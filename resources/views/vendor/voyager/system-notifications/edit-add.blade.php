@@ -143,21 +143,21 @@
 
 @section('javascript')
     <script>
-        let payment_form = $('#system_notification_form');
-        payment_form.submit(function (event) {
-            event.preventDefault();
-            $.ajax({
-                type: "POST",
-                url: "{{generate_url()}}",
-                data: {user_id: 1, project: "user", data: {url: ''}},
-                dataType: "json",
-                encode: true,
-            }).done(function (data) {
-                alert(data)
-                console.log(data);
-                // form.submit();
-            });
-        });
+        {{--let payment_form = $('#system_notification_form');--}}
+        {{--payment_form.submit(function () {--}}
+        {{--    // event.preventDefault();--}}
+        {{--    $.ajax({--}}
+        {{--        type: "POST",--}}
+        {{--        url: "{{generate_url()}}",--}}
+        {{--        data: {user_id: 395, project: "user", data: {id: 'notification_id'}},--}}
+        {{--        dataType: "json",--}}
+        {{--        encode: true,--}}
+        {{--    }).done(function (data) {--}}
+        {{--        alert(data)--}}
+        {{--        console.log(data);--}}
+        {{--        // payment_form.submit();--}}
+        {{--    });--}}
+        {{--});--}}
 
         var params = {};
         var $file;
