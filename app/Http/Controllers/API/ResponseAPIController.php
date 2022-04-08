@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TaskIndexResource;
+use App\Models\Response;
 use App\Models\Task;
 use App\Models\TaskResponse;
 use App\Models\WalletBalance;
@@ -19,6 +21,8 @@ class ResponseAPIController extends Controller
         $data = $request->validate([
             'description' => 'required|string',
             'price' => 'required|int',
+            'notificate' => 'required',
+            'pay' => 'required'
         ]);
         $data['notification_on'] = $request->notificate ? 1 : 0;
         $data['task_id'] = $task->id;
@@ -33,38 +37,36 @@ class ResponseAPIController extends Controller
         $ballance = WalletBalance::where('user_id', auth()->user()->id)->first();
         if ($ballance) {
             if ($ballance->balance < 4000) {
-                Alert::error('Hisobingizda yetarli mablag\' mavjud emas!');
+                response()->json(["success" => false, 'message'=>'Hisobingizda yetarli mablag\' mavjud emas!']);
             }else if($task->responses()->where('creator_id', auth()->user()->id)->first()){
-                Alert::error("Balance", 'Allaqachon mavjud!');
-
+                return response()->json(['success' => false, "Siz allaqachon so'rov yuborgansiz"]);
             } else {
-                Alert::success("Success", 'asdweqweqw');
                 $ballance->balance = $ballance->balance - $request->pay;
                 $ballance->save();
                 TaskResponse::create($data);
+                return new TaskIndexResource($task);
             }
         } else {
 
-            Alert::error("Balance", 'Hisobingizda yetarli mablag\' mavjud emas!');
-
+            response()->json(["success" => false, 'message'=>'Hisobingizda yetarli mablag\' mavjud emas!']);
         }
         return response()->json($task); //back();
 
     }
 
 
-    public function selectPerformer(TaskResponse $response)
+    public function selectPerformer(Response $response)
     {
+        taskGuard($response->task);
         if ($response->task->status >= 3) {
-            abort(403);
+            return response()->json(["success" => false, 'message' => 'Ish hali bajarilmoqda']);
         }
         $data = [
             'performer_id' => $response->user_id,
             'status' => Task::STATUS_IN_PROGRESS
         ];
         $response->task->update($data);
-        Alert::success('Success');
-        return response()->json(['message'=>'Success']); // back()
+        return response()->json(["success" => true]);
     }
 
 

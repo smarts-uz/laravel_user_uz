@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PerformerIndexResource;
 use App\Models\User;
 use App\Models\UserView;
 use App\Services\Payme\Request;
@@ -25,8 +26,8 @@ class PerformerAPIController extends Controller
      */
     public function service()
     {
-
-        return User::where('role_id', 2)->get();
+        $performers = User::where('role_id', 2)->get();
+        return PerformerIndexResource::collection($performers);
     }
 
     /**
@@ -53,7 +54,7 @@ class PerformerAPIController extends Controller
     {
         setView($performer);
 
-        return $performer->role_id == 5? $performer:abort(404);
+        return $performer->role_id == 5? new PerformerIndexResource($performer):abort(404);
     }
 
 

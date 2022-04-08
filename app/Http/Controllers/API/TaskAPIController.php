@@ -12,6 +12,7 @@ use App\Services\Task\CreateService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use TCG\Voyager\Models\Category;
 use App\Models\CustomFieldsValue;
 
@@ -183,6 +184,16 @@ class TaskAPIController extends Controller
     {
         $data = $request->validated();
         $data["user_id"] = auth()->user()->id;
+
+        $images = isset($data['photos'])?$data['images']:[];
+        $data['photos'] =  [];
+        foreach ($images as $image) {
+            $name = md5(\Carbon\Carbon::now().'_'.$image->getClientOriginalName().'.'.$image->getClientOriginalExtension());
+            $filepath = Storage::disk('public')->putFileAs('/images',$image, $name);
+            $data['photos'][] = $filepath;
+        }
+
+
         $result = Task::create($data);
         if ($result)
             return response()->json([
@@ -283,6 +294,15 @@ class TaskAPIController extends Controller
         taskGuard($task);
         $data = $request->validated();
         $data = getAddress($data); // шуни комментировать килиб койса swagger да ишлайди
+
+        $images = isset($data['photos'])?$data['images']:[];
+        $data['photos'] =  [];
+        foreach ($images as $image) {
+            $name = md5(\Carbon\Carbon::now().'_'.$image->getClientOriginalName().'.'.$image->getClientOriginalExtension());
+            $filepath = Storage::disk('public')->putFileAs('/images',$image, $name);
+            $data['photos'][] = $filepath;
+        }
+
         $task->update($data);
         $this->service->syncCustomFields($task);
 

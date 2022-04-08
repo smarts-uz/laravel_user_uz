@@ -45,11 +45,13 @@ class NotificationService
     {
         if ($slug == 'news-notifications'){
             $type = 2;
+            $column = 'news_notification';
         } else {
             $type = 3;
+            $column = 'system_notification';
         }
 
-        $user_ids = User::query()->pluck('id')->toArray();
+        $user_ids = User::query()->where($column, 1)->pluck('id')->toArray();
         foreach ($user_ids as $user_id) {
             Notification::create([
                 'user_id' => $user_id,

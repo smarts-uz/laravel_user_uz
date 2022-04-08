@@ -7,8 +7,10 @@ use App\Http\Controllers\API\LoginAPIController;
 use App\Http\Controllers\API\NewsAPIController;
 use App\Http\Controllers\API\PerformerAPIController; // javoxir
 use App\Http\Controllers\API\ProfileAPIController; // javoxir +
+use App\Http\Controllers\API\ResponseAPIController;
 use App\Http\Controllers\API\SocialAPIController;
 use App\Http\Controllers\API\TaskAPIController; // javoxir
+use App\Http\Controllers\API\UpdateAPIController;
 use App\Http\Controllers\API\UserAPIController; // javoxir
 use App\Http\Controllers\API\SearchAPIController; // javoxir -
 use App\Http\Controllers\API\MassmediaAPIController; // javoxir
@@ -17,7 +19,10 @@ use App\Http\Controllers\API\VoyagerUserAPIController; // javoxir -
 use App\Http\Controllers\API\RefillAPIController; // javoxir
 use App\Http\Controllers\API\ReportAPIController; // javoxir
 use App\Http\Controllers\API\PaynetTransactionAPIController;
+use App\Http\Controllers\PortfolioAPIController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Task\ResponseController;
+use App\Http\Controllers\Task\UpdateController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -61,6 +66,17 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post("account/change/email", [LoginAPIController::class,'change_email']);
     Route::post("account/change/phone", [LoginAPIController::class,'change_phone_number']);
 
+    Route::delete('/delete/portfolio/{portfolio}', [PortfolioAPIController::class, 'delete']);
+    Route::post('/portfolio/create', [PortfolioAPIController::class, 'createPortfolio']);
+
+    Route::post("/task/{task}/response", [ResponseAPIController::class, 'store']);
+    Route::post('/select-performer/{response}', [ResponseAPIController::class, 'selectPerformer']);
+    Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']);
+    Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']);
+    Route::post('/change-avatar', [ProfileAPIController::class, 'avatar']);
+
+
+
 
 });
 
@@ -93,6 +109,13 @@ Route::get('/categories/{id}', [CategoriesAPIController::class, 'show']); //end
 //Performers
 Route::get('/performers', [PerformerAPIController::class, 'service']); //end
 Route::get('/performers/{performer}', [PerformerAPIController::class, 'performer']); //end
+
+//Portfolio
+Route::get('/portfolio_albums/{performer}', [PortfolioAPIController::class, 'index']); //end
+Route::get('/portfolio_album/{portfolio}', [PortfolioAPIController::class, 'show']); //end
+
+
+
 
 //Massmedia
 Route::get('/press',[MassmediaAPIController::class, 'index']); //end

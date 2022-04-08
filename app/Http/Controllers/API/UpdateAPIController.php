@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\UpdateRequest;
+use App\Http\Resources\TaskIndexResource;
 use App\Models\CustomFieldsValue;
 use App\Models\Notification;
 use App\Models\Task;
@@ -38,19 +39,22 @@ class UpdateAPIController extends Controller
     }
 
     public function completed(Task $task){
+        taskGuard($task);
         $data = [
             'status' => Task::STATUS_COMPLETE
         ];
         $task->update($data);
 
-        Alert::success('Success');
-
-        return response()->json(['message'=> 'Success']);  //back();
+        return response()->json(['message'=> 'Success', 'success' => true, 'task' => new TaskIndexResource($task)]);
 
     }
 
 
     public function sendReview(Task $task, Request $request){
+        $request->validate([
+            'comment' => 'required',
+            'good' => 'required',
+        ]);
         DB::beginTransaction();
 //        dd($request->all());
         try {
@@ -82,7 +86,7 @@ class UpdateAPIController extends Controller
             DB::rollBack();
         }
         DB::commit();
-        return response()->json($task);  //back();
+        return new TaskIndexResource($task);  //back();
     }
 
 
