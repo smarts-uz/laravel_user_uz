@@ -184,7 +184,7 @@
                             </div>
                             <div>
                                 @if(Cache::has('user-is-online-' . $user->id))
-                                    <span class="text-green-500">Online</span>
+                                    <span id="only" class="text-green-500">Online</span>
                                 @else
                                     <span class="text-gray-500"> {{ Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</span>
                                 @endif
@@ -381,31 +381,19 @@
         //     // Get the checkbox
         //     var checkBox = document.getElementById("online");
         //     // Get the output text
-        //     // @foreach($users as $user)
-        //     // var {{ str_replace(' ', '', $user->name) }} = document.getElementById("{{$user->id}}");
+        //     @foreach($users as $user)
+        //     var {{ str_replace(' ', '', $user->name) }} = document.getElementById("{{$user->id}}");
         //     // If the checkbox is checked, display the output text
         //     if (checkBox.checked == true){
         //         if (Cache::has('user-is-online-' . $user->id)) {
-        //             // {{ str_replace(' ', '', $user->name) }}.classList.remove("hidden");
+        //              {{ str_replace(' ', '', $user->name) }}.classList.remove("hidden");
                     
         //         }
         //     } else {
-        //         // {{ str_replace(' ', '', $user->name) }}.classList.add("hidden");
+        //          {{ str_replace(' ', '', $user->name) }}.classList.add("hidden");
         //     }
-        //     // @endforeach        
+        //     @endforeach        
         // }
-
-        $('#online').change(function(){
-            // if(this.checked==true){
-            //     if(Cache::has('user-is-online-' . $user->id)){
-            //         $('#{{$user->id}}').removeClass('hidden');
-            //     }
-            // }
-            // else{
-            //     $('#{{$user->id}}').addClass('hidden');
-            // }
-           // $('#{{$user->id}}').addClass('hidden');
-        })
     </script>
     {{-- Modal end --}}
     <script>

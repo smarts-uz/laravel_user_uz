@@ -72,6 +72,7 @@ Route::group(['prefix' => 'performers'], function () {
     Route::get('/', [PerformersController::class, 'service'])->name('performers.service'); // javoxir
     Route::get('/{user}', [PerformersController::class, 'performer'])->name('performers.performer'); // javoxir
     Route::get('/chat/{id}', [PerformersController::class, 'performer_chat'])->name('performers.performer_chat'); // javoxir
+    Route::get('user_online', [PerformersController::class, 'user_online']);
 });
 #endregion
 
