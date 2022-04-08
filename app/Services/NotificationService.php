@@ -11,17 +11,18 @@ use Illuminate\Support\Facades\Http;
 
 class NotificationService
 {
-    public function sendTaskNotification($task)
+    public static function sendTaskNotification($task)
     {
-        $users = User::all();
-
-        foreach ($users as $user) {
-            $user_cat_ids = explode(",", $user->category_id);
+        $users = User::query()->pluck('category_id', 'id')->toArray();
+        $user_ids = [];
+        foreach ($users as $user_id => $category_id) {
+            $user_cat_ids = explode(",", $category_id);
             $check_for_true = array_search($task->category_id, $user_cat_ids);
-
             if ($check_for_true !== false) {
+                $user_ids[] = $user_id;
+
                 Notification::create([
-                    'user_id' => $user->id,
+                    'user_id' => $user_id,
                     'description' => 1,
                     'task_id' => $task->id,
                     "cat_id" => $task->category_id,
@@ -30,13 +31,14 @@ class NotificationService
                 ]);
             }
         }
-        $user_id_fjs = NULL;
-        $id_task = $task->id;
-        $id_cat = $task->category_id;
-        $title_task = $task->name;
-        $type = 1;
 
-//        event(new MyEvent($id_task, $id_cat, $title_task, $type, $user_id_fjs));
+        $response = Http::post('ws.smarts.uz/api/send-notification', [
+            'user_ids' => $user_ids,
+            'project' => 'user',
+            'data' => ['url' => 'tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently']
+        ]);
+
+//        dd($response->json());
     }
 
     public static function sendNotification($not, $slug)

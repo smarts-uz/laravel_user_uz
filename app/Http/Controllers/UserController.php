@@ -11,6 +11,7 @@ use App\Models\Reklama;
 use App\Models\Advant;
 use App\Models\UserVerify;
 use App\Models\How_work_it;
+use App\Services\NotificationService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -205,10 +206,10 @@ class UserController extends Controller
         return redirect('/');
     }
 
-    public function verifyProfil(Request $request,User $user)
+    public function verifyProfil(Request $request,User $user, Task $task)
     {
 
-
+        $task = Task::query()->find($request->get('for_ver_func'));
         $request->validate([
             'sms_otp' => 'required',
         ],
@@ -223,36 +224,8 @@ class UserController extends Controller
                 Task::findOrFail($request->for_ver_func)->update(['status' => 1, 'user_id' => $user->id, 'phone' => $user->phone_number]);
                 auth()->login($user);
 
-// dd($request, $user);
-                
-                // foreach(User::all() as $users){
-
-
-                //     $user_cat_ids = explode(",",$users->category_id);
-                //     $check_for_true = array_search($category,$user_cat_ids);
-        
-                //     if($check_for_true !== false){
-                //     Notification::create([
-        
-                //         'user_id'=>$users->id,
-                //         'description'=> 1,
-                //         'task_id'=>$id->id,
-                //         "cat_id"=>$category,
-                //         "name_task"=>$id->name,
-                //         "type"=> 1
-        
-                //     ]);
-                // }
-        
-                // }
-        
-                //    $user_id_fjs = NULL;
-                //    $id_task = $id->id;
-                //    $id_cat = $id->category_id;
-                //    $title_task = $id->name;
-                //    $type = 1;
-        
-                //        event(new MyEvent($id_task,$id_cat,$title_task,$type,$user_id_fjs));
+                // send notification
+                 NotificationService::sendTaskNotification($task);
 
                 return redirect()->route('searchTask.task',$request->for_ver_func);
             } else {

@@ -12,6 +12,7 @@ use App\Models\CustomField;
 use App\Models\CustomFieldsValue;
 use App\Models\Task;
 use App\Models\User;
+use App\Services\NotificationService;
 use App\Services\Task\CreateService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -189,6 +190,7 @@ class CreateController extends Controller
 
     public function contact_store(Task $task, Request $request)
     {
+//        dd($task);
         $user = auth()->user();
 
         $data = $request->validate([
@@ -206,36 +208,7 @@ class CreateController extends Controller
         $task->phone = $user->phone_number;
         $task->save();
 
-        // dd($task);
-
-        foreach (User::all() as $users) {
-
-
-            $user_cat_ids = explode(",", $users->category_id);
-            $check_for_true = array_search($task->category_id, $user_cat_ids);
-
-            if ($check_for_true !== false) {
-                Notification::create([
-
-                    'user_id' => $users->id,
-                    'description' => 1,
-                    'task_id' => $task->id,
-                    "cat_id" => $task->category_id,
-                    "name_task" => $task->name,
-                    "type" => 1
-
-                ]);
-            }
-
-        }
-
-        $user_id_fjs = NULL;
-        $id_task = $task->id;
-        $id_cat = $task->category_id;
-        $title_task = $task->name;
-        $type = 1;
-
-        event(new MyEvent($id_task, $id_cat, $title_task, $type, $user_id_fjs));
+        NotificationService::sendTaskNotification($task);
 
         return redirect()->route('searchTask.task', $task->id);
     }
