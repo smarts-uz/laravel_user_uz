@@ -62,6 +62,12 @@ class User extends \TCG\Voyager\Models\User
     public function reviews() {
         return $this->hasMany(Review::class,'user_id','id');
     }
+    public function goodReviews() {
+        return $this->hasMany(Review::class,'user_id','id')->where('good_bad',1);
+    }
+    public function badReviews() {
+        return $this->hasMany(Review::class,'user_id','id')->where('good_bad',0);
+    }
     public function views(){
         return $this->hasMany(UserView::class,'user_id');
     }
