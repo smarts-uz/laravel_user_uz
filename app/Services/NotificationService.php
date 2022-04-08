@@ -35,7 +35,7 @@ class NotificationService
         $response = Http::post('ws.smarts.uz/api/send-notification', [
             'user_ids' => $user_ids,
             'project' => 'user',
-            'data' => ['url' => 'tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently']
+            'data' => ['url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently']
         ]);
 
 //        dd($response->json());
