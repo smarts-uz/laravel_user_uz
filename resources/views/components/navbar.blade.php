@@ -227,21 +227,24 @@
                             <ul class="py-1 overflow-y-auto max-h-96" id="notifs" aria-labelledby="dropdown">
                                 @foreach($notifications as $notification)
                                     <li>
-                                        <form action="{{ route('performers.deleteNotification', $notification->id ) }}" method="post">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">{{$notification->name_task}}</button>
-                                        </form>
+                                        <a href="/notification" class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">
+                                            {{$notification->name_task}}
+                                        </a>
+{{--                                        <form action="{{ route('performers.deleteNotification', $notification->id ) }}" method="post">--}}
+{{--                                            @csrf--}}
+{{--                                            @method('delete')--}}
+{{--                                            <button type="submit" class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">{{$notification->name_task}}</button>--}}
+{{--                                        </form>--}}
                                     </li>
                                 @endforeach
-                                <div id="for_append_notifications"></div>
+{{--                                <div id="for_append_notifications"></div>--}}
                                 <li>
                                     <a class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">
                                         <i class="xl:text-2xl lg:text-xl fas fa-star"></i>
                                         {{__('Осталось только установить пароль')}}
                                     </a>
                                 </li>
-                                <a href="/fordelnotif" class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">asdasdasdsa</a>
+
                                 <li>
                                     <a href="{{ route('profile.editData')}}" class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2">{{__("В раздел 'Настройки'")}}</a>
                                 </li>
@@ -451,14 +454,23 @@
             cluster: '{{env("PUSHER_APP_CLUSTER")}}',
             // encrypted: true,
 
-            wsHost:  'websocket.loc', // 'bidding.uztelecom.uz',
+            wsHost:  'ws.smarts.uz', // 'bidding.uztelecom.uz',
             wsPort: 6001,
             forceTLS: false,
             disableStats: true,
         });
-        let channel = pusher.subscribe('uztelecom-notification-send-' + {{auth()->id()}});
+        let channel = pusher.subscribe('user-notification-send-' + {{auth()->id()}});
         channel.bind('server-user', function(data) {
             data = JSON.parse(data.data)
+            let count = parseInt($('#content_count').text())
+            count = count ? count : 0;
+            count += 1
+            $('#content_count').text(count)
+            $('#notifs').append(`
+            <li>
+                 <a href=${data['url']} class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2">${data['name']}</a>
+            </li>
+            `)
             console.log(data)
         });
 
