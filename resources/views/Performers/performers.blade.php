@@ -52,7 +52,7 @@
                     </div>
                     <div class="form-check flex flex-row mx-8 mt-10">
                         <input class="focus:outline-none  form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-black-600 checked:border-black-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                               type="checkbox" value="1" onchange="check()" id="online">
+                               type="checkbox" value="1" onchange="check1()" id="online">
                         <label class="form-check-label inline-block text-gray-800" for="online">
                             {{__('Сейчас на сайте')}}
                         </label>
@@ -183,12 +183,10 @@
                                 </div>
                             </div>
                             <div>
-                                @if($user->active_status == 1)
-                                    <p class="text-sm text-green-500 my-3"><i class="fa fa-circle text-xs text-green-500 mr-2 mt-1"> </i>
-                                        {{__('Онлайн')}}</p>
-
+                                @if(Cache::has('user-is-online-' . $user->id))
+                                    <span class="text-green-500">Online</span>
                                 @else
-                                    <p class="text-sm text-gray-500 my-3">{{ $user->last_seen }}</p>
+                                    <span class="text-gray-500"> {{ Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</span>
                                 @endif
 
                             </div>
@@ -379,22 +377,35 @@
         }
     </script>
     <script>
-        function check() {
-            // Get the checkbox
-            var checkBox = document.getElementById("online");
-            // Get the output text
-            @foreach($users as $user)
-            var {{ str_replace(' ', '', $user->name) }} = document.getElementById("{{$user->id}}");
-            // If the checkbox is checked, display the output text
-            if (checkBox.checked == true){
-                if ({{$user->active_status}} == 0) {
-                    {{ str_replace(' ', '', $user->name) }}.classList.add("hidden");
-                }
-            } else {
-                {{ str_replace(' ', '', $user->name) }}.classList.remove("hidden");
-            }
-            @endforeach
-        }
+        // function check1() {
+        //     // Get the checkbox
+        //     var checkBox = document.getElementById("online");
+        //     // Get the output text
+        //     // @foreach($users as $user)
+        //     // var {{ str_replace(' ', '', $user->name) }} = document.getElementById("{{$user->id}}");
+        //     // If the checkbox is checked, display the output text
+        //     if (checkBox.checked == true){
+        //         if (Cache::has('user-is-online-' . $user->id)) {
+        //             // {{ str_replace(' ', '', $user->name) }}.classList.remove("hidden");
+                    
+        //         }
+        //     } else {
+        //         // {{ str_replace(' ', '', $user->name) }}.classList.add("hidden");
+        //     }
+        //     // @endforeach        
+        // }
+
+        $('#online').change(function(){
+            // if(this.checked==true){
+            //     if(Cache::has('user-is-online-' . $user->id)){
+            //         $('#{{$user->id}}').removeClass('hidden');
+            //     }
+            // }
+            // else{
+            //     $('#{{$user->id}}').addClass('hidden');
+            // }
+           // $('#{{$user->id}}').addClass('hidden');
+        })
     </script>
     {{-- Modal end --}}
     <script>

@@ -12,12 +12,10 @@
                     </div>
                     <div>
 
-                        @if($user->last_seen_at >= now()->toDateTimeString())
-                            <p class="text-green-500"><i
-                                    class="fa fa-circle text-xs text-green-500 float-left mr-2 mt-[5px]"> </i>{{__('Онлайн')}}
-                            </p>
+                        @if(Cache::has('user-is-online-' . $user->id))
+                            <span class="text-green-500">Online</span>
                         @else
-                            <p class="text-gray-500">{{ $user->last_seen }}</p>
+                            <span class="text-gray-500"> {{ Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</span>
                         @endif
                         <h1 class="text-3xl font-bold ">{{$user->name}}</h1>
                     </div>
