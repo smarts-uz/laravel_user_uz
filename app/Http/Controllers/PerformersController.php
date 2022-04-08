@@ -117,5 +117,11 @@ class PerformersController extends Controller
         Notification::where('user_id', Auth::id())->delete();
         return response()->json(['success']);
     }
+    public function user_online(Request $request){
+            $users = User::select("*")
+            ->whereNotNull('last_seen')
+            ->orderBy('last_seen', 'DESC');
 
+        return view('Performers.performers', compact('users'));
+    }
 }
