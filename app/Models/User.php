@@ -96,9 +96,4 @@ class User extends \TCG\Voyager\Models\User
         return $this->hasMany(Portfolio::class);
     }
 
-    public function getLastSeenAttribute(){
-        $value = $this->last_seen_at;
-        $value = Carbon::parse($value)->locale(getLocale());
-        return $value->diffForHumans();
-    }
 }
