@@ -16,9 +16,9 @@ $count = $notifications->count();
 <ul class="py-1 overflow-y-auto max-h-96" id="notifs" aria-labelledby="dropdown">
     @foreach($notifications as $notification)
         <li>
-            <a href="/notification" class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">
+            <button onclick="toggleModal121('modal-id121')" class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">
                 {{$notification->name_task}}
-            </a>
+            </button>
         </li>
     @endforeach
 </ul>
