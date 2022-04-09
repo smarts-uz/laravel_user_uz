@@ -42,12 +42,8 @@
 
     </script>
     <link rel="stylesheet" href="{{asset('css/modal.css')}}">
-    @if(isset($task->responses))
         <div class="xl:flex container w-11/12 mx-auto">
             <div class="md:flex mx-auto xl:w-9/12 w-full">
-                @else
-                    <div class="md:flex mx-auto xl:w-9/12 w-full">
-                        @endif
                         <div class="mt-8 lg:flex mb-8 w-full">
                             {{-- left sidebar start --}}
                             <div class="w-full float-left">
@@ -452,97 +448,122 @@
 
                                 @auth()
                                     @if ($task->user_id == auth()->user()->id)
-                                        <div class="">
-
-                                            <div class="text-4xl font-semibold my-6">
-                                                @if ($task->responses_count <= 4)
-                                                    @if ($task->responses_count == 1)
-                                                        {{__('У задания')}} {{$task->responses_count}} {{__('отклик')}}
-                                                    @else
-                                                        {{__('У задания')}} {{$task->responses_count}} {{__('откликa')}}
-                                                    @endif
-                                                @else
-                                                    {{__('У задания')}} {{$task->responses_count}} {{__('откликов')}}
-                                                @endif
-                                            </div>
+                                    <div class="text-4xl font-semibold my-6">
+                                        @if ($task->responses_count <= 4)
+                                            @if ($task->responses_count == 1)
+                                                {{__('У задания')}} {{$task->responses_count}} {{__('отклик')}}
                                             @else
-                                                <div class="text-4xl font-semibold my-6">
-                                                    {{__('У задания нет откликов')}}
-                                                </div>
+                                                {{__('У задания')}} {{$task->responses_count}} {{__('откликa')}}
                                             @endif
-                                            <hr>
-                                            @endauth
+                                        @else
+                                            {{__('У задания')}} {{$task->responses_count}} {{__('откликов')}}
+                                        @endif
+                                    </div>
+                                    @else
+                                        <div class="text-4xl font-semibold my-6">
+                                            {{__('У задания нет откликов')}}
+                                        </div>
+                                    @endif
+                                    <hr>
+                                @endauth 
 
-                                            @foreach ($task->responses as $response)
-                                                <div class="mb-6">
-                                                    <div class="my-10">
-                                                        <div class="rounded-md bg-black h-24 float-left mr-5">
-                                                            <img class="w-24 h-24"
-                                                                 src="https://thumbs.dreamstime.com/b/%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80-%D0%B7%D0%B5%D0%BB%D0%B5%D0%BD%D0%BE%D0%B3%D0%BE-%D1%86%D0%B2%D0%B5%D1%82%D0%B0-%D0%B7%D0%BD%D0%B0%D1%87%D0%BA%D0%B0-%D1%85%D0%BE%D0%BA%D0%BA%D0%B5%D1%8F-%D0%BD%D0%B0-%D0%BB%D1%8C%D0%B4%D0%B5-%D1%80%D1%83%D0%BA%D0%BE%D0%BF%D0%BE%D0%B6%D0%B0%D1%82%D0%B8%D1%8F-117033775.jpg"
-                                                                 alt="">
-                                                        </div>
-                                                        <div class="">
-                                                            <a href="/performers/{{Arr::get('id', $response->user)}}"
-                                                               class="text-blue-500 text-xl font-semibold float-left">
-                                                                {{Arr::get('name', $response->user)}}
+                                    
+
+                                @foreach ($task->responses as $response)
+                                    <div class="mb-6">
+                                        <div class="my-10">
+                                            <div class="rounded-md bg-black h-24 float-left mr-5">
+                                                <img class="w-24 h-24"
+                                                    src="https://thumbs.dreamstime.com/b/%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80-%D0%B7%D0%B5%D0%BB%D0%B5%D0%BD%D0%BE%D0%B3%D0%BE-%D1%86%D0%B2%D0%B5%D1%82%D0%B0-%D0%B7%D0%BD%D0%B0%D1%87%D0%BA%D0%B0-%D1%85%D0%BE%D0%BA%D0%BA%D0%B5%D1%8F-%D0%BD%D0%B0-%D0%BB%D1%8C%D0%B4%D0%B5-%D1%80%D1%83%D0%BA%D0%BE%D0%BF%D0%BE%D0%B6%D0%B0%D1%82%D0%B8%D1%8F-117033775.jpg"
+                                                    alt="">
+                                            </div>
+                                            <div class="">
+                                                <a href="/performers/{{Arr::get('id', $response->user)}}"
+                                                class="text-blue-500 text-xl font-semibold float-left">
+                                                    {{Arr::get('name', $response->user)}}
+                                                </a>
+                                                <input type="text" name="performer_id" class="hidden"
+                                                    value="{{Arr::get('id', $response->user)}}">
+                                                <img class="w-7 h-7 ml-2"
+                                                    src="{{asset('images/shield.svg')}}" alt="">
+                                                <div class="text-gray-700">
+                                                    <i class="fas fa-star text-yellow-200 mr-1"></i>{{__('4,96 по 63 отзывам')}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gray-100 rounded-[10px] p-4">
+                                            <div class="ml-0">
+                                                <div
+                                                    class="text-[17px] text-gray-500 font-semibold">{{__('Стоимость')}} {{$response->price}}
+                                                    UZS
+                                                </div>
+
+                                                <div
+                                                    class="text-[17px] text-gray-500 my-5">{{$response->description}}</div>
+                                                @if($response->not_free == 1)
+                                                    <div
+                                                        class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} {{$response->user->phone_number}}</div>
+                                                @endif
+
+                                                @auth()
+                                                    @if($task->status == 3 && $response->user_id == $task->performer_id)
+                                                        <div class="w-10/12 mx-auto">
+                                                            <a href="{{ route('performers.performer_chat', $response->user->id) }}"
+                                                            class="text-semibold text-center w-[200px] mb-2 md:w-[320px] ml-0 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
+                                                                {{__('Написать в чат')}}
                                                             </a>
-                                                            <input type="text" name="performer_id" class="hidden"
-                                                                   value="{{Arr::get('id', $response->user)}}">
-                                                            <img class="w-7 h-7 ml-2"
-                                                                 src="{{asset('images/shield.svg')}}" alt="">
-                                                            <div class="text-gray-700">
-                                                                <i class="fas fa-star text-yellow-200 mr-1"></i>{{__('4,96 по 63 отзывам')}}
-                                                            </div>
+
                                                         </div>
+                                                    @elseif($task->status <= 2 && auth()->user()->id == $task->user_id)
+                                                        <form
+                                                            action="{{ route('response.selectPerformer', $response->id) }}"
+                                                            method="post">
+                                                            @csrf
+                                                            <button
+                                                                type="submit"
+                                                                class="cursor-pointer text-semibold text-center w-[200px]
+                                                    md:w-[320px] md:ml-4 inline-block py-3 px-4 bg-white transition
+                                                    duration-200 text-white bg-green-500 hover:bg-green-500 font-medium
+                                                    border border-transparent rounded-md"> {{__('Выбрать исполнителем')}}</button>
+
+                                                        </form>
+                                                    @endif
+
+                                                @endauth
+
+                                                <div class="text-gray-400 text-[14px] my-6">
+                                                    {{__('Выберите исполнителя, чтобы потом оставить отзыв о работе.')}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                                 <div>
+                                    <div class=" my-3">
+                                       <h1 class="font-medium text-3xl mt-3">Похожиe задания</h1>
+                                       <div class="border-2 border-gray-500 rounded-xl hover:bg-blue-100 h-auto my-3">
+                                            <div class="grid grid-cols-5 w-11/12 mx-auto">
+                                                <div class="sm:col-span-3 col-span-5 flex flex-row">
+                                                    <div class="sm:mr-6 mr-3 w-1/6">
+                                                        <img src="" class="text-2xl float-left text-blue-400 sm:mr-4 mr-3 h-14 w-14 bg-blue-200 p-2 rounded-xl"/>
                                                     </div>
-                                                    <div class="bg-gray-100 rounded-[10px] p-4">
-                                                        <div class="ml-0">
-                                                            <div
-                                                                class="text-[17px] text-gray-500 font-semibold">{{__('Стоимость')}} {{$response->price}}
-                                                                UZS
-                                                            </div>
-
-                                                            <div
-                                                                class="text-[17px] text-gray-500 my-5">{{$response->description}}</div>
-                                                            @if($response->not_free == 1)
-                                                                <div
-                                                                    class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} {{$response->user->phone_number}}</div>
-                                                            @endif
-
-                                                            @auth()
-                                                                @if($task->status == 3 && $response->user_id == $task->performer_id)
-                                                                    <div class="w-10/12 mx-auto">
-                                                                        <a href="{{ route('performers.performer_chat', $response->user->id) }}"
-                                                                           class="text-semibold text-center w-[200px] mb-2 md:w-[320px] ml-0 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
-                                                                            {{__('Написать в чат')}}
-                                                                        </a>
-
-                                                                    </div>
-                                                                @elseif($task->status <= 2 && auth()->user()->id == $task->user_id)
-                                                                    <form
-                                                                        action="{{ route('response.selectPerformer', $response->id) }}"
-                                                                        method="post">
-                                                                        @csrf
-                                                                        <button
-                                                                            type="submit"
-                                                                            class="cursor-pointer text-semibold text-center w-[200px]
-                                                                 md:w-[320px] md:ml-4 inline-block py-3 px-4 bg-white transition
-                                                                 duration-200 text-white bg-green-500 hover:bg-green-500 font-medium
-                                                                 border border-transparent rounded-md"> {{__('Выбрать исполнителем')}}</button>
-
-                                                                    </form>
-                                                                @endif
-
-                                                            @endauth
-
-                                                            <div class="text-gray-400 text-[14px] my-6">
-                                                                {{__('Выберите исполнителя, чтобы потом оставить отзыв о работе.')}}
-                                                            </div>
-                                                        </div>
+                                                    <div class="w-5/6">
+                                                        <a href="" class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600"></a>
+                                                        <p class="text-sm  location "></p>
+                                                        <p class="text-sm my-0.5"></p>
+                                                        <p class="text-sm "></p>
                                                     </div>
                                                 </div>
-                                            @endforeach
-                                        </div>
+                                                <div class="sm:col-span-2 col-span-5 sm:text-right text-left sm:ml-0 ml-16" id="about">
+                                                    <p  class="sm:text-lg text-sm font-semibold text-gray-700"></p>
+                                                    <span  class="text-sm sm:mt-5 sm:mt-1 mt-0"></span>
+                                                    <p class="text-sm sm:mt-1 mt-0"></p>
+                                                    <a href="/performers/` + data.userid + `" class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500"></a>
+                                                </div>
+                                            </div>
+                                       </div>
+                                    </div>
+                                </div>      
                             </div>
                         </div>
                         {{-- right sidebar start --}}
