@@ -387,12 +387,12 @@
         //     if (checkBox.checked == true){
         //         if (Cache::has('user-is-online-' . $user->id)) {
         //              {{ str_replace(' ', '', $user->name) }}.classList.remove("hidden");
-                    
+
         //         }
         //     } else {
         //          {{ str_replace(' ', '', $user->name) }}.classList.add("hidden");
         //     }
-        //     @endforeach        
+        //     @endforeach
         // }
     </script>
     {{-- Modal end --}}
