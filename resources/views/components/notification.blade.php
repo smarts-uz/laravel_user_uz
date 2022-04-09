@@ -23,7 +23,28 @@ $count = $notifications->count();
     @endforeach
 </ul>
 </div>
+    {{-- modal notification --}}
 
+    <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="modal-id121" style="background-color:rgba(0,0,0,0.5)">
+        <div class="relative w-auto my-6 mx-auto max-w-3xl"  id="modal-id121">
+            <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                <div class=" text-center p-12  rounded-t">
+                    <button type="submit"  onclick="toggleModal121('modal-id121')" class="rounded-md w-100 h-16 absolute top-1 right-4">
+                        <i class="fas fa-times  text-slate-400 hover:text-slate-600 text-xl w-full"></i>
+                    </button>
+                    <h3 class="font-medium text-4xl block mt-4">
+                        fdvedgrfgrtdfgtrfgtrg
+                    </h3>
+                </div>
+                <div class="mb-4 h-auto p-4">
+                    <p class="text-center h-full w-full text-lg">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, ise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum,</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id121-backdrop"></div>
+
+    {{-- end modal notification --}}
 @auth
     @php
         $array_cats_user = auth()->user()->category_id;
@@ -56,108 +77,13 @@ $count = $notifications->count();
             </li>
             `)
             console.log(data)
-        });
+        }); 
 
-        // Enable pusher logging - don't include this in production
-    {{--        Pusher.logToConsole = true;--}}
-
-    {{--        var pusher = new Pusher('ec2f696b4a7b3e054939', {--}}
-    {{--            cluster: 'ap2'--}}
-    {{--        });--}}
-
-    {{--        var channel = pusher.subscribe('my-channel');--}}
-    {{--        channel.bind('my-event', function (data) {--}}
-    {{--            alert(data)--}}
-    {{--            if (Number(data["type"]) === 1) {--}}
-
-    {{--                const for_check_cat_id = [<? echo $array_cats_user ?>];--}}
-
-    {{--                let num_cat_id = Number(data["id_cat"]);--}}
-
-    {{--                let check_arr = for_check_cat_id.includes(num_cat_id);--}}
-
-    {{--                if (check_arr === true) {--}}
-    {{--                    var content_count = document.getElementById('content_count').innerHTML;--}}
-    {{--                    let count_for_inner = Number(content_count) + 1;--}}
-    {{--                    document.getElementById('content_count').innerHTML = count_for_inner;--}}
-
-    {{--                    let el_for_create = document.getElementById('for_append_notifications');--}}
-
-    {{--                    el_for_create.insertAdjacentHTML('afterend', `--}}
-    {{--<li>--}}
-    {{--<a href="/detailed-tasks/` + Number(data["id_task"]) + `" class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">` + data["title_task"] + `</a>--}}
-    {{--</li>--}}
-    {{-- `);--}}
-
-    {{--                }--}}
-
-    {{--            }--}}
-
-    {{--            if (Number(data["type"]) === 2) {--}}
-
-    {{--                let user_id_for_js2 = Number(<? echo $array_cats_user ?>);--}}
-
-    {{--                if (user_id_for_js2 === Number(data["user_id_fjs"])) {--}}
-    {{--                    var content_count = document.getElementById('content_count').innerHTML;--}}
-    {{--                    let count_for_inner = Number(content_count) + 1;--}}
-    {{--                    document.getElementById('content_count').innerHTML = count_for_inner;--}}
-
-    {{--                    let el_for_create = document.getElementById('for_append_notifications');--}}
-
-    {{--                    el_for_create.insertAdjacentHTML('afterend', `--}}
-    {{--<li>--}}
-    {{--<a href="/detailed-tasks/` + Number(data["id_task"]) + `" class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">У вас новый отклик</a>--}}
-    {{--</li>--}}
-    {{-- `);--}}
-
-    {{--                }--}}
-
-    {{--            }--}}
-    {{--            if (Number(data["type"]) === 3) {--}}
-
-    {{--                let user_id_for_js3 = Number(<? echo $array_cats_user ?>);--}}
-
-    {{--                if (user_id_for_js3 === Number(data["user_id_fjs"])) {--}}
-    {{--                    var content_count = document.getElementById('content_count').innerHTML;--}}
-    {{--                    let count_for_inner = Number(content_count) + 1;--}}
-    {{--                    document.getElementById('content_count').innerHTML = count_for_inner;--}}
-
-    {{--                    let el_for_create = document.getElementById('for_append_notifications');--}}
-
-    {{--                    el_for_create.insertAdjacentHTML('afterend', `--}}
-    {{--<li>--}}
-    {{--<a href="/detailed-tasks/` + Number(data["id_task"]) + `" class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">Вы получили задание</a>--}}
-    {{--</li>--}}
-    {{--`);--}}
-
-    {{--                }--}}
-
-    {{--            }--}}
-    {{--            if (Number(data["type"]) === 4) {--}}
-
-    {{--                const for_check_cat_id = [<? echo $user ?>];--}}
-
-    {{--                let num_cat_id = Number(data["user_id"]);--}}
-
-    {{--                let check_arr = for_check_cat_id.includes(num_cat_id);--}}
-
-    {{--                if (check_arr === true) {--}}
-    {{--                    var content_count = document.getElementById('content_count').innerHTML;--}}
-    {{--                    let count_for_inner = Number(content_count) + 1;--}}
-    {{--                    document.getElementById('content_count').innerHTML = count_for_inner;--}}
-
-    {{--                    let el_for_create = document.getElementById('for_append_notifications');--}}
-
-    {{--                    el_for_create.insertAdjacentHTML('afterend', `--}}
-    {{--<li>--}}
-    {{--<a href="/detailed-tasks/` + Number(data["task_id"]) + `" class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">` + data["task_name"] + `</a>--}}
-    {{--</li>--}}
-    {{--`);--}}
-
-    {{--                }--}}
-
-    {{--            }--}}
-
-    {{--        });--}}
+         function toggleModal121(modalID121){
+            document.getElementById(modalID121).classList.toggle("hidden");
+            document.getElementById(modalID121 + "-backdrop").classList.toggle("hidden");
+            document.getElementById(modalID121).classList.toggle("flex");
+            document.getElementById(modalID121 + "-backdrop").classList.toggle("flex");
+        }   
     </script>
 @endauth
