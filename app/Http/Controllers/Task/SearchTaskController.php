@@ -69,6 +69,10 @@ public function __construct()
 
     public function task(Task $task)
     {
+        $id = $task->id;
+        $cat_id = $task->category_id;
+        $similar_tasks = Task::where('category_id', '=', $cat_id)->where('id', '<>', $id)->get();
+
         $complianceType = ComplianceType::all();
 
         $review = null;
@@ -77,7 +81,7 @@ public function __construct()
             $task->views++;
             $task->save();
         }
-        return view('task.detailed-tasks', compact('task', 'review','complianceType'));
+        return view('task.detailed-tasks', compact('task', 'review','complianceType', 'similar_tasks'));
     }
 
     public function comlianse_save(Request $request){
