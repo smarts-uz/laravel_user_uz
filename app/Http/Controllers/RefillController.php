@@ -41,7 +41,7 @@ public function ref(Request $request){
             return view('paycom.send', ['transaction' => $tr]);
         break;
         case 'Paynet':
-            return PaynetController::pay();
+            return PaynetController::pay($request);
         break;
     }
 
