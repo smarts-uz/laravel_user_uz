@@ -10,7 +10,7 @@ use TCG\Voyager\Traits\Translatable;
 class Task extends Model
 {
     use HasFactory;
-    use Translatable;
+    //use Translatable;
 
     const STATUS_NEW = 0;
     const STATUS_OPEN = 1;
