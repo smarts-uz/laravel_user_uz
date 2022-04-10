@@ -42,10 +42,22 @@
                                     @endisset
                                 </p>
                             </span>
-            <p class="mt-2">{{__('Создал')}} <a >
-                                <span>
-                                    {{count($user->tasks??[])}}
-                                </span> {{__('задание')}}</a></p>
+                            <div class="text-gray-500 text-base mt-2">
+                                <p class="mt-2">{{__('Создал')}} <a>
+                                    <span>
+                                        {{count($user->tasks??[])}}
+                                    </span> {{__('задание')}}</a></p>
+                                @switch($user->reviews()->count())
+                                    @case(1)
+                                    <span>{{__('Получил')}} {{$user->reviews()->count()}} {{__('Отзыв')}}</span>
+                                    @break
+                                    @case(1 && 5)
+                                    <span>{{__('Получил')}} {{$user->reviews()->count()}} {{__('Отзыва')}}</span>
+                                    @break
+                                    @default
+                                    <span>{{__('Получил')}} {{$user->reviews()->count()}} {{__('Отзывов')}}</span>
+                                @endswitch
+                            </div>
             <div>
                 <div class="flex flex-row items-center text-base hidden">
                     <p class="text-black ">{{__('Отзывы:')}}</p>
