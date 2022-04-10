@@ -152,7 +152,6 @@
                                     {{-- settings/ second tab -> enable notification start --}}
                                     <div class="md:w-4/5 w-full mt-5">
                                         <h3 class="font-bold text-3xl">{{__('Получать уведомления:')}}</h3>
-                                       {{-- <form  action="" class="w-full" method="GET"> --}}
                                             <div class="grid grid-cols-10 mt-5">
                                                 <input type="checkbox" id="notif_checkbox1" class="w-5 h-5 col-span-1 my-auto mx-auto"/>
                                                 <span class="col-span-9 ml-2">{{__('Системные уведомления')}}</span>
@@ -164,7 +163,6 @@
                                             <button onclick="ajax_func()"
                                                     class="block  md:w-1/2 w-full mt-10 bg-green-400 hover:bg-green-600 text-white uppercase p-4 rounded-xl"
                                                     type="submit">{{__('Сохранить')}}</button>
-                                       {{-- </form> --}}
                                     </div>
                                     {{-- settings/ second tab -> enable notification end --}}
                                 </div>
@@ -223,25 +221,6 @@
                                                 });
                                             }
                                         </script>
-
-                                        {{-- choosing categories end --}}
-
-                                        {{-- notification type --}}
-                                        {{-- <div class="notification">
-                                            <h3 class="font-bold text-3xl mb-7 mt-10">3. {{__('Типы уведомлений')}}</h3>
-                                            <p class="mt-5">{{__('Уведомлять меня по:')}}</p>
-
-                                            <input type="checkbox" class="inline w-4 h-4" />
-                                            <i class="far fa-envelope inline mr-1"></i>
-                                            <span class="inline">E-mail</span>
-
-                                            <input type="checkbox" class="inline w-4 h-4 ml-10"/>
-                                            <i class="fas fa-mobile-alt inline mr-1"></i>
-                                            <span class="inline">{{__('Push')}}</span>
-
-                                        </div> --}}
-                                        {{-- notification type end --}}
-                                        {{-- task recommmendation --}}
 
                                     </div>
                                     {{-- settings/ third tab end -> subscribe for some tasks --}}
@@ -359,8 +338,8 @@
         </div>
     </div>
     <script>
+        let notif_11,notif_22;
         function ajax_func(){
-            let notif_11,notif_22;
             if($('#notif_checkbox1').is(":checked")){
                 notif_11=1;
             }
@@ -400,7 +379,9 @@
                 }
             });
         }
-
+        
+            
+        
     </script>
     <script src="https://unpkg.com/imask"></script>
     <script src="{{ asset('js/profile/setting.js') }}"></script>

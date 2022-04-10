@@ -76,7 +76,6 @@
                 <a href=${data['url']} class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">${data['name']}</a>
             </li>
             `)
-            console.log(data)
         });
 
         function toggleModal121(modalID121){
