@@ -13,9 +13,9 @@ use Illuminate\Database\Eloquent\Model;
 class PaynetTransaction extends Model
 {
     use HasFactory;
-    protected $table = 'transactions';
+    protected $table = 'paynet_transactions';
     protected $fillable = [
-        'transactionable_id',
+        'user_id',
         'amount', // double (10,2)
         'status'
     ];
