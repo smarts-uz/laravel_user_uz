@@ -5,7 +5,7 @@
 @section('content')
 
 
-    <form class="" action="{{route("task.create.custom.store", $task->id)}}" method="post">
+    <form class="" action="{{route("task.create.remote.store", $task->id)}}" method="post">
         @csrf
 
         <div class="mx-auto sm:w-9/12 w-11/12 my-16">
@@ -31,12 +31,12 @@
                         <div>
                             <h1 class="text-center text-3xl font-bold">Место оказания услуги</h1>
                             <div class="flex gap-x-2 items-center mt-8">
-                                <input class="h-4 w-4" type="radio" name="radio" id="radio">
-                                <label class="text-lg" for="radio">Можно выполнить удаленно</label>
+                                <input class="h-4 w-4" type="radio" name="radio" value="remote" id="remote">
+                                <label class="text-lg" for="remote">Можно выполнить удаленно</label>
                             </div>
                             <div class="flex gap-x-2 items-center mt-4">
-                                <input class="h-4 w-4" type="radio" name="radio" id="radio1">
-                                <label class="text-lg" for="radio1">Нужно присутствие по адресу </label>
+                                <input class="h-4 w-4" type="radio" name="radio" value="address" id="address">
+                                <label class="text-lg" for="address">Нужно присутствие по адресу </label>
                             </div>
                         </div>
                         <div class="mt-4">
