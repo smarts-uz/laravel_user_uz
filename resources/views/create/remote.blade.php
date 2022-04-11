@@ -28,6 +28,17 @@
                         @foreach($task->category->customFieldsInCustom as $data)
                             @include('create.custom-fields')
                         @endforeach
+                        <div>
+                            <h1 class="text-center text-3xl font-bold">Место оказания услуги</h1>
+                            <div class="flex gap-x-2 items-center mt-8">
+                                <input class="h-4 w-4" type="radio" name="radio" id="radio">
+                                <label class="text-lg" for="radio">Можно выполнить удаленно</label>
+                            </div>
+                            <div class="flex gap-x-2 items-center mt-4">
+                                <input class="h-4 w-4" type="radio" name="radio" id="radio1">
+                                <label class="text-lg" for="radio1">Нужно присутствие по адресу </label>
+                            </div>
+                        </div>
                         <div class="mt-4">
                             <div class="flex w-full gap-x-4 mt-4">
                                 <a onclick="myFunction()"
