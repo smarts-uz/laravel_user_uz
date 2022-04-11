@@ -53,6 +53,23 @@ class CreateController extends Controller
         $task = Task::create($data);
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_NAME);
 
+        if ($task->category->parent->remote){
+            return redirect()->route("task.create.remote", $task->id);
+        }
+
+        return redirect()->route("task.create.custom.get", $task->id);
+    }
+    public function remote_get(Task $task){
+        return view('create.remote', compact('task'));
+    }
+
+    public function remote_store(Request $request,Task $task)
+    {
+
+        if (!$task->category->customFieldsInCustom->count()) {
+            return redirect()->route('task.create.address', $task->id);
+        }
+
         return redirect()->route("task.create.custom.get", $task->id);
     }
 
