@@ -10,7 +10,7 @@ use TCG\Voyager\Traits\Translatable;
 class Task extends Model
 {
     use HasFactory;
-    use Translatable;
+    //use Translatable;
 
     const STATUS_NEW = 0;
     const STATUS_OPEN = 1;
@@ -50,8 +50,7 @@ class Task extends Model
 
     public function responses()
     {
-//        return $this->hasMany(TaskResponse::class);
-        return $this->hasMany(Response::class);
+        return $this->hasMany(TaskResponse::class);
     }
 
     public function getPriceAttribute()

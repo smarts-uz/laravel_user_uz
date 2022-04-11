@@ -55,12 +55,33 @@ class CreateController extends Controller
 
         return redirect()->route("task.create.custom.get", $task->id);
     }
+    public function remote_get(Task $task){
+        return view('create.remote', compact('task'));
+    }
+
+    public function remote_store(Request $request,Task $task)
+    {
+        $data = $request->validate(['radio' => 'required']);
+
+        if ($data['radio'] == 'address')
+        {
+            return redirect()->route("task.create.custom.get", $task->id);
+        }else if ($data['radio'] == 'remote')
+        {
+            return redirect()->route("task.create.date", $task->id);
+        }
+
+        return back();
+    }
 
 
     public function custom_get(Task $task)
     {
 
         if (!$task->category->customFieldsInCustom->count()) {
+            if ($task->category->parent->remote){
+                return redirect()->route("task.create.remote", $task->id);
+            }
             return redirect()->route('task.create.address', $task->id);
         }
 
@@ -71,6 +92,11 @@ class CreateController extends Controller
     public function custom_store(Request $request, Task $task)
     {
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM);
+
+        if ($task->category->parent->remote){
+            return redirect()->route("task.create.remote", $task->id);
+        }
+
         return redirect()->route('task.create.address', $task->id);
     }
 

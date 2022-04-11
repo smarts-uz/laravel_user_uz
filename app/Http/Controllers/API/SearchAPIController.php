@@ -161,7 +161,7 @@ class SearchAPIController extends Controller
     public function changeTask(Task $task)
     {
         taskGuard($task);
-        return view('searchTask.changetask', compact('task'));
+        return view('task.changetask', compact('task'));
     }
 
     /**
