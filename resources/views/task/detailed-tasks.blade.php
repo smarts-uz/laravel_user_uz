@@ -545,27 +545,36 @@
                                  <div>
                                     <div class=" my-3">
                                        <h1 class="font-medium text-3xl mt-3">Похожиe задания</h1>
-                                       <div class="border-2 border-gray-500 rounded-xl hover:bg-blue-100 h-auto my-3">
-                                            <div class="grid grid-cols-5 w-11/12 mx-auto">
-                                                <div class="sm:col-span-3 col-span-5 flex flex-row">
-                                                    <div class="sm:mr-6 mr-3 w-1/6">
-                                                        <img src="" class="text-2xl float-left text-blue-400 sm:mr-4 mr-3 h-14 w-14 bg-blue-200 p-2 rounded-xl"/>
+                                       @foreach($task->category->tasks()->orderBy('created_at','desc')->take(3)->get() as $item)
+
+                                            <div class="border-2 border-gray-500 rounded-xl hover:bg-blue-100 h-auto my-3">
+                                                <div class="grid grid-cols-5 w-11/12 mx-auto">
+                                                    <div class="sm:col-span-3 col-span-5 flex flex-row">
+                                                        <div class="sm:mr-6 mr-3 w-1/6">
+                                                            <img src="{{ asset('storage/'.$item->category->ico) }}" class="text-2xl float-left text-blue-400 sm:mr-4 mr-3 h-14 w-14 bg-blue-200 p-2 rounded-xl"/>
+                                                        </div>
+                                                        <div class="w-5/6">
+                                                            <a href="#" class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">{{ $item->name }}</a>
+                                                            <p class="text-sm">{{ $item->address? json_decode($item->address, true)['location']:'' }}</p>
+                                                            @if($item->date_type == 1 || $item->date_type == 3)
+                                                                <p class="text-sm my-0.5">Начать {{ $item->start_date }}</p>
+                                                            @endif
+                                                            @if($item->date_type == 3 || $item->date_type == 3)
+                                                                <p class="text-sm my-0.5">Закончить {{ $item->end_date }}</p>
+                                                            @endif
+                                                            <p class="text-sm ">Оплата через карту</p>
+                                                        </div>
                                                     </div>
-                                                    <div class="w-5/6">
-                                                        <a href="#" class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">Dizayner Kerak</a>
-                                                        <p class="text-sm">Узбекистан, Ташкент</p>
-                                                        <p class="text-sm my-0.5">Начать 7-апрель 5:15</p>
-                                                        <p class="text-sm ">Оплата через карту</p>
+                                                    <div class="sm:col-span-2 col-span-5 sm:text-right text-left sm:ml-0 ml-16">
+                                                        <p  class="sm:text-lg text-sm font-semibold text-gray-700">до {{ $item->budget }} сум</p>
+                                                        <span  class="text-sm sm:mt-5 sm:mt-1 mt-0">Откликов - {{  $item->response_count }}</span>
+                                                        <p class="text-sm sm:mt-1 mt-0">{{ $item->category->name }}</p>
+                                                        <a href="#" class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $item->user?$item->user->name:'' }}</a>
                                                     </div>
-                                                </div>
-                                                <div class="sm:col-span-2 col-span-5 sm:text-right text-left sm:ml-0 ml-16">
-                                                    <p  class="sm:text-lg text-sm font-semibold text-gray-700">до 835000 сум</p>
-                                                    <span  class="text-sm sm:mt-5 sm:mt-1 mt-0">Откликов - 0</span>
-                                                    <p class="text-sm sm:mt-1 mt-0">Верстка</p>
-                                                    <a href="#" class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">akki jura</a>
                                                 </div>
                                             </div>
-                                       </div>
+
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
