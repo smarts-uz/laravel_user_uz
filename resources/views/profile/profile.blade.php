@@ -61,10 +61,10 @@
                             <p class="text-lg mt-2">{{__('Профили с видео получают больше внимания и вызывают доверие заказчиков.')}}</p>
                             <div class="flex sm:flex-row flex-col my-3">
                                 <input type="text" id="text" class="border border-gray-400 hover:border-yellow-500 focus:outline-none rounded-lg sm:w-2/3 w-full p-2" placeholder="{{__('Ссылка на ролик с YouTube')}}" required>
-                                <input type="submit" value="{{('Добавить')}}" class="sm:w-1/3 w-2/3 sm:mx-3 mx-0 rounded-lg bg-green-500 hover:bg-green-600 text-white py-2 px-4 cursor-pointer sm:mt-0 mt-3">
+                                <button onclick="videoYouT()" class="sm:w-1/3 w-2/3 sm:mx-3 mx-0 rounded-lg bg-green-500 hover:bg-green-600 text-white py-2 px-4 cursor-pointer sm:mt-0 mt-3">{{('Добавить')}}</button>
                             </div>
                         </div>
-
+                        <iframe id="iframe" src="" frameborder="0"></iframe>
                         <div class="example-of-works w-full my-10">
                            <a href="/profile/create">
                                <button class="bg-green-500 px-8 py-3 rounded-md text-white text-2xl">
@@ -122,7 +122,8 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/profile/profile.js') }}"></script>
+    <script src="{{ asset('js/profile/profile.js') }}">
+    </script>
     @if($user->role_id == 2)
         <script>
         if($('.tooltip-2').length === 0){
