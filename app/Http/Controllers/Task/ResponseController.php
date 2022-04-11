@@ -15,12 +15,13 @@ class ResponseController extends Controller
 
     public function store(Request $request, Task $task)
     {
-
         $data = $request->validate([
             'description' => 'required|string',
             'price' => 'required|int',
+            'notificate' => 'nullable',
+            'pay' => 'required',
         ]);
-        $data['notification_on'] = $request->notificate ? 1 : 0;
+        $data['notificate'] = $request->notificate ? 1 : 0;
         $data['task_id'] = $task->id;
         $data['user_id'] = $task->user_id;
         $data['creator_id'] = auth()->user()->id;
