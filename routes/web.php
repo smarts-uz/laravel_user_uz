@@ -189,6 +189,9 @@ Route::prefix("task")->group(function () {
     Route::prefix("create")->group(function () {
         Route::get('/', [CreateController::class, 'name'])->name('task.create.name');
         Route::post('/name', [CreateController::class, 'name_store'])->name('task.create.name.store');
+
+        Route::get('/remote/{task}',[CreateController::class,'remote_get'])->name('task.create.remote');
+        Route::post('/remote/{task}', [CreateController::class, 'remote_store'])->name('task.create.remote.store');
         Route::get('/custom/{task}', [CreateController::class, 'custom_get'])->name('task.create.custom.get');
         Route::post('/custom/{task}/store', [CreateController::class, 'custom_store'])->name('task.create.custom.store');
         Route::get('/address/{task}', [CreateController::class, 'address'])->name('task.create.address');
