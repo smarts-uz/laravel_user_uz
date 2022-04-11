@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TaskResponse extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id' , 'task_id', 'description', 'notificate', 'time', 'price','creator_id'];
+    protected $fillable = ['user_id' , 'task_id', 'description', 'notificate', 'price','creator_id'];
 
 
     protected $with = ['user', 'task'];

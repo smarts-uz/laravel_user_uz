@@ -50,8 +50,7 @@ class Task extends Model
 
     public function responses()
     {
-//        return $this->hasMany(TaskResponse::class);
-        return $this->hasMany(Response::class);
+        return $this->hasMany(TaskResponse::class);
     }
 
     public function getPriceAttribute()

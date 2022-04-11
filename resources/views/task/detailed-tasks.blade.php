@@ -346,7 +346,7 @@
                                                                     <div class="my-2">
                                                                         <label class=" px-2">
                                                                             <input type="checkbox"
-                                                                                   name="notification_on"
+                                                                                   name="notificate"
                                                                                    class="mr-2 my-3 focus:outline-none  focus:border-yellow-500">{{__('Уведомить меня, если исполнителем')}}
                                                                             <br>
                                                                         </label>
@@ -465,9 +465,9 @@
                                         </div>
                                     @endif
                                     <hr>
-                                @endauth 
+                                @endauth
 
-                                    
+
 
                                 @foreach ($task->responses as $response)
                                     <div class="mb-6">
@@ -563,7 +563,7 @@
                                             </div>
                                        </div>
                                     </div>
-                                </div>      
+                                </div>
                             </div>
                         </div>
                         {{-- right sidebar start --}}

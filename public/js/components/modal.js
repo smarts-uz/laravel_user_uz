@@ -13,7 +13,7 @@ var maskOptions = {
     mask: '+998(00)000-00-00',
     lazy: false
 }
-if (element)
+if ($("#phone_number"))
     var mask = new IMask(element, maskOptions);
 $("#phone_number").keyup(function () {
     var text = $(this).val()
