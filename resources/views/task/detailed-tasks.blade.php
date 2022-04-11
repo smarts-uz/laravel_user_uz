@@ -109,12 +109,15 @@
                                     <div class="ml-4 md:ml-12 flex flex-row mt-8">
                                         @if($task->date_type == 1)
                                             <h1 class="font-bold h-auto w-48">{{__('Начать работу')}}</h1>
+                                            {{ $task->start_date     }}
                                         @elseif($task->date_type == 2)
                                             <h1 class="font-bold h-auto w-48">{{__('Закончить работу')}}</h1>
+                                            {{ $task->end_date     }}
                                         @else
                                             <h1 class="font-bold h-auto w-48">{{__('Указать период')}}</h1>
+                                            <p class=" h-auto w-96">{{ $task->start_date     }}  - {{ $task->end_date     }}  </p>
+
                                         @endif
-                                        <p class=" h-auto w-96">{{ $task->start_date     }}</p>
                                     </div>
                                     <div class="ml-4 md:ml-12 flex flex-row mt-8">
                                         <h1 class="font-bold h-auto w-48">{{__('Бюджет')}}</h1>
@@ -199,8 +202,9 @@
                                                 <h1 class="font-bold text-gray-600 h-auto w-48">{{$value->custom_field->title}}</h1>
                                                 <div class=" h-auto w-96">
                                                     <p class="text-gray-500">
+                                                        <b class="ml-4">{{ $value->custom_field->label  }}:</b>
+
                                                         {{ json_decode($value->value)[0]  }}
-                                                        <span class="ml-4">{{ $value->custom_field->label  }}</span>
                                                     </p>
                                                 </div>
                                             </div>
