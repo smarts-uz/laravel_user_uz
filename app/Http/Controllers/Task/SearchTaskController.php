@@ -30,18 +30,10 @@ class SearchTaskController extends VoyagerBaseController
 public function __construct()
 {
     $this->service = new SearchService();
-
 }
 
     public function task_search()
     {
-//        $task = Task::whereIn('status', [2])
-//            ->orderBy('id', 'asc')->get();
-//        foreach ($task as $tasks){
-//            $otklik = Response::where('task_id', $tasks->id)->count();
-//        }
-
-//        dd($task, $otklik);
         return view('task.search');
     }
     public function search(Request $request)
@@ -52,8 +44,6 @@ public function __construct()
 
     public function ajax_tasks()
     {
-//        $search = new SearchService();
-//        return $search->ajaxReq();
         return $this->service->ajaxReq();
     }
 
@@ -69,10 +59,6 @@ public function __construct()
 
     public function task(Task $task)
     {
-        $id = $task->id;
-        $cat_id = $task->category_id;
-        $similar_tasks = Task::where('category_id', '=', $cat_id)->where('id', '<>', $id)->get();
-
         $complianceType = ComplianceType::all();
 
         $review = null;
@@ -81,7 +67,7 @@ public function __construct()
             $task->views++;
             $task->save();
         }
-        return view('task.detailed-tasks', compact('task', 'review','complianceType', 'similar_tasks'));
+        return view('task.detailed-tasks', compact('task', 'review','complianceType'));
     }
 
     public function comlianse_save(Request $request){
