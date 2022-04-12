@@ -9,7 +9,7 @@ use TCG\Voyager\Traits\Translatable;
 class UserDetail extends Model
 {
     use HasFactory;
-    use Translatable;
+    //use Translatable;
 
 
 
