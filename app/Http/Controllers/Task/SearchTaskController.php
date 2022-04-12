@@ -59,6 +59,10 @@ public function __construct()
 
     public function task(Task $task)
     {
+        if (!$task->user)
+        {
+            abort(404);
+        }
         $complianceType = ComplianceType::all();
 
         $review = null;

@@ -25,9 +25,7 @@
                     </div>
 
                     <div class="shadow-2xl w-full md:p-16 p-4 mx-auto my-4 rounded-2xl	w-full">
-                        @foreach($task->category->customFieldsInCustom as $data)
-                            @include('create.custom-fields')
-                        @endforeach
+                            @include('create.custom-fields2')
                         <div class="mt-4">
                             <div class="flex w-full gap-x-4 mt-4">
                                 <a onclick="myFunction()"

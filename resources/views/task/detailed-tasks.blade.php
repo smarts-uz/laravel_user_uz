@@ -99,11 +99,14 @@
 
                                 <div
                                     class="mt-12 border-2 py-2 lg:w-[600px]  w-[400px] rounded-lg border-orange-100 shadow-2xl">
-                                    <div id="map" class="h-64 mb-4 -mt-2"></div>
+                                    <div id="map" class="h-64 mb-4 -mt-2 {{ $task->address?'':'hidden' }}  "></div>
                                     <div class="ml-4 md:ml-12 flex flex-row my-4">
                                         <h1 class="font-bold h-auto w-48">{{__('Место')}}</h1>
                                         @if($task->address !== NULL)
                                             <p class=" h-auto w-96">{{json_decode($task->address, true)['location']}}</p>
+                                        @else
+                                            Udalyonka
+{{--                                            Tarjima qilish kerak!--}}
                                         @endif
                                     </div>
                                     <div class="ml-4 md:ml-12 flex flex-row mt-8">
@@ -577,7 +580,7 @@
                                                                 {{__('до')}} {{$task->budget}} {{__('сум')}}
                                                             @endif
                                                         </p>
-                                                        <span  class="text-sm sm:mt-5 sm:mt-1 mt-0">Откликов - 
+                                                        <span  class="text-sm sm:mt-5 sm:mt-1 mt-0">Откликов -
                                                             @if ($item->response_count>0)
                                                                 {{  $item->response_count }}
                                                             @else
