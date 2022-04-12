@@ -67,12 +67,11 @@
                         {{__('Оплата наличными')}}
                     </span>
                   </label>
-                 @foreach($task->category->customFieldsInNote as $data)
-                     @include('create.custom-fields')
-                 @endforeach
+                 @include('create.custom-fields2')
+
              </div>
              <div class="flex w-full gap-x-4 mt-4">
-             <a onclick="myFunction()" 
+             <a onclick="myFunction()"
              class="bg-white my-4 cursor-pointer hover:border-yellow-500 text-gray-600 hover:text-yellow-500 transition duration-300 font-normal text-base py-3 sm:px-8 px-6 rounded-2xl  border border-2">
                                             <!-- <button type="button"> -->
                                             {{__('Назад')}}

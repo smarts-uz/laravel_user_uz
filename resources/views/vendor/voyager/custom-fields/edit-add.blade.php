@@ -151,9 +151,17 @@ roch.insertAdjacentHTML('afterBegin', ''+ cntele +' ');
 
 var ninput = document.createElement('INPUT');
 ninput.type = 'text';
+ninput.placeholder = 'UZ';
 ninput.setAttribute("name", "options[options]["+ cntele +"]");
 ninput.setAttribute("style", "width:50%; border:1px solid #e4eaec; padding: 2px 12px;");
 roch.appendChild(ninput);
+
+var ruinput = document.createElement('INPUT');
+ruinput.type = 'text';
+ruinput.placeholder = 'RU';
+ruinput.setAttribute("name", "options_ru[options]["+ cntele +"]");
+ruinput.setAttribute("style", "width:50%; border:1px solid #e4eaec; padding: 2px 12px;");
+roch.appendChild(ruinput);
 
 var ninputdel = document.createElement('INPUT');
 ninputdel.type = 'button';

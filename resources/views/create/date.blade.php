@@ -57,7 +57,7 @@
                                 <div class="flex flex-col gap-y-4">
 
                                     <div class="flex items-center">
-                                        <select name="date_type" id="periud" class=" bg-gray-50 border focus:outline-none text-gray-900 text-base rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5" 
+                                        <select name="date_type" id="periud" class=" bg-gray-50 border focus:outline-none text-gray-900 text-base rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5"
                                         aria-label="Default select example focus:outline-none">
                                             <option {{ old('date_type') == "1" ? 'selected' :null }} value="1" id="1" class="text-base">{{__('Начать работу')}}</option>
                                             <option  {{ old('date_type') == "2" ? 'selected' :null }}  value="2" id="2" class="text-base">{{__('Закончить работу')}}</option>
@@ -116,9 +116,8 @@
                                     </div>
                                    </div>
                                 </div>
-                                @foreach($task->category->customFieldsInDate as $data)
-                                    @include('create.custom-fields')
-                                @endforeach
+                                @include('create.custom-fields2')
+
                                 <div class="mt-4">
                                     <div class="flex w-full mt-4">
                                         <a onclick="myFunction()"

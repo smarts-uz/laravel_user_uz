@@ -288,8 +288,8 @@ function tasks_list_all(data) {
         let json = JSON.parse(data.address);
         $(".show_tasks").append(
             `<div class="sort-table print_block my-3" id="` + data.id + `" hidden>
-                <div class="w-full border border-2  sm:pt-3 rounded-xl p-2 hover:bg-blue-100 h-auto item md:overflow-hidden" data-nomer="`+ data.start_date +`">
-                    <div class="grid grid-cols-5 w-11/12 mx-auto sm:mt-3 mt-1">
+                <div class="w-full border border-2 rounded-xl p-2 hover:bg-blue-100 h-auto item md:overflow-hidden" data-nomer="`+ data.start_date +`">
+                    <div class="grid grid-cols-5 w-11/12 mx-auto my-1">
                         <div class="sm:col-span-3 col-span-5 flex flex-row" id="results">
                             <div class="sm:mr-6 mr-3 w-1/6">
                                 <img src="storage/` + data.icon.replace("\\","/") + `" class="text-2xl float-left text-blue-400 sm:mr-4 mr-3 h-14 w-14 bg-blue-200 p-2 rounded-xl"/>

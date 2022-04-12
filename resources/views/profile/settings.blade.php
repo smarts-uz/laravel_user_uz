@@ -232,9 +232,9 @@
                                             defer></script>
 
 
-                                    <div class="container max-w-full me-auto">
+                                    <div class="container max-w-full mx-auto">
                                         <div class="">
-                                            <div class="max-w-sm me-auto">
+                                            <div class="max-w-sm">
                                                 <div class="relative flex flex-wrap">
                                                     <div class="w-full relative">
                                                         <div class="mt-6">
@@ -261,11 +261,11 @@
                                                                             <input placeholder="" name="password"
                                                                                    :type="show ? 'password' : 'text'"
                                                                                    class="text-md block px-3 py-2 rounded-lg w-full
-                                                    bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md
-                                                    focus:placeholder-gray-500
-                                                    focus:bg-white
-                                                    focus:border-yellow-400
-                                                    focus:outline-none">
+                                                                                bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md
+                                                                                focus:placeholder-gray-500
+                                                                                focus:bg-white
+                                                                                focus:border-yellow-400
+                                                                                focus:outline-none">
                                                                             <div
                                                                                     class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
 
@@ -300,20 +300,20 @@
                                                                                    name="password_confirmation"
                                                                                    :type="show ? 'password' : 'text'"
                                                                                    class="text-md block px-3 py-2 rounded-lg w-full
-                                                    bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md
-                                                    focus:placeholder-gray-500
-                                                    focus:bg-white
-                                                    focus:border-yellow-400
-                                                    focus:outline-none">
+                                                                        bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md
+                                                                        focus:placeholder-gray-500
+                                                                        focus:bg-white
+                                                                        focus:border-yellow-400
+                                                                        focus:outline-none">
                                                                         </div>
                                                                     </div>
 
                                                                     @error('password')
                                                                     <p class="text-red-500">{{ $message }}</p>
                                                                     @enderror
-                                                                    <button type="submit" class="mt-16 text-lg font-semibold
-                                                    bg-green-400 w-50 text-white rounded-lg
-                                                    px-6 py-3 block shadow-xl hover:text-white hover:bg-green-500">
+                                                                    <button type="submit" class="mt-8 text-lg font-semibold
+                                                                        bg-green-400 w-50 text-white rounded-lg
+                                                                        px-6 py-3 block shadow-xl hover:text-white hover:bg-green-500">
                                                                         {{__('Сохранить новый пароль')}}
                                                                     </button>
                                                                 </div>
@@ -321,6 +321,16 @@
 
                                                         </div>
                                                     </div>
+                                                </div>
+                                            
+                                            </div>
+                                            <div class="mt-12">
+                                                <h1 class="font-bold text-black text-3xl">Активные сессии</h1>
+                                                <div class="flex flex-row mt-4 items-center">
+                                                    <i class="fas fa-desktop mr-2 text-yellow-500"></i>
+                                                    <p class="mx-1">Текущая — Windows,</p>
+                                                    <h1 class="mx-1">7 апреля в 16:07,</h1>
+                                                    <span class="text-gray-500">браузер Chrome</span> 
                                                 </div>
                                             </div>
                                         </div>
