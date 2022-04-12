@@ -11,6 +11,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "goodoneuz/pay-uz": "^2.2",
         "guzzlehttp/guzzle": "^7.0.1",
+        "joshrainwater/active-users": "^2.1",
         "joy/voyager-api": "^1.2",
         "laravel/framework": "^8.78",
         "laravel/passport": "^10.3",
