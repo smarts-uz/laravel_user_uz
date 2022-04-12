@@ -110,12 +110,11 @@
                                         </option>
                                     </select>
                                 </div>
-                            @foreach($task->category->customFieldsInBudget as $data)
-                                @include('create.custom-fields')
-                            @endforeach
-                                <div class="mt-4">
+                            @include('create.custom-fields2')
+
+                            <div class="mt-4">
                                     <div class="flex w-full mt-4">
-                                        <a onclick="myFunction()" 
+                                        <a onclick="myFunction()"
                                         class="bg-white my-4 cursor-pointer hover:border-yellow-500 text-gray-600 hover:text-yellow-500 transition duration-300 font-normal text-lg py-3 sm:px-8 px-4 rounded-2xl border border-2">
                                             <!-- <button type="button"> -->
                                          {{__('Назад')}}

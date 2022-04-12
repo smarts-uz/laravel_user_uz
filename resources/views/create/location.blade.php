@@ -127,9 +127,7 @@
                                         <span>{{__('Добавить ещё адрес')}}</span>
                                     </button>
                                     <div id="map" class="h-60 mt-4 rounded-lg w-full"></div>
-                                    @foreach($task->category->customFieldsInAddress as $data)
-                                        @include('create.custom-fields')
-                                    @endforeach
+                                        @include('create.custom-fields2')
                                     <div class="flex w-full mt-4">
                                         <a onclick="backfunctionlocation()"
                                            class="bg-white my-4 cursor-pointer hover:border-yellow-500 text-gray-600 hover:text-yellow-500 transition duration-300 font-normal text-xl py-3 sm:px-8 px-4 rounded-2xl border border-2">

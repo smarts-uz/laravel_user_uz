@@ -14,6 +14,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Services\NotificationService;
 use App\Services\Task\CreateService;
+use App\Services\Task\CustomFieldService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
@@ -26,10 +27,12 @@ use App\Events\MyEvent;
 class CreateController extends Controller
 {
     protected $service;
+    protected $custom_field_service;
 
     public function __construct()
     {
         $this->service = new CreateService();
+        $this->custom_field_service = new CustomFieldService();
     }
 
 
@@ -60,6 +63,7 @@ class CreateController extends Controller
     public function custom_get(Task $task)
     {
 
+        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM);
         if (!$task->category->customFieldsInCustom->count()) {
             if ($task->category->parent->remote){
                 return redirect()->route("task.create.remote", $task->id);
@@ -67,7 +71,7 @@ class CreateController extends Controller
             return redirect()->route('task.create.address', $task->id);
         }
 
-        return view('create.custom', compact('task'));
+        return view('create.custom', compact('task','custom_fields'));
 
     }
 
@@ -103,15 +107,14 @@ class CreateController extends Controller
 
     public function address(Task $task)
     {
-        return view('create.location', compact('task'));
+        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS);
+        return view('create.location', compact('task','custom_fields'));
 
     }
 
     public function address_store(Request $request, Task $task)
     {
         $task->update($this->service->addAdditionalAddress($request));
-
-
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS);
         return redirect()->route("task.create.date", $task->id);
 
@@ -119,7 +122,9 @@ class CreateController extends Controller
 
     public function date(Task $task)
     {
-        return view('create.date', compact('task'));
+        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_DATE);
+
+        return view('create.date', compact('task','custom_fields'));
 
     }
 
@@ -135,8 +140,9 @@ class CreateController extends Controller
     public function budget(Task $task)
     {
         $category = Category::findOrFail($task->category_id);
+        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET);
 
-        return view('create.budget', compact('task', 'category'));
+        return view('create.budget', compact('task', 'category','custom_fields'));
     }
 
     public function budget_store(Task $task, Request $request)
@@ -144,15 +150,15 @@ class CreateController extends Controller
         $task->budget = preg_replace('/[^0-9.]+/', '', $request->amount1);
         $task->save();
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET);
-
-
         return redirect()->route('task.create.note', $task->id);
 
     }
 
     public function note(Task $task)
     {
-        return view('create.notes', compact('task'));
+        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_NOTE);
+
+        return view('create.notes', compact('task','custom_fields'));
     }
 
     public function images_store(Task $task, Request $request)
@@ -210,7 +216,9 @@ class CreateController extends Controller
 
     public function contact(Task $task)
     {
-        return view('create.contacts', compact('task'));
+        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CONTACTS);
+
+        return view('create.contacts', compact('task','custom_fields'));
     }
 
 
