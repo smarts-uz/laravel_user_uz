@@ -12,7 +12,8 @@ class CustomField extends Model
     use Translatable;
 
     protected $casts = [
-        'options' => 'array'
+        'options' => 'array',
+        'options_ru' => 'array'
     ];
     protected $translatable = ['title','description','placeholder','label'];
 
