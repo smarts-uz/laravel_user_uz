@@ -477,27 +477,56 @@
 
 
                                 @foreach ($task->responses as $response)
-                                    <div class="mb-6">
-                                        <div class="my-10">
-                                            <div class="rounded-md bg-black h-24 float-left mr-5">
-                                                <img class="w-24 h-24"
-                                                    src="https://thumbs.dreamstime.com/b/%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80-%D0%B7%D0%B5%D0%BB%D0%B5%D0%BD%D0%BE%D0%B3%D0%BE-%D1%86%D0%B2%D0%B5%D1%82%D0%B0-%D0%B7%D0%BD%D0%B0%D1%87%D0%BA%D0%B0-%D1%85%D0%BE%D0%BA%D0%BA%D0%B5%D1%8F-%D0%BD%D0%B0-%D0%BB%D1%8C%D0%B4%D0%B5-%D1%80%D1%83%D0%BA%D0%BE%D0%BF%D0%BE%D0%B6%D0%B0%D1%82%D0%B8%D1%8F-117033775.jpg"
-                                                    alt="">
+                                    <div class="my-6 flex flex-row">
+                                        <div class="">
+                                            <img class="w-24 h-24 rounded-lg border-2" src="{{asset('images/avatar-avtor-image.png')}}" alt="">
+                                        </div>
+                                        <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
+                                            <a href="#"
+                                            class="text-blue-400 text-xl font-semibold hover:text-blue-500">
+                                               Admin admin
+                                            </a>
+                                            <input type="text" name="performer_id" class="hidden"
+                                                value="{{Arr::get('id', $response->user)}}">
+                                            <div class="text-gray-700 sm:mt-4 mt-2">
+                                                <i class="fas fa-star text-yellow-500 mr-1"></i>4,96 по 63 отзывам
                                             </div>
-                                            <div class="">
-                                                <a href="/performers/{{Arr::get('id', $response->user)}}"
-                                                class="text-blue-500 text-xl font-semibold float-left">
-                                                    {{Arr::get('name', $response->user)}}
-                                                </a>
-                                                <input type="text" name="performer_id" class="hidden"
-                                                    value="{{Arr::get('id', $response->user)}}">
-                                                <img class="w-7 h-7 ml-2"
-                                                    src="{{asset('images/shield.svg')}}" alt="">
-                                                <div class="text-gray-700">
-                                                    <i class="fas fa-star text-yellow-200 mr-1"></i>{{__('4,96 по 63 отзывам')}}
+                                        </div>
+                                        <div class="flex flex-row items-start">
+                                            <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
+                                                <img  src="{{ asset('images/verify.png') }}"
+                                                     alt="" class="w-10">
+                                                <div id="tooltip-animation_1" role="tooltip"
+                                                     class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                    <p class="text-center">
+                                                            {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
+                                                    </p>
+                                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                                </div>
+                                            </div>
+                                            <div data-tooltip-target="tooltip-animation_2" class="mx-2 tooltip-2">
+                                                <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
+                                                <div id="tooltip-animation_2" role="tooltip"
+                                                     class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                    <p class="text-center">
+                                                        {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
+                                                    </p>
+                                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                                </div>
+                                            </div>
+                                            <div data-tooltip-target="tooltip-animation_3" class="mx-1">
+                                                    <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
+                                                <div id="tooltip-animation_3" role="tooltip"
+                                                     class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                    <p class="text-center">
+                                                        {{__('Более 50 выполненных заданий')}}
+                                                    </p>
+                                                    <div class="tooltip-arrow" data-popper-arrow></div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="mb-6">
                                         <div class="bg-gray-100 rounded-[10px] p-4">
                                             <div class="ml-0">
                                                 <div
