@@ -43,8 +43,10 @@ class SearchAPIController extends Controller
      */
     public function task_search(){
 
-        $tasks = Task::withTranslations(['ru', 'uz'])->orderBy('id','desc')->paginate(20);
-        $categories = Category::withTranslations(['ru', 'uz'])->get();
+        //$tasks = Task::withTranslations(['ru', 'uz'])->orderBy('id','desc')->paginate(20);
+        $tasks = Task::orderBy('id','desc')->paginate(20);
+        //$categories = Category::withTranslations(['ru', 'uz'])->get();
+        $categories = Category::get();
 
         return response()->json([
             'data' => [
