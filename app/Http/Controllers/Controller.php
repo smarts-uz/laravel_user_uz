@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use TCG\Voyager\Models\Category;
-use Rainwater\Active\Active;
 
 class Controller extends BaseController
 {

@@ -176,7 +176,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         \Chatify\ChatifyServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
-        Rainwater\Active\ActiveServiceProvider::class
 
     ],
 
@@ -234,7 +233,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Chatify' => Chatify\Facades\ChatifyMessenger::class,
-        'Active' => Rainwater\Active\ActiveFacade::class
     ],
 
 ];
