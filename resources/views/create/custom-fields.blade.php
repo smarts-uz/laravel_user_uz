@@ -19,7 +19,18 @@
                     <select id="where" name="{{$data->name}}[]"
                             class="shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
                             required>
+@if(session('lang') == 'ru')
+                        @foreach($data->options_ru['options'] as $key => $option)
+                            <option
+                                @if(isset($task) && $task->custom_field_values()->where('custom_field_id', $data->id)->first() &&
+        is_array( json_decode($task->custom_field_values()->where('custom_field_id', $data->id)->first()->value)) &&
 
+        array_key_exists($key-1, json_decode($task->custom_field_values()->where('custom_field_id', $data->id)->first()->value)) &&
+    json_decode($task->custom_field_values()->where('custom_field_id', $data->id)->first()->value)[$key-1] == $option) selected
+                                @endif
+                                value="{{$option}}">{{$option}}</option>
+                        @endforeach
+@elseif(session('lang') == 'uz')
                         @foreach($data->options['options'] as $key => $option)
                             <option
                                 @if(isset($task) && $task->custom_field_values()->where('custom_field_id', $data->id)->first() &&
@@ -30,6 +41,7 @@
                                 @endif
                                 value="{{$option}}">{{$option}}</option>
                         @endforeach
+@endif
                     </select>
                 </div>
             </div>
@@ -62,6 +74,24 @@
                         <div class="mb-3 xl:w-full">
 
                             @if(array_key_exists('options', $data->options))
+@if(session('lang') == 'ru')
+                                @foreach($data->options_ru['options'] as $key => $option)
+                                    <label class="md:w-2/3 block mt-6">
+                                        <input
+                                            @if(isset($task) && $task->custom_field_values()->where('custom_field_id', $data->id)->first() &&
+        is_array( json_decode($task->custom_field_values()->where('custom_field_id', $data->id)->first()->value)) &&
+        array_key_exists($key-1, json_decode($task->custom_field_values()->where('custom_field_id', $data->id)->first()->value)) &&
+        json_decode($task->custom_field_values()->where('custom_field_id', $data->id)->first()->value, true)[$key-1] == $option) checked
+                                            @endif
+                                            class="mr-2  h-4 w-4" type="checkbox"
+                                            value="{{$option}}" name="{{$data->name}}[]">
+
+                                        <span class="text-slate-900">
+                                                    {{$option}}
+                                                    </span>
+                                    </label>
+                                @endforeach
+@elseif(session('lang') == 'uz')
                                 @foreach($data->options['options'] as $key => $option)
                                     <label class="md:w-2/3 block mt-6">
                                         <input
@@ -78,6 +108,7 @@
                                                     </span>
                                     </label>
                                 @endforeach
+@endif
                             @endif
 
                         </div>
@@ -116,7 +147,23 @@
                     <div>
 
                         <div name="glassSht" class="mb-3 xl:w-full">
+@if(session('lang') == 'ru')
+                            @foreach($data->options_ru['options'] as $key => $option)
 
+                                <input type="radio"
+                                       @if(isset($task) && $task->custom_field_values()->where('custom_field_id', $data->id)->first() &&
+        is_array( json_decode($task->custom_field_values()->where('custom_field_id', $data->id)->first()->value)) &&
+
+        array_key_exists($key-1, json_decode($task->custom_field_values()->where('custom_field_id', $data->id)->first()->value)) &&
+    json_decode($task->custom_field_values()->where('custom_field_id', $data->id)->first()->value)[$key-1] == $option) checked
+                                       @endif
+                                       id="radio_{{$key}}" name="{{$data->name}}[]"
+                                       value="{{$option}}">
+                                <label for="radio_{{$key}}">{{$option}}</label>
+                                <br>
+                                <br>
+                            @endforeach
+@elseif(session('lang') == 'uz')
                             @foreach($data->options['options'] as $key => $option)
 
                                 <input type="radio"
@@ -132,7 +179,7 @@
                                 <br>
                                 <br>
                             @endforeach
-
+@endif
                         </div>
                     </div>
 
