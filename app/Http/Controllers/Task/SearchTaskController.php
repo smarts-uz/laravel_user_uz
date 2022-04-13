@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Task;
 
 use App\Http\Requests\Task\UpdateRequest;
+use App\Http\Resources\ResponseResource;
 use App\Models\Compliance;
 use App\Models\ComplianceType;
 use App\Models\CustomField;
@@ -71,6 +72,7 @@ public function __construct()
             $task->views++;
             $task->save();
         }
+
         $same_tasks = $task->category->tasks()->where('id','!=',$task->id)->take(3)->get();
         return view('task.detailed-tasks', compact('task', 'review','complianceType','same_tasks'));
     }
