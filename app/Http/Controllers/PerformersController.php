@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Response;
 use App\Models\WalletBalance;
 use App\Models\Review;
+use App\Services\NotificationService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -80,6 +81,11 @@ class PerformersController extends Controller
                 'description' => '123',
                 'type' => 4,
             ]);
+
+            NotificationService::sendNotificationRequest([$users_id], [
+                'url' => 'detailed-tasks' . '/' . $task_id, 'name' => $task_name->name, 'time' => 'recently'
+            ]);
+
             return response()->json(['success' => $users_id]);
         }
         return response()->json(['success' => '$users_id']);
