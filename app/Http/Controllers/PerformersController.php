@@ -86,7 +86,7 @@ class PerformersController extends Controller
     }
 
 
-    public function perf_ajax($cf_id)
+    public function perf_ajax($cf_id, User $user)
     {
         // $str = "1,2,3,4,5,6,7,8";
         // $cat_arr = explode(",",$str);
@@ -95,14 +95,15 @@ class PerformersController extends Controller
         // $users = User::where('role_id',2)->paginate(50);
 
         // return $users;
-
+        $about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
+        $task_count = $user->performer_tasks_count;
         $categories = Category::get();
         $cur_cat = Category::where('id', $cf_id)->get();
         $child_categories = Category::get();
         $users = User::where('role_id', 2)->paginate(50);
         $tasks = Task::where('user_id', Auth::id())->get();
 
-        return view('Performers/performers_cat', compact('child_categories', 'categories', 'users', 'cf_id', 'cur_cat', 'tasks'));
+        return view('Performers/performers_cat', compact('child_categories','about','user', 'task_count', 'categories', 'users', 'cf_id', 'cur_cat', 'tasks'));
 
     }
 
