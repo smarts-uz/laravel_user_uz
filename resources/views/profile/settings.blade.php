@@ -322,16 +322,20 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            
+
                                             </div>
                                             <div class="mt-12">
                                                 <h1 class="font-bold text-black text-3xl">Активные сессии</h1>
-                                                <div class="flex flex-row mt-4 items-center">
-                                                    <i class="fas fa-desktop mr-2 text-yellow-500"></i>
-                                                    <p class="mx-1">Текущая — Windows,</p>
-                                                    <h1 class="mx-1">7 апреля в 16:07,</h1>
-                                                    <span class="text-gray-500">браузер Chrome</span> 
-                                                </div>
+                                                @foreach($sessions as $session)
+
+                                                    <div class="flex flex-row mt-4 items-center">
+                                                        <i class="fas fa-desktop mr-2 text-yellow-500"></i>
+                                                        <p class="mx-1">{{ $session->ip_address == request()->ip()? "Текущая — " :"" }}{{ $parser->parse($session->user_agent)->ua->family }},</p>
+                                                        <h1 class="mx-1">{{ $session->last_active }}, </h1>
+                                                        <span class="text-gray-500">браузер {{ $parser->parse($session->user_agent)->os->family }}</span>
+                                                    </div>
+
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
@@ -389,9 +393,9 @@
                 }
             });
         }
-        
-            
-        
+
+
+
     </script>
     <script src="https://unpkg.com/imask"></script>
     <script src="{{ asset('js/profile/setting.js') }}"></script>

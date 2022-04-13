@@ -6,10 +6,12 @@ use App\Http\Requests\PortfolioRequest;
 use App\Http\Requests\User\PerformerCreateRequest;
 use App\Http\Requests\UserPasswordRequest;
 use App\Http\Requests\UserUpdateDataRequest;
+use App\Models\Session;
 use App\Services\User\Active;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Jenssegers\Agent\Agent;
 use \TCG\Voyager\Models\Category;
 use App\Models\Portfolio;
 use App\Models\PortfolioImage;
@@ -26,12 +28,16 @@ use App\Models\UserView;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Services\Profile\ProfileService;
+use UAParser\Parser;
 
 class ProfileController extends Controller
 {
     //portfolio
+    public $agent;
+
     public function __construct()
     {
+        $this->agent = new Agent();
 
 //        if (auth()->check()){
 
@@ -42,6 +48,13 @@ class ProfileController extends Controller
 //        }
 
     }
+
+    public function clear_sessions()
+    {
+        Session::query()->where('user_id', auth()->user()->id)->delete();
+        return back();
+    }
+
 
     public function comment(Request $request)
     {
@@ -76,10 +89,10 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $isDelete = false;
-        if ($portfolio->user_id == $user->id){
+        if ($portfolio->user_id == $user->id) {
             $isDelete = true;
         }
-        return view('profile/portfolio', compact('user', 'portfolio','isDelete'));
+        return view('profile/portfolio', compact('user', 'portfolio', 'isDelete'));
     }
 
     //profile
@@ -150,7 +163,9 @@ class ProfileController extends Controller
         $regions = Region::withTranslations(['ru', 'uz'])->get();
         $about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
         $task_count = Task::where('performer_id', $user->id)->count();
-        return view('profile.settings', compact('user', 'categories', 'views', 'regions', 'about', 'task_count'));
+        $sessions = Session::query()->where('user_id', $user->id)->get();
+        $parser = Parser::create();
+        return view('profile.settings', compact('user', 'categories', 'views', 'regions', 'about', 'task_count', 'sessions', 'parser'));
     }
 
     public function updateData(UserUpdateDataRequest $request)
@@ -305,7 +320,7 @@ class ProfileController extends Controller
 
         $data['user_id'] = auth()->user()->id;
 
-        $data['image'] = session()->has('images') ? session('images'):'[]';
+        $data['image'] = session()->has('images') ? session('images') : '[]';
 
         session()->forget('images');
         Portfolio::create($data);
@@ -313,10 +328,12 @@ class ProfileController extends Controller
 
 
     }
-    public function notif_setting_ajax(Request $request){
+
+    public function notif_setting_ajax(Request $request)
+    {
         $user = User::find($request->id);
-        $user->system_notification=$request->notif11;
-        $user->news_notification=$request->notif22;
+        $user->system_notification = $request->notif11;
+        $user->news_notification = $request->notif22;
         $user->save();
         return $request;
     }
