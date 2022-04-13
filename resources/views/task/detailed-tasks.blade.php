@@ -482,7 +482,7 @@
                                                 <img class="w-24 h-24 rounded-lg border-2" src="{{asset('images/avatar-avtor-image.png')}}" alt="">
                                             </div>
                                             <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
-                                                <a href="#"
+                                                <a href="/performers/{{ $response->user->id }}"
                                                    class="text-blue-400 text-xl font-semibold hover:text-blue-500">
                                                     {{ $response->user->name }}
                                                 </a>
