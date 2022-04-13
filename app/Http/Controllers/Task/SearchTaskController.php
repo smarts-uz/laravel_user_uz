@@ -73,7 +73,7 @@ public function __construct()
             $task->save();
         }
 
-        $same_tasks = $task->category->tasks()->where('id','!=',$task->id)->where('status', Task::STATUS_OPEN)->take(3)->get();
+        $same_tasks = $task->category->tasks()->where('id','!=',$task->id)->where('status', Task::STATUS_OPEN)->take(10)->get();
         return view('task.detailed-tasks', compact('task', 'review','complianceType','same_tasks'));
     }
 

@@ -622,7 +622,11 @@
                                                             @endif
                                                         </span>
                                                         <p class="text-sm sm:mt-1 mt-0">{{ $item->category->name }}</p>
-                                                        <a href="#" class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $item->user?$item->user->name:'' }}</a>
+                                                        @if (Auth::check() && Auth::user()->id == $item->user->id)
+                                                        <a href="/profile" class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $item->user?$item->user->name:'' }}</a>
+                                                        @else
+                                                        <a href="/performers/{{$item->user->id}}" class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $item->user?$item->user->name:'' }}</a>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
