@@ -128,7 +128,7 @@
                                             @if ( __('до') == 'gacha' )
                                                 {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
                                             @else
-                                                {{__('до')}} {{$task->budget}} {{__('сум')}}
+                                                {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
                                             @endif
                                         </p>
                                     </div>
@@ -577,7 +577,7 @@
                                  <div>
                                     <div class=" my-3">
                                        <h1 class="font-medium text-3xl mt-3">Похожиe задания</h1>
-                                       @foreach($task->category->tasks()->orderBy('created_at','desc')->take(3)->get() as $item)
+                                       @foreach($same_tasks as $item)
 
                                             <div class="border-2 border-gray-500 rounded-xl bg-gray-50 hover:bg-blue-100 h-auto my-3">
                                                 <div class="grid grid-cols-5 w-11/12 mx-auto py-2">
@@ -604,9 +604,9 @@
                                                     <div class="sm:col-span-2 col-span-5 sm:text-right text-left sm:ml-0 ml-16">
                                                         <p  class="sm:text-lg text-sm font-semibold text-gray-700">
                                                             @if ( __('до') == 'gacha' )
-                                                                {{$task->budget}} {{__('сум')}}{{__('до')}}
+                                                                {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
                                                             @else
-                                                                {{__('до')}} {{$task->budget}} {{__('сум')}}
+                                                                {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
                                                             @endif
                                                         </p>
                                                         <span  class="text-sm sm:mt-5 sm:mt-1 mt-0">Откликов -

@@ -71,7 +71,8 @@ public function __construct()
             $task->views++;
             $task->save();
         }
-        return view('task.detailed-tasks', compact('task', 'review','complianceType'));
+        $same_tasks = $task->category->tasks()->where('id','!=',$task->id)->take(3)->get();
+        return view('task.detailed-tasks', compact('task', 'review','complianceType','same_tasks'));
     }
 
     public function comlianse_save(Request $request){
