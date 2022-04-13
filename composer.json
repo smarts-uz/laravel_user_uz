@@ -11,6 +11,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "goodoneuz/pay-uz": "^2.2",
         "guzzlehttp/guzzle": "^7.0.1",
+        "jenssegers/agent": "^2.6",
         "joy/voyager-api": "^1.2",
         "laravel/framework": "^8.78",
         "laravel/passport": "^10.3",
@@ -24,6 +25,7 @@
         "teamprodev/laravel_payment_clickuz": "^1.0.2",
         "teamprodev/playmobile-sms": "^1.0",
         "temprodev/laravel-one-auth": "dev-main",
+        "ua-parser/uap-php": "^3.9",
         "vemcogroup/laravel-translation": "^3.0"
     },
     "require-dev": {

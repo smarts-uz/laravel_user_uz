@@ -110,11 +110,9 @@
                                 @endif
                                 <div class="flex items-center">
                                     <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
-                                        <img @if ($user->is_email_verified !== Null && $user->is_phone_number_verified !== Null)
-                                             src="{{ asset('images/verify.png') }}"
-                                             @else
-                                             src="{{ asset('images/verify_gray.png') }}"
-                                             @endif  alt="" class="w-10">
+                                        <img
+                                            src="{{ $user->is_email_verified && $user->is_phone_number_verified? asset('images/verify.png') : asset('images/verify_gray.png') }}"
+                                            alt="" class="w-10">
                                         <div id="tooltip-animation_1" role="tooltip"
                                              class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                             <p class="text-center">

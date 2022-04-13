@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Task;
 
 use App\Http\Requests\Task\UpdateRequest;
+use App\Http\Resources\ResponseResource;
 use App\Models\Compliance;
 use App\Models\ComplianceType;
 use App\Models\CustomField;
@@ -59,6 +60,10 @@ public function __construct()
 
     public function task(Task $task)
     {
+        if (!$task->user)
+        {
+            abort(404);
+        }
         $complianceType = ComplianceType::all();
 
         $review = null;
@@ -67,7 +72,9 @@ public function __construct()
             $task->views++;
             $task->save();
         }
-        return view('task.detailed-tasks', compact('task', 'review','complianceType'));
+
+        $same_tasks = $task->category->tasks()->where('id','!=',$task->id)->where('status', Task::STATUS_OPEN)->take(3)->get();
+        return view('task.detailed-tasks', compact('task', 'review','complianceType','same_tasks'));
     }
 
     public function comlianse_save(Request $request){

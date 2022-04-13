@@ -1,4 +1,7 @@
 <?php
 
-file_put_contents('test.txt', $pay);
-file_put_contents('test.txt', get_defined_constants(true));
+$data = array(json_decode($transaction, true))[0];
+$amount = (int)( $data['amount'] / 100 );
+$user_id = $data['transactionable_id'];
+
+App\Models\WalletBalance::walletBalanceUpdateOrCreate($user_id, $amount);
