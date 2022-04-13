@@ -479,7 +479,11 @@
                                     @if($response->user)
                                         <div class="my-6 flex flex-row">
                                             <div class="">
-                                                <img class="w-24 h-24 rounded-lg border-2" src="{{asset('images/avatar-avtor-image.png')}}" alt="">
+                                                <img class="w-24 h-24 rounded-lg border-2" @if ($response->user->avatar == Null)
+                                                src='{{asset("storage/images/default.jpg")}}'
+                                                @else
+                                                src="{{asset("storage/{$response->user->avatar}")}}"
+                                                @endif alt="avatar">
                                             </div>
                                             <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
                                                 <a href="/performers/{{ $response->user->id }}"
