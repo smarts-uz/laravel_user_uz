@@ -153,11 +153,11 @@
                                     <div class="md:w-4/5 w-full mt-5">
                                         <h3 class="font-bold text-3xl">{{__('Получать уведомления:')}}</h3>
                                             <div class="grid grid-cols-10 mt-5">
-                                                <input type="checkbox" id="notif_checkbox1" class="w-5 h-5 col-span-1 my-auto mx-auto"/>
+                                                <input type="checkbox" id="notif_checkbox1" {{$user->system_notification==1 ? checked : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
                                                 <span class="col-span-9 ml-2">{{__('Системные уведомления')}}</span>
                                             </div>
                                             <div class="grid grid-cols-10 mt-5">
-                                                <input type="checkbox" id="notif_checkbox2" class="w-5 h-5 col-span-1 my-auto mx-auto"/>
+                                                <input type="checkbox" id="notif_checkbox2" {{$user->news_notification==1 ? checked : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
                                                 <span class="col-span-9 ml-2">{{__('Я хочу получать новости сайта')}}</span>
                                             </div>
                                             <button onclick="ajax_func()"
@@ -354,8 +354,9 @@
             }
             console.log(notif_11)
             console.log(notif_22)
-            @php $id=auth()->user()->id  @endphp
-            let id={{$id}}
+{{--            @php $id=auth()->user()->id  @endphp--}}
+{{--            let id={{$id}}--}}
+                let id={{auth()->user()->id}}
             console.log(id);
             $.ajax({
                 url: "{{route('profile.notif_setting_ajax')}}",
@@ -379,9 +380,9 @@
                 }
             });
         }
-        
-            
-        
+
+
+
     </script>
     <script src="https://unpkg.com/imask"></script>
     <script src="{{ asset('js/profile/setting.js') }}"></script>
