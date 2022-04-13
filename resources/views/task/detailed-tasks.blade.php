@@ -105,8 +105,7 @@
                                         @if($task->address !== NULL)
                                             <p class=" h-auto w-96">{{json_decode($task->address, true)['location']}}</p>
                                         @else
-                                            Udalyonka
-{{--                                            Tarjima qilish kerak!--}}
+                                            {{__('Виртуальное задание')}}
                                         @endif
                                     </div>
                                     <div class="ml-4 md:ml-12 flex flex-row mt-8">
