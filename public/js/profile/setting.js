@@ -3,7 +3,7 @@
 let tabsContainer = document.querySelector("#tabs");
 
 let tabTogglers = tabsContainer.querySelectorAll("a");
-console.log(tabTogglers);
+
 
 tabTogglers.forEach(function (toggler) {
     toggler.addEventListener("click", function (e) {

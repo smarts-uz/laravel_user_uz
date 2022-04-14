@@ -85,7 +85,6 @@
                                     var allcount = good * 5;
                                     var coundlikes = (good * 1) + (bad * 1);
                                     var overallStars = allcount / coundlikes;
-                                    console.log(overallStars);
                                     var star = overallStars.toFixed();
                                     if (!isNaN(star)) {
                                         for (let i = 0; i < star; i++) {
