@@ -318,7 +318,7 @@
                             </div>
                             <div class="flex-initial w-3/4">
                                 <h2 class="font-medium text-lg">{{__('Телефон')}}</h2>
-                                @if($user->phone_verified_at)
+                                @if($user->is_phone_number_verified)
                                     <p>{{__('Подтвержден')}}</p>
                                 @else
                                     <p>{{__('Не подтвержден')}}</p>
@@ -331,7 +331,7 @@
                             </div>
                             <div class="flex-initial w-3/4">
                                 <h2 class="font-medium text-lg">Email</h2>
-                                @if($user->email_verified_at)
+                                @if($user->is_email_verified)
                                     <p>{{__('Подтвержден')}}</p>
                                 @else
                                     <p>{{__('Не подтвержден')}}</p>
