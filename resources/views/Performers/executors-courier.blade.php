@@ -130,7 +130,7 @@
                                     <div id="tooltip-animation_1" role="tooltip"
                                          class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                         <p class="text-center">
-                                            @if ($user->is_email_verified !== Null && $user->is_phone_number_verified !== Null)
+                                            @if ($user->is_email_verified && $user->is_phone_number_verified)
                                                 {{__('Номер телефона и Е-mail пользователя подтверждены')}}
                                             @else
                                                 {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
@@ -318,7 +318,7 @@
                             </div>
                             <div class="flex-initial w-3/4">
                                 <h2 class="font-medium text-lg">{{__('Телефон')}}</h2>
-                                @if($user->phone_verified_at)
+                                @if($user->is_phone_number_verified)
                                     <p>{{__('Подтвержден')}}</p>
                                 @else
                                     <p>{{__('Не подтвержден')}}</p>
@@ -331,7 +331,7 @@
                             </div>
                             <div class="flex-initial w-3/4">
                                 <h2 class="font-medium text-lg">Email</h2>
-                                @if($user->email_verified_at)
+                                @if($user->is_email_verified)
                                     <p>{{__('Подтвержден')}}</p>
                                 @else
                                     <p>{{__('Не подтвержден')}}</p>

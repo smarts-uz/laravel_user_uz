@@ -66,7 +66,7 @@
                         //dd($res_c_arr);
                     @endphp
                     @if($res_c_arr !== false)
-                    <div class="w-12/12 m-5 h-[200px] flex md:flex-none overflow-hidden md:overflow-visible mb-10 " id="{{$user->id}}">
+                    <div class="w-12/12 m-5 h-[200px] flex md:flex-none overflow-hidden md:overflow-visible mb-10" name="{{$user->id}}" id="difficultTask">
                         <div class="w-34 float-left">
                             <img class="rounded-lg w-32 h-32 bg-black mb-4 mr-4" @if ($user->avatar == Null)src='{{asset("storage/images/default.jpg")}}' @else src="{{asset("storage/{$user->avatar}")}}" @endif alt="avatar">
                             <div class="flex flex-row items-center text-base">
