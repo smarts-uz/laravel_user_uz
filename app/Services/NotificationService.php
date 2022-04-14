@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Http;
 
 class NotificationService
 {
-    public function sendTaskNotification($task)
+    public static function sendTaskNotification($task)
     {
         $users = User::query()->pluck('category_id', 'id')->toArray();
         $user_ids = [];
@@ -32,14 +32,16 @@ class NotificationService
             }
         }
 
-        $response = $this->sendNotificationRequest($user_ids, [
-            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+        $response = $response = Http::post('ws.smarts.uz/api/send-notification', [
+            'user_ids' => $user_ids,
+            'project' => 'user',
+            'data' => ['url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently']
         ]);
 
 //        dd($response->json());
     }
 
-    public function sendNotification($not, $slug)
+    public static function sendNotification($not, $slug)
     {
         if ($slug == 'news-notifications'){
             $type = 2;
@@ -59,14 +61,16 @@ class NotificationService
             ]);
         }
 
-        $response = $this->sendNotificationRequest($user_ids, [
-            'url' => $slug . '/' . $not->id, 'name' => $not->title, 'time' => 'recently'
+        $response = Http::post('ws.smarts.uz/api/send-notification', [
+            'user_ids' => $user_ids,
+            'project' => 'user',
+            'data' => ['url' => $slug . '/' . $not->id, 'name' => $not->title, 'time' => 'recently']
         ]);
 
 //        dd($response->json());
     }
 
-    public function sendNotificationRequest($user_ids, $data)
+    public static function sendNotificationRequest($user_ids, $data)
     {
         return Http::post('ws.smarts.uz/api/send-notification', [
             'user_ids' => $user_ids,
