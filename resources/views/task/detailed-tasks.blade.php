@@ -44,7 +44,7 @@
     <div class="xl:flex container w-11/12 mx-auto">
         <div class="md:flex mx-auto xl:w-9/12 w-full">
             {{-- left sidebar start --}}
-                <div class="w-full float-left">
+                <div class="w-full float-left mt-8">
                     <h1 class="text-3xl font-bold mb-2">{{$task->name}}</h1>
                     <div class="md:flex flex-row">
                         <span class="text-black rounded-lg bg-yellow-400 p-2">
@@ -328,6 +328,89 @@
                             </a>
                         </div>
                     @endif
+
+                    <div class="mt-3">
+                        <h1 class="text-3xl font-semibold text-black">Ваш  отклик</h1>
+                        <div class="my-3 flex flex-row">
+                            <div class="">
+                                <img class="w-24 h-24 rounded-lg border-2"
+                                src='{{asset('images/avatar-avtor-image.png')}}' alt="avatar">
+                            </div>
+                            <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
+                                <a href="#"
+                                class="text-blue-400 text-xl font-semibold hover:text-blue-500">
+                                    Admin
+                                </a>
+                                <input type="text" name="performer_id" class="hidden"
+                                    value="">
+                                <div class="text-gray-700 sm:mt-4 mt-2">
+                                    {{-- <i class="fas fa-star text-yellow-500 mr-1"></i>{{ $response->user->reviews()->count()? $response->user->goodReviews()->count()/$response->user->reviews()->count():0 }}  по {{ $response->user->reviews()->count() }} отзывам --}}
+                                </div>
+                            </div>
+                            <div class="flex flex-row items-start">
+                                <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
+                                    <img  src="{{asset('images/verify_gray.png') }}"
+                                        alt="" class="w-10">
+                                    <div id="tooltip-animation_1" role="tooltip"
+                                        class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                        <p class="text-center">
+                                            {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
+                                        </p>
+                                        <div class="tooltip-arrow" data-popper-arrow></div>
+                                    </div>
+                                </div>
+                                <div data-tooltip-target="tooltip-animation_2" class="mx-2 tooltip-2">
+                                    <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
+                                    <div id="tooltip-animation_2" role="tooltip"
+                                        class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                        <p class="text-center">
+                                            {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
+                                        </p>
+                                        <div class="tooltip-arrow" data-popper-arrow></div>
+                                    </div>
+                                </div>
+                                <div data-tooltip-target="tooltip-animation_3" class="mx-1">
+                                    <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
+                                    <div id="tooltip-animation_3" role="tooltip"
+                                        class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                        <p class="text-center">
+                                            {{__('Более 50 выполненных заданий')}}
+                                        </p>
+                                        <div class="tooltip-arrow" data-popper-arrow></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <div class="bg-gray-100 rounded-[10px] p-4">
+                                <div class="ml-0">
+                                    <div
+                                        class="text-[17px] text-gray-500 font-semibold">{{__('Стоимость')}} 100000
+                                        UZS
+                                    </div>
+
+                                    <div
+                                        class="text-[17px] text-gray-500 my-5">Lorem ipsum dolor sit amet.</div>
+                                   
+                                        <div
+                                            class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}}</div>
+                                            <div class="w-10/12 mx-auto">
+                                                <a href="#"
+                                                class="text-semibold text-center w-[200px] mb-2 md:w-[320px] ml-0 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
+                                                    {{__('Написать в чат')}}
+                                                </a>
+
+                                            </div>
+                                                <button  onclick="toggleModal33()" type="submit" class="cursor-pointer text-semibold text-center  md:ml-4 inline-block py-3 px-4 bg-white transition
+                                                    duration-200 text-white bg-green-500 hover:bg-green-500 font-medium
+                                                    border border-transparent rounded-md"> {{__('Выбрать исполнителем')}}</button>
+                                    <div class="text-gray-400 text-[14px] my-6">
+                                        {{__('Выберите исполнителя, чтобы потом оставить отзыв о работе.')}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>     
+                    </div>
 
                     @auth()
                         @if ($task->user_id == auth()->user()->id)

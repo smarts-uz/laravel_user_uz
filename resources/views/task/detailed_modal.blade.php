@@ -2,7 +2,7 @@
 <div
 class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none        justify-center items-center"
 style="background-color:rgba(0,0,0,0.5)" id="modal-id45">
-<div class="relative w-full my-6 mx-auto max-w-3xl" id="modal44">
+<div class="relative w-full my-6 mx-auto max-w-3xl" id="modal45">
     <div
         class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none">
         <div class=" text-center p-6  rounded-t">
@@ -257,3 +257,33 @@ id="modal-id4">
         </div>
     </div>
 </div>
+
+
+{{-- zakazchik ispolnitel tanlagandagi modal --}}
+<div
+class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none        justify-center items-center"
+style="background-color:rgba(0,0,0,0.5)" id="modal-id33">
+<div class="relative w-full my-6 mx-auto max-w-3xl" id="modal33">
+    <div
+        class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none">
+        <div class=" text-center p-6  rounded-t">
+            <button type="submit" onclick="toggleModal33()"
+                    class="rounded-md w-100 h-16 absolute top-1 right-4 focus:outline-none">
+                <i class="fas fa-times text-xl w-full"></i>
+            </button>
+            <h1 class="font-medium text-3xl block mt-6">
+                Исполнитель выбран 
+            </h1>
+        </div>
+        <div class="text-center my-6 mx-auto">
+            <img class="border-2 rounded-xl w-32 h-32 mx-auto" src="" alt="user_avatar">
+            <h1>Ilhomjon</h1>
+            <p>+998 94 548 05 14</p>
+            <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution.</p>
+            <button  onclick="toggleModal33()" type="submit" class="cursor-pointer mt-2 text-semibold text-center inline-block py-3 px-4 bg-white transition duration-200 text-white bg-green-500 hover:bg-green-500 font-medium border border-transparent rounded-md">Хорошо</button>
+        </div>
+    </div>
+</div>
+</div>
+<div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id33-backdrop"></div>
+{{-- zakazchik ispolnitel tanlagandagi modal end--}}
