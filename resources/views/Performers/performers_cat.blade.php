@@ -68,16 +68,13 @@
                     @if($res_c_arr !== false)
                     <div class="w-12/12 m-5 h-[200px] flex md:flex-none overflow-hidden md:overflow-visible mb-10" name="{{$user->id}}" id="difficultTask">
                         <div class="w-34 float-left">
-                            <img class="rounded-lg w-32 h-32 bg-black mb-4 mr-4"
-                                 @if ($user->avatar == Null)
-                                 src='{{asset("storage/images/default.jpg")}}'
-                                 @else
-                                 src="{{asset("storage/{$user->avatar}")}}"
-                                 @endif alt="avatar">
-                            <div class="flex flex-row text-[12px]">
-                                <p>{{__('Отзывы:')}}</p>
-                                <i class="far fa-thumbs-up m-1 text-gray-400 like{{$user->id}}">{{$user->reviews()->where('good_bad',1)->count()}}</i>
-                                <i class="far fa-thumbs-down m-1 text-gray-400 dislike{{$user->id}}">{{$user->reviews()->where('good_bad',0)->count()}}</i>
+                            <img class="rounded-lg w-32 h-32 bg-black mb-4 mr-4" @if ($user->avatar == Null)src='{{asset("storage/images/default.jpg")}}' @else src="{{asset("storage/{$user->avatar}")}}" @endif alt="avatar">
+                            <div class="flex flex-row items-center text-base">
+                                <p class="text-black ">{{__('Отзывы:')}}</p>
+                                <i class="far fa-thumbs-up text-blue-500 ml-1 mb-1"></i>
+                                <span class="text-gray-800 mr-2 like{{$user->id}}">{{ $user->reviews()->where('good_bad',1)->count()}}</span>
+                                <i class="far fa-thumbs-down mt-0.5 text-blue-500"></i>
+                                <span class="text-gray-800 dislike{{$user->id}}">{{ $user->reviews()->where('good_bad',0)->count()}}</span>
                             </div>
                             <div class="flex flex-row stars{{$user->id}}">
                             </div>
@@ -85,9 +82,10 @@
                                 $(document).ready(function(){
                                     var good = $(".like{{$user->id}}").text();
                                     var bad = $(".dislike{{$user->id}}").text();
-                                    var allcount = (good * 5) + (bad * 1);
+                                    var allcount = good * 5;
                                     var coundlikes = (good * 1) + (bad * 1);
                                     var overallStars = allcount / coundlikes;
+                                    console.log(overallStars);
                                     var star = overallStars.toFixed();
                                     if (!isNaN(star)) {
                                         for (let i = 0; i < star; i++) {
@@ -105,41 +103,118 @@
                             </script>
                         </div>
                         <div class="w-4/5 md:float-none md:float-none">
-                            <div>
-                                <a href="/performers/{{$user->id}}">
-                                    <p class="lg:text-3xl text-2xl underline text-blue-500 hover:text-red-500" id="{{$user->id}}"> {{$user->name}} </p>
+                            <div class="flex items-center">
+                                @if (Auth::check() && Auth::user()->id == $user->id)
+                                        <a href="/profile"
+                                           class="lg:text-3xl mr-2 text-2xl underline text-blue-500 hover:text-red-500" id="{{$user->id}}">
+                                           {{$user->name}}
+                                        </a>
+                                    @else
+                                <a class="user mr-2" href="performers/{{$user->id}}">
+                                    <p class="lg:text-3xl text-2xl underline text-blue-500 performer-page{{$user->id}} hover:text-red-500" id="{{$user->id}}"> {{$user->name}}</p>
                                 </a>
-                            <!-- <img class="h-8 ml-2" src="{{ asset('images/icon_year.svg') }}">
-                                <img class="h-8 ml-2" src="{{ asset('images/icon_shield.png') }}">
-                                <img class="h-8 ml-2" src="{{ asset('images/icon_bag.png') }}"> -->
+                                @endif
+                                <div class="flex items-center">
+                                    <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
+                                        <img
+                                            src="{{ $user->is_email_verified && $user->is_phone_number_verified? asset('images/verify.png') : asset('images/verify_gray.png') }}"
+                                            alt="" class="w-10">
+                                        <div id="tooltip-animation_1" role="tooltip"
+                                             class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                            <p class="text-center">
+                                                @if ($user->is_email_verified !== Null && $user->is_phone_number_verified !== Null)
+                                                    {{__('Номер телефона и Е-mail пользователя подтверждены')}}
+                                                @else
+                                                    {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
+                                                @endif
+                                            </p>
+                                            <div class="tooltip-arrow" data-popper-arrow></div>
+                                        </div>
+                                    </div>
+                                    @if($user->role_id == 2)
+                                        @foreach($about as $rating)
+                                            @if($rating->id == $user->id)
+                                                <div data-tooltip-target="tooltip-animation_2" class="mx-1 tooltip-2">
+                                                    <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
+                                                    <div id="tooltip-animation_2" role="tooltip"
+                                                         class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                        <p class="text-center">
+                                                            {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
+                                                        </p>
+                                                        <div class="tooltip-arrow" data-popper-arrow></div>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                @continue
+                                            @endif
+                                        @endforeach
+                                        <div data-tooltip-target="tooltip-animation_3" class="mx-1">
+                                            @if($task_count >= 50)
+                                                <img src="{{ asset('images/50.png') }}" alt="" class="w-10">
+                                            @else
+                                                <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10">
+                                            @endif
+                                            <div id="tooltip-animation_3" role="tooltip"
+                                                 class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                <p class="text-center">
+                                                    {{__('Более 50 выполненных заданий')}}
+                                                </p>
+                                                <div class="tooltip-arrow" data-popper-arrow></div>
+                                            </div>
+                                        </div>
+                                    @else
+                                    <div data-tooltip-target="tooltip-animation_2" class="mx-4 tooltip-2">
+                                        <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
+                                        <div id="tooltip-animation_2" role="tooltip"
+                                             class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                            <p class="text-center">
+                                                {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
+                                            </p>
+                                            <div class="tooltip-arrow" data-popper-arrow></div>
+                                        </div>
+                                    </div>
+                                    <div data-tooltip-target="tooltip-animation_3" class="mx-1">
+                                            <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10">
+                                        <div id="tooltip-animation_3" role="tooltip"
+                                             class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                            <p class="text-center">
+                                                {{__('Более 50 выполненных заданий')}}
+                                            </p>
+                                            <div class="tooltip-arrow" data-popper-arrow></div>
+                                        </div>
+                                    </div>
+                                    @endif
+                                </div>
                             </div>
                             <div>
-                                @if($user->active_status == 1)
-                                    <p class="text-sm text-green-500 my-3"><i class="fa fa-circle text-xs text-green-500 mr-2 mt-1"> </i>
-                                        {{__('Онлайн')}}</p>
-
+                                @if(Cache::has('user-is-online-' . $user->id))
+                                    <span id="only" class="text-green-500">Online</span>
                                 @else
-                                    <p class="text-sm text-gray-500 my-3">{{__('Офлайн')}}</p>
+                                    <span class="text-gray-500"> {{ Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</span>
                                 @endif
 
                             </div>
                             <div>
                                 <p class="text-base  leading-0  ">
-                                    {{$user->description}}
+                                    {{substr($user->description,0,100)}}
+                                    @if(strlen($user->description) >= 100)
+                                        ...
+                                    @endif
                                 </p>
                             </div>
                             <div class="mt-6">
                                 @auth
-                                    @if($tasks->count() > 0)
-                                        <a id="open{{$user->id}}" class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white">
-                                            {{__('Предложить задание')}}
-                                        </a>
-                                    @else
-                                        <a   onclick="toggleModal12('modal-id12')" class="hidden lg:block">
-                                            <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
-                                                {{__('Предложить задание')}}</button>
-                                        </a>
-                                    @endif
+                                @if($tasks->count() > 0)
+                                    <a id="open{{$user->id}}">
+                                       <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white">
+                                           {{__('Предложить задание')}}</button>
+                                    </a>
+                                @else
+                                    <a   onclick="toggleModal12('modal-id12')" class="hidden lg:block">
+                                        <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
+                                            {{__('Предложить задание')}}</button>
+                                    </a>
+                                @endif
                                 @endauth
                             </div>
                         </div>
@@ -177,7 +252,7 @@
                 <input type="text" name="csrf" class="hidden" value="{{ csrf_token() }}">
 
                 <div id="hidden_div">
-                    <button type="submit" onclick="myFunction()" class="cursor-pointer bg-red-500 text-white rounded-lg p-2 px-4 mt-4">
+                    <button type="submit" onclick="myFunct()" class="cursor-pointer bg-red-500 text-white rounded-lg p-2 px-4 mt-4">
                         {{__('Предложить работу')}}
                     </button>
                     <p class="py-7">{{__('Каждое задание можно предложить пяти исполнителям из каталога. исполнители получат
@@ -382,7 +457,7 @@
     </script>
 
     <script>
-        function myFunction() {
+        function myFunct() {
             document.getElementById('modal').style.display = "block";
             document.getElementById('modal_content').style.display = "none";
             let task_id = $( "#task_name" ).val();

@@ -105,8 +105,7 @@
                                         @if($task->address !== NULL)
                                             <p class=" h-auto w-96">{{json_decode($task->address, true)['location']}}</p>
                                         @else
-                                            Udalyonka
-{{--                                            Tarjima qilish kerak!--}}
+                                            {{__('Виртуальное задание')}}
                                         @endif
                                     </div>
                                     <div class="ml-4 md:ml-12 flex flex-row mt-8">
@@ -480,10 +479,14 @@
                                     @if($response->user)
                                         <div class="my-6 flex flex-row">
                                             <div class="">
-                                                <img class="w-24 h-24 rounded-lg border-2" src="{{asset('images/avatar-avtor-image.png')}}" alt="">
+                                                <img class="w-24 h-24 rounded-lg border-2" @if ($response->user->avatar == Null)
+                                                src='{{asset("storage/images/default.jpg")}}'
+                                                @else
+                                                src="{{asset("storage/{$response->user->avatar}")}}"
+                                                @endif alt="avatar">
                                             </div>
                                             <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
-                                                <a href="#"
+                                                <a href="/performers/{{ $response->user->id }}"
                                                    class="text-blue-400 text-xl font-semibold hover:text-blue-500">
                                                     {{ $response->user->name }}
                                                 </a>
@@ -619,7 +622,11 @@
                                                             @endif
                                                         </span>
                                                         <p class="text-sm sm:mt-1 mt-0">{{ $item->category->name }}</p>
-                                                        <a href="#" class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $item->user?$item->user->name:'' }}</a>
+                                                        @if (Auth::check() && Auth::user()->id == $item->user->id)
+                                                        <a href="/profile" class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $item->user?$item->user->name:'' }}</a>
+                                                        @else
+                                                        <a href="/performers/{{$item->user->id}}" class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $item->user?$item->user->name:'' }}</a>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Response;
 use App\Models\WalletBalance;
 use App\Models\Review;
+use App\Services\NotificationService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -80,13 +81,18 @@ class PerformersController extends Controller
                 'description' => '123',
                 'type' => 4,
             ]);
+
+            NotificationService::sendNotificationRequest([$users_id], [
+                'url' => 'detailed-tasks' . '/' . $task_id, 'name' => $task_name->name, 'time' => 'recently'
+            ]);
+
             return response()->json(['success' => $users_id]);
         }
         return response()->json(['success' => '$users_id']);
     }
 
 
-    public function perf_ajax($cf_id)
+    public function perf_ajax($cf_id, User $user)
     {
         // $str = "1,2,3,4,5,6,7,8";
         // $cat_arr = explode(",",$str);
@@ -95,14 +101,15 @@ class PerformersController extends Controller
         // $users = User::where('role_id',2)->paginate(50);
 
         // return $users;
-
+        $about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
+        $task_count = $user->performer_tasks_count;
         $categories = Category::get();
         $cur_cat = Category::where('id', $cf_id)->get();
         $child_categories = Category::get();
         $users = User::where('role_id', 2)->paginate(50);
         $tasks = Task::where('user_id', Auth::id())->get();
 
-        return view('Performers/performers_cat', compact('child_categories', 'categories', 'users', 'cf_id', 'cur_cat', 'tasks'));
+        return view('Performers/performers_cat', compact('child_categories','about','user', 'task_count', 'categories', 'users', 'cf_id', 'cur_cat', 'tasks'));
 
     }
 
