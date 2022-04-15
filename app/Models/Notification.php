@@ -13,5 +13,10 @@ class Notification extends Model
     use Translatable;
     protected $translatable = ['description'];
     protected $fillable = ['user_id','service_id','task_id','cat_id','description','name_task','type'];
-    
+
+    public const TASK_CREATED = 1;
+    public const NEWS_NOTIFICATION = 2;
+    public const SYSTEM_NOTIFICATION = 3;
+    public const PERFORMER_SELECTED = 4;
+    public const TASK_SELECTED = 5;
 }

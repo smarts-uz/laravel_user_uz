@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Task;
 use App\Models\TaskResponse;
 use App\Models\WalletBalance;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use PlayMobile\SMS\SmsService;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -44,6 +45,8 @@ class ResponseController extends Controller
                 $ballance->balance = $ballance->balance - $request->pay;
                 $ballance->save();
                 TaskResponse::create($data);
+
+                NotificationService::sendTaskSelectedNotification($task);
             }
         } else {
 
