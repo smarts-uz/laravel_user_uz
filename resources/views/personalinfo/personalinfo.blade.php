@@ -88,7 +88,7 @@
                                 </a>
                             </div>
                             @error('born_date')
-                            <p class="text-red-500">{{ $message }}</p>
+                            <p class="text-red-500 mt-2 ml-2">{{ $message }}</p>
                             @enderror
                         </div>
                         <div class="flex w-full gap-x-4 mt-4">

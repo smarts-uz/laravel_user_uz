@@ -70,7 +70,7 @@
                                 </a>
                             </div>
                             <div class="sm:w-1/2 w-full mx-auto lg:mt-0 mt-6">
-                                <a href="/contacts">
+                                <a href="#">
                                     <button  class="font-sans  text-2xl mx-2 font-medium  text-black-400 ring-1 ring-gray-300 px-14 py-4 rounded">
                                         {{__('Перейти в контакты')}}
                                     </button>
