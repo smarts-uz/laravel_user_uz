@@ -52,7 +52,7 @@
                     </div>
                     <div class="form-check flex flex-row mx-8 mt-10">
                         <input class="focus:outline-none  form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-black-600 checked:border-black-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                               type="checkbox" value="1" onchange="check1()" id="online">
+                               type="checkbox" onchange="activePerformers();" id="online">
                         <label class="form-check-label inline-block text-gray-800" for="online">
                             {{__('Сейчас на сайте')}}
                         </label>
@@ -60,9 +60,9 @@
                 </div>
                 <div class="sortable">
                 @foreach($users as $user)
-                    <div class="score scores{{$user->id}} w-12/12 m-5 h-[200px] flex md:flex-none overflow-hidden md:overflow-visible mb-10 " id="{{$user->id}}" about="">
+                    <div class="score scores{{$user->id}} w-12/12 m-5 h-[200px] flex md:flex-none overflow-hidden md:overflow-visible mb-10 " name="{{$user->id}}" id="difficultTask">
                         <div class="w-34 float-left">
-                            <img class="rounded-lg w-32 h-32 bg-black mb-4 mr-4" @if ($user->avatar == Null)src='{{asset("storage/images/default.jpg")}}' @else src="{{asset("storage/{$user->avatar}")}}" @endif alt="avatar">
+                            <img class="rounded-lg w-32 h-32 bg-black mb-4 mr-4" @if ($user->avatar === null)src='{{asset("storage/images/default.jpg")}}' @else src="{{asset("storage/{$user->avatar}")}}" @endif alt="avatar">
                             <div class="flex flex-row items-center text-base">
                                 <p class="text-black ">{{__('Отзывы:')}}</p>
                                 <i class="far fa-thumbs-up text-blue-500 ml-1 mb-1"></i>
@@ -79,7 +79,6 @@
                                     var allcount = good * 5;
                                     var coundlikes = (good * 1) + (bad * 1);
                                     var overallStars = allcount / coundlikes;
-                                    console.log(overallStars);
                                     var star = overallStars.toFixed();
                                     if (!isNaN(star)) {
                                         for (let i = 0; i < star; i++) {
@@ -133,7 +132,7 @@
                                                     <div id="tooltip-animation_2" role="tooltip"
                                                          class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                         <p class="text-center">
-                                                            {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
+                                                            {{__('Входит в ТОП-20 исполнителей User.uz')}}
                                                         </p>
                                                         <div class="tooltip-arrow" data-popper-arrow></div>
                                                     </div>
@@ -375,24 +374,42 @@
         }
     </script>
     <script>
-        // function check1() {
-        //     // Get the checkbox
-        //     var checkBox = document.getElementById("online");
-        //     // Get the output text
-        //     @foreach($users as $user)
-        //     var {{ str_replace(' ', '', $user->name) }} = document.getElementById("{{$user->id}}");
-        //     // If the checkbox is checked, display the output text
-        //     if (checkBox.checked == true){
-        //         if (Cache::has('user-is-online-' . $user->id)) {
-        //              {{ str_replace(' ', '', $user->name) }}.classList.remove("hidden");
+        let dataAjax = [];
 
-        //         }
-        //     } else {
-        //          {{ str_replace(' ', '', $user->name) }}.classList.add("hidden");
-        //     }
-        //     @endforeach
-        // }
+
+        function activePerformers() {
+            let checkBox = document.getElementById("online");
+            let id = checkBox.checked;
+            if (id) {
+                $.ajax({
+                    url: "{{route('performers.active_performers')}}",
+                    type: 'GET',
+                    success: function (data) {
+                        dataAjax = $.parseJSON(JSON.stringify(data));
+                    },
+                    error: function (error) {
+                        console.error("Ajax orqali yuklashda xatolik...", error);
+                    }
+                });
+                let id2 = $('#difficultTask').attr('name');
+                console.log(id2)
+                // let id3 = id2.name;
+                // console.log(id3)
+
+                $('#difficultTask').each(function () {
+
+                    $.each(dataAjax, function (index, dataAjax, id3) {
+                        // console.log(dataAjax.user_id)
+                        if (dataAjax.user_id == id3) {
+                            this.hide();
+                        }
+                    });
+                });
+            }
+        }
     </script>
+
+
     {{-- Modal end --}}
     <script>
         @foreach($users as $user)

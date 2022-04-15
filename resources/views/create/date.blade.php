@@ -85,10 +85,10 @@
                                                     <i class="fas fa-trash-alt stroke-current text-red-600 "></i>
                                                 </a>
                                             </div>
-                                            @error('start_date')
-                                            <p class="lg:text-base md:text-xs text-xs pl-1 text-red-500">{{ $message }}</p>
-                                            @enderror
                                         </div>
+                                        @error('start_date')
+                                        <p class="lg:text-base md:text-xs text-xs pl-1 text-red-500 ">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                     <div id="end-date" class="@if(!$errors->has('end_date')) xl:col-span-1 col-span-2 hidden @endif">
                                         <div class="flatpickr inline-block flex items-center">
@@ -109,10 +109,10 @@
                                                     <i class="fas fa-trash-alt stroke-current text-red-600 "></i>
                                                 </a>
                                             </div>
-                                            @error('end_date')
-                                            <p class="lg:text-base md:text-sm text-xs pl-1 text-red-500">{{ $message }}</p>
-                                            @enderror
                                         </div>
+                                        @error('end_date')
+                                            <p class="lg:text-base md:text-sm text-xs pl-1 text-red-500">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                    </div>
                                 </div>

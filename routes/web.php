@@ -69,6 +69,7 @@ Route::group(['middleware' => 'auth'], function () {
 Route::post('del-notif', [PerformersController::class, 'del_all_notif']); // javoxir
 Route::post('/performers', [PerformersController::class, 'service']); // javoxir
 Route::get('perf-ajax/{id}', [PerformersController::class, 'perf_ajax']); // javoxir
+Route::get('active-performers', [PerformersController::class, 'ajaxAP'])->name('performers.active_performers'); // Shuxrat78
 Route::get('/executors-courier', function () {
     return view('Performers/executors-courier');
 }); // javoxir
