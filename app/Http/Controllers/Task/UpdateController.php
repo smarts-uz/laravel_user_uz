@@ -24,7 +24,7 @@ class UpdateController extends Controller
         $this->service = new CreateService();
     }
 
-    public function __invoke(UpdateRequest $request, Task $task)
+    public function change(UpdateRequest $request, Task $task)
     {
         taskGuard($task);
         $data = $request->validated();
@@ -53,10 +53,13 @@ class UpdateController extends Controller
 
 
     public function sendReview(Task $task, Request $request){
+        taskGuard($task);
+
         DB::beginTransaction();
 //        dd($request->all());
+
         try {
-            $task->status = $request->input('status');
+            $task->status = Task::STATUS_COMPLETE;
             $l1 = Review::where('reviewer_id', $task->user_id)->where('user_id', $task->performer_id)->orWhere('reviewer_id', $task->performer_id)->where('user_id', $task->user_id)->count();
             if($l1 == 1){
                 $task->save();
@@ -66,7 +69,6 @@ class UpdateController extends Controller
             $review->good_bad = $request->good;
             $review->task_id = $task->id;
             $review->reviewer_id = auth()->id();
-            if ($task->reviews_count==2) $task->status = Task::STATUS_COMPLETE;
             if($task->user_id == auth()->id()){
                 $review->user_id = $task->performer_id;
             }else{
@@ -80,7 +82,8 @@ class UpdateController extends Controller
                 'type' => 2
             ]);
             $review->save();
-        }catch (Exception $exception){
+        }catch (\Exception $exception){
+            dd($exception);
             DB::rollBack();
         }
         DB::commit();

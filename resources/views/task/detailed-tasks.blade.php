@@ -44,9 +44,9 @@
     <div class="xl:flex container w-11/12 mx-auto">
         <div class="md:flex mx-auto xl:w-9/12 w-full">
             {{-- left sidebar start --}}
-                <div class="w-full float-left mt-8">
-                    <h1 class="text-3xl font-bold mb-2">{{$task->name}}</h1>
-                    <div class="md:flex flex-row">
+            <div class="w-full float-left mt-8">
+                <h1 class="text-3xl font-bold mb-2">{{$task->name}}</h1>
+                <div class="md:flex flex-row">
                         <span class="text-black rounded-lg bg-yellow-400 p-2">
                             @if ( __('до') == 'gacha' )
                                 {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
@@ -54,305 +54,308 @@
                                 {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
                             @endif
                         </span>
-                        @auth()
-                            @if($task->user_id == auth()->user()->id)
-                                <a href="{{ route('searchTask.changetask', $task->id) }}"
-                                class="py-2 px-2 text-gray-500 hover:text-red-500">
-                                    <i class="fas fa-pencil-alt"></i>
-                                </a>
-                            @endif
-                        @endauth
-                        @if ($task->email_confirm == 1)
-                            <h1 class="my-2 text-green-400">{{__('Сделка без риска')}}</h1>
-                            <i class="far fa-credit-card text-green-400 mx-3 my-1 text-2xl"></i>
+                    @auth()
+                        @if($task->user_id == auth()->user()->id)
+                            <a href="{{ route('searchTask.changetask', $task->id) }}"
+                               class="py-2 px-2 text-gray-500 hover:text-red-500">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
                         @endif
-                    </div>
-                    <div class="md:flex flex-row float-left">
-                        @if ($task->show_only_to_performers == 1)
-                            <p class="mt-4 text-gray-400 font-normal">{{__('Заказчик отдает предпочтение застрахованным исполнителям')}}</p>
-                        @endif
-                    </div>
-                    <div class="md:flex flex-row text-gray-400 mt-4 text-base">
-                        @if ($task->status == 3)
-                            <p class="text-amber-500 font-normal md:border-r-2 border-gray-400 pr-2">{{__('В исполнении')}}</p>
-                        @elseif($task->status < 3)
-                            <p class="text-green-400 font-normal md:border-r-2 border-gray-400 pr-2">{{__('Открыто')}}</p>
+                    @endauth
+                    @if ($task->email_confirm == 1)
+                        <h1 class="my-2 text-green-400">{{__('Сделка без риска')}}</h1>
+                        <i class="far fa-credit-card text-green-400 mx-3 my-1 text-2xl"></i>
+                    @endif
+                </div>
+                <div class="md:flex flex-row float-left">
+                    @if ($task->show_only_to_performers == 1)
+                        <p class="mt-4 text-gray-400 font-normal">{{__('Заказчик отдает предпочтение застрахованным исполнителям')}}</p>
+                    @endif
+                </div>
+                <div class="md:flex flex-row text-gray-400 mt-4 text-base">
+                    @if ($task->status == 3)
+                        <p class="text-amber-500 font-normal md:border-r-2 border-gray-400 pr-2">{{__('В исполнении')}}</p>
+                    @elseif($task->status < 3)
+                        <p class="text-green-400 font-normal md:border-r-2 border-gray-400 pr-2">{{__('Открыто')}}</p>
+                    @else
+                        <p class="text-red-400 font-normal md:border-r-2 border-gray-400 pr-2">{{__('Закрыто')}}</p>
+                    @endif
+                    <p class="font-normal md:border-r-2 border-gray-400 md:px-2 px-0">{{$task->views }}  {{__('просмотров')}}</p>
+                    <p class="mr-3 md:pl-2 pr-3 md:border-r-2 border-gray-400">{{$task->created_at}}</p>
+                    <p class="pr-3 ">{{ $task->category->getTranslatedAttribute('name') }}</p>
+                    @if($task->user_id == auth()->id())
+                        <form action="{{route("searchTask.delete_task", $task->id)}}" method="post">
+                            @csrf
+                            @method('delete')
+                            <button type="submit"
+                                    class="mr-3 border-l-2  pl-2 pl-3 border-gray-400 text-red-500">
+                                {{__('Отменить')}}
+                            </button>
+                        </form>
+                    @endif
+                </div>
+
+                <div
+                    class="mt-12 border-2 py-2 lg:w-[600px]  w-[400px] rounded-lg border-orange-100 shadow-2xl">
+                    <div id="map" class="h-64 mb-4 -mt-2 {{ $task->address?'':'hidden' }}  "></div>
+                    <div class="ml-4 md:ml-12 flex flex-row my-4">
+                        <h1 class="font-bold h-auto w-48">{{__('Место')}}</h1>
+                        @if($task->address !== NULL)
+                            <p class=" h-auto w-96">{{json_decode($task->address, true)['location']}}</p>
                         @else
-                            <p class="text-red-400 font-normal md:border-r-2 border-gray-400 pr-2">{{__('Закрыто')}}</p>
-                        @endif
-                        <p class="font-normal md:border-r-2 border-gray-400 md:px-2 px-0">{{$task->views }}  {{__('просмотров')}}</p>
-                        <p class="mr-3 md:pl-2 pr-3 md:border-r-2 border-gray-400">{{$task->created_at}}</p>
-                        <p class="pr-3 ">{{ $task->category->getTranslatedAttribute('name') }}</p>
-                        @if($task->user_id == auth()->id())
-                            <form action="{{route("searchTask.delete_task", $task->id)}}" method="post">
-                                @csrf
-                                @method('delete')
-                                <button type="submit"
-                                        class="mr-3 border-l-2  pl-2 pl-3 border-gray-400 text-red-500">
-                                    {{__('Отменить')}}
-                                </button>
-                            </form>
+                            {{__('Виртуальное задание')}}
                         @endif
                     </div>
+                    <div class="ml-4 md:ml-12 flex flex-row mt-8">
+                        @if($task->date_type == 1)
+                            <h1 class="font-bold h-auto w-48">{{__('Начать работу')}}</h1>
+                            {{ $task->start_date     }}
+                        @elseif($task->date_type == 2)
+                            <h1 class="font-bold h-auto w-48">{{__('Закончить работу')}}</h1>
+                            {{ $task->end_date     }}
+                        @else
+                            <h1 class="font-bold h-auto w-48">{{__('Указать период')}}</h1>
+                            <p class=" h-auto w-96">{{ $task->start_date     }} - {{ $task->end_date     }}  </p>
 
-                    <div
-                        class="mt-12 border-2 py-2 lg:w-[600px]  w-[400px] rounded-lg border-orange-100 shadow-2xl">
-                        <div id="map" class="h-64 mb-4 -mt-2 {{ $task->address?'':'hidden' }}  "></div>
-                        <div class="ml-4 md:ml-12 flex flex-row my-4">
-                            <h1 class="font-bold h-auto w-48">{{__('Место')}}</h1>
-                            @if($task->address !== NULL)
-                                <p class=" h-auto w-96">{{json_decode($task->address, true)['location']}}</p>
+                        @endif
+                    </div>
+                    <div class="ml-4 md:ml-12 flex flex-row mt-8">
+                        <h1 class="font-bold h-auto w-48">{{__('Бюджет')}}</h1>
+                        <p class=" h-auto w-96">
+                            @if ( __('до') == 'gacha' )
+                                {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
                             @else
-                                {{__('Виртуальное задание')}}
+                                {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
                             @endif
-                        </div>
-                        <div class="ml-4 md:ml-12 flex flex-row mt-8">
-                            @if($task->date_type == 1)
-                                <h1 class="font-bold h-auto w-48">{{__('Начать работу')}}</h1>
-                                {{ $task->start_date     }}
-                            @elseif($task->date_type == 2)
-                                <h1 class="font-bold h-auto w-48">{{__('Закончить работу')}}</h1>
-                                {{ $task->end_date     }}
-                            @else
-                                <h1 class="font-bold h-auto w-48">{{__('Указать период')}}</h1>
-                                <p class=" h-auto w-96">{{ $task->start_date     }}  - {{ $task->end_date     }}  </p>
+                        </p>
+                    </div>
 
-                            @endif
-                        </div>
-                        <div class="ml-4 md:ml-12 flex flex-row mt-8">
-                            <h1 class="font-bold h-auto w-48">{{__('Бюджет')}}</h1>
-                            <p class=" h-auto w-96">
-                                @if ( __('до') == 'gacha' )
-                                    {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
+                    @isset($value)
+                        @foreach($task->custom_field_values as $value)
+                            <div class="ml-4 md:ml-12 flex flex-row mt-8">
+
+                                <h1 class="font-bold h-auto w-48">{{ $value->custom_field->getTranslatedAttribute('title') }}</h1>
+                                <p class=" h-auto w-96">
+                                    @foreach(json_decode($value->value, true) as $value_obj)
+                                        @if ($loop->last)
+                                            {{$value_obj}}
+                                        @else
+                                            {{$value_obj}},
+                                        @endif
+                                    @endforeach
+                                </p>
+                            </div>
+                        @endforeach
+                    @endisset
+
+
+                    <div class="ml-4 md:ml-12 flex flex-row mt-8">
+                        <h1 class="font-bold h-auto w-48">{{__('Оплата задания')}}</h1>
+                        <div class=" h-auto w-96">
+                            <p class="text-blue-400">
+                                @if($task->oplata == 1)
+                                    {{__(' Оплата наличными')}}
                                 @else
-                                    {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
+                                    {{__('Оплата через карту')}}
                                 @endif
                             </p>
                         </div>
-
-                        @isset($value)
-                            @foreach($task->custom_field_values as $value)
-                                <div class="ml-4 md:ml-12 flex flex-row mt-8">
-
-                                    <h1 class="font-bold h-auto w-48">{{ $value->custom_field->getTranslatedAttribute('title') }}</h1>
-                                    <p class=" h-auto w-96">
-                                        @foreach(json_decode($value->value, true) as $value_obj)
-                                            @if ($loop->last)
-                                                {{$value_obj}}
-                                            @else
-                                                {{$value_obj}},
-                                            @endif
-                                        @endforeach
-                                    </p>
-                                </div>
-                            @endforeach
-                        @endisset
-
-
-                        <div class="ml-4 md:ml-12 flex flex-row mt-8">
-                            <h1 class="font-bold h-auto w-48">{{__('Оплата задания')}}</h1>
-                            <div class=" h-auto w-96">
-                                <p class="text-blue-400">
-                                    @if($task->oplata == 1)
-                                        {{__(' Оплата наличными')}}
-                                    @else
-                                        {{__('Оплата через карту')}}
-                                    @endif
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="ml-4 md:ml-12 flex flex-row mt-8">
-                            <h1 class="font-bold h-auto w-48">{{__('Нужно')}}</h1>
-                            <p class=" h-auto w-96">{{$task->description}}</p>
-                        </div>
-
-                        <div class="ml-4 md:ml-12 flex flex-wrap mt-8">
-                            <h1 class="font-bold h-auto w-48">{{__('Рисунок')}}</h1>
-                            @foreach(json_decode($task->photos)??[] as $key => $image)
-                                {{--@if ($loop->first)--}}
-
-                                @if($loop->first)
-                                    <div class="relative boxItem">
-                                        <a class="boxItem relative" href="{{ asset('storage/'.$image) }}"
-                                        data-fancybox="img1"
-                                        data-caption="<span>{{  $task->created_at}}</span>">
-                                            <div class="mediateka_photo_content">
-                                                <img src="{{ asset('storage/'.$image) }}" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                @endif
-                                {{--@endif--}}
-                            @endforeach
-                        </div>
-                        @if($task->docs == 1)
-                            <div class="ml-4 md:ml-12 flex flex-row mt-8">
-                                <h1 class="font-bold h-auto w-48">{{__('Предоставил(а) документы')}}</h1>
-                            </div>
-                        @else
-                            <div class="ml-4 md:ml-12 flex flex-row mt-8">
-                                <h1 class="font-bold h-auto w-48">{{__('Не предоставил(а) документы')}}</h1>
-                            </div>
-                        @endif
-
-                        @foreach($task->custom_field_values as $value)
-                            @if($value->value &&  $value->custom_field)
-                                <div class="ml-4 md:ml-12 flex flex-row mt-8">
-                                    <h1 class="font-bold text-gray-600 h-auto w-48">{{ $value->custom_field->title }}</h1>
-                                    <div class=" h-auto w-96">
-                                        <p class="text-gray-500">
-                                            <b class="ml-4">{{ $value->custom_field->label  }}:</b>
-
-                                            {{ json_decode($value->value)[0]  }}
-                                        </p>
-                                    </div>
-                                </div>
-                        @endif
-                    @endforeach
-
-                    <!--  ------------------------ showModal Откликнуться на это задание  ------------------------  -->
-
-                        <div>
-                            <div class="w-full flex flex-col sm:flex-row sm:p-6 p-2">
-                                <!-- This is an example component -->
-                                <div class="w-full text-center">
-                                    @auth
-                                        @if(getAuthUserBalance() >= 4000 || $task->responses_count< setting('site.free_responses'))
-                                            @if($task->user_id != auth()->id() && $task->status < 3)
-                                                <button
-                                                    class="sm:w-4/5 w-full font-sans text-lg pay font-semibold bg-green-500 text-white hover:bg-green-600 px-8 pt-1 pb-2 mt-6 rounded-lg transition-all duration-300"
-                                                    id="btn1"
-                                                    type="button"
-                                                    data-modal-toggle="authentication-modal">
-                                                    {{__('Откликнуться за 4000 UZS')}}<br>
-                                                    <span class="text-sm">
-                                                    {{__('и отправить контакты заказчику')}}<br>
-                                                </span>
-                                                </button>
-                                                <button
-                                                    class="sm:w-4/5 w-full font-sans text-lg font-semibold bg-yellow-500 text-white hover:bg-yellow-600 px-8 pt-1 pb-2 mt-6 rounded-lg transition-all duration-300"
-                                                    id="btn2"
-                                                    type="button"
-                                                    data-modal-toggle="authentication-modal">
-                                                    {{__('Откликнуться на задание бесплатно')}}<br>
-                                                    <span class="text-sm">
-                                                    {{__('отклик - 0 UZS, контакт с заказчиком - 5000 UZS')}}
-                                                </span>
-                                                </button>
-                                            @endif
-                                        @elseif(getAuthUserBalance() < 4000 || $response_count_user >= setting('site.free_responses'))
-                                            @if($task->user_id != auth()->id() && $task->status < 3)
-                                                <a class="open-modal"
-                                                data-modal="#modal1">
-                                                    <button
-                                                        class='w-1/2 font-sans text-lg font-semibold bg-green-500 text-white hover:bg-green-500 px-8 pt-2 pb-3 mt-6 rounded-lg transition-all duration-300 m-2'>
-                                                        {{__('Откликнуться за 4000 UZS')}}
-                                                    </button>
-                                                </a>
-                                                <a class="open-modal"
-                                                data-modal="#modal1">
-                                                    <button
-                                                        class='font-sans text-lg font-semibold bg-yellow-500 text-white hover:bg-orange-500 px-8 pt-2 pb-3 mt-6 rounded-lg transition-all duration-300 m-2'>
-                                                        {{__('Откликнуться на задание бесплатно')}}
-                                                    </button>
-                                                </a>
-                                                <div class='modal' id='modal1'>
-                                                    <div class='content'>
-                                                        <img class="w-64 h-64"
-                                                            src="{{asset('images/cash_icon.png')}}"
-                                                            alt="">
-                                                        <h1 class="title">{{__('Пополните баланс')}}</h1>
-                                                        <p>
-                                                            {{__('Для отклика на вашем балансе должно быть 4000 UZS. Если заказчик захочет с вами связаться, мы автоматически спишем стоимость контакта с вашего счёта.')}}
-                                                        </p>
-                                                        <a class='btn'
-                                                        href="/profile/cash">{{__('Пополнить')}}</a>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                        @endif
-                                    @else
-                                        <a href="/login">
-                                            <button
-                                                class="sm:w-4/5 w-full mx-auto font-sans mt-8 text-lg  font-semibold bg-yellow-500 text-white hover:bg-orange-500 px-10 py-4 rounded-lg">
-                                                {{__('Откликнуться на это задание')}}
-                                            </button>
-                                        </a>
-                                    @endauth
-                                    @auth
-                                        @if ($task->performer_id == auth()->user()->id || $task->user_id == auth()->user()->id)
-                                            <button id="sendbutton"
-                                                    class="font-sans w-full text-lg font-semibold bg-green-500 hidden text-white hover:bg-green-400 px-12 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
-                                                    type="button">
-                                                {{__('Оставить отзыв')}}
-                                            </button>
-
-                                            @if($task->status == 3)
-
-                                                {{--                                                            <form action="{{ route('task.completed', $task->id) }}" method="post">--}}
-                                                @csrf
-                                                @if(!$review)
-                                                    <button
-                                                        id="modal-open-id5"
-                                                        class=" sm:w-2/5 w-9/12 text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-12 ml-6  pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
-                                                        type="submit">
-                                                        Завершен
-                                                    </button>
-                                                    <button
-                                                        id="modal-open-id4"
-                                                        class="not_done  sm:w-2/5 w-9/12 text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
-                                                        type="button">
-                                                        Не завершен
-                                                    </button>
-                                                @endif
-                                            @endif
-                                        @endif
-                                    @endauth
-                                
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    @if($task->user_id == auth()->id())
+
+                    <div class="ml-4 md:ml-12 flex flex-row mt-8">
+                        <h1 class="font-bold h-auto w-48">{{__('Нужно')}}</h1>
+                        <p class=" h-auto w-96">{{$task->description}}</p>
+                    </div>
+
+                    <div class="ml-4 md:ml-12 flex flex-wrap mt-8">
+                        <h1 class="font-bold h-auto w-48">{{__('Рисунок')}}</h1>
+                        @foreach(json_decode($task->photos)??[] as $key => $image)
+                            {{--@if ($loop->first)--}}
+
+                            @if($loop->first)
+                                <div class="relative boxItem">
+                                    <a class="boxItem relative" href="{{ asset('storage/'.$image) }}"
+                                       data-fancybox="img1"
+                                       data-caption="<span>{{  $task->created_at}}</span>">
+                                        <div class="mediateka_photo_content">
+                                            <img src="{{ asset('storage/'.$image) }}" alt="">
+                                        </div>
+                                    </a>
+                                </div>
+                            @endif
+                            {{--@endif--}}
+                        @endforeach
+                    </div>
+                    @if($task->docs == 1)
+                        <div class="ml-4 md:ml-12 flex flex-row mt-8">
+                            <h1 class="font-bold h-auto w-48">{{__('Предоставил(а) документы')}}</h1>
+                        </div>
                     @else
-                        <div
-                            class="mt-12 border-2 p-6 lg:w-[600px]  w-[400px] rounded-lg border-orange-100 shadow-lg">
-                            <h1 class="text-3xl font-semibold py-3">{{__('Хотите найти надежного помощника?')}}</h1>
-                            <p class="mb-10">{{__('Universal Services помогает быстро решать любые бытовые и бизнес-задачи.')}}</p>
-                            <a href="/categories/1">
-                                <button
-                                    class="font-sans text-lg font-semibold bg-yellow-500 text-white hover:bg-orange-500 px-8 pt-2 pb-3 rounded">
-                                    {{__('Создайте свое задание')}}
-                                </button>
-                            </a>
+                        <div class="ml-4 md:ml-12 flex flex-row mt-8">
+                            <h1 class="font-bold h-auto w-48">{{__('Не предоставил(а) документы')}}</h1>
                         </div>
                     @endif
 
+                    @foreach($task->custom_field_values as $value)
+                        @if($value->value &&  $value->custom_field)
+                            <div class="ml-4 md:ml-12 flex flex-row mt-8">
+                                <h1 class="font-bold text-gray-600 h-auto w-48">{{ $value->custom_field->title }}</h1>
+                                <div class=" h-auto w-96">
+                                    <p class="text-gray-500">
+                                        <b class="ml-4">{{ $value->custom_field->label  }}:</b>
+
+                                        {{ json_decode($value->value)[0]  }}
+                                    </p>
+                                </div>
+                            </div>
+                    @endif
+                @endforeach
+
+                <!--  ------------------------ showModal Откликнуться на это задание  ------------------------  -->
+
+                    <div>
+                        <div class="w-full flex flex-col sm:flex-row sm:p-6 p-2">
+                            <!-- This is an example component -->
+                            <div class="w-full text-center">
+                                @auth
+                                    @if(getAuthUserBalance() >= 4000 || $task->responses_count< setting('site.free_responses'))
+                                        @if($task->user_id != auth()->id() && $task->status < 3 && !$auth_response)
+                                            <button
+                                                class="sm:w-4/5 w-full font-sans text-lg pay font-semibold bg-green-500 text-white hover:bg-green-600 px-8 pt-1 pb-2 mt-6 rounded-lg transition-all duration-300"
+                                                id="btn1"
+                                                type="button"
+                                                data-modal-toggle="authentication-modal">
+                                                {{__('Откликнуться за 4000 UZS')}}<br>
+                                                <span class="text-sm">
+                                                    {{__('и отправить контакты заказчику')}}<br>
+                                                </span>
+                                            </button>
+                                            <button
+                                                class="sm:w-4/5 w-full font-sans text-lg font-semibold bg-yellow-500 text-white hover:bg-yellow-600 px-8 pt-1 pb-2 mt-6 rounded-lg transition-all duration-300"
+                                                id="btn2"
+                                                type="button"
+                                                data-modal-toggle="authentication-modal">
+                                                {{__('Откликнуться на задание бесплатно')}}<br>
+                                                <span class="text-sm">
+                                                    {{__('отклик - 0 UZS, контакт с заказчиком - 5000 UZS')}}
+                                                </span>
+                                            </button>
+                                        @endif
+                                    @elseif(getAuthUserBalance() < 4000 || $response_count_user >= setting('site.free_responses'))
+                                        @if($task->user_id != auth()->id() && $task->status < 3 && !$auth_response)
+                                            <a class="open-modal"
+                                               data-modal="#modal1">
+                                                <button
+                                                    class='w-1/2 font-sans text-lg font-semibold bg-green-500 text-white hover:bg-green-500 px-8 pt-2 pb-3 mt-6 rounded-lg transition-all duration-300 m-2'>
+                                                    {{__('Откликнуться за 4000 UZS')}}
+                                                </button>
+                                            </a>
+                                            <a class="open-modal"
+                                               data-modal="#modal1">
+                                                <button
+                                                    class='font-sans text-lg font-semibold bg-yellow-500 text-white hover:bg-orange-500 px-8 pt-2 pb-3 mt-6 rounded-lg transition-all duration-300 m-2'>
+                                                    {{__('Откликнуться на задание бесплатно')}}
+                                                </button>
+                                            </a>
+                                            <div class='modal' id='modal1'>
+                                                <div class='content'>
+                                                    <img class="w-64 h-64"
+                                                         src="{{asset('images/cash_icon.png')}}"
+                                                         alt="">
+                                                    <h1 class="title">{{__('Пополните баланс')}}</h1>
+                                                    <p>
+                                                        {{__('Для отклика на вашем балансе должно быть 4000 UZS. Если заказчик захочет с вами связаться, мы автоматически спишем стоимость контакта с вашего счёта.')}}
+                                                    </p>
+                                                    <a class='btn'
+                                                       href="/profile/cash">{{__('Пополнить')}}</a>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endif
+                                @else
+                                    <a href="/login">
+                                        <button
+                                            class="sm:w-4/5 w-full mx-auto font-sans mt-8 text-lg  font-semibold bg-yellow-500 text-white hover:bg-orange-500 px-10 py-4 rounded-lg">
+                                            {{__('Откликнуться на это задание')}}
+                                        </button>
+                                    </a>
+                                @endauth
+                                @auth
+                                    @if ($task->performer_id == auth()->user()->id || $task->user_id == auth()->user()->id)
+                                        <button id="sendbutton"
+                                                class="font-sans w-full text-lg font-semibold bg-green-500 hidden text-white hover:bg-green-400 px-12 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
+                                                type="button">
+                                            {{__('Оставить отзыв')}}
+                                        </button>
+
+                                        @if($task->status == 3)
+
+                                            {{--                                                            <form action="{{ route('task.completed', $task->id) }}" method="post">--}}
+                                            @csrf
+                                            @if(!$review)
+                                                <button
+                                                    id="modal-open-id5"
+                                                    class=" sm:w-2/5 w-9/12 text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-12 ml-6  pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
+                                                    type="submit">
+                                                    Завершен
+                                                </button>
+                                                <button
+                                                    id="modal-open-id4"
+                                                    class="not_done  sm:w-2/5 w-9/12 text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
+                                                    type="button">
+                                                    Не завершен
+                                                </button>
+                                            @endif
+                                        @endif
+                                    @endif
+                                @endauth
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if($task->user_id == auth()->id())
+                @else
+                    <div
+                        class="mt-12 border-2 p-6 lg:w-[600px]  w-[400px] rounded-lg border-orange-100 shadow-lg">
+                        <h1 class="text-3xl font-semibold py-3">{{__('Хотите найти надежного помощника?')}}</h1>
+                        <p class="mb-10">{{__('Universal Services помогает быстро решать любые бытовые и бизнес-задачи.')}}</p>
+                        <a href="/categories/1">
+                            <button
+                                class="font-sans text-lg font-semibold bg-yellow-500 text-white hover:bg-orange-500 px-8 pt-2 pb-3 rounded">
+                                {{__('Создайте свое задание')}}
+                            </button>
+                        </a>
+                    </div>
+                @endif
+
+                @if($auth_response)
                     <div class="mt-3">
-                        <h1 class="text-3xl font-semibold text-black">Ваш  отклик</h1>
+                        <h1 class="text-3xl font-semibold text-black">Ваш отклик</h1>
                         <div class="my-3 flex flex-row">
                             <div class="">
                                 <img class="w-24 h-24 rounded-lg border-2"
-                                src='{{asset('images/avatar-avtor-image.png')}}' alt="avatar">
+                                     src='{{ auth()->user()->avatar? asset('storage/'.auth()->user()->avatar) : asset('images/avatar-avtor-image.png') }}'
+                                     alt="avatar">
                             </div>
                             <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
-                                <a href="#"
-                                class="text-blue-400 text-xl font-semibold hover:text-blue-500">
-                                    Admin
+                                <a href="{{ route('performers.performer', auth()->user()->id) }}"
+                                   class="text-blue-400 text-xl font-semibold hover:text-blue-500">
+                                    {{ auth()->user()->name }}
                                 </a>
                                 <input type="text" name="performer_id" class="hidden"
-                                    value="">
+                                       value="">
                                 <div class="text-gray-700 sm:mt-4 mt-2">
                                     {{-- <i class="fas fa-star text-yellow-500 mr-1"></i>{{ $response->user->reviews()->count()? $response->user->goodReviews()->count()/$response->user->reviews()->count():0 }}  по {{ $response->user->reviews()->count() }} отзывам --}}
                                 </div>
                             </div>
                             <div class="flex flex-row items-start">
                                 <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
-                                    <img  src="{{asset('images/verify_gray.png') }}"
+                                    <img
+                                        src="{{ auth()->user()->is_email_verified && auth()->user()->is_phone_number_verified ? asset('images/verify.pngau') : asset('images/verify_gray.png') }}"
                                         alt="" class="w-10">
                                     <div id="tooltip-animation_1" role="tooltip"
-                                        class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                         class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                         <p class="text-center">
                                             {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
                                         </p>
@@ -362,7 +365,7 @@
                                 <div data-tooltip-target="tooltip-animation_2" class="mx-2 tooltip-2">
                                     <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
                                     <div id="tooltip-animation_2" role="tooltip"
-                                        class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                         class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                         <p class="text-center">
                                             {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
                                         </p>
@@ -372,7 +375,7 @@
                                 <div data-tooltip-target="tooltip-animation_3" class="mx-1">
                                     <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
                                     <div id="tooltip-animation_3" role="tooltip"
-                                        class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                         class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                         <p class="text-center">
                                             {{__('Более 50 выполненных заданий')}}
                                         </p>
@@ -385,35 +388,24 @@
                             <div class="bg-gray-100 rounded-[10px] p-4">
                                 <div class="ml-0">
                                     <div
-                                        class="text-[17px] text-gray-500 font-semibold">{{__('Стоимость')}} 100000
+                                        class="text-[17px] text-gray-500 font-semibold">{{__('Стоимость')}} {{ number_format($auth_response->price) }}
                                         UZS
                                     </div>
 
                                     <div
-                                        class="text-[17px] text-gray-500 my-5">Lorem ipsum dolor sit amet.</div>
-                                   
-                                        <div
-                                            class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}}</div>
-                                            <div class="w-10/12 mx-auto">
-                                                <a href="#"
-                                                class="text-semibold text-center w-[200px] mb-2 md:w-[320px] ml-0 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
-                                                    {{__('Написать в чат')}}
-                                                </a>
-
-                                            </div>
-                                                <button  onclick="toggleModal33()" type="submit" class="cursor-pointer text-semibold text-center  md:ml-4 inline-block py-3 px-4 bg-white transition
-                                                    duration-200 text-white bg-green-500 hover:bg-green-500 font-medium
-                                                    border border-transparent rounded-md"> {{__('Выбрать исполнителем')}}</button>
-                                    <div class="text-gray-400 text-[14px] my-6">
-                                        {{__('Выберите исполнителя, чтобы потом оставить отзыв о работе.')}}
+                                        class="text-[17px] text-gray-500 my-5">{{ $auth_response->description }}
                                     </div>
+
+                                    <div
+                                        class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}}
+                                        +998 {{ auth()->user()->phone_number }}</div>
                                 </div>
                             </div>
-                        </div>     
+                        </div>
                     </div>
-
-                    @auth()
-                        @if ($task->user_id == auth()->user()->id)
+                @endif
+                @auth()
+                    @if ($task->user_id == auth()->user()->id)
                         <div class="text-4xl font-semibold my-6">
                             @if ($task->response_count <= 4)
                                 @if ($task->responses_count == 1)
@@ -425,134 +417,250 @@
                                 {{__('У задания')}} {{$task->responses_count}} {{__('откликов')}}
                             @endif
                         </div>
-                            @foreach ($task->responses as $response)
-                                @if($response->user)
-                                    <div class="my-6 flex flex-row">
-                                        <div class="">
-                                            <img class="w-24 h-24 rounded-lg border-2" @if ($response->user->avatar == Null)
-                                            src='{{asset("storage/images/default.jpg")}}'
-                                                @else
-                                                src="{{asset("storage/{$response->user->avatar}")}}"
-                                                @endif alt="avatar">
-                                        </div>
-                                        <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
-                                            <a href="/performers/{{ $response->user->id }}"
-                                            class="text-blue-400 text-xl font-semibold hover:text-blue-500">
-                                                {{ $response->user->name }}
-                                            </a>
-                                            <input type="text" name="performer_id" class="hidden"
-                                                value="{{ $response->user_id }}">
-                                            <div class="text-gray-700 sm:mt-4 mt-2">
-                                                <i class="fas fa-star text-yellow-500 mr-1"></i>{{ $response->user->reviews()->count()? $response->user->goodReviews()->count()/$response->user->reviews()->count():0 }}  по {{ $response->user->reviews()->count() }} отзывам
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-row items-start">
-                                            <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
-                                                <img  src="{{ $response->user->is_email_verified && $response->user->is_phone_number_verified? asset('images/verify.png') : asset('images/verify_gray.png')  }}"
-                                                    alt="" class="w-10">
-                                                <div id="tooltip-animation_1" role="tooltip"
-                                                    class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                                    <p class="text-center">
-                                                        {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
-                                                    </p>
-                                                    <div class="tooltip-arrow" data-popper-arrow></div>
-                                                </div>
-                                            </div>
-                                            <div data-tooltip-target="tooltip-animation_2" class="mx-2 tooltip-2">
-                                                <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
-                                                <div id="tooltip-animation_2" role="tooltip"
-                                                    class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                                    <p class="text-center">
-                                                        {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
-                                                    </p>
-                                                    <div class="tooltip-arrow" data-popper-arrow></div>
-                                                </div>
-                                            </div>
-                                            <div data-tooltip-target="tooltip-animation_3" class="mx-1">
-                                                <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
-                                                <div id="tooltip-animation_3" role="tooltip"
-                                                    class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                                    <p class="text-center">
-                                                        {{__('Более 50 выполненных заданий')}}
-                                                    </p>
-                                                    <div class="tooltip-arrow" data-popper-arrow></div>
-                                                </div>
-                                            </div>
+
+                        @if($selected && $selected->performer)
+                            <h1>Vibranniy ispolnitel</h1>
+                            <div class="my-6 flex flex-row">
+                                <div class="">
+                                    <img class="w-24 h-24 rounded-lg border-2" @if ($selected->performer->avatar == Null)
+                                    src='{{asset("storage/images/default.jpg")}}'
+                                         @else
+                                         src="{{asset("storage/{$selected->performer->avatar}")}}"
+                                         @endif alt="avatar">
+                                </div>
+                                <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
+                                    <a href="/performers/{{ $selected->performer->id }}"
+                                       class="text-blue-400 text-xl font-semibold hover:text-blue-500">
+                                        {{ $selected->performer->name }}
+                                    </a>
+                                    <input type="text" name="performer_id" class="hidden"
+                                           value="{{ $selected->performer_id }}">
+                                    <div class="text-gray-700 sm:mt-4 mt-2">
+                                        <i class="fas fa-star text-yellow-500 mr-1"></i>{{ $selected->performer->reviews()->count()? $selected->performer->goodReviews()->count()/$selected->performer->reviews()->count():0 }}
+                                        по {{ $selected->performer->reviews()->count() }} отзывам
+                                    </div>
+                                </div>
+                                <div class="flex flex-row items-start">
+                                    <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
+                                        <img
+                                            src="{{ $selected->performer->is_email_verified && $selected->performer->is_phone_number_verified? asset('images/verify.png') : asset('images/verify_gray.png')  }}"
+                                            alt="" class="w-10">
+                                        <div id="tooltip-animation_1" role="tooltip"
+                                             class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                            <p class="text-center">
+                                                {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
+                                            </p>
+                                            <div class="tooltip-arrow" data-popper-arrow></div>
                                         </div>
                                     </div>
-                                    <div class="mb-6">
-                                        <div class="bg-gray-100 rounded-[10px] p-4">
-                                            <div class="ml-0">
-                                                <div
-                                                    class="text-[17px] text-gray-500 font-semibold">{{__('Стоимость')}} {{$response->price}}
-                                                    UZS
+                                    <div data-tooltip-target="tooltip-animation_2" class="mx-2 tooltip-2">
+                                        <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
+                                        <div id="tooltip-animation_2" role="tooltip"
+                                             class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                            <p class="text-center">
+                                                {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
+                                            </p>
+                                            <div class="tooltip-arrow" data-popper-arrow></div>
+                                        </div>
+                                    </div>
+                                    <div data-tooltip-target="tooltip-animation_3" class="mx-1">
+                                        <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
+                                        <div id="tooltip-animation_3" role="tooltip"
+                                             class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                            <p class="text-center">
+                                                {{__('Более 50 выполненных заданий')}}
+                                            </p>
+                                            <div class="tooltip-arrow" data-popper-arrow></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="bg-gray-100 rounded-[10px] p-4">
+                                    <div class="ml-0">
+                                        <div
+                                            class="text-[17px] text-gray-500 font-semibold">{{__('Стоимость')}} {{$selected->price}}
+                                            UZS
+                                        </div>
+
+                                        <div
+                                            class="text-[17px] text-gray-500 my-5">{{$selected->description}}</div>
+                                        @if($selected->not_free == 1)
+                                            <div
+                                                class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} {{$selected->performer->phone_number}}</div>
+                                        @endif
+
+                                        @auth()
+                                            @if($task->status == 3 && $selected->performer_id == $task->performer_id)
+                                                <div class="w-10/12 mx-auto">
+                                                    <a href="{{ route('performers.performer_chat', $selected->performer->id) }}"
+                                                       class="text-semibold text-center w-[200px] mb-2 md:w-[320px] ml-0 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
+                                                        {{__('Написать в чат')}}
+                                                    </a>
+
                                                 </div>
-
-                                                <div
-                                                    class="text-[17px] text-gray-500 my-5">{{$response->description}}</div>
-                                                @if($response->not_free == 1)
-                                                    <div
-                                                        class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} {{$response->user->phone_number}}</div>
-                                                @endif
-
-                                                @auth()
-                                                    @if($task->status == 3 && $response->user_id == $task->performer_id)
-                                                        <div class="w-10/12 mx-auto">
-                                                            <a href="{{ route('performers.performer_chat', $response->user->id) }}"
-                                                            class="text-semibold text-center w-[200px] mb-2 md:w-[320px] ml-0 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
-                                                                {{__('Написать в чат')}}
-                                                            </a>
-
-                                                        </div>
-                                                    @elseif($task->status <= 2 && auth()->user()->id == $task->user_id)
-                                                        <form
-                                                            action="{{ route('response.selectPerformer', $response->id) }}"
-                                                            method="post">
-                                                            @csrf
-                                                            <button
-                                                                type="submit"
-                                                                class="cursor-pointer text-semibold text-center w-[200px]
+                                            @elseif($task->status <= 2 && auth()->user()->id == $task->user_id)
+                                                <form
+                                                    action="{{ route('response.selectPerformer', $selected->id) }}"
+                                                    method="post">
+                                                    @csrf
+                                                    <button
+                                                        type="submit"
+                                                        class="cursor-pointer text-semibold text-center w-[200px]
                                         md:w-[320px] md:ml-4 inline-block py-3 px-4 bg-white transition
                                         duration-200 text-white bg-green-500 hover:bg-green-500 font-medium
                                         border border-transparent rounded-md"> {{__('Выбрать исполнителем')}}</button>
 
-                                                        </form>
-                                                    @endif
+                                                </form>
+                                            @endif
 
-                                                @endauth
+                                        @endauth
 
-                                                <div class="text-gray-400 text-[14px] my-6">
-                                                    {{__('Выберите исполнителя, чтобы потом оставить отзыв о работе.')}}
-                                                </div>
+                                        <div class="text-gray-400 text-[14px] my-6">
+                                            {{__('Выберите исполнителя, чтобы потом оставить отзыв о работе.')}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+
+                    @foreach ($responses as $response)
+                            @if($response->performer)
+                                <div class="my-6 flex flex-row">
+                                    <div class="">
+                                        <img class="w-24 h-24 rounded-lg border-2" @if ($response->performer->avatar == Null)
+                                        src='{{asset("storage/images/default.jpg")}}'
+                                             @else
+                                             src="{{asset("storage/{$response->performer->avatar}")}}"
+                                             @endif alt="avatar">
+                                    </div>
+                                    <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
+                                        <a href="/performers/{{ $response->performer->id }}"
+                                           class="text-blue-400 text-xl font-semibold hover:text-blue-500">
+                                            {{ $response->performer->name }}
+                                        </a>
+                                        <input type="text" name="performer_id" class="hidden"
+                                               value="{{ $response->performer_id }}">
+                                        <div class="text-gray-700 sm:mt-4 mt-2">
+                                            <i class="fas fa-star text-yellow-500 mr-1"></i>{{ $response->performer->reviews()->count()? $response->performer->goodReviews()->count()/$response->performer->reviews()->count():0 }}
+                                            по {{ $response->performer->reviews()->count() }} отзывам
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-row items-start">
+                                        <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
+                                            <img
+                                                src="{{ $response->performer->is_email_verified && $response->performer->is_phone_number_verified? asset('images/verify.png') : asset('images/verify_gray.png')  }}"
+                                                alt="" class="w-10">
+                                            <div id="tooltip-animation_1" role="tooltip"
+                                                 class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                <p class="text-center">
+                                                    {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
+                                                </p>
+                                                <div class="tooltip-arrow" data-popper-arrow></div>
+                                            </div>
+                                        </div>
+                                        <div data-tooltip-target="tooltip-animation_2" class="mx-2 tooltip-2">
+                                            <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
+                                            <div id="tooltip-animation_2" role="tooltip"
+                                                 class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                <p class="text-center">
+                                                    {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
+                                                </p>
+                                                <div class="tooltip-arrow" data-popper-arrow></div>
+                                            </div>
+                                        </div>
+                                        <div data-tooltip-target="tooltip-animation_3" class="mx-1">
+                                            <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
+                                            <div id="tooltip-animation_3" role="tooltip"
+                                                 class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                <p class="text-center">
+                                                    {{__('Более 50 выполненных заданий')}}
+                                                </p>
+                                                <div class="tooltip-arrow" data-popper-arrow></div>
                                             </div>
                                         </div>
                                     </div>
-                                @endif
-                            @endforeach
+                                </div>
+                                <div class="mb-6">
+                                    <div class="bg-gray-100 rounded-[10px] p-4">
+                                        <div class="ml-0">
+                                            <div
+                                                class="text-[17px] text-gray-500 font-semibold">{{__('Стоимость')}} {{$response->price}}
+                                                UZS
+                                            </div>
 
-                        @else
+                                            <div
+                                                class="text-[17px] text-gray-500 my-5">{{$response->description}}</div>
+                                            @if($response->not_free == 1)
+                                                <div
+                                                    class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} {{$response->performer->phone_number}}</div>
+                                            @endif
+
+                                            @auth()
+                                                @if($task->status == 3 && $response->performer_id == $task->performer_id)
+                                                    <div class="w-10/12 mx-auto">
+                                                        <a href="{{ route('performers.performer_chat', $response->performer->id) }}"
+                                                           class="text-semibold text-center w-[200px] mb-2 md:w-[320px] ml-0 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
+                                                            {{__('Написать в чат')}}
+                                                        </a>
+
+                                                    </div>
+                                                @elseif($task->status <= 2 && auth()->user()->id == $task->user_id)
+                                                    <form
+                                                        action="{{ route('response.selectPerformer', $response->id) }}"
+                                                        method="post">
+                                                        @csrf
+                                                        <button
+                                                            type="submit"
+                                                            class="cursor-pointer text-semibold text-center w-[200px]
+                                        md:w-[320px] md:ml-4 inline-block py-3 px-4 bg-white transition
+                                        duration-200 text-white bg-green-500 hover:bg-green-500 font-medium
+                                        border border-transparent rounded-md"> {{__('Выбрать исполнителем')}}</button>
+
+                                                    </form>
+                                                @endif
+
+                                            @endauth
+
+                                            <div class="text-gray-400 text-[14px] my-6">
+                                                {{__('Выберите исполнителя, чтобы потом оставить отзыв о работе.')}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+
+                    @else
+                        @if(!$task->responses_count)
                             <div class="text-4xl font-semibold my-6">
                                 {{__('У задания нет откликов')}}
                             </div>
                         @endif
-                        <hr>
-                    @endauth
+                    @endif
+                    <hr>
+                @endauth
 
 
-
-                    <div>
+                <div>
+                    @if(count($same_tasks))
                         <div class=" my-3">
-                        <h1 class="font-medium text-3xl mt-3">Похожиe задания</h1>
-                        @foreach($same_tasks as $item)
 
-                                <div class="border-2 border-gray-500 rounded-xl bg-gray-50 hover:bg-blue-100 h-auto my-3">
+                            <h1 class="font-medium text-3xl mt-3">Похожиe задания</h1>
+                            @foreach($same_tasks as $item)
+
+                                <div
+                                    class="border-2 border-gray-500 rounded-xl bg-gray-50 hover:bg-blue-100 h-auto my-3">
                                     <div class="grid grid-cols-5 w-11/12 mx-auto py-2">
                                         <div class="sm:col-span-3 col-span-5 flex flex-row">
                                             <div class="sm:mr-6 mr-3 w-1/6">
-                                                <img src="{{ asset('storage/'.$item->category->ico) }}" class="text-2xl float-left text-blue-400 sm:mr-4 mr-3 h-14 w-14 bg-blue-200 p-2 rounded-xl"/>
+                                                <img src="{{ asset('storage/'.$item->category->ico) }}"
+                                                     class="text-2xl float-left text-blue-400 sm:mr-4 mr-3 h-14 w-14 bg-blue-200 p-2 rounded-xl"/>
                                             </div>
                                             <div class="w-5/6">
-                                                <a href="/detailed-tasks/{{$item->id}}" class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">{{ $item->name }}</a>
+                                                <a href="/detailed-tasks/{{$item->id}}"
+                                                   class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">{{ $item->name }}</a>
                                                 <p class="text-sm">{{ $item->address? json_decode($item->address, true)['location']:'' }}</p>
                                                 @if($item->date_type == 1 || $item->date_type == 3)
                                                     <p class="text-sm my-0.5">Начать {{ $item->start_date }}</p>
@@ -568,14 +676,14 @@
                                             </div>
                                         </div>
                                         <div class="sm:col-span-2 col-span-5 sm:text-right text-left sm:ml-0 ml-16">
-                                            <p  class="sm:text-lg text-sm font-semibold text-gray-700">
+                                            <p class="sm:text-lg text-sm font-semibold text-gray-700">
                                                 @if ( __('до') == 'gacha' )
                                                     {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
                                                 @else
                                                     {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
                                                 @endif
                                             </p>
-                                            <span  class="text-sm sm:mt-5 sm:mt-1 mt-0">Откликов -
+                                            <span class="text-sm sm:mt-5 sm:mt-1 mt-0">Откликов -
                                                 @if ($item->response_count>0)
                                                     {{  $item->response_count }}
                                                 @else
@@ -584,9 +692,11 @@
                                             </span>
                                             <p class="text-sm sm:mt-1 mt-0">{{ $item->category->name }}</p>
                                             @if (Auth::check() && Auth::user()->id == $item->user->id)
-                                            <a href="/profile" class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $item->user?$item->user->name:'' }}</a>
+                                                <a href="/profile"
+                                                   class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $item->user?$item->user->name:'' }}</a>
                                             @else
-                                            <a href="/performers/{{$item->user->id}}" class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $item->user?$item->user->name:'' }}</a>
+                                                <a href="/performers/{{$item->user->id}}"
+                                                   class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $item->user?$item->user->name:'' }}</a>
                                             @endif
                                         </div>
                                     </div>
@@ -594,67 +704,68 @@
 
                             @endforeach
                         </div>
-                    </div>
-                </div>      
-            {{--end left sidebar start --}} 
+                    @endif
+                </div>
+            </div>
+            {{--end left sidebar start --}}
 
             {{-- right sidebar start --}}
-                <div class="lg:w-3/12 w-full mt-8 lg:ml-8 ml-0">
-                    <div class="mb-10">
-                        <h1 class="text-xl font-medium mb-4">{{__('Задание')}} № {{$task->id}}</h1>
-                        <div>
-                            <button onclick="toggleModal44()"
+            <div class="lg:w-3/12 w-full mt-8 lg:ml-8 ml-0">
+                <div class="mb-10">
+                    <h1 class="text-xl font-medium mb-4">{{__('Задание')}} № {{$task->id}}</h1>
+                    <div>
+                        <button onclick="toggleModal44()"
+                                class="px-3 py-3 border border-3 ml-4 rounded-md border-gray-500 hover:border-gray-400">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                        @if (Auth::check())
+                            <button onclick="toggleModal45()"
                                     class="px-3 py-3 border border-3 ml-4 rounded-md border-gray-500 hover:border-gray-400">
-                                <i class="fas fa-share-alt"></i>
+                                <i class="far fa-flag"></i>
                             </button>
-                            @if (Auth::check())
-                                <button onclick="toggleModal45()"
-                                        class="px-3 py-3 border border-3 ml-4 rounded-md border-gray-500 hover:border-gray-400">
-                                    <i class="far fa-flag"></i>
-                                </button>
-                            @else
-                                <button
-                                    class="px-3 py-3 border border-3 ml-4 rounded-md border-gray-400">
-                                    <i class="far fa-flag"></i>
-                                </button>
-                            @endif
-                        </div>
-                    </div>
-                    <h1 class="text-lg">{{__('Заказчик этого задания')}}</h1>
-                    <div class="flex flex-col mt-4">
-                        <div class="mb-4">
-                            <img class="border-2 border-radius-500 border-gray-400 w-32 h-32 rounded-lg" alt="#"
-                                src="@if ($task->user->avatar == ''){{ asset("storage/images/default.png") }}
-                                @else{{asset("storage/{$task->user->avatar}") }}" @endif
-                            >
-                        </div>
-                        <div class="">
-                            @if (Auth::check() && Auth::user()->id == $task->user->id)
-                                <a href="/profile"
-                                class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
-                                </a>
-                            @else
-                                <a href="/performers/{{$task->user->id}}"
-                                class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
-                                </a>
-                            @endif
-
-                            <br>
-                            <a class="text-xl text-gray-500">
-                                @if($task->user->age != "")
-                                    <p class="inline-block text-m mr-2">
-                                        {{$task->user->age}}
-                                        @if($task->user->age>20 && $task->user->age%10==1) {{__('год')}}
-                                        @elseif ($task->user->age>20 && ($task->user->age%10==2 || $task->user->age%10==3 || $task->user->age%10==1)) {{__('года')}}
-                                        @else {{__('лет')}}
-                                        @endif
-                                    </p>
-                                @endif
-                            </a>
-                        </div>
+                        @else
+                            <button
+                                class="px-3 py-3 border border-3 ml-4 rounded-md border-gray-400">
+                                <i class="far fa-flag"></i>
+                            </button>
+                        @endif
                     </div>
                 </div>
-             {{--end right sidebar start --}}
+                <h1 class="text-lg">{{__('Заказчик этого задания')}}</h1>
+                <div class="flex flex-col mt-4">
+                    <div class="mb-4">
+                        <img class="border-2 border-radius-500 border-gray-400 w-32 h-32 rounded-lg" alt="#"
+                             src="@if ($task->user->avatar == ''){{ asset("storage/images/default.png") }}
+                             @else{{asset("storage/{$task->user->avatar}") }}" @endif
+                        >
+                    </div>
+                    <div class="">
+                        @if (Auth::check() && Auth::user()->id == $task->user->id)
+                            <a href="/profile"
+                               class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
+                            </a>
+                        @else
+                            <a href="/performers/{{$task->user->id}}"
+                               class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
+                            </a>
+                        @endif
+
+                        <br>
+                        <a class="text-xl text-gray-500">
+                            @if($task->user->age != "")
+                                <p class="inline-block text-m mr-2">
+                                    {{$task->user->age}}
+                                    @if($task->user->age>20 && $task->user->age%10==1) {{__('год')}}
+                                    @elseif ($task->user->age>20 && ($task->user->age%10==2 || $task->user->age%10==3 || $task->user->age%10==1)) {{__('года')}}
+                                    @else {{__('лет')}}
+                                    @endif
+                                </p>
+                            @endif
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {{--end right sidebar start --}}
         </div>
     </div>
 

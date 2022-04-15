@@ -7,6 +7,7 @@ use App\Models\Task;
 use App\Models\TaskResponse;
 use App\Models\WalletBalance;
 use Illuminate\Http\Request;
+use PlayMobile\SMS\SmsService;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ResponseController extends Controller
@@ -24,7 +25,7 @@ class ResponseController extends Controller
         $data['notificate'] = $request->notificate ? 1 : 0;
         $data['task_id'] = $task->id;
         $data['user_id'] = $task->user_id;
-        $data['creator_id'] = auth()->user()->id;
+        $data['performer_id'] = auth()->user()->id;
         if ($request->pay == 0) {
             $data['not_free'] = 0;
         } else {
@@ -35,7 +36,7 @@ class ResponseController extends Controller
         if ($ballance) {
             if ($ballance->balance < 4000) {
                 Alert::error('Hisobingizda yetarli mablag\' mavjud emas!');
-            }else if($task->responses()->where('creator_id', auth()->user()->id)->first()){
+            }else if($task->responses()->where('performer_id', auth()->user()->id)->first()){
                 Alert::error("Balance", 'Allaqachon mavjud!');
 
             } else {
@@ -60,13 +61,22 @@ class ResponseController extends Controller
             abort(403);
         }
         $data = [
-            'performer_id' => $response->user_id,
+            'performer_id' => $response->performer_id,
             'status' => Task::STATUS_IN_PROGRESS
         ];
         $response->task->update($data);
-        Alert::success('Success');
+        $response_name = $response->performer->name;
+        $response_phone = $response->performer->phone_numer;
+        if ($response->user->phone_numer)
+        {
+            $name = $response->user->name;
+            $phone = $response->user->phone_number;
+            $text = "Vi ispolnitel v zadanii user.uz/detailed-tasks/$response->task_id. Kontakt zakazchika: $name. $phone";
+            (new SmsService())->send($response->user->phone_numer, $text);
+
+        }
+        alert()->image('Ispolnitel vibran', "$response_name - $response_phone",asset('storage/'.$response->user->avatar),'200','200', $response->user->name);
         return back();
     }
-
 
 }
