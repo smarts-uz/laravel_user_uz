@@ -29,6 +29,7 @@ class UpdateController extends Controller
         taskGuard($task);
         $data = $request->validated();
         $data = getAddress($data);
+
         $task->update($data);
         $this->service->syncCustomFields($task);
         Alert::success('Success');
