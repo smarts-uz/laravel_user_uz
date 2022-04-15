@@ -548,8 +548,8 @@ function map_pos(mm) {
         ymaps.ready(init);
         function init() {
             let location = ymaps.geolocation;
-            sugVal = document.getElementById("suggest").value;
-            if (sugVal != '') {
+            suggestVal = document.getElementById("suggest").value;
+            if (suggestVal != '') {
                 var myGeo = ymaps.geocode(sugVal);
                 myGeo.then(
                     function (res) {

@@ -11,10 +11,11 @@ use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use TCG\Voyager\Models\Category;
 use App\Models\User;
+use App\Models\Session;
 use App\Models\BrowsingHistory;
 use App\Models\PostView;
 use App\Models\UserView;
-use Session;
+//use Session;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Models\Task;
@@ -111,6 +112,14 @@ class PerformersController extends Controller
 
         return view('Performers/performers_cat', compact('child_categories','about','user', 'task_count', 'categories', 'users', 'cf_id', 'cur_cat', 'tasks'));
 
+    }
+
+    public function ajaxAP()
+    {
+        $activeSessions = Session::query()->where('user_id', '<>', null)
+            ->select('user_id')
+            ->get();
+        return $activeSessions->all();
     }
 
     public function deleteNotification(Notification $notification)
