@@ -38,7 +38,7 @@
                                     @isset($user->location)
                                         <i class="fas fa-map-marker-alt"></i>
                                         {{__('Местоположение')}} {{$user->location}}
-                                    @else {{__('город не включен')}}
+                                    @else {{__('город не обозначен')}}
                                     @endisset
                                 </p>
                             </span>
