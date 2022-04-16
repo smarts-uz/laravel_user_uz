@@ -19,25 +19,7 @@
             <div class="w-2/12 flex justify-center lg:hidden mr-2">
                 {{-- icon-1 --}}
                 <div class=" float-left">
-                    <div class="w-4 h-4 absolute rounded-full bg-red-500 ml-3 text-white text-center">1</div>
-                    <button class="" type="button" data-dropdown-toggle="notification">
-                        <i class="text-xl text-gray-500 hover:text-yellow-500 far fa-bell"></i>
-                    </button>
-                    <!-- Dropdown menu -->
-                    <div class="hidden bg-white text-base z-50 list-none divide-y divide-gray-100 rounded shadow my-4" id="notification">
-                        <div class="px-4 py-3">
-                            <span class="block text-base font-bold">{{__('Уведомления')}}</span>
-                        </div>
-                        <ul class="py-1" aria-labelledby="notification">
-                            <li>
-                                <a href="/profile/settings"
-                                   class="delete-task text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2">{{__("В раздел 'Настройки'")}}</a>
-                            </li>
-                            <li>
-                                <a class="bg-slate-100 text-sm italic text-green-600 hover:text-red-600 underline decoration-dotted  block px-4 py-2">{{__('Отметить все как прочитанное')}}</a>
-                            </li>
-                        </ul>
-                    </div>
+                    {{-- @include('components.notification') --}}
                 </div>
                 <div class="ml-4">
                     <a href="/chat">

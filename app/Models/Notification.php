@@ -19,4 +19,5 @@ class Notification extends Model
     public const SYSTEM_NOTIFICATION = 3;
     public const PERFORMER_SELECTED = 4;
     public const TASK_SELECTED = 5;
+    public const SEND_REVIEW = 6;
 }

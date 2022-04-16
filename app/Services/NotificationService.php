@@ -53,7 +53,7 @@ class NotificationService
         foreach ($user_ids as $user_id) {
             Notification::create([
                 'user_id' => $user_id,
-                'description' => $not->message,
+                'description' => $not->message ?? 'description',
                 "name_task" => $not->title,
                 "type" => $type
             ]);
@@ -81,7 +81,7 @@ class NotificationService
 
         Notification::query()->create([
             'user_id' => $user_id,
-            'description' => $task->desciption,
+            'description' => $task->desciption ?? 'description',
             'task_id' => $task->id,
             "cat_id" => $task->category_id,
             "name_task" => $task->name,
