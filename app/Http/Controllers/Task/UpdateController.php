@@ -79,7 +79,7 @@ class UpdateController extends Controller
                 'task_id' => $task->id,
                 'name_task' => $task->name,
                 'description' => 1,
-                'type' => 2
+                'type' => Notification::SEND_REVIEW
             ]);
             $review->save();
         }catch (\Exception $exception){
