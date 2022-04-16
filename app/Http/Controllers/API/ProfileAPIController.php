@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserPasswordRequest;
 use App\Http\Requests\UserUpdateDataRequest;
+use App\Http\Resources\UserIndexResource;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,8 +17,10 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ProfileAPIController extends Controller
 {
-    public function index(User $user){
-        return $user;
+    public function index()
+    {
+        $user = Auth::user();
+        return new UserIndexResource($user);
     }
 
     public function change_password(Request $request)
@@ -41,22 +44,6 @@ class ProfileAPIController extends Controller
             'message'=>"password successfully changed",
             'password' => 'password'
         ]);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'avatar' => 'image'
-        ]);
-        $user= User::find($id);
-        $data = $request->all();
-
-        if($request->hasFile('avatar')){
-            Storage::delete($user->avatar);
-            $data['avatar'] = $request->file('avatar')->store("images/users");
-        }
-        $user->update($data);
-        return  response()->json(['status'=>true,'message'=>"avatar successfully changed"]);
     }
 
     public function avatar(Request $request){
@@ -162,4 +149,8 @@ class ProfileAPIController extends Controller
         return redirect()->route('profile.editData');
     }
 
+    public function cash()
+    {
+        return 1;
+    }
 }

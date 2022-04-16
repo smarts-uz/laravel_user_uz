@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Task;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TaskIndexResource extends JsonResource
@@ -26,10 +25,10 @@ class TaskIndexResource extends JsonResource
             'budget' => $this->budget,
             'description' => $this->description,
             'phone' => $this->phone,
-//            'category_id' => $this->category_id,
+            //'category_id' => $this->category_id,
             'category' => $this->category,
             'performer_id' => $this->performer_id,
-//            'user_id' => $this->user_id,
+            //'user_id' => $this->user_id,
             'user' => $this->user,
             'views' => $this->views,
             'status' => $this->status,
