@@ -36,7 +36,8 @@ class TaskIndexResource extends JsonResource
             'oplata' => $this->oplata,
             'docs' => $this->docs,
             'photos' => json_decode(asset('storage/'.$this->photos)),
-            'same_tasks' => $this->category->tasks()->where('id','!=',$this->id)->where('status', Task::STATUS_OPEN)->take(10)->get()
+            'task_responses' => $this->responses()->without('task')->get(),
+            'same_tasks' => $this->category->tasks()->where('id','!=',$this->id)->where('status', Task::STATUS_OPEN)->take(10)->get(),
         ];
     }
 }

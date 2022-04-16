@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PerformerRegisterRequest;
 use App\Http\Resources\PerformerIndexResource;
 use App\Models\User;
-use App\Models\UserView;
-use App\Services\Payme\Request;
-use Illuminate\Support\Facades\DB;
-use Exception;
+use Illuminate\Http\Request;
+use function Symfony\Component\String\s;
 
 class PerformerAPIController extends Controller
 {
@@ -54,9 +53,37 @@ class PerformerAPIController extends Controller
     {
         setView($performer);
 
-        return $performer->role_id == 5? new PerformerIndexResource($performer):abort(404);
+        return $performer->role_id == 5 ? new PerformerIndexResource($performer) : abort(404);
     }
 
+    public function register(PerformerRegisterRequest $request)
+    {
+
+    }
+
+    public function validatorRules($step)
+    {
+        if ($step == 1) {
+            return [
+                'name' => 'required',
+                'address' => 'required',
+                'birth_date' => 'required'
+            ];
+        } elseif ($step == 2) {
+            return [
+                'phone_number' => 'required',
+                'email' => 'required|email'
+            ];
+        } elseif ($step == 3) {
+            return [
+                'avatar' => 'required'
+            ];
+        } else {
+            return [
+                'categories' => 'required'
+            ];
+        }
+    }
 
     public function getByCategories()
     {

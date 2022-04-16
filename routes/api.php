@@ -86,6 +86,7 @@ Route::post('register', [UserAPIController::class, 'register']); //end
 
 Route::post('/reset', [UserAPIController::class, 'reset_submit']);
 Route::post('/reset/password', [UserAPIController::class, 'reset_password_save'])->name('user.reset_password_save');
+Route::post('/profile/password/change', [ProfileAPIController::class, 'change_password'])->name('profile.change_paasword');
 Route::post('/code', [UserAPIController::class, 'reset_code'])->name('user.reset_code');
 
 
