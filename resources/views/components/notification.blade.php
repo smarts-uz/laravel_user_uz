@@ -6,7 +6,7 @@
     <div id="content_count" class="w-4 h-4 absolute rounded-full bg-red-500 ml-3 text-white text-xs text-center">{{$count}}</div>
 @endif
 <button class="focus:outline-none" type="button" data-dropdown-toggle="dropdown">
-    <i class="xl:text-2xl lg:text-xl mr-6 text-gray-500 hover:text-yellow-500 far fa-bell"></i>
+    <i class="text-2xl lg:mr-6 mr-0 text-gray-500 hover:text-yellow-500 far fa-bell"></i>
 </button>
 <!-- Dropdown menu -->
 <div class="hidden bg-white text-base z-50 list-none divide-y divide-gray-100 rounded shadow my-4" id="dropdown">
@@ -22,6 +22,48 @@
             </li>
         @endforeach
     </ul>
+    {{-- otklik qilinganda performerga ketadigan notification --}}
+        <div class="border-b-2 border-gray-700 flex gap-x-2 p-3 text-gray-800">
+            <div class="">
+                <i class="fas fa-star text-yellow-500"></i>
+            </div>
+            <div class="flex flex-col">
+                <p class="mb-2 text-right">21-aprel 12:00</p>
+                <div>Отклик к заданию  <br>
+                    <a class="hover:text-red-500" href="#">“Xonalardi tozalash kerak" <br> №1908</a>
+                    задания отправлен</div>
+            </div>
+        </div>
+    {{-- otklik qilinganda performerga ketadigan notification end --}}
+
+    {{-- Zakazchik biror bir ispolniteldi tanlaganda notification --}}
+        <div class="border-b-2 border-gray-700 flex gap-x-2 p-3 text-gray-800">
+            <div class="">
+                <i class="fas fa-star text-yellow-500"></i>
+            </div>
+            <div class="flex flex-col">
+                <p class="mb-2 text-right">22-aprel 12:00</p>
+                <div>Вас выбрали исполнителем <br> в задании 
+                    <a class="hover:text-red-500" href="#">“Xonalardi tozalash kerak" <br> №1908</a>
+                    <a class="hover:text-blue-500" href="#"> Ozodbek</a></div>
+            </div>
+        </div>
+    {{-- Zakazchik biror bir ispolniteldi tanlaganda notification end --}}
+
+    {{-- Zakazchik otziv qoldirilgandagi notification --}}
+        <div class="border-b-2 border-gray-700 flex gap-x-2 p-3 text-gray-800">
+            <div class="">
+                <i class="fas fa-star text-yellow-500"></i>
+            </div>
+            <div class="flex flex-col">
+                <p class="mb-2 text-right">22-aprel 14:00</p>
+                <div>Заказчик указал, что вы выполнили  <br> задание
+                    <a class="hover:text-red-500" href="#">“Xonalardi tozalash kerak" <br> №1908</a>
+                    и оставил вам отзыв </div>
+            </div>
+        </div>
+    {{-- Zakazchik otziv qoldirilgandagi notification end --}}
+
 </div>
 {{-- modal notification --}}
 

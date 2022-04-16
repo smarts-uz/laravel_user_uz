@@ -11,12 +11,10 @@
                         <i class="far fa-eye"> {{ $user->performer_views_count }} {{__('просмотр')}}</i>
                     </div>
                     <div>
-
                         @if(Cache::has('user-is-online-' . $user->id))
                             <span class="text-green-500">Online</span>
                         @else
-                            <span
-                                class="text-gray-500"> {{ Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</span>
+                            <span class="text-gray-500"> {{ Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</span>
                         @endif
                         <h1 class="text-3xl font-bold ">{{$user->name}}</h1>
                     </div>
@@ -29,8 +27,6 @@
                                  @else
                                  src="{{asset("storage/{$user->avatar}")}}"
                                  @endif alt="avatar">
-
-
                         </div>
 
                         <div class="flex-initial sm:w-2/3 w-full sm:mt-0 mt-6 sm:ml-8 ml-0">
@@ -50,17 +46,15 @@
                                         @endif
                                     </p>
                                 @endisset
-
                                 <span class="inline-block">
-                                <p class="inline-block text-m">
-                                    @isset($user->location)
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        {{__('Местоположение')}} {{$user->location}}
-                                    @else {{__('город не включен')}}
-                                    @endisset
-                                </p>
-                            </span>
-
+                                    <p class="inline-block text-m">
+                                        @isset($user->location)
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            {{__('Местоположение')}} {{$user->location}}
+                                        @else {{__('город не обозначен')}}
+                                        @endisset
+                                    </p>
+                                </span>
                             </div>
                             <div class="text-gray-500 text-base mt-2">
                                 <p class="mt-2">{{__('Создал')}} <a>
