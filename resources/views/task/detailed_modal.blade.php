@@ -123,7 +123,7 @@ id="modal-id4">
                             border resize-none w-full border-solid border-gray-200 rounded transition ease-in-out m-0 focus:outline-none  focus:border-yellow-500 "></textarea>
 
                     <button
-                        class="send-comment font-sans w-full text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-12 pt-2 pb-3 rounded transition-all duration-300 mt-8"
+                        class="font-sans w-full text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-12 pt-2 pb-3 rounded transition-all duration-300 mt-8"
                         type="submit">
                         {{__('Отправить')}}
                     </button>
@@ -272,7 +272,7 @@ style="background-color:rgba(0,0,0,0.5)" id="modal-id33">
                 <i class="fas fa-times text-xl w-full"></i>
             </button>
             <h1 class="font-medium text-3xl block mt-6">
-                Исполнитель выбран 
+                Исполнитель выбран
             </h1>
         </div>
         <div class="text-center my-6 mx-auto">
