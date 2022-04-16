@@ -552,11 +552,12 @@ function map_pos(mm) {
             let location = ymaps.geolocation;
             suggestVal = document.getElementById("suggest").value;
             if (suggestVal != '') {
-                var myGeo = ymaps.geocode(sugVal);
+                var myGeo = ymaps.geocode(suggestVal);
                 myGeo.then(
                     function (res) {
-                        let userCoord = res.geoObjects.get(0).geometry.getCoordinates();
-                        userCoordinates = userCoord;
+                        // let userCoord = res.geoObjects.get(0).geometry.getCoordinates();
+                        // userCoordinates = userCoord;
+                        userCoordinates = res.geoObjects.get(0).geometry.getCoordinates();
                         myMap2.geoObjects.add(result.geoObjects)
                         // myMap.setCenter( res.geoObjects.get(0).geometry.getCoordinates());
                     }
@@ -572,10 +573,10 @@ function map_pos(mm) {
                 })
                     .then(
                         function (result) {
-                            let userCoord = result.geoObjects.get(0).geometry.getCoordinates();
-                            userCoordinates = userCoord;
+                            // let userCoord = result.geoObjects.get(0).geometry.getCoordinates();
+                            // userCoordinates = userCoord;
+                            userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
                             // myMap2.geoObjects.add(result.geoObjects)
-
                         },
                         function (err) {
                             console.log('Ошибка: ' + err)
@@ -589,7 +590,7 @@ function map_pos(mm) {
                 zoom: 13,
                 controls: [],
                 // controls: ['zoomControl','geolocationControl'],
-                behaviors: ['default', 'scrollZoom']
+                // behaviors: ['default', 'scrollZoom']
             }, {
                 searchControlProvider: 'yandex#search'
             });
@@ -616,6 +617,7 @@ function map_pos(mm) {
             clusterer = new ymaps.Clusterer({
                 preset: 'islands#invertedGreenClusterIcons',
                 // hasBalloon: false,
+                gridSize: 80,
                 groupByCoordinates: false,
                 clusterDisableClickZoom: true,
                 clusterHideIconOnBalloonOpen: false,
@@ -641,8 +643,8 @@ function map_pos(mm) {
             }
 
             clusterer.options.set({
-                gridSize: 80,
-                clusterDisableClickZoom: true
+                // gridSize: 80,
+                // clusterDisableClickZoom: true
             });
 
             clusterer.add(geoObjects);

@@ -375,8 +375,6 @@
     </script>
     <script>
         let dataAjax = [];
-
-
         function activePerformers() {
             let checkBox = document.getElementById("online");
             let id = checkBox.checked;
@@ -386,25 +384,47 @@
                     type: 'GET',
                     success: function (data) {
                         dataAjax = $.parseJSON(JSON.stringify(data));
+                        console.log(dataAjax);
+
+                        $('#difficultTask').each(function () {
+                            let id2 = $(this).attr('name');
+                            let found = 0;
+                            $.each(dataAjax, function (index, dataAjax) {
+                                console.log(dataAjax.user_id);
+                                if (dataAjax.user_id == id2)
+                                {console.log(dataAjax.user_id);
+                                    found = 0;}
+                                else
+                                {found = 1;}
+                            });
+                            if (found) {
+                                console.log('Ishlashi kerak joy!')
+                                $(this).hide();
+                            }
+                        });
+
                     },
                     error: function (error) {
                         console.error("Ajax orqali yuklashda xatolik...", error);
                     }
                 });
-                let id2 = $('#difficultTask').attr('name');
-                console.log(id2)
-                // let id3 = id2.name;
-                // console.log(id3)
 
-                $('#difficultTask').each(function () {
-
-                    $.each(dataAjax, function (index, dataAjax, id3) {
-                        // console.log(dataAjax.user_id)
-                        if (dataAjax.user_id == id3) {
-                            this.hide();
-                        }
-                    });
-                });
+                // $('#difficultTask').each(function () {
+                //     let id2 = $(this).attr('name');
+                //     let found = 0;
+                //     $.each(dataAjax, function (data) {
+                //         console.log(data.user_id);
+                //         if (data.user_id == id2)
+                //         {console.log(data.user_id);
+                //         found = 0;}
+                //         else
+                //         {found = 1;}
+                //     });
+                //     if (found) {
+                //         console.log('Ishlashi kerak joy!')
+                //         $(this).hide();
+                //     }
+                // });
             }
         }
     </script>
