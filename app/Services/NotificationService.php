@@ -27,27 +27,25 @@ class NotificationService
                     'task_id' => $task->id,
                     "cat_id" => $task->category_id,
                     "name_task" => $task->name,
-                    "type" => 1
+                    "type" => Notification::TASK_CREATED
                 ]);
             }
         }
 
-        $response = $response = Http::post('ws.smarts.uz/api/send-notification', [
+        Http::post('ws.smarts.uz/api/send-notification', [
             'user_ids' => $user_ids,
             'project' => 'user',
             'data' => ['url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently']
         ]);
-
-//        dd($response->json());
     }
 
     public static function sendNotification($not, $slug)
     {
         if ($slug == 'news-notifications'){
-            $type = 2;
+            $type = Notification::NEWS_NOTIFICATION;
             $column = 'news_notification';
         } else {
-            $type = 3;
+            $type = Notification::SYSTEM_NOTIFICATION;
             $column = 'system_notification';
         }
 
@@ -55,19 +53,17 @@ class NotificationService
         foreach ($user_ids as $user_id) {
             Notification::create([
                 'user_id' => $user_id,
-                'description' => $not->message,
+                'description' => $not->message ?? 'description',
                 "name_task" => $not->title,
                 "type" => $type
             ]);
         }
 
-        $response = Http::post('ws.smarts.uz/api/send-notification', [
+        Http::post('ws.smarts.uz/api/send-notification', [
             'user_ids' => $user_ids,
             'project' => 'user',
             'data' => ['url' => $slug . '/' . $not->id, 'name' => $not->title, 'time' => 'recently']
         ]);
-
-//        dd($response->json());
     }
 
     public static function sendNotificationRequest($user_ids, $data)
@@ -76,6 +72,26 @@ class NotificationService
             'user_ids' => $user_ids,
             'project' => 'user',
             'data' => $data
+        ]);
+    }
+
+    public static function sendTaskSelectedNotification($task)
+    {
+        $user_id = auth()->id();
+
+        Notification::query()->create([
+            'user_id' => $user_id,
+            'description' => $task->desciption ?? 'description',
+            'task_id' => $task->id,
+            "cat_id" => $task->category_id,
+            "name_task" => $task->name,
+            "type" => Notification::TASK_SELECTED
+        ]);
+
+        return Http::post('ws.smarts.uz/api/send-notification', [
+            'user_ids' => [$user_id],
+            'project' => 'user',
+            'data' => ['url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently']
         ]);
     }
 }

@@ -72,20 +72,19 @@ public function __construct()
             $task->views++;
             $task->save();
         }
+        $selected = $task->responses()->where('performer_id', $task->performer_id)->first();
+        $responses = $selected ? $task->responses()->where('id','!=', $selected->id)->get(): $task->responses;
+
+        $auth_response = auth()->check()? $task->responses()->where('performer_id', auth()->user()->id)->with('user')->first():null;
 
         $same_tasks = $task->category->tasks()->where('id','!=',$task->id)->where('status', Task::STATUS_OPEN)->take(10)->get();
-        return view('task.detailed-tasks', compact('task', 'review','complianceType','same_tasks'));
+        return view('task.detailed-tasks', compact('task', 'review','complianceType','same_tasks', 'auth_response','selected','responses'));
     }
 
     public function comlianse_save(Request $request){
         $comp = new SearchService();
         $comp->comlianse_saveS($request);
         return redirect()->back();
-    }
-
-    public function selectPerformer(TaskResponse $response){
-        dd(23423);
-
     }
 
 

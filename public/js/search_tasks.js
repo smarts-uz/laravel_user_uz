@@ -297,9 +297,9 @@ function tasks_list_all(data) {
                             <div class="w-5/6">
                                 <a href="/detailed-tasks/` + data.id + `" class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">` + data.name + `</a>
                                 <p class="text-sm  location ">` + (data.address != null ? json.location : 'Можно выполнить удаленно') + `</p>
-                                <p class="text-sm my-0.5">` + (data.date_type == 1 ? 'Начать работу ' +data.start_date  : '') + `</p>
-                                <p class="text-sm my-0.5">` + (data.date_type == 2 ? 'Закончить работу ' +data.end_date  : '') + `</p>
-                                <p class="text-sm my-0.5">` + (data.date_type == 3 ? 'Период задания  ' + data.start_date +'</br>' + data.end_date : '') + `</p>
+                                <p class="text-sm my-0.5">` + (data.date_type == 1 ? 'Начать ' + data.start_date  : '') + `</p>
+                                <p class="text-sm my-0.5">` + (data.date_type == 2 ? 'Закончить ' + data.end_date  : '') + `</p>
+                                <p class="text-sm my-0.5">` + (data.date_type == 3 ? 'Начать ' + data.start_date +'</br>'+ 'Закончить ' + data.end_date : '') + `</p>
                                 <p class="text-sm ">` + (data.oplata == 1 ? 'Оплата наличными' : 'Оплата через карту') + `</p>
                             </div>
                         </div>

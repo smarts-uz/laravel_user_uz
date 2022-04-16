@@ -1,8 +1,8 @@
 @extends("layouts.app")
 
 @section("content")
-    {{--@foreach($users as $user)--}}
-    <div class="xl:w-9/12 w-10/12 mx-auto lg:flex">
+ 
+    <div class="xl:w-9/12 w-10/12 mx-auto ">
         <div class="grid grid-cols-3 grid-flow-row mt-10">
             {{-- left sidebar start --}}
             <div class="lg:col-span-2 col-span-3">
@@ -11,16 +11,13 @@
                         <i class="far fa-eye"> {{ $user->performer_views_count }} {{__('просмотр')}}</i>
                     </div>
                     <div>
-
                         @if(Cache::has('user-is-online-' . $user->id))
                             <span class="text-green-500">Online</span>
                         @else
-                            <span
-                                class="text-gray-500"> {{ Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</span>
+                            <span class="text-gray-500"> {{ Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</span>
                         @endif
                         <h1 class="text-3xl font-bold ">{{$user->name}}</h1>
                     </div>
-
                     <div class="flex sm:flex-row flex-col w-full mt-6">
                         <div class="sm:w-1/3 pb-10 w-full">
                             <img class="border border-3 border-gray-400 h-44 w-44"
@@ -29,8 +26,6 @@
                                  @else
                                  src="{{asset("storage/{$user->avatar}")}}"
                                  @endif alt="avatar">
-
-
                         </div>
 
                         <div class="flex-initial sm:w-2/3 w-full sm:mt-0 mt-6 sm:ml-8 ml-0">
@@ -50,17 +45,15 @@
                                         @endif
                                     </p>
                                 @endisset
-
                                 <span class="inline-block">
-                                <p class="inline-block text-m">
-                                    @isset($user->location)
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        {{__('Местоположение')}} {{$user->location}}
-                                    @else {{__('город не включен')}}
-                                    @endisset
-                                </p>
-                            </span>
-
+                                    <p class="inline-block text-m">
+                                        @isset($user->location)
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            {{__('Местоположение')}} {{$user->location}}
+                                        @else {{__('город не обозначен')}}
+                                        @endisset
+                                    </p>
+                                </span>
                             </div>
                             <div class="text-gray-500 text-base mt-2">
                                 <p class="mt-2">{{__('Создал')}} <a>
@@ -123,22 +116,33 @@
                                 </script>
                             </div>
                             <div class="flex mt-6 items-center">
-                                <div data-tooltip-target="tooltip-animation_1" class="mx-4 tooltip-1">
-                                    <img
-                                        src="{{ $user->is_email_verified && $user->is_phone_number_verified? asset('images/verify.png') : asset('images/verify_gray.png') }}"
-                                        alt="" class="w-24">
-                                    <div id="tooltip-animation_1" role="tooltip"
-                                         class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                        <p class="text-center">
-                                            @if ($user->is_email_verified && $user->is_phone_number_verified)
+                                @if ($user->is_email_verified && $user->is_phone_number_verified)
+                                    <div data-tooltip-target="tooltip-animation_1" class="mx-4 tooltip-1">
+                                        <img
+                                            src="{{asset('images/verify.png')}}"
+                                            alt="" class="w-24">
+                                        <div id="tooltip-animation_1" role="tooltip"
+                                            class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                            <p class="text-center">
                                                 {{__('Номер телефона и Е-mail пользователя подтверждены')}}
-                                            @else
-                                                {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
-                                            @endif
-                                        </p>
-                                        <div class="tooltip-arrow" data-popper-arrow></div>
+                                            </p>
+                                            <div class="tooltip-arrow" data-popper-arrow></div>
+                                        </div>
                                     </div>
-                                </div>
+                                @else   
+                                    <div data-tooltip-target="tooltip-animation_1" class="mx-4 tooltip-1">
+                                        <img
+                                            src="{{asset('images/verify_gray.png') }}"
+                                            alt="" class="w-24">
+                                        <div id="tooltip-animation_1" role="tooltip"
+                                            class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                            <p class="text-center">
+                                                {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
+                                            </p>
+                                            <div class="tooltip-arrow" data-popper-arrow></div>
+                                        </div>
+                                    </div>
+                                @endif
                                 @if($user->role_id == 2)
                                     @foreach($about as $rating)
                                         @if($rating->id == $user->id)
@@ -193,37 +197,23 @@
                                     </div>
                                 @endif
                             </div>
-                            <a class="md:hidden block mt-8" href="#">
-                                <button
-                                    class="bg-amber-600 hover:bg-amber-500 md:text-2xl text-white font-medium py-4 md:px-12  rounded">
-                                    {{__('Предложить задание')}}
-                                </button>
-                            </a>
                         </div>
                     </div>
-
                 </figure>
-
-
-                {{-- right sidebar end --}}
                 <div class="col-span-2">
                     <h1 class="text-3xl font-semibold text-gray-700">{{__('Обо мне')}}</h1>
                     <p>{{$user->description}}</p>
                 </div>
-
                 <div class="mt-8">
-
                     <div class="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 w-full mx-auto">
                         @foreach($portfolios as $portfolio)
-
                             <a href="{{ route('profile.portfolio', $portfolio->id) }}"
                                class="border my-6 border-gray-400 mr-auto w-56 h-48 mr-6 sm:mb-0 mb-8">
                                 <img
                                     src="{{  count(json_decode($portfolio->image)) == 0 ? '': asset('storage/'.json_decode($portfolio->image)[0])  }}"
                                     alt="#" class="w-56 h-48">
 
-                                <div
-                                    class="h-12 flex relative bottom-12 w-full bg-black opacity-75 hover:opacity-100 items-center">
+                                <div class="h-12 flex relative bottom-12 w-full bg-black opacity-75 hover:opacity-100 items-center">
                                     <p class="w-2/3 text-center text-base text-white">{{$portfolio->comment}}</p>
                                     <div class="w-1/3 flex items-center">
                                         <i class="fas fa-camera float-right text-white text-2xl m-2"></i>
@@ -234,77 +224,10 @@
                         @endforeach
                     </div>
                 </div>
-
-
-                <div class="py-12 col-span-2">
-                    <ul class="d-flex flex-col gap-y-5">
-                        @isset($reviews)
-                            @foreach ($reviews as $review)
-                                @if($review->user_id == $user->id && $review->task && $review->user)
-                                    <li class="d-flex flex-col my-10 rounded-lg">
-                                        <a href="{{route('performers.performer', $review->user_id)}}" target="_blank"
-                                           rel="noreferrer noopener"
-                                           class="w-24 h-24 overflow-hidden rounded-full border-b-0 float-left">
-                                            <img class="UsersReviews_picture__aB22p"
-                                                 @if ($user->avatar == Null)
-                                                 src='{{asset("storage/images/default.jpg")}}'
-                                                 @else
-                                                 src="{{asset("storage/{$review->user->avatar}")}}"
-                                                 @endif alt="avatar">
-
-                                        </a>
-
-                                        <div class="align-top ml-12 h-16">
-
-                                            <span>
-                                <a href="{{route('performers.performer', $review->user->id)}}" target="_blank"
-                                   rel="noreferrer noopener" class="text-blue-500 ">{{$review->user->name}}</a>
-                            </span>
-                                            <div class="text-4 text-[rgba(78,78,78,.5)]">
-                                <span class="align-middle">
-                                    @if ($user->id == $review->user_id)
-                                        @if ($user->role_id == 2)
-                                            {{__('Отзыв')}}:
-                                            @if ($review->good_bad == 1)
-                                                <i class="far fa-thumbs-up"></i>
-                                            @else
-                                                <i class="far fa-thumbs-down"></i>
-                                            @endif
-                                        @else
-                                            {{__('Отзыв')}}:
-                                            @if ($review->good_bad == 1)
-                                                <i class="far fa-thumbs-up"></i>
-                                            @else
-                                                <i class="far fa-thumbs-down"></i>
-                                            @endif
-                                        @endif
-                                    @endif
-                                </span>
-                                            </div>
-                                        </div>
-                                        <div
-                                            class="p-5 mt-3 mr-0 mb-8 bg-yellow-50 shadow-[-1px_1px_2px] shadow-gray-300 rounded-2.5 relative text-gray-600 text-[14.7px] leading-[1.1rem] before:content-[''] before:w-0 before:h-0 before:absolute before:top-[-11px] before:left-[-9px] before:z-[2] before:rotate-[-45deg before:border-transparent border-b-gray-100 border-solid rounded-md">
-                                            <div class="text-gray-500 py-4">
-                                                @if ($review->good_bad == 1)
-                                                    <i class="far fa-thumbs-up"></i>
-                                                @else
-                                                    <i class="far fa-thumbs-down"></i>
-                                                @endif
-                                                Задание "{{ Arr::get('name',$review->task)}}"
-
-                                            </div>
-                                            <hr>
-                                            <div class="py-4">
-                                                {{$review->description}}
-                                            </div>
-                                        </div>
-                                    </li>
-                                @endif
-                            @endforeach
-                        @endisset
-                    </ul>
-                </div>
             </div>
+            {{-- left sidebar start end--}}
+
+            {{-- right sidebar start --}}
             <div class="lg:col-span-1 col-span-2 sm:w-80 w-72 sm:ml-14 ml-0">
                 <div class="mt-16 border p-8 rounded-lg border-gray-300">
                     <div>
@@ -356,6 +279,7 @@
                     </ul>
                 </div>
             </div>
+            {{-- right sidebar end --}}
         </div>
     </div>
 

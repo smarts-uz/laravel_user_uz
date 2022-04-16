@@ -108,22 +108,33 @@
                                 </a>
                                 @endif
                                 <div class="flex items-center">
-                                    <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
-                                        <img
-                                            src="{{ $user->is_email_verified && $user->is_phone_number_verified? asset('images/verify.png') : asset('images/verify_gray.png') }}"
-                                            alt="" class="w-10">
-                                        <div id="tooltip-animation_1" role="tooltip"
-                                             class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                            <p class="text-center">
-                                                @if ($user->is_email_verified !== Null && $user->is_phone_number_verified !== Null)
+                                    @if ($user->is_email_verified && $user->is_phone_number_verified)
+                                        <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
+                                            <img
+                                                src="{{asset('images/verify.png')}}"
+                                                alt="" class="w-10">
+                                            <div id="tooltip-animation_1" role="tooltip"
+                                                class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                <p class="text-center">
                                                     {{__('Номер телефона и Е-mail пользователя подтверждены')}}
-                                                @else
-                                                    {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
-                                                @endif
-                                            </p>
-                                            <div class="tooltip-arrow" data-popper-arrow></div>
+                                                </p>
+                                                <div class="tooltip-arrow" data-popper-arrow></div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @else   
+                                        <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
+                                            <img
+                                                src="{{asset('images/verify_gray.png') }}"
+                                                alt="" class="w-10">
+                                            <div id="tooltip-animation_1" role="tooltip"
+                                                class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                <p class="text-center">
+                                                    {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
+                                                </p>
+                                                <div class="tooltip-arrow" data-popper-arrow></div>
+                                            </div>
+                                        </div>
+                                    @endif
                                     @if($user->role_id == 2)
                                         @foreach($about as $rating)
                                             @if($rating->id == $user->id)
@@ -548,5 +559,12 @@
             });
         })
     </script>
+    @if($user->role_id == 2)
+        <script>
+        if($('.tooltip-2').length === 0){
+            $( "<div data-tooltip-target='tooltip-animation_2' class='mx-4 tooltip-2' ><img src='{{ asset("images/best_gray.png") }}'alt='' class='w-24'><div id='tooltip-animation_2' role='tooltip' class='inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700'><p class='text-center'>{{__('Невходит в ТОП-20 всех исполнителей User.uz')}}</p><div class='tooltip-arrow' data-popper-arrow></div> </div></div>" ).insertAfter( $( ".tooltip-1" ) );
+        }
+    </script>
+    @endif
 @endsection
 

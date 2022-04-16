@@ -75,6 +75,8 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']);
     Route::post('/change-avatar', [ProfileAPIController::class, 'avatar']);
 
+    Route::get('/profile', [ProfileAPIController::class, 'index']);
+    Route::get('/user_cash', [ProfileAPIController::class, 'cash']);
 
 
 

@@ -25,7 +25,8 @@ class UpdateRequest extends FormRequest
     {
         $rule = [
             'name' => 'required',
-            'address' => 'required',
+            'location0' => 'required',
+            'coordinates0' => 'required',
             'date_type' => 'required',
             'budget' => 'required',
             'description' => 'required',
@@ -40,7 +41,7 @@ class UpdateRequest extends FormRequest
 
     public function dateRule($rule)
     {
-        switch($rule['date_type']) {
+        switch($this->get('date_type')) {
             case 1:
                 $rule['start_date'] = 'required|date';
                 $rule['date_type'] = 'required';
