@@ -362,6 +362,8 @@ function img_show() {
     $('.no_tasks').removeAttr('hidden');
     $(".show_tasks").empty();
     $('.lM').attr("hidden","hidden")
+    dataGeo = [];
+    map_pos(k)
 }
 
 function tasks_show(){
