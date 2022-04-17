@@ -9,8 +9,10 @@ use App\Http\Resources\SameTaskResource;
 use App\Http\Resources\TaskIndexResource;
 use App\Http\Resources\TaskResponseResource;
 use App\Models\Task;
+use App\Models\TaskResponse;
 use App\Models\User;
 use App\Services\Task\CreateService;
+use App\Services\Task\ResponseService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -20,10 +22,13 @@ use App\Models\CustomFieldsValue;
 
 class TaskAPIController extends Controller
 {
+    private $service;
+    private $response_service;
 
     public function __construct()
     {
         $this->service = new CreateService();
+        $this->response_service = new ResponseService();
 
     }
     public function same_tasks(Task $task, Request $request)
@@ -40,6 +45,18 @@ class TaskAPIController extends Controller
         return TaskResponseResource::collection($task->responses);
     }
 
+    public function response_store(Task $task, Request $request)
+    {
+        $response = $this->response_service->store($request,$task);
+
+        return response()->json($response);
+    }
+
+    public function selectPerformer(TaskResponse $response)
+    {
+        $response = $this->response_service->selectPerformer($response);
+        return  response()->json($response);
+    }
 
 
     /**

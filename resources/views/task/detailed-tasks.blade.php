@@ -100,8 +100,14 @@
                     <div id="map" class="h-64 mb-4 -mt-2 {{ $task->address?'':'hidden' }}  "></div>
                     <div class="ml-4 md:ml-12 flex flex-row my-4">
                         <h1 class="font-bold h-auto w-48">{{__('Место')}}</h1>
-                        @if($task->address !== NULL)
-                            <p class=" h-auto w-96">{{json_decode($task->address, true)['location']}}</p>
+                        @if($task->address)
+                            <p class=" h-auto w-96">{{json_decode($task->address, true)['location']}}<br>
+                                @if($task->address_add)
+                                @foreach(json_decode($task->address_add, true) as $address){{$address['location']}}
+                                    <br>
+                                    @endforeach
+                            @endif
+                            </p>
                         @else
                             {{__('Виртуальное задание')}}
                         @endif
@@ -352,7 +358,7 @@
                             <div class="flex flex-row items-start">
                                 <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
                                     <img
-                                        src="{{ auth()->user()->is_email_verified && auth()->user()->is_phone_number_verified ? asset('images/verify.pngau') : asset('images/verify_gray.png') }}"
+                                        src="{{ auth()->user()->is_email_verified && auth()->user()->is_phone_number_verified ? asset('images/verify.png') : asset('images/verify_gray.png') }}"
                                         alt="" class="w-10">
                                     <div id="tooltip-animation_1" role="tooltip"
                                          class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
@@ -422,8 +428,9 @@
                             <h1>Vibranniy ispolnitel</h1>
                             <div class="my-6 flex flex-row">
                                 <div class="">
-                                    <img class="w-24 h-24 rounded-lg border-2" @if ($selected->performer->avatar == Null)
-                                    src='{{asset("storage/images/default.jpg")}}'
+                                    <img class="w-24 h-24 rounded-lg border-2"
+                                         @if ($selected->performer->avatar == Null)
+                                         src='{{asset("storage/images/default.jpg")}}'
                                          @else
                                          src="{{asset("storage/{$selected->performer->avatar}")}}"
                                          @endif alt="avatar">
@@ -525,12 +532,13 @@
                         @endif
 
 
-                    @foreach ($responses as $response)
+                        @foreach ($responses as $response)
                             @if($response->performer)
                                 <div class="my-6 flex flex-row">
                                     <div class="">
-                                        <img class="w-24 h-24 rounded-lg border-2" @if ($response->performer->avatar == Null)
-                                        src='{{asset("storage/images/default.jpg")}}'
+                                        <img class="w-24 h-24 rounded-lg border-2"
+                                             @if ($response->performer->avatar == Null)
+                                             src='{{asset("storage/images/default.jpg")}}'
                                              @else
                                              src="{{asset("storage/{$response->performer->avatar}")}}"
                                              @endif alt="avatar">
