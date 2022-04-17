@@ -52,7 +52,7 @@
                     </div>
                     <div class="form-check flex flex-row mx-8 mt-10">
                         <input class="focus:outline-none  form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-black-600 checked:border-black-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                               type="checkbox" onchange="activePerformers();" id="online">
+                               type="checkbox" id="online">
                         <label class="form-check-label inline-block text-gray-800" for="online">
                             {{__('Сейчас на сайте')}}
                         </label>
@@ -60,7 +60,7 @@
                 </div>
                 <div class="sortable">
                 @foreach($users as $user)
-                    <div class="score scores{{$user->id}} w-12/12 m-5 h-[200px] flex md:flex-none overflow-hidden md:overflow-visible mb-10 " name="{{$user->id}}" id="difficultTask">
+                    <div class="difficultTask score scores{{$user->id}} w-12/12 m-5 h-[200px] flex md:flex-none overflow-hidden md:overflow-visible mb-10 " id="{{$user->id}}">
                         <div class="w-34 float-left">
                             <img class="rounded-lg w-32 h-32 bg-black mb-4 mr-4" @if ($user->avatar === null)src='{{asset("storage/images/default.jpg")}}' @else src="{{asset("storage/{$user->avatar}")}}" @endif alt="avatar">
                             <div class="flex flex-row items-center text-base">
@@ -121,7 +121,7 @@
                                                 <div class="tooltip-arrow" data-popper-arrow></div>
                                             </div>
                                         </div>
-                                    @else   
+                                    @else
                                         <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
                                             <img
                                                 src="{{asset('images/verify_gray.png') }}"
@@ -384,40 +384,40 @@
             document.getElementById(modalID12 + "-backdrop").classList.toggle("flex");
         }
     </script>
-    <script>
-        let dataAjax = [];
-
-
-        function activePerformers() {
-            let checkBox = document.getElementById("online");
-            let id = checkBox.checked;
-            if (id) {
+    <script> //Bu scriptda Active Performers id lari Session table dan Ajax orqali chaqililadi va ekranga chiqaziladi.
+        let activePerformersId = [];
+        $('#online').click(function () {
+            let id, this_div;
+            if (this.checked == true) {
                 $.ajax({
                     url: "{{route('performers.active_performers')}}",
                     type: 'GET',
                     success: function (data) {
-                        dataAjax = $.parseJSON(JSON.stringify(data));
+                        activePerformersId = $.parseJSON(JSON.stringify(data));
+
+                        $('.difficultTask').each(function () {
+                            id = $(this).attr('id');
+                            this_div = $(this);
+                            $.each(activePerformersId, function () {
+                                if (activePerformersId.user_id == id) {
+                                    this_div.show();
+                                } else {
+                                    this_div.hide();
+                                }
+                            });
+                        });
+
                     },
                     error: function (error) {
                         console.error("Ajax orqali yuklashda xatolik...", error);
                     }
                 });
-                let id2 = $('#difficultTask').attr('name');
-                console.log(id2)
-                // let id3 = id2.name;
-                // console.log(id3)
-
-                $('#difficultTask').each(function () {
-
-                    $.each(dataAjax, function (index, dataAjax, id3) {
-                        // console.log(dataAjax.user_id)
-                        if (dataAjax.user_id == id3) {
-                            this.hide();
-                        }
-                    });
+            } else {
+                $('.difficultTask').each(function () {
+                    $(this).show();
                 });
             }
-        }
+        });
     </script>
 
 
