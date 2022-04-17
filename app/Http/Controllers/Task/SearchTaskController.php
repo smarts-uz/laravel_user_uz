@@ -9,6 +9,7 @@ use App\Models\ComplianceType;
 use App\Models\CustomField;
 use App\Models\CustomFieldsValue;
 use App\Models\WalletBalance;
+use App\Services\Task\CustomFieldService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 use App\Models\User;
@@ -27,10 +28,12 @@ use App\Services\Task\SearchService;
 
 class SearchTaskController extends VoyagerBaseController
 {
-
+    private  $service;
+    private $custom_fields_servie;
 public function __construct()
 {
     $this->service = new SearchService();
+    $this->custom_fields_servie = new CustomFieldService();
 }
 
     public function task_search()
@@ -74,7 +77,6 @@ public function __construct()
         }
         $selected = $task->responses()->where('performer_id', $task->performer_id)->first();
         $responses = $selected   ? $task->responses()->where('id','!=', $selected->id)->get(): $task->responses;
-
         $auth_response = auth()->check()? $task->responses()->where('performer_id', auth()->user()->id)->with('user')->first():null;
         $same_tasks = $task->category->tasks()->where('id','!=',$task->id)->where('status', Task::STATUS_OPEN)->take(10)->get();
         return view('task.detailed-tasks', compact('task', 'review','complianceType','same_tasks', 'auth_response','selected','responses'));

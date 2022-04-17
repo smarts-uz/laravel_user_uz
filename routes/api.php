@@ -49,6 +49,7 @@ Route::middleware('custom.auth:api')->group(function () {
 //    });
 
     Route::get('/my-tasks', [TaskAPIController::class, 'my_tasks']); //end
+    Route::get('/my-open-tasks', [TaskAPIController::class, 'my_open_tasks']); //end
     Route::put('/change-task/{task}', [TaskAPIController::class, 'changeTask']); //end
     Route::get('/custom-field-by-category/{category}',[CustomFieldAPIController::class,'getByCategoryId']); //end
     Route::get('/custom-field-values-by-task/{task}',[CustomFieldAPIController::class,'getByTaskId']); //end
@@ -101,6 +102,7 @@ Route::get('faq/{id}', [FaqAPIController::class, 'questions']); //end
 
 //Tasks
 Route::get('task/{task}', [TaskAPIController::class, 'task']); //end
+Route::post('tasks-filter', [TaskAPIController::class, 'filter']); //end
 Route::get('responses/{task}', [TaskAPIController::class, 'responses']); //end
 Route::get('same-tasks/{task}', [TaskAPIController::class, 'same_tasks']); //end
 Route::get('tasks-search', [SearchAPIController::class, 'ajax_tasks']); //end

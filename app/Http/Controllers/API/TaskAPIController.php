@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\TaskFilterRequest;
 use App\Http\Requests\Api\V1\Task\StoreRequest;
 use App\Http\Requests\Task\UpdateRequest;
 use App\Http\Resources\SameTaskResource;
@@ -12,6 +13,7 @@ use App\Models\Task;
 use App\Models\TaskResponse;
 use App\Models\User;
 use App\Services\Task\CreateService;
+use App\Services\Task\FilterTaskService;
 use App\Services\Task\ResponseService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -24,10 +26,12 @@ class TaskAPIController extends Controller
 {
     private $service;
     private $response_service;
+    private $filter_service;
 
     public function __construct()
     {
         $this->service = new CreateService();
+        $this->filter_service = new FilterTaskService();
         $this->response_service = new ResponseService();
 
     }
@@ -57,6 +61,16 @@ class TaskAPIController extends Controller
         $response = $this->response_service->selectPerformer($response);
         return  response()->json($response);
     }
+
+    public function filter(TaskFilterRequest $request)
+    {
+        $data = $request->validated();
+        $tasks =$this->filter_service->filter($data);
+
+        return TaskIndexResource::collection($tasks);
+    }
+
+
 
 
     /**
@@ -112,16 +126,21 @@ class TaskAPIController extends Controller
     public function my_tasks()
     {
         $user = auth()->user();
-        $tasks = TaskIndexResource::collection($user->tasks);
-        $perform_tasks = TaskIndexResource::collection($user->performer_tasks);
-        return response()->json([
-            'data' => [
-                'tasks' => $tasks,
-                'perform_tasks' => $perform_tasks,
-            ]
-        ]);
+        $open_tasks = $user->tasks()->where('status', Task::STATUS_OPEN)->count();
+        $in_process_tasks = $user->tasks()->where('status', Task::STATUS_IN_PROGRESS)->count();
+        $complete_tasks = $user->tasks()->where('status', Task::STATUS_COMPLETE)->count();
+        $cancelled_tasks = $user->tasks()->where('status', Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->count();
+        $all = $open_tasks + $in_process_tasks + $complete_tasks + $cancelled_tasks;
+        $data = compact('open_tasks', 'complete_tasks', 'cancelled_tasks','in_process_tasks', 'all');
+
+        return response()->json(['success' => true, 'data' => $data]);
     }
 
+    public function my_open_tasks()
+    {
+
+        return [];
+    }
     /**
      *
      * @OA\Post (

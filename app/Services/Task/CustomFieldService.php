@@ -17,6 +17,16 @@ class CustomFieldService
         return $result;
     }
 
+    public function getCustomFields($task)
+    {
+        $custom_fields = $task->category->custom_fields;
+        $result = [];
+        $values = $this->getValuesOfTask($task);
+        foreach ($custom_fields as $custom_field) {
+            $result[] = $this->initCustomField($custom_field, $task,$values);
+        }
+        return $result;
+    }
     private function initCustomField($custom_field,$task, $values)
     {
         $item = [];
@@ -56,7 +66,7 @@ class CustomFieldService
             $data[$custom_field->id] = [];
         }
         foreach ($task->custom_field_values as $custom_fields_value) {
-            $data[$custom_fields_value->custom_field_id] = json_decode($custom_fields_value->value);
+            $data[$custom_fields_value->custom_field_id] = $custom_fields_value->value?json_decode($custom_fields_value->value):[];
         }
 
         return $data;
