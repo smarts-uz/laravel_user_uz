@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Services\Task\CustomFieldService;
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TaskIndexResource extends JsonResource
@@ -26,17 +28,15 @@ class TaskIndexResource extends JsonResource
             'description' => $this->description,
             'phone' => $this->phone,
             //'category_id' => $this->category_id,
-            'category' => $this->category,
-            'performer_id' => $this->performer_id,
-            //'user_id' => $this->user_id,
-            'user' => $this->user,
+            'category_name' => $this->category->name,
+            'user' => new UserInTaskResource($this->user),
             'views' => $this->views,
             'status' => $this->status,
             'oplata' => $this->oplata,
             'docs' => $this->docs,
+            'created_at' => $this->created,
+            'custom_fields' => (new CustomFieldService())->getCustomFieldsByRoute($this, ''),
             'photos' => json_decode(asset('storage/'.$this->photos)),
-            'task_responses' => $this->responses()->without('task')->get(),
-            'same_tasks' => $this->category->tasks()->where('id','!=',$this->id)->where('status', Task::STATUS_OPEN)->take(10)->get(),
-        ];
+         ];
     }
 }

@@ -93,7 +93,7 @@
                                                     <p class="text-red-500">{{ $message }}</p>
                                                     @enderror
                                                     <input type="hidden" name="phone_number"
-                                                           value="{{$user->phone_number_old}}" id="phone">
+                                                           value="{{$user->is_phone_number_verified?$user->phone_number:$user->phone_number_old}}" id="phone">
                                                 </div>
                                                 <div class="w-full block w-full mb-4">
                                                     <label class="mb-2 text-md md:block text-gray-400"
@@ -227,10 +227,6 @@
                                 </div>
                                 <div id="fourth"
                                      class="hidden tab-pane @if($errors->has('password')) error  @endif py-4">
-                                    <!-- component -->
-                                    <script src="https://cdn.js delivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js"
-                                            defer></script>
-
 
                                     <div class="container max-w-full mx-auto">
                                         <div class="">

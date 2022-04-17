@@ -60,7 +60,7 @@ public function __construct()
 
     public function task(Task $task)
     {
-        if (!$task->user)
+        if (!$task->user_id)
         {
             abort(404);
         }
@@ -77,6 +77,7 @@ public function __construct()
 
         $auth_response = auth()->check()? $task->responses()->where('performer_id', auth()->user()->id)->with('user')->first():null;
 
+//        dd($task->responses);
         $same_tasks = $task->category->tasks()->where('id','!=',$task->id)->where('status', Task::STATUS_OPEN)->take(10)->get();
         return view('task.detailed-tasks', compact('task', 'review','complianceType','same_tasks', 'auth_response','selected','responses'));
     }

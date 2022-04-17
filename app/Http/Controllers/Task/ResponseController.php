@@ -17,6 +17,8 @@ class ResponseController extends Controller
 
     public function store(Request $request, Task $task)
     {
+        if ($task->user_id == auth()->user()->id)
+            abort(403);
         $data = $request->validate([
             'description' => 'required|string',
             'price' => 'required|int',
@@ -44,7 +46,9 @@ class ResponseController extends Controller
                 Alert::success("Success", 'asdweqweqw');
                 $ballance->balance = $ballance->balance - $request->pay;
                 $ballance->save();
-                TaskResponse::create($data);
+//                dd($data);
+                $task_response = TaskResponse::create($data);
+//                dd($task_response);
 
                 NotificationService::sendTaskSelectedNotification($task);
             }

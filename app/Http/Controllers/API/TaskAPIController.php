@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Task\StoreRequest;
 use App\Http\Requests\Task\UpdateRequest;
+use App\Http\Resources\SameTaskResource;
 use App\Http\Resources\TaskIndexResource;
 use App\Models\Task;
 use App\Models\User;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
-use TCG\Voyager\Models\Category;
+use App\Models\Category;
 use App\Models\CustomFieldsValue;
 
 class TaskAPIController extends Controller
@@ -23,6 +24,12 @@ class TaskAPIController extends Controller
     {
         $this->service = new CreateService();
 
+    }
+    public function same_tasks(Task $task, Request $request)
+    {
+        $tasks = $task->category->tasks()->where('id','!=',$task->id);
+        $tasks = $tasks->where('status', Task::STATUS_OPEN)->take(10)->get();
+        return SameTaskResource::collection($tasks);
     }
     /**
      * @OA\Get(
