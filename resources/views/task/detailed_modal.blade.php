@@ -88,7 +88,7 @@ id="modal-id4">
 <form id="updatereview" action="{{route('update.sendReview', $task->id)}}" method="POST">
     @csrf
     <div class="relative my-6 mx-auto max-w-xl" id="modal4">
-        <input type="text" hidden name="status" id="status" value="">
+        <input type="number" hidden name="status" id="status" value="">
         <div
             class="border-0 top-32 rounded-lg shadow-2xl px-10 py-10 relative flex mx-auto flex-col w-full bg-white outline-none focus:outline-none">
             <div class=" text-center  rounded-t">
@@ -260,8 +260,9 @@ id="modal-id4">
 
 
 {{-- zakazchik ispolnitel tanlagandagi modal --}}
+@if( session()->has('success') &&  session()->has('data') && session('success'))
 <div
-class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none        justify-center items-center"
+class="{{ session()->has('success') &&  session()->has('data') && session('success') ?"":'hidden' }} overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none        justify-center items-center"
 style="background-color:rgba(0,0,0,0.5)" id="modal-id33">
 <div class="relative w-full my-6 mx-auto max-w-3xl" id="modal33">
     <div
@@ -276,14 +277,16 @@ style="background-color:rgba(0,0,0,0.5)" id="modal-id33">
             </h1>
         </div>
         <div class="text-center my-6 mx-auto">
-            <img class="border-2 rounded-xl w-32 h-32 mx-auto" src="" alt="user_avatar">
-            <h1>Ilhomjon</h1>
-            <p>+998 94 548 05 14</p>
-            <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution.</p>
+            <img class="border-2 rounded-xl w-32 h-32 mx-auto" src="{{ session('data')['performer_avatar'] }}" alt="user_avatar">
+            <h1>{{ session('data')['performer_name'] }}</h1>
+            <p>+998 {{  session('data')['performer_phone'] }}</p>
+            <p>{{  session('data')['performer_description'] }}</p>
             <button  onclick="toggleModal33()" type="submit" class="cursor-pointer mt-2 text-semibold text-center inline-block py-3 px-4 bg-white transition duration-200 text-white bg-green-500 hover:bg-green-500 font-medium border border-transparent rounded-md">Хорошо</button>
         </div>
     </div>
 </div>
 </div>
+
+@endif
 <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id33-backdrop"></div>
 {{-- zakazchik ispolnitel tanlagandagi modal end--}}

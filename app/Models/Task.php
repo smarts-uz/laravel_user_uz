@@ -64,6 +64,13 @@ class Task extends Model
         $value = Carbon::parse($value)->locale(getLocale());
         return $value->diffForHumans();
     }
+    public function getCreatedAttribute()
+    {
+        $value = $this->getRawOriginal('created_at');
+        $value = Carbon::parse($value)->locale(getLocale());
+        $day = $value == now()->toDateTimeString()? "Bugun": "$value->day-$value->monthName";
+        return "$day  $value->noZeroHour:$value->minute";
+    }
 
     public function getEndDateAttribute($value)
     {
@@ -76,6 +83,7 @@ class Task extends Model
     {
         $value = Carbon::parse($value)->locale(getLocale());
         $value->minute<10 ? $minut = '0'.$value->minute : $minut = $value->minute;
-        return "$value->day-$value->monthName  $value->noZeroHour:$minut";
+        $day = $value == now()->toDateTimeString()? "Bugun": "$value->day-$value->monthName";
+        return "$day  $value->noZeroHour:$minut";
     }
 }

@@ -27,6 +27,9 @@ class UpdateController extends Controller
     public function change(UpdateRequest $request, Task $task)
     {
         taskGuard($task);
+        if ($task->responses_count)
+            abort(403);
+
         $data = $request->validated();
         $data = getAddress($data);
 
@@ -54,26 +57,18 @@ class UpdateController extends Controller
 
     public function sendReview(Task $task, Request $request){
         taskGuard($task);
-
         DB::beginTransaction();
 //        dd($request->all());
 
         try {
-            $task->status = Task::STATUS_COMPLETE;
-            $l1 = Review::where('reviewer_id', $task->user_id)->where('user_id', $task->performer_id)->orWhere('reviewer_id', $task->performer_id)->where('user_id', $task->user_id)->count();
-            if($l1 == 1){
-                $task->save();
-            }
+            $task->status  =  $request->status ? Task::STATUS_COMPLETE: Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
+            $task->save();
             $review = new Review();
             $review->description = $request->comment;
             $review->good_bad = $request->good;
             $review->task_id = $task->id;
             $review->reviewer_id = auth()->id();
-            if($task->user_id == auth()->id()){
-                $review->user_id = $task->performer_id;
-            }else{
-                $review->user_id = $task->user_id;
-            }
+            $review->user_id = $task->performer_id;
             Notification::create([
                 'user_id' => $task->user_id,
                 'task_id' => $task->id,
@@ -83,7 +78,6 @@ class UpdateController extends Controller
             ]);
             $review->save();
         }catch (\Exception $exception){
-            dd($exception);
             DB::rollBack();
         }
         DB::commit();

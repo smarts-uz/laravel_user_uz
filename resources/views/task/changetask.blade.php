@@ -122,7 +122,7 @@
 
                             @if($task->end_date)
                                 <div class="col-span-1 mt-1">
-                                    <div class="flatpickr inline-block flex items-center hidden" id="end-date">
+                                    <div class="flatpickr inline-block flex items-center {{ $task->end_date?'':"hidden" }} " id="end-date">
                                         <div class="flex">
                                             <input type="hidden" name="end_date" placeholder="{{ $task->getRawOriginal('end_date') }}" data-input="{{ $task->getRawOriginal('end_date') }}"
                                                 class="focus:outline-none w-full text-left bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-3 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 flatpickr-input"
@@ -299,8 +299,8 @@
                             class="text-2 xl mr-5 bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded-md ">
                         {{__('Сохранить')}}
                     </button>
-                    <a
-                        class="text-xl text-blue-500 hover:text-red-500 border-b border-dotted border-blue-500 hover:border-red-500">{{__('Отмена')}}</a>
+                    <a href="{{ route('searchTask.delete_task.get', $task->id) }}"
+                        class="text-xl delete-task text-blue-500 hover:text-red-500 border-b border-dotted border-blue-500 hover:border-red-500">{{__('Отмена')}}</a>
                 </div>
             </div>
             <div class="lg:w-4/12 w-full md:block hidden lg:m-0 m-10">
@@ -323,6 +323,9 @@
     <script src="{{ asset('js/changetask.js') }}"></script>
 
     <script>
+
+
+
         function ch_task(){
             @php $host = request()->getHost();@endphp
             var settings = {
@@ -330,6 +333,7 @@
                 "method": "GET",
                 "timeout": 0,
             };
+
             $.ajax(settings).done(function (response) {
                 ajax_location = $.parseJSON(response.address_add);
                 // console.log(ajax_location);

@@ -60,7 +60,7 @@ public function __construct()
 
     public function task(Task $task)
     {
-        if (!$task->user)
+        if (!$task->user_id)
         {
             abort(404);
         }
@@ -73,10 +73,9 @@ public function __construct()
             $task->save();
         }
         $selected = $task->responses()->where('performer_id', $task->performer_id)->first();
-        $responses = $selected ? $task->responses()->where('id','!=', $selected->id)->get(): $task->responses;
+        $responses = $selected   ? $task->responses()->where('id','!=', $selected->id)->get(): $task->responses;
 
         $auth_response = auth()->check()? $task->responses()->where('performer_id', auth()->user()->id)->with('user')->first():null;
-
         $same_tasks = $task->category->tasks()->where('id','!=',$task->id)->where('status', Task::STATUS_OPEN)->take(10)->get();
         return view('task.detailed-tasks', compact('task', 'review','complianceType','same_tasks', 'auth_response','selected','responses'));
     }
@@ -170,6 +169,7 @@ public function __construct()
                 ]);
             }
         }
+
         return response()->json(['success' => $all_count]);
     }
 
@@ -186,6 +186,8 @@ public function __construct()
     public function changeTask(Task $task)
     {
         taskGuard($task);
+        if ($task->responses_count)
+            abort(403);
 //        dd($task);
         return view('task.changetask', compact('task'));
     }

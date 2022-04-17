@@ -103,6 +103,7 @@ Route::get('tasks-search', [SearchTaskController::class, 'ajax_tasks'])->name('s
 Route::get('search', [SearchTaskController::class, 'search'])->name('search'); // javoxir
 Route::post('ajax-request', [SearchTaskController::class, 'task_response']); // javoxir
 Route::delete('delete-task/{task}', [SearchTaskController::class, 'delete_task'])->name('searchTask.delete_task'); // javoxir
+Route::get('delete-task/{task}', [SearchTaskController::class, 'delete_task'])->name('searchTask.delete_task.get'); // javoxir
 Route::get('/detailed-tasks/{task}', [SearchTaskController::class, 'task'])->name("searchTask.task"); // javoxir
 Route::post('/detailed-tasks', [SearchTaskController::class, 'comlianse_save'])->name("searchTask.comlianse_save");
 Route::get('/change-task/{task}', [SearchTaskController::class, 'changeTask'])->name("searchTask.changetask")->middleware('auth'); // javoxir

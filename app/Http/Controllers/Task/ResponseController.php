@@ -17,6 +17,8 @@ class ResponseController extends Controller
 
     public function store(Request $request, Task $task)
     {
+        if ($task->user_id == auth()->user()->id)
+            abort(403);
         $data = $request->validate([
             'description' => 'required|string',
             'price' => 'required|int',
@@ -44,7 +46,9 @@ class ResponseController extends Controller
                 Alert::success("Success", 'asdweqweqw');
                 $ballance->balance = $ballance->balance - $request->pay;
                 $ballance->save();
-                TaskResponse::create($data);
+//                dd($data);
+                $task_response = TaskResponse::create($data);
+//                dd($task_response);
 
                 NotificationService::sendTaskSelectedNotification($task);
             }
@@ -60,7 +64,7 @@ class ResponseController extends Controller
 
     public function selectPerformer(TaskResponse $response)
     {
-        if ($response->task->status >= 3) {
+        if ($response->task->status >= 3 && $response->task->resonses_count) {
             abort(403);
         }
         $data = [
@@ -68,8 +72,7 @@ class ResponseController extends Controller
             'status' => Task::STATUS_IN_PROGRESS
         ];
         $response->task->update($data);
-        $response_name = $response->performer->name;
-        $response_phone = $response->performer->phone_numer;
+        $performer = $response->performer;
         if ($response->user->phone_numer)
         {
             $name = $response->user->name;
@@ -78,8 +81,13 @@ class ResponseController extends Controller
             (new SmsService())->send($response->user->phone_numer, $text);
 
         }
-        alert()->image('Ispolnitel vibran', "$response_name - $response_phone",asset('storage/'.$response->user->avatar),'200','200', $response->user->name);
-        return back();
+        $data = [
+            'performer_name' => $performer->name,
+            'performer_phone' => $performer->phone_number,
+            'performer_description' => $performer->description,
+            'performer_avatar' => asset('storage/'.$performer->avatar),
+        ];
+        return back()->with(['success' => true,'data' => $data]);
     }
 
 }
