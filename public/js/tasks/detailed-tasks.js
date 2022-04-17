@@ -5,10 +5,13 @@
         $("#modal-id4-backdrop").hide();
     });
     $("#modal-open-id4").click( function () {
+        $('#status').val(0);
+
     $("#modal-id4").show();
     $("#class_demo1").click();
 });
     $("#modal-open-id5").click( function () {
+        $('#status').val(1);
     $("#modal-id4").show();
     $("#class_demo").click();
 });
