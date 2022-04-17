@@ -387,26 +387,27 @@
     <script> //Bu scriptda Active Performers id lari Session table dan Ajax orqali chaqililadi va ekranga chiqaziladi.
         let activePerformersId = [];
         $('#online').click(function () {
-            let id, this_div;
+            let id, find;
             if (this.checked == true) {
                 $.ajax({
                     url: "{{route('performers.active_performers')}}",
                     type: 'GET',
                     success: function (data) {
                         activePerformersId = $.parseJSON(JSON.stringify(data));
-
                         $('.difficultTask').each(function () {
                             id = $(this).attr('id');
-                            this_div = $(this);
-                            $.each(activePerformersId, function () {
+                            find = 0;
+                            $.each(activePerformersId, function (index, activePerformersId){
                                 if (activePerformersId.user_id == id) {
-                                    this_div.show();
-                                } else {
-                                    this_div.hide();
+                                    find = 1;
                                 }
                             });
+                                if (find){
+                                    $(this).show();
+                                } else {
+                                    $(this).hide();
+                                }
                         });
-
                     },
                     error: function (error) {
                         console.error("Ajax orqali yuklashda xatolik...", error);
