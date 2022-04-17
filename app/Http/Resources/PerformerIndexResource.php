@@ -27,6 +27,7 @@ class PerformerIndexResource extends JsonResource
             'last_seen' => Carbon::parse( $this->last_seen)->diffForHumans(),
             'likes' => $goods,
             'dislikes' => $bads,
+            'description' => $this->description,
             'stars' => round($goods * 5 / (($goods+$bads==0) ? 1 : ($goods + $bads))),
         ];
     }

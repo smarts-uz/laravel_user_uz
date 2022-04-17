@@ -136,11 +136,68 @@ class TaskAPIController extends Controller
         return response()->json(['success' => true, 'data' => $data]);
     }
 
+    public function my_perform_tasks()
+    {
+        $user = auth()->user();
+        $open_tasks = Task::query()->where('performer_id', $user->id)->where('status', Task::STATUS_OPEN)->count();
+        $in_process_tasks = Task::query()->where('performer_id', $user->id)->where('status', Task::STATUS_IN_PROGRESS)->count();
+        $complete_tasks = Task::query()->where('performer_id', $user->id)->where('status', Task::STATUS_COMPLETE)->count();
+        $cancelled_tasks = Task::query()->where('performer_id', $user->id)->where('status', Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->count();
+        $all = $open_tasks + $in_process_tasks + $complete_tasks + $cancelled_tasks;
+        $data = compact('open_tasks', 'complete_tasks', 'cancelled_tasks','in_process_tasks', 'all');
+
+        return response()->json(['success' => true, 'data' => $data]);
+    }
+
     public function my_open_tasks()
     {
-
-        return [];
+        $user = auth()->user();
+        $tasks = $user->tasks()->where('status', Task::STATUS_OPEN)->get();
+        return TaskIndexResource::collection($tasks);
     }
+
+    public function my_perform_open_tasks()
+    {
+        $user = auth()->user();
+        $tasks = Task::query()->where('performer_id',$user->id)->where('status', Task::STATUS_OPEN)->get();
+        return TaskIndexResource::collection($tasks);
+    }
+
+
+    public function my_in_process_tasks()
+    {
+        $user = auth()->user();
+        $tasks = $user->tasks()->where('status', Task::STATUS_IN_PROGRESS)->get();
+        return TaskIndexResource::collection($tasks);
+    }
+
+    public function my_perform_in_process_tasks()
+    {
+        $user = auth()->user();
+        $tasks = Task::query()->where('performer_id',$user->id)->where('status', Task::STATUS_IN_PROGRESS)->get();
+        return TaskIndexResource::collection($tasks);
+    }
+
+    public function my_complete_tasks()
+    {
+        $user = auth()->user();
+        $tasks = $user->tasks()->where('status', Task::STATUS_COMPLETE)->get();
+        return TaskIndexResource::collection($tasks);
+    }
+    public function my_not_complete_tasks()
+    {
+        $user = auth()->user();
+        $tasks = $user->tasks()->where('status', Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->get();
+        return TaskIndexResource::collection($tasks);
+    }
+    public function my_perform_not_complete_tasks()
+    {
+        $user = auth()->user();
+        $tasks = Task::query()->where('performer_id', $user->id)->where('status', Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->get();
+        return TaskIndexResource::collection($tasks);
+    }
+
+
     /**
      *
      * @OA\Post (

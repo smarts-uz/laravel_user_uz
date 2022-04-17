@@ -27,6 +27,14 @@ class CategoriesAPIController extends Controller
         $categories = Category::withTranslation($request->lang)->get();
         return CategoryIndexResource::collection($categories);
     }
+    public function search(Request $request)
+    {
+        $categories = Category::query()->whereNotNull('parent_id')->where('name','LIKE',"%$request->name%")->get();
+        return CategoryIndexResource::collection($categories);
+    }
+
+
+
 
     /**
      * @OA\Get(

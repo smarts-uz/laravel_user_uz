@@ -49,7 +49,14 @@ Route::middleware('custom.auth:api')->group(function () {
 //    });
 
     Route::get('/my-tasks', [TaskAPIController::class, 'my_tasks']); //end
-    Route::get('/my-open-tasks', [TaskAPIController::class, 'my_open_tasks']); //end
+    Route::get('/my-perform-tasks', [TaskAPIController::class, 'my_perform_tasks']);
+    Route::get('/my-open-tasks', [TaskAPIController::class, 'my_open_tasks']);
+    Route::get('/my-perform-open-tasks', [TaskAPIController::class, 'my_perform_open_tasks']);
+    Route::get('/my-in-process-tasks', [TaskAPIController::class, 'my_in_process_tasks']);
+    Route::get('/my-perform-in-process-tasks', [TaskAPIController::class, 'my_perform_in_process_tasks']);
+    Route::get('/my-complete-tasks', [TaskAPIController::class, 'my_complete_tasks']);
+    Route::get('/my-not-complete-tasks', [TaskAPIController::class, 'my_not_complete_tasks']);
+    Route::get('/my-perform-not-complete-tasks', [TaskAPIController::class, 'my_perform_not_complete_tasks']);
     Route::put('/change-task/{task}', [TaskAPIController::class, 'changeTask']); //end
     Route::get('/custom-field-by-category/{category}',[CustomFieldAPIController::class,'getByCategoryId']); //end
     Route::get('/custom-field-values-by-task/{task}',[CustomFieldAPIController::class,'getByTaskId']); //end
@@ -113,9 +120,11 @@ Route::get('/detailed-tasks/{task}', [SearchAPIController::class, 'task']); //en
 //Categories
 Route::get('/categories', [CategoriesAPIController::class, 'index']); //end
 Route::get('/categories/{id}', [CategoriesAPIController::class, 'show']); //end
+Route::get('/category/search', [CategoriesAPIController::class, 'search']); //end
 
 //Performers
 Route::get('/performers', [PerformerAPIController::class, 'service']); //end
+Route::get('/online-performers', [PerformerAPIController::class, 'online_performers']); //end
 Route::get('/performers/{performer}', [PerformerAPIController::class, 'performer']); //end
 
 //Portfolio

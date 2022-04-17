@@ -58,7 +58,6 @@ class UpdateController extends Controller
     public function sendReview(Task $task, Request $request){
         taskGuard($task);
         DB::beginTransaction();
-//        dd($request->all());
 
         try {
             $task->status  =  $request->status ? Task::STATUS_COMPLETE: Task::STATUS_COMPLETE_WITHOUT_REVIEWS;

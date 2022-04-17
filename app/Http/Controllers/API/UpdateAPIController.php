@@ -9,6 +9,7 @@ use App\Models\CustomFieldsValue;
 use App\Models\Notification;
 use App\Models\Task;
 use App\Review;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Services\Task\CreateService;
 use Illuminate\Support\Arr;
@@ -54,39 +55,34 @@ class UpdateAPIController extends Controller
         $request->validate([
             'comment' => 'required',
             'good' => 'required',
+            'status' => 'required',
         ]);
+        taskGuard($task);
         DB::beginTransaction();
-//        dd($request->all());
+
         try {
-            $task->status = $request->input('status');
-            $l1 = Review::where('reviewer_id', $task->user_id)->where('user_id', $task->performer_id)->orWhere('reviewer_id', $task->performer_id)->where('user_id', $task->user_id)->count();
-            if($l1 == 1){
-                $task->save();
-            }
+            $task->status  =  $request->status ? Task::STATUS_COMPLETE: Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
+            $task->save();
             $review = new Review();
             $review->description = $request->comment;
             $review->good_bad = $request->good;
             $review->task_id = $task->id;
             $review->reviewer_id = auth()->id();
-            if ($task->reviews_count==2) $task->status = Task::STATUS_COMPLETE;
-            if($task->user_id == auth()->id()){
-                $review->user_id = $task->performer_id;
-            }else{
-                $review->user_id = $task->user_id;
-            }
+            $review->user_id = $task->performer_id;
             Notification::create([
                 'user_id' => $task->user_id,
                 'task_id' => $task->id,
                 'name_task' => $task->name,
                 'description' => 1,
-                'type' => 2
+                'type' => Notification::SEND_REVIEW
             ]);
             $review->save();
-        }catch (Exception $exception){
+        }catch (\Exception $exception){
             DB::rollBack();
+            return response()->json(['success' => false, 'message' =>"fail"]);  //back();
         }
         DB::commit();
-        return new TaskIndexResource($task);  //back();
+        return response()->json(['success' => true, 'message' =>" success"]);  //back();
     }
 
 
