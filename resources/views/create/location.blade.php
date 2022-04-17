@@ -84,7 +84,7 @@
                                                     </button>
                                                     <input oninput="myMapFunction()" id="suggest1"
                                                            class="appearance-none bg-transparent w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
-                                                           type="search" name="location1"
+                                                           type="search" name="location1" required
                                                            placeholder="Город, Улица, Дом" aria-label="Full name">
                                                     <button id="1" onclick="getLocals(this.id)"
                                                             class="flex-shrink-0 border-transparent border-4 text-yellow-500 hover:text-yellow-600 text-sm py-1 px-2 rounded"

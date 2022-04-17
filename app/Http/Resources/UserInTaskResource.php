@@ -23,7 +23,7 @@ class UserInTaskResource extends JsonResource
             'likes' => $goods,
             'dislikes' => $bads,
             'stars' => round($goods * 5 / (($goods+$bads==0) ? 1 : ($goods + $bads))),
-            'last_seen' => $this->last_seen,
+            'last_seen' => $this->last_seen_at,
         ];
     }
 }

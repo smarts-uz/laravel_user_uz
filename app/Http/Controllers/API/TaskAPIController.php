@@ -7,6 +7,7 @@ use App\Http\Requests\Api\V1\Task\StoreRequest;
 use App\Http\Requests\Task\UpdateRequest;
 use App\Http\Resources\SameTaskResource;
 use App\Http\Resources\TaskIndexResource;
+use App\Http\Resources\TaskResponseResource;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\Task\CreateService;
@@ -31,6 +32,16 @@ class TaskAPIController extends Controller
         $tasks = $tasks->where('status', Task::STATUS_OPEN)->take(10)->get();
         return SameTaskResource::collection($tasks);
     }
+
+
+
+    public function responses(Task $task)
+    {
+        return TaskResponseResource::collection($task->responses);
+    }
+
+
+
     /**
      * @OA\Get(
      *     path="/api/task/{task}",
