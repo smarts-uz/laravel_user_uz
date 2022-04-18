@@ -22,81 +22,35 @@
                 <div class="flex flex-col">
                     <p class="mb-2 text-right">21-aprel 12:00</p>
                     @if($notification->type == 1)
-                        <div>Отклик к заданию <br>
+                        <div>{{__('Отклик к заданию')}} <br>
                             <a class="hover:text-red-500" href="#">“Xonalardi tozalash kerak" <br> №1908</a>
-                            задания отправлен
+                            {{__('задания отправлен')}}
                         </div>
                     @elseif($notification->type == 2 || $notification->type == 3)
                         <button onclick="toggleModal121('modal-id121')" class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">
                             {{$notification->name_task}}
                         </button>
                     @elseif($notification->type == 4)
-                        <div>Вас выбрали исполнителем <br> в задании
+                        <div>{!!__('Вас выбрали исполнителем <br> в задании')!!}
                             <a class="hover:text-red-500" href="#">“Xonalardi tozalash kerak" <br> №1908</a>
                             <a class="hover:text-blue-500" href="#"> Ozodbek</a></div>
                     @elseif($notification->type == 5)
-                        <div>Отклик к заданию <br>--}}
+                        <div>{{__('Отклик к заданию')}} <br>
                             <a class="hover:text-red-500" href="#">“Xonalardi tozalash kerak" <br> №1908</a>
-                            задания отправлен
+                            {{__('задания отправлен')}}
                         </div>
                     @else
-                        <div>Заказчик указал, что вы выполнили <br> задание
+                        <div> {!!__('Заказчик указал, что вы выполнили <br> задание')!!}
                             <a class="hover:text-red-500" href="#">“Xonalardi tozalash kerak" <br> №1908</a>
-                            и оставил вам отзыв
+                           {{__(' и оставил вам отзыв')}}
                         </div>
                     @endif
                 </div>
             </li>
 
         @endforeach
-        {{--            <li>--}}
-        {{--                <button onclick="toggleModal121('modal-id121')" class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">--}}
-        {{--                    {{$notification->name_task}}--}}
-        {{--                </button>--}}
-        {{--            </li>--}}
     </ul>
-    {{-- otklik qilinganda performerga ketadigan notification --}}
-    {{--        <div class="border-b-2 border-gray-700 flex gap-x-2 p-3 text-gray-800">--}}
-    {{--            <div class="">--}}
-    {{--                <i class="fas fa-star text-yellow-500"></i>--}}
-    {{--            </div>--}}
-    {{--            <div class="flex flex-col">--}}
-    {{--                <p class="mb-2 text-right">21-aprel 12:00</p>--}}
-    {{--                <div>Отклик к заданию  <br>--}}
-    {{--                    <a class="hover:text-red-500" href="#">“Xonalardi tozalash kerak" <br> №1908</a>--}}
-    {{--                    задания отправлен</div>--}}
-    {{--            </div>--}}
-    {{--        </div>--}}
-    {{-- otklik qilinganda performerga ketadigan notification end --}}
-
-    {{-- Zakazchik biror bir ispolniteldi tanlaganda notification --}}
-    {{--        <div class="border-b-2 border-gray-700 flex gap-x-2 p-3 text-gray-800">--}}
-    {{--            <div class="">--}}
-    {{--                <i class="fas fa-star text-yellow-500"></i>--}}
-    {{--            </div>--}}
-    {{--            <div class="flex flex-col">--}}
-    {{--                <p class="mb-2 text-right">22-aprel 12:00</p>--}}
-    {{--                <div>Вас выбрали исполнителем <br> в задании--}}
-    {{--                    <a class="hover:text-red-500" href="#">“Xonalardi tozalash kerak" <br> №1908</a>--}}
-    {{--                    <a class="hover:text-blue-500" href="#"> Ozodbek</a></div>--}}
-    {{--            </div>--}}
-    {{--        </div>--}}
-    {{-- Zakazchik biror bir ispolniteldi tanlaganda notification end --}}
-
-    {{-- Zakazchik otziv qoldirilgandagi notification --}}
-    {{--        <div class="border-b-2 border-gray-700 flex gap-x-2 p-3 text-gray-800">--}}
-    {{--            <div class="">--}}
-    {{--                <i class="fas fa-star text-yellow-500"></i>--}}
-    {{--            </div>--}}
-    {{--            <div class="flex flex-col">--}}
-    {{--                <p class="mb-2 text-right">22-aprel 14:00</p>--}}
-    {{--                <div>Заказчик указал, что вы выполнили  <br> задание--}}
-    {{--                    <a class="hover:text-red-500" href="#">“Xonalardi tozalash kerak" <br> №1908</a>--}}
-    {{--                    и оставил вам отзыв </div>--}}
-    {{--            </div>--}}
-    {{--        </div>--}}
-    {{-- Zakazchik otziv qoldirilgandagi notification end --}}
-
+    
 </div>
 {{-- modal notification --}}
 
