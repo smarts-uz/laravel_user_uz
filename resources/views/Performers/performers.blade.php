@@ -398,7 +398,7 @@
                             id = $(this).attr('id');
                             find = 0;
                             $.each(activePerformersId, function (index, activePerformersId){
-                                if (activePerformersId.user_id == id) {
+                                if (activePerformersId.id == id) {
                                     find = 1;
                                 }
                             });

@@ -71,6 +71,10 @@ class TaskAPIController extends Controller
     }
 
 
+    public function task_map(Task $task)
+    {
+        return $task->addresses;
+    }
 
 
     /**

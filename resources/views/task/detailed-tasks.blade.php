@@ -3,6 +3,7 @@
 @section("content")
     <script type="text/javascript" src="http://connect.mail.ru/js/loader.js">
     </script>
+    <div class="hidden" id="map_route">{{ route('task.map', $task->id) }}</div>
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=f4b34baa-cbd1-432b-865b-9562afa3fcdb"
             type="text/javascript"></script>
     <script>
@@ -11,7 +12,7 @@
         function init() {
             var myMap = new ymaps.Map("map", {
                     center: [{{$task->coordinates}}],
-                    zoom: 17,
+                    zoom: 6,
                     controls: [],
                     type: 'yandex#satellite',
                     restrictMapArea: [59.838, 29.511]
@@ -27,6 +28,49 @@
                     // Метку можно перемещать.
                     draggable: true
                 });
+
+            $.ajax({
+                url: $("#map_route").text(),
+                dataType: "json",
+                type: "get",
+                async: true,
+                data: { },
+                success: function (data) {
+                    for (let i=0; i < data.length; i++)
+                    {
+                        console.log(data[i]);
+                        myMap.geoObjects
+                            .add(myGeoObject)
+                            .add(new ymaps.Placemark([data[i].latitude,data[i].longitude], {
+                                balloonContent: data[i].location
+                            }, {
+                                preset: 'islands#icon',
+                                iconColor: '#0095b6'
+                            }));
+                    }
+
+
+                },
+                error: function (xhr, exception) {
+                    var msg = "";
+                    if (xhr.status === 0) {
+                        msg = "Not connect.\n Verify Network." + xhr.responseText;
+                    } else if (xhr.status == 404) {
+                        msg = "Requested page not found. [404]" + xhr.responseText;
+                    } else if (xhr.status == 500) {
+                        msg = "Internal Server Error [500]." +  xhr.responseText;
+                    } else if (exception === "parsererror") {
+                        msg = "Requested JSON parse failed.";
+                    } else if (exception === "timeout") {
+                        msg = "Time out error." + xhr.responseText;
+                    } else if (exception === "abort") {
+                        msg = "Ajax request aborted.";
+                    } else {
+                        msg = "Error:" + xhr.status + " " + xhr.responseText;
+                    }
+
+                }
+            });
 
             myMap.geoObjects
                 .add(myGeoObject)
@@ -97,7 +141,7 @@
 
                 <div
                     class="mt-12 border-2 py-2 lg:w-[600px]  w-[400px] rounded-lg border-orange-100 shadow-2xl">
-                    <div id="map" class="h-64 mb-4 -mt-2 {{ $task->address?'':'hidden' }}  "></div>
+                    <div id="map" class="h-64 mb-4 -mt-2 {{ $task->addresses?'':'hidden' }}  "></div>
                     <div class="ml-4 md:ml-12 flex flex-row my-4">
                         <h1 class="font-bold h-auto w-48">{{__('Место')}}</h1>
                         @if($task->address)

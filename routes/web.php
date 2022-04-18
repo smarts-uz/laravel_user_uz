@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\PerformerAPIController;
+use App\Http\Controllers\API\TaskAPIController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FaqsController;
 
@@ -81,6 +82,7 @@ Route::group(['prefix' => 'performers'], function () {
     Route::get('user_online', [PerformersController::class, 'user_online']);
 });
 #endregion
+Route::get('task/{task}/map', [TaskAPIController::class, 'task_map'])->name('task.map'); //end
 
 #region chat
 Route::group(['prefix' => 'admin'], function () {
