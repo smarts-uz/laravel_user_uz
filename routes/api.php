@@ -44,10 +44,6 @@ Route::middleware('custom.auth:api')->group(function () {
 
     Route::post('task/create', [TaskAPIController::class, 'create']); //end
 
-//    Route::any('/{paysys}',function($paysys){
-//        (new Goodoneuz\PayUz\PayUz)->driver($paysys)->handle();
-//    });
-
     Route::get('/my-tasks', [TaskAPIController::class, 'my_tasks']); //end
     Route::get('/my-perform-tasks', [TaskAPIController::class, 'my_perform_tasks']);
     Route::get('/my-open-tasks', [TaskAPIController::class, 'my_open_tasks']);
