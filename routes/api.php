@@ -75,9 +75,6 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::get('/profile', [ProfileAPIController::class, 'index']);
     Route::get('/user_cash', [ProfileAPIController::class, 'cash']);
 
-    Route::post('/task/{task}/response',[TaskAPIController::class, 'response_store']);
-    Route::post('/select-response/{response}',[TaskAPIController::class, 'selectPerformer']);
-
 });
 
 //User Routes
