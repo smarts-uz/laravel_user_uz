@@ -44,19 +44,12 @@ Route::middleware('custom.auth:api')->group(function () {
 
     Route::post('task/create', [TaskAPIController::class, 'create']); //end
 
-    Route::get('/my-tasks', [TaskAPIController::class, 'my_tasks']); //end
-    Route::get('/my-perform-tasks', [TaskAPIController::class, 'my_perform_tasks']);
-    Route::get('/my-open-tasks', [TaskAPIController::class, 'my_open_tasks']);
-    Route::get('/my-perform-open-tasks', [TaskAPIController::class, 'my_perform_open_tasks']);
-    Route::get('/my-in-process-tasks', [TaskAPIController::class, 'my_in_process_tasks']);
-    Route::get('/my-perform-in-process-tasks', [TaskAPIController::class, 'my_perform_in_process_tasks']);
-    Route::get('/my-complete-tasks', [TaskAPIController::class, 'my_complete_tasks']);
-    Route::get('/my-not-complete-tasks', [TaskAPIController::class, 'my_not_complete_tasks']);
-    Route::get('/my-perform-not-complete-tasks', [TaskAPIController::class, 'my_perform_not_complete_tasks']);
-    Route::put('/change-task/{task}', [TaskAPIController::class, 'changeTask']); //end
-    Route::get('/custom-field-by-category/{category}',[CustomFieldAPIController::class,'getByCategoryId']); //end
-    Route::get('/custom-field-values-by-task/{task}',[CustomFieldAPIController::class,'getByTaskId']); //end
-    Route::get('/custom-field-values-by-custom-field/{custom_field}',[CustomFieldAPIController::class,'getByCustomFieldId']); //end
+//    Route::any('/{paysys}',function($paysys){
+//        (new Goodoneuz\PayUz\PayUz)->driver($paysys)->handle();
+//    });
+
+    Route::get('/my-tasks-count', [TaskAPIController::class, 'my_tasks_count']);
+    Route::get('/my-tasks', [TaskAPIController::class, 'my_tasks_all']);
     Route::delete('/for_del_new_task/{task}', [TaskAPIController::class, 'deletetask']); //end
     Route::delete('/delete-task/{task}', [SearchAPIController::class, 'delete_task']); //end
     Route::delete('/delete', [UserAPIController::class, 'destroy']); //end
@@ -81,9 +74,6 @@ Route::middleware('custom.auth:api')->group(function () {
 
     Route::get('/profile', [ProfileAPIController::class, 'index']);
     Route::get('/user_cash', [ProfileAPIController::class, 'cash']);
-
-    Route::post('/task/{task}/response',[TaskAPIController::class, 'response_store']);
-    Route::post('/select-response/{response}',[TaskAPIController::class, 'selectPerformer']);
 
 });
 

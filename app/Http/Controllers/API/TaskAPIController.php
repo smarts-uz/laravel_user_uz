@@ -71,6 +71,10 @@ class TaskAPIController extends Controller
     }
 
 
+    public function task_map(Task $task)
+    {
+        return $task->addresses;
+    }
 
 
     /**
@@ -123,79 +127,44 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function my_tasks()
+    public function my_tasks_count(Request $request)
     {
         $user = auth()->user();
-        $open_tasks = $user->tasks()->where('status', Task::STATUS_OPEN)->count();
-        $in_process_tasks = $user->tasks()->where('status', Task::STATUS_IN_PROGRESS)->count();
-        $complete_tasks = $user->tasks()->where('status', Task::STATUS_COMPLETE)->count();
-        $cancelled_tasks = $user->tasks()->where('status', Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->count();
-        $all = $open_tasks + $in_process_tasks + $complete_tasks + $cancelled_tasks;
-        $data = compact('open_tasks', 'complete_tasks', 'cancelled_tasks','in_process_tasks', 'all');
+        $is_performer = $request->is_performer;
 
-        return response()->json(['success' => true, 'data' => $data]);
+        $column = $is_performer ? 'performer_id': 'user_id';
+
+        $open_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_OPEN)->count(),'status' => Task::STATUS_OPEN];
+        $in_process_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_IN_PROGRESS)->count(),'status' => Task::STATUS_IN_PROGRESS];
+        $complete_tasks = ['count' =>  Task::query()->where($column, $user->id)->where('status', Task::STATUS_COMPLETE)->count(),'status' => Task::STATUS_COMPLETE];
+        $cancelled_tasks = ['count' =>  Task::query()->where($column, $user->id)->where('status', Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->count(),'status' => Task::STATUS_COMPLETE_WITHOUT_REVIEWS];
+        $all = ['count' => $open_tasks['count'] + $in_process_tasks['count'] + $complete_tasks['count'] + $cancelled_tasks['count'], 'status' => 0];
+
+
+
+        return response()->json(['success' => true, 'data' => compact('open_tasks','in_process_tasks', 'complete_tasks','cancelled_tasks','all')]);
     }
 
-    public function my_perform_tasks()
+    public function my_tasks_all(Request $request)
     {
         $user = auth()->user();
-        $open_tasks = Task::query()->where('performer_id', $user->id)->where('status', Task::STATUS_OPEN)->count();
-        $in_process_tasks = Task::query()->where('performer_id', $user->id)->where('status', Task::STATUS_IN_PROGRESS)->count();
-        $complete_tasks = Task::query()->where('performer_id', $user->id)->where('status', Task::STATUS_COMPLETE)->count();
-        $cancelled_tasks = Task::query()->where('performer_id', $user->id)->where('status', Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->count();
-        $all = $open_tasks + $in_process_tasks + $complete_tasks + $cancelled_tasks;
-        $data = compact('open_tasks', 'complete_tasks', 'cancelled_tasks','in_process_tasks', 'all');
+        $is_performer = $request->is_performer;
+        $status = $request->status;
 
-        return response()->json(['success' => true, 'data' => $data]);
-    }
+        $status = in_array($status,[Task::STATUS_OPEN,Task::STATUS_COMPLETE_WITHOUT_REVIEWS,Task::STATUS_COMPLETE,Task::STATUS_IN_PROGRESS])? $status : 0;
 
-    public function my_open_tasks()
-    {
-        $user = auth()->user();
-        $tasks = $user->tasks()->where('status', Task::STATUS_OPEN)->get();
-        return TaskIndexResource::collection($tasks);
-    }
+        $column = $is_performer ? 'performer_id': 'user_id';
+        $tasks = Task::query()->where($column, $user->id);
 
-    public function my_perform_open_tasks()
-    {
-        $user = auth()->user();
-        $tasks = Task::query()->where('performer_id',$user->id)->where('status', Task::STATUS_OPEN)->get();
-        return TaskIndexResource::collection($tasks);
+        if ($status)
+            $tasks = $tasks->where('status', $status);
+        else
+            $tasks =  $tasks->where('status', '!=',0);
+
+        return response()->json(['success' => true, 'data' => TaskIndexResource::collection( $tasks->get())]);
     }
 
 
-    public function my_in_process_tasks()
-    {
-        $user = auth()->user();
-        $tasks = $user->tasks()->where('status', Task::STATUS_IN_PROGRESS)->get();
-        return TaskIndexResource::collection($tasks);
-    }
-
-    public function my_perform_in_process_tasks()
-    {
-        $user = auth()->user();
-        $tasks = Task::query()->where('performer_id',$user->id)->where('status', Task::STATUS_IN_PROGRESS)->get();
-        return TaskIndexResource::collection($tasks);
-    }
-
-    public function my_complete_tasks()
-    {
-        $user = auth()->user();
-        $tasks = $user->tasks()->where('status', Task::STATUS_COMPLETE)->get();
-        return TaskIndexResource::collection($tasks);
-    }
-    public function my_not_complete_tasks()
-    {
-        $user = auth()->user();
-        $tasks = $user->tasks()->where('status', Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->get();
-        return TaskIndexResource::collection($tasks);
-    }
-    public function my_perform_not_complete_tasks()
-    {
-        $user = auth()->user();
-        $tasks = Task::query()->where('performer_id', $user->id)->where('status', Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->get();
-        return TaskIndexResource::collection($tasks);
-    }
 
 
     /**

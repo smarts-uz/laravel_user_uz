@@ -6,6 +6,7 @@ use App\Models\Response;
 use App\Models\WalletBalance;
 use App\Models\Review;
 use App\Services\NotificationService;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -116,10 +117,10 @@ class PerformersController extends Controller
 
     public function ajaxAP()
     {
-        $activeSessions = Session::query()->where('user_id', '<>', null)
-            ->select('user_id')
-            ->get();
-        return $activeSessions->all();
+        $date = Carbon::now()->subMinutes(2)->toDateTimeString();
+        $performers = User::query()->select('id')->where('role_id', 2)->where('last_seen', ">=",$date)->get();
+
+        return $performers;
     }
 
     public function deleteNotification(Notification $notification)
