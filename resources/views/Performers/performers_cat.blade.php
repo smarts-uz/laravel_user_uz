@@ -52,7 +52,7 @@
                     </div>
                     <div class="form-check flex flex-row mx-8 mt-10">
                         <input class="focus:outline-none  form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-black-600 checked:border-black-600 focus:outline-none focus:border-yellow-500 transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                               type="checkbox" value="1" onchange="check()" id="online">
+                               type="checkbox" value="1" id="online">
                         <label class="form-check-label inline-block text-gray-800" for="online">
                             {{__('Сейчас на сайте')}}
                         </label>
@@ -66,7 +66,7 @@
                         //dd($res_c_arr);
                     @endphp
                     @if($res_c_arr !== false)
-                    <div class="w-12/12 m-5 h-[200px] flex md:flex-none overflow-hidden md:overflow-visible mb-10" name="{{$user->id}}" id="difficultTask">
+                    <div class="difficultTask w-12/12 m-5 h-[200px] flex md:flex-none overflow-hidden md:overflow-visible mb-10" id="{{$user->id}}">
                         <div class="w-34 float-left">
                             <img class="rounded-lg w-32 h-32 bg-black mb-4 mr-4" @if ($user->avatar == Null)src='{{asset("storage/images/default.jpg")}}' @else src="{{asset("storage/{$user->avatar}")}}" @endif alt="avatar">
                             <div class="flex flex-row items-center text-base">
@@ -127,7 +127,7 @@
                                                 <div class="tooltip-arrow" data-popper-arrow></div>
                                             </div>
                                         </div>
-                                    @else   
+                                    @else
                                         <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
                                             <img
                                                 src="{{asset('images/verify_gray.png') }}"
@@ -402,23 +402,41 @@
             document.getElementById(modalID12 + "-backdrop").classList.toggle("flex");
         }
     </script>
-    <script>
-        function check() {
-            // Get the checkbox
-            var checkBox = document.getElementById("online");
-            // Get the output text
-            @foreach($users as $user)
-            var {{ str_replace(' ', '', $user->name) }} = document.getElementById("{{$user->id}}");
-            // If the checkbox is checked, display the output text
-            if (checkBox.checked == true){
-                if ({{$user->active_status}} == 0) {
-                    {{ str_replace(' ', '', $user->name) }}.classList.add("hidden");
-                }
+    <script> //Bu scriptda Active Performers id lari Session table dan Ajax orqali chaqililadi va ekranga chiqaziladi.
+        let activePerformersId = [];
+        $('#online').click(function () {
+            let id, find;
+            if (this.checked == true) {
+                $.ajax({
+                    url: "{{route('performers.active_performers')}}",
+                    type: 'GET',
+                    success: function (data) {
+                        activePerformersId = $.parseJSON(JSON.stringify(data));
+                        $('.difficultTask').each(function () {
+                            id = $(this).attr('id');
+                            find = 0;
+                            $.each(activePerformersId, function (index, activePerformersId){
+                                if (activePerformersId.user_id == id) {
+                                    find = 1;
+                                }
+                            });
+                            if (find){
+                                $(this).show();
+                            } else {
+                                $(this).hide();
+                            }
+                        });
+                    },
+                    error: function (error) {
+                        console.error("Ajax orqali yuklashda xatolik...", error);
+                    }
+                });
             } else {
-                {{ str_replace(' ', '', $user->name) }}.classList.remove("hidden");
+                $('.difficultTask').each(function () {
+                    $(this).show();
+                });
             }
-            @endforeach
-        }
+        });
     </script>
     {{-- Modal end --}}
     <script>
