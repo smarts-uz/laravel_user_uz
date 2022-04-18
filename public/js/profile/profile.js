@@ -38,3 +38,18 @@ $("#button_comment").click(function(event){
     });
     toggleModal6('modal-id6');
 });
+        // tabs
+        function openCity(evt, cityName) {
+            var index, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (index = 0; index < tabcontent.length; index++) {
+              tabcontent[index].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (index = 0; index < tablinks.length; index++) {
+              tablinks[index].className = tablinks[index].className.replace("bg-yellow-200 text-gray-900", "");
+            }
+            document.getElementById(cityName).style.display = "block";
+            evt.currentTarget.className += "bg-yellow-200 text-gray-900";
+          }
+        //tabs end

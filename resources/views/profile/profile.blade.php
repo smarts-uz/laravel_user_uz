@@ -75,10 +75,8 @@
                         </div>
                         <div class="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 w-full mx-auto">
                         @foreach($portfolios as $portfolio)
-
                                 <a href="{{ route('profile.portfolio', $portfolio->id) }}" class="border my-6 border-gray-400 mr-auto w-56 h-48 mr-6 sm:mb-0 mb-8">
                                 <img src="{{  count(json_decode($portfolio->image)) == 0 ? '': asset('storage/'.json_decode($portfolio->image)[0])  }}" alt="#" class="w-56 h-48">
-
                                 <div class="h-12 flex relative bottom-12 w-full bg-black opacity-75 hover:opacity-100 items-center">
                                     <p class="w-2/3 text-center text-base text-white">{{$portfolio->comment}}</p>
                                    <div class="w-1/3 flex items-center">
@@ -88,40 +86,80 @@
                                 </div>
                             </a>
                         @endforeach
-
-
                         </div>
                     </div>
                     <div class="mt-8">
-                                <p class="text-2xl font-semibold">
-                                    {{__('Виды выполняемых работ')}}
-                                </p>
-                                <div class="my-4">
-                                    <ul class="pl-10 leading-7">
-                                        @foreach(explode(',', $user->category_id) as $user_cat)
-                                            @foreach($categories as $cat)
-                                                @if($cat->id == $user_cat)
-                                        <li>
-                                            <a href="/categories/{{$cat->parent_id}}" class="underline">
-                                                {{ $cat->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
-                                            </a>
-                                        </li>
-                                                @endif
-                                            @endforeach
-                                            @endforeach
-                                    </ul>
+                        <p class="text-2xl font-semibold">
+                            {{__('Виды выполняемых работ')}}
+                        </p>
+                        <div class="my-4">
+                            <ul class="pl-10 leading-7">
+                                @foreach(explode(',', $user->category_id) as $user_cat)
+                                    @foreach($categories as $cat)
+                                        @if($cat->id == $user_cat)
+                                            <li>
+                                                <a href="/categories/{{$cat->parent_id}}" class="underline">
+                                                    {{ $cat->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
+                                                </a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="my-4">
+                            <h1 class="text-xl font-semibold mt-2">Отзывов пока нет</h1>
+                            <p class="mt-2">Отзывы появятся после того, как вы создадите или выполните задание</p>
+                            <h1 class="text-xl font-semibold mt-2">Отзывы</h1>
+                            {{-- tabs --}}
+                            <div class="tab my-2">
+                                <button class="tablinks tablinks border-2 rounded-xl px-2 py-1 mr-4 my-2 border-gray-500  " onclick="openCity(event, 'first')"><i class="far fa-thumbs-up text-blue-500 mr-1"></i> Положительные</button>
+                                <button class="tablinks tablinks border-2 rounded-xl px-2 py-1 my-2  border-gray-500 text-gray-800 " onclick="openCity(event, 'second')"><i class="far fa-thumbs-down text-blue-500 mr-2"></i>Отрицательные</button>
+                              </div>
+                            {{-- tab contents --}}
+                            <div id="first" class="tabcontent">
+                                <div class="my-6">
+                                    <div class="flex flex-row gap-x-2 my-4">
+                                        <img src="" alt="#" class="w-12 h-12 border-2 rounded-lg border-gray-500">
+                                        <a href="#" class="text-blue-500 hover:text-red-500">Admin</a>
+                                    </div>
+                                    <div class="sm:w-3/4 w-full p-3 bg-yellow-50 rounded-xl">
+                                        <p>Задание <a href="#" class="hover:text-red-400 border-b border-gray-300 hover:border-red-400">"Нужен срочна курьер"</a> выполнено</p>    
+                                        <p class="border-t-2 border-gray-300 my-3 pt-3">Отличноо</p>
+                                        <p class="text-right">26-апрель 19:00</p>
+                                    </div>
                                 </div>
                             </div>
+                              
+                            <div id="second" class="tabcontent">
+                                <div class="my-6">
+                                    <div class="flex flex-row gap-x-2 my-4">
+                                        <img src="" alt="#" class="w-12 h-12 border-2 rounded-lg border-gray-500">
+                                        <a href="#" class="text-blue-500 hover:text-red-500">User</a>
+                                    </div>
+                                    <div class="sm:w-3/4 w-full p-3 bg-yellow-50 rounded-xl">
+                                        <p>Задание <a href="#" class="hover:text-red-400 border-b border-gray-300 hover:border-red-400">"Нужен срочна курьер"</a> выполнено</p>    
+                                        <p class="border-t-2 border-gray-300 my-3 pt-3">ывраывов</p>
+                                        <p class="text-right">26-апрель 19:00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {{-- about-me end --}}
                 </div>
             </div>
-                {{-- right-side-bar --}}
 
+                {{-- right-side-bar --}}
             @include('auth.profile-side-info')
-                {{-- tugashi o'ng tomon ispolnitel --}}
+                {{-- right-side-bar --}}
         </div>
     </div>
-
+    <style>
+        .tabcontent {
+            display: none;
+        }
+    </style>
     <script src="{{ asset('js/profile/profile.js') }}">
     </script>
     @if($user->role_id == 2)
