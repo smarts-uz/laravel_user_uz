@@ -16,8 +16,8 @@ class TaskResponseResource extends JsonResource
     {
         return
         [
-            'id' =>$this->id,
-            'user' => new UserInTaskResource($this->performer),
+            'id' => $this->id,
+            'user' => new UserInTaskResource($this->user),
             'budget' => $this->price,
             'description' =>$this->description,
         ];
