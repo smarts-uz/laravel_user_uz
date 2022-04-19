@@ -30,9 +30,9 @@
 
                                 <div class="w-full border-t border-solid hover:bg-blue-100 category">
                                     <div class="md:grid md:grid-cols-10 p-2">
-                                        @foreach ($categories as $category)
-                                            @if ($category->id == $task->category_id)
-                                                 <img src=" {{ asset('storage/'.$category->ico) }}" alt="" class="h-10 w-10 bg-blue-200 p-2 rounded-xl md:mb-0 mb-3">
+                                        @foreach ($categories2 as $category2)
+                                            @if ($category2->id == $task->category_id)
+                                                 <img src=" {{ asset('storage/'.$category2->ico) }}" alt="" class="h-10 w-10 bg-blue-200 p-2 rounded-xl md:mb-0 mb-3">
                                             @endif
                                         @endforeach
                                         <div class="col-span-6">
@@ -58,9 +58,9 @@
                                                     {{__('до')}} {{$task->budget}} {{__('сум')}}
                                                 @endif
                                             </p>
-                                            @foreach ($categories as $category)
-                                                @if($category->id == $task->category_id)
-                                                    <span class="text-sm text-gray-500 hover:text-red-600 my-3" about="{{$category->id}}">{{ $category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</span>
+                                            @foreach ($categories2 as $category2)
+                                                @if($category2->id == $task->category_id)
+                                                    <span class="text-sm text-gray-500 hover:text-red-600 my-3" about="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</span>
                                                 @endif
                                             @endforeach
                                             <p class="text-sm text-gray-500"> {{__("Количество откликов :")}} {{$task->responses->where('task_id',$task->id)->count()}}</p>
@@ -84,9 +84,9 @@
                             @foreach($tasks as $task)
                                     <div class="w-full border-t border-solid hover:bg-blue-100 category2 my-5">
                                         <div class="md:grid md:grid-cols-10 p-2">
-                                            @foreach ($categories as $category)
-                                                @if ($category->id == $task->category_id)
-                                                <img src=" {{ asset('storage/'.$category->ico) }}" alt="" class="h-12 w-12 bg-blue-200 p-2 rounded-xl md:mb-0 mb-3">
+                                            @foreach ($categories2 as $category2)
+                                                @if ($category2->id == $task->category_id)
+                                                <img src=" {{ asset('storage/'.$category2->ico) }}" alt="" class="h-12 w-12 bg-blue-200 p-2 rounded-xl md:mb-0 mb-3">
                                                 @endif
                                             @endforeach
                                             <div class="col-span-6">
@@ -112,9 +112,9 @@
                                                         {{__('до')}} {{$task->budget}} {{__('сум')}}
                                                     @endif
                                                 </p>
-                                                @foreach ($categories as $category)
-                                                    @if($category->id == $task->category_id)
-                                                        <span class="text-sm text-gray-500 hover:text-red-600 my-3" about="{{$category->id}}">{{ $category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</span>
+                                                @foreach ($categories2 as $category2)
+                                                    @if($category2->id == $task->category_id)
+                                                        <span class="text-sm text-gray-500 hover:text-red-600 my-3" about="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</span>
                                                     @endif
                                                 @endforeach
                                                     <p class="text-sm text-gray-500"> {{__("Количество откликов :")}} {{$task->responses->where('task_id',$task->id)->count()}}</p>
@@ -148,13 +148,13 @@
                     <button class="font-medium hover:text-red-500 rounded-lg text-sm text-center inline-flex items-center mb-1 allshow" type="button">{{__('Все категории')}}</button>
 
                     <div class="w-full my-1">
-                        @foreach (\TCG\Voyager\Models\Category::query()->where('parent_id', null)->get() as $category)
+                        @foreach ($categories as $category)
                             <div x-data={show:false} class="rounded-sm">
                                 <div class="my-3 text-blue-500 hover:text-red-500 cursor-pointer" id="{{ str_replace(' ', '', $category->name) }}">
                                     {{ $category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
                                 </div>
                                 <div id="{{$category->slug}}" class="px-8 py-1 hidden">
-                                    @foreach (\TCG\Voyager\Models\Category::query()->where('parent_id', $category->id)->get() as $category2)
+                                    @foreach ($categories2 as $category2)
 
                                         <div class="child_cat">
                                             <a  class="text-blue-500 hover:text-red-500 my-1 send-request cursor-pointer" id="{{$category2->id}}" data-id="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</a>
@@ -292,7 +292,7 @@
 
         </script>
     <script>
-        @foreach (\TCG\Voyager\Models\Category::query()->where('parent_id', null)->get() as $category)
+        @foreach ($categories as $category)
         $( "#{{ str_replace(' ', '', $category->name) }}" ).click(function() {
             if ($("#{{$category->slug}}").hasClass("hidden")) {
                 $("#{{$category->slug}}").removeClass('hidden');
@@ -300,7 +300,7 @@
                 $("#{{$category->slug}}").addClass('hidden');
             }
         });
-        @foreach (\TCG\Voyager\Models\Category::query()->where('parent_id', $category->id)->get() as $category2)
+        @foreach ($categories2 as $category2)
         $( "#{{$category2->id}}" ).click(function() {
             var category = $(".categoryid").children("span");
             $( category ).each(function() {

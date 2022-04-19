@@ -113,8 +113,12 @@ class Controller extends BaseController
         $datas = new Collection(); //Create empty collection which we know has the merge() method
         $datas = $datas->merge($tasks);
         $datas = $datas->merge($perform_tasks);
-        $categories = getAllCategories();
-        return view('task.mytasks',compact('tasks','perform_tasks','categories','datas'));
+//        $categories = getAllCategories();
+        $categories = Category::where('parent_id', null)->select('id','name','slug')->get();
+        $categories2 = Category::where('parent_id','<>', null)->select('id','parent_id','name')->get();
+
+        return view('task.mytasks',compact('tasks','perform_tasks','categories','categories2','datas'));
+
     }
 
     public function category($id)
