@@ -20,6 +20,8 @@ class UserInTaskResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'avatar' => $this->avatar?asset('storage/'.$this->avatar):null,
+            'phone_number' => $this->phone_number,
+            'degree' => $this->phone_number,
             'likes' => $goods,
             'dislikes' => $bads,
             'stars' => round($goods * 5 / (($goods+$bads==0) ? 1 : ($goods + $bads))),

@@ -66,7 +66,7 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::delete('/delete/portfolio/{portfolio}', [PortfolioAPIController::class, 'delete']);
     Route::post('/portfolio/create', [PortfolioAPIController::class, 'createPortfolio']);
 
-    Route::post("/task/{task}/response", [ResponseAPIController::class, 'store']);
+    Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']);
     Route::post('/select-performer/{response}', [ResponseAPIController::class, 'selectPerformer']);
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']);
     Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']);

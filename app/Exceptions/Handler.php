@@ -2,9 +2,12 @@
 
 namespace App\Exceptions;
 
+use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Throwable;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
@@ -43,9 +46,30 @@ class Handler extends ExceptionHandler
             if ($request->is('api/*')) {
                 return response()->json([
                     'success' => false,
-                    'msg' => 'Record not found.'
+                    'message' => 'Record not found.'
                 ]);
             }
         });
+
+
     }
+    /**
+     * Convert a validation exception into a JSON response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Validation\ValidationException  $exception
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function invalidJson($request, ValidationException $exception)
+    {
+        $message = "";
+        foreach ($exception->errors() as $error) {
+            $message .= $error[0];
+        }
+        return response()->json([
+            'success' => false,
+            'message' => $message,
+        ], 200);
+    }
+
 }
