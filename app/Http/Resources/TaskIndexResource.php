@@ -19,8 +19,7 @@ class TaskIndexResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'address' => json_decode($this->address),
-            'address_add' => json_decode($this->address_add),
+            'address' => TaskAddressResource::collection($this->addresses),
             'date_type' => $this->date_type,
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
