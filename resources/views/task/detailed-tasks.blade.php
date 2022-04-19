@@ -347,13 +347,13 @@
                                                     id="modal-open-id5"
                                                     class=" sm:w-2/5 w-9/12 text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-12 ml-6  pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
                                                     type="submit">
-                                                    Завершен
+                                                    {{__('Задание выполнено')}}
                                                 </button>
                                                 <button
                                                     id="modal-open-id4"
                                                     class="not_done  sm:w-2/5 w-9/12 text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
                                                     type="button">
-                                                    Не завершен
+                                                    {{__('Задание не выполнено')}}
                                                 </button>
                                             @endif
                                         @endif

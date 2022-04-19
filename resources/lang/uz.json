@@ -595,5 +595,7 @@
     "Положительные":"Ijobiy",
     "Отрицательные":"Salbiy",
     "выполнено":"bajarildi",
-    "Отзывы": "Sharhlar"
+    "Отзывы": "Sharhlar",
+    "Задание выполнено":"Ish tugallandi",
+    "Задание не выполнено":"Ish tugallanmadi"
 }
