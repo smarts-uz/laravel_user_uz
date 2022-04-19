@@ -2,15 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use TCG\Voyager\Events\BreadDataAdded;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
+use function Symfony\Component\Translation\t;
 
 class NotificationController extends VoyagerBaseController
 {
+
+    public function read_notification(Notification $notification)
+    {
+        $notification->is_read = 1;
+        $notification->update();
+        return $notification->is_read;
+    }
+
+    public function show_notification(Notification $notification)
+    {
+        $notification->update(['is_read', 1]);
+        return redirect('/detailed-tasks/' . $notification->id);
+    }
+
     public function store(Request $request)
     {
         $slug = $this->getSlug($request);

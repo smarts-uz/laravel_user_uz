@@ -9,6 +9,7 @@ use App\Http\Controllers\FaqsController;
 use App\Http\Controllers\LoginController;
 
 //avacoder
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 
 //++
@@ -230,6 +231,8 @@ Route::get('/lang/{lang}', [Controller::class, 'lang'])->name('lang'); // javoxi
 Route::get('/', [Controller::class, 'home'])->name('home'); // javoxir
 Route::get('/terms', function () {  return view('auth.terms');});
 Route::get('/file-download', [Controller::class, 'download'])->name('file_download.download');
+Route::get('/show-notification/{notification}', [NotificationController::class, 'show_notification'])->name('show_notification');
+Route::get('/read-notification/{notification}', [NotificationController::class, 'read_notification'])->name('read_notification');
 #endregion
 
 #region registration
