@@ -24,7 +24,7 @@ class TaskFilterRequest extends FormRequest
     public function rules()
     {
         return [
-            'categories' => 'nullable|array',
+            'categories' => 'nullable',
             'longitude' => 'nullable|numeric',
             'latitude' => 'nullable|numeric',
             'budget' => 'nullable|int',

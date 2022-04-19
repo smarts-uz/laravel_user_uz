@@ -15,11 +15,11 @@ class FilterTaskService
         $tasks = Task::query()->where('status', '=',Task::STATUS_OPEN);
 
         if (isset($data['categories'])) {
-            $categories = $data['categories'];
+            $categories = json_decode($data['categories']);
             $tasks->whereIn('category_id', $categories);
         }
         if (isset($data['budget'])) {
-            $tasks->where('budget', $data['budget'] );
+            $tasks->where('budget', ">=", $data['budget'] );
         }
         if (isset($data['is_remote'])) {
             $is_remote = $data['is_remote'];
