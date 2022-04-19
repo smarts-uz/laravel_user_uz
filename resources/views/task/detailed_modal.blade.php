@@ -273,20 +273,20 @@ style="background-color:rgba(0,0,0,0.5)" id="modal-id33">
                 <i class="fas fa-times text-xl w-full"></i>
             </button>
             <h1 class="font-medium text-3xl block mt-6">
-                Исполнитель выбран
+                {{__('Исполнитель выбран')}}
             </h1>
         </div>
-        <div class="text-center my-6 mx-auto">
-            <img class="border-2 rounded-xl w-32 h-32 mx-auto" src="{{ session('data')['performer_avatar'] }}" alt="user_avatar">
-            <h1>{{ session('data')['performer_name'] }}</h1>
-            <p>+998 {{  session('data')['performer_phone'] }}</p>
+        <div class="text-center mb-6 mx-auto">
+            <img class="border-2 rounded-xl w-28 h-28 mx-auto" src="{{ session('data')['performer_avatar'] }}" alt="user_avatar">
+            <h1 class="my-2 font-medium hover:text-red-500 ">{{ session('data')['performer_name'] }}</h1>
+            <p class="mb-2">+998 {{  session('data')['performer_phone'] }}</p>
             <p>{{  session('data')['performer_description'] }}</p>
-            <button  onclick="toggleModal33()" type="submit" class="cursor-pointer mt-2 text-semibold text-center inline-block py-3 px-4 bg-white transition duration-200 text-white bg-green-500 hover:bg-green-500 font-medium border border-transparent rounded-md">Хорошо</button>
+            <button  onclick="toggleModal33()" type="submit" class="cursor-pointer mt-2 text-semibold text-center inline-block py-3 px-4 bg-white transition duration-200 text-white bg-green-500 hover:bg-green-500 font-medium border border-transparent rounded-md">{{__('Хорошо')}}</button>
         </div>
     </div>
 </div>
 </div>
 
 @endif
-<div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id33-backdrop"></div>
+<div class="hidden  fixed inset-0 z-40 " id="modal-id33-backdrop"></div>
 {{-- zakazchik ispolnitel tanlagandagi modal end--}}

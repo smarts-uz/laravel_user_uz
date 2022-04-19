@@ -18,15 +18,15 @@
     </div>
     <ul class="py-1 overflow-y-auto max-h-96" id="notifs" aria-labelledby="dropdown">
         @foreach($notifications as $notification)
-            <li class="border-b-2 border-gray-700 flex gap-x-2 p-3 text-gray-800">
+            <li class="border-b-2 border-gray-500 flex gap-x-2 p-3 text-gray-800">
                 <div class="">
                     <i class="fas fa-star text-yellow-500"></i>
                 </div>
-                <div class="flex flex-col">
+                <div class="flex flex-col w-full">
                     <p class="mb-2 text-right">{{$notification->created_at->format('d M')}}</p>
                     @if($notification->type == 1)
-                        <div>{{__('Отклик к заданию')}} <br>
-                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}" <br> №{{$notification->id}}</a>
+                        <div class="w-full">{{__('Отклик к заданию')}} <br>
+                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}"  №{{$notification->id}}</a> <br>
                             {{__('задания отправлен')}}
                         </div>
                     @elseif($notification->type == 2 || $notification->type == 3)
@@ -35,17 +35,17 @@
                             {{$notification->name_task}}
                         </button>
                     @elseif($notification->type == 4)
-                        <div>{!!__('Вас выбрали исполнителем <br> в задании')!!}
-                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}" <br> №{{$notification->id}}</a>
+                        <div class="w-full">{!!__('Вас выбрали исполнителем <br> в задании')!!}
+                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}"  №{{$notification->id}}</a> <br>
                             <a class="hover:text-blue-500" href="/performers/{{$notification->user_id}}"> {{$notification->user->name}}</a></div>
                     @elseif($notification->type == 5)
-                        <div>{{__('Отклик к заданию')}} <br>
-                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}" <br> №{{$notification->id}}</a>
+                        <div class="w-full">{{__('Отклик к заданию')}} <br>
+                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}" №{{$notification->id}}</a> <br>
                             {{__('задания отправлен')}}
                         </div>
                     @else
-                        <div> {!!__('Заказчик указал, что вы выполнили <br> задание')!!}
-                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}" <br> №{{$notification->id}}</a>
+                        <div class="w-full"> {!!__('Заказчик указал, что вы выполнили <br> задание')!!}
+                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}"  №{{$notification->id}}</a> <br>
                             {{__(' и оставил вам отзыв')}}
                         </div>
                     @endif

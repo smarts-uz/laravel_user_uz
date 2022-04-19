@@ -345,12 +345,11 @@
                                             @if(!$review)
                                                 <button
                                                     id="modal-open-id5"
-                                                    class=" sm:w-2/5 w-9/12 text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-12 ml-6  pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
+                                                    class="not_done  sm:w-2/5 w-9/12 text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
                                                     type="submit">
                                                     {{__('Задание выполнено')}}
                                                 </button>
                                                 <button
-                                                    id="modal-open-id4"
                                                     class="not_done  sm:w-2/5 w-9/12 text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
                                                     type="button">
                                                     {{__('Задание не выполнено')}}
@@ -381,7 +380,7 @@
 
                 @if($auth_response)
                     <div class="mt-3">
-                        <h1 class="text-3xl font-semibold text-black">Ваш отклик</h1>
+                        <h1 class="text-3xl font-semibold text-black">{{__('Ваш отклик')}}</h1>
                         <div class="my-3 flex flex-row">
                             <div class="">
                                 <img class="w-24 h-24 rounded-lg border-2"
@@ -396,7 +395,7 @@
                                 <input type="text" name="performer_id" class="hidden"
                                        value="">
                                 <div class="text-gray-700 sm:mt-4 mt-2">
-                                    {{-- <i class="fas fa-star text-yellow-500 mr-1"></i>{{ $response->user->reviews()->count()? $response->user->goodReviews()->count()/$response->user->reviews()->count():0 }}  по {{ $response->user->reviews()->count() }} отзывам --}}
+                                    <i class="fas fa-star text-yellow-500 mr-1"></i>{{ $auth_response->user->reviews()->count()? $auth_response->user->goodReviews()->count()/$auth_response->user->reviews()->count():0 }}  по {{ $auth_response->user->reviews()->count() }} отзывам
                                 </div>
                             </div>
                             <div class="flex flex-row items-start">
@@ -469,7 +468,7 @@
                         </div>
 
                         @if($selected && $selected->performer)
-                            <h1>Vibranniy ispolnitel</h1>
+                            <h1>{{__('Выбранный исполнитель')}} </h1>
                             <div class="my-6 flex flex-row">
                                 <div class="">
                                     <img class="w-24 h-24 rounded-lg border-2"
@@ -699,7 +698,7 @@
                     @if(count($same_tasks))
                         <div class=" my-3">
 
-                            <h1 class="font-medium text-3xl mt-3">Похожиe задания</h1>
+                            <h1 class="font-medium text-3xl mt-3">{{__('Похожиe задания')}}</h1>
                             @foreach($same_tasks as $item)
 
                                 <div
@@ -715,10 +714,10 @@
                                                    class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">{{ $item->name }}</a>
                                                 <p class="text-sm">{{ $item->address? json_decode($item->address, true)['location']:'' }}</p>
                                                 @if($item->date_type == 1 || $item->date_type == 3)
-                                                    <p class="text-sm my-0.5">Начать {{ $item->start_date }}</p>
+                                                    <p class="text-sm my-0.5">{{__('Начать')}} {{ $item->start_date }}</p>
                                                 @endif
                                                 @if($item->date_type == 3 || $item->date_type == 3)
-                                                    <p class="text-sm my-0.5">Закончить {{ $item->end_date }}</p>
+                                                    <p class="text-sm my-0.5">{{__('Закончить')}} {{ $item->end_date }}</p>
                                                 @endif
                                                 @if($item->oplata == 1)
                                                     <p class="text-sm">{{__(' Оплата наличными')}}</p>
@@ -735,7 +734,7 @@
                                                     {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
                                                 @endif
                                             </p>
-                                            <span class="text-sm sm:mt-5 sm:mt-1 mt-0">Откликов -
+                                            <span class="text-sm sm:mt-5 sm:mt-1 mt-0">{{__('Откликов')}} -
                                                 @if ($item->response_count>0)
                                                     {{  $item->response_count }}
                                                 @else
