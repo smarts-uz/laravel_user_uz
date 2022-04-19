@@ -61,9 +61,9 @@
                 <div class="sortable">
                 @foreach($users as $user)
                     <div class="difficultTask score scores{{$user->id}} w-12/12 m-5 h-[200px] flex md:flex-none overflow-hidden md:overflow-visible mb-10 " id="{{$user->id}}">
-                        <div class="w-34 float-left">
+                        <div class=" float-left">
                             <img class="rounded-lg w-32 h-32 bg-black mb-4 mr-4" @if ($user->avatar === null)src='{{asset("storage/images/default.jpg")}}' @else src="{{asset("storage/{$user->avatar}")}}" @endif alt="avatar">
-                            <div class="flex flex-row items-center text-base">
+                            <div class="flex sm:flex-row items-center text-base">
                                 <p class="text-black ">{{__('Отзывы:')}}</p>
                                 <i class="far fa-thumbs-up text-blue-500 ml-1 mb-1"></i>
                                 <span class="text-gray-800 mr-2 like{{$user->id}}">{{ $user->reviews()->where('good_bad',1)->count()}}</span>
@@ -95,8 +95,8 @@
                                 });
                             </script>
                         </div>
-                        <div class="w-4/5 md:float-none md:float-none">
-                            <div class="flex items-center">
+                        <div class="w-4/5 ">
+                            <div class="flex sm:flex-row flex-col sm:items-center items-start">
                                 @if (Auth::check() && Auth::user()->id == $user->id)
                                         <a href="/profile"
                                            class="lg:text-3xl mr-2 text-2xl underline text-blue-500 hover:text-red-500" id="{{$user->id}}">
@@ -107,7 +107,7 @@
                                     <p class="lg:text-3xl text-2xl underline text-blue-500 performer-page{{$user->id}} hover:text-red-500" id="{{$user->id}}"> {{$user->name}}</p>
                                 </a>
                                 @endif
-                                <div class="flex items-center">
+                                <div class="flex items-center sm:my-0 my-2">
                                     @if ($user->is_email_verified && $user->is_phone_number_verified)
                                         <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
                                             <img

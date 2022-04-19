@@ -122,7 +122,7 @@
                                                            for="location">{{__('Город')}}</label>
                                                     <select class="border rounded-xl py-2 px-3 w-full focus:border-yellow-500 text-grey-900 outline-none"
                                                             name="location">
-                                                        <option value="">{{__('Выберите категории')}}</option>
+                                                        <option value="">{{__('Выберите город')}}</option>
 
                                                         @foreach($regions as $region)
                                                             <option

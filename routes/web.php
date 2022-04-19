@@ -72,9 +72,6 @@ Route::post('del-notif', [PerformersController::class, 'del_all_notif']); // jav
 Route::post('/performers', [PerformersController::class, 'service']); // javoxir
 Route::get('perf-ajax/{id}', [PerformersController::class, 'perf_ajax']); // javoxir
 Route::get('active-performers', [PerformersController::class, 'ajaxAP'])->name('performers.active_performers'); // Shuxrat78
-Route::get('/executors-courier', function () {
-    return view('Performers/executors-courier');
-}); // javoxir
 Route::post('give-task', [PerformersController::class, 'give_task']); // javoxir
 Route::group(['prefix' => 'performers'], function () {
     Route::get('/', [PerformersController::class, 'service'])->name('performers.service'); // javoxir
@@ -111,9 +108,6 @@ Route::get('/detailed-tasks/{task}', [SearchTaskController::class, 'task'])->nam
 Route::post('/detailed-tasks', [SearchTaskController::class, 'comlianse_save'])->name("searchTask.comlianse_save");
 Route::get('/change-task/{task}', [SearchTaskController::class, 'changeTask'])->name("searchTask.changetask")->middleware('auth'); // javoxir
 Route::put('/change-task/{task}', [UpdateController::class, 'change'])->name("update.__invoke")->middleware('auth'); // javoxir
-Route::get('/choose-task', function () {
-    return view('task.choosetasks');
-}); // javoxir
 #endregion
 
 #region verificationInfo
