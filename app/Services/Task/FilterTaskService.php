@@ -15,7 +15,7 @@ class FilterTaskService
         $tasks = Task::query()->where('status', '=',Task::STATUS_OPEN);
 
         if (isset($data['categories'])) {
-            $categories = json_decode($data['categories']);
+            $categories = $data['categories'];
             $tasks->whereIn('category_id', $categories);
         }
         if (isset($data['budget'])) {
