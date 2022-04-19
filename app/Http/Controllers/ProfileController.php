@@ -159,13 +159,14 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         $views = $user->views()->count();
-        $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->get();
+        $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->select('id','name')->get();
+        $categories2 = Category::where('parent_id','<>', null)->select('id','parent_id','name')->get();
         $regions = Region::withTranslations(['ru', 'uz'])->get();
         $about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
         $task_count = Task::where('performer_id', $user->id)->count();
         $sessions = Session::query()->where('user_id', $user->id)->get();
         $parser = Parser::create();
-        return view('profile.settings', compact('user', 'categories', 'views', 'regions', 'about', 'task_count', 'sessions', 'parser'));
+        return view('profile.settings', compact('user', 'categories', 'categories2', 'views', 'regions', 'about', 'task_count', 'sessions', 'parser'));
     }
 
     public function updateData(UserUpdateDataRequest $request)
