@@ -11,4 +11,13 @@ class Address extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+
+    public function task()
+    {
+        $this->belongsTo(Task::class);
+    }
+
+
+
 }
