@@ -24,10 +24,16 @@ class PerformerAPIController extends Controller
      * )
      *
      */
-    public function service()
+    public function service(Request $request)
     {
-        $performers = User::where('role_id', 2)->get();
-        return PerformerIndexResource::collection($performers);
+        $performers = User::where('role_id', 2);
+        if (isset($request->online))
+        {
+            $date = Carbon::now()->subMinutes(2)->toDateTimeString();
+            $performers = $performers->where('role_id', 2)->where('last_seen', ">=",$date);
+        }
+
+        return PerformerIndexResource::collection($performers->paginate($request->per_page));
     }
 
     public function online_performers()
