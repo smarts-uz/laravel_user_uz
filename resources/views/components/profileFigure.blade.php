@@ -4,7 +4,7 @@
     </div>
     <br>
     <h2 class="font-bold text-2xl text-gray-800 mb-2">{{__('Здравствуйте')}}, {{$user->name}}!</h2>
-    <div class="flex flex-row mt-6">
+    <div class="flex sm:flex-row flex-col mt-6">
         <div class="sm:w-1/3 pb-10 w-full">
             <img class="border border-3 border-gray-400 h-44 w-44"
                  @if ($user->avatar == Null)

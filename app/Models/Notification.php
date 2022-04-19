@@ -11,8 +11,9 @@ class Notification extends Model
 {
     use HasFactory;
     use Translatable;
+
     protected $translatable = ['description'];
-    protected $fillable = ['user_id','service_id','task_id','cat_id','description','name_task','type'];
+    protected $fillable = ['user_id', 'service_id', 'task_id', 'cat_id', 'description', 'name_task', 'type', 'is_read'];
 
     public const TASK_CREATED = 1;
     public const NEWS_NOTIFICATION = 2;
@@ -20,4 +21,9 @@ class Notification extends Model
     public const PERFORMER_SELECTED = 4;
     public const TASK_SELECTED = 5;
     public const SEND_REVIEW = 6;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

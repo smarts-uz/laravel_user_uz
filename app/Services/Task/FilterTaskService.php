@@ -19,7 +19,7 @@ class FilterTaskService
             $tasks->whereIn('category_id', $categories);
         }
         if (isset($data['budget'])) {
-            $tasks->where('budget', $data['budget'] );
+            $tasks->where('budget', ">=", $data['budget'] );
         }
         if (isset($data['is_remote'])) {
             $is_remote = $data['is_remote'];

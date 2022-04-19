@@ -1,5 +1,8 @@
 @php
-    $notifications = App\Models\Notification::query()->where('user_id', auth()->id())->get();
+    $notifications = App\Models\Notification::query()
+        ->where('user_id', auth()->id())
+        ->where('is_read', 0)
+        ->limit(10)->get();
     $count = $notifications->count();
 @endphp
 @if($count > 0)
@@ -20,82 +23,37 @@
                     <i class="fas fa-star text-yellow-500"></i>
                 </div>
                 <div class="flex flex-col">
-                    <p class="mb-2 text-right">21-aprel 12:00</p>
+                    <p class="mb-2 text-right">{{$notification->created_at->format('d M')}}</p>
                     @if($notification->type == 1)
-                        <div>Отклик к заданию <br>
-                            <a class="hover:text-red-500" href="#">“Xonalardi tozalash kerak" <br> №1908</a>
-                            задания отправлен
+                        <div>{{__('Отклик к заданию')}} <br>
+                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}" <br> №{{$notification->id}}</a>
+                            {{__('задания отправлен')}}
                         </div>
                     @elseif($notification->type == 2 || $notification->type == 3)
-                        <button onclick="toggleModal121('modal-id121')" class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">
+                        <button onclick="toggleModal121('modal-id121', '{{$notification->name_task}}', '{{$notification->description}}', {{$notification->id}})"
+                                class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">
                             {{$notification->name_task}}
                         </button>
                     @elseif($notification->type == 4)
-                        <div>Вас выбрали исполнителем <br> в задании
-                            <a class="hover:text-red-500" href="#">“Xonalardi tozalash kerak" <br> №1908</a>
-                            <a class="hover:text-blue-500" href="#"> Ozodbek</a></div>
+                        <div>{!!__('Вас выбрали исполнителем <br> в задании')!!}
+                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}" <br> №{{$notification->id}}</a>
+                            <a class="hover:text-blue-500" href="/performers/{{$notification->user_id}}"> {{$notification->user->name}}</a></div>
                     @elseif($notification->type == 5)
-                        <div>Отклик к заданию <br>--}}
-                            <a class="hover:text-red-500" href="#">“Xonalardi tozalash kerak" <br> №1908</a>
-                            задания отправлен
+                        <div>{{__('Отклик к заданию')}} <br>
+                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}" <br> №{{$notification->id}}</a>
+                            {{__('задания отправлен')}}
                         </div>
                     @else
-                        <div>Заказчик указал, что вы выполнили <br> задание
-                            <a class="hover:text-red-500" href="#">“Xonalardi tozalash kerak" <br> №1908</a>
-                            и оставил вам отзыв
+                        <div> {!!__('Заказчик указал, что вы выполнили <br> задание')!!}
+                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}" <br> №{{$notification->id}}</a>
+                            {{__(' и оставил вам отзыв')}}
                         </div>
                     @endif
                 </div>
             </li>
 
         @endforeach
-        {{--            <li>--}}
-        {{--                <button onclick="toggleModal121('modal-id121')" class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">--}}
-        {{--                    {{$notification->name_task}}--}}
-        {{--                </button>--}}
-        {{--            </li>--}}
     </ul>
-    {{-- otklik qilinganda performerga ketadigan notification --}}
-    {{--        <div class="border-b-2 border-gray-700 flex gap-x-2 p-3 text-gray-800">--}}
-    {{--            <div class="">--}}
-    {{--                <i class="fas fa-star text-yellow-500"></i>--}}
-    {{--            </div>--}}
-    {{--            <div class="flex flex-col">--}}
-    {{--                <p class="mb-2 text-right">21-aprel 12:00</p>--}}
-    {{--                <div>Отклик к заданию  <br>--}}
-    {{--                    <a class="hover:text-red-500" href="#">“Xonalardi tozalash kerak" <br> №1908</a>--}}
-    {{--                    задания отправлен</div>--}}
-    {{--            </div>--}}
-    {{--        </div>--}}
-    {{-- otklik qilinganda performerga ketadigan notification end --}}
-
-    {{-- Zakazchik biror bir ispolniteldi tanlaganda notification --}}
-    {{--        <div class="border-b-2 border-gray-700 flex gap-x-2 p-3 text-gray-800">--}}
-    {{--            <div class="">--}}
-    {{--                <i class="fas fa-star text-yellow-500"></i>--}}
-    {{--            </div>--}}
-    {{--            <div class="flex flex-col">--}}
-    {{--                <p class="mb-2 text-right">22-aprel 12:00</p>--}}
-    {{--                <div>Вас выбрали исполнителем <br> в задании--}}
-    {{--                    <a class="hover:text-red-500" href="#">“Xonalardi tozalash kerak" <br> №1908</a>--}}
-    {{--                    <a class="hover:text-blue-500" href="#"> Ozodbek</a></div>--}}
-    {{--            </div>--}}
-    {{--        </div>--}}
-    {{-- Zakazchik biror bir ispolniteldi tanlaganda notification end --}}
-
-    {{-- Zakazchik otziv qoldirilgandagi notification --}}
-    {{--        <div class="border-b-2 border-gray-700 flex gap-x-2 p-3 text-gray-800">--}}
-    {{--            <div class="">--}}
-    {{--                <i class="fas fa-star text-yellow-500"></i>--}}
-    {{--            </div>--}}
-    {{--            <div class="flex flex-col">--}}
-    {{--                <p class="mb-2 text-right">22-aprel 14:00</p>--}}
-    {{--                <div>Заказчик указал, что вы выполнили  <br> задание--}}
-    {{--                    <a class="hover:text-red-500" href="#">“Xonalardi tozalash kerak" <br> №1908</a>--}}
-    {{--                    и оставил вам отзыв </div>--}}
-    {{--            </div>--}}
-    {{--        </div>--}}
-    {{-- Zakazchik otziv qoldirilgandagi notification end --}}
 
 </div>
 {{-- modal notification --}}
@@ -105,17 +63,13 @@
     <div class="relative w-auto my-6 mx-auto max-w-3xl" id="modal-id121">
         <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
             <div class=" text-center p-12  rounded-t">
-                <button type="submit" onclick="toggleModal121('modal-id121')" class="rounded-md w-100 h-16 absolute top-1 right-4">
+                <button type="submit" onclick="toggleModal121('modal-id121', 'Title', 'Description', 0)" class="rounded-md w-100 h-16 absolute top-1 right-4">
                     <i class="fas fa-times  text-slate-400 hover:text-slate-600 text-xl w-full"></i>
                 </button>
-                <h3 class="font-medium text-4xl block mt-4">
-                    fdvedgrfgrtdfgtrfgtrg
-                </h3>
+                <h3 class="font-medium text-4xl block mt-4" id="title_notification">Title</h3>
             </div>
             <div class="mb-4 h-auto p-4">
-                <p class="text-center h-full w-full text-lg">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin
-                    literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, ise on the theory of ethics,
-                    very popular during the Renaissance. The first line of Lorem Ipsum,</p>
+                <p class="text-center h-full w-full text-lg" id="description_notification">Description</p>
             </div>
         </div>
     </div>
@@ -156,7 +110,21 @@
             `)
         });
 
-        function toggleModal121(modalID121) {
+        function toggleModal121(modalID121, title, description, not_id) {
+            $.ajax({
+                url: '/read-notification/' + not_id,
+                method: "GET",
+                // data: { _token: access_token, id, type },
+                dataType: "JSON",
+                success: (data) => {
+
+                },
+                error: () => {
+                    console.error("Error, check server response!");
+                },
+            });
+            $('#title_notification').val(title)
+            $('#description_notification').val(description)
             document.getElementById(modalID121).classList.toggle("hidden");
             document.getElementById(modalID121 + "-backdrop").classList.toggle("hidden");
             document.getElementById(modalID121).classList.toggle("flex");

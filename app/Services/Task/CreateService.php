@@ -2,6 +2,7 @@
 
 namespace App\Services\Task;
 
+use App\Models\Address;
 use App\Models\CustomFieldsValue;
 use Illuminate\Support\Arr;
 
@@ -37,8 +38,7 @@ class CreateService
     }
 
 
-    public function addAdditionalAddress($request){
-        $data = [];
+    public function addAdditionalAddress($task,$request){
         $data_inner = [];
         $dataMain['coordinates'] = $request->coordinates0;
 
@@ -49,14 +49,10 @@ class CreateService
                 $data_inner['location'] = $location;
                 $data_inner['longitude'] = explode(',', $coordinates)[1];
                 $data_inner['latitude'] = explode(',', $coordinates)[0];
-                if ($i != 0) {
-                    $data[] = $data_inner;
-                } else {
-                    $dataMain['address'] = json_encode($data_inner);
-                }
+                $data_inner['task_id'] = $task->id;
+                Address::create($data_inner);
             }
         }
-        $dataMain['address_add'] = $data;
         return $dataMain;
 
     }

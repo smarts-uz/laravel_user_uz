@@ -86,4 +86,9 @@ class Task extends Model
         $day = $value == now()->toDateTimeString()? "Bugun": "$value->day-$value->monthName";
         return "$day  $value->noZeroHour:$minut";
     }
+
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
 }

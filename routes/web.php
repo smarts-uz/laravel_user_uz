@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\PerformerAPIController;
+use App\Http\Controllers\API\TaskAPIController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FaqsController;
 
@@ -8,6 +9,7 @@ use App\Http\Controllers\FaqsController;
 use App\Http\Controllers\LoginController;
 
 //avacoder
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 
 //++
@@ -81,6 +83,7 @@ Route::group(['prefix' => 'performers'], function () {
     Route::get('user_online', [PerformersController::class, 'user_online']);
 });
 #endregion
+Route::get('task/{task}/map', [TaskAPIController::class, 'task_map'])->name('task.map'); //end
 
 #region chat
 Route::group(['prefix' => 'admin'], function () {
@@ -228,6 +231,8 @@ Route::get('/lang/{lang}', [Controller::class, 'lang'])->name('lang'); // javoxi
 Route::get('/', [Controller::class, 'home'])->name('home'); // javoxir
 Route::get('/terms', function () {  return view('auth.terms');});
 Route::get('/file-download', [Controller::class, 'download'])->name('file_download.download');
+Route::get('/show-notification/{notification}', [NotificationController::class, 'show_notification'])->name('show_notification');
+Route::get('/read-notification/{notification}', [NotificationController::class, 'read_notification'])->name('read_notification');
 #endregion
 
 #region registration

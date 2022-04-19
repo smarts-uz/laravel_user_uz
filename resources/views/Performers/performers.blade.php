@@ -394,14 +394,13 @@
                     type: 'GET',
                     success: function (data) {
                         activePerformersId = $.parseJSON(JSON.stringify(data));
-                        console.log(activePerformersId)
                         $('.difficultTask').each(function () {
                             id = $(this).attr('id');
                             find = 0;
                             $.each(activePerformersId, function (index, activePerformersId){
-                                if (activePerformersId.id == id){
-                                        find = 1;
-                                    }
+                                if (activePerformersId.id == id) {
+                                    find = 1;
+                                }
                             });
                                 if (find){
                                     $(this).show();

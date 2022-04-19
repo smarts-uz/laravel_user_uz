@@ -9,7 +9,6 @@ use TCG\Voyager\Traits\Translatable;
 class Address extends Model
 {
     use HasFactory;
-    use Translatable;
-    protected $translatable = ['address','description'];
 
+    protected $guarded = [];
 }
