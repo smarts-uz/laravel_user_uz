@@ -1,0 +1,25 @@
+html{
+    scroll-behavior: smooth;
+}
+.scroll-up-btn{
+    position: fixed;
+    height: 55px;
+    width: 60px;
+    color: #fff;
+    background: rgb(89, 105, 248);
+    left: 30px;
+    bottom: 30px;
+    font-size: 50px;
+    text-align: center;
+    border-radius: 5px;
+    z-index: 9999;
+    cursor: pointer;
+    line-height: 30px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 1.3s ease;
+}
+.scroll-up-btn.show{
+    opacity: 1;
+    pointer-events: auto;
+}
