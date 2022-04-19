@@ -25,18 +25,18 @@
 
                 <div>
                     <div class="max-w-md mx-left">
-                        @foreach (\TCG\Voyager\Models\Category::query()->where('parent_id', null)->get() as $category)
+                        @foreach ($categories as $category)
                             <div x-data={show:false} class="rounded-sm">
                                 <div class="my-3 text-blue-500 hover:text-red-500 cursor-pointer" id="{{ str_replace(' ', '', $category->name) }}">
                                     {{ $category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
                                 </div>
                                 <div id="{{$category->slug}}" class="px-8 py-1 hidden">
-                                    @foreach (\TCG\Voyager\Models\Category::query()->where('parent_id', $category->id)->get() as $category2)
-
-                                        <div>
-                                            <a href="/perf-ajax/{{ $category2->id }}" class="text-blue-500 cursor-pointer hover:text-red-500 my-1 send-request" data-id="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</a>
-                                        </div>
-
+                                    @foreach ($categories2 as $category2)
+                                        @if($category2->parent_id == $category->id)
+                                            <div>
+                                                <a href="/perf-ajax/{{ $category2->id }}" class="text-blue-500 cursor-pointer hover:text-red-500 my-1 send-request" data-id="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</a>
+                                            </div>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>
@@ -366,7 +366,7 @@
     <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id12-backdrop"></div>
     </div>
     <script>
-        @foreach (\TCG\Voyager\Models\Category::query()->where('parent_id', null)->get() as $category)
+        @foreach ($categories as $category)
         $( "#{{ str_replace(' ', '', $category->name) }}" ).click(function() {
             if ($("#{{$category->slug}}").hasClass("hidden")) {
                 $("#{{$category->slug}}").removeClass('hidden');
@@ -384,7 +384,7 @@
             document.getElementById(modalID12 + "-backdrop").classList.toggle("flex");
         }
     </script>
-    <script> //Bu scriptda Active Performers id lari Session table dan Ajax orqali chaqililadi va ekranga chiqaziladi.
+    <script> //Bu scriptda Active Performers id lari User table dan Ajax orqali chaqililadi va ekranga chiqaziladi.
         let activePerformersId = [];
         $('#online').click(function () {
             let id, find;
@@ -394,13 +394,14 @@
                     type: 'GET',
                     success: function (data) {
                         activePerformersId = $.parseJSON(JSON.stringify(data));
+                        console.log(activePerformersId)
                         $('.difficultTask').each(function () {
                             id = $(this).attr('id');
                             find = 0;
                             $.each(activePerformersId, function (index, activePerformersId){
-                                if (activePerformersId.user_id == id) {
-                                    find = 1;
-                                }
+                                if (activePerformersId.id == id){
+                                        find = 1;
+                                    }
                             });
                                 if (find){
                                     $(this).show();
@@ -413,7 +414,7 @@
                         console.error("Ajax orqali yuklashda xatolik...", error);
                     }
                 });
-            } else {
+            } else{
                 $('.difficultTask').each(function () {
                     $(this).show();
                 });

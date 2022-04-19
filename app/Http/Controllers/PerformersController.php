@@ -6,6 +6,7 @@ use App\Models\Response;
 use App\Models\WalletBalance;
 use App\Models\Review;
 use App\Services\NotificationService;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -15,13 +16,14 @@ use App\Models\Session;
 use App\Models\BrowsingHistory;
 use App\Models\PostView;
 use App\Models\UserView;
-//use Session;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Models\Task;
 use App\Models\Notification;
 use App\Events\MyEvent;
 use Illuminate\Support\Facades\Auth;
+
+
 
 
 class PerformersController extends Controller
@@ -44,11 +46,13 @@ class PerformersController extends Controller
     public function service( User $user,Request $request)
     {
         $tasks = Task::where('user_id', Auth::id())->get();
-
+        $categories = Category::where('parent_id', null)->select('id','name','slug')->get();
+        $categories2 = Category::where('parent_id','<>', null)->select('id','parent_id','name')->get();
         $users = User::where('role_id', 2)->orderbyDesc('reviews')->paginate(50);
         $task_count =$user->performer_tasks_count;
         $about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
-        return view('Performers/performers', compact('users', 'tasks' ,'about','task_count' ));
+
+        return view('Performers/performers', compact('users', 'tasks' ,'about','task_count','categories','categories2' ));
     }
 
 
@@ -116,10 +120,12 @@ class PerformersController extends Controller
 
     public function ajaxAP()
     {
-        $activeSessions = Session::query()->where('user_id', '<>', null)
-            ->select('user_id')
+        $date = Carbon::now()->subMinutes(2)->toDateTimeString();
+        $activePerformers = User::where([['role_id', 2],['last_seen', ">=",$date]])
+            ->select('id')
             ->get();
-        return $activeSessions->all();
+
+        return $activePerformers->all();
     }
 
     public function deleteNotification(Notification $notification)
