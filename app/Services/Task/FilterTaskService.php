@@ -46,7 +46,7 @@ class FilterTaskService
                 }
             }
         }else{
-            $tasks = $tasks->get();
+            $tasks_items = $tasks->get();
         }
         $tasks = $tasks_items;
 
