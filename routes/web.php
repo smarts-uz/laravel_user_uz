@@ -58,7 +58,7 @@ use App\Http\Controllers\Task\CreateController;
 |
 */
 
-Route::any('/paynet',function(){
+Route::any('/paynet', function () {
     (new Goodoneuz\PayUz\PayUz)->driver('paynet')->handle();
 });
 
@@ -69,16 +69,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/fordelnotif/{notification}/', [PerformersController::class, 'deleteNotification'])->name('performers.deleteNotification'); // javoxir
 });
 Route::post('del-notif', [PerformersController::class, 'del_all_notif']); // javoxir
-Route::post('/performers', [PerformersController::class, 'service']); // javoxir
+
 Route::get('perf-ajax/{id}', [PerformersController::class, 'perf_ajax']); // javoxir
 Route::get('active-performers', [PerformersController::class, 'ajaxAP'])->name('performers.active_performers'); // Shuxrat78
 Route::post('give-task', [PerformersController::class, 'give_task']); // javoxir
+
 Route::group(['prefix' => 'performers'], function () {
+    Route::post('/', [PerformersController::class, 'service']); // javoxir
     Route::get('/', [PerformersController::class, 'service'])->name('performers.service'); // javoxir
     Route::get('/{user}', [PerformersController::class, 'performer'])->name('performers.performer'); // javoxir
     Route::get('/chat/{id}', [PerformersController::class, 'performer_chat'])->name('performers.performer_chat'); // javoxir
     Route::get('user_online', [PerformersController::class, 'user_online']);
 });
+
 #endregion
 Route::get('task/{task}/map', [TaskAPIController::class, 'task_map'])->name('task.map'); //end
 
@@ -190,7 +193,7 @@ Route::prefix("task")->group(function () {
         Route::get('/', [CreateController::class, 'name'])->name('task.create.name');
         Route::post('/name', [CreateController::class, 'name_store'])->name('task.create.name.store');
 
-        Route::get('/remote/{task}',[CreateController::class,'remote_get'])->name('task.create.remote');
+        Route::get('/remote/{task}', [CreateController::class, 'remote_get'])->name('task.create.remote');
         Route::post('/remote/{task}', [CreateController::class, 'remote_store'])->name('task.create.remote.store');
         Route::get('/custom/{task}', [CreateController::class, 'custom_get'])->name('task.create.custom.get');
         Route::post('/custom/{task}/store', [CreateController::class, 'custom_store'])->name('task.create.custom.store');
@@ -223,7 +226,9 @@ Route::post('send-review-user/{task}', [UpdateController::class, 'sendReview'])-
 Route::get('/categories/{id}', [Controller::class, 'category'])->name("categories"); // javoxir
 Route::get('/lang/{lang}', [Controller::class, 'lang'])->name('lang'); // javoxir
 Route::get('/', [Controller::class, 'home'])->name('home'); // javoxir
-Route::get('/terms', function () {  return view('auth.terms');});
+Route::get('/terms', function () {
+    return view('auth.terms');
+});
 Route::get('/file-download', [Controller::class, 'download'])->name('file_download.download');
 Route::get('/show-notification/{notification}', [NotificationController::class, 'show_notification'])->name('show_notification');
 Route::get('/read-notification/{notification}', [NotificationController::class, 'read_notification'])->name('read_notification');

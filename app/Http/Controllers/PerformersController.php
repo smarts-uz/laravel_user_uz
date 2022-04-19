@@ -6,6 +6,7 @@ use App\Models\Response;
 use App\Models\WalletBalance;
 use App\Models\Review;
 use App\Services\NotificationService;
+use App\Services\PerformersService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -24,10 +25,10 @@ use App\Events\MyEvent;
 use Illuminate\Support\Facades\Auth;
 
 
-
-
 class PerformersController extends Controller
 {
+
+
     public function performer_chat($id)
     {
 
@@ -43,29 +44,49 @@ class PerformersController extends Controller
         }
     }
 
-    public function service( User $user,Request $request)
+
+    /**
+     *
+     * Function  service
+     * @param User $user
+     * @param Request $request
+     * @return  \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function service(User $user, Request $request)
     {
-        $tasks = Task::where('user_id', Auth::id())->get();
-        $categories = Category::where('parent_id', null)->select('id','name','slug')->get();
-        $categories2 = Category::where('parent_id','<>', null)->select('id','parent_id','name')->get();
-        $users = User::where('role_id', 2)->orderbyDesc('reviews')->paginate(50);
-        $task_count =$user->performer_tasks_count;
-        $about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
 
-        return view('Performers/performers', compact('users', 'tasks' ,'about','task_count','categories','categories2' ));
+        $authId = Auth::id();
+
+        $service = new PerformersService();
+        $item = $service->service($authId, $user);
+
+        return view('performers/performers',
+            [
+                'users' => $item->users,
+                'tasks' => $item->tasks,
+                'about' => $item->about,
+                'task_count' => $item->task_count,
+                'categories' => $item->categories,
+                'categories2' => $item->categories2,
+            ]);
     }
-
 
 
     public function performer(User $user, Request $request)
     {
-        setView($user);
-        $task_count = $user->performer_tasks_count;
-        $about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
-        $reviews = $user->reviews()->get();
-        $portfolios = $user->portfolios()->where('image', '!=', null)->get();
+        setview($user);
 
-        return view('Performers/executors-courier', compact('reviews', 'about', 'user', 'task_count','portfolios'));
+        $service = new PerformersService();
+        $item = $service->performer($user);
+
+        return view('performers/executors-courier',
+            [
+                'reviews' => $item->reviews,
+                'about' => $item->about,
+                'user' => $user,
+                'task_count' => $item->task_count,
+                'portfolios' => $item->portfolios
+            ]);
     }
 
 
@@ -114,14 +135,14 @@ class PerformersController extends Controller
         $users = User::where('role_id', 2)->paginate(50);
         $tasks = Task::where('user_id', Auth::id())->get();
 
-        return view('Performers/performers_cat', compact('child_categories','about','user', 'task_count', 'categories', 'users', 'cf_id', 'cur_cat', 'tasks'));
+        return view('performers/performers_cat', compact('child_categories', 'about', 'user', 'task_count', 'categories', 'users', 'cf_id', 'cur_cat', 'tasks'));
 
     }
 
     public function ajaxAP()
     {
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
-        $activePerformers = User::where([['role_id', 2],['last_seen', ">=",$date]])
+        $activePerformers = User::where([['role_id', 2], ['last_seen', ">=", $date]])
             ->select('id')
             ->get();
 
@@ -139,8 +160,10 @@ class PerformersController extends Controller
         Notification::where('user_id', Auth::id())->delete();
         return response()->json(['success']);
     }
-    public function user_online(Request $request){
-            $users = User::select("*")
+
+    public function user_online(Request $request)
+    {
+        $users = User::select("*")
             ->whereNotNull('last_seen')
             ->orderBy('last_seen', 'DESC');
 
