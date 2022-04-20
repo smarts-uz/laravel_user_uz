@@ -1,10 +1,8 @@
 <?php
 
 use App\Http\Controllers\API\CategoriesAPIController; // javoxir
-use App\Http\Controllers\API\CustomFieldAPIController; // javoxir
 use App\Http\Controllers\API\FaqAPIController; // javoxir
 use App\Http\Controllers\API\LoginAPIController;
-use App\Http\Controllers\API\NewsAPIController;
 use App\Http\Controllers\API\PerformerAPIController; // javoxir
 use App\Http\Controllers\API\ProfileAPIController; // javoxir +
 use App\Http\Controllers\API\ResponseAPIController;
@@ -20,11 +18,6 @@ use App\Http\Controllers\API\RefillAPIController; // javoxir
 use App\Http\Controllers\API\ReportAPIController; // javoxir
 use App\Http\Controllers\API\PaynetTransactionAPIController;
 use App\Http\Controllers\PortfolioAPIController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Task\ResponseController;
-use App\Http\Controllers\Task\UpdateController;
-use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
@@ -54,8 +47,6 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::delete('/delete-task/{task}', [SearchAPIController::class, 'delete_task']); //end
     Route::delete('/delete', [UserAPIController::class, 'destroy']); //end
     Route::post('/settings/update', [ProfileAPIController::class, 'updateData'])->name('profile.updateData'); //not
-
-
 
     Route::get('account/verification/email', [LoginAPIController::class, 'send_email_verification']);
     Route::get('account/verification/phone', [LoginAPIController::class, 'send_phone_verification']);

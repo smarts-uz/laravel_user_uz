@@ -26,7 +26,7 @@
                     <p class="mb-2 text-right">{{$notification->created_at->format('d M')}}</p>
                     @if($notification->type == 1)
                         <div class="w-full">{{__('Отклик к заданию')}} <br>
-                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}"  №{{$notification->id}}</a> <br>
+                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification->task_id])}}">“{{$notification->name_task}}"  №{{$notification->task_id}}</a> <br>
                             {{__('задания отправлен')}}
                         </div>
                     @elseif($notification->type == 2 || $notification->type == 3)
@@ -36,16 +36,16 @@
                         </button>
                     @elseif($notification->type == 4)
                         <div class="w-full">{!!__('Вас выбрали исполнителем <br> в задании')!!}
-                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}"  №{{$notification->id}}</a> <br>
+                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification->task_id])}}">“{{$notification->name_task}}"  №{{$notification->task_id}}</a> <br>
                             <a class="hover:text-blue-500" href="/performers/{{$notification->user_id}}"> {{$notification->user->name}}</a></div>
                     @elseif($notification->type == 5)
                         <div class="w-full">{{__('Отклик к заданию')}} <br>
-                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}" №{{$notification->id}}</a> <br>
+                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification->task_id])}}">“{{$notification->name_task}}" №{{$notification->task_id}}</a> <br>
                             {{__('задания отправлен')}}
                         </div>
                     @else
                         <div class="w-full"> {!!__('Заказчик указал, что вы выполнили <br> задание')!!}
-                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}"  №{{$notification->id}}</a> <br>
+                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification->task_id])}}">“{{$notification->name_task}}"  №{{$notification->task_id}}</a> <br>
                             {{__(' и оставил вам отзыв')}}
                         </div>
                     @endif

@@ -144,9 +144,13 @@ class ProfileAPIController extends Controller
             $data['is_phone_number_verified'] = 0;
             $data['phone_number_old'] = auth()->user()->phone_number;
         }
-        Auth::user()->update($data);
+        $user = Auth::user();
+        $user->update($data);
         Alert::success(__('Настройки успешно сохранены'));
-        return redirect()->route('profile.editData');
+        return response()->json([
+            'success' => true,
+            'data' => []
+        ]);
     }
 
     public function cash()

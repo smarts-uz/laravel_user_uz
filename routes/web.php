@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\API\PerformerAPIController;
+
 use App\Http\Controllers\API\TaskAPIController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FaqsController;
