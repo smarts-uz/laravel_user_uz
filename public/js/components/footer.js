@@ -9,5 +9,5 @@ $(window).on('scroll',function(){
 })
 
 $(".scroll-up-btn").click(function(){
-    $('html').animate({scrollTop:0}, 2000);
+    $('html').animate({scrollTop:0}, 900);
 })
