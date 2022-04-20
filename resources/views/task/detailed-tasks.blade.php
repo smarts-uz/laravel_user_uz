@@ -338,7 +338,7 @@
                                             {{__('Оставить отзыв')}}
                                         </button>
 
-                                        @if($task->status == 3)
+                                        @if($task->status == 3 && $task->user_id == auth()->user()->id)
 
                                             {{--                                                            <form action="{{ route('task.completed', $task->id) }}" method="post">--}}
                                             @csrf
@@ -468,7 +468,7 @@
                         </div>
 
                         @if($selected && $selected->performer)
-                            <h1>{{__('Выбранный исполнитель')}} </h1>
+                            <h1 class="font-semibold text-2xl">{{__('Выбранный исполнитель')}} </h1>
                             <div class="my-6 flex flex-row">
                                 <div class="">
                                     <img class="w-24 h-24 rounded-lg border-2"
