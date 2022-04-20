@@ -243,9 +243,7 @@
                     </div>
                     @endif
                 @endforeach
-
-
-                {{ $users->links() }}
+                {{ $users->links('pagination::tailwind') }}
 
             </div>
         </div>
