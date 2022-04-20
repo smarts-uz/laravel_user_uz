@@ -121,7 +121,7 @@ class UserController extends Controller
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
         (new SmsService())->send(preg_replace('/[^0-9]/', '', $user->phone_number), $sms_otp);
-        session()->put('verifications',['key' => 'email', 'value' => $data['email']]);
+        session()->put('verifications',['key' => 'phone_number', 'value' => $data['phone_number']]);
 
         return redirect()->route('user.reset_code_view');
     }

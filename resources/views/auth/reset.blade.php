@@ -15,17 +15,18 @@
         <div class="mx-auto my-8">
             <ul id="tabs"
                 class="nav nav-tabs flex  text-center flex-wrap list-none border-b-0 pl-0 mb-2 justify-center">
-                <li class="bg-white text-xl px-12 text-gray-800 font-semibold hover:bg-gray-200 py-2 text-yellow-500 border-b-2 border-yellow-500">
+                <li class="bg-white text-xl px-12 text-gray-800 font-semibold hover:bg-gray-200 py-2  @if(!$errors->has('phone_number'))  text-yellow-500 border-b-2 border-yellow-500 @endif ">
                     <a id="default-tab" href="#first">ЭЛ. ПОЧТА</a></li>
-                <li class="px-12 text-xl text-gray-800 hover:bg-gray-200 font-semibold py-2"><a href="#second">СМС</a>
+                <li class="px-12 text-xl text-gray-800 hover:bg-gray-200 font-semibold py-2  @if($errors->has('phone_number'))  text-yellow-500 border-b-2 border-yellow-500 @endif  "><a href="#second">СМС</a>
                 </li>
             </ul>
         </div>
 
         <!-- Tab Contents -->
+
         <div id="tab-contents" class="flex justify-center">
-            <div id="first" class="p-2">
-                <form action="{{route('user.reset_submit')}}" method="POST">
+            <div id="first" class="p-2   @if($errors->has('phone_number')) hidden @endif">
+                <form action="{{route('user.reset_submit_email')}}" method="POST">
                     @csrf
                     <div class="mx-auto flex items-center justify-center w-full">
                         <p class="mb-4">
@@ -45,7 +46,7 @@
                             <p class="text-red-500">{{session('message')}}</p>
                         @endif
                         @error('email')
-                              <p class="text-red-500">{{ $message }}</p>
+                        <p class="text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
                     <button type="submit"
@@ -54,7 +55,7 @@
                     </button>
                 </form>
             </div>
-            <div id="second" class="p-2">
+                <div id="second" class="p-2 @if(!$errors->has('phone_number')) hidden @endif">
                 <div class="mx-auto flex items-center justify-center w-full">
                     <p class="mb-4">
                         Укажите телефон, привязанный к вашей <br> учетной записи. Мы отправим СМС с кодом.
@@ -78,7 +79,7 @@
                                 <p class="text-red-500">{{session('message')}}</p>
                             @endif
 
-                            <input type="hidden" name="phone_number" id="phone">
+                            <input type="hidden" name="phone_number" value="{{ old('phone_number') }}" id="phone">
                             @error('phone_number')
                             <span class="text-danger" style="color: red">{{ $message  }}</span>
                             @enderror
@@ -115,7 +116,7 @@
                 e.target.parentElement.classList.add("text-yellow-500", "border-b-2", "border-yellow-500");
             });
         });
-        $('#second').addClass('hidden');
+
         $('#second').click(function () {
             $(this).removeClass('hidden');
         })
