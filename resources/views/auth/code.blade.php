@@ -1,24 +1,24 @@
 @extends('layouts.app')
 @section('content')
     <div class="mt-3 text-center text-base">
-        <div class="mx-auto flex items-center justify-center w-full">
-            <h3 class="font-bold text-2xl block mb-4">
+        <div class="mx-auto items-center justify-center w-full">
+            <h3 class="font-bold text-3xl block mt-8 mb-4">
                 {{__('Восстановление пароля')}}
             </h3>
+            <p class="font-medium text-lg mt-3 mb-6">
+                Выберите подходящий способ:
+            </p>
         </div>
         <div class="mx-auto flex items-center justify-center w-full">
-            <p class="mb-4">
-              {{__('Укажите телефон, привязанный к вашей учетной записи. Мы отправим СМС с кодом.')}}
-            </p>
         </div>
         <form action="{{route('user.reset_code')}}" method="POST">
             @csrf
             <div>
                 <div class="mb-4">
-                    <label class="block text-gray-500 text-sm" for="phone_number">
-                        {{__('Телефон немер')}}
+                    <label class="block text-gray-500 text-sm mb-1" for="phone_number">
+                        Введите смс-код
                     </label>
-                    <input type="number" onfocus="onfocus"
+                    <input type="text" onfocus="onfocus" onkeypress='validate(event)'
                            id="phone_number" name="code"
                            class="shadow focus:outline-none focus:border-yellow-500 appearance-none border border-slate-300 rounded w-80 py-2 px-3 text-gray-700 mb-3 leading-tight ">
                     <br>
