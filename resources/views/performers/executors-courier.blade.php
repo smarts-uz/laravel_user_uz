@@ -225,7 +225,7 @@
                     </div>
                 </div>
                 <div class="my-4">
-                    @if(!(count($goodReviews) && count($badReviews)))
+                    @if(!(count($goodReviews) || count($badReviews)))
                         <h1 class="text-xl font-semibold mt-2">{{__('Отзывов пока нет')}}</h1>
                         <p class="mt-2">{{__('Отзывы появятся после того, как вы создадите или выполните задание')}}</p>
 
