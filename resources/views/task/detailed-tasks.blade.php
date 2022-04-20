@@ -338,7 +338,7 @@
                                             {{__('Оставить отзыв')}}
                                         </button>
 
-                                        @if($task->status == 3)
+                                        @if($task->status == 3 && $task->user_id == auth()->user()->id)
 
                                             {{--                                                            <form action="{{ route('task.completed', $task->id) }}" method="post">--}}
                                             @csrf
