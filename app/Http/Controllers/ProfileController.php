@@ -114,8 +114,10 @@ class ProfileController extends Controller
         $b = File::directories(public_path("Portfolio/{$user->name}"));
         $directories = array_map('basename', $b);
         $categories = Category::withTranslations(['ru', 'uz'])->get();
+        $goodReviews = $user->goodReviews()->get();
+        $badReviews = $user->badReviews()->get();
 
-        return view('profile.profile', compact('categories', 'about', 'portfolios', 'directories', 'task_count', 'user', 'views', 'task', 'ports'));
+        return view('profile.profile', compact('categories', 'about', 'portfolios', 'directories', 'task_count', 'user', 'views', 'task', 'ports','goodReviews','badReviews'));
     }
 
     public function updates(Request $request)

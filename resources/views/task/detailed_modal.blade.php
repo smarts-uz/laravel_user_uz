@@ -260,9 +260,9 @@ id="modal-id4">
 
 
 {{-- zakazchik ispolnitel tanlagandagi modal --}}
-@if( session()->has('success') &&  session()->has('data') && session('success'))
+@if(session()->has('data'))
 <div
-class="{{ session()->has('success') &&  session()->has('data') && session('success') ?"":'hidden' }} overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none        justify-center items-center"
+class="{{ session()->has('data') ?"":'hidden' }} overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none        justify-center items-center"
 style="background-color:rgba(0,0,0,0.5)" id="modal-id33">
 <div class="relative w-full my-6 mx-auto max-w-3xl" id="modal33">
     <div
