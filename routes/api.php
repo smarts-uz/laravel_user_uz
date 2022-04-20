@@ -62,8 +62,8 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']);
     Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']);
     Route::post('/change-avatar', [ProfileAPIController::class, 'avatar']);
-
     Route::get('/profile', [ProfileAPIController::class, 'index']);
+    Route::post('/profile/password/change', [ProfileAPIController::class, 'change_password'])->name('profile.change_password');
     Route::get('/user_cash', [ProfileAPIController::class, 'cash']);
 
 });
@@ -74,7 +74,6 @@ Route::post('register', [UserAPIController::class, 'register']); //end
 
 Route::post('/reset', [UserAPIController::class, 'reset_submit']);
 Route::post('/reset/password', [UserAPIController::class, 'reset_password_save'])->name('user.reset_password_save');
-Route::post('/profile/password/change', [ProfileAPIController::class, 'change_password'])->name('profile.change_paasword');
 Route::post('/code', [UserAPIController::class, 'reset_code'])->name('user.reset_code');
 
 
