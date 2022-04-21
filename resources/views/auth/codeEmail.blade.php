@@ -6,7 +6,7 @@
                 {{__('Восстановление пароля')}}
             </h3>
             <p class="font-medium text-lg mt-3 mb-6">
-                Выберите подходящий способ:
+                {{__('Выберите подходящий способ:')}}
             </p>
         </div>
         <div class="mx-auto flex items-center justify-center w-full">
@@ -16,7 +16,7 @@
             <div>
                 <div class="mb-4">
                     <label class="block text-gray-500 text-sm mb-1" for="phone_number">
-                        Введите смс-код
+                        {{__('Введите смс-код')}}
                     </label>
                     <input type="text" onfocus="onfocus" onkeypress='validate(event)'
                            id="phone_number" name="code"

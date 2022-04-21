@@ -84,7 +84,7 @@
                 <div class="sm:w-4/5 w-full mx-auto mt-20">{{__('значки')}}
                     <hr>
                 </div>
-                <div class="flex lg:flex-row flex-col mt-10 sm:w-4/5 w-full mx-auto">
+                <div class="flex lg:flex-row flex-col mt-10 sm:w-4/5 w-full mx-auto gap-x-2">
                     <div class="lg:w-1/2 w-full lg:text-left text-center">
                          <a href="categories/1">
                             <button  class="font-sans  text-2xl  font-medium bg-green-600 text-white hover:bg-green-500 px-10 py-4 rounded">
@@ -93,7 +93,7 @@
                         </a>
                     </div>
                     <div class="lg:w-1/2 w-full mx-auto lg:mt-0 mt-6">
-                        <p>{{__('Может быть вы хотите стать')}}<a href="/verificationInfo" class="text-blue-500 underline hover:text-orange-400">{{__('исполнителем Universal Services?')}}</a></p>
+                        <p>{{__('Может быть вы хотите стать')}}<a href="/verification" class="text-blue-500 underline hover:text-orange-400">{{__('исполнителем Universal Services?')}}</a></p>
                     </div>
                 </div>
             </div>
