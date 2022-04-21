@@ -182,7 +182,7 @@
                                                        class="text-blue-500 hover:text-red-500">{{ $badReview->user->name }}</a>
                                                 </div>
                                                 <div class="sm:w-3/4 w-full p-3 bg-yellow-50 rounded-xl">
-                                                    <p>{{__('Задание')}} <a href="#"
+                                                    <p>{{__('Задание')}} <a href="{{ route('searchTask.task',$badReview->task_id) }}"
                                                                             class="hover:text-red-400 border-b border-gray-300 hover:border-red-400">"{{ $badReview->task->name }}
                                                             "</a> {{__('выполнено')}}</p>
                                                     <p class="border-t-2 border-gray-300 my-3 pt-3">{{ $badReview->description }}</p>

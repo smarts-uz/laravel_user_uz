@@ -284,10 +284,10 @@ class UserController extends Controller
         return $message;
     }
 
-    public function update(Request $request, User $user)
-    {
-        $user->update($request->only($this->getEditableColumns()));
-    }
+    // public function update(Request $request, User $user)
+    // {
+    //     $user->update($request->only($this->getEditableColumns()));
+    // }
 
     protected function getEditableColumns()
     {
