@@ -91,7 +91,7 @@
             cluster: '{{env("PUSHER_APP_CLUSTER")}}',
             // encrypted: true,
 
-            wsHost: 'ws.smarts.uz', // 'bidding.uztelecom.uz',
+            wsHost: '{{env('WEBSOCKET_SERVER_HOST')}}',
             wsPort: 6001,
             forceTLS: false,
             disableStats: true,
@@ -99,6 +99,7 @@
         let channel = pusher.subscribe('user-notification-send-' + {{auth()->id()}});
         channel.bind('server-user', function (data) {
             data = JSON.parse(data.data)
+            console.log(data)
             let count = parseInt($('#content_count').text())
             count = count ? count : 0;
             count += 1
