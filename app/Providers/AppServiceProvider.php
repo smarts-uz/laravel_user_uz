@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Review;
+use App\Observers\ReviewObserver;
 use App\Services\User\Active;
 use Illuminate\Support\ServiceProvider;
 use TCG\Voyager\Facades\Voyager;
@@ -29,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
         foreach (glob(__DIR__.'/../Helpers/*.php') as $filename) {
             require_once $filename;
         }
+        Review::observe(ReviewObserver::class);
 
     }
 }

@@ -156,8 +156,8 @@
                                             </div>
                                         @endif
                                         @if($user->role_id == 2)
-                                            @foreach($about as $rating)
-                                                @if($rating->id == $user->id)
+{{--                                            @foreach($about as $rating)--}}
+{{--                                                @if($rating->id == $user->id)--}}
                                                     <div data-tooltip-target="tooltip-animation_2"
                                                          class="mx-1 tooltip-2">
                                                         <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
@@ -169,10 +169,10 @@
                                                             <div class="tooltip-arrow" data-popper-arrow></div>
                                                         </div>
                                                     </div>
-                                                @else
-                                                    @continue
-                                                @endif
-                                            @endforeach
+{{--                                                @else--}}
+{{--                                                    @continue--}}
+{{--                                                @endif--}}
+{{--                                            @endforeach--}}
                                             <div data-tooltip-target="tooltip-animation_3" class="mx-1">
                                                 @if($task_count >= 50)
                                                     <img src="{{ asset('images/50.png') }}" alt="" class="w-10">
