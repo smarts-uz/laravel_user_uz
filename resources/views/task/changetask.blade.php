@@ -162,7 +162,7 @@
                                 <input autocomplete="off" oninput="myMapFunction()" id="suggest0"
                                        class="appearance-none bg-transparent w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none focus:border-yellow-500"
                                        type="text" placeholder="Город, Улица, Дом" name="location0"
-                                       value="{{ json_decode($task->address)->location }}">
+                                       value="">
 
 
                                 @error('location0')
@@ -183,7 +183,7 @@
                             </div>
 
                             <input name="coordinates0" type="hidden" id="coordinate"
-                                   value="{{json_decode($task->address)->latitude.",". json_decode($task->address)->longitude }}">
+                                   value="">
 
                         </div>
                         <div>

@@ -192,8 +192,9 @@ public function __construct()
         taskGuard($task);
         if ($task->responses_count)
             abort(403);
-//        dd($task);
-        return view('task.changetask', compact('task'));
+        $addresses = $task->addresses;
+        //        dd($task);
+        return view('task.changetask', compact('task','addresses'));
     }
 
 
