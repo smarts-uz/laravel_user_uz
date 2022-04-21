@@ -23,7 +23,7 @@
                     <input type="password" placeholder="Confirm password"
                            id="phone_number" name="password_confirmation"
                          required  class="shadow focus:outline-none focus:border-yellow-500 appearance-none border rounded w-80 py-2 px-3 text-gray-700 mb-3 leading-tight">
-                         <i class="fas fa-eye-slash text-gray-500 relative -left-12" id="eye1"></i>
+                         <i class="fas fa-eye-slash text-gray-500 relative -left-12" id="eye"></i>
                     <br>
                     @error('password')
                         <span class="text-danger" style="color: red">{{ $message  }}</span>
