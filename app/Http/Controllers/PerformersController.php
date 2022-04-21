@@ -79,13 +79,18 @@ class PerformersController extends Controller
         $service = new PerformersService();
         $item = $service->performer($user);
 
+        $goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->get();
+        $badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->get();
+
         return view('performers/executors-courier',
             [
                 'reviews' => $item->reviews,
                 'about' => $item->about,
                 'user' => $user,
                 'task_count' => $item->task_count,
-                'portfolios' => $item->portfolios
+                'portfolios' => $item->portfolios,
+                'goodReviews' => $goodReviews,
+                'badReviews' => $badReviews,
             ]);
     }
 

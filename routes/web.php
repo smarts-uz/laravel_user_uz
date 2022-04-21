@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\API\PerformerAPIController;
+
 use App\Http\Controllers\API\TaskAPIController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FaqsController;
@@ -45,6 +45,8 @@ use App\Http\Controllers\MassmediaController;
 // javoxir
 use App\Http\Controllers\Task\CreateController;
 
+use App\Http\Controllers\ClickuzController;
+
 //avocoder
 
 /*
@@ -62,6 +64,8 @@ Route::any('/paynet', function () {
     (new Goodoneuz\PayUz\PayUz)->driver('paynet')->handle();
 });
 
+Route::post('/get_info_click', [ClickuzController::class, 'get_info']);
+Route::get('/test_gic', [ClickuzController::class, 'test']);
 
 #region performers
 Route::get('/for_del_new_task/{task}', [CreateController::class, 'deletetask']); // javoxir
@@ -255,9 +259,11 @@ Route::post("account/change/email", [LoginController::class, 'change_email'])->n
 Route::post("account/change/phone", [LoginController::class, 'change_phone_number'])->name('login.change_phone_number')->middleware('auth');
 Route::post("account/change/phone/send", [LoginController::class, 'verify_phone'])->name('login.verify_phone')->middleware('auth');
 Route::post('/reset', [UserController::class, 'reset_submit'])->name('user.reset_submit');
+Route::post('/reset-by-email', [UserController::class, 'reset_by_email'])->name('user.reset_submit_email');
 Route::get('/reset/password', [UserController::class, 'reset_password'])->name('user.reset_password');
 Route::post('/reset/password', [UserController::class, 'reset_password_save'])->name('user.reset_password_save');
 Route::get('/code', [UserController::class, 'reset_code_view'])->name('user.reset_code_view');
+Route::view('/code-email', 'auth.codeEmail')->name('user.reset_code_view_email');
 Route::post('/code', [UserController::class, 'reset_code'])->name('user.reset_code');
 Route::get('/register/code', [UserController::class, 'code'])->name('user.code');
 Route::post('/register/code', [UserController::class, 'code_submit'])->name('user.code_submit');

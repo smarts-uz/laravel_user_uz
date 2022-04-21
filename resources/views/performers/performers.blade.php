@@ -245,6 +245,7 @@
                             </div>
                         </div>
                     @endforeach
+                    {{ $users->links('pagination::tailwind') }}
                 </div>
             </div>
         </div>

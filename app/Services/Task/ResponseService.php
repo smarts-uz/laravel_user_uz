@@ -66,14 +66,15 @@ class ResponseService
             'performer_id' => $response->performer_id,
             'status' => Task::STATUS_IN_PROGRESS
         ];
+        $response_user = $response->user;
         $task->update($data);
         $performer = $response->performer;
-        if ($response->user->phone_numer) {
-            $name = $response->user->name;
-            $phone = $response->user->phone_number;
-            $text = "Vi ispolnitel v zadanii user.uz/detailed-tasks/$response->task_id. Kontakt zakazchika: $name. $phone";
-            (new SmsService())->send($response->user->phone_numer, $text);
-
+        if ($performer->phone_number) {
+            $name = $response_user->name;
+            $phone = $response_user->phone_number;
+            $tesk_url = route("searchTask.task",$response->task_id);
+            $text = "Vi ispolnitel v zadanii $tesk_url. Kontakt zakazchika: $name. $phone";
+            (new SmsService())->send($performer->phone_number, $text);
         }
         $data = [
             'performer_name' => $performer->name,

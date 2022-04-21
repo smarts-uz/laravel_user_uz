@@ -27,7 +27,6 @@
                     @enderror
                     @if(session()->has('error'))
                         <span class="text-red-500">{{ session('error')  }}</span>
-
                     @endif
                 </div>
             </div>

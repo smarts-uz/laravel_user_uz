@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ProfileAPIController extends Controller
@@ -25,31 +26,41 @@ class ProfileAPIController extends Controller
 
     public function change_password(Request $request)
     {
-        $data = $request->validate([
+        $validator = Validator::make($request->all(), [
             'old_password' => 'required',
             'password' => 'required|confirmed|min:6'
         ]);
-        if (!$data) {
+        if ($validator->fails()) {
             return response()->json([
-                'status'=> false,
-                'message'=>"something went wrong"
+                'status' => false,
+                'data' => $validator->errors(),
+                'message' => "something went wrong"
+            ]);
+        }
+        $user = auth()->user();
+        if (Hash::check($request['old_password'], $user->password)) {
+            $user->update(['password' => Hash::make($request['password'])]);
+
+            return response()->json([
+                'status' => true,
+                'message' => "password successfully changed",
+                'password' => 'password'
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => "Old password wrong"
             ]);
         }
 
-        $data['password'] = Hash::make($data['password']);
-        auth()->user()->update($data);
 
-        return response()->json([
-            'status'=> true,
-            'message'=>"password successfully changed",
-            'password' => 'password'
-        ]);
     }
 
-    public function avatar(Request $request){
-        $image = $request->validate(['image'=>'required'])['image'];
-        $name = md5(Carbon::now().'_'.$image->getClientOriginalName().'.'.$image->getClientOriginalExtension());
-        $filepath = Storage::disk('public')->putFileAs('/images',$image, $name);
+    public function avatar(Request $request)
+    {
+        $image = $request->validate(['image' => 'required'])['image'];
+        $name = md5(Carbon::now() . '_' . $image->getClientOriginalName() . '.' . $image->getClientOriginalExtension());
+        $filepath = Storage::disk('public')->putFileAs('/images', $image, $name);
         $data['avatar'] = $filepath;
         auth()->user()->update($data);
 
@@ -144,9 +155,13 @@ class ProfileAPIController extends Controller
             $data['is_phone_number_verified'] = 0;
             $data['phone_number_old'] = auth()->user()->phone_number;
         }
-        Auth::user()->update($data);
+        $user = Auth::user();
+        $user->update($data);
         Alert::success(__('Настройки успешно сохранены'));
-        return redirect()->route('profile.editData');
+        return response()->json([
+            'success' => true,
+            'data' => []
+        ]);
     }
 
     public function cash()

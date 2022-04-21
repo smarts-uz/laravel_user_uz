@@ -22,8 +22,9 @@ class NotificationController extends VoyagerBaseController
 
     public function show_notification(Notification $notification)
     {
-        $notification->update(['is_read', 1]);
-        return redirect('/detailed-tasks/' . $notification->id);
+        $notification->is_read = 1;
+        $notification->update();
+        return redirect('/detailed-tasks/' . $notification->task_id);
     }
 
     public function store(Request $request)
