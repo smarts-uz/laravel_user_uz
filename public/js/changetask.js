@@ -3,12 +3,29 @@ var x = 1;
 var alp =  ["B", "C", "D", "E", "F","G","H","I","J"];
 var suggestView = [];
 
-function init_map(){
-    myMap = new ymaps.Map('map', {
-        center: [ 41.311151, 69.279737],
-        zoom: 13,
-        controls: ['zoomControl'],
+function getMapData() {
+    var result = false
+    $.ajax({
+        url: $("#map_route").text(),
+        dataType: "json",
+        type: "get",
+        async: false,
+        success: function (data) {
+            result = data
+        },
     });
+
+    return result
+}
+
+function init_map(){
+    data = getMapData()
+    if (data.length)
+        myMap = new ymaps.Map('map', {
+            center: [ data[0].latitude, data[0].longitude],
+            zoom: 13,
+            controls: ['zoomControl'],
+        });
 }
 
 ymaps.ready(init_map);

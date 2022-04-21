@@ -6,83 +6,7 @@
     <div class="hidden" id="map_route">{{ route('task.map', $task->id) }}</div>
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=f4b34baa-cbd1-432b-865b-9562afa3fcdb"
             type="text/javascript"></script>
-    <script>
-        ymaps.ready(init);
-
-        function init() {
-            var myMap = new ymaps.Map("map", {
-                    center: [{{$task->coordinates}}],
-                    zoom: 6,
-                    controls: [],
-                    type: 'yandex#satellite',
-                    restrictMapArea: [59.838, 29.511]
-                }),
-
-                // Создаем геообъект с типом геометрии "Точка".
-                myGeoObject = new ymaps.GeoObject({
-                    // Описание геометрии.
-                }, {
-                    // Опции.
-                    // Иконка метки будет растягиваться под размер ее содержимого.
-                    preset: 'islands#blackStretchyIcon',
-                    // Метку можно перемещать.
-                    draggable: true
-                });
-
-            $.ajax({
-                url: $("#map_route").text(),
-                dataType: "json",
-                type: "get",
-                async: true,
-                data: { },
-                success: function (data) {
-                    for (let i=0; i < data.length; i++)
-                    {
-                        console.log(data[i]);
-                        myMap.geoObjects
-                            .add(myGeoObject)
-                            .add(new ymaps.Placemark([data[i].latitude,data[i].longitude], {
-                                balloonContent: data[i].location
-                            }, {
-                                preset: 'islands#icon',
-                                iconColor: '#0095b6'
-                            }));
-                    }
-
-
-                },
-                error: function (xhr, exception) {
-                    var msg = "";
-                    if (xhr.status === 0) {
-                        msg = "Not connect.\n Verify Network." + xhr.responseText;
-                    } else if (xhr.status == 404) {
-                        msg = "Requested page not found. [404]" + xhr.responseText;
-                    } else if (xhr.status == 500) {
-                        msg = "Internal Server Error [500]." +  xhr.responseText;
-                    } else if (exception === "parsererror") {
-                        msg = "Requested JSON parse failed.";
-                    } else if (exception === "timeout") {
-                        msg = "Time out error." + xhr.responseText;
-                    } else if (exception === "abort") {
-                        msg = "Ajax request aborted.";
-                    } else {
-                        msg = "Error:" + xhr.status + " " + xhr.responseText;
-                    }
-
-                }
-            });
-
-            myMap.geoObjects
-                .add(myGeoObject)
-                .add(new ymaps.Placemark([{{$task->coordinates}}], {
-                    balloonContent: '{{$task->name}}'
-                }, {
-                    preset: 'islands#icon',
-                    iconColor: '#0095b6'
-                }));
-        }
-
-    </script>
+    <script src="{{ asset('js/detailed-task-map.js') }}" type="text/javascript"></script>
 
 
     <div class="xl:flex container w-11/12 mx-auto">
@@ -141,16 +65,15 @@
 
                 <div
                     class="mt-12 border-2 py-2 lg:w-[600px]  w-[400px] rounded-lg border-orange-100 shadow-2xl">
-                    <div id="map" class="h-64 mb-4 -mt-2 {{ $task->addresses?'':'hidden' }}  "></div>
+                    <div id="map" class="h-64 mb-4 -mt-2 {{ count($addresses)?'':'hidden' }}  "></div>
                     <div class="ml-4 md:ml-12 flex flex-row my-4">
                         <h1 class="font-bold h-auto w-48">{{__('Место')}}</h1>
-                        @if($task->address)
-                            <p class=" h-auto w-96">{{json_decode($task->address, true)['location']}}<br>
-                                @if($task->address_add)
-                                @foreach(json_decode($task->address_add, true) as $address){{$address['location']}}
+                        @if(count($addresses))
+                            <p class=" h-auto w-96">
+                                @foreach($addresses as $address)
+                                    {{$address->location}}
                                     <br>
-                                    @endforeach
-                            @endif
+                                @endforeach
                             </p>
                         @else
                             {{__('Виртуальное задание')}}
@@ -395,7 +318,8 @@
                                 <input type="text" name="performer_id" class="hidden"
                                        value="">
                                 <div class="text-gray-700 sm:mt-4 mt-2">
-                                    <i class="fas fa-star text-yellow-500 mr-1"></i>{{ $auth_response->user->reviews()->count()? $auth_response->user->goodReviews()->count()/$auth_response->user->reviews()->count():0 }}  по {{ $auth_response->user->reviews()->count() }} отзывам
+                                    <i class="fas fa-star text-yellow-500 mr-1"></i>{{ $auth_response->user->reviews()->count()? $auth_response->user->goodReviews()->count()/$auth_response->user->reviews()->count():0 }}
+                                    по {{ $auth_response->user->reviews()->count() }} отзывам
                                 </div>
                             </div>
                             <div class="flex flex-row items-start">
@@ -712,7 +636,7 @@
                                             <div class="w-5/6">
                                                 <a href="/detailed-tasks/{{$item->id}}"
                                                    class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">{{ $item->name }}</a>
-                                                <p class="text-sm">{{ $item->address? json_decode($item->address, true)['location']:'' }}</p>
+                                                <p class="text-sm">{{ count($addresses)? $addresses[0]->location:'' }}</p>
                                                 @if($item->date_type == 1 || $item->date_type == 3)
                                                     <p class="text-sm my-0.5">{{__('Начать')}} {{ $item->start_date }}</p>
                                                 @endif
