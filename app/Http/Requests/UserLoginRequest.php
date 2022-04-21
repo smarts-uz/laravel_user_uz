@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Controllers\LoginController;
 use App\Models\User;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -45,6 +46,11 @@ class UserLoginRequest extends FormRequest
              ]);
          }
         auth()->login($user);
+        if (!$user->is_email_verified)
+            LoginController::send_verification('email', auth()->user());
+
+
+
     }
 
 
