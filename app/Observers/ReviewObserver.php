@@ -16,10 +16,12 @@ class ReviewObserver
      */
     public function created(Review $review)
     {
-        $user = User::where('id',$review->user_id);
+        $user = User::where('id',$review->user_id)->get();
+
         $review->good_bad ? $user->increment('review_good',1) : $user->increment('review_bad',1);
         $goods = $user->review_good;
         $bads = $user->review_bad;
         $user->reviw_rating = round($goods * 5 / (($goods+$bads==0) ? 1 : ($goods + $bads)));
+        $user->save();
     }
 }
