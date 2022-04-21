@@ -22,7 +22,7 @@ class ClickuzController extends Controller
             ]
         ])->getBody();
 
-      // return $res;
+    //   return $res;
     }
 
     public function pay(Request $request){
@@ -63,7 +63,10 @@ class ClickuzController extends Controller
                 'error_note' => 'Абонент не найден'
                 );
         }
-            return json_encode($res, JSON_UNESCAPED_UNICODE);
+            // return json_encode($res, JSON_UNESCAPED_UNICODE);
+
+            return response()->json($res, 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
+
             }
 
     public function prepare(Request $request){
