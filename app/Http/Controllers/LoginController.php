@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
 use App\Mail\MessageEmail;
+use App\Mail\VerifyEmail;
 use App\Models\User;
 use App\Models\WalletBalance;
 use App\Providers\RouteServiceProvider;
@@ -70,7 +71,7 @@ class LoginController extends Controller
                 'code' => $code,
                 'user' => auth()->user()->id
             ];
-            Mail::to($user->email)->send(new MessageEmail($data));
+            Mail::to($user->email)->send(new VerifyEmail($data));
         } else {
             $code = rand(100000, 999999);
             (new SmsService())->send($user->phone_number, $code);

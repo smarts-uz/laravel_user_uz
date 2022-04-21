@@ -45,6 +45,8 @@ use App\Http\Controllers\MassmediaController;
 // javoxir
 use App\Http\Controllers\Task\CreateController;
 
+use App\Http\Controllers\ClickuzController;
+
 //avocoder
 
 /*
@@ -62,6 +64,8 @@ Route::any('/paynet', function () {
     (new Goodoneuz\PayUz\PayUz)->driver('paynet')->handle();
 });
 
+Route::post('/get_info_click', [ClickuzController::class, 'get_info']);
+Route::get('/test_gic', [ClickuzController::class, 'test']);
 
 #region performers
 Route::get('/for_del_new_task/{task}', [CreateController::class, 'deletetask']); // javoxir

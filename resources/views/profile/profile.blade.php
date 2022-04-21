@@ -155,7 +155,7 @@
                                                 <div class="flex flex-row gap-x-2 my-4">
                                                     <img src="{{ asset('storage/'.$goodReview->user->avatar) }}" alt="#"
                                                          class="w-12 h-12 border-2 rounded-lg border-gray-500">
-                                                    <a href="#"
+                                                    <a href="{{ route('performers.performer',$goodReview->reviewer_id) }}"
                                                        class="text-blue-500 hover:text-red-500">{{ $goodReview->user->name }}</a>
                                                 </div>
                                                 <div class="sm:w-3/4 w-full p-3 bg-yellow-50 rounded-xl">
@@ -178,11 +178,11 @@
                                                 <div class="flex flex-row gap-x-2 my-4">
                                                     <img src="{{  asset('storage/'.$badReview->user->avatar) }}" alt="#"
                                                          class="w-12 h-12 border-2 rounded-lg border-gray-500">
-                                                    <a href="#"
+                                                    <a href="{{ route('performers.performer',$badReview->reviewer_id ) }}"
                                                        class="text-blue-500 hover:text-red-500">{{ $badReview->user->name }}</a>
                                                 </div>
                                                 <div class="sm:w-3/4 w-full p-3 bg-yellow-50 rounded-xl">
-                                                    <p>{{__('Задание')}} <a href="#"
+                                                    <p>{{__('Задание')}} <a href="{{ route('searchTask.task',$badReview->task_id) }}"
                                                                             class="hover:text-red-400 border-b border-gray-300 hover:border-red-400">"{{ $badReview->task->name }}
                                                             "</a> {{__('выполнено')}}</p>
                                                     <p class="border-t-2 border-gray-300 my-3 pt-3">{{ $badReview->description }}</p>

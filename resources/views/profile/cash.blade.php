@@ -35,11 +35,14 @@
                     {{-- cash start --}}
                     <div class="cash block  w-full" id="tab-cash">
                         <div class="head mt-5">
-                            <h2 class="font-semibold text-2xl text-gray-700 mb-4">{{__('Ваш баланс')}}
-                                @if ($balance == null) 0
-                                @else {{ amount_format($balance->balance) }}
-                                @endif
-                            </h2>
+                            <div class="flex flex-row">
+                                <h2 class="font-semibold text-2xl text-gray-700 mb-4">{{__('Ваш баланс')}}
+                                    @if ($balance == null) 0
+                                    @else {{ amount_format($balance->balance) }}
+                                    @endif
+                                </h2>
+                                <h1 class="font-semibold text-2xl text-gray-700 mb-4 ml-12">ID: {{$user->id}}</h1>
+                            </div>
                             <p class="inline">{{__('Пополнить счет на')}}</p>
                             <input
                                 class="focus:outline-none focus:border-yellow-500  inline rounded-xl xl:ml-3 ring-1 text-2xl text-center h-18 w-36  pb-1"
@@ -158,13 +161,6 @@
                             <h4 class="font-medium text-lg mt-2 text-gray-700">
                                 {{__('Какая минимальная сумма для пополнения счета?')}}</h4>
                             <p class="text-base">{{__('4000 UZS.')}}</p>
-                            <h4 class="font-medium text-lg mt-2 text-gray-700">
-                                {{__('Как сделать возврат денег со своего счета в Universal Services?')}}</h4>
-                            <p class="text-base"><a href="/profile"
-                                    class="text-blue-500">{{__('Оформить запрос на возврат денег')}}</a> -
-                                {{__('кликните по этой ссылке и укажите сумму, которую вы хотите вернуть. Как правило, деньги
-    перечисляются на тот же счет, с которого производилось пополнение баланса в Universal Services, в
-    течение 5 рабочих дней с учетом комиссии платежной системы.')}}</p>
                         </div>
                     </div>
                     {{-- cash end --}}

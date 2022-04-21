@@ -81,7 +81,9 @@ public function __construct()
         $responses = $selected   ? $task->responses()->where('id','!=', $selected->id)->get(): $task->responses;
         $auth_response = auth()->check()? $task->responses()->where('performer_id', auth()->user()->id)->with('user')->first():null;
         $same_tasks = $task->category->tasks()->where('id','!=',$task->id)->where('status', Task::STATUS_OPEN)->take(10)->get();
-        return view('task.detailed-tasks', compact('task', 'review','complianceType','same_tasks', 'auth_response','selected','responses'));
+        $addresses = $task->addresses;
+
+        return view('task.detailed-tasks', compact('task', 'review','complianceType','same_tasks', 'auth_response','selected','responses','addresses'));
     }
 
     public function comlianse_save(Request $request){
@@ -192,8 +194,9 @@ public function __construct()
         taskGuard($task);
         if ($task->responses_count)
             abort(403);
-//        dd($task);
-        return view('task.changetask', compact('task'));
+        $addresses = $task->addresses;
+        //        dd($task);
+        return view('task.changetask', compact('task','addresses'));
     }
 
 

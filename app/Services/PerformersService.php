@@ -38,7 +38,7 @@ class PerformersService
 
 
         $item->task_count = $user->performer_tasks_count;
-        $item->about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
+//        $item->about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
 
         return $item;
 

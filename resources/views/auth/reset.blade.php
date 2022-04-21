@@ -6,7 +6,7 @@
                 {{__('Восстановление пароля')}}
             </h3>
             <p class="font-medium text-lg mt-3 mb-6">
-                Выберите подходящий способ:
+               {{__(' Выберите подходящий способ:')}}
             </p>
         </div>
 
@@ -16,8 +16,8 @@
             <ul id="tabs"
                 class="nav nav-tabs flex  text-center flex-wrap list-none border-b-0 pl-0 mb-2 justify-center">
                 <li class="bg-white text-xl px-12 text-gray-800 font-semibold hover:bg-gray-200 py-2  @if(!$errors->has('phone_number'))  text-yellow-500 border-b-2 border-yellow-500 @endif ">
-                    <a id="default-tab" href="#first">ЭЛ. ПОЧТА</a></li>
-                <li class="px-12 text-xl text-gray-800 hover:bg-gray-200 font-semibold py-2  @if($errors->has('phone_number'))  text-yellow-500 border-b-2 border-yellow-500 @endif  "><a href="#second">СМС</a>
+                    <a id="default-tab" href="#first">{{__('ЭЛ. ПОЧТА')}}</a></li>
+                <li class="px-12 text-xl text-gray-800 hover:bg-gray-200 font-semibold py-2  @if($errors->has('phone_number'))  text-yellow-500 border-b-2 border-yellow-500 @endif  "><a href="#second">{{__('СМС')}}</a>
                 </li>
             </ul>
         </div>
@@ -30,8 +30,8 @@
                     @csrf
                     <div class="mx-auto flex items-center justify-center w-full">
                         <p class="mb-4">
-                            Укажите почту, привязанную к вашей <br> учетной записи. Мы отправим письмо <br> для
-                            восстановления пароля.
+                           {!!__(' Укажите почту, привязанную к вашей <br> учетной записи. Мы отправим письмо <br> для
+                            восстановления пароля.')!!}
                         </p>
                     </div>
                     <div class="mb-4">
@@ -58,7 +58,7 @@
                 <div id="second" class="p-2 @if(!$errors->has('phone_number')) hidden @endif">
                 <div class="mx-auto flex items-center justify-center w-full">
                     <p class="mb-4">
-                        Укажите телефон, привязанный к вашей <br> учетной записи. Мы отправим СМС с кодом.
+                        {!!__("Укажите телефон, привязанный к вашей <br> учетной записи. Мы отправим СМС с кодом.")!!}
                     </p>
                 </div>
                 <form action="{{route('user.reset_submit')}}" method="POST">

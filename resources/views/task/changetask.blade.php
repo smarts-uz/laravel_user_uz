@@ -8,6 +8,7 @@
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/uz_latn.js"></script>
+<script src="{{ asset('js/detailed-task-map.js') }}"></script>
 {{--    <style>.flatpickr-calendar{width:230px;} </style>--}}
 <style>.flatpickr-calendar{max-width: 295px; width: 100%;} </style>
     <script>
@@ -97,7 +98,7 @@
                             </select>
                         </div>
                         <div class="grid-cols-2 gap-4">
-                            @if($task->start_date)
+                            @if($task->getRawOriginal('start_date'))
                                 <div class="col-span-1">
                                     <div class="flatpickr inline-block flex items-center sm:mb-0 mb-4 hidden" id="start-date">
                                         <div class="flex ">
@@ -120,9 +121,9 @@
                                 </div>
                             @endif
 
-                            @if($task->end_date)
+                            @if($task->getRawOriginal('end_date'))
                                 <div class="col-span-1 mt-1">
-                                    <div class="flatpickr inline-block flex items-center {{ $task->end_date?'':"hidden" }} " id="end-date">
+                                    <div class="flatpickr inline-block flex items-center {{ $task->getRawOriginal('end_date')?'':"hidden" }} " id="end-date">
                                         <div class="flex">
                                             <input type="hidden" name="end_date" placeholder="{{ $task->getRawOriginal('end_date') }}" data-input="{{ $task->getRawOriginal('end_date') }}"
                                                 class="focus:outline-none w-full text-left bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-3 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 flatpickr-input"
@@ -162,7 +163,7 @@
                                 <input autocomplete="off" oninput="myMapFunction()" id="suggest0"
                                        class="appearance-none bg-transparent w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none focus:border-yellow-500"
                                        type="text" placeholder="Город, Улица, Дом" name="location0"
-                                       value="{{ json_decode($task->address)->location }}">
+                                       value="{{ count($addresses)? $addresses[0]->location:'' }}">
 
 
                                 @error('location0')
@@ -183,7 +184,7 @@
                             </div>
 
                             <input name="coordinates0" type="hidden" id="coordinate"
-                                   value="{{json_decode($task->address)->latitude.",". json_decode($task->address)->longitude }}">
+                                   value="{{ count($addresses) ? "$addresses[0]->latitude,$addresses[0]->longitude":'' }}">
 
                         </div>
                         <div>
@@ -329,16 +330,16 @@
         function ch_task(){
             @php $host = request()->getHost();@endphp
             var settings = {
-                "url": "http://{{$host}}/api/task/{{$task->id}}",
+                "url": "{{ route('task.map', $task->id) }}",
                 "method": "GET",
                 "timeout": 0,
             };
 
-            $.ajax(settings).done(function (response) {
-                ajax_location = $.parseJSON(response.address_add);
+            $.ajax(settings).done(function (response){
+                ajax_location = response;
                 // console.log(ajax_location);
                 if (ajax_location.length != 0){
-                    for (let i=0; i<=ajax_location.length; i++){
+                    for (let i=1; i< ajax_location.length; i++){
                     $("#addinput").append('<div class="flex items-center gap-x-2">' +
                         '<div class="flex items-center rounded-lg border  w-full py-1"> ' +
                         '<button class="Alfavit flex-shrink-0 border-transparent text-teal-500 text-md py-1 px-2 rounded focus:outline-none" type="button">  '+ alp[i] +' </button>' +
