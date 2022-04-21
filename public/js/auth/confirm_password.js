@@ -1,4 +1,4 @@
-  //   input eye
+//   input eye
 $(function () {
 
     $('#eye').click(function () {
@@ -14,19 +14,19 @@ $(function () {
     });
 
 });
-//  //input eye2
-// $(function () {
+ //input eye2
+$(function () {
 
-//     $('#eye1').click(function () {
-//         if ($(this).hasClass('fa-eye-slash')) {
-//             $(this).removeClass('fa-eye-slash');
-//             $(this).addClass('fa-eye');
-//             $('#password_confirmation').attr('type', 'text');
-//         } else {
-//             $(this).removeClass('fa-eye');
-//             $(this).addClass('fa-eye-slash');
-//             $('#password_confirmation').attr('type', 'password');
-//         }
-//     });
+    $('#eye1').click(function () {
+        if ($(this).hasClass('fa-eye-slash')) {
+            $(this).removeClass('fa-eye-slash');
+            $(this).addClass('fa-eye');
+            $('.confirm_password').attr('type', 'text');
+        } else {
+            $(this).removeClass('fa-eye');
+            $(this).addClass('fa-eye-slash');
+            $('.confirm_password').attr('type', 'password');
+        }
+    });
 
 });
