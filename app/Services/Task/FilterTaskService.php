@@ -32,7 +32,7 @@ class FilterTaskService
         }
         $tasks = $tasks->whereIn('id', $tasks_items);
         if (isset($data['categories'])) {
-            $categories = json_decode($data['categories']);
+            $categories = $data['categories'];
             $tasks->whereIn('category_id', $categories)->pluck('id')->toArray();
         }
         if (isset($data['budget'])) {
@@ -47,7 +47,14 @@ class FilterTaskService
             $without_response = $data['without_response'];
             if ($without_response)
                 $tasks->whereDoesntHave('responses');
-
+        }
+        if (isset($request->s))
+        {
+            $s = $request->s;
+            $tasks->where('name','like',"%$s%")
+                ->orWhere('description', 'like',"%$s%")
+                ->orWhere('phone', 'like',"%$s%")
+                ->orWhere('budget', 'like',"%$s%");
         }
 
         return $tasks->paginate();
