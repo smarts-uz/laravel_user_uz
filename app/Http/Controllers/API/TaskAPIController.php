@@ -8,6 +8,7 @@ use App\Http\Requests\Api\V1\Task\StoreRequest;
 use App\Http\Requests\Task\UpdateRequest;
 use App\Http\Resources\SameTaskResource;
 use App\Http\Resources\TaskIndexResource;
+use App\Http\Resources\TaskPaginationResource;
 use App\Http\Resources\TaskResponseResource;
 use App\Models\Task;
 use App\Models\TaskResponse;
@@ -76,6 +77,23 @@ class TaskAPIController extends Controller
         return $task->addresses;
     }
 
+
+    public function task_find(Request $request)
+    {
+       if (isset($request->s))
+       {
+           $s = $request->s;
+           $tasks = Task::query()->where('status',Task::STATUS_OPEN)
+               ->where('name','like',"%$s%")
+               ->orWhere('description', 'like',"%$s%")
+               ->orWhere('phone', 'like',"%$s%")
+               ->orWhere('budget', 'like',"%$s%")->paginate();
+       }
+       else{
+           $tasks = Task::query()->where('status',Task::STATUS_OPEN)->paginate();
+       }
+        return response()->json(['success' => true, 'data' => new TaskPaginationResource($tasks)]);
+    }
 
     /**
      * @OA\Get(
