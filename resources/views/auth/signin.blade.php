@@ -31,7 +31,7 @@
                                autofocus>
 
                         @error('email')
-                        <p class="text-red-500">{{ $message }}</p>
+                        <p class="text-red-500"> {{__('Электронная почта или пароль неверны. Попробуй снова')}}</p>
                         @enderror
 
                     </div>
@@ -43,15 +43,9 @@
                         <i class="fas fa-eye-slash text-gray-500 relative -left-12" id="eye"></i>
 
                         @error('password')
-                            <p class="text-red-500">{{ $message }}</p>
+                            <p class="text-red-500"> {{__('Электронная почта или пароль неверны. Попробуй снова')}}</p>
                         @enderror
                     </div>
-
-                    @if(session()->has('message'))
-                        <p class="text-red-500 mb-5">
-                            {{__('Электронная почта или пароль неверны. Попробуй снова')}}
-                        </p>
-                    @endif
                     <div>
                         <button type="submit"
                                 class="sm:w-80 w-72 h-12 rounded-lg bg-green-500 text-white uppercase
