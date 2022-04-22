@@ -179,7 +179,7 @@ class TaskAPIController extends Controller
         else
             $tasks =  $tasks->where('status', '!=',0);
 
-        return response()->json(['success' => true, 'data' => TaskIndexResource::collection( $tasks->get())]);
+        return new TaskPaginationResource($tasks->paginate());
     }
 
 

@@ -85,7 +85,6 @@ Route::get('faq/{id}', [FaqAPIController::class, 'questions']); //end
 
 //Tasks
 Route::get('task/{task}', [TaskAPIController::class, 'task']); //end
-Route::get('task-find', [TaskAPIController::class, 'task_find']); //end
 Route::get('tasks-filter', [TaskAPIController::class, 'filter']); //end
 Route::get('responses/{task}', [TaskAPIController::class, 'responses']); //end
 Route::get('same-tasks/{task}', [TaskAPIController::class, 'same_tasks']); //end
@@ -101,7 +100,6 @@ Route::get('/category/search', [CategoriesAPIController::class, 'search']); //en
 
 //Performers
 Route::get('/performers', [PerformerAPIController::class, 'service']); //end
-Route::get('/online-performers', [PerformerAPIController::class, 'online_performers']); //end
 Route::get('/performers/{performer}', [PerformerAPIController::class, 'performer']); //end
 
 //Portfolio
