@@ -85,6 +85,7 @@ Route::get('faq/{id}', [FaqAPIController::class, 'questions']); //end
 
 //Tasks
 Route::get('task/{task}', [TaskAPIController::class, 'task']); //end
+Route::get('task-find', [TaskAPIController::class, 'task_find']); //end
 Route::post('tasks-filter', [TaskAPIController::class, 'filter']); //end
 Route::get('responses/{task}', [TaskAPIController::class, 'responses']); //end
 Route::get('same-tasks/{task}', [TaskAPIController::class, 'same_tasks']); //end
