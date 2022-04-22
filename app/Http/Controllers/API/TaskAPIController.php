@@ -68,7 +68,7 @@ class TaskAPIController extends Controller
         $data = $request->validated();
         $tasks =$this->filter_service->filter($data);
 
-        return TaskIndexResource::collection($tasks);
+        return new TaskPaginationResource($tasks);
     }
 
 
@@ -92,7 +92,7 @@ class TaskAPIController extends Controller
        else{
            $tasks = Task::query()->where('status',Task::STATUS_OPEN)->paginate();
        }
-        return response()->json(['success' => true, 'data' => new TaskPaginationResource($tasks)]);
+        return new TaskPaginationResource($tasks);
     }
 
     /**
