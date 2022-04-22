@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserPasswordRequest;
 use App\Http\Requests\UserUpdateDataRequest;
 use App\Http\Resources\UserIndexResource;
+use App\Models\Session;
+use App\Models\Task;
 use App\Models\User;
+use App\Services\Profile\ProfileService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,7 +37,6 @@ class ProfileAPIController extends Controller
             return response()->json([
                 'status' => false,
                 'data' => $validator->errors(),
-                'message' => "something went wrong"
             ]);
         }
         $user = auth()->user();
@@ -43,13 +45,16 @@ class ProfileAPIController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => "password successfully changed",
-                'password' => 'password'
+                'data' => [
+                    'message' => "Password changed"
+                ]
             ]);
         } else {
             return response()->json([
                 'status' => false,
-                'message' => "Old password wrong"
+                'data' => [
+                    'message' => "Old password wrong"
+                ]
             ]);
         }
 
@@ -147,25 +152,144 @@ class ProfileAPIController extends Controller
     public function updateData(UserUpdateDataRequest $request)
     {
         $data = $request->validated();
-        if ($data['email'] != auth()->user()->email) {
-            $data['is_email_verified'] = 0;
-            $data['email_old'] = auth()->user()->email;
-        }
-        if ($data['phone_number'] != auth()->user()->phone_number) {
-            $data['is_phone_number_verified'] = 0;
-            $data['phone_number_old'] = auth()->user()->phone_number;
-        }
+        $profile = new ProfileService();
+        $updatedData = $profile->settingsUpdate($data);
         $user = Auth::user();
-        $user->update($data);
-        Alert::success(__('Настройки успешно сохранены'));
+        $user->update($updatedData);
         return response()->json([
             'success' => true,
-            'data' => []
+            'data' => [
+                'message' => 'Settings updated'
+            ]
         ]);
     }
 
     public function cash()
     {
-        return 1;
+        $user = Auth()->user()->load('transactions');
+
+        $balance = $user->walletBalance;
+        $views = $user->views()->count();
+        $tasksCreated = $user->tasks()->count();
+        $transactions = $user->transactions()->paginate(15);
+        $about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
+        $tasksPerformed = Task::where('performer_id', $user->id)->count();
+        return response()->json([
+            'user' => $user,
+            'balance' => $balance,
+            'views' => $views,
+            'tasks_created' => $tasksCreated,
+            'transactions' => $transactions,
+            'about' => $about,
+            'tasks_performed' => $tasksPerformed
+        ]);
+    }
+
+    public function editData()
+    {
+        $profile = new ProfileService();
+        $data = $profile->settingsEdit();
+        return response()->json($data);
+    }
+
+    public function clearSessions()
+    {
+        Session::query()->where('user_id', auth()->user()->id)->delete();
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'message' => 'Sessions cleared'
+            ]
+        ]);
+    }
+
+    public function deleteUser()
+    {
+        auth()->user()->delete();
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'message' => 'User deleted'
+            ]
+        ]);
+    }
+
+    public function updateCategory(Request $request)
+    {
+        $request->validate([
+            'category' => 'required'
+        ]);
+        $user = Auth::user();
+        $user->role_id = 2;
+        $checkbox = implode(",", $request->get('category'));
+        $user->update(['category_id' => $checkbox]);
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'message' => 'Category updated'
+            ]
+        ]);
+    }
+
+    public function storeDistrict(Request $request)
+    {
+        $request->validate([
+            'district' => 'required',
+        ]);
+
+        $user = Auth::user();
+        $user->district = $request->district;
+        $user->save();
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'message' => 'District stored'
+            ]
+        ]);
+    }
+
+    public function storeProfilePhoto(Request $request)
+    {
+        $profile = new ProfileService();
+        $photoName = $profile->storeProfilePhoto($request);
+        if ($photoName) {
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'message' => 'Profile photo stored',
+                    'photo_name' => $photoName
+                ]
+            ]);
+        }
+        return response()->json([
+            'success' => false,
+            'data' => [
+                'message' => 'Failed to store profile photo',
+            ]
+        ]);
+    }
+
+    public function editDesctiption(Request $request)
+    {
+        $profile = new ProfileService();
+        $profile->editDescription($request);
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'message' => 'Description edited'
+            ]
+        ]);
+    }
+
+    public function userNotifications(Request $request)
+    {
+        $profile = new ProfileService();
+        $profile->userNotifications($request);
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'message' => 'Subscription for notifications upgraded'
+            ]
+        ]);
     }
 }
