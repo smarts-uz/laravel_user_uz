@@ -19,7 +19,62 @@
             <div class="w-2/12 flex justify-center lg:hidden mr-2">
                 {{-- icon-1 --}}
                 <div class=" float-left">
-                    {{-- @include('components.notification') --}}
+                    @php
+                        $notifications = App\Models\Notification::query()
+                            ->where('user_id', auth()->id())
+                            ->where('is_read', 0)
+                            ->limit(10)->get();
+                        $count = $notifications->count();
+                    @endphp
+                    @if($count > 0)
+                        <div id="content_count" class="w-4 h-4 absolute rounded-full bg-red-500 ml-3 text-white text-xs text-center">{{$count}}</div>
+                    @endif
+                    <button class="focus:outline-none" type="button" data-dropdown-toggle="notification">
+                        <i class="text-xl text-gray-500 hover:text-yellow-500 far fa-bell"></i>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div class="hidden bg-white text-base z-50 list-none divide-y divide-gray-100 rounded shadow my-4 sm:w-96 w-72" id="notification">
+                        <div class="px-4 py-3">
+                            <span class="block text-base font-bold">{{__('Уведомления')}}</span>
+                        </div>
+                        <ul class="py-1" aria-labelledby="notification">
+                            @foreach($notifications as $notification)
+                                <li class="border-b-2 border-gray-500 flex gap-x-2 p-3 text-gray-800">
+                                    <div class="">
+                                        <i class="fas fa-star text-yellow-500"></i>
+                                    </div>
+                                    <div class="flex flex-col w-full">
+                                        <p class="mb-2 text-right">{{$notification->created_at->format('d M')}}</p>
+                                        @if($notification->type == 1)
+                                            <div class="w-full">{{__('Отклик к заданию')}} 
+                                                <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">"{{$notification->name_task}}"  №{{$notification->task_id}}</a> 
+                                                {{__('задания отправлен')}}
+                                            </div>
+                                        @elseif($notification->type == 2 || $notification->type == 3)
+                                            <button onclick="toggleModal121('modal-id121', '{{$notification->name_task}}', '{{$notification->description}}', {{$notification->id}})"
+                                                    class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">
+                                                {{$notification->name_task}}
+                                            </button>
+                                        @elseif($notification->type == 4)
+                                            <div class="w-full">{{__('Вас выбрали исполнителем  в задании')}}
+                                                <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}"  №{{$notification->task_id}}</a> 
+                                                <a class="hover:text-blue-500" href="/performers/{{$notification->user_id}}"> {{$notification->user->name}}</a></div>
+                                        @elseif($notification->type == 5)
+                                            <div class="w-full">{{__('Отклик к заданию')}} 
+                                                <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}" №{{$notification->task_id}}</a> 
+                                                {{__('задания отправлен')}}
+                                            </div>
+                                        @else
+                                            <div class="w-full"> {{__('Заказчик указал, что вы выполнили  задание')}}
+                                                <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}"  №{{$notification->task_id}}</a> 
+                                                {{__(' и оставил вам отзыв')}}
+                                            </div>
+                                        @endif
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
                 </div>
                 <div class="ml-4">
                     <a href="/chat">
@@ -27,7 +82,6 @@
                     </a>
                 </div>
             </div>
-            <!-- </div> -->
             <script src="https://unpkg.com/@themesberg/flowbite@latest/dist/flowbite.bundle.js"></script>
         @endauth
     @endif
@@ -56,7 +110,7 @@
                             {{-- icon-2 --}}
                             <div class="max-w-lg mx-auto ml-6">
                                 <a href="/profile" class="delete-task cursor-pointer profiles">
-                                    <button class="" type="button" data-dropdown-toggle="dropdownuser"><i
+                                    <button class="focus:outline-none" type="button" data-dropdown-toggle="dropdownuser"><i
                                             class="text-2xl text-gray-500 hover:text-yellow-500  far fa-user"></i>
                                     </button>
                                 </a>

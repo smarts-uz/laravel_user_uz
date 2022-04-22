@@ -35,13 +35,13 @@
                     {{-- cash start --}}
                     <div class="cash block  w-full" id="tab-cash">
                         <div class="head mt-5">
-                            <div class="flex flex-row">
+                            <div class="flex sm:flex-row flex-col">
                                 <h2 class="font-semibold text-2xl text-gray-700 mb-4">{{__('Ваш баланс')}}
                                     @if ($balance == null) 0
                                     @else {{ amount_format($balance->balance) }}
                                     @endif
                                 </h2>
-                                <h1 class="font-semibold text-2xl text-gray-700 mb-4 ml-12">ID: {{$user->id}}</h1>
+                                <h1 class="font-semibold text-2xl text-gray-700 mb-4 sm:ml-12 ml-0">ID: {{$user->id}}</h1>
                             </div>
                             <p class="inline">{{__('Пополнить счет на')}}</p>
                             <input
@@ -67,7 +67,7 @@
                             </label>
                             <div class="hidden flex flex-row items-center my-4" id="ddr">
                               <div>
-                                    <p class="text-xl">Период : </p>
+                                    <p class="text-xl">{{__('Период : ')}}</p>
                               </div>
                               <div class="mx-4">
                                     <input id="from-date" type="date" class="p-1 rounded-lg border-2 border-gray-300 focus:outline-none">
@@ -156,8 +156,8 @@
                             <h4 class="font-medium text-lg mt-2 text-gray-700">
                                 {{__('Условия работы с Universal Services.')}}</h4>
                             <p class="text-base">{{__('Universal Services списывает с исполнителей фиксированную оплату за возможность оставлять к заданиям
-    отклики с контактными данными. Стоимость одного отклика зависит от категории заданий и
-    начинается от 20 uzs. Оплата за отклики не возвращается.')}}</p>
+                                отклики с контактными данными. Стоимость одного отклика зависит от категории заданий и
+                                начинается от 20 uzs. Оплата за отклики не возвращается.')}}</p>
                             <h4 class="font-medium text-lg mt-2 text-gray-700">
                                 {{__('Какая минимальная сумма для пополнения счета?')}}</h4>
                             <p class="text-base">{{__('4000 UZS.')}}</p>
