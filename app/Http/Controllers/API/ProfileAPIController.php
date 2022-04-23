@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -63,11 +64,20 @@ class ProfileAPIController extends Controller
 
     public function avatar(Request $request)
     {
-        $image = $request->validate(['image' => 'required'])['image'];
-        $name = md5(Carbon::now() . '_' . $image->getClientOriginalName() . '.' . $image->getClientOriginalExtension());
-        $filepath = Storage::disk('public')->putFileAs('/images', $image, $name);
-        $data['avatar'] = $filepath;
-        auth()->user()->update($data);
+        $request->validate([
+            'avatar' => 'required|image'
+        ]);
+        $user = Auth::user();
+        $data = $request->all();
+        $destination = 'storage/' . $user->avatar;
+        if (File::exists($destination)) {
+            File::delete($destination);
+        }
+        $filename = $request->file('avatar');
+        $imagename = "user-avatar/" . $filename->getClientOriginalName();
+        $filename->move(public_path() . '/storage/user-avatar/', $imagename);
+        $data['avatar'] = $imagename;
+        $user->update($data);
 
         return response()->json(['success' => true]);
 
