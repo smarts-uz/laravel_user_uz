@@ -8,8 +8,6 @@ use App\Models\User;
 use App\Models\Message;
 use TCG\Voyager\Http\Controllers\VoyagerController;
 use RealRashid\SweetAlert\Facades\Alert;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\App;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -28,23 +26,7 @@ class ConversationController extends Controller
         }
         return redirect()->route('voyager.appeals.index');
     }
-    public function toExpert($message)
-    {
 
-//        $messageObject = Appeal::where('id', $message);
-//        $messageData = $messageObject->first();
-//        $files = json_decode($messageData->images);
-//
-//        $details = [
-//            'title' => $messageData->title,
-//            'body' => $messageData->text,
-//            'files' => $files
-//        ];
-//        if(Mail::to(Auth::user()->email)->send(new SendMail($details))){
-//            Alert::success('Send', 'Appeal sent to expert');
-//        };
-//        return redirect()->route('voyager.appeals.index');
-    }
     public function showChat(User $user, Message $message)
     {
 
@@ -113,10 +95,6 @@ class ConversationController extends Controller
 
         $totalDuration = $finishTime->diffInHours($starttime);
         $experts = DB::select('SELECT user_id FROM messages WHERE message_id =null AND user_id IN (SELECT id FROM users WHERE role_id != 2) ORDER BY created_at ASC LIMIT 1');
-        // if ($totalDuration == 48) {
-        //     // Alert::error('impossible close', 'You couldn`t close conversation!!!');
-        //     redirect()->route('voyager.appeals.index')->with('warning', 'something went wrong!');
-        // } else {
         foreach ($experts as $expert){
             // dd($expert->user_id);
             $userObeject = User::where('id', $expert->user_id);
@@ -133,13 +111,4 @@ class ConversationController extends Controller
             return redirect()->route('voyager.appeals.index')->with('warning', 'something went wrong!');
         }
     }
-    // }
-//    public function setLang(Request $request)
-//    {
-//
-//        $user = User::where('id', Auth::user()->id)->update(["settings" => ["locale" => $request->lang]]);
-//        $x = App::setLocale($request->lang);
-//
-//        return back();
-//    }
 }

@@ -92,93 +92,6 @@ public function __construct()
         return redirect()->back();
     }
 
-
-    public function task_response(Request $request)
-    {
-        $status = $request->input('status');
-        $performer_id = $request->input('performer_id');
-        $task_id = $request->input('task_id');
-        $description = $request->input('response_desc');
-        $comment = $request->input('comment');
-        $name_task = $request->input('name_task');
-        $users_id = $request->input('user_id');
-        $good = $request->input('good');
-        if ($status) {
-            if ($status == 4 || $status == 2) {
-                Task::where('id', $task_id)->update([
-                    'status' => $status
-                ]);
-            } elseif ($status == 3) {
-                Task::where('id', $task_id)->update([
-                    'status' => $status,
-                    'performer_id' => $performer_id,
-                ]);
-                Notification::create([
-                    'user_id' => $performer_id,
-                    'task_id' => $task_id,
-                    'name_task' => $name_task,
-                    'description' => 1,
-                    'type' => 3
-                ]);
-            }
-        }
-        if ($description) {
-            $notificate = $request->input('notificate');
-            $response_time = $request->input('response_time');
-            $response_price = $request->input('response_price');
-            $task_id = $request->input('task_id');
-            TaskResponse::create([
-                'user_id' => Auth::id(),
-                'task_id' => $task_id,
-                'description' => $description,
-                'notificate' => $notificate,
-                'time' => $response_time,
-                'price' => $response_price,
-                'creator_id' => $users_id
-            ]);
-            Notification::create([
-                'user_id' => $users_id,
-                'task_id' => $task_id,
-                'name_task' => $name_task,
-                'description' => 1,
-                'type' => 2
-            ]);
-        }
-        if ($comment) {
-            if (Auth::id() == $users_id) {
-                Review::create([
-                    'user_id' => $performer_id,
-                    'description' => $comment,
-                    'good_bad' => $good,
-                    'reviewer_id' => Auth::id(),
-                    'task_id' => $task_id,
-                ]);
-                $user_reviews_good = Review::where('user_id', $performer_id)->where('good_bad', 1)->count();
-                $user_reviews_bad = Review::where('user_id', $performer_id)->where('good_bad', 0)->count();
-                $all_count = $user_reviews_good - $user_reviews_bad;
-                User::where('id', $performer_id)->update([
-                    'reviews' => $all_count
-                ]);
-            } else {
-                Review::create([
-                    'user_id' => $users_id,
-                    'description' => $comment,
-                    'good_bad' => $good,
-                    'reviewer_id' => Auth::id(),
-                    'task_id' => $task_id,
-                ]);
-                $user_reviews_good = Review::where('user_id', $users_id)->where('good_bad', 1)->count();
-                $user_reviews_bad = Review::where('user_id', $users_id)->where('good_bad', 0)->count();
-                $all_count = $user_reviews_good - $user_reviews_bad;
-                User::where('id', $users_id)->update([
-                    'reviews' => $all_count
-                ]);
-            }
-        }
-
-        return response()->json(['success' => $all_count]);
-    }
-
     public function delete_task(Task $task)
     {
         taskGuard($task);
@@ -198,7 +111,5 @@ public function __construct()
         //        dd($task);
         return view('task.changetask', compact('task','addresses'));
     }
-
-
 
 }

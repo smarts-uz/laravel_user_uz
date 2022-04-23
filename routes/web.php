@@ -92,7 +92,7 @@ Route::get('task/{task}/map', [TaskAPIController::class, 'task_map'])->name('tas
 #region chat
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
-    Route::get('/reports', [ReportController::class, 'index'])->name("voyager.reports.index"); // javoxir
+    Route::get('/reports', [ReportController::class, 'report'])->name("voyager.reports.index"); // javoxir
     Route::get("users/activitiy/{user}", [VoyagerUserController::class, "activity"])->name("voyagerUser.activity"); // javoxir
     Route::get('/messages/chat/{id}', [ConversationController::class, 'showChat'])->name("conversation.showChat"); // javoxir
     Route::post('/messages/chat/rate/{message}', [ConversationController::class, 'rating'])->name("conversation.rating"); // javoxir
