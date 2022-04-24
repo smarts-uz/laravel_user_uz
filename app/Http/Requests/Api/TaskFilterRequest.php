@@ -31,6 +31,7 @@ class TaskFilterRequest extends FormRequest
             'is_remote' => 'nullable|boolean',
             'without_response' => 'nullable',
             'difference' => 'nullable|int',
+            's' => 'nullable|string',
         ];
     }
 }
