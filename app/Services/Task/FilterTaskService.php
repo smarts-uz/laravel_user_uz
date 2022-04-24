@@ -5,6 +5,7 @@ namespace App\Services\Task;
 
 
 use App\Models\Address;
+use App\Models\Category;
 use App\Models\Task;
 
 class FilterTaskService
@@ -34,6 +35,11 @@ class FilterTaskService
         $tasks->whereIn('id', $tasks_items);
         if (isset($data['categories'])) {
             $categories = is_array($data['categories'])?$data['categories']:json_decode($data['categories']);
+            $categories = Category::query()->whereIn('parent_id',$categories)->pluck('id')->toArray();
+            $tasks->whereIn('category_id', $categories)->pluck('id')->toArray();
+        }
+        if (isset($data['child_categories'])) {
+            $categories = is_array($data['child_categories'])?$data['child_categories']:json_decode($data['child_categories']);
             $tasks->whereIn('category_id', $categories)->pluck('id')->toArray();
         }
         if (isset($data['budget'])) {
