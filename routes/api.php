@@ -122,6 +122,7 @@ Route::get('/detailed-tasks/{task}', [SearchAPIController::class, 'task']); //en
 
 //Categories
 Route::get('/categories', [CategoriesAPIController::class, 'index']); //end
+Route::get('/categories-parent', [CategoriesAPIController::class, 'parents']); //end
 Route::get('/categories/{id}', [CategoriesAPIController::class, 'show']); //end
 Route::get('/category/search', [CategoriesAPIController::class, 'search']); //end
 
