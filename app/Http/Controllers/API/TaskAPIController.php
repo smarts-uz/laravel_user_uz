@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\TaskFilterRequest;
 use App\Http\Requests\Api\V1\Task\StoreRequest;
 use App\Http\Requests\Task\UpdateRequest;
@@ -10,6 +9,7 @@ use App\Http\Resources\SameTaskResource;
 use App\Http\Resources\TaskIndexResource;
 use App\Http\Resources\TaskPaginationResource;
 use App\Http\Resources\TaskResponseResource;
+use App\Models\CustomField;
 use App\Models\Task;
 use App\Models\TaskResponse;
 use App\Models\User;
@@ -18,6 +18,7 @@ use App\Services\Task\FilterTaskService;
 use App\Services\Task\ResponseService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Category;
@@ -182,6 +183,42 @@ class TaskAPIController extends Controller
         return new TaskPaginationResource($tasks->paginate());
     }
 
+
+
+    public function routing(Request $request)
+    {
+        $route = $request->route;
+        $category = Category::find($request->category_id);
+        $data = [];
+        switch ($route){
+            case CustomField::ROUTE_NAME:
+                if ($category->parent->remote)
+                    $data['route']  = 'remote';
+                else
+                    $data['route']  = CustomField::ROUTE_ADDRESS;
+                $data['custom_fields'] = $category->customFieldsInName;
+
+                break;
+            case CustomField::ROUTE_ADDRESS:
+                $data['custom_fields'] = $category->customFieldsInAddress;
+                break;
+            case CustomField::ROUTE_BUDGET:
+                $data['custom_fields'] = $category->customFieldsInBudget;
+                break;
+            case CustomField::ROUTE_NOTE:
+                $data['custom_fields'] = $category->customFieldsInNote;
+                break;
+            case CustomField::ROUTE_DATE:
+                $data['custom_fields'] = $category->customFieldsInDate;
+                break;
+            case CustomField::ROUTE_CUSTOM:
+                $data['custom_fields'] = $category->customFieldsInCustom;
+                break;
+        }
+
+        return $data;
+
+    }
 
 
 

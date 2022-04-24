@@ -93,6 +93,7 @@ Route::middleware('custom.auth:api')->group(function () {
     });
 
 });
+Route::post('create-task/routing', [TaskAPIController::class,'routing']);
 
 //User Routes
 Route::post('login', [UserAPIController::class, 'login']); //end
@@ -160,3 +161,4 @@ Route::post('/paynet-transaction', [PaynetTransactionAPIController::class, 'crea
 Route::get('login/google/callback',[SocialAPIController::class,'loginWithGoogle']);
 
 Route::get('login/facebook/callback',[SocialAPIController::class,'loginWithFacebook']);
+

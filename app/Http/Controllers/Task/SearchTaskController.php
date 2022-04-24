@@ -9,6 +9,7 @@ use App\Models\ComplianceType;
 use App\Models\CustomField;
 use App\Models\CustomFieldsValue;
 use App\Models\WalletBalance;
+use App\Services\Task\CreateService;
 use App\Services\Task\CustomFieldService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
@@ -28,24 +29,28 @@ use App\Services\Task\SearchService;
 
 class SearchTaskController extends VoyagerBaseController
 {
-    private  $service;
+    private $service;
     private $custom_fields_servie;
-public function __construct()
-{
-    $this->service = new SearchService();
-    $this->custom_fields_servie = new CustomFieldService();
-}
+    private $create_service;
+
+    public function __construct()
+    {
+        $this->service = new SearchService();
+        $this->custom_fields_servie = new CustomFieldService();
+        $this->create_service = new CreateService();
+    }
 
     public function task_search()
     {
-        $categories = Category::where('parent_id', null)->select('id','name')->get();
-        $categories2 = Category::where('parent_id','<>', null)->select('id','parent_id','name')->get();
+        $categories = Category::where('parent_id', null)->select('id', 'name')->get();
+        $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
         return view('task.search', compact('categories', 'categories2'));
     }
+
     public function search(Request $request)
     {
         $s = $request->s;
-        return   Task::where('name', 'LIKE', "%$s%")->orderBy('name')->paginate(10);
+        return Task::where('name', 'LIKE', "%$s%")->orderBy('name')->paginate(10);
     }
 
     public function ajax_tasks()
@@ -65,28 +70,28 @@ public function __construct()
 
     public function task(Task $task)
     {
-        if (!$task->user_id)
-        {
+        if (!$task->user_id) {
             abort(404);
         }
         $complianceType = ComplianceType::all();
 
         $review = null;
         if ($task->reviews_count == 2) $review == true;
-        if (auth()->check()){
+        if (auth()->check()) {
             $task->views++;
             $task->save();
         }
         $selected = $task->responses()->where('performer_id', $task->performer_id)->first();
-        $responses = $selected   ? $task->responses()->where('id','!=', $selected->id)->get(): $task->responses;
-        $auth_response = auth()->check()? $task->responses()->where('performer_id', auth()->user()->id)->with('user')->first():null;
-        $same_tasks = $task->category->tasks()->where('id','!=',$task->id)->where('status', Task::STATUS_OPEN)->take(10)->get();
+        $responses = $selected ? $task->responses()->where('id', '!=', $selected->id)->get() : $task->responses;
+        $auth_response = auth()->check() ? $task->responses()->where('performer_id', auth()->user()->id)->with('user')->first() : null;
+        $same_tasks = $task->category->tasks()->where('id', '!=', $task->id)->where('status', Task::STATUS_OPEN)->take(10)->get();
         $addresses = $task->addresses;
 
-        return view('task.detailed-tasks', compact('task', 'review','complianceType','same_tasks', 'auth_response','selected','responses','addresses'));
+        return view('task.detailed-tasks', compact('task', 'review', 'complianceType', 'same_tasks', 'auth_response', 'selected', 'responses', 'addresses'));
     }
 
-    public function comlianse_save(Request $request){
+    public function comlianse_save(Request $request)
+    {
         $comp = new SearchService();
         $comp->comlianse_saveS($request);
         return redirect()->back();
@@ -95,10 +100,7 @@ public function __construct()
     public function delete_task(Task $task)
     {
         taskGuard($task);
-        $task->responses()->delete();
-        $task->reviews()->delete();
-        $task->custom_field_values()->delete();
-        $task->delete();
+        $this->create_service->delete($task);
         return redirect('/');
     }
 
@@ -109,7 +111,7 @@ public function __construct()
             abort(403);
         $addresses = $task->addresses;
         //        dd($task);
-        return view('task.changetask', compact('task','addresses'));
+        return view('task.changetask', compact('task', 'addresses'));
     }
 
 }

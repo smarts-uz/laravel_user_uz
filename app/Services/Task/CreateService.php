@@ -26,6 +26,14 @@ class CreateService
             $value->save();
         }
     }
+
+    public function delete($task)
+    {
+        $task->responses()->delete();
+        $task->reviews()->delete();
+        $task->custom_field_values()->delete();
+        $task->delete();
+    }
     public function attachCustomFieldsByRoute($task, $routeName){
         foreach ($task->category->custom_fields()->where('route',$routeName)->get() as $data) {
             $value = $task->custom_field_values()->where('custom_field_id', $data->id)->first()?? new CustomFieldsValue();
