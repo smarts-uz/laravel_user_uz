@@ -44,15 +44,10 @@ class FilterTaskService
             if ($is_remote)
                 $tasks->whereDoesntHave('addresses');
         }
-        else{
-            $tasks->whereHas('addresses');
-        }
         if (isset($data['without_response'])) {
             $without_response = $data['without_response'];
             if ($without_response)
                 $tasks->whereDoesntHave('responses');
-        }else{
-                $tasks->whereHas('responses');
         }
 
         if (isset($data['s']))

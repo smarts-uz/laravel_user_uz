@@ -17,6 +17,7 @@ class CategoryIndexResource extends JsonResource
         return [
           'id' => $this->id,
           'parent_id' => $this->parent_id,
+            'childs' =>  CategoryIndexResource::collection($this->childs),
           'name' => $this->name,
             'ico' => asset('storage/'.$this->ico),
         ];

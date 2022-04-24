@@ -23,12 +23,13 @@ class CategoriesAPIController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::withTranslation($request->lang)->get();
+        $categories = Category::select('parent_id,name,ico')->withTranslation($request->lang)->whereNull('parent_id')->get();
         return CategoryIndexResource::collection($categories);
     }
     public function search(Request $request)
     {
-        $categories = Category::query()->whereNotNull('parent_id')->where('name','LIKE',"%$request->name%")->get();
+        $parentId = $request->parent_id;
+        $categories = Category::query()->where('parent_id', $parentId)->with('childs')->where('name','LIKE',"%$request->name%")->get();
         return CategoryIndexResource::collection($categories);
     }
 
