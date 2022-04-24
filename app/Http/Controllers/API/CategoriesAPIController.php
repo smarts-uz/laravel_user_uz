@@ -29,8 +29,14 @@ class CategoriesAPIController extends Controller
     public function search(Request $request)
     {
         $parentId = $request->parent_id;
-        $categories = Category::query()->whereNotNull('parent_id')->where('parent_id', $parentId)->where('name','LIKE',"%$request->name%")->get();
-        return CategoryIndexResource::collection($categories);
+        $name = $request->name;
+        $categories = Category::query()->whereNotNull('parent_id');
+        if ($parentId)
+            $categories
+            ->where('parent_id', $parentId);
+        if ($name)
+            $categories->where('name','LIKE',"%$name%");
+        return CategoryIndexResource::collection($categories->get());
     }
 
     public function parents(Request $request){
