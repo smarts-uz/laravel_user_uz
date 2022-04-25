@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PerformerRegisterRequest;
 use App\Http\Resources\PerformerIndexResource;
+use App\Http\Resources\PerformerPaginateResource;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -39,8 +40,8 @@ class PerformerAPIController extends Controller
     public function online_performers()
     {
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
-        $performers = User::where('role_id', 2)->where('last_seen', ">=",$date)->get();
-        return PerformerIndexResource::collection($performers);
+        $performers = User::where('role_id', 2)->where('last_seen', ">=",$date)->paginate();
+        return new PerformerPaginateResource($performers);
     }
 
     /**

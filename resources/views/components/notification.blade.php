@@ -12,7 +12,7 @@
     <i class="text-2xl lg:mr-6 mr-0 text-gray-500 hover:text-yellow-500 far fa-bell"></i>
 </button>
 <!-- Dropdown menu -->
-<div class="hidden bg-white text-base z-50 list-none divide-y divide-gray-100 rounded shadow my-4" id="dropdown">
+<div class="hidden bg-white text-base z-50 list-none divide-y divide-gray-100 rounded shadow my-4 w-96" id="dropdown">
     <div class="px-4 py-3">
         <span class="block text-base font-bold">{{__('Уведомления')}}</span>
     </div>
@@ -25,8 +25,8 @@
                 <div class="flex flex-col w-full">
                     <p class="mb-2 text-right">{{$notification->created_at->format('d M')}}</p>
                     @if($notification->type == 1)
-                        <div class="w-full">{{__('Отклик к заданию')}} <br>
-                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}"  №{{$notification->task_id}}</a> <br>
+                        <div class="w-full">{{__('Отклик к заданию')}} 
+                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">"{{$notification->name_task}}"  №{{$notification->task_id}}</a> 
                             {{__('задания отправлен')}}
                         </div>
                     @elseif($notification->type == 2 || $notification->type == 3)
@@ -35,17 +35,17 @@
                             {{$notification->name_task}}
                         </button>
                     @elseif($notification->type == 4)
-                        <div class="w-full">{!!__('Вас выбрали исполнителем <br> в задании')!!}
-                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}"  №{{$notification->task_id}}</a> <br>
+                        <div class="w-full">{{__('Вас выбрали исполнителем  в задании')}}
+                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}"  №{{$notification->task_id}}</a> 
                             <a class="hover:text-blue-500" href="/performers/{{$notification->user_id}}"> {{$notification->user->name}}</a></div>
                     @elseif($notification->type == 5)
-                        <div class="w-full">{{__('Отклик к заданию')}} <br>
-                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}" №{{$notification->task_id}}</a> <br>
+                        <div class="w-full">{{__('Отклик к заданию')}} 
+                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}" №{{$notification->task_id}}</a> 
                             {{__('задания отправлен')}}
                         </div>
                     @else
-                        <div class="w-full"> {!!__('Заказчик указал, что вы выполнили <br> задание')!!}
-                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}"  №{{$notification->task_id}}</a> <br>
+                        <div class="w-full"> {{__('Заказчик указал, что вы выполнили  задание')}}
+                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}"  №{{$notification->task_id}}</a> 
                             {{__(' и оставил вам отзыв')}}
                         </div>
                     @endif
@@ -91,7 +91,7 @@
             cluster: '{{env("PUSHER_APP_CLUSTER")}}',
             // encrypted: true,
 
-            wsHost: 'ws.smarts.uz', // 'bidding.uztelecom.uz',
+            wsHost: '{{env('WEBSOCKET_SERVER_HOST')}}',
             wsPort: 6001,
             forceTLS: false,
             disableStats: true,
@@ -99,6 +99,7 @@
         let channel = pusher.subscribe('user-notification-send-' + {{auth()->id()}});
         channel.bind('server-user', function (data) {
             data = JSON.parse(data.data)
+            console.log(data)
             let count = parseInt($('#content_count').text())
             count = count ? count : 0;
             count += 1

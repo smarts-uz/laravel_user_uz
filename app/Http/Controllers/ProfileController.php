@@ -159,30 +159,17 @@ class ProfileController extends Controller
 //settings
     public function editData()
     {
-        $user = Auth::user();
-        $views = $user->views()->count();
-        $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->select('id','name')->get();
-        $categories2 = Category::where('parent_id','<>', null)->select('id','parent_id','name')->get();
-        $regions = Region::withTranslations(['ru', 'uz'])->get();
-        $about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
-        $task_count = Task::where('performer_id', $user->id)->count();
-        $sessions = Session::query()->where('user_id', $user->id)->get();
-        $parser = Parser::create();
-        return view('profile.settings', compact('user', 'categories', 'categories2', 'views', 'regions', 'about', 'task_count', 'sessions', 'parser'));
+        $profile = new ProfileService();
+        $data = $profile->settingsEdit();
+        return view('profile.settings', $data);
     }
 
     public function updateData(UserUpdateDataRequest $request)
     {
         $data = $request->validated();
-        if ($data['email'] != auth()->user()->email) {
-            $data['is_email_verified'] = 0;
-            $data['email_old'] = auth()->user()->email;
-        }
-        if ($data['phone_number'] != auth()->user()->phone_number) {
-            $data['is_phone_number_verified'] = 0;
-            $data['phone_number_old'] = auth()->user()->phone_number;
-        }
-        Auth::user()->update($data);
+        $profile = new ProfileService();
+        $updatedData = $profile->settingsUpdate($data);
+        Auth::user()->update($updatedData);
         Alert::success(__('Настройки успешно сохранены'));
         return redirect()->route('profile.editData');
     }
@@ -220,9 +207,8 @@ class ProfileController extends Controller
 
     public function EditDescription(Request $request)
     {
-        $user = Auth::user();
-        $user->description = $request->description;
-        $user->save();
+        $profile = new ProfileService();
+        $profile->editDescription($request);
         return redirect()->back();
 
     }
@@ -334,27 +320,18 @@ class ProfileController extends Controller
 
     public function notif_setting_ajax(Request $request)
     {
-        $user = User::find($request->id);
-        $user->system_notification = $request->notif11;
-        $user->news_notification = $request->notif22;
-        $user->save();
+        $profile = new ProfileService();
+        $profile->userNotifications($request);
         return $request;
     }
 
     public function storeProfileImage(Request $request)
     {
-        if ($request->hasFile('image')) {
+        $profile = new ProfileService();
+        $photoName = $profile->storeProfilePhoto($request);
 
-            $files = $request->file('image');
-            $name = Storage::put('public/uploads', $files);
-            $name = str_replace('public/', '', $name);
-            $user = auth()->user();
-            $user->avatar = $name;
-            $user->save();
-        }
-
-        if ($name) {
-            echo json_encode(['status' => 1, 'msg' => 'success', 'name' => $name]);
+        if ($photoName) {
+            echo json_encode(['status' => 1, 'msg' => 'success', 'name' => $photoName]);
         } else {
             echo json_encode(['status' => 0, 'msg' => 'failed']);
         }

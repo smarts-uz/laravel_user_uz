@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
-    public function index(Report $report)
+    public function report(Report $report)
     {
         $table = $report->getTable();
 

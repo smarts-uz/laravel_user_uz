@@ -125,13 +125,6 @@ class PerformersController extends Controller
 
     public function perf_ajax($cf_id, User $user)
     {
-        // $str = "1,2,3,4,5,6,7,8";
-        // $cat_arr = explode(",",$str);
-        //dd(array_search($id,$cat_arr));
-
-        // $users = User::where('role_id',2)->paginate(50);
-
-        // return $users;
         $about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
         $task_count = $user->performer_tasks_count;
         $categories = Category::get();

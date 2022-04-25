@@ -29,6 +29,7 @@ class TaskIndexResource extends JsonResource
             'performer_id' => $this->performer_id,
             //'category_id' => $this->category_id,
             'category_name' => $this->category->name,
+            'category_id' => $this->category_id,
             'user' => new UserInTaskResource($this->user),
             'views' => $this->views,
             'status' => $this->status,

@@ -92,7 +92,7 @@ Route::get('task/{task}/map', [TaskAPIController::class, 'task_map'])->name('tas
 #region chat
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
-    Route::get('/reports', [ReportController::class, 'index'])->name("voyager.reports.index"); // javoxir
+    Route::get('/reports', [ReportController::class, 'report'])->name("voyager.reports.index"); // javoxir
     Route::get("users/activitiy/{user}", [VoyagerUserController::class, "activity"])->name("voyagerUser.activity"); // javoxir
     Route::get('/messages/chat/{id}', [ConversationController::class, 'showChat'])->name("conversation.showChat"); // javoxir
     Route::post('/messages/chat/rate/{message}', [ConversationController::class, 'rating'])->name("conversation.rating"); // javoxir
@@ -143,7 +143,7 @@ Route::get('/questions/{id}', [FaqsController::class, 'questions'])->name('faq.q
 Route::view('/faq', 'faq.faq');
 Route::view('/reviews', 'reviews.review');
 Route::view('/author-reviews', 'reviews.authors_reviews');
-Route::get('/press', [MassmediaController::class, 'index'])->name('massmedia'); // javoxir
+Route::get('/press', [Controller::class, 'index'])->name('massmedia'); // javoxir
 Route::view('/vacancies', 'reviews.vacancies');
 Route::get('/geotaskshint', [Controller::class, 'geotaskshint'])->name('geotaskshint'); // javoxir
 Route::get('/security', [Controller::class, 'security'])->name('security'); // javoxir
@@ -279,4 +279,8 @@ Route::post('/paycom', 'App\Http\Controllers\PaycomTransactionController@paycom'
 // Show transactions history
 Route::get('profile/transactions/history', [\App\Http\Controllers\UserTransactionHisory::class, 'getTransactions'])->name('user.transactions.history')->middleware('auth');
 #endregion
+
+Route::get('admin/reported-tasks', [\App\Http\Controllers\VoyagerTaskController::class, 'reported_tasks'])->name('admin.tasks.reported')->middleware('auth');
+Route::get('admin/complete-task/{task}', [\App\Http\Controllers\VoyagerTaskController::class, 'complete_task'])->name('admin.tasks.complete')->middleware('auth');
+Route::delete('admin/complete-task/{task}', [\App\Http\Controllers\VoyagerTaskController::class, 'delete_task'])->name('admin.tasks.reported.delete')->middleware('auth');
 

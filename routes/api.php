@@ -46,7 +46,6 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::delete('/for_del_new_task/{task}', [TaskAPIController::class, 'deletetask']); //end
     Route::delete('/delete-task/{task}', [SearchAPIController::class, 'delete_task']); //end
     Route::delete('/delete', [UserAPIController::class, 'destroy']); //end
-    Route::post('/settings/update', [ProfileAPIController::class, 'updateData'])->name('profile.updateData'); //not
 
     Route::get('account/verification/email', [LoginAPIController::class, 'send_email_verification']);
     Route::get('account/verification/phone', [LoginAPIController::class, 'send_phone_verification']);
@@ -54,19 +53,47 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post("account/change/email", [LoginAPIController::class,'change_email']);
     Route::post("account/change/phone", [LoginAPIController::class,'change_phone_number']);
 
-    Route::delete('/delete/portfolio/{portfolio}', [PortfolioAPIController::class, 'delete']);
-    Route::post('/portfolio/create', [PortfolioAPIController::class, 'createPortfolio']);
-
     Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']);
     Route::post('/select-performer/{response}', [ResponseAPIController::class, 'selectPerformer']);
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']);
     Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']);
-    Route::post('/change-avatar', [ProfileAPIController::class, 'avatar']);
-    Route::get('/profile', [ProfileAPIController::class, 'index']);
-    Route::post('/profile/password/change', [ProfileAPIController::class, 'change_password'])->name('profile.change_password');
-    Route::get('/user_cash', [ProfileAPIController::class, 'cash']);
+
+    // Profile API
+    Route::prefix('/profile')->group(function () {
+        // Profile
+        Route::get('/', [ProfileAPIController::class, 'index']);
+        Route::post('/change-avatar', [ProfileAPIController::class, 'avatar']);
+
+        // Profile Cash
+        Route::get('/cash', [ProfileAPIController::class, 'cash']);
+
+        // Profile Settings
+        Route::get('/settings', [ProfileAPIController::class, 'editData']);
+        Route::post('/settings/update', [ProfileAPIController::class, 'updateData']);
+        Route::post('/category/update', [ProfileAPIController::class, 'updateCategory']);
+        Route::post('/sessions/clear', [ProfileAPIController::class, 'clearSessions']);
+        Route::post('/password/change', [ProfileAPIController::class, 'change_password']);
+        Route::get('/notifications/subscription', [ProfileAPIController::class, 'userNotifications']);
+
+        // Profile Delete
+        Route::post('/delete', [ProfileAPIController::class, 'deleteUser']);
+
+        // Profile Details
+        Route::post('/store/district', [ProfileAPIController::class, 'storeDistrict']);
+        Route::post('/store/profile-photo', [ProfileAPIController::class, 'storeProfilePhoto']);
+        Route::post('/description', [ProfileAPIController::class, 'editDesctiption']);
+
+        // Profile Portfolio
+        Route::delete('/delete/portfolio/{portfolio}', [PortfolioAPIController::class, 'delete']);
+        Route::post('/portfolio/create', [PortfolioAPIController::class, 'createPortfolio']);
+
+        // comment
+        // testBase
+        // portfolio/{portfolio}
+    });
 
 });
+Route::post('create-task/routing', [TaskAPIController::class,'routing']);
 
 //User Routes
 Route::post('login', [UserAPIController::class, 'login']); //end
@@ -85,7 +112,7 @@ Route::get('faq/{id}', [FaqAPIController::class, 'questions']); //end
 
 //Tasks
 Route::get('task/{task}', [TaskAPIController::class, 'task']); //end
-Route::post('tasks-filter', [TaskAPIController::class, 'filter']); //end
+Route::get('tasks-filter', [TaskAPIController::class, 'filter']); //end
 Route::get('responses/{task}', [TaskAPIController::class, 'responses']); //end
 Route::get('same-tasks/{task}', [TaskAPIController::class, 'same_tasks']); //end
 Route::get('tasks-search', [SearchAPIController::class, 'ajax_tasks']); //end
@@ -95,12 +122,12 @@ Route::get('/detailed-tasks/{task}', [SearchAPIController::class, 'task']); //en
 
 //Categories
 Route::get('/categories', [CategoriesAPIController::class, 'index']); //end
+Route::get('/categories-parent', [CategoriesAPIController::class, 'parents']); //end
 Route::get('/categories/{id}', [CategoriesAPIController::class, 'show']); //end
 Route::get('/category/search', [CategoriesAPIController::class, 'search']); //end
 
 //Performers
 Route::get('/performers', [PerformerAPIController::class, 'service']); //end
-Route::get('/online-performers', [PerformerAPIController::class, 'online_performers']); //end
 Route::get('/performers/{performer}', [PerformerAPIController::class, 'performer']); //end
 
 //Portfolio
@@ -135,3 +162,4 @@ Route::post('/paynet-transaction', [PaynetTransactionAPIController::class, 'crea
 Route::get('login/google/callback',[SocialAPIController::class,'loginWithGoogle']);
 
 Route::get('login/facebook/callback',[SocialAPIController::class,'loginWithFacebook']);
+

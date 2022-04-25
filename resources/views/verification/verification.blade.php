@@ -3,7 +3,7 @@
 
 @section('content')
     <div style="background-image: url('https://images.pexels.com/photos/5588400/pexels-photo-5588400.jpeg?auto=compress&amp;cs=tinysrgb&amp;fit=crop&amp;h=768&amp;w=1688')"
-         class="h-screen bg-no-repeat mb-32">
+         class="h-screen bg-no-repeat bg-cover mb-32">
         <div class="text-center my-auto pt-48">
             <p class="text-4xl lg:text-6xl font-bold text-white ">{{__('Станьте исполнителем Universal Services')}}</p>
             <p class="mt-8 mb-12 text-white text-xl lg:text-2xl">{!!__('Universal Services поможет найти новых клиентов и зарабатывать <br> на выполнении любых услуг.')!!}</p>
