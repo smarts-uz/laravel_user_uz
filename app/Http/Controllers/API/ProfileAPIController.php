@@ -21,12 +21,80 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ProfileAPIController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/api/profile/pro",
+     *     tags={"ProfileAPI"},
+     *     summary="Your profile",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function index()
     {
         $user = Auth::user();
         return new UserIndexResource($user);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/password/change",
+     *     tags={"ProfileAPI"},
+     *     summary="Change password",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="old_password",
+     *                    type="string",
+     *                    format="password",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="password",
+     *                    type="string",
+     *                    format="password",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="password_confirmation",
+     *                    type="string",
+     *                    format="password",
+     *                 ),
+     *             ), 
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function change_password(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -61,6 +129,40 @@ class ProfileAPIController extends Controller
 
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/change-avatar",
+     *     tags={"ProfileAPI"},
+     *     summary="Change Avator",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="image",
+     *                    type="file",
+     *                 ),
+     *             ), 
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function avatar(Request $request)
     {
         $image = $request->validate(['image' => 'required'])['image'];
@@ -87,63 +189,52 @@ class ProfileAPIController extends Controller
     }
 
 
+    
     /**
-     *
-     * @OA\Post (
-     *     path="/api/settings/update",
-     *     tags={"Profile"},
-     *     summary="Update Settings",
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
+     * @OA\Post(
+     *     path="/api/profile/settings/update",
+     *     tags={"PorfolioAPI"},
+     *     summary="Update settings",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 @OA\Property(
-     *                      type="object",
-     *                      @OA\Property(
-     *                          property="email",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="age",
-     *                          type="integer"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="phone_number",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="description",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="location",
-     *                          type="string"
-     *                      )
+     *                 @OA\Property (
+     *                    property="email",
+     *                    type="string",
      *                 ),
-     *                 example={
-     *                     "email":"admin@admin.com",
-     *                     "age":17,
-     *                     "phone_number":"999098998",
-     *                     "description":"Assalomu aleykum",
-     *                     "location":"Xorazm viloyati",
-     *                }
-     *             )
-     *         )
-     *      ),
-     *      @OA\Response(
+     *                 @OA\Property (
+     *                    property="age",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="phone_number",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="description",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="location",
+     *                    type="string",
+     *                 ),
+     *             ), 
+     *         ),
+     *     ),
+     *     @OA\Response (
      *          response=200,
-     *          description="success",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="id", type="number", example=1),
-     *              @OA\Property(property="email", type="string", example="admin@admin.com"),
-     *              @OA\Property(property="age", type="integer", example=20),
-     *              @OA\Property(property="phone_number", type="string", example="999098998"),
-     *              @OA\Property(property="description", type="string", example="Assalomu aleykum"),
-     *              @OA\Property(property="location", type="string", example="Xorazm viloyati"),
-     *              @OA\Property(property="updated_at", type="string", example="2021-12-11T09:25:53.000000Z"),
-     *              @OA\Property(property="created_at", type="string", example="2021-12-11T09:25:53.000000Z"),
-     *          )
-     *      ),
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
      *     security={
      *         {"token": {}}
      *     },
@@ -164,6 +255,29 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+
+    /**
+     * @OA\Get(
+     *     path="/api/profile/cash",
+     *     tags={"ProfileAPI"},
+     *     summary="Your cash",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function cash()
     {
         $user = Auth()->user()->load('transactions');
@@ -185,6 +299,29 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+
+    /**
+     * @OA\Get(
+     *     path="/api/profile/settings",
+     *     tags={"ProfileAPI"},
+     *     summary="Your profile data",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function editData()
     {
         $profile = new ProfileService();
@@ -192,6 +329,29 @@ class ProfileAPIController extends Controller
         return response()->json($data);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/sessions/clear",
+     *     tags={"ProfileAPI"},
+     *     summary="Session clear",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function clearSessions()
     {
         Session::query()->where('user_id', auth()->user()->id)->delete();
@@ -203,6 +363,29 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+
+    /**
+     * @OA\DELETE(
+     *     path="/api/profile/delete",
+     *     tags={"ProfileAPI"},
+     *     summary="Delete User",
+     *     @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function deleteUser()
     {
         auth()->user()->delete();
@@ -214,6 +397,41 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/category/update",
+     *     tags={"ProfileAPI"},
+     *     summary="Profile category update",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="category",
+     *                    type="string",
+     *                 ),
+     *             ), 
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function updateCategory(Request $request)
     {
         $request->validate([
@@ -231,6 +449,41 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/store/district",
+     *     tags={"ProfileAPI"},
+     *     summary="Profile district",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="district",
+     *                    type="string",
+     *                 ),
+     *             ), 
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function storeDistrict(Request $request)
     {
         $request->validate([
@@ -248,6 +501,41 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/store/profile-photo",
+     *     tags={"ProfileAPI"},
+     *     summary="Profile Photo",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="image",
+     *                    type="file",
+     *                 ),
+     *             ), 
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function storeProfilePhoto(Request $request)
     {
         $profile = new ProfileService();
@@ -269,6 +557,41 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/description",
+     *     tags={"ProfileAPI"},
+     *     summary="Profile description",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="description",
+     *                    type="string",
+     *                 ),
+     *             ), 
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function editDesctiption(Request $request)
     {
         $profile = new ProfileService();

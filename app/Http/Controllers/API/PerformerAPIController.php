@@ -16,11 +16,19 @@ class PerformerAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/performers",
-     *     tags={"Performers"},
+     *     tags={"PerformersAPI"},
      *     summary="Get list of Performers",
-     *     @OA\Response(
+     *     @OA\Response (
      *          response=200,
-     *          description="Successful operation",
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
      *     )
      * )
      *
@@ -47,7 +55,7 @@ class PerformerAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/performers/{performer}",
-     *     tags={"Performers"},
+     *     tags={"PerformersAPI"},
      *     summary="Get list of Performers",
      *     @OA\Parameter(
      *          in="path",
@@ -57,9 +65,17 @@ class PerformerAPIController extends Controller
      *              type="string"
      *          ),
      *     ),
-     *     @OA\Response(
+     *     @OA\Response (
      *          response=200,
-     *          description="Successful operation",
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
      *     )
      * )
      *

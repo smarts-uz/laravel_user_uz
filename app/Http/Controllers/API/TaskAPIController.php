@@ -36,6 +36,33 @@ class TaskAPIController extends Controller
         $this->response_service = new ResponseService();
 
     }
+    /**
+     * @OA\Get(
+     *     path="/api/same-tasks/{task}",
+     *     tags={"TaskAPI"},
+     *     summary="Same tasks",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     )
+     * )
+     */
     public function same_tasks(Task $task, Request $request)
     {
         $tasks = $task->category->tasks()->where('id','!=',$task->id);
@@ -44,12 +71,84 @@ class TaskAPIController extends Controller
     }
 
 
-
+    /**
+     * @OA\Get(
+     *     path="/api/responses/{task}",
+     *     tags={"TaskAPI"},
+     *     summary="Response tasks",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     )
+     * )
+     */
     public function responses(Task $task)
     {
         return TaskResponseResource::collection($task->responses);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/task/{task}/response",
+     *     tags={"TaskAPI"},
+     *     summary="Response store task",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="description",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="price",
+     *                    type="integer",
+     *                 ),
+     *             ), 
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function response_store(Task $task, Request $request)
     {
         $response = $this->response_service->store($request,$task);
@@ -63,6 +162,78 @@ class TaskAPIController extends Controller
         return  response()->json($response);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/tasks-filter",
+     *     tags={"TaskAPI"},
+     *     summary="Tasks filter",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="categories",
+     *          @OA\Schema (
+     *              type="array",
+     *              @OA\Items (
+     *                  type="integer",
+     *              )
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="lat",
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="long",
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="budget",
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="is_remote",
+     *          @OA\Schema (
+     *              type="boolean"
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="without_response",
+     *          @OA\Schema (
+     *              type="boolean"
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="difference",
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *     ),
+     *     
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     * )
+     */
     public function filter(TaskFilterRequest $request)
     {
         $data = $request->validated();
@@ -98,7 +269,7 @@ class TaskAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/task/{task}",
-     *     tags={"Task"},
+     *     tags={"TaskAPI"},
      *     summary="Show tasks by ID",
      *     @OA\Parameter(
      *          in="path",
@@ -129,20 +300,32 @@ class TaskAPIController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/my-tasks",
-     *     tags={"Task"},
-     *     summary="Get list of my Tasks",
-     *     security={
-     *      {"token": {}},
-     *     },
-     *     @OA\Response(
+     *     path="/api/my-tasks-count",
+     *     tags={"TaskAPI"},
+     *     summary="My tasks count",
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="is_performer",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
+     *     ),
+     *     @OA\Response (
      *          response=200,
-     *          description="successful operation",
+     *          description="Successful operation"
      *     ),
      *     @OA\Response(
      *          response=401,
-     *          description="Unauthenticated"
-     *     )
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *      {"token": {}},
+     *     },
      * )
      */
     public function my_tasks_count(Request $request)
@@ -163,6 +346,45 @@ class TaskAPIController extends Controller
         return response()->json(['success' => true, 'data' => compact('open_tasks','in_process_tasks', 'complete_tasks','cancelled_tasks','all')]);
     }
 
+
+    /**
+     * @OA\Get(
+     *     path="/api/my-tasks",
+     *     tags={"TaskAPI"},
+     *     summary="My tasks all",
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="is_performer",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          ),
+     *     ),
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="status",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *      {"token": {}},
+     *     },
+     * )
+     */
     public function my_tasks_all(Request $request)
     {
         $user = auth()->user();
@@ -186,93 +408,62 @@ class TaskAPIController extends Controller
 
 
     /**
-     *
-     * @OA\Post (
+     * @OA\Post(
      *     path="/api/task/create",
-     *     tags={"Task"},
-     *     summary="Add new task",
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
+     *     tags={"TaskAPI"},
+     *     summary="Task create",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 @OA\Property(
-     *                      type="object",
-     *                      @OA\Property(
-     *                          property="name",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="address",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="date_type",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="start_date",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="end_date",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="budget",
-     *                          type="integer"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="description",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="category_id",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="phone",
-     *                          type="string"
-     *                      )
+     *                 @OA\Property (
+     *                    property="name",
+     *                    type="string",
      *                 ),
-     *                 example={
-     *                     "name":"Javoxir",
-     *                     "address":"Xorazm",
-     *                     "date_type":"1",
-     *                     "start_date":"2021-05-17 10:00",
-     *                     "end_date":"2021-05-17 10:00",
-     *                     "budget":10000,
-     *                     "description":"Juda zo`r",
-     *                     "category_id":"31",
-     *                     "phone":"909598654",
-     *                }
-     *             )
-     *         )
-     *      ),
-     *      @OA\Response(
+     *                 @OA\Property (
+     *                    property="address",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="date_type",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="budget",
+     *                    type="number",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="description",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="category_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="photos",
+     *                    type="file",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="phone",
+     *                    type="string",
+     *                 ),
+     *             ), 
+     *         ),
+     *     ),
+     *     @OA\Response (
      *          response=200,
-     *          description="success",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="id", type="number", example=1),
-     *              @OA\Property(property="name", type="string", example="name"),
-     *              @OA\Property(property="address", type="string", example="address"),
-     *              @OA\Property(property="date_type", type="string", example="1"),
-     *              @OA\Property(property="start_date", type="string", example="2021-05-17 00:00"),
-     *              @OA\Property(property="end_date", type="string", example="2021-05-17 00:00"),
-     *              @OA\Property(property="budget", type="integer", example="100000"),
-     *              @OA\Property(property="description", type="string", example="Zo`r"),
-     *              @OA\Property(property="category_id", type="integer", example="35"),
-     *              @OA\Property(property="phone", type="string", example="909598654"),
-     *              @OA\Property(property="updated_at", type="string", example="2021-12-11T09:25:53.000000Z"),
-     *              @OA\Property(property="created_at", type="string", example="2021-12-11T09:25:53.000000Z"),
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=400,
-     *          description="invalid",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="msg", type="string", example="fail"),
-     *          )
-     *      ),
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
      *     security={
      *         {"token": {}}
      *     },
@@ -307,82 +498,70 @@ class TaskAPIController extends Controller
 
 
     /**
-     *
-     * @OA\Put (
+     * @OA\Put(
      *     path="/api/change-task/{task}",
-     *     tags={"Task"},
-     *     summary="Update Task",
-     *     @OA\Parameter(
-     *         in="path",
-     *         name="task",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         )
-     *     ),
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(
-     *                      type="object",
-     *                      @OA\Property(
-     *                          property="name",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="address",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="date_type",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="budget",
-     *                          type="integer"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="description",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="category_id",
-     *                          type="integer"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="phone",
-     *                          type="string"
-     *                      ),
-     *                 ),
-     *                 example={
-     *                     "name":"Javoxir",
-     *                     "address":"Xorazm viloyati",
-     *                     "date_type":"1",
-     *                     "budget":12000,
-     *                     "description":"Juda zo`r",
-     *                     "category_id":"31",
-     *                     "phone":"998987456",
-     *                }
-     *             )
-     *         )
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="success",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="id", type="number", example=1),
-     *              @OA\Property(property="name", type="string", example="Javoxir"),
-     *              @OA\Property(property="address", type="string", example="Xorazm viloyati"),
-     *              @OA\Property(property="date_type", type="string", example="1"),
-     *              @OA\Property(property="budget", type="integer", example="15000"),
-     *              @OA\Property(property="description", type="string", example="Juda zo`r"),
-     *              @OA\Property(property="category_id", type="integer", example="31"),
-     *              @OA\Property(property="phone", type="string", example="998987456"),
-     *              @OA\Property(property="updated_at", type="string", example="2021-12-11T09:25:53.000000Z"),
-     *              @OA\Property(property="created_at", type="string", example="2021-12-11T09:25:53.000000Z"),
+     *     tags={"TaskAPI"},
+     *     summary="Change task",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="string"
      *          )
-     *      ),
+     *     ),
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="name",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="address",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="date_type",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="budget",
+     *                    type="number",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="description",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="category_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="photos",
+     *                    type="file",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="phone",
+     *                    type="string",
+     *                 ),
+     *             ), 
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
      *     security={
      *         {"token": {}}
      *     },
@@ -412,11 +591,8 @@ class TaskAPIController extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/for_del_new_task/{task}",
-     *     tags={"Task"},
+     *     tags={"TaskAPI"},
      *     summary="Delete Task",
-     *     security={
-     *         {"token": {}}
-     *     },
      *     @OA\Parameter(
      *          in="path",
      *          name="task",
@@ -436,7 +612,10 @@ class TaskAPIController extends Controller
      *     @OA\Response(
      *          response=403,
      *          description="Forbidden"
-     *     )
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
      * )
      */
     public function deletetask(Task $task)

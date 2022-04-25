@@ -13,7 +13,7 @@ class FaqAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/faq",
-     *     tags={"FAQ"},
+     *     tags={"FaqAPI"},
      *     summary="Get of FAQ",
      *     @OA\Response (
      *          response=200,
@@ -35,7 +35,7 @@ class FaqAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/faq/{id}",
-     *     tags={"FAQ"},
+     *     tags={"FaqAPI"},
      *     summary="Get of questions in FAQ",
      *     @OA\Parameter (
      *          in="path",
