@@ -18,6 +18,7 @@ use App\Http\Controllers\Task\UpdateController;
 use App\Http\Controllers\UserController;
 
 //avocoder
+use App\Http\Controllers\vendor\Chatify\MessagesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConversationController;
 
@@ -90,6 +91,18 @@ Route::group(['prefix' => 'performers'], function () {
 Route::get('task/{task}/map', [TaskAPIController::class, 'task_map'])->name('task.map'); //end
 
 #region chat
+Route::group(['prefix' => 'chat'], function (){
+    Route::get('/getContacts', [MessagesController::class, 'getContacts'])->name('contacts.get');
+    Route::post('/favorites', [MessagesController::class, 'getFavorites'])->name('favorites');
+    Route::post('/idInfo', [MessagesController::class,'idFetchData']);
+    Route::post('/shared', [MessagesController::class, 'sharedPhotos'])->name('shared');
+    Route::post('/fetchMessages', [MessagesController::class, 'fetch'])->name('fetch.messages');
+    Route::post('/sendMessage', [MessagesController::class, 'send'])->name('send.message');
+    Route::post('/makeSeen', [MessagesController::class, 'seen'])->name('messages.seen');
+    Route::post('/updateContacts', [MessagesController::class, 'updateContactItem'])->name('contacts.update');
+    Route::post('/pusher/auth', [MessagesController::class, 'pusherAuth']);
+});
+
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
     Route::get('/reports', [ReportController::class, 'index'])->name("voyager.reports.index"); // javoxir
@@ -279,4 +292,5 @@ Route::post('/paycom', 'App\Http\Controllers\PaycomTransactionController@paycom'
 // Show transactions history
 Route::get('profile/transactions/history', [\App\Http\Controllers\UserTransactionHisory::class, 'getTransactions'])->name('user.transactions.history')->middleware('auth');
 #endregion
+
 

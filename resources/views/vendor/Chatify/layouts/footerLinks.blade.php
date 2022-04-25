@@ -4,13 +4,13 @@
     Pusher.logToConsole = true;
 
     var pusher = new Pusher("{{ config('chatify.pusher.key') }}", {
-        encrypted: true,
+        // encrypted: true,
         cluster: '{{env("PUSHER_APP_CLUSTER")}}',
         wsHost: '{{env('WEBSOCKET_SERVER_HOST')}}',
         wsPort: 6001,
         forceTLS: false,
         disableStats: true,
-        authEndpoint: '{{route("pusher.auth")}}',
+        authEndpoint: 'http://' + {{env('WEBSOCKET_SERVER_HOST')}} +'/chat/pusher/auth',
         auth: {
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

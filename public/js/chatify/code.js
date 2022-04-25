@@ -596,6 +596,7 @@ var channel = pusher.subscribe("private-chatify");
 
 // Listen to messages, and append if data received
 channel.bind("messaging", function (data) {
+    // console.log('teasdasdasda')
   if (data.from_id == getMessengerId() && data.to_id == auth_id) {
     $(".messages").find(".message-hint").remove();
     messagesContainer.find(".messages").append(data.message);
