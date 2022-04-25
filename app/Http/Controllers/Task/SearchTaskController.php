@@ -58,42 +58,29 @@ class SearchTaskController extends VoyagerBaseController
         return $this->service->ajaxReq();
     }
 
-    public function my_tasks()
-    {
-        $user = auth()->user();
-        $tasks = $user->tasks();
-        $perform_tasks = Task::where('performer_id', $user->id())->get();
-        $all_tasks = Task::where('user_id', $user->id)->where('performer_id', $user->id)->get();
-        $categories = Category::get();
-        return view('/task/mytasks', compact('tasks', 'categories', 'perform_tasks', 'all_tasks'));
-    }
-
     public function task(Task $task)
     {
         if (!$task->user_id) {
             abort(404);
         }
-        $complianceType = ComplianceType::all();
-
         $review = null;
-        if ($task->reviews_count == 2) $review == true;
+        if ($task->reviews_count == 2) $review = true;
         if (auth()->check()) {
             $task->views++;
             $task->save();
         }
-        $selected = $task->responses()->where('performer_id', $task->performer_id)->first();
-        $responses = $selected ? $task->responses()->where('id', '!=', $selected->id)->get() : $task->responses;
-        $auth_response = auth()->check() ? $task->responses()->where('performer_id', auth()->user()->id)->with('user')->first() : null;
-        $same_tasks = $task->category->tasks()->where('id', '!=', $task->id)->where('status', Task::STATUS_OPEN)->take(10)->get();
-        $addresses = $task->addresses;
+        $auth_response = auth()->check();
+        $userId = auth()->id();
+        $item = $this->service->task_service($auth_response, $userId, $task);
 
-        return view('task.detailed-tasks', compact('task', 'review', 'complianceType', 'same_tasks', 'auth_response', 'selected', 'responses', 'addresses'));
+        return view('task.detailed-tasks',
+        ['task' => $task, 'review' => $review, 'complianceType' => $item->complianceType, 'same_tasks' => $item->same_tasks,
+        'auth_response' => $item->auth_response, 'selected' => $item->selected, 'responses' => $item->responses, 'addresses' => $item->addresses]);
     }
 
     public function comlianse_save(Request $request)
     {
-        $comp = new SearchService();
-        $comp->comlianse_saveS($request);
+        $this->service->comlianse_saveS($request);
         return redirect()->back();
     }
 
