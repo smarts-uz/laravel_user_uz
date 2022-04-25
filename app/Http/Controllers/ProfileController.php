@@ -98,27 +98,6 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function updates(Request $request)
-    {
-        $request->validate([
-            'avatar' => 'required|image'
-        ]);
-        $user = Auth::user();
-        $data = $request->all();
-        if ($request->hasFile('avatar')) {
-            $destination = 'storage/' . $user->avatar;
-            if (File::exists($destination)) {
-                File::delete($destination);
-            }
-            $filename = $request->file('avatar');
-            $imagename = "user-avatar/" . $filename->getClientOriginalName();
-            $filename->move(public_path() . '/storage/user-avatar/', $imagename);
-            $data['avatar'] = $imagename;
-        }
-        $user->update($data);
-        return redirect()->back();
-    }
-
     //profile Cash
     public function profileCash()
     {

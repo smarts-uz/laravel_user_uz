@@ -154,8 +154,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::prefix('profile')->group(function () {
         //Profile
         Route::get('/', [ProfileController::class, 'profileData'])->name('profile.profileData'); // javoxir
-        Route::put('/updateuserphoto', [ProfileController::class, 'updates'])->name('profile.updates');
-
         //Profile cash
         Route::get('/cash', [ProfileController::class, 'profileCash'])->name('profile.profileCash'); // javoxir
 
