@@ -159,7 +159,7 @@ Route::post('/paynet-transaction', [PaynetTransactionAPIController::class, 'crea
 
 
 
-Route::get('login/google/callback',[SocialAPIController::class,'loginWithGoogle']);
+Route::post('login/google/callback',[SocialAPIController::class,'loginWithGoogle']);
 
 Route::post('login/facebook/callback',[SocialAPIController::class,'loginWithFacebook']);
 
