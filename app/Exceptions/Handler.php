@@ -64,7 +64,7 @@ class Handler extends ExceptionHandler
     {
         $message = "";
         foreach ($exception->errors() as $error) {
-            $message .= $error[0];
+            $message = $error[0];
         }
         return response()->json([
             'success' => false,
