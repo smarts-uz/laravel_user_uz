@@ -31,8 +31,10 @@ class UpdateController extends Controller
             abort(403);
 
         $data = $request->validated();
-        $data = getAddress($data);
-
+        $task->addresses()->delete();
+        $data['coordinates'] = $this->service->addAdditionalAddress($task,$request);
+        unset($data['location0']);
+        unset($data['coordinates0']);
         $task->update($data);
         $this->service->syncCustomFields($task);
         Alert::success('Success');
