@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\CustomField;
-use App\Models\Task;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -34,16 +33,17 @@ class Controller extends BaseController
 
     public function my_tasks()
     {
-        $user = auth()->user();
-        $tasks = $user->tasks()->orderBy('created_at', 'desc')->get();
-        $perform_tasks = $user->performer_tasks;
-        $datas = new Collection();
-        $datas = $datas->merge($tasks);
-        $datas = $datas->merge($perform_tasks);
-        $categories = Category::where('parent_id', null)->select('id', 'name', 'slug')->get();
-        $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
-
-        return view('task.mytasks', compact('tasks', 'perform_tasks', 'categories', 'categories2', 'datas'));
+       
+        $service = new ControllerService();
+        $item = $service->my_tasks();
+        return view('task.mytasks',
+        [
+            'categories' => $item->categories,
+            'categories2' => $item->categories2,
+            'datas' => $item->datas,
+            'perform_tasks' => $item->perform_tasks,
+            'tasks' => $item->tasks,
+        ]);
 
     }
 

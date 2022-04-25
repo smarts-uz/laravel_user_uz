@@ -3,7 +3,7 @@
 
 namespace App\Services;
 
-
+use Illuminate\Database\Eloquent\Collection;
 use App\Events\MyEvent;
 use App\Item\ControllerItem;
 use App\Item\CategoryItem;
@@ -35,6 +35,18 @@ class ControllerService
         $item -> choosed_category = Category::withTranslations(['ru', 'uz'])->where('id', $id)->get();
         $item -> child_categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', $id)->get();
         $item -> idR = $id;
+        return $item;
+    }
+    public function my_tasks(){
+        $item = new MyTaskItem();
+        $item ->user = auth()->user();
+        $item ->tasks = $item ->user->tasks()->orderBy('created_at', 'desc')->get();
+        $item ->perform_tasks = $item ->user->performer_tasks;
+        $item ->datas = new Collection();
+        $item ->datas = $item ->datas->merge( $item ->tasks);
+        $item ->datas = $item ->datas->merge($item ->perform_tasks);
+        $item ->categories = Category::where('parent_id', null)->select('id', 'name', 'slug')->get();
+        $item ->categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
         return $item;
     }
 }
