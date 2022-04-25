@@ -9,6 +9,8 @@ use App\Http\Requests\PerformerRegisterRequest;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Resources\PerformerIndexResource;
 use App\Http\Resources\PerformerPaginateResource;
+use App\Http\Resources\ReviewPaginationResource;
+use App\Models\Review;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -159,6 +161,14 @@ class PerformerAPIController extends Controller
 
         return response()->json(['success' => true, "message" => 'successfully updated']);
 
+    }
+
+    public function reviews(Request $request)
+    {
+        $from_performer = $request->from_performer;
+        $reviews = Review::query()->whereHas('task')->whereHas('user')->where('user_id',auth()->user()->id)->paginate();
+
+        return new ReviewPaginationResource($reviews);
     }
 
     public function getByCategories()

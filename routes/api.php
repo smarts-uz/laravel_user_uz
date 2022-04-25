@@ -61,7 +61,7 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('/become-performer-phone', [PerformerAPIController::class,'becomePerformerEmailPhone']);
     Route::post('/become-performer-avatar', [PerformerAPIController::class,'becomePerformerAvatar']);
     Route::post('/become-performer-category', [PerformerAPIController::class,'becomePerformerCategory']);
-
+    Route::get('/reviews', [PerformerAPIController::class, 'reviews']);
     // Profile API
     Route::prefix('/profile')->group(function () {
         // Profile
