@@ -249,7 +249,6 @@ Route::post('/register', [LoginController::class, 'customRegister'])->name('logi
 Route::get('/logout', [LoginController::class, 'logout'])->name('login.logout');
 Route::get('/reset', [UserController::class, 'reset'])->name('user.reset');
 Route::get('/confirm', [UserController::class, 'confirm'])->name('user.confirm');
-Route::get('dashboard', [UserController::class, 'dashboardView'])->middleware(['auth']);
 Route::get('account/verify/{user}/{hash}', [LoginController::class, 'verifyAccount'])->name('login.verifyAccount');
 Route::get('account/verification/email', [LoginController::class, 'send_email_verification'])->name('login.send_email_verification')->middleware('auth');
 Route::get('account/verification/phone', [LoginController::class, 'send_phone_verification'])->name('login.send_phone_verification')->middleware('auth');

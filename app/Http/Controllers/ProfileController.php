@@ -7,28 +7,17 @@ use App\Http\Requests\User\PerformerCreateRequest;
 use App\Http\Requests\UserPasswordRequest;
 use App\Http\Requests\UserUpdateDataRequest;
 use App\Models\Session;
-use App\Services\User\Active;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Jenssegers\Agent\Agent;
 use \TCG\Voyager\Models\Category;
 use App\Models\Portfolio;
-use App\Models\PortfolioImage;
-use App\Models\Region;
 use Illuminate\Support\Facades\File;
 use App\Models\User;
 use App\Models\Task;
-use App\Models\WalletBalance;
-use App\Models\All_transaction;
-use App\Models\Portfoliocomment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\UserView;
-use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Services\Profile\ProfileService;
-use UAParser\Parser;
 
 class ProfileController extends Controller
 {
@@ -38,15 +27,6 @@ class ProfileController extends Controller
     public function __construct()
     {
         $this->agent = new Agent();
-
-//        if (auth()->check()){
-
-//            $user = Auth::user();
-//
-//        $user->last_seen_at = Carbon::now()->addMinutes(5);
-//            $user->save();
-//        }
-
     }
 
     public function clear_sessions()
@@ -99,25 +79,23 @@ class ProfileController extends Controller
     public function profileData()
     {
         $user = Auth::user();
+        $service = new ProfileService();
+        $item = $service->profileData($user);
 
-        $views = $user->views_count;
-        $task = $user->tasks_count;
-        $task_count = $user->performer_tasks()->where('status', 4)->count();
-        $ports = $user->portfoliocomments;
-        $portfolios = $user->portfolios()->where('image', '!=', null)->get();
-        // $image variable hech qatta ishlatilmayaptiku nega kiritgansizlar? Maqsad nima?
-        $about = User::where('role_id', 2)->take(20)->get();
-        $file = "Portfolio/{$user->name}";
-        if (!file_exists($file)) {
-            File::makeDirectory($file);
-        }
-        $b = File::directories(public_path("Portfolio/{$user->name}"));
-        $directories = array_map('basename', $b);
-        $categories = Category::withTranslations(['ru', 'uz'])->get();
-        $goodReviews = $user->goodReviews()->get();
-        $badReviews = $user->badReviews()->get();
-
-        return view('profile.profile', compact('categories', 'about', 'portfolios', 'directories', 'task_count', 'user', 'views', 'task', 'ports','goodReviews','badReviews'));
+        return view('profile.profile',
+        [
+            'categories' => $item->categories,
+            'about' => $item->about,
+            'user' => $user,
+            'directories' => $item->directories,
+            'portfolios' => $item->portfolios,
+            'goodReviews' => $item->goodReviews,
+            'badReviews' => $item->badReviews,
+            'task_count' => $item->task_count,
+            'views' => $item->views,
+            'ports' => $item->ports,
+            'task' => $item->task,
+        ]);
     }
 
     public function updates(Request $request)
@@ -144,16 +122,19 @@ class ProfileController extends Controller
     //profile Cash
     public function profileCash()
     {
-        $user = Auth()->user()->load('transactions');
-
-        $balance = $user->walletBalance;
-        $views = $user->views()->count();
-        $task = $user->tasks()->count();
-        $transactions = $user->transactions()->paginate(15);
-        $about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
-        $task_count = Task::where('performer_id', $user->id)->count();
-
-        return view('profile.cash', compact('user', 'views', 'balance', 'task', 'about', 'task_count', 'transactions'));
+        $service = new ProfileService();
+        $item = $service->profileCash();
+        return view('profile.cash',
+        [
+            'task_count' => $item->task_count,
+            'views' => $item->views,
+            'balance' => $item->balance,
+            'task' => $item->task,
+            'about' => $item->about,
+            'task_count' => $item->task_count,
+            'transactions' => $item->transactions,
+            'user' => $item->user,
+        ]);
     }
 
 //settings

@@ -2,6 +2,8 @@
 
 namespace App\Services\Profile;
 
+use App\Item\ProfileCashItem;
+use App\Item\ProfileDataItem;
 use App\Models\Region;
 use App\Models\Session;
 use App\Models\Task;
@@ -119,5 +121,36 @@ class ProfileService
         $user->system_notification = $request->notif11;
         $user->news_notification = $request->notif22;
         $user->save();
+    }
+
+    public function profileCash(){
+        $item = new ProfileCashItem();
+        $item ->user = Auth()->user()->load('transactions');
+        $item ->balance =  $item ->user->walletBalance;
+        $item ->views =  $item ->user->views()->count();
+        $item ->task =  $item ->user->tasks()->count();
+        $item ->transactions =  $item ->user->transactions()->paginate(15);
+        $item ->about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
+        $item ->task_count = Task::where('performer_id',  $item ->user->id)->count();
+        return $item;
+    }
+    public function profileData( $user){
+        $item = new ProfileDataItem();
+        $item ->views = $user->views_count;
+        $item ->task = $user->tasks_count;
+        $item ->task_count = $user->performer_tasks()->where('status', 4)->count();
+        $item ->ports = $user->portfoliocomments;
+        $item ->portfolios = $user->portfolios()->where('image', '!=', null)->get();
+        $item ->about = User::where('role_id', 2)->take(20)->get();
+        $item ->file = "Portfolio/{$user->name}";
+        if (!file_exists($item ->file)) {
+            File::makeDirectory($item ->file);
+        }
+        $item ->b = File::directories(public_path("Portfolio/{$user->name}"));
+        $item ->directories = array_map('basename',  $item ->b );
+        $item ->categories = Category::withTranslations(['ru', 'uz'])->get();
+        $item ->goodReviews = $user->goodReviews()->get();
+        $item ->badReviews = $user->badReviews()->get();
+        return $item;
     }
 }
