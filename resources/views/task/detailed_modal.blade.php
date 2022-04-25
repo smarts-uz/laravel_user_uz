@@ -27,9 +27,9 @@ style="background-color:rgba(0,0,0,0.5)" id="modal-id45">
                         <option value="{{$complType->id}}">{{$complType->name}}</option>
                     @endforeach
                 </select>
-                <textarea name="c_text" id=""
+                <textarea name="c_text" id="" required
                           class="border-2 border-gray-500 rounded-lg p-2 w-4/5 focus:outline-none hover:border-yellow-500"></textarea>
-                <input type="submit" value="{{__('Отправить')}}"
+                <input type="submit" value="{{__('Отправить')}}" required
                        class="bg-yellow-500 mt-4 py-3 px-5 rounded-lg text-white text-xl cursor-pointer font-medium border-2 border-gray-500 hover:bg-yellow-600">
             </form>
 
@@ -189,6 +189,7 @@ id="modal-id4">
                                 value="1"
                                 onchange="valueChanged()"/>{{__('Указать время актуальности предложения')}}
                         </label>
+                        <input type="number" class="hidden" id="not_free" name="not_free">
                         <br>
                         <select name="response_time"
                                 id="AttorneyEmpresa"
