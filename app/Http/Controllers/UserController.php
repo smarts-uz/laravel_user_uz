@@ -284,14 +284,4 @@ class UserController extends Controller
         return $message;
     }
 
-    // public function update(Request $request, User $user)
-    // {
-    //     $user->update($request->only($this->getEditableColumns()));
-    // }
-
-    protected function getEditableColumns()
-    {
-        return ['review_rating', 'review_good', 'review_bad'];
-    }
-
 }
