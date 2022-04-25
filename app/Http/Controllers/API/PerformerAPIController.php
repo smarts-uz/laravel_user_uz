@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BecomePerformerEmailPhone;
+use App\Http\Requests\BecomePerformerRequest;
 use App\Http\Requests\PerformerRegisterRequest;
+use App\Http\Requests\UserLoginRequest;
 use App\Http\Resources\PerformerIndexResource;
 use App\Http\Resources\PerformerPaginateResource;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use function Symfony\Component\String\s;
 
 class PerformerAPIController extends Controller
@@ -114,6 +118,47 @@ class PerformerAPIController extends Controller
                 'categories' => 'required'
             ];
         }
+    }
+
+    public function becomePerformerData(BecomePerformerRequest $request)
+    {
+        $data = $request->validated();
+        $user = auth()->user();
+        $user->update($data);
+
+        return response()->json(['success' => 'true', 'message' => 'Successfully updated']);
+    }
+    public function becomePerformerEmailPhone(BecomePerformerEmailPhone $request)
+    {
+        $request->validated();
+        return response()->json(['success' => 'true', 'message' => 'Successfully updated']);
+    }
+
+    public function becomePerformerAvatar(Request $request)
+    {
+        $data = $request->validate(['avatar'=>'required']);
+        $avatar = $data['avatar'];
+
+        $data['role_id'] = 2;
+        $name = Storage::put('public/uploads', $avatar);
+        $name = str_replace('public/', '', $name);
+        $data['avatar'] = $name;
+        auth()->user()->update($data);
+
+        return response()->json(['success' => true, 'message' => 'true']);
+
+
+    }
+
+
+    public function becomePerformerCategory(Request $request)
+    {
+        $data = $request->validate(['category_id' => 'required|string']);
+
+        auth()->user()->update($data);
+
+        return response()->json(['success' => true, "message" => 'successfully updated']);
+
     }
 
     public function getByCategories()
