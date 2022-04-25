@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\FaqCategories;
 use App\Models\Faqs;
+use App\Services\FaqsService;
 use Illuminate\Routing\Controller;
 
 class FaqsController extends Controller
@@ -21,8 +22,11 @@ class FaqsController extends Controller
 
     public function questions($id)
     {
-        $fq = Faqs::withTranslations(['ru', 'uz'])->where('category_id', $id)->get();
-        $fc = FaqCategories::withTranslations(['ru', 'uz'])->where('id', $id)->first();
-        return view('faq.faq-ans', compact('fq', 'fc'));
+        $service = new FaqsService();
+        $item = $service->questions($id);
+        return view('faq.faq-ans',[
+            'fq' => $item->fq,
+            'fc' => $item->fc,
+        ]);
     }
 }
