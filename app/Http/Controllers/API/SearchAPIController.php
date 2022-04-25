@@ -138,18 +138,29 @@ class SearchAPIController extends Controller
      */
     public function task(Task $task)
     {
-        $complianceType = CompliancesType::all();
+        if (!$task->user_id) {
+            abort(404);
+        }
+        $auth_response = auth()->check();
+        $userId = auth()->id();
         $review = null;
-        if ($task->reviews_count == 2) $review == true;
-        if (auth()->check()){
+        if ($task->reviews_count == 2) $review = true;
+        if ($auth_response){
             $task->views++;
             $task->save();
         }
+        $item = $this->service->task_service($auth_response, $userId, $task);
+
         return response()->json([
             'data' => [
                 'task' => $task,
                 'review' => $review,
-                'complianceType' => $complianceType
+                'complianceType' => $item->complianceType,
+                'same_tasks' => $item->same_tasks,
+                'auth_response' => $item->auth_response,
+                'selected' => $item->selected,
+                'responses' => $item->responses,
+                'addresses' => $item->addresses
             ]
         ]);
     }
