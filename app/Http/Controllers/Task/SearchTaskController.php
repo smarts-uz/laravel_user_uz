@@ -95,7 +95,7 @@ class SearchTaskController extends VoyagerBaseController
     {
         taskGuard($task);
         if ($task->responses_count)
-            abort(403);
+            abort(403,"No Permission");
         $addresses = $task->addresses;
         //        dd($task);
         return view('task.changetask', compact('task', 'addresses'));
