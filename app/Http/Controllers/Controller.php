@@ -2,143 +2,160 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Advant;
-use App\Models\Task;
-use App\Models\How_work_it;
-use App\Models\User;
-use App\Models\Reklama;
-use App\Models\Trust;
-use App\Models\UserView;
+use App\Models\CustomField;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
 use TCG\Voyager\Models\Category;
+use App\Models\Massmedia;
+use App\Services\ControllerService;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function home(Request $request)
+
+    public function home()
     {
-        $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->get();
-        $tasks  =  Task::where('status', 1)->orWhere('status',2)->orderBy('id', 'desc')->take(20)->get();
-        $howitworks = How_work_it::all();
-        if (!session()->has('lang')) {
-            Session::put('lang', 'ru');
-        }
-        $random_category = Category::skip(1)->first();
-        $users_count = User::where('role_id', 2)->count();
-        $advants = Advant::all();
-        $reklamas = Reklama::all();
-        $trusts = Trust::orderby('id', 'desc')->get();
-        return view('home', compact('tasks', 'howitworks', 'categories', 'random_category', 'users_count', 'advants', 'reklamas', 'trusts'));
+        $service = new ControllerService();
+        $item = $service->home();
+        return view('home',
+            [
+                'categories' => $item->categories,
+                'tasks' => $item->tasks,
+            ]
+        );
     }
 
-    public function home_profile()
-    {
-        $user = User::find(Auth::user()->id);
-        $vcs = UserView::where('user_id', $user->id)->get();
-        return view('profile.profile', compact('user', 'vcs'));
-    }
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'avatar' => 'required|image'
-        ]);
-        $user = User::find($id);
-        $data = $request->all();
-
-        if ($request->hasFile('avatar')) {
-            Storage::delete($user->avatar);
-            $data['avatar'] = $request->file('avatar')->store("images/users");
-            // $filename = $request->file('avatar')->getClientOriginalName();
-            // Storage::disk('avatar')->putFileAs('images/users', $request->file('avatar'), $filename);
-            $filename = request()->file('avatar');
-            $extention = File::extension($filename);
-            $file = $filename;
-            $file->store('images/users', ['disk' => 'avatar']);
-        }
-        $user->update($data);
-        return  redirect()->route('profile.profileData');
-    }
-    public function task_create()
-    {
-        return view('/create/name');
-    }
-    public function location_create()
-    {
-        return view('/create/location');
-    }
-    public function task_search()
-    {
-        return view('task/search2');
-    }
-    public function performers()
-    {
-        return view('performer');
-    }
-
-    public function profile_cash()
-    {
-        return view('/profile/cash');
-    }
-    public function profile_settings()
-    {
-        return view('/profile/settings');
-    }
-    public function geotaskshint()
-    {
-        return view('/staticpages/geotaskshint');
-    }
-    public function security()
-    {
-        return view('/staticpages/security');
-    }
-    public function badges()
-    {
-        return view('/staticpages/badges');
-    }
     public function my_tasks()
     {
-        $user = auth()->user();
-        $tasks = $user->tasks()->orderBy('created_at','desc')->get();
-        $perform_tasks = $user->performer_tasks;
-        $datas = new Collection(); //Create empty collection which we know has the merge() method
-        $datas = $datas->merge($tasks);
-        $datas = $datas->merge($perform_tasks);
-//        $categories = getAllCategories();
-        $categories = Category::where('parent_id', null)->select('id','name','slug')->get();
-        $categories2 = Category::where('parent_id','<>', null)->select('id','parent_id','name')->get();
-
-        return view('task.mytasks',compact('tasks','perform_tasks','categories','categories2','datas'));
+       
+        $service = new ControllerService();
+        $item = $service->my_tasks();
+        return view('task.mytasks',
+        [
+            'categories' => $item->categories,
+            'categories2' => $item->categories2,
+            'datas' => $item->datas,
+            'perform_tasks' => $item->perform_tasks,
+            'tasks' => $item->tasks,
+        ]);
 
     }
 
     public function category($id)
     {
-        $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->get();
-        $choosed_category = Category::withTranslations(['ru', 'uz'])->where('id', $id)->get();
-        $child_categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', $id)->get();
-        $idR = $id;
-        return view('task/choosetasks', compact('child_categories', 'categories', 'choosed_category', 'idR'));
+        $service = new ControllerService();
+        $item = $service->category($id);
+        return view('task/choosetasks',
+            [
+                'child_categories' => $item->child_categories,
+                'categories' => $item->categories,
+                'choosed_category' => $item->choosed_category,
+                'idR' => $item->idR,
+            ]);
     }
+
     public function lang($lang)
     {
         Session::put('lang', $lang);
         return redirect()->back();
     }
+
     public function download()
     {
-        $filePath = setting('site.pdf_url');
+        $filePath = public_path("Правила_сервиса.pdf");
         $headers = ['Content-Type: application/pdf'];
-        $fileName ='Правила_сервиса.pdf';
+        $fileName = 'Правила_сервиса.pdf';
         return response()->download($filePath, $fileName, $headers);
     }
+
+    public function index()
+    {
+        $medias = Massmedia::paginate(20);
+        return view('reviews.CMI', compact('medias'));
+    }
+
+    public function geotaskshint()
+    {
+        return view('/staticpages/geotaskshint');
+    }
+
+    public function security()
+    {
+        return view('/staticpages/security');
+    }
+
+    public function badges()
+    {
+        return view('/staticpages/badges');
+    }
+
+    public function routing($request)
+    {
+        $routeName = $request->route;
+        $category = \App\Models\Category::find($request->category_id);
+        $data = [];
+
+        switch ($routeName) {
+            case CustomField::ROUTE_NAME:
+                $data['custom_fields'] = $category->customFieldsInName;
+                if ($category->parent->remote)
+                    $data['next_route'] = CustomField::ROUTE_REMOTE;
+                else
+                    if (count($category->customFieldsInCustom))
+                        $data['next_route'] = CustomField::ROUTE_CUSTOM;
+                    else
+                        $data['next_route'] = CustomField::ROUTE_ADDRESS;
+                break;
+            case CustomField::ROUTE_REMOTE:
+                $data['custom_fields'] = [];
+                if ($category->parent->remote)
+                    if (count($category->customFieldsInCustom))
+                        $data['next_route'] = CustomField::ROUTE_CUSTOM;
+                    else
+                        $data['next_route'] = CustomField::ROUTE_ADDRESS;
+                else
+                    $data['next_route'] = CustomField::ROUTE_ADDRESS;
+                break;
+            case CustomField::ROUTE_ADDRESS:
+                $data['custom_fields'] = $category->customFieldsInAddress;
+                $data['next_route'] = CustomField::ROUTE_CUSTOM;
+                break;
+            case CustomField::ROUTE_CUSTOM:
+                $data['custom_fields'] = $category->customFieldsInCustom;
+                $data['next_route'] = CustomField::ROUTE_DATE;
+                break;
+            case CustomField::ROUTE_DATE:
+                $data['custom_fields'] = $category->customFieldsInDate;
+                $data['next_route'] = CustomField::ROUTE_BUDGET;
+                break;
+            case CustomField::ROUTE_BUDGET:
+                $data['custom_fields'] = $category->customFieldsInBudget;
+                $data['next_route'] = CustomField::ROUTE_NOTE;
+                break;
+            case CustomField::ROUTE_NOTE:
+                $data['custom_fields'] = $category->customFieldsInNote;
+                $data['next_route'] = CustomField::ROUTE_CONTACTS;
+                break;
+            case CustomField::ROUTE_CONTACTS:
+                $data['custom_fields'] = $category->customFieldsInNote;
+                break;
+
+        }
+
+        return $data;
+
+    }
+
+
+    private function validate($route)
+    {
+
+    }
+
 }

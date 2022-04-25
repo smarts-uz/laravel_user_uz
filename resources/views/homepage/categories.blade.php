@@ -18,12 +18,6 @@
 
             </button>
         @endforeach
-        {{-- <div class="float-left  pt-5 pl-4 ">
-            <a href="/categories/1" class="bg-blue-900 w-full text-white px-2 py-3 rounded-lg my-2">
-                {{__('Посмотреть все услуги')}}
-            </a>
-        </div> --}}
-
     </div>
 
     <div class="flex flex-col float-left my-14 w-full md:hidden block">

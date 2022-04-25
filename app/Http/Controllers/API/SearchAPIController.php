@@ -15,7 +15,7 @@ use App\Models\Notification;
 use App\Models\TaskResponse;
 use App\Models\Review;
 use Illuminate\Support\Facades\Auth;
-use App\Models\ComplianceType;
+use App\Models\CompliancesType;
 
 class SearchAPIController extends Controller
 {
@@ -29,19 +29,15 @@ class SearchAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/search-task",
-     *     tags={"SearchAPI"},
+     *     tags={"Search"},
      *     summary="Get list of Tasks and Categories",
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
      *     ),
      *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
+     *          response=500,
+     *          description="Server error"
      *     )
      * )
      */
@@ -63,19 +59,15 @@ class SearchAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/tasks-search",
-     *     tags={"SearchAPI"},
+     *     tags={"Search"},
      *     summary="Get list of Tasks",
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
      *     ),
      *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
+     *          response=500,
+     *          description="Ajax error"
      *     )
      * )
      */
@@ -127,7 +119,7 @@ class SearchAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/detailed-tasks/{task}",
-     *     tags={"SearchAPI"},
+     *     tags={"Search"},
      *     summary="Get Task by ID",
      *     @OA\Parameter(
      *          in="path",
@@ -137,35 +129,38 @@ class SearchAPIController extends Controller
      *              type="string"
      *          ),
      *     ),
-     *     @OA\Response (
+     *     @OA\Response(
      *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
+     *          description="Successful operation",
      *     )
      * )
      *
      */
     public function task(Task $task)
     {
-        $complianceType = ComplianceType::all();
+        if (!$task->user_id) {
+            abort(404);
+        }
+        $auth_response = auth()->check();
+        $userId = auth()->id();
         $review = null;
-        if ($task->reviews_count == 2) $review == true;
-        if (auth()->check()){
+        if ($task->reviews_count == 2) $review = true;
+        if ($auth_response){
             $task->views++;
             $task->save();
         }
+        $item = $this->service->task_service($auth_response, $userId, $task);
+
         return response()->json([
             'data' => [
                 'task' => $task,
                 'review' => $review,
-                'complianceType' => $complianceType
+                'complianceType' => $item->complianceType,
+                'same_tasks' => $item->same_tasks,
+                'auth_response' => $item->auth_response,
+                'selected' => $item->selected,
+                'responses' => $item->responses,
+                'addresses' => $item->addresses
             ]
         ]);
     }
@@ -185,7 +180,7 @@ class SearchAPIController extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/delete-task/{task}",
-     *     tags={"SearchAPI"},
+     *     tags={"Search"},
      *     summary="Delete Task",
      *     security={
      *         {"token": {}}
@@ -209,8 +204,7 @@ class SearchAPIController extends Controller
      *     @OA\Response(
      *          response=403,
      *          description="Forbidden"
-     *     ),
-     *     
+     *     )
      * )
      */
     public function delete_task(Task $task)
@@ -229,7 +223,7 @@ class SearchAPIController extends Controller
      *
      * @OA\Post (
      *     path="/api/ajax-request",
-     *     tags={"SearchAPI"},
+     *     tags={"Search"},
      *     summary="Add new task",
      *     @OA\RequestBody(
      *         @OA\MediaType(
@@ -271,7 +265,7 @@ class SearchAPIController extends Controller
      *                      ),
      *                      @OA\Property(
      *                          property="notificate",
-     *                          type="integer"
+     *                          type="string"
      *                      ),
      *                      @OA\Property(
      *                          property="response_time",
@@ -291,7 +285,7 @@ class SearchAPIController extends Controller
      *                     "name_task":"Янги задача",
      *                     "user_id":77,
      *                     "good":"Яхши",
-     *                     "notificate":"1",
+     *                     "notificate":"Salom",
      *                     "response_time":"77",
      *                     "response_price":"300",
      *                }
@@ -315,14 +309,13 @@ class SearchAPIController extends Controller
      *              @OA\Property(property="created_at", type="string", example="2021-12-11T09:25:53.000000Z"),
      *          )
      *      ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="invalid",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="msg", type="string", example="fail"),
+     *          )
+     *      ),
      *     security={
      *         {"token": {}}
      *     },

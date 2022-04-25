@@ -5,6 +5,7 @@ namespace App\Services\Task;
 
 
 use App\Models\Address;
+use App\Models\Category;
 use App\Models\Task;
 
 class FilterTaskService
@@ -27,18 +28,24 @@ class FilterTaskService
                     }
                 }
             }
+
         }else{
             $tasks_items = $tasks->pluck('id')->toArray();
         }
-        $tasks = $tasks->whereIn('id', $tasks_items);
+        $tasks->whereIn('id', $tasks_items);
         if (isset($data['categories'])) {
-            $categories = $data['categories'];
+            $categories = is_array($data['categories'])?$data['categories']:json_decode($data['categories']);
+            $categories = Category::query()->whereIn('parent_id',$categories)->pluck('id')->toArray();
+            $tasks->whereIn('category_id', $categories)->pluck('id')->toArray();
+        }
+        if (isset($data['child_categories'])) {
+            $categories = is_array($data['child_categories'])?$data['child_categories']:json_decode($data['child_categories']);
             $tasks->whereIn('category_id', $categories)->pluck('id')->toArray();
         }
         if (isset($data['budget'])) {
             $tasks->where('budget', ">=", (int) $data['budget'] )->pluck('id')->toArray();
         }
-        if (isset($data['is_remote'])) {
+        if (isset($data['is_remote']) && !(isset($data['lat']) && isset($data['long']) && isset($data['difference']))) {
             $is_remote = $data['is_remote'];
             if ($is_remote)
                 $tasks->whereDoesntHave('addresses');
@@ -48,9 +55,10 @@ class FilterTaskService
             if ($without_response)
                 $tasks->whereDoesntHave('responses');
         }
-        if (isset($request->s))
+
+        if (isset($data['s']))
         {
-            $s = $request->s;
+            $s = $data['s'];
             $tasks->where('name','like',"%$s%")
                 ->orWhere('description', 'like',"%$s%")
                 ->orWhere('phone', 'like',"%$s%")

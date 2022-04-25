@@ -6,6 +6,8 @@ use App\Http\Requests\PortfolioRequest;
 use App\Http\Resources\PortfolioIndexResource;
 use App\Models\Portfolio;
 use App\Models\User;
+use Illuminate\Routing\Controller;
+
 
 class PortfolioAPIController extends Controller
 {

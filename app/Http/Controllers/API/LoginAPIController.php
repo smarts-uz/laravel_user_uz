@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
 use App\Mail\MessageEmail;
+use App\Mail\VerifyEmail;
 use App\Models\User;
 use App\Models\WalletBalance;
 use App\Providers\RouteServiceProvider;
@@ -32,7 +33,7 @@ class LoginAPIController extends Controller
                 'code' => $code,
                 'user' => auth()->user()->id
             ];
-            Mail::to($user->email)->send(new MessageEmail($data));
+            Mail::to($user->email)->send(new VerifyEmail($data));
         } else {
             $code = rand(100000, 999999);
             (new SmsService())->send($user->phone_number, $code);
@@ -69,7 +70,7 @@ class LoginAPIController extends Controller
     public function send_email_verification()
     {
         self::send_verification('email',auth()->user());
-        return response()->json(['message'=>'success']);
+        return response()->json(['success' => true,'message'=>'success']);
     }
 
     /**
@@ -227,7 +228,8 @@ class LoginAPIController extends Controller
         if ($request->email == $user->email) {
             return response()->json([
                 'email-message' => 'Error, Your email is given',
-                'email' => $request->email
+                'email' => $request->email,
+                'succes' => false
             ]);
         } else {
             $request->validate([

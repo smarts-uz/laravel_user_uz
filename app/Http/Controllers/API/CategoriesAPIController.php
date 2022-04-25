@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryIndexResource;
 use App\Http\Resources\CategoryShowResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Routing\Controller;
 
 class CategoriesAPIController extends Controller
 {
@@ -40,7 +39,7 @@ class CategoriesAPIController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::withTranslation($request->lang)->get();
+        $categories = Category::select('parent_id,name,ico')->withTranslation($request->lang)->whereNull('parent_id')->get();
         return CategoryIndexResource::collection($categories);
     }
 
@@ -73,10 +72,22 @@ class CategoriesAPIController extends Controller
      */
     public function search(Request $request)
     {
-        $categories = Category::query()->whereNotNull('parent_id')->where('name','LIKE',"%$request->name%")->get();
-        return CategoryIndexResource::collection($categories);
+        $parentId = $request->parent_id;
+        $name = $request->name;
+        $categories = Category::query()->whereNotNull('parent_id');
+        if ($parentId)
+            $categories
+            ->where('parent_id', $parentId);
+        if ($name)
+            $categories->where('name','LIKE',"%$name%");
+        return CategoryIndexResource::collection($categories->get());
     }
 
+    public function parents(Request $request){
+        $categories = Category::query()->whereNull('parent_id')->get();
+        return CategoryIndexResource::collection($categories);
+
+    }
 
 
 

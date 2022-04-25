@@ -25,12 +25,14 @@ class TaskFilterRequest extends FormRequest
     {
         return [
             'categories' => 'nullable',
+            'child_categories' => 'nullable',
             'lat' => 'nullable|numeric',
             'long' => 'nullable|numeric',
             'budget' => 'nullable|int',
             'is_remote' => 'nullable|boolean',
             'without_response' => 'nullable',
             'difference' => 'nullable|int',
+            's' => 'nullable|string',
         ];
     }
 }
