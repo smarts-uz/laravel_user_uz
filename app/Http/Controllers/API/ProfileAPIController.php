@@ -76,7 +76,7 @@ class ProfileAPIController extends Controller
      *                    type="string",
      *                    format="password",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -144,7 +144,7 @@ class ProfileAPIController extends Controller
      *                    property="image",
      *                    type="file",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -199,7 +199,7 @@ class ProfileAPIController extends Controller
     }
 
 
-    
+
     /**
      * @OA\Post(
      *     path="/api/profile/settings/update",
@@ -230,7 +230,7 @@ class ProfileAPIController extends Controller
      *                    property="location",
      *                    type="string",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -257,12 +257,8 @@ class ProfileAPIController extends Controller
         $updatedData = $profile->settingsUpdate($data);
         $user = Auth::user();
         $user->update($updatedData);
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'message' => 'Settings updated'
-            ]
-        ]);
+        $user->save();
+        return new UserIndexResource($user);
     }
 
 
@@ -422,7 +418,7 @@ class ProfileAPIController extends Controller
      *                    property="category",
      *                    type="string",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -474,7 +470,7 @@ class ProfileAPIController extends Controller
      *                    property="district",
      *                    type="string",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -526,7 +522,7 @@ class ProfileAPIController extends Controller
      *                    property="image",
      *                    type="file",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -582,7 +578,7 @@ class ProfileAPIController extends Controller
      *                    property="description",
      *                    type="string",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
