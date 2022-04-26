@@ -37,18 +37,20 @@
 
                 <div>
                     <div class="max-w-md mx-left">
-                        @foreach (\TCG\Voyager\Models\Category::query()->where('parent_id', null)->get() as $category)
+                        @foreach ($categories as $category)
                             <div x-data={show:false} class="rounded-sm">
                                 <div class="my-3 text-blue-500 hover:text-red-500 cursor-pointer" id="{{ str_replace(' ', '', $category->name) }}">
                                     {{ $category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
                                 </div>
                                 <div id="{{$category->slug}}" class="px-8 py-1 hidden">
-                                    @foreach (\TCG\Voyager\Models\Category::query()->where('parent_id', $category->id)->get() as $category2)
-
-                                        <div>
-                                            <a href="/perf-ajax/{{ $category2->id }}" class="text-blue-500 cursor-pointer hover:text-red-500 my-1 send-request" data-id="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</a>
-                                        </div>
-
+                                    @foreach ($categories2 as $category2)
+                                        @if($category2->parent_id == $category->id)
+                                            <div>
+                                                <a href="/perf-ajax/{{ $category2->id }}"
+                                                   class="text-blue-500 cursor-pointer hover:text-red-500 my-1 send-request"
+                                                   data-id="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</a>
+                                            </div>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>
@@ -247,17 +249,16 @@
 
             </div>
         </div>
-        <div id="modal_content" class="modal_content fixed top-0 left-0 h-full w-full bg-black bg-opacity-50 hidden text-center">
+    </div>
+
+
+    <div id="modal_content" class="modal_content fixed top-0 left-0 h-full w-full bg-black bg-opacity-50 hidden text-center">
             <div class="modal relative bg-white w-5/12 mx-auto p-10 rounded-md justify-center mt-48 ease-in transition duration-500">
                 <h1 class="text-3xl font-semibold">{{__('Выберите задание, которое хотите предложить исполнителью')}}</h1>
                 @foreach($tasks as $task)
                     <input type="text" name="tasks_id" class="hidden" value="{{ $task->id }}">
                 @endforeach
-
-                {{--                <form action="" method="POST">--}}
-                @csrf
                 <select name="tasks" id="task_name" onchange="showDiv(this)" class="appearance-none focus:outline-none border border-solid border-gray-500 rounded-lg text-gray-500 px-6 py-2 text-lg mt-6 hover:text-yellow-500  hover:border-yellow-500 hover:shadow-xl shadow-yellow-500 mx-auto block"><br>
-
                     @foreach($tasks as $task)
                         @auth
                             <option value="{{ $task->id }}">
@@ -278,8 +279,6 @@
                     <p class="py-7">{{__('Каждое задание можно предложить пяти исполнителям из каталога. исполнители получат
                         СМС со ссылкой на ваше задание.')}}</p>
                 </div>
-                {{--                </form>--}}
-
 
                 <a href="/categories/1">
                     <button id="hidden_div2" class="cursor-pointer bg-green-500 text-white rounded-lg p-2 px-4 mt-6 mx-auto" style="display: none;">
@@ -291,57 +290,6 @@
                     x
                 </button>
             </div>
-        </div>
-
-
-
-
-        <!-- Основной контент страницы -->
-        <div id="modal" style="display: none">
-            <div class="modal h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-50">
-                <!-- modal -->
-                <div class="bg-white rounded shadow-lg w-10/12 md:w-1/3 text-center py-12">
-                    <!-- modal header -->
-                    <h1 class="text-2xl font-bold namem"></h1>
-                    <div class="mx-auto mt-8">
-                        {{__(' Мы отправили ему уведомление.')}}
-                    </div>
-                    <button onclick="myFunction1()" class="cursor-pointer bg-green-500 text-white rounded-lg p-2 px-4 mt-6 mx-auto">
-                        ok
-                    </button>
-                </div>
-            </div>
-        </div>
-        {{-- Modal start --}}
-        <div class="hidden overflow-x-hidden overflow-y-auto bg-black bg-opacity-50 fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="modal-id12">
-            <div class="relative w-auto my-6 mx-auto max-w-3xl"  id="modal-id12">
-                <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                    <div class=" text-center p-12  rounded-t">
-                        <button type="submit"  onclick="toggleModal12('modal-id12')" class="rounded-md w-100 h-16 absolute top-1 right-4">
-                            <i class="fas fa-times  text-slate-400 hover:text-slate-600 text-xl w-full"></i>
-                        </button>
-                        <h3 class="font-medium text-4xl block mt-4">
-                            {!!__('У вас пока нет опубликованных <br> заданий')!!}
-                        </h3>
-                    </div>
-                    <!--body-->
-                    <div class="relative p-6 flex-auto">
-                        <p class="my-4  text-lg  text-center">
-                            {!!__('Создайте задание, после чего вы сможете предложить <br> выполнить его исполнителям.')!!}
-                        </p>
-                    </div>
-                    <!--footer-->
-                    <div class="flex mx-auto items-center justify-end p-6 rounded-b mb-8">
-                        <div class="mt-4 ">
-                            <a class="px-10 py-4 text-center font-sans  text-xl  font-semibold bg-green-500 text-white hover:bg-green-600  h-12 rounded-md text-xl" href="/categories/1" >{{__('Создать задание')}}</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{ $users->links() }}
-
-        </div>
     </div>
 
 
@@ -394,7 +342,7 @@
     <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id12-backdrop"></div>
     </div>
     <script>
-        @foreach (\TCG\Voyager\Models\Category::query()->where('parent_id', null)->get() as $category)
+        @foreach ($categories as $category)
         $( "#{{ str_replace(' ', '', $category->name) }}" ).click(function() {
             if ($("#{{$category->slug}}").hasClass("hidden")) {
                 $("#{{$category->slug}}").removeClass('hidden');

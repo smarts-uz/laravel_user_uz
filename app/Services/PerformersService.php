@@ -62,7 +62,8 @@ class PerformersService
     public function perf_ajax($user,$cf_id){
         $item = new PerformerPrefItem();
         $item-> about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
-        $item-> categories = Category::get();
+        $item->categories = Category::where('parent_id', null)->select('id', 'name', 'slug')->get();
+        $item->categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
         $item-> cur_cat = Category::where('id', $cf_id)->get();
         $item-> child_categories = Category::get();
         $item-> users = User::where('role_id', 2)->paginate(50);

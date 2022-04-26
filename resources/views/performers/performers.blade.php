@@ -156,8 +156,8 @@
                                             </div>
                                         @endif
                                         @if($user->role_id == 2)
-{{--                                            @foreach($about as $rating)--}}
-{{--                                                @if($rating->id == $user->id)--}}
+                                                    {{--                                            @foreach($about as $rating)--}}
+                                                    {{--                                                @if($rating->id == $user->id)--}}
                                                     <div data-tooltip-target="tooltip-animation_2"
                                                          class="mx-1 tooltip-2">
                                                         <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
@@ -169,10 +169,10 @@
                                                             <div class="tooltip-arrow" data-popper-arrow></div>
                                                         </div>
                                                     </div>
-{{--                                                @else--}}
-{{--                                                    @continue--}}
-{{--                                                @endif--}}
-{{--                                            @endforeach--}}
+                                                        {{--                                                @else--}}
+                                                        {{--                                                    @continue--}}
+                                                        {{--                                                @endif--}}
+                                                        {{--                                            @endforeach--}}
                                             <div data-tooltip-target="tooltip-animation_3" class="mx-1">
                                                 @if($task_count >= 50)
                                                     <img src="{{ asset('images/50.png') }}" alt="" class="w-10">
@@ -249,7 +249,10 @@
                 </div>
             </div>
         </div>
-        <div id="modal_content"
+    </div>
+
+
+    <div id="modal_content"
              class="modal_content fixed top-0 left-0 h-full w-full bg-black bg-opacity-50 hidden text-center">
             <div class="modal relative bg-white md:w-5/12 w-4/5 mx-auto p-10 rounded-md justify-center mt-28 ease-in transition duration-500">
                 <h1 class="text-3xl font-semibold">{{__('Выберите задание, которое хотите предложить исполнителью')}}</h1>
@@ -301,53 +304,8 @@
                     x
                 </button>
             </div>
-        </div>
-        <div id="modal" style="display: none">
-            <div class="modal h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-50">
-                <div class="bg-white rounded shadow-lg w-10/12 md:w-1/3 text-center py-12">
-                    <h1 class="text-2xl font-bold namem"></h1>
-                    <div class="mx-auto mt-8">
-                        {{__('Уведомления отправлено.')}}
-                    </div>
-                    <button onclick="myFunction1()"
-                            class="cursor-pointer bg-green-500 text-white rounded-lg p-2 px-4 mt-6 mx-auto">
-                        ok
-                    </button>
-                </div>
-            </div>
-        </div>
-        {{-- Modal start --}}
-        <div class="hidden overflow-x-hidden overflow-y-auto bg-black bg-opacity-50 fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
-             id="modal-id12">
-            <div class="relative w-auto my-6 mx-auto max-w-3xl" id="modal-id12">
-                <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                    <div class=" text-center p-12  rounded-t">
-                        <button type="submit" onclick="toggleModal12('modal-id12')"
-                                class="rounded-md w-100 h-16 absolute top-1 right-4">
-                            <i class="fas fa-times  text-slate-400 hover:text-slate-600 text-xl w-full"></i>
-                        </button>
-                        <h3 class="font-medium text-4xl block mt-4">
-                            {{__('У вас пока нет опубликованных заданий')}}
-                        </h3>
-                    </div>
-                    <!--body-->
-                    <div class="relative p-6 flex-auto">
-                        <p class="my-4  text-lg  text-center">
-                            {!!__('Создайте задание, после чего вы сможете предложить <br> выполнить его исполнителям.')!!}
-                        </p>
-                    </div>
-                    <div class="flex mx-auto items-center justify-end p-6 rounded-b mb-8">
-                        <div class="mt-4 ">
-                            <a class="px-10 py-4 text-center font-sans  text-xl  font-semibold bg-green-500 text-white hover:bg-green-600  h-12 rounded-md text-xl"
-                               href="/categories/1">{{__('Создать задание')}}</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
     </div>
-
+    
     <!-- Основной контент страницы -->
     <div id="modal" style="display: none">
         <div class="modal h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-50">
@@ -365,7 +323,6 @@
             </div>
         </div>
     </div>
-    @csrf
 
     {{-- Modal start --}}
     <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"

@@ -124,6 +124,7 @@ class PerformersController extends Controller
             'user' => $user,
             'task_count' => $task_count,
             'categories' => $item->categories,
+            'categories2' => $item->categories2,
             'users' =>$item->users,
             'cur_cat' =>$item->cur_cat,
             'tasks' =>$item->tasks,
