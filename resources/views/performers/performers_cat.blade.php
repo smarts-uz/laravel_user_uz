@@ -252,38 +252,51 @@
     </div>
 
 
-    <div id="modal_content" class="modal_content fixed top-0 left-0 h-full w-full bg-black bg-opacity-50 hidden text-center">
-            <div class="modal relative bg-white w-5/12 mx-auto p-10 rounded-md justify-center mt-48 ease-in transition duration-500">
+    <div id="modal_content"
+            class="modal_content hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" style="background-color:rgba(0,0,0,0.5)">
+        <div class="modal relative w-auto mt-12 mx-auto max-w-3xl">
+            <div class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none text-center py-12">
                 <h1 class="text-3xl font-semibold">{{__('Выберите задание, которое хотите предложить исполнителью')}}</h1>
                 @foreach($tasks as $task)
-                    <input type="text" name="tasks_id" class="hidden" value="{{ $task->id }}">
+                    <label>
+                        <input type="text" name="tasks_id" class="hidden" value="{{ $task->id }}">
+                    </label>
                 @endforeach
-                <select name="tasks" id="task_name" onchange="showDiv(this)" class="appearance-none focus:outline-none border border-solid border-gray-500 rounded-lg text-gray-500 px-6 py-2 text-lg mt-6 hover:text-yellow-500  hover:border-yellow-500 hover:shadow-xl shadow-yellow-500 mx-auto block"><br>
-                    @foreach($tasks as $task)
-                        @auth
-                            @if ($task->status <= 2)
-                                <option value="{{ $task->id }}">
-                                    {{ $task->name }}
-                                </option>
-                            @endif
-                        @endauth
-                    @endforeach
+
+                <select name="tasks" id="task_name" onchange="showDiv(this)"
+                        class="appearance-none focus:outline-none border border-solid border-gray-500 rounded-lg text-gray-500 px-6 py-2 text-lg mt-6 hover:text-yellow-500  hover:border-yellow-500 hover:shadow-xl shadow-yellow-500 mx-auto block"><br>
+
+                        @foreach($tasks as $task)
+                            @auth
+                                @if ($task->status <= 2)
+                                    <option value="{{ $task->id }}">
+                                        {{ $task->name }}
+                                    </option>
+                                @endif
+                            @endauth
+                        @endforeach
                     <option value="1">
-                        {{__('+ новое задание')}}
+                        + {{__('новое задание')}}
                     </option>
                 </select>
-                <input type="text" name="csrf" class="hidden" value="{{ csrf_token() }}">
+                <label>
+                    <input type="text" name="csrf" class="hidden" value="{{ csrf_token() }}">
+                </label>
 
                 <div id="hidden_div">
-                    <button type="submit" onclick="myFunct()" class="cursor-pointer bg-red-500 text-white rounded-lg p-2 px-4 mt-4">
+                    <button type="submit" onclick="myFunc()"
+                            class="cursor-pointer bg-red-500 text-white rounded-lg p-2 px-4 mt-4">
                         {{__('Предложить работу')}}
                     </button>
-                    <p class="py-7">{{__('Каждое задание можно предложить пяти исполнителям из каталога. исполнители получат
-                        СМС со ссылкой на ваше задание.')}}</p>
+                    <p class="py-7">
+                        {{__('Каждое задание можно предложить пяти исполнителям из каталога. исполнители получат СМС со ссылкой на ваше задание.')}}</p>
                 </div>
 
+
                 <a href="/categories/1">
-                    <button id="hidden_div2" class="cursor-pointer bg-green-500 text-white rounded-lg p-2 px-4 mt-6 mx-auto" style="display: none;">
+                    <button id="hidden_div2"
+                            class="cursor-pointer bg-green-500 text-white rounded-lg p-2 px-4 mt-6 mx-auto"
+                            style="display: none;">
                         {{__('Создать новое задание')}}
                     </button>
                 </a>
@@ -292,6 +305,7 @@
                     x
                 </button>
             </div>
+        </div>
     </div>
 
 

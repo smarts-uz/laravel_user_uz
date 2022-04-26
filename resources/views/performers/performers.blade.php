@@ -130,8 +130,7 @@
                                     <div class="flex items-center sm:my-0 my-2">
                                         @if ($user->is_email_verified && $user->is_phone_number_verified)
                                             <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
-                                                <img
-                                                        src="{{asset('images/verify.png')}}"
+                                                <img src="{{asset('images/verify.png')}}"
                                                         alt="" class="w-10">
                                                 <div id="tooltip-animation_1" role="tooltip"
                                                      class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
@@ -156,8 +155,6 @@
                                             </div>
                                         @endif
                                         @if($user->role_id == 2)
-                                                    {{--                                            @foreach($about as $rating)--}}
-                                                    {{--                                                @if($rating->id == $user->id)--}}
                                                     <div data-tooltip-target="tooltip-animation_2"
                                                          class="mx-1 tooltip-2">
                                                         <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
@@ -169,10 +166,6 @@
                                                             <div class="tooltip-arrow" data-popper-arrow></div>
                                                         </div>
                                                     </div>
-                                                        {{--                                                @else--}}
-                                                        {{--                                                    @continue--}}
-                                                        {{--                                                @endif--}}
-                                                        {{--                                            @endforeach--}}
                                             <div data-tooltip-target="tooltip-animation_3" class="mx-1">
                                                 @if($task_count >= 50)
                                                     <img src="{{ asset('images/50.png') }}" alt="" class="w-10">
@@ -253,56 +246,58 @@
 
 
     <div id="modal_content"
-             class="modal_content fixed top-0 left-0 h-full w-full bg-black bg-opacity-50 hidden text-center">
-            <div class="modal relative bg-white md:w-5/12 w-4/5 mx-auto p-10 rounded-md justify-center mt-28 ease-in transition duration-500">
-                <h1 class="text-3xl font-semibold">{{__('Выберите задание, которое хотите предложить исполнителью')}}</h1>
-                @foreach($tasks as $task)
+             class="modal_content hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" style="background-color:rgba(0,0,0,0.5)">
+            <div class="modal relative w-auto mt-12 mx-auto max-w-3xl">
+                <div class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none text-center py-12">
+                    <h1 class="text-3xl font-semibold">{{__('Выберите задание, которое хотите предложить исполнителью')}}</h1>
+                    @foreach($tasks as $task)
+                        <label>
+                            <input type="text" name="tasks_id" class="hidden" value="{{ $task->id }}">
+                        </label>
+                    @endforeach
+
+                    <select name="tasks" id="task_name" onchange="showDiv(this)"
+                            class="appearance-none focus:outline-none border border-solid border-gray-500 rounded-lg text-gray-500 px-6 py-2 text-lg mt-6 hover:text-yellow-500  hover:border-yellow-500 hover:shadow-xl shadow-yellow-500 mx-auto block"><br>
+
+                            @foreach($tasks as $task)
+                                @auth
+                                    @if ($task->status <= 2)
+                                        <option value="{{ $task->id }}">
+                                            {{ $task->name }}
+                                        </option>
+                                    @endif
+                                @endauth
+                            @endforeach
+                        <option value="1">
+                            + {{__('новое задание')}}
+                        </option>
+                    </select>
                     <label>
-                        <input type="text" name="tasks_id" class="hidden" value="{{ $task->id }}">
+                        <input type="text" name="csrf" class="hidden" value="{{ csrf_token() }}">
                     </label>
-                @endforeach
 
-                <select name="tasks" id="task_name" onchange="showDiv(this)"
-                        class="appearance-none focus:outline-none border border-solid border-gray-500 rounded-lg text-gray-500 px-6 py-2 text-lg mt-6 hover:text-yellow-500  hover:border-yellow-500 hover:shadow-xl shadow-yellow-500 mx-auto block"><br>
+                    <div id="hidden_div">
+                        <button type="submit" onclick="myFunc()"
+                                class="cursor-pointer bg-red-500 text-white rounded-lg p-2 px-4 mt-4">
+                            {{__('Предложить работу')}}
+                        </button>
+                        <p class="py-7">
+                            {{__('Каждое задание можно предложить пяти исполнителям из каталога. исполнители получат СМС со ссылкой на ваше задание.')}}</p>
+                    </div>
 
-                        @foreach($tasks as $task)
-                            @auth
-                                @if ($task->status <= 2)
-                                    <option value="{{ $task->id }}">
-                                        {{ $task->name }}
-                                    </option>
-                                @endif
-                            @endauth
-                        @endforeach
-                    <option value="1">
-                        + {{__('новое задание')}}
-                    </option>
-                </select>
-                <label>
-                    <input type="text" name="csrf" class="hidden" value="{{ csrf_token() }}">
-                </label>
 
-                <div id="hidden_div">
-                    <button type="submit" onclick="myFunc()"
-                            class="cursor-pointer bg-red-500 text-white rounded-lg p-2 px-4 mt-4">
-                        {{__('Предложить работу')}}
+                    <a href="/categories/1">
+                        <button id="hidden_div2"
+                                class="cursor-pointer bg-green-500 text-white rounded-lg p-2 px-4 mt-6 mx-auto"
+                                style="display: none;">
+                            {{__('Создать новое задание')}}
+                        </button>
+                    </a>
+
+                    <button class="cursor-pointer close text-gray-400 font-bold rounded-lg p-2 px-4 mt-6 absolute -top-6 right-0 text-2xl">
+                        x
                     </button>
-                    <p class="py-7">
-                        {{__('Каждое задание можно предложить пяти исполнителям из каталога. исполнители получат СМС со ссылкой на ваше задание.')}}</p>
                 </div>
-
-
-                <a href="/categories/1">
-                    <button id="hidden_div2"
-                            class="cursor-pointer bg-green-500 text-white rounded-lg p-2 px-4 mt-6 mx-auto"
-                            style="display: none;">
-                        {{__('Создать новое задание')}}
-                    </button>
-                </a>
-
-                <button class="cursor-pointer close text-gray-400 font-bold rounded-lg p-2 px-4 mt-6 absolute -top-6 right-0 text-2xl">
-                    x
-                </button>
             </div>
     </div>
     
@@ -533,12 +528,5 @@
             });
         })
     </script>
-    @if($user->role_id == 2)
-        <script>
-            if ($('.tooltip-2').length === 0) {
-                $("<div data-tooltip-target='tooltip-animation_2' class='mx-4 tooltip-2' ><img src='{{ asset("images/best_gray.png") }}'alt='' class='w-24'><div id='tooltip-animation_2' role='tooltip' class='inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700'><p class='text-center'>{{__('Невходит в ТОП-20 всех исполнителей User.uz')}}</p><div class='tooltip-arrow' data-popper-arrow></div> </div></div>").insertAfter($(".tooltip-1"));
-            }
-        </script>
-    @endif
 @endsection
 
