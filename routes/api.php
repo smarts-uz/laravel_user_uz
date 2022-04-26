@@ -57,7 +57,11 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('/select-performer/{response}', [ResponseAPIController::class, 'selectPerformer']);
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']);
     Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']);
-
+    Route::post('/become-performer', [PerformerAPIController::class,'becomePerformerData']);
+    Route::post('/become-performer-phone', [PerformerAPIController::class,'becomePerformerEmailPhone']);
+    Route::post('/become-performer-avatar', [PerformerAPIController::class,'becomePerformerAvatar']);
+    Route::post('/become-performer-category', [PerformerAPIController::class,'becomePerformerCategory']);
+    Route::get('/reviews', [PerformerAPIController::class, 'reviews']);
     // Profile API
     Route::prefix('/profile')->group(function () {
         // Profile
@@ -159,7 +163,7 @@ Route::post('/paynet-transaction', [PaynetTransactionAPIController::class, 'crea
 
 
 
-Route::get('login/google/callback',[SocialAPIController::class,'loginWithGoogle']);
+Route::post('login/google/callback',[SocialAPIController::class,'loginWithGoogle']);
 
-Route::get('login/facebook/callback',[SocialAPIController::class,'loginWithFacebook']);
+Route::post('login/facebook/callback',[SocialAPIController::class,'loginWithFacebook']);
 

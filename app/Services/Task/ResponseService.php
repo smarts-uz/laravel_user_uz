@@ -23,6 +23,7 @@ class ResponseService
             'description' => 'required|string',
             'price' => 'required|int',
             'notificate' => 'nullable',
+            'not_free' => 'nullable|int'
         ]);
         $data['notificate'] = $request->notificate ? 1 : 0;
         $data['task_id'] = $task->id;

@@ -55,7 +55,37 @@ class ResponseAPIController extends Controller
     }
 
 
-    public function selectPerformer(Response $response)
+    /**
+     * @OA\Post(
+     *     path="/api/select-performer/{response}",
+     *     tags={"ResponseAPI"},
+     *     summary="Select performer",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="response",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function selectPerformer(TaskResponse $response)
     {
         taskGuard($response->task);
         if ($response->task->status >= 3) {

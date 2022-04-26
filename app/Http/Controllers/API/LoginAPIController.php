@@ -45,12 +45,56 @@ class LoginAPIController extends Controller
         return redirect()->route('profile.profileData');
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/account/verification/email",
+     *     tags={"LoginAPI"},
+     *     summary="Email verification",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function send_email_verification()
     {
         self::send_verification('email',auth()->user());
         return response()->json(['success' => true,'message'=>'success']);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/account/verification/phone",
+     *     tags={"LoginAPI"},
+     *     summary="Phone verification",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function send_phone_verification()
     {
         self::send_verification('phone',auth()->user());
@@ -90,6 +134,41 @@ class LoginAPIController extends Controller
 
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/account/verification/phone",
+     *     tags={"LoginAPI"},
+     *     summary="Verification phone",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="code",
+     *                    type="string",
+     *                 ),
+     *             ), 
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function verify_phone(Request $request)
     {
         $request->validate([
@@ -106,6 +185,41 @@ class LoginAPIController extends Controller
         }
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/account/change/email",
+     *     tags={"LoginAPI"},
+     *     summary="Change email",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="email",
+     *                    type="string",
+     *                 ),
+     *             ), 
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function change_email(Request $request)
     {
 
@@ -137,6 +251,41 @@ class LoginAPIController extends Controller
         }
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/account/change/phone",
+     *     tags={"LoginAPI"},
+     *     summary="Change phone number",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="phone_number",
+     *                    type="string",
+     *                 ),
+     *             ), 
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function change_phone_number(Request $request)
     {
 

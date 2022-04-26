@@ -13,11 +13,27 @@ class CategoriesAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/categories",
-     *     tags={"Category"},
+     *     tags={"CategoryAPI"},
      *     summary="Get list of Category",
-     *     @OA\Response(
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="lang",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
+     *     ),
+     *     @OA\Response (
      *          response=200,
-     *          description="successful operation",
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
      *     )
      * )
      */
@@ -26,6 +42,34 @@ class CategoriesAPIController extends Controller
         $categories = Category::select('parent_id,name,ico')->withTranslation($request->lang)->whereNull('parent_id')->get();
         return CategoryIndexResource::collection($categories);
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/category/search",
+     *     tags={"CategoryAPI"},
+     *     summary="Get list of Category",
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="name",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     )
+     * )
+     */
     public function search(Request $request)
     {
         $parentId = $request->parent_id;
@@ -50,12 +94,8 @@ class CategoriesAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/categories/{id}",
-     *     tags={"Category"},
-     *     summary="Get list of Category",
-     *     @OA\Response(
-     *          response=200,
-     *          description="successful operation",
-     *     ),
+     *     tags={"CategoryAPI"},
+     *     summary="Get category by show ID",
      *     @OA\Parameter(
      *          in="path",
      *          name="id",
@@ -64,6 +104,18 @@ class CategoriesAPIController extends Controller
      *              type="string"
      *          ),
      *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     )
      * )
      */
     public function show(Category $id, Request $request){

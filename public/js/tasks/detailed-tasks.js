@@ -157,7 +157,17 @@ $(document).ready(function () {
             $(this).after('<br>');
         }
     });
+
+
 });
+    $('#btn1').click(function (){
+        $('#not_free').val(1)
+    })
+    $('#btn2').click(function (){
+        $('#not_free').val(0)
+        alert(22)
+
+    })
 
 function toggleModal44(){
     document.getElementById("modal-id44").classList.toggle("hidden");

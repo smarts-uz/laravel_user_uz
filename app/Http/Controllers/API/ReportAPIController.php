@@ -15,7 +15,7 @@ class ReportAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/admin/reports",
-     *     tags={"Report"},
+     *     tags={"ReportAPI"},
      *     summary="Get list of Reports",
      *     @OA\Response(
      *         response=200,

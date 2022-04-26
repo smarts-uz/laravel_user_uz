@@ -3,12 +3,18 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BecomePerformerEmailPhone;
+use App\Http\Requests\BecomePerformerRequest;
 use App\Http\Requests\PerformerRegisterRequest;
+use App\Http\Requests\UserLoginRequest;
 use App\Http\Resources\PerformerIndexResource;
 use App\Http\Resources\PerformerPaginateResource;
+use App\Http\Resources\ReviewPaginationResource;
+use App\Models\Review;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use function Symfony\Component\String\s;
 
 class PerformerAPIController extends Controller
@@ -16,11 +22,19 @@ class PerformerAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/performers",
-     *     tags={"Performers"},
+     *     tags={"PerformersAPI"},
      *     summary="Get list of Performers",
-     *     @OA\Response(
+     *     @OA\Response (
      *          response=200,
-     *          description="Successful operation",
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
      *     )
      * )
      *
@@ -47,7 +61,7 @@ class PerformerAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/performers/{performer}",
-     *     tags={"Performers"},
+     *     tags={"PerformersAPI"},
      *     summary="Get list of Performers",
      *     @OA\Parameter(
      *          in="path",
@@ -57,9 +71,17 @@ class PerformerAPIController extends Controller
      *              type="string"
      *          ),
      *     ),
-     *     @OA\Response(
+     *     @OA\Response (
      *          response=200,
-     *          description="Successful operation",
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
      *     )
      * )
      *
@@ -98,6 +120,55 @@ class PerformerAPIController extends Controller
                 'categories' => 'required'
             ];
         }
+    }
+
+    public function becomePerformerData(BecomePerformerRequest $request)
+    {
+        $data = $request->validated();
+        $user = auth()->user();
+        $user->update($data);
+
+        return response()->json(['success' => 'true', 'message' => 'Successfully updated']);
+    }
+    public function becomePerformerEmailPhone(BecomePerformerEmailPhone $request)
+    {
+        $request->validated();
+        return response()->json(['success' => 'true', 'message' => 'Successfully updated']);
+    }
+
+    public function becomePerformerAvatar(Request $request)
+    {
+        $data = $request->validate(['avatar'=>'required']);
+        $avatar = $data['avatar'];
+
+        $data['role_id'] = 2;
+        $name = Storage::put('public/uploads', $avatar);
+        $name = str_replace('public/', '', $name);
+        $data['avatar'] = $name;
+        auth()->user()->update($data);
+
+        return response()->json(['success' => true, 'message' => 'true']);
+
+
+    }
+
+
+    public function becomePerformerCategory(Request $request)
+    {
+        $data = $request->validate(['category_id' => 'required|string']);
+
+        auth()->user()->update($data);
+
+        return response()->json(['success' => true, "message" => 'successfully updated']);
+
+    }
+
+    public function reviews(Request $request)
+    {
+        $from_performer = $request->from_performer;
+        $reviews = Review::query()->whereHas('task')->whereHas('user')->where('user_id',auth()->user()->id)->paginate();
+
+        return new ReviewPaginationResource($reviews);
     }
 
     public function getByCategories()
