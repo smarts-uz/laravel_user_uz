@@ -43,7 +43,7 @@ class UserIndexResource extends JsonResource
             'phone_number_old' => $this->phone_number_old,
             'system_notification' =>$this->system_notification,
             'news_notification' => $this->news_notification,
-            'portfolios' => PortfolioResource::collection($this->portfolios()),
+            'portfolios' => PortfolioResource::collection($this->portfolios),
             'views' => $this->views,
             'directories' => $directories
         ];

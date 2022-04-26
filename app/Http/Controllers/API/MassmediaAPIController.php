@@ -11,11 +11,19 @@ class MassmediaAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/press",
-     *     tags={"Massmedia"},
+     *     tags={"MassmediaAPI"},
      *     summary="Get list of Massmedia",
-     *     @OA\Response(
+     *     @OA\Response (
      *          response=200,
-     *          description="Successful operation",
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
      *     )
      * )
      *

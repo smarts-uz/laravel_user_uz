@@ -25,7 +25,7 @@ class CustomField extends Model
     const ROUTE_NOTE = 'note';
     const ROUTE_BUDGET = 'budget';
     const ROUTE_CONTACTS = 'contacts';
-
+    const ROUTE_REMOTE = 'remote';
 
 
     public function custom_field_values(){

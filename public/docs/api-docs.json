@@ -246,6 +246,36 @@
                 ]
             }
         },
+        "\/api\/category\/search": {
+            "get": {
+                "tags": [
+                    "CategoryAPI"
+                ],
+                "summary": "Get list of Category",
+                "operationId": "c177ab8a25cbaa55ef98e7ebdbc848a7",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
         "\/api\/categories\/{id}": {
             "get": {
                 "tags": [
@@ -494,7 +524,7 @@
         "\/api\/faq": {
             "get": {
                 "tags": [
-                    "FAQ"
+                    "FaqAPI"
                 ],
                 "summary": "Get of FAQ",
                 "operationId": "627dff87644e5af795264e88d68c6a93",
@@ -514,7 +544,7 @@
         "\/api\/faq\/{id}": {
             "get": {
                 "tags": [
-                    "FAQ"
+                    "FaqAPI"
                 ],
                 "summary": "Get of questions in FAQ",
                 "operationId": "e8a9316af66afa96c1b26831bbb0c5f2",
@@ -541,16 +571,190 @@
                 }
             }
         },
+        "\/api\/account\/verification\/email": {
+            "get": {
+                "tags": [
+                    "LoginAPI"
+                ],
+                "summary": "Email verification",
+                "operationId": "93b3118bb0818d1dcb1bb1be3dbb8e06",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/account\/verification\/phone": {
+            "get": {
+                "tags": [
+                    "LoginAPI"
+                ],
+                "summary": "Phone verification",
+                "operationId": "6d69dfb7137ac44458f283488e08818f",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "LoginAPI"
+                ],
+                "summary": "Verification phone",
+                "operationId": "3fe3e97c01c6204997ab62e7f3323789",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "code": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/account\/change\/email": {
+            "post": {
+                "tags": [
+                    "LoginAPI"
+                ],
+                "summary": "Change email",
+                "operationId": "e4f3c97d90cbbf1a6ea9e302c3aabc16",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/account\/change\/phone": {
+            "post": {
+                "tags": [
+                    "LoginAPI"
+                ],
+                "summary": "Change phone number",
+                "operationId": "e869367af6b12b9b98bc07deb3f324f6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "phone_number": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "\/api\/press": {
             "get": {
                 "tags": [
-                    "Massmedia"
+                    "MassmediaAPI"
                 ],
                 "summary": "Get list of Massmedia",
                 "operationId": "0fa13637ece57023fae30034c3834745",
                 "responses": {
                     "200": {
                         "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     }
                 }
             }
@@ -558,13 +762,19 @@
         "\/api\/performers": {
             "get": {
                 "tags": [
-                    "Performers"
+                    "PerformersAPI"
                 ],
                 "summary": "Get list of Performers",
                 "operationId": "731347e6f7c873d149bc292778b4f161",
                 "responses": {
                     "200": {
                         "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     }
                 }
             }
@@ -572,7 +782,7 @@
         "\/api\/performers\/{performer}": {
             "get": {
                 "tags": [
-                    "Performers"
+                    "PerformersAPI"
                 ],
                 "summary": "Get list of Performers",
                 "operationId": "be33fb1d00766c364214bb291f26b42d",
@@ -589,99 +799,433 @@
                 "responses": {
                     "200": {
                         "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     }
                 }
             }
         },
-        "\/api\/settings\/update": {
+        "\/api\/profile\/pro": {
+            "get": {
+                "tags": [
+                    "ProfileAPI"
+                ],
+                "summary": "Your profile",
+                "operationId": "c9ee16d35ab0bfb2689bdc9772de9c25",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/password\/change": {
             "post": {
                 "tags": [
-                    "Profile"
+                    "ProfileAPI"
                 ],
-                "summary": "Update Settings",
-                "operationId": "87b781e0e7bbedcd7d91dace78199f65",
+                "summary": "Change password",
+                "operationId": "c06fc7a558675fb5c831d01488fb7ed1",
                 "requestBody": {
+                    "required": true,
                     "content": {
-                        "application\/json": {
+                        "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "": {
-                                        "properties": {
-                                            "email": {
-                                                "type": "string"
-                                            },
-                                            "age": {
-                                                "type": "integer"
-                                            },
-                                            "phone_number": {
-                                                "type": "string"
-                                            },
-                                            "description": {
-                                                "type": "string"
-                                            },
-                                            "location": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
+                                    "old_password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password"
                                     }
                                 },
-                                "type": "object",
-                                "example": {
-                                    "email": "admin@admin.com",
-                                    "age": 17,
-                                    "phone_number": "999098998",
-                                    "description": "Assalomu aleykum",
-                                    "location": "Xorazm viloyati"
-                                }
+                                "type": "object"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "number",
-                                            "example": 1
-                                        },
-                                        "email": {
-                                            "type": "string",
-                                            "example": "admin@admin.com"
-                                        },
-                                        "age": {
-                                            "type": "integer",
-                                            "example": 20
-                                        },
-                                        "phone_number": {
-                                            "type": "string",
-                                            "example": "999098998"
-                                        },
-                                        "description": {
-                                            "type": "string",
-                                            "example": "Assalomu aleykum"
-                                        },
-                                        "location": {
-                                            "type": "string",
-                                            "example": "Xorazm viloyati"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "example": "2021-12-11T09:25:53.000000Z"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "example": "2021-12-11T09:25:53.000000Z"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/change-avatar": {
+            "post": {
+                "tags": [
+                    "ProfileAPI"
+                ],
+                "summary": "Change Avator",
+                "operationId": "e24aca199c98465326996bbe44e2d7f0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
                             }
                         }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/settings\/update": {
+            "post": {
+                "tags": [
+                    "PorfolioAPI"
+                ],
+                "summary": "Update settings",
+                "operationId": "827c0d8a45f51d307cc762dd318efd27",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "age": {
+                                        "type": "integer"
+                                    },
+                                    "phone_number": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "location": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/cash": {
+            "get": {
+                "tags": [
+                    "ProfileAPI"
+                ],
+                "summary": "Your cash",
+                "operationId": "d56031e1533a8e80176a21212f83e14c",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/settings": {
+            "get": {
+                "tags": [
+                    "ProfileAPI"
+                ],
+                "summary": "Your profile data",
+                "operationId": "149dc7b997029ed7e11d952595dd9023",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/sessions\/clear": {
+            "post": {
+                "tags": [
+                    "ProfileAPI"
+                ],
+                "summary": "Session clear",
+                "operationId": "019d9b4c7d79b28adaec0034b340e709",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/delete": {
+            "delete": {
+                "tags": [
+                    "ProfileAPI"
+                ],
+                "summary": "Delete User",
+                "operationId": "f8088993efebc204c6ba6135018b70c7",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/category\/update": {
+            "post": {
+                "tags": [
+                    "ProfileAPI"
+                ],
+                "summary": "Profile category update",
+                "operationId": "3dc8fd0c11313ed42dbfafd17c56ded1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "category": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/store\/district": {
+            "post": {
+                "tags": [
+                    "ProfileAPI"
+                ],
+                "summary": "Profile district",
+                "operationId": "db6342292ab39fd7a7ac60fb9cf79de2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "district": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/store\/profile-photo": {
+            "post": {
+                "tags": [
+                    "ProfileAPI"
+                ],
+                "summary": "Profile Photo",
+                "operationId": "3a2d669088e22d4d2459c4de2f814b6c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/description": {
+            "post": {
+                "tags": [
+                    "ProfileAPI"
+                ],
+                "summary": "Profile description",
+                "operationId": "0b092dd0f96f96a3e656bc8ef61cb591",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     }
                 },
                 "security": [
@@ -1184,7 +1728,7 @@
         "\/api\/admin\/reports": {
             "get": {
                 "tags": [
-                    "Report"
+                    "ReportAPI"
                 ],
                 "summary": "Get list of Reports",
                 "operationId": "2896b2a6438f455504f2cb034e2631f3",
@@ -1198,19 +1742,57 @@
                 }
             }
         },
+        "\/api\/select-performer\/{response}": {
+            "post": {
+                "tags": [
+                    "ResponseAPI"
+                ],
+                "summary": "Select performer",
+                "operationId": "511724f24ec6d5f5b3802a2d6f61dbb6",
+                "parameters": [
+                    {
+                        "name": "response",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "\/api\/search-task": {
             "get": {
                 "tags": [
-                    "Search"
+                    "SearchAPI"
                 ],
                 "summary": "Get list of Tasks and Categories",
                 "operationId": "127de8717a061012429b03b03240a847",
                 "responses": {
                     "200": {
-                        "description": "successful operation"
+                        "description": "Successful operation"
                     },
-                    "500": {
-                        "description": "Server error"
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     }
                 }
             }
@@ -1218,16 +1800,19 @@
         "\/api\/tasks-search": {
             "get": {
                 "tags": [
-                    "Search"
+                    "SearchAPI"
                 ],
                 "summary": "Get list of Tasks",
                 "operationId": "fdb13257bd152b1db5c2c5c3e24a63da",
                 "responses": {
                     "200": {
-                        "description": "successful operation"
+                        "description": "Successful operation"
                     },
-                    "500": {
-                        "description": "Ajax error"
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     }
                 }
             }
@@ -1235,7 +1820,7 @@
         "\/api\/detailed-tasks\/{task}": {
             "get": {
                 "tags": [
-                    "Search"
+                    "SearchAPI"
                 ],
                 "summary": "Get Task by ID",
                 "operationId": "c28cc0364c969c91e25be68618f588b9",
@@ -1252,6 +1837,12 @@
                 "responses": {
                     "200": {
                         "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     }
                 }
             }
@@ -1259,7 +1850,7 @@
         "\/api\/delete-task\/{task}": {
             "delete": {
                 "tags": [
-                    "Search"
+                    "SearchAPI"
                 ],
                 "summary": "Delete Task",
                 "operationId": "769179127b589bbb0f0b9354fa5a4744",
@@ -1294,7 +1885,7 @@
         "\/api\/ajax-request": {
             "post": {
                 "tags": [
-                    "Search"
+                    "SearchAPI"
                 ],
                 "summary": "Add new task",
                 "operationId": "c1da554eab2487a455858b838141274e",
@@ -1330,7 +1921,7 @@
                                                 "type": "string"
                                             },
                                             "notificate": {
-                                                "type": "string"
+                                                "type": "integer"
                                             },
                                             "response_time": {
                                                 "type": "string"
@@ -1352,7 +1943,7 @@
                                     "name_task": "\u042f\u043d\u0433\u0438 \u0437\u0430\u0434\u0430\u0447\u0430",
                                     "user_id": 77,
                                     "good": "\u042f\u0445\u0448\u0438",
-                                    "notificate": "Salom",
+                                    "notificate": "1",
                                     "response_time": "77",
                                     "response_price": "300"
                                 }
@@ -1417,21 +2008,11 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "invalid",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "properties": {
-                                        "msg": {
-                                            "type": "string",
-                                            "example": "fail"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     }
                 },
                 "security": [
@@ -1441,10 +2022,197 @@
                 ]
             }
         },
+        "\/api\/same-tasks\/{task}": {
+            "get": {
+                "tags": [
+                    "TaskAPI"
+                ],
+                "summary": "Same tasks",
+                "operationId": "120ccd09ca7a2be2153ee7a0f2655447",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "\/api\/responses\/{task}": {
+            "get": {
+                "tags": [
+                    "TaskAPI"
+                ],
+                "summary": "Response tasks",
+                "operationId": "e40467954638499de8484738d2359d0c",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "\/api\/task\/{task}\/response": {
+            "post": {
+                "tags": [
+                    "TaskAPI"
+                ],
+                "summary": "Response store task",
+                "operationId": "72b3712b916c380767bb13875dd42339",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "price": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/tasks-filter": {
+            "get": {
+                "tags": [
+                    "TaskAPI"
+                ],
+                "summary": "Tasks filter",
+                "operationId": "01811c7639caa6a28b67d031f8c8be43",
+                "parameters": [
+                    {
+                        "name": "categories",
+                        "in": "path",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    {
+                        "name": "lat",
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "long",
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "budget",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "is_remote",
+                        "in": "path",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "without_response",
+                        "in": "path",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "difference",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
         "\/api\/task\/{task}": {
             "get": {
                 "tags": [
-                    "Task"
+                    "TaskAPI"
                 ],
                 "summary": "Show tasks by ID",
                 "operationId": "f81261f5febbe5e9edecf62e8b165e8f",
@@ -1471,19 +2239,75 @@
                 }
             }
         },
-        "\/api\/my-tasks": {
+        "\/api\/my-tasks-count": {
             "get": {
                 "tags": [
-                    "Task"
+                    "TaskAPI"
                 ],
-                "summary": "Get list of my Tasks",
-                "operationId": "fedd4ac2f6573b645be861cefc93edf0",
+                "summary": "My tasks count",
+                "operationId": "72718dc806703c197699e0f060cb0935",
+                "parameters": [
+                    {
+                        "name": "is_performer",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "successful operation"
+                        "description": "Successful operation"
                     },
                     "401": {
                         "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/my-tasks": {
+            "get": {
+                "tags": [
+                    "TaskAPI"
+                ],
+                "summary": "My tasks all",
+                "operationId": "1a716f0c34b249580b5d4194baa5f168",
+                "parameters": [
+                    {
+                        "name": "is_performer",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     }
                 },
                 "security": [
@@ -1496,140 +2320,55 @@
         "\/api\/task\/create": {
             "post": {
                 "tags": [
-                    "Task"
+                    "TaskAPI"
                 ],
-                "summary": "Add new task",
+                "summary": "Task create",
                 "operationId": "eaeff5e59900942953b4fdd6602d933b",
                 "requestBody": {
+                    "required": true,
                     "content": {
-                        "application\/json": {
+                        "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "": {
-                                        "properties": {
-                                            "name": {
-                                                "type": "string"
-                                            },
-                                            "address": {
-                                                "type": "string"
-                                            },
-                                            "date_type": {
-                                                "type": "string"
-                                            },
-                                            "start_date": {
-                                                "type": "string"
-                                            },
-                                            "end_date": {
-                                                "type": "string"
-                                            },
-                                            "budget": {
-                                                "type": "integer"
-                                            },
-                                            "description": {
-                                                "type": "string"
-                                            },
-                                            "category_id": {
-                                                "type": "string"
-                                            },
-                                            "phone": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "type": "string"
+                                    },
+                                    "date_type": {
+                                        "type": "integer"
+                                    },
+                                    "budget": {
+                                        "type": "number"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "category_id": {
+                                        "type": "integer"
+                                    },
+                                    "photos": {
+                                        "type": "file"
+                                    },
+                                    "phone": {
+                                        "type": "string"
                                     }
                                 },
-                                "type": "object",
-                                "example": {
-                                    "name": "Javoxir",
-                                    "address": "Xorazm",
-                                    "date_type": "1",
-                                    "start_date": "2021-05-17 10:00",
-                                    "end_date": "2021-05-17 10:00",
-                                    "budget": 10000,
-                                    "description": "Juda zo`r",
-                                    "category_id": "31",
-                                    "phone": "909598654"
-                                }
+                                "type": "object"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "number",
-                                            "example": 1
-                                        },
-                                        "name": {
-                                            "type": "string",
-                                            "example": "name"
-                                        },
-                                        "address": {
-                                            "type": "string",
-                                            "example": "address"
-                                        },
-                                        "date_type": {
-                                            "type": "string",
-                                            "example": "1"
-                                        },
-                                        "start_date": {
-                                            "type": "string",
-                                            "example": "2021-05-17 00:00"
-                                        },
-                                        "end_date": {
-                                            "type": "string",
-                                            "example": "2021-05-17 00:00"
-                                        },
-                                        "budget": {
-                                            "type": "integer",
-                                            "example": "100000"
-                                        },
-                                        "description": {
-                                            "type": "string",
-                                            "example": "Zo`r"
-                                        },
-                                        "category_id": {
-                                            "type": "integer",
-                                            "example": "35"
-                                        },
-                                        "phone": {
-                                            "type": "string",
-                                            "example": "909598654"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "example": "2021-12-11T09:25:53.000000Z"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "example": "2021-12-11T09:25:53.000000Z"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Successful operation"
                     },
-                    "400": {
-                        "description": "invalid",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "properties": {
-                                        "msg": {
-                                            "type": "string",
-                                            "example": "fail"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     }
                 },
                 "security": [
@@ -1642,9 +2381,9 @@
         "\/api\/change-task\/{task}": {
             "put": {
                 "tags": [
-                    "Task"
+                    "TaskAPI"
                 ],
-                "summary": "Update Task",
+                "summary": "Change task",
                 "operationId": "c7d65b35593a76b8531537f6d0d373d4",
                 "parameters": [
                     {
@@ -1657,103 +2396,50 @@
                     }
                 ],
                 "requestBody": {
+                    "required": true,
                     "content": {
-                        "application\/json": {
+                        "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "": {
-                                        "properties": {
-                                            "name": {
-                                                "type": "string"
-                                            },
-                                            "address": {
-                                                "type": "string"
-                                            },
-                                            "date_type": {
-                                                "type": "string"
-                                            },
-                                            "budget": {
-                                                "type": "integer"
-                                            },
-                                            "description": {
-                                                "type": "string"
-                                            },
-                                            "category_id": {
-                                                "type": "integer"
-                                            },
-                                            "phone": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "type": "string"
+                                    },
+                                    "date_type": {
+                                        "type": "integer"
+                                    },
+                                    "budget": {
+                                        "type": "number"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "category_id": {
+                                        "type": "integer"
+                                    },
+                                    "photos": {
+                                        "type": "file"
+                                    },
+                                    "phone": {
+                                        "type": "string"
                                     }
                                 },
-                                "type": "object",
-                                "example": {
-                                    "name": "Javoxir",
-                                    "address": "Xorazm viloyati",
-                                    "date_type": "1",
-                                    "budget": 12000,
-                                    "description": "Juda zo`r",
-                                    "category_id": "31",
-                                    "phone": "998987456"
-                                }
+                                "type": "object"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "number",
-                                            "example": 1
-                                        },
-                                        "name": {
-                                            "type": "string",
-                                            "example": "Javoxir"
-                                        },
-                                        "address": {
-                                            "type": "string",
-                                            "example": "Xorazm viloyati"
-                                        },
-                                        "date_type": {
-                                            "type": "string",
-                                            "example": "1"
-                                        },
-                                        "budget": {
-                                            "type": "integer",
-                                            "example": "15000"
-                                        },
-                                        "description": {
-                                            "type": "string",
-                                            "example": "Juda zo`r"
-                                        },
-                                        "category_id": {
-                                            "type": "integer",
-                                            "example": "31"
-                                        },
-                                        "phone": {
-                                            "type": "string",
-                                            "example": "998987456"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "example": "2021-12-11T09:25:53.000000Z"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "example": "2021-12-11T09:25:53.000000Z"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     }
                 },
                 "security": [
@@ -1766,7 +2452,7 @@
         "\/api\/for_del_new_task\/{task}": {
             "delete": {
                 "tags": [
-                    "Task"
+                    "TaskAPI"
                 ],
                 "summary": "Delete Task",
                 "operationId": "944c123df58af87508b1e98eda756420",
@@ -1798,10 +2484,217 @@
                 ]
             }
         },
+        "\/api\/task\/{task}\/complete": {
+            "post": {
+                "tags": [
+                    "UpdateAPI"
+                ],
+                "summary": "Task complete",
+                "operationId": "34274bcd311837ea8443d39da123d261",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/send-review-user\/{task}": {
+            "post": {
+                "tags": [
+                    "UpdateAPI"
+                ],
+                "summary": "Send review",
+                "operationId": "f440159070ac0fc1e2b350969e9ad62d",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "comment": {
+                                        "type": "string"
+                                    },
+                                    "good": {
+                                        "type": "integer"
+                                    },
+                                    "status": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/reset": {
+            "post": {
+                "tags": [
+                    "UserAPI"
+                ],
+                "summary": "User phone_number",
+                "operationId": "56a1d9813d571e101444350e67d6dd7d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "phone_number": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "\/api\/reset\/password": {
+            "post": {
+                "tags": [
+                    "UserAPI"
+                ],
+                "summary": "User password save",
+                "operationId": "235c0c336670eb4e95abc202257cb924",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "phone_number": {
+                                        "type": "number"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "\/api\/code": {
+            "post": {
+                "tags": [
+                    "UserAPI"
+                ],
+                "summary": "User reset code",
+                "operationId": "3f40aa2d8aa65af2ec2afb498a175340",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "code": {
+                                        "type": "number"
+                                    },
+                                    "phone_number": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
         "\/api\/delete": {
             "delete": {
                 "tags": [
-                    "User"
+                    "UserAPI"
                 ],
                 "summary": "Delete User",
                 "operationId": "cb2f0570b508943a718fd4db10b9ccb0",
@@ -1826,16 +2719,19 @@
         "\/api\/logout": {
             "post": {
                 "tags": [
-                    "User"
+                    "UserAPI"
                 ],
                 "summary": "User logout",
                 "operationId": "755cf3bc351a4bb58a6c9bce9f16e4fb",
                 "responses": {
                     "200": {
-                        "description": "successful operation"
+                        "description": "Successful operation"
                     },
-                    "500": {
-                        "description": "Server error"
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     }
                 },
                 "security": [
@@ -1845,16 +2741,16 @@
                 ]
             }
         },
-        "\/api\/users\/activitiy\/{user}": {
+        "\/api\/portfolio_albums\/{performer}": {
             "get": {
                 "tags": [
-                    "VoyagerUser"
+                    "PortfolioAPI"
                 ],
-                "summary": "Get VoyagerUser by ID",
-                "operationId": "fd17ed88ad18e932fe2017a396266013",
+                "summary": "Index portfolio",
+                "operationId": "dae4aab4cf5115526da387ad1cf885a2",
                 "parameters": [
                     {
-                        "name": "user",
+                        "name": "performer",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -1865,8 +2761,122 @@
                 "responses": {
                     "200": {
                         "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     }
                 }
+            }
+        },
+        "\/api\/portfolio_album\/{portfolio}": {
+            "get": {
+                "tags": [
+                    "PortfolioAPI"
+                ],
+                "summary": "Show portfolio",
+                "operationId": "fc334dc503d1acd8733579ecbe993f39",
+                "parameters": [
+                    {
+                        "name": "portfolio",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "\/api\/profile\/delete\/portfolio\/{portfolio}": {
+            "delete": {
+                "tags": [
+                    "PorfolioAPI"
+                ],
+                "summary": "Delete portfolio",
+                "operationId": "d9c1402c8ec34d5cc23dacc089807a1b",
+                "parameters": [
+                    {
+                        "name": "portfolio",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/portfolio\/create": {
+            "post": {
+                "tags": [
+                    "PorfolioAPI"
+                ],
+                "summary": "Create portfolio",
+                "operationId": "787f52e274cd4ab7479c069f1649ed5e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "comment": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
             }
         },
         "\/api\/login": {
@@ -18435,14 +19445,7 @@
                         "description": "Sort by column",
                         "required": false,
                         "schema": {
-                            "enum": [
-                                "id",
-                                "created_at",
-                                "updated_at",
-                                "title",
-                                "image",
-                                "description"
-                            ],
+                            "enum": [],
                             "type": "string"
                         }
                     },
@@ -19587,14 +20590,7 @@
                         "description": "Sort by column",
                         "required": false,
                         "schema": {
-                            "enum": [
-                                "id",
-                                "created_at",
-                                "updated_at",
-                                "title",
-                                "image",
-                                "description"
-                            ],
+                            "enum": [],
                             "type": "string"
                         }
                     },
@@ -21379,14 +22375,7 @@
                         "description": "Sort by column",
                         "required": false,
                         "schema": {
-                            "enum": [
-                                "id",
-                                "created_at",
-                                "updated_at",
-                                "title",
-                                "comment",
-                                "image"
-                            ],
+                            "enum": [],
                             "type": "string"
                         }
                     },
@@ -22568,14 +23557,7 @@
                         "description": "Sort by column",
                         "required": false,
                         "schema": {
-                            "enum": [
-                                "id",
-                                "created_at",
-                                "updated_at",
-                                "title",
-                                "description",
-                                "image"
-                            ],
+                            "enum": [],
                             "type": "string"
                         }
                     },
@@ -31692,10 +32674,10 @@
                                 "user_id",
                                 "description",
                                 "good_bad",
-                                "created_at",
-                                "updated_at",
                                 "reviewer_id",
-                                "task_id"
+                                "task_id",
+                                "created_at",
+                                "updated_at"
                             ],
                             "type": "string"
                         }

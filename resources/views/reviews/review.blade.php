@@ -15,12 +15,12 @@
                     {{__('Мы рады, что каждый из исполнителей присоединился к сервису, и гордимся командой наших проверенных пользователей. А их отзывы о нашей работе доказывают, что мы делаем действительно полезный и необходимый для многих продукт.')}}</p>
                 <ul class="pt-[20px]">
                     <li class="mt-6">
-                        <a href="/u1053628" target="_blank" rel="noreferrer noopener" class="block float-left align-top w-18 h-18 overflow-hidden rounded-lg mr-4 shadow-lg border-b-0 ">
+                        <a href="#" target="_blank" rel="noreferrer noopener" class="block float-left align-top w-18 h-18 overflow-hidden rounded-lg mr-4 shadow-lg border-b-0 ">
                             <img class="UsersReviews_picture__aB22p" src="https://shivinfotech.co/assests/images/download.png">
                         </a>
                         <div class="align-top ml-[50px] h-24">
                             <span>
-                                <a href="/u1053628" target="_blank" rel="noreferrer noopener" class="text-blue-400 ">Сергей С.</a>
+                                <a href="#" target="_blank" rel="noreferrer noopener" class="text-blue-400 ">Сергей С.</a>
                             </span>
                             <div class="text-base text-[rgba(78,78,78,.5)]">
                                 <span class="align-middle">
@@ -41,12 +41,12 @@
                         </div>
                     </li>
                     <li class="mt-8">
-                        <a href="/u1053628" target="_blank" rel="noreferrer noopener" class="block float-left align-top w-18 h-18 overflow-hidden rounded-lg mr-4 shadow-lg border-b-0 ">
+                        <a href="#" target="_blank" rel="noreferrer noopener" class="block float-left align-top w-18 h-18 overflow-hidden rounded-lg mr-4 shadow-lg border-b-0 ">
                             <img class="UsersReviews_picture__aB22p" src="https://shivinfotech.co/assests/images/download.png">
                         </a>
                         <div class="align-top ml-[50px] h-24">
                             <span>
-                                <a href="/u1053628" target="_blank" rel="noreferrer noopener" class="text-blue-400 ">{{__('Сергей С.')}}</a>
+                                <a href="#" target="_blank" rel="noreferrer noopener" class="text-blue-400 ">{{__('Сергей С.')}}</a>
                             </span>
                             <div class="text-base text-[rgba(78,78,78,.5)]">
                                 <span class="align-middle">
@@ -67,12 +67,12 @@
                         </div>
                     </li>
                     <li class="mt-8">
-                        <a href="/u1053628" target="_blank" rel="noreferrer noopener" class="block float-left align-top w-18 h-18 overflow-hidden rounded-lg mr-4 shadow-lg border-b-0 ">
+                        <a href="#" target="_blank" rel="noreferrer noopener" class="block float-left align-top w-18 h-18 overflow-hidden rounded-lg mr-4 shadow-lg border-b-0 ">
                             <img class="UsersReviews_picture__aB22p" src="https://shivinfotech.co/assests/images/download.png">
                         </a>
                         <div class="align-top ml-[50px] h-24">
                             <span>
-                                <a href="/u1053628" target="_blank" rel="noreferrer noopener" class="text-blue-400 ">{{__('Сергей С.')}}</a>
+                                <a href="#" target="_blank" rel="noreferrer noopener" class="text-blue-400 ">{{__('Сергей С.')}}</a>
                             </span>
                             <div class="text-base text-[rgba(78,78,78,.5)]">
                                 <span class="align-middle">

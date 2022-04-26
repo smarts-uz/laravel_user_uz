@@ -23,12 +23,12 @@ class ResponseService
             'description' => 'required|string',
             'price' => 'required|int',
             'notificate' => 'nullable',
+            'not_free' => 'nullable|int'
         ]);
         $data['notificate'] = $request->notificate ? 1 : 0;
         $data['task_id'] = $task->id;
         $data['user_id'] = $task->user_id;
         $data['performer_id'] = auth()->user()->id;
-
         $ballance = WalletBalance::where('user_id', auth()->user()->id)->first();
         if ($ballance) {
             if ($ballance->balance < 4000) {
@@ -42,7 +42,8 @@ class ResponseService
                 $message = __('success');
                 $ballance->balance = $ballance->balance - $request->pay;
                 $ballance->save();
-                TaskResponse::create($data);
+                $r = TaskResponse::create($data);
+                dd($r);
 
                 NotificationService::sendTaskSelectedNotification($task);
             }

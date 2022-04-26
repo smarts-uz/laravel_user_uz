@@ -6,19 +6,25 @@ use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Models\Report;
 use App\Models\Category;
+use App\Services\ReportService;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
-    public function index(Report $report)
+    public function report(Report $report)
     {
-        $table = $report->getTable();
-
-        $columns = DB::select( 'SHOW FULL COLUMNS FROM reports' );
-        $task_parent = Category::where('parent_id', null)->get();
-        $task = Task::where('category_id', $task_parent)->count();
+    
+        $service = new ReportService();
+        $item = $service->report($report);
         
-        return view('vendor.voyager.report.report', compact('task','report','table','columns','task_parent'));
+        return view('vendor.voyager.report.report', 
+        [
+            'task' => $item->task,
+            'report' => $report,
+            'table' => $item->table,
+            'columns' => $item->columns,
+            'task_parent' => $item->task_parent,
+        ]);
     }
 }

@@ -2,29 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserLoginRequest;
-use App\Http\Requests\UserPhoneRequest;
 use App\Mail\MessageEmail;
 use App\Models\User;
 use App\Models\Task;
-use App\Models\Trust;
-use App\Models\Reklama;
-use App\Models\Advant;
-use App\Models\UserVerify;
-use App\Models\How_work_it;
 use App\Services\NotificationService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use RealRashid\SweetAlert\Facades\Alert;
-use TCG\Voyager\Models\Category;
 use PlayMobile\SMS\SmsService;
 use Hash;
-use App\Models\Notification;
-use App\Events\MyEvent;
 
 
 class UserController extends Controller
@@ -34,10 +21,6 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return view('auth.signin');
-    }
 
     public function code()
     {
@@ -58,38 +41,6 @@ class UserController extends Controller
     {
         return view('auth.confirm');
     }
-
-    public function createSignin(UserLoginRequest $request)
-    {
-        $data = $request->validated();
-        $user = User::where('email', $data['email'])->first();
-
-        if (!$user) {
-            session()->flash('message', 'Введенный email не существует!');
-            return redirect()->back();
-        }
-        $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
-            $user = User::find(Auth::user()->id)
-                ->update([
-                    'active_status' => 1,
-                ]);
-            $lang = Session::pull('lang');
-            Session::put('lang', $lang);
-            $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->get();
-            $tasks = Task::withTranslations(['ru', 'uz'])->orderBy('id', 'desc')->take(15)->get();
-            $howitworks = How_work_it::all();
-            $users_count = User::where('role_id', 2)->count();
-            $random_category = Category::all()->random();
-            $advants = Advant::all();
-            $trusts = Trust::orderby('id', 'desc')->get();
-            $reklamas = Reklama::all();
-            return view('home', compact('reklamas', 'tasks', 'advants', 'howitworks', 'categories', 'users_count', 'trusts', 'random_category'))->withSuccess('Logged-in');
-        } else {
-            return view('auth.signin')->withSuccess('Credentials are wrong.');
-        }
-    }
-
 
     public function code_submit(Request $request)
     {
@@ -195,44 +146,6 @@ class UserController extends Controller
         return redirect('/profile');
     }
 
-    public function createUser(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'phone_number' => $data['phone_number'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password'])
-        ]);
-    }
-
-    public function dashboardView()
-    {
-        if (Auth::check()) {
-            $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->get();
-            $tasks = Task::withTranslations(['ru', 'uz'])->orderBy('id', 'desc')->take(15)->get();
-            $howitworks = How_work_it::all();
-            $lang = Session::pull('lang');
-            Session::put('lang', $lang);
-            $reklamas = Reklama::all();
-            $trusts = Trust::orderby('id', 'desc')->get();
-            return view('home', compact('tasks', 'howitworks', 'categories', 'reklamas', 'trusts'));
-        }
-        return redirect("login")->withSuccess('Access is not permitted');
-    }
-
-    public function logout()
-    {
-        $user = User::find(Auth::id())
-            ->update([
-                'active_status' => 0,
-            ]);
-        $lang = Session::pull('lang');
-        Session::flush();
-        Auth::logout();
-        Session::put('lang', $lang);
-        return redirect('/');
-    }
-
     public function verifyProfil(Request $request, User $user, Task $task)
     {
 
@@ -265,33 +178,4 @@ class UserController extends Controller
         }
 
     }
-
-
-    public function checkIsVerified($verifyUser)
-    {
-        $message = 'Sorry your profile cannot be identified.';
-
-        if (!is_null($verifyUser)) {
-            $user = $verifyUser->user;
-            if (!$user->is_email_verified) {
-                $verifyUser->user->is_email_verified = 1;
-                $verifyUser->user->save();
-                $message = "Your profile is verified. You can now login.";
-            } else {
-                $message = "Your profile is already verified. You can now login.";
-            }
-        }
-        return $message;
-    }
-
-    // public function update(Request $request, User $user)
-    // {
-    //     $user->update($request->only($this->getEditableColumns()));
-    // }
-
-    protected function getEditableColumns()
-    {
-        return ['review_rating', 'review_good', 'review_bad'];
-    }
-
 }

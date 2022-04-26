@@ -5,6 +5,7 @@ namespace App\Services\Task;
 
 
 use App\Models\Address;
+use App\Models\Category;
 use App\Models\Task;
 
 class FilterTaskService
@@ -15,24 +16,6 @@ class FilterTaskService
     {
         $tasks = Task::query()->where('status', '=',Task::STATUS_OPEN);
 
-        if (isset($data['categories'])) {
-            $categories = $data['categories'];
-            $tasks->whereIn('category_id', $categories);
-        }
-        if (isset($data['budget'])) {
-            $tasks->where('budget', ">=", $data['budget'] );
-        }
-        if (isset($data['is_remote'])) {
-            $is_remote = $data['is_remote'];
-            if ($is_remote)
-                $tasks->whereDoesntHave('address');
-        }
-        if (isset($data['without_response'])) {
-            $without_response = $data['without_response'];
-            if ($without_response)
-                $tasks->whereDoesntHave('responses');
-
-        }
         $tasks_items =  [];
         if (isset($data['lat']) && isset($data['long']) && isset($data['difference']))
         {
@@ -41,17 +24,48 @@ class FilterTaskService
                     $k = $this->distance($data['lat'], $data['long'],$address->latitude, $address->longitude);
                     if ($k < $data['difference'])
                     {
-                        $tasks_items[] = $task;
+                        $tasks_items[] = $task->id;
                     }
                 }
             }
+
         }else{
-            $tasks_items = $tasks->get();
+            $tasks_items = $tasks->pluck('id')->toArray();
         }
-        $tasks = $tasks_items;
+        $tasks->whereIn('id', $tasks_items);
+        if (isset($data['categories'])) {
+            $categories = is_array($data['categories'])?$data['categories']:json_decode($data['categories']);
+            $categories = Category::query()->whereIn('parent_id',$categories)->pluck('id')->toArray();
+            $tasks->whereIn('category_id', $categories)->pluck('id')->toArray();
+        }
+        if (isset($data['child_categories'])) {
+            $categories = is_array($data['child_categories'])?$data['child_categories']:json_decode($data['child_categories']);
+            $tasks->whereIn('category_id', $categories)->pluck('id')->toArray();
+        }
+        if (isset($data['budget'])) {
+            $tasks->where('budget', ">=", (int) $data['budget'] )->pluck('id')->toArray();
+        }
+        if (isset($data['is_remote']) && !(isset($data['lat']) && isset($data['long']) && isset($data['difference']))) {
+            $is_remote = $data['is_remote'];
+            if ($is_remote)
+                $tasks->whereDoesntHave('addresses');
+        }
+        if (isset($data['without_response'])) {
+            $without_response = $data['without_response'];
+            if ($without_response)
+                $tasks->whereDoesntHave('responses');
+        }
 
+        if (isset($data['s']))
+        {
+            $s = $data['s'];
+            $tasks->where('name','like',"%$s%")
+                ->orWhere('description', 'like',"%$s%")
+                ->orWhere('phone', 'like',"%$s%")
+                ->orWhere('budget', 'like',"%$s%");
+        }
 
-        return $tasks;
+        return $tasks->paginate();
     }
 
 

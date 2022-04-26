@@ -74,12 +74,12 @@ class User extends \TCG\Voyager\Models\User
 
     public function goodReviews()
     {
-        return $this->hasMany(Review::class, 'user_id', 'id')->where('good_bad', 1);
+        return $this->hasMany(Review::class, 'user_id', 'id')->where('good_bad', 1)->whereHas('task')->whereHas('user');
     }
 
     public function badReviews()
     {
-        return $this->hasMany(Review::class, 'user_id', 'id')->where('good_bad', 0);
+        return $this->hasMany(Review::class, 'user_id', 'id')->where('good_bad', 0)->whereHas('task')->whereHas('user');
     }
 
     public function views()
@@ -141,4 +141,8 @@ class User extends \TCG\Voyager\Models\User
         return $this->hasMany(Portfolio::class);
     }
 
+    public function ch_messages()
+    {
+//        return $this
+    }
 }

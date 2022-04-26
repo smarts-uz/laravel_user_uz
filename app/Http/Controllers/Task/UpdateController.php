@@ -7,7 +7,7 @@ use App\Http\Requests\Task\UpdateRequest;
 use App\Models\CustomFieldsValue;
 use App\Models\Notification;
 use App\Models\Task;
-use App\Review;
+use App\Models\Review;
 use Illuminate\Http\Request;
 use App\Services\Task\CreateService;
 use Illuminate\Support\Arr;
@@ -28,11 +28,13 @@ class UpdateController extends Controller
     {
         taskGuard($task);
         if ($task->responses_count)
-            abort(403);
+            abort(403,"No Permission");
 
         $data = $request->validated();
-        $data = getAddress($data);
-
+        $task->addresses()->delete();
+        $data['coordinates'] = $this->service->addAdditionalAddress($task,$request);
+        unset($data['location0']);
+        unset($data['coordinates0']);
         $task->update($data);
         $this->service->syncCustomFields($task);
         Alert::success('Success');
@@ -55,19 +57,20 @@ class UpdateController extends Controller
     }
 
 
-    public function sendReview(Task $task, Request $request){
+    public function sendReview(Task $task, Request $request)
+    {
         taskGuard($task);
-        DB::beginTransaction();
 
         try {
             $task->status  =  $request->status ? Task::STATUS_COMPLETE: Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
             $task->save();
-            $review = new Review();
-            $review->description = $request->comment;
-            $review->good_bad = $request->good;
-            $review->task_id = $task->id;
-            $review->reviewer_id = auth()->id();
-            $review->user_id = $task->performer_id;
+            Review::create([
+                'description' => $request->comment,
+                'good_bad' => $request->good,
+                'task_id' => $task->id,
+                'reviewer_id' => auth()->id(),
+                'user_id' => $task->performer_id,
+            ]);
             Notification::create([
                 'user_id' => $task->user_id,
                 'task_id' => $task->id,
@@ -75,11 +78,9 @@ class UpdateController extends Controller
                 'description' => 1,
                 'type' => Notification::SEND_REVIEW
             ]);
-            $review->save();
         }catch (\Exception $exception){
             DB::rollBack();
         }
-        DB::commit();
         return back();
     }
 

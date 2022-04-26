@@ -26,6 +26,15 @@ class CreateService
             $value->save();
         }
     }
+
+    public function delete($task)
+    {
+        $task->responses()->delete();
+        $task->reviews()->delete();
+        $task->custom_field_values()->delete();
+        $task->addresses()->delete();
+        $task->delete();
+    }
     public function attachCustomFieldsByRoute($task, $routeName){
         foreach ($task->category->custom_fields()->where('route',$routeName)->get() as $data) {
             $value = $task->custom_field_values()->where('custom_field_id', $data->id)->first()?? new CustomFieldsValue();
@@ -41,7 +50,6 @@ class CreateService
     public function addAdditionalAddress($task,$request){
         $data_inner = [];
         $dataMain['coordinates'] = $request->coordinates0;
-
         for ($i = 0; $i < setting('site.max_address')??10; $i++) {
             $location = Arr::get($request->all(), 'location' . $i);
             $coordinates = Arr::get($request->all(), 'coordinates' . $i);
