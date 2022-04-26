@@ -46,7 +46,7 @@ class ControllerService
         $item ->datas = $item ->datas->merge( $item ->tasks);
         $item ->datas = $item ->datas->merge($item ->perform_tasks);
         $item ->categories = Category::where('parent_id', null)->select('id', 'name', 'slug')->get();
-        $item ->categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
+        $item ->categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name','ico')->get();
         return $item;
     }
 }
