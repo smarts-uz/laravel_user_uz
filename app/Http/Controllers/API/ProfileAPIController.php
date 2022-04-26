@@ -499,12 +499,7 @@ class ProfileAPIController extends Controller
         $user = Auth::user();
         $user->district = $request->district;
         $user->save();
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'message' => 'District stored'
-            ]
-        ]);
+        return new UserIndexResource($user);
     }
 
 
