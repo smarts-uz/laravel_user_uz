@@ -6,7 +6,7 @@ namespace App\Services;
 use Illuminate\Database\Eloquent\Collection;
 use App\Events\MyEvent;
 use App\Item\ControllerItem;
-use App\Item\CategoryItem;
+use App\Item\SearchServiceTaskItem;
 use App\Item\MyTaskItem;
 use App\Models\Task;
 use Illuminate\Support\Facades\Http;
@@ -30,7 +30,7 @@ class ControllerService
 
     }
     public function category($id){
-        $item = new CategoryItem();
+        $item = new SearchServiceTaskItem();
         $item -> categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->get();
         $item -> choosed_category = Category::withTranslations(['ru', 'uz'])->where('id', $id)->get();
         $item -> child_categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', $id)->get();
