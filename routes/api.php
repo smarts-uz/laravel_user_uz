@@ -66,34 +66,23 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::prefix('/profile')->group(function () {
         // Profile
         Route::get('/', [ProfileAPIController::class, 'index']);
-        Route::post('/change-avatar', [ProfileAPIController::class, 'avatar']);
+        Route::get('/portfolios', [ProfileAPIController::class, 'portfolios']);
+        Route::get('/reviews', [ProfileAPIController::class, 'reviews']);
+        Route::get('/balance', [ProfileAPIController::class, 'balance']);
+        Route::get('/description', [ProfileAPIController::class, 'description']);
+        Route::post('/description/edit', [ProfileAPIController::class, 'editDesctiption']);
+        Route::post('/payment', [ProfileAPIController::class, 'payment']);
 
-        // Profile Cash
-        Route::get('/cash', [ProfileAPIController::class, 'cash']);
+        Route::prefix('/settings')->group(function () {
+            Route::get('/', [ProfileAPIController::class, 'editData']);
+            Route::post('/update', [ProfileAPIController::class, 'updateData']);
+            Route::get('/phone', [ProfileAPIController::class, 'phoneEdit']);
+            Route::post('/phone/edit', [ProfileAPIController::class, 'phoneUpdate']);
+            Route::post('/password/change', [ProfileAPIController::class, 'change_password']);
+            Route::post('/notifications', [ProfileAPIController::class, 'userNotifications']);
+        });
 
-        // Profile Settings
-        Route::get('/settings', [ProfileAPIController::class, 'editData']);
-        Route::post('/settings/update', [ProfileAPIController::class, 'updateData']);
-        Route::post('/category/update', [ProfileAPIController::class, 'updateCategory']);
-        Route::post('/sessions/clear', [ProfileAPIController::class, 'clearSessions']);
-        Route::post('/password/change', [ProfileAPIController::class, 'change_password']);
-        Route::get('/notifications/subscription', [ProfileAPIController::class, 'userNotifications']);
 
-        // Profile Delete
-        Route::post('/delete', [ProfileAPIController::class, 'deleteUser']);
-
-        // Profile Details
-        Route::post('/store/district', [ProfileAPIController::class, 'storeDistrict']);
-        Route::post('/store/profile-photo', [ProfileAPIController::class, 'storeProfilePhoto']);
-        Route::post('/description', [ProfileAPIController::class, 'editDesctiption']);
-
-        // Profile Portfolio
-        Route::delete('/delete/portfolio/{portfolio}', [PortfolioAPIController::class, 'delete']);
-        Route::post('/portfolio/create', [PortfolioAPIController::class, 'createPortfolio']);
-
-        // comment
-        // testBase
-        // portfolio/{portfolio}
     });
 
 });
