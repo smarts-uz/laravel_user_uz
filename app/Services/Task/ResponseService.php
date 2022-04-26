@@ -43,7 +43,6 @@ class ResponseService
                 $ballance->balance = $ballance->balance - $request->pay;
                 $ballance->save();
                 $r = TaskResponse::create($data);
-                dd($r);
 
                 NotificationService::sendTaskSelectedNotification($task);
             }

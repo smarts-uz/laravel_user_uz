@@ -518,7 +518,7 @@
                                         <input type="text" name="performer_id" class="hidden"
                                                value="{{ $response->performer_id }}">
                                         <div class="text-gray-700 sm:mt-4 mt-2">
-                                            <i class="fas fa-star text-yellow-500 mr-1"></i>{{ $response->performer->reviews()->count()? $response->performer->goodReviews()->count()/$response->performer->reviews()->count():0 }}
+                                            <i class="fas fa-star text-yellow-500 mr-1"></i>{{ $response->performer->reviews()->count()? number_format($response->performer->goodReviews()->count() / $response->performer->reviews()->count()):0 }}
                                             по {{ $response->performer->reviews()->count() }} отзывам
                                         </div>
                                     </div>
@@ -535,26 +535,58 @@
                                                 <div class="tooltip-arrow" data-popper-arrow></div>
                                             </div>
                                         </div>
-                                        <div data-tooltip-target="tooltip-animation_2" class="mx-2 tooltip-2">
-                                            <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
-                                            <div id="tooltip-animation_2" role="tooltip"
-                                                 class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                                <p class="text-center">
-                                                    {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
-                                                </p>
-                                                <div class="tooltip-arrow" data-popper-arrow></div>
+                                        @if($response->performer->role_id == 2)
+                                            @foreach($about as $rating)
+                                                @if($rating->id == $response->performer_id)
+                                                    <div data-tooltip-target="tooltip-animation_2" class="mx-4 tooltip-2">
+                                                        <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
+                                                        <div id="tooltip-animation_2" role="tooltip"
+                                                             class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                            <p class="text-center">
+                                                                {{__('Входит в ТОП-20 исполнителей User.uz')}}
+                                                            </p>
+                                                            <div class="tooltip-arrow" data-popper-arrow></div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            @endforeach
+                                            <div data-tooltip-target="tooltip-animation_3" class="mx-4">
+                                                @if($response->performer->tasks()->count() >= 50)
+                                                    <img src="{{ asset('images/50.png') }}" alt="" class="w-10">
+                                                @else
+                                                    <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10">
+                                                @endif
+                                                <div id="tooltip-animation_3" role="tooltip"
+                                                     class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                    <p class="text-center">
+                                                        {{__('Более 50 выполненных заданий')}}
+                                                    </p>
+                                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div data-tooltip-target="tooltip-animation_3" class="mx-1">
-                                            <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
-                                            <div id="tooltip-animation_3" role="tooltip"
-                                                 class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                                <p class="text-center">
-                                                    {{__('Более 50 выполненных заданий')}}
-                                                </p>
-                                                <div class="tooltip-arrow" data-popper-arrow></div>
+                                        @else
+                                            <div data-tooltip-target="tooltip-animation_2" class="mx-4 tooltip-2">
+                                                <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
+                                                <div id="tooltip-animation_2" role="tooltip"
+                                                     class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                    <p class="text-center">
+                                                        {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
+                                                    </p>
+                                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                                </div>
                                             </div>
-                                        </div>
+                                            <div data-tooltip-target="tooltip-animation_3" class="mx-4">
+                                                <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10">
+                                                <div id="tooltip-animation_3" role="tooltip"
+                                                     class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                    <p class="text-center">
+                                                        {{__('Более 50 выполненных заданий')}}
+                                                    </p>
+                                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                                </div>
+                                            </div>
+                                        @endif
+
                                     </div>
                                 </div>
                                 <div class="mb-6">

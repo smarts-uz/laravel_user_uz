@@ -75,7 +75,7 @@ class SearchTaskController extends VoyagerBaseController
 
         return view('task.detailed-tasks',
         ['task' => $task, 'review' => $review, 'complianceType' => $item->complianceType, 'same_tasks' => $item->same_tasks,
-        'auth_response' => $item->auth_response, 'selected' => $item->selected, 'responses' => $item->responses, 'addresses' => $item->addresses]);
+        'auth_response' => $item->auth_response, 'selected' => $item->selected, 'responses' => $item->responses, 'addresses' => $item->addresses, 'about'=>$item->about]);
     }
 
     public function comlianse_save(Request $request)
