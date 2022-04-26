@@ -87,6 +87,9 @@ class SearchTaskController extends VoyagerBaseController
     public function delete_task(Task $task)
     {
         taskGuard($task);
+        abort_if($task->responses()->count() || $task->status != Task::STATUS_OPEN,403, 'No permission');
+
+
         $this->create_service->delete($task);
         return redirect('/');
     }

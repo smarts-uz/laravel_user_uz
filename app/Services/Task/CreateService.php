@@ -32,6 +32,7 @@ class CreateService
         $task->responses()->delete();
         $task->reviews()->delete();
         $task->custom_field_values()->delete();
+        $task->addresses()->delete();
         $task->delete();
     }
     public function attachCustomFieldsByRoute($task, $routeName){
