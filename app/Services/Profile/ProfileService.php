@@ -68,6 +68,8 @@ class ProfileService
         $task_count = Task::where('performer_id', $user->id)->count();
         $sessions = Session::query()->where('user_id', $user->id)->get();
         $parser = Parser::create();
+        $goodReviews = auth()->user()->goodReviews()->whereHas('task')->whereHas('user')->get();
+        $badReviews = auth()->user()->badReviews()->whereHas('task')->whereHas('user')->get();
         return array(
             'user' => $user,
             'views' => $views,
@@ -77,7 +79,9 @@ class ProfileService
             'about' => $about,
             'task_count' => $task_count,
             'sessions' => $sessions,
-            'parser' => $parser
+            'parser' => $parser,
+            'goodReviews' => $goodReviews,
+            'badReviews' => $badReviews,
         );
     }
 

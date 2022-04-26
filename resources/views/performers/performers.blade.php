@@ -84,9 +84,9 @@
                                 <div class="flex sm:flex-row items-center text-base">
                                     <p class="text-black ">{{__('Отзывы:')}}</p>
                                     <i class="far fa-thumbs-up text-blue-500 ml-1 mb-1"></i>
-                                    <span class="text-gray-800 mr-2 like{{$user->id}}">{{ $user->reviews()->where('good_bad',1)->count()}}</span>
+                                    <span class="text-gray-800 mr-2 like{{$user->id}}">{{ $user->goodReviews()->count()}}</span>
                                     <i class="far fa-thumbs-down mt-0.5 text-blue-500"></i>
-                                    <span class="text-gray-800 dislike{{$user->id}}">{{ $user->reviews()->where('good_bad',0)->count()}}</span>
+                                    <span class="text-gray-800 dislike{{$user->id}}">{{ $user->badReviews()->count()}}</span>
                                 </div>
                                 <div class="flex flex-row stars{{$user->id}}">
                                 </div>
