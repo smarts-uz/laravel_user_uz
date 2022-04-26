@@ -264,7 +264,8 @@ class ProfileController extends Controller
     public function verificationCategory()
     {
         $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->get();
-        return view('personalinfo.personalcategoriya', compact('categories'));
+        $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
+        return view('personalinfo.personalcategoriya', compact('categories','categories2'));
     }
 
     public function createPortfolio(PortfolioRequest $request)
