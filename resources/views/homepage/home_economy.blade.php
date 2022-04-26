@@ -67,14 +67,4 @@
             <img src="{{ asset('/images/Vector.png') }}" alt="">
         </div>
     </div>
-{{--    <div class="text-center w-full mx-auto mt-12 pb-8">--}}
-{{--        <a href="/task/create?category_id=31">--}}
-{{--            <button class="text-center text-white py-4 px-5  bg-yellow-500 border-yellow-500 text-3xl rounded">--}}
-{{--                {{__('Разместите задание прямо сейчас')}}--}}
-{{--            </button>--}}
-{{--        </a>--}}
-{{--        <div class="text-center text-xl mt-4">--}}
-{{--            {!!__('и найдите <br> исполнителя за несколько минут')!!}--}}
-{{--        </div>--}}
-{{--    </div>--}}
 </div>

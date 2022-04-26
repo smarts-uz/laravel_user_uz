@@ -15,7 +15,7 @@ class TaskPaginationResource extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'data' => TaskIndexResource::collection($this->collection),
+            'data' => TaskSingleResource::collection($this->collection),
             'current_page' => $this->currentPage(),
             'last_page' => $this->lastPage(),
             'total' => $this->total(),

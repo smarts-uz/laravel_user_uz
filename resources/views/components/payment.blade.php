@@ -69,7 +69,7 @@
                             <button type="button" class=" w-52 focus:border-2 focus:border-dashed focus:border-green-500 mx-8" name="button"><label for="debit1"><img
                                         src="https://paynet.uz/medias/article/big/134/logo-paynet.png" alt=""></label></button>
 
-                            <label for="">ID:{{ auth()->id() }}</label>
+                            {{-- <label for="">ID:{{ auth()->id() }}</label> --}}
                         </div>
                         <div class="d-none input-group my-5" id="forhid">
                             <input id="amount_u" type="hidden" name="amount" class="form-control">

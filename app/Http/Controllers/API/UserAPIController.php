@@ -32,10 +32,42 @@ class UserAPIController extends Controller
 
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
 
-        return response(['user' => auth()->user(), 'access_token'=>$accessToken]);
+        return response()->json(['user' => auth()->user(), 'access_token'=>$accessToken]);
 
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/reset",
+     *     tags={"UserAPI"},
+     *     summary="User phone_number",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema (
+     *                 @OA\Property (
+     *                     property="phone_number",
+     *                     type="integer",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     * )
+     */
     public function reset_submit(Request $request)
     {
 
@@ -53,6 +85,48 @@ class UserAPIController extends Controller
         return response()->json(['success' => true, 'message' => "SMS Code is send!"]);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/reset/password",
+     *     tags={"UserAPI"},
+     *     summary="User password save",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema (
+     *                 @OA\Property (
+     *                     property="phone_number",
+     *                     type="number",
+     *                 ),
+     *                 @OA\Property (
+     *                     property="password",
+     *                     type="string",
+     *                     format="password",
+     *                 ),
+     *                 @OA\Property (
+     *                     property="password_confirmation",
+     *                     type="string",
+     *                     format="password",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     * )
+     */
     public function reset_password_save(Request $request)
     {
         $request->validate([
@@ -70,6 +144,42 @@ class UserAPIController extends Controller
 
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/code",
+     *     tags={"UserAPI"},
+     *     summary="User reset code",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema (
+     *                 @OA\Property (
+     *                     property="code",
+     *                     type="number",
+     *                 ),
+     *                 @OA\Property (
+     *                     property="phone_number",
+     *                     type="number",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     * )
+     */
     public function reset_code(Request $request)
     {
         $data = $request->validate([
@@ -104,7 +214,7 @@ class UserAPIController extends Controller
             Auth::login($user);
             $accessToken = auth()->user()->createToken('authToken')->accessToken;
 
-            return response(['user' => auth()->user(), 'access_token'=>$accessToken]);
+            return response()->json(['user' => auth()->user(), 'access_token'=>$accessToken]);
         } catch (ValidationException $e) {
             return response()->json(array_values($e->errors()));
         }
@@ -132,11 +242,8 @@ class UserAPIController extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/delete",
-     *     tags={"User"},
+     *     tags={"UserAPI"},
      *     summary="Delete User",
-     *     security={
-     *         {"token": {}}
-     *     },
      *     @OA\Response(
      *          response=200,
      *          description="Successful operation"
@@ -148,7 +255,10 @@ class UserAPIController extends Controller
      *     @OA\Response(
      *          response=403,
      *          description="Forbidden"
-     *     )
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
      * )
      */
     public function destroy()
@@ -160,19 +270,23 @@ class UserAPIController extends Controller
     /**
      * @OA\Post(
      *     path="/api/logout",
-     *     tags={"User"},
+     *     tags={"UserAPI"},
      *     summary="User logout",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
      *     security={
      *         {"token": {}}
      *     },
-     *     @OA\Response(
-     *         response=200,
-     *         description="successful operation",
-     *     ),
-     *     @OA\Response(
-     *          response=500,
-     *          description="Server error"
-     *     )
      * )
      */
     function logout()

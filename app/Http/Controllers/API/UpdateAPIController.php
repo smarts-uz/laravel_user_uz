@@ -8,7 +8,7 @@ use App\Http\Resources\TaskIndexResource;
 use App\Models\CustomFieldsValue;
 use App\Models\Notification;
 use App\Models\Task;
-use App\Review;
+use App\Models\Review;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Services\Task\CreateService;
@@ -39,6 +39,37 @@ class UpdateAPIController extends Controller
 
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/task/{task}/complete",
+     *     tags={"UpdateAPI"},
+     *     summary="Task complete",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function completed(Task $task){
         taskGuard($task);
         $data = [
@@ -51,6 +82,56 @@ class UpdateAPIController extends Controller
     }
 
 
+    /**
+     * @OA\Post(
+     *     path="/api/send-review-user/{task}",
+     *     tags={"UpdateAPI"},
+     *     summary="Send review",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="comment",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="good",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="status",
+     *                    type="integer",
+     *                 ),
+     *             ), 
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function sendReview(Task $task, Request $request){
         $request->validate([
             'comment' => 'required',
@@ -63,12 +144,15 @@ class UpdateAPIController extends Controller
         try {
             $task->status  =  $request->status ? Task::STATUS_COMPLETE: Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
             $task->save();
-            $review = new Review();
-            $review->description = $request->comment;
-            $review->good_bad = $request->good;
-            $review->task_id = $task->id;
-            $review->reviewer_id = auth()->id();
-            $review->user_id = $task->performer_id;
+
+        Review::create([
+            'description' => $request->comment,
+            'good_bad' => $request->good,
+            'task_id' => $task->id,
+            'reviewer_id' => auth()->id(),
+            'user_id' => $task->performer_id,
+        ]);
+
             Notification::create([
                 'user_id' => $task->user_id,
                 'task_id' => $task->id,
@@ -76,7 +160,7 @@ class UpdateAPIController extends Controller
                 'description' => 1,
                 'type' => Notification::SEND_REVIEW
             ]);
-            $review->save();
+
         }catch (\Exception $exception){
             DB::rollBack();
             return response()->json(['success' => false, 'message' =>"fail"]);  //back();

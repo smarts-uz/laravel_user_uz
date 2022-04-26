@@ -27,7 +27,7 @@ function getAddress($data){
 
 function portfolioGuard($portfolio){
     if ($portfolio->user_id != auth()->user()->id){
-        abort(403);
+        abort(403,"No Permission");
     }
 }
 function getAdditionalAddress($data){
@@ -118,7 +118,7 @@ function getAuthUserBalance(){
 
 function taskGuard($task){
           if ($task->user_id != auth()->user()->id){
-              abort(403);
+              abort(403,"No Permission");
           }
 }
 

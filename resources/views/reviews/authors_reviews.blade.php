@@ -14,12 +14,12 @@
                 <ul class="pt-8">
                     <li class="border border-solid border-2 rounded-md bg-pink-50">
                         <div class="px-8 py-6">
-                            <a href="/u1053628" target="_blank" rel="noreferrer noopener" class="block float-left align-top w-16 h-16 overflow-hidden rounded-full shadow-lg border-b-0 mr-4">
+                            <a href="#" target="_blank" rel="noreferrer noopener" class="block float-left align-top w-16 h-16 overflow-hidden rounded-full shadow-lg border-b-0 mr-4">
                                 <img class="rounded-full" src="https://assets.youdo.com/next/_next/static/images/e_zhilina-027471a79969109990245cf940f9f980.jpg">
                             </a>
                             <div class="align-top ml-12 min-h-20">
                                 <span>
-                                    <a href="/u1053628" target="_blank" rel="noreferrer noopener" class="font-semibold ">{{__('Ольга Ивенская')}}</a>
+                                    <a href="#" target="_blank" rel="noreferrer noopener" class="font-semibold ">{{__('Ольга Ивенская')}}</a>
                                 </span>
                                 <div class="text-base -mt-2 text-gray-400">
                                     <span class="align-middle">

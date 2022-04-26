@@ -16736,14 +16736,7 @@
                         "description": "Sort by column",
                         "required": false,
                         "schema": {
-                            "enum": [
-                                "id",
-                                "created_at",
-                                "updated_at",
-                                "title",
-                                "image",
-                                "description"
-                            ],
+                            "enum": [],
                             "type": "string"
                         }
                     },
@@ -17888,14 +17881,7 @@
                         "description": "Sort by column",
                         "required": false,
                         "schema": {
-                            "enum": [
-                                "id",
-                                "created_at",
-                                "updated_at",
-                                "title",
-                                "image",
-                                "description"
-                            ],
+                            "enum": [],
                             "type": "string"
                         }
                     },
@@ -19680,14 +19666,7 @@
                         "description": "Sort by column",
                         "required": false,
                         "schema": {
-                            "enum": [
-                                "id",
-                                "created_at",
-                                "updated_at",
-                                "title",
-                                "comment",
-                                "image"
-                            ],
+                            "enum": [],
                             "type": "string"
                         }
                     },
@@ -20869,14 +20848,7 @@
                         "description": "Sort by column",
                         "required": false,
                         "schema": {
-                            "enum": [
-                                "id",
-                                "created_at",
-                                "updated_at",
-                                "title",
-                                "description",
-                                "image"
-                            ],
+                            "enum": [],
                             "type": "string"
                         }
                     },
@@ -30461,10 +30433,10 @@
                                 "user_id",
                                 "description",
                                 "good_bad",
-                                "created_at",
-                                "updated_at",
                                 "reviewer_id",
-                                "task_id"
+                                "task_id",
+                                "created_at",
+                                "updated_at"
                             ],
                             "type": "string"
                         }
@@ -35807,19 +35779,19 @@
                     },
                     "name": {
                         "type": "string",
-                        "description": "\u0418\u043c\u044f"
+                        "description": "Имя"
                     },
                     "description": {
                         "type": "string",
-                        "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                        "description": "Описание"
                     },
                     "order": {
                         "type": "integer",
-                        "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
+                        "description": "Последовательность"
                     },
                     "featured": {
                         "type": "string",
-                        "description": "\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0443\u0435\u043c\u044b\u0435"
+                        "description": "Рекомендуемые"
                     }
                 }
             },
@@ -35834,19 +35806,19 @@
                     },
                     "name": {
                         "type": "string",
-                        "description": "\u0418\u043c\u044f"
+                        "description": "Имя"
                     },
                     "description": {
                         "type": "string",
-                        "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                        "description": "Описание"
                     },
                     "order": {
                         "type": "integer",
-                        "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
+                        "description": "Последовательность"
                     },
                     "featured": {
                         "type": "string",
-                        "description": "\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0443\u0435\u043c\u044b\u0435"
+                        "description": "Рекомендуемые"
                     }
                 }
             },
@@ -35861,19 +35833,19 @@
                     },
                     "name": {
                         "type": "string",
-                        "description": "\u0418\u043c\u044f"
+                        "description": "Имя"
                     },
                     "description": {
                         "type": "string",
-                        "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                        "description": "Описание"
                     },
                     "order": {
                         "type": "integer",
-                        "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
+                        "description": "Последовательность"
                     },
                     "featured": {
                         "type": "string",
-                        "description": "\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0443\u0435\u043c\u044b\u0435"
+                        "description": "Рекомендуемые"
                     },
                     "parent_categories_id": {
                         "type": "string",
@@ -35881,7 +35853,7 @@
                     },
                     "child_category_belongsto_parent_category_relationship": {
                         "type": "integer",
-                        "description": "P\u043e\u0434\u0438\u0442\u0435\u043b\u044c\u0441\u043a\u0430\u044f \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f"
+                        "description": "Pодительская категория"
                     }
                 }
             },
@@ -35896,19 +35868,19 @@
                     },
                     "name": {
                         "type": "string",
-                        "description": "\u0418\u043c\u044f"
+                        "description": "Имя"
                     },
                     "description": {
                         "type": "string",
-                        "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                        "description": "Описание"
                     },
                     "order": {
                         "type": "integer",
-                        "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
+                        "description": "Последовательность"
                     },
                     "featured": {
                         "type": "string",
-                        "description": "\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0443\u0435\u043c\u044b\u0435"
+                        "description": "Рекомендуемые"
                     },
                     "parent_categories_id": {
                         "type": "string",
@@ -35916,7 +35888,7 @@
                     },
                     "child_category_belongsto_parent_category_relationship": {
                         "type": "integer",
-                        "description": "P\u043e\u0434\u0438\u0442\u0435\u043b\u044c\u0441\u043a\u0430\u044f \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f"
+                        "description": "Pодительская категория"
                     }
                 }
             },
@@ -36033,7 +36005,7 @@
                 "properties": {
                     "custom_field_belongsto_category_relationship": {
                         "type": "integer",
-                        "description": "\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f"
+                        "description": "Категория"
                     },
                     "category_id": {
                         "type": "string",
@@ -36041,7 +36013,7 @@
                     },
                     "title": {
                         "type": "string",
-                        "description": "\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435"
+                        "description": "Название"
                     },
                     "type": {
                         "type": "string",
@@ -36049,7 +36021,7 @@
                     },
                     "order": {
                         "type": "integer",
-                        "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
+                        "description": "Последовательность"
                     }
                 }
             },
@@ -36058,7 +36030,7 @@
                 "properties": {
                     "custom_field_belongsto_category_relationship": {
                         "type": "integer",
-                        "description": "\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f"
+                        "description": "Категория"
                     },
                     "category_id": {
                         "type": "string",
@@ -36066,11 +36038,11 @@
                     },
                     "title": {
                         "type": "string",
-                        "description": "\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435"
+                        "description": "Название"
                     },
                     "description": {
                         "type": "string",
-                        "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u044f "
+                        "description": "Описания "
                     },
                     "name": {
                         "type": "string",
@@ -36113,7 +36085,7 @@
                     },
                     "order": {
                         "type": "integer",
-                        "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
+                        "description": "Последовательность"
                     },
                     "options_ru": {
                         "type": "string",
@@ -36136,59 +36108,59 @@
                     },
                     "name": {
                         "type": "string",
-                        "description": "\u0418\u043c\u044f"
+                        "description": "Имя"
                     },
                     "address": {
                         "type": "string",
-                        "description": "\u0410\u0434\u0440\u0435\u0441"
+                        "description": "Адрес"
                     },
                     "address_add": {
                         "type": "string",
-                        "description": "\u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0430\u0434\u0440\u0435\u0441"
+                        "description": "дополнительный адрес"
                     },
                     "return_to_b": {
                         "type": "string",
-                        "description": "\u0412\u0435\u0440\u043d\u0443\u0442\u044c\u0441\u044f \u043a B"
+                        "description": "Вернуться к B"
                     },
                     "date_type": {
                         "type": "string",
-                        "description": "\u0422\u0438\u043f \u0434\u0430\u0442\u044b"
+                        "description": "Тип даты"
                     },
                     "start_date": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
-                        "description": "\u0414\u0430\u0442\u0430 \u043d\u0430\u0447\u0430\u043b\u0430",
+                        "description": "Дата начала",
                         "example": "2021-05-17 00:00"
                     },
                     "end_date": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
-                        "description": "\u0414\u0430\u0442\u0430 \u043e\u043a\u043e\u043d\u0447\u0430\u043d\u0438\u044f",
+                        "description": "Дата окончания",
                         "example": "2021-05-17 00:00"
                     },
                     "budget": {
                         "type": "integer",
-                        "description": "\u0411\u044e\u0434\u0436\u0435\u0442"
+                        "description": "Бюджет"
                     },
                     "services": {
                         "type": "string",
-                        "description": "\u0423\u0441\u043b\u0443\u0433\u0438"
+                        "description": "Услуги"
                     },
                     "description": {
                         "type": "string",
-                        "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                        "description": "Описание"
                     },
                     "description_private": {
                         "type": "string",
-                        "description": "\u043b\u0438\u0447\u043d\u043e\u0435 \u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                        "description": "личное Описание"
                     },
                     "photos": {
                         "type": "string",
-                        "description": "\u0424\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0438\u0438"
+                        "description": "Фотографии"
                     },
                     "show_only_to_performers": {
                         "type": "string",
-                        "description": "\u041f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0442\u044c \u0442\u043e\u043b\u044c\u043a\u043e \u0438\u0441\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044f\u043c"
+                        "description": "Показывать только исполнителям"
                     },
                     "status": {
                         "type": "string",
@@ -36247,59 +36219,59 @@
                     },
                     "name": {
                         "type": "string",
-                        "description": "\u0418\u043c\u044f"
+                        "description": "Имя"
                     },
                     "address": {
                         "type": "string",
-                        "description": "\u0410\u0434\u0440\u0435\u0441"
+                        "description": "Адрес"
                     },
                     "address_add": {
                         "type": "string",
-                        "description": "\u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0430\u0434\u0440\u0435\u0441"
+                        "description": "дополнительный адрес"
                     },
                     "return_to_b": {
                         "type": "string",
-                        "description": "\u0412\u0435\u0440\u043d\u0443\u0442\u044c\u0441\u044f \u043a B"
+                        "description": "Вернуться к B"
                     },
                     "date_type": {
                         "type": "string",
-                        "description": "\u0422\u0438\u043f \u0434\u0430\u0442\u044b"
+                        "description": "Тип даты"
                     },
                     "start_date": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
-                        "description": "\u0414\u0430\u0442\u0430 \u043d\u0430\u0447\u0430\u043b\u0430",
+                        "description": "Дата начала",
                         "example": "2021-05-17 00:00"
                     },
                     "end_date": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
-                        "description": "\u0414\u0430\u0442\u0430 \u043e\u043a\u043e\u043d\u0447\u0430\u043d\u0438\u044f",
+                        "description": "Дата окончания",
                         "example": "2021-05-17 00:00"
                     },
                     "budget": {
                         "type": "integer",
-                        "description": "\u0411\u044e\u0434\u0436\u0435\u0442"
+                        "description": "Бюджет"
                     },
                     "services": {
                         "type": "string",
-                        "description": "\u0423\u0441\u043b\u0443\u0433\u0438"
+                        "description": "Услуги"
                     },
                     "description": {
                         "type": "string",
-                        "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                        "description": "Описание"
                     },
                     "description_private": {
                         "type": "string",
-                        "description": "\u043b\u0438\u0447\u043d\u043e\u0435 \u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                        "description": "личное Описание"
                     },
                     "photos": {
                         "type": "string",
-                        "description": "\u0424\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0438\u0438"
+                        "description": "Фотографии"
                     },
                     "show_only_to_performers": {
                         "type": "string",
-                        "description": "\u041f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0442\u044c \u0442\u043e\u043b\u044c\u043a\u043e \u0438\u0441\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044f\u043c"
+                        "description": "Показывать только исполнителям"
                     },
                     "status": {
                         "type": "string",
@@ -37242,7 +37214,7 @@
                     },
                     "title": {
                         "type": "string",
-                        "description": "\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435"
+                        "description": "Название"
                     },
                     "image": {
                         "type": "string",
@@ -37251,7 +37223,7 @@
                     },
                     "description": {
                         "type": "string",
-                        "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                        "description": "Описание"
                     }
                 }
             },
@@ -37266,7 +37238,7 @@
                     },
                     "title": {
                         "type": "string",
-                        "description": "\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435"
+                        "description": "Название"
                     },
                     "image": {
                         "type": "string",
@@ -37275,7 +37247,7 @@
                     },
                     "description": {
                         "type": "string",
-                        "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                        "description": "Описание"
                     }
                 }
             },
@@ -37782,11 +37754,11 @@
                 "properties": {
                     "title": {
                         "type": "string",
-                        "description": "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a"
+                        "description": "Заголовок"
                     },
                     "message": {
                         "type": "string",
-                        "description": "\u0421\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0435"
+                        "description": "Сообщение"
                     },
                     "created_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
@@ -37801,11 +37773,11 @@
                 "properties": {
                     "title": {
                         "type": "string",
-                        "description": "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a"
+                        "description": "Заголовок"
                     },
                     "message": {
                         "type": "string",
-                        "description": "\u0421\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0435"
+                        "description": "Сообщение"
                     },
                     "created_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
@@ -37820,11 +37792,11 @@
                 "properties": {
                     "title": {
                         "type": "string",
-                        "description": "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a"
+                        "description": "Заголовок"
                     },
                     "message": {
                         "type": "string",
-                        "description": "\u0421\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0435"
+                        "description": "Сообщение"
                     },
                     "created_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
@@ -37839,11 +37811,11 @@
                 "properties": {
                     "title": {
                         "type": "string",
-                        "description": "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a"
+                        "description": "Заголовок"
                     },
                     "message": {
                         "type": "string",
-                        "description": "\u0421\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0435"
+                        "description": "Сообщение"
                     },
                     "created_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
@@ -40084,19 +40056,19 @@
                                 },
                                 "name": {
                                     "type": "string",
-                                    "description": "\u0418\u043c\u044f"
+                                    "description": "Имя"
                                 },
                                 "description": {
                                     "type": "string",
-                                    "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                                    "description": "Описание"
                                 },
                                 "order": {
                                     "type": "integer",
-                                    "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
+                                    "description": "Последовательность"
                                 },
                                 "featured": {
                                     "type": "string",
-                                    "description": "\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0443\u0435\u043c\u044b\u0435"
+                                    "description": "Рекомендуемые"
                                 }
                             }
                         }
@@ -40116,19 +40088,19 @@
                                 },
                                 "name": {
                                     "type": "string",
-                                    "description": "\u0418\u043c\u044f"
+                                    "description": "Имя"
                                 },
                                 "description": {
                                     "type": "string",
-                                    "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                                    "description": "Описание"
                                 },
                                 "order": {
                                     "type": "integer",
-                                    "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
+                                    "description": "Последовательность"
                                 },
                                 "featured": {
                                     "type": "string",
-                                    "description": "\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0443\u0435\u043c\u044b\u0435"
+                                    "description": "Рекомендуемые"
                                 }
                             }
                         }
@@ -40148,19 +40120,19 @@
                                 },
                                 "name": {
                                     "type": "string",
-                                    "description": "\u0418\u043c\u044f"
+                                    "description": "Имя"
                                 },
                                 "description": {
                                     "type": "string",
-                                    "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                                    "description": "Описание"
                                 },
                                 "order": {
                                     "type": "integer",
-                                    "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
+                                    "description": "Последовательность"
                                 },
                                 "featured": {
                                     "type": "string",
-                                    "description": "\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0443\u0435\u043c\u044b\u0435"
+                                    "description": "Рекомендуемые"
                                 }
                             }
                         }
@@ -40180,19 +40152,19 @@
                                 },
                                 "name": {
                                     "type": "string",
-                                    "description": "\u0418\u043c\u044f"
+                                    "description": "Имя"
                                 },
                                 "description": {
                                     "type": "string",
-                                    "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                                    "description": "Описание"
                                 },
                                 "order": {
                                     "type": "integer",
-                                    "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
+                                    "description": "Последовательность"
                                 },
                                 "featured": {
                                     "type": "string",
-                                    "description": "\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0443\u0435\u043c\u044b\u0435"
+                                    "description": "Рекомендуемые"
                                 },
                                 "parent_categories_id": {
                                     "type": "string",
@@ -40200,7 +40172,7 @@
                                 },
                                 "child_category_belongsto_parent_category_relationship": {
                                     "type": "integer",
-                                    "description": "P\u043e\u0434\u0438\u0442\u0435\u043b\u044c\u0441\u043a\u0430\u044f \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f"
+                                    "description": "Pодительская категория"
                                 }
                             }
                         }
@@ -40220,19 +40192,19 @@
                                 },
                                 "name": {
                                     "type": "string",
-                                    "description": "\u0418\u043c\u044f"
+                                    "description": "Имя"
                                 },
                                 "description": {
                                     "type": "string",
-                                    "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                                    "description": "Описание"
                                 },
                                 "order": {
                                     "type": "integer",
-                                    "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
+                                    "description": "Последовательность"
                                 },
                                 "featured": {
                                     "type": "string",
-                                    "description": "\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0443\u0435\u043c\u044b\u0435"
+                                    "description": "Рекомендуемые"
                                 },
                                 "parent_categories_id": {
                                     "type": "string",
@@ -40240,7 +40212,7 @@
                                 },
                                 "child_category_belongsto_parent_category_relationship": {
                                     "type": "integer",
-                                    "description": "P\u043e\u0434\u0438\u0442\u0435\u043b\u044c\u0441\u043a\u0430\u044f \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f"
+                                    "description": "Pодительская категория"
                                 }
                             }
                         }
@@ -40260,19 +40232,19 @@
                                 },
                                 "name": {
                                     "type": "string",
-                                    "description": "\u0418\u043c\u044f"
+                                    "description": "Имя"
                                 },
                                 "description": {
                                     "type": "string",
-                                    "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                                    "description": "Описание"
                                 },
                                 "order": {
                                     "type": "integer",
-                                    "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
+                                    "description": "Последовательность"
                                 },
                                 "featured": {
                                     "type": "string",
-                                    "description": "\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0443\u0435\u043c\u044b\u0435"
+                                    "description": "Рекомендуемые"
                                 },
                                 "parent_categories_id": {
                                     "type": "string",
@@ -40280,7 +40252,7 @@
                                 },
                                 "child_category_belongsto_parent_category_relationship": {
                                     "type": "integer",
-                                    "description": "P\u043e\u0434\u0438\u0442\u0435\u043b\u044c\u0441\u043a\u0430\u044f \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f"
+                                    "description": "Pодительская категория"
                                 }
                             }
                         }
@@ -40504,7 +40476,7 @@
                                 },
                                 "custom_field_belongsto_category_relationship": {
                                     "type": "integer",
-                                    "description": "\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f"
+                                    "description": "Категория"
                                 },
                                 "category_id": {
                                     "type": "string",
@@ -40512,11 +40484,11 @@
                                 },
                                 "title": {
                                     "type": "string",
-                                    "description": "\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435"
+                                    "description": "Название"
                                 },
                                 "description": {
                                     "type": "string",
-                                    "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u044f "
+                                    "description": "Описания "
                                 },
                                 "name": {
                                     "type": "string",
@@ -40553,7 +40525,7 @@
                                 },
                                 "order": {
                                     "type": "integer",
-                                    "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
+                                    "description": "Последовательность"
                                 },
                                 "options_ru": {
                                     "type": "string",
@@ -40581,7 +40553,7 @@
                                 },
                                 "custom_field_belongsto_category_relationship": {
                                     "type": "integer",
-                                    "description": "\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f"
+                                    "description": "Категория"
                                 },
                                 "category_id": {
                                     "type": "string",
@@ -40589,11 +40561,11 @@
                                 },
                                 "title": {
                                     "type": "string",
-                                    "description": "\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435"
+                                    "description": "Название"
                                 },
                                 "description": {
                                     "type": "string",
-                                    "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u044f "
+                                    "description": "Описания "
                                 },
                                 "name": {
                                     "type": "string",
@@ -40630,7 +40602,7 @@
                                 },
                                 "order": {
                                     "type": "integer",
-                                    "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
+                                    "description": "Последовательность"
                                 },
                                 "options_ru": {
                                     "type": "string",
@@ -40658,7 +40630,7 @@
                                 },
                                 "custom_field_belongsto_category_relationship": {
                                     "type": "integer",
-                                    "description": "\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f"
+                                    "description": "Категория"
                                 },
                                 "category_id": {
                                     "type": "string",
@@ -40666,11 +40638,11 @@
                                 },
                                 "title": {
                                     "type": "string",
-                                    "description": "\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435"
+                                    "description": "Название"
                                 },
                                 "description": {
                                     "type": "string",
-                                    "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u044f "
+                                    "description": "Описания "
                                 },
                                 "name": {
                                     "type": "string",
@@ -40707,7 +40679,7 @@
                                 },
                                 "order": {
                                     "type": "integer",
-                                    "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
+                                    "description": "Последовательность"
                                 },
                                 "options_ru": {
                                     "type": "string",
@@ -40735,59 +40707,59 @@
                                 },
                                 "name": {
                                     "type": "string",
-                                    "description": "\u0418\u043c\u044f"
+                                    "description": "Имя"
                                 },
                                 "address": {
                                     "type": "string",
-                                    "description": "\u0410\u0434\u0440\u0435\u0441"
+                                    "description": "Адрес"
                                 },
                                 "address_add": {
                                     "type": "string",
-                                    "description": "\u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0430\u0434\u0440\u0435\u0441"
+                                    "description": "дополнительный адрес"
                                 },
                                 "return_to_b": {
                                     "type": "string",
-                                    "description": "\u0412\u0435\u0440\u043d\u0443\u0442\u044c\u0441\u044f \u043a B"
+                                    "description": "Вернуться к B"
                                 },
                                 "date_type": {
                                     "type": "string",
-                                    "description": "\u0422\u0438\u043f \u0434\u0430\u0442\u044b"
+                                    "description": "Тип даты"
                                 },
                                 "start_date": {
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                                     "type": "date-time",
-                                    "description": "\u0414\u0430\u0442\u0430 \u043d\u0430\u0447\u0430\u043b\u0430",
+                                    "description": "Дата начала",
                                     "example": "2021-05-17 00:00"
                                 },
                                 "end_date": {
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                                     "type": "date-time",
-                                    "description": "\u0414\u0430\u0442\u0430 \u043e\u043a\u043e\u043d\u0447\u0430\u043d\u0438\u044f",
+                                    "description": "Дата окончания",
                                     "example": "2021-05-17 00:00"
                                 },
                                 "budget": {
                                     "type": "integer",
-                                    "description": "\u0411\u044e\u0434\u0436\u0435\u0442"
+                                    "description": "Бюджет"
                                 },
                                 "services": {
                                     "type": "string",
-                                    "description": "\u0423\u0441\u043b\u0443\u0433\u0438"
+                                    "description": "Услуги"
                                 },
                                 "description": {
                                     "type": "string",
-                                    "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                                    "description": "Описание"
                                 },
                                 "description_private": {
                                     "type": "string",
-                                    "description": "\u043b\u0438\u0447\u043d\u043e\u0435 \u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                                    "description": "личное Описание"
                                 },
                                 "photos": {
                                     "type": "string",
-                                    "description": "\u0424\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0438\u0438"
+                                    "description": "Фотографии"
                                 },
                                 "show_only_to_performers": {
                                     "type": "string",
-                                    "description": "\u041f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0442\u044c \u0442\u043e\u043b\u044c\u043a\u043e \u0438\u0441\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044f\u043c"
+                                    "description": "Показывать только исполнителям"
                                 },
                                 "status": {
                                     "type": "string",
@@ -40851,59 +40823,59 @@
                                 },
                                 "name": {
                                     "type": "string",
-                                    "description": "\u0418\u043c\u044f"
+                                    "description": "Имя"
                                 },
                                 "address": {
                                     "type": "string",
-                                    "description": "\u0410\u0434\u0440\u0435\u0441"
+                                    "description": "Адрес"
                                 },
                                 "address_add": {
                                     "type": "string",
-                                    "description": "\u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0430\u0434\u0440\u0435\u0441"
+                                    "description": "дополнительный адрес"
                                 },
                                 "return_to_b": {
                                     "type": "string",
-                                    "description": "\u0412\u0435\u0440\u043d\u0443\u0442\u044c\u0441\u044f \u043a B"
+                                    "description": "Вернуться к B"
                                 },
                                 "date_type": {
                                     "type": "string",
-                                    "description": "\u0422\u0438\u043f \u0434\u0430\u0442\u044b"
+                                    "description": "Тип даты"
                                 },
                                 "start_date": {
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                                     "type": "date-time",
-                                    "description": "\u0414\u0430\u0442\u0430 \u043d\u0430\u0447\u0430\u043b\u0430",
+                                    "description": "Дата начала",
                                     "example": "2021-05-17 00:00"
                                 },
                                 "end_date": {
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                                     "type": "date-time",
-                                    "description": "\u0414\u0430\u0442\u0430 \u043e\u043a\u043e\u043d\u0447\u0430\u043d\u0438\u044f",
+                                    "description": "Дата окончания",
                                     "example": "2021-05-17 00:00"
                                 },
                                 "budget": {
                                     "type": "integer",
-                                    "description": "\u0411\u044e\u0434\u0436\u0435\u0442"
+                                    "description": "Бюджет"
                                 },
                                 "services": {
                                     "type": "string",
-                                    "description": "\u0423\u0441\u043b\u0443\u0433\u0438"
+                                    "description": "Услуги"
                                 },
                                 "description": {
                                     "type": "string",
-                                    "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                                    "description": "Описание"
                                 },
                                 "description_private": {
                                     "type": "string",
-                                    "description": "\u043b\u0438\u0447\u043d\u043e\u0435 \u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                                    "description": "личное Описание"
                                 },
                                 "photos": {
                                     "type": "string",
-                                    "description": "\u0424\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0438\u0438"
+                                    "description": "Фотографии"
                                 },
                                 "show_only_to_performers": {
                                     "type": "string",
-                                    "description": "\u041f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0442\u044c \u0442\u043e\u043b\u044c\u043a\u043e \u0438\u0441\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044f\u043c"
+                                    "description": "Показывать только исполнителям"
                                 },
                                 "status": {
                                     "type": "string",
@@ -40967,59 +40939,59 @@
                                 },
                                 "name": {
                                     "type": "string",
-                                    "description": "\u0418\u043c\u044f"
+                                    "description": "Имя"
                                 },
                                 "address": {
                                     "type": "string",
-                                    "description": "\u0410\u0434\u0440\u0435\u0441"
+                                    "description": "Адрес"
                                 },
                                 "address_add": {
                                     "type": "string",
-                                    "description": "\u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0430\u0434\u0440\u0435\u0441"
+                                    "description": "дополнительный адрес"
                                 },
                                 "return_to_b": {
                                     "type": "string",
-                                    "description": "\u0412\u0435\u0440\u043d\u0443\u0442\u044c\u0441\u044f \u043a B"
+                                    "description": "Вернуться к B"
                                 },
                                 "date_type": {
                                     "type": "string",
-                                    "description": "\u0422\u0438\u043f \u0434\u0430\u0442\u044b"
+                                    "description": "Тип даты"
                                 },
                                 "start_date": {
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                                     "type": "date-time",
-                                    "description": "\u0414\u0430\u0442\u0430 \u043d\u0430\u0447\u0430\u043b\u0430",
+                                    "description": "Дата начала",
                                     "example": "2021-05-17 00:00"
                                 },
                                 "end_date": {
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                                     "type": "date-time",
-                                    "description": "\u0414\u0430\u0442\u0430 \u043e\u043a\u043e\u043d\u0447\u0430\u043d\u0438\u044f",
+                                    "description": "Дата окончания",
                                     "example": "2021-05-17 00:00"
                                 },
                                 "budget": {
                                     "type": "integer",
-                                    "description": "\u0411\u044e\u0434\u0436\u0435\u0442"
+                                    "description": "Бюджет"
                                 },
                                 "services": {
                                     "type": "string",
-                                    "description": "\u0423\u0441\u043b\u0443\u0433\u0438"
+                                    "description": "Услуги"
                                 },
                                 "description": {
                                     "type": "string",
-                                    "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                                    "description": "Описание"
                                 },
                                 "description_private": {
                                     "type": "string",
-                                    "description": "\u043b\u0438\u0447\u043d\u043e\u0435 \u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                                    "description": "личное Описание"
                                 },
                                 "photos": {
                                     "type": "string",
-                                    "description": "\u0424\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0438\u0438"
+                                    "description": "Фотографии"
                                 },
                                 "show_only_to_performers": {
                                     "type": "string",
-                                    "description": "\u041f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0442\u044c \u0442\u043e\u043b\u044c\u043a\u043e \u0438\u0441\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044f\u043c"
+                                    "description": "Показывать только исполнителям"
                                 },
                                 "status": {
                                     "type": "string",
@@ -42526,7 +42498,7 @@
                                 },
                                 "title": {
                                     "type": "string",
-                                    "description": "\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435"
+                                    "description": "Название"
                                 },
                                 "image": {
                                     "type": "string",
@@ -42535,7 +42507,7 @@
                                 },
                                 "description": {
                                     "type": "string",
-                                    "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                                    "description": "Описание"
                                 }
                             }
                         }
@@ -42561,7 +42533,7 @@
                                 },
                                 "title": {
                                     "type": "string",
-                                    "description": "\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435"
+                                    "description": "Название"
                                 },
                                 "image": {
                                     "type": "string",
@@ -42570,7 +42542,7 @@
                                 },
                                 "description": {
                                     "type": "string",
-                                    "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                                    "description": "Описание"
                                 }
                             }
                         }
@@ -42596,7 +42568,7 @@
                                 },
                                 "title": {
                                     "type": "string",
-                                    "description": "\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435"
+                                    "description": "Название"
                                 },
                                 "image": {
                                     "type": "string",
@@ -42605,7 +42577,7 @@
                                 },
                                 "description": {
                                     "type": "string",
-                                    "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
+                                    "description": "Описание"
                                 }
                             }
                         }
@@ -43660,11 +43632,11 @@
                                 },
                                 "title": {
                                     "type": "string",
-                                    "description": "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a"
+                                    "description": "Заголовок"
                                 },
                                 "message": {
                                     "type": "string",
-                                    "description": "\u0421\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0435"
+                                    "description": "Сообщение"
                                 }
                             }
                         }
@@ -43684,11 +43656,11 @@
                                 },
                                 "title": {
                                     "type": "string",
-                                    "description": "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a"
+                                    "description": "Заголовок"
                                 },
                                 "message": {
                                     "type": "string",
-                                    "description": "\u0421\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0435"
+                                    "description": "Сообщение"
                                 }
                             }
                         }
@@ -43708,11 +43680,11 @@
                                 },
                                 "title": {
                                     "type": "string",
-                                    "description": "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a"
+                                    "description": "Заголовок"
                                 },
                                 "message": {
                                     "type": "string",
-                                    "description": "\u0421\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0435"
+                                    "description": "Сообщение"
                                 }
                             }
                         }
@@ -43732,11 +43704,11 @@
                                 },
                                 "title": {
                                     "type": "string",
-                                    "description": "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a"
+                                    "description": "Заголовок"
                                 },
                                 "message": {
                                     "type": "string",
-                                    "description": "\u0421\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0435"
+                                    "description": "Сообщение"
                                 }
                             }
                         }
@@ -43756,11 +43728,11 @@
                                 },
                                 "title": {
                                     "type": "string",
-                                    "description": "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a"
+                                    "description": "Заголовок"
                                 },
                                 "message": {
                                     "type": "string",
-                                    "description": "\u0421\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0435"
+                                    "description": "Сообщение"
                                 }
                             }
                         }
@@ -43780,11 +43752,11 @@
                                 },
                                 "title": {
                                     "type": "string",
-                                    "description": "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a"
+                                    "description": "Заголовок"
                                 },
                                 "message": {
                                     "type": "string",
-                                    "description": "\u0421\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0435"
+                                    "description": "Сообщение"
                                 }
                             }
                         }

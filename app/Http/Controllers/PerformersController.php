@@ -2,26 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Response;
 use App\Models\WalletBalance;
-use App\Models\Review;
 use App\Services\NotificationService;
 use App\Services\PerformersService;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use RealRashid\SweetAlert\Facades\Alert;
 use TCG\Voyager\Models\Category;
 use App\Models\User;
-use App\Models\Session;
-use App\Models\BrowsingHistory;
-use App\Models\PostView;
-use App\Models\UserView;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use App\Models\Task;
 use App\Models\Notification;
-use App\Events\MyEvent;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -68,6 +57,7 @@ class PerformersController extends Controller
                 'task_count' => $item->task_count,
                 'categories' => $item->categories,
                 'categories2' => $item->categories2,
+                'user_online' => $item ->user_online,
             ]);
     }
 
@@ -125,22 +115,21 @@ class PerformersController extends Controller
 
     public function perf_ajax($cf_id, User $user)
     {
-        // $str = "1,2,3,4,5,6,7,8";
-        // $cat_arr = explode(",",$str);
-        //dd(array_search($id,$cat_arr));
-
-        // $users = User::where('role_id',2)->paginate(50);
-
-        // return $users;
-        $about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
         $task_count = $user->performer_tasks_count;
-        $categories = Category::get();
-        $cur_cat = Category::where('id', $cf_id)->get();
-        $child_categories = Category::get();
-        $users = User::where('role_id', 2)->paginate(50);
-        $tasks = Task::where('user_id', Auth::id())->get();
-
-        return view('performers/performers_cat', compact('child_categories', 'about', 'user', 'task_count', 'categories', 'users', 'cf_id', 'cur_cat', 'tasks'));
+        $service = new PerformersService();
+        $item = $service->perf_ajax($cf_id, $user);
+        return view('performers/performers_cat',
+        [
+            'child_categories' => $item->child_categories,
+            'about' => $item->about,
+            'user' => $user,
+            'task_count' => $task_count,
+            'categories' => $item->categories,
+            'users' =>$item->users,
+            'cur_cat' =>$item->cur_cat,
+            'tasks' =>$item->tasks,
+            'cf_id' => $cf_id, 
+        ]);
 
     }
 
@@ -164,14 +153,5 @@ class PerformersController extends Controller
     {
         Notification::where('user_id', Auth::id())->delete();
         return response()->json(['success']);
-    }
-
-    public function user_online(Request $request)
-    {
-        $users = User::select("*")
-            ->whereNotNull('last_seen')
-            ->orderBy('last_seen', 'DESC');
-
-        return view('Performers.performers', compact('users'));
     }
 }

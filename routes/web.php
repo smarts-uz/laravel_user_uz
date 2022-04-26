@@ -84,7 +84,6 @@ Route::group(['prefix' => 'performers'], function () {
     Route::get('/', [PerformersController::class, 'service'])->name('performers.service'); // javoxir
     Route::get('/{user}', [PerformersController::class, 'performer'])->name('performers.performer'); // javoxir
     Route::get('/chat/{id}', [PerformersController::class, 'performer_chat'])->name('performers.performer_chat'); // javoxir
-    Route::get('user_online', [PerformersController::class, 'user_online']);
 });
 
 #endregion
@@ -105,7 +104,7 @@ Route::group(['prefix' => 'chat'], function (){
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
-    Route::get('/reports', [ReportController::class, 'index'])->name("voyager.reports.index"); // javoxir
+    Route::get('/reports', [ReportController::class, 'report'])->name("voyager.reports.index"); // javoxir
     Route::get("users/activitiy/{user}", [VoyagerUserController::class, "activity"])->name("voyagerUser.activity"); // javoxir
     Route::get('/messages/chat/{id}', [ConversationController::class, 'showChat'])->name("conversation.showChat"); // javoxir
     Route::post('/messages/chat/rate/{message}', [ConversationController::class, 'rating'])->name("conversation.rating"); // javoxir
@@ -156,7 +155,7 @@ Route::get('/questions/{id}', [FaqsController::class, 'questions'])->name('faq.q
 Route::view('/faq', 'faq.faq');
 Route::view('/reviews', 'reviews.review');
 Route::view('/author-reviews', 'reviews.authors_reviews');
-Route::get('/press', [MassmediaController::class, 'index'])->name('massmedia'); // javoxir
+Route::get('/press', [Controller::class, 'index'])->name('massmedia'); // javoxir
 Route::view('/vacancies', 'reviews.vacancies');
 Route::get('/geotaskshint', [Controller::class, 'geotaskshint'])->name('geotaskshint'); // javoxir
 Route::get('/security', [Controller::class, 'security'])->name('security'); // javoxir
@@ -168,8 +167,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::prefix('profile')->group(function () {
         //Profile
         Route::get('/', [ProfileController::class, 'profileData'])->name('profile.profileData'); // javoxir
-        Route::put('/updateuserphoto', [ProfileController::class, 'updates'])->name('profile.updates');
-
         //Profile cash
         Route::get('/cash', [ProfileController::class, 'profileCash'])->name('profile.profileCash'); // javoxir
 
@@ -263,7 +260,6 @@ Route::post('/register', [LoginController::class, 'customRegister'])->name('logi
 Route::get('/logout', [LoginController::class, 'logout'])->name('login.logout');
 Route::get('/reset', [UserController::class, 'reset'])->name('user.reset');
 Route::get('/confirm', [UserController::class, 'confirm'])->name('user.confirm');
-Route::get('dashboard', [UserController::class, 'dashboardView'])->middleware(['auth']);
 Route::get('account/verify/{user}/{hash}', [LoginController::class, 'verifyAccount'])->name('login.verifyAccount');
 Route::get('account/verification/email', [LoginController::class, 'send_email_verification'])->name('login.send_email_verification')->middleware('auth');
 Route::get('account/verification/phone', [LoginController::class, 'send_phone_verification'])->name('login.send_phone_verification')->middleware('auth');
@@ -293,4 +289,7 @@ Route::post('/paycom', 'App\Http\Controllers\PaycomTransactionController@paycom'
 Route::get('profile/transactions/history', [\App\Http\Controllers\UserTransactionHisory::class, 'getTransactions'])->name('user.transactions.history')->middleware('auth');
 #endregion
 
+Route::get('admin/reported-tasks', [\App\Http\Controllers\VoyagerTaskController::class, 'reported_tasks'])->name('admin.tasks.reported')->middleware('auth');
+Route::get('admin/complete-task/{task}', [\App\Http\Controllers\VoyagerTaskController::class, 'complete_task'])->name('admin.tasks.complete')->middleware('auth');
+Route::delete('admin/complete-task/{task}', [\App\Http\Controllers\VoyagerTaskController::class, 'delete_task'])->name('admin.tasks.reported.delete')->middleware('auth');
 
