@@ -71,7 +71,6 @@ class PerformersController extends Controller
 
         $goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->get();
         $badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->get();
-
         return view('performers/executors-courier',
             [
                 'reviews' => $item->reviews,
@@ -128,7 +127,7 @@ class PerformersController extends Controller
             'users' =>$item->users,
             'cur_cat' =>$item->cur_cat,
             'tasks' =>$item->tasks,
-            'cf_id' => $cf_id, 
+            'cf_id' => $cf_id,
         ]);
 
     }
