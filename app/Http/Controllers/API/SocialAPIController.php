@@ -25,7 +25,8 @@ class SocialAPIController extends Controller
     public function loginWithFacebook(Request $request)
     {
         $data = $request->validate([
-           'id' => 'required',
+           'google_id' => 'nullable',
+           'facebook_id' => 'nullable',
            'email' => 'nullable|email',
            'name' => 'required|string',
            'avatar' => 'required|string',
@@ -40,30 +41,47 @@ class SocialAPIController extends Controller
 
             ]
         );
-        $findUser = User::orWhere('email', $data['email'])->orWhere('facebook_id', $data['id'])->first();
+        $data['email'] = isset($data['email'])? $data['email']:null;
+        if (isset($data['google_id']))
+            $findUser = User::orWhere('email', $data['email'])->orWhere('google_id', $data['google_id'])->first();
+        else if (isset($data['facebook_id'])    )
+            $findUser = User::orWhere('email', $data['email'])->orWhere('facebook_id', $data['facebook_id'])->first();
 
 
-        if ($findUser) {
-            $findUser->facebook_id = $data['id'];
-            $findUser->save();
-            Auth::login($findUser);
-            $accessToken = auth()->user()->createToken('authToken')->accessToken;
-            return response(['success' => true,'user' => new PerformerIndexResource(auth()->user()), 'access_token'=>$accessToken]);
+        if (isset($data['google_id']) || isset($data['facebook_id']))
+        {
+            if ($findUser) {
+                if (isset($data['google_id']))
+                    $findUser->google_id = $data['google_id'];
+                else if (isset($data['facebook_id']))
+                    $findUser->facebook_id = $data['facebook_id'];
+                $findUser->save();
+                Auth::login($findUser);
+                $accessToken = auth()->user()->createToken('authToken')->accessToken;
+                return response(['success' => true,'user' => new PerformerIndexResource(auth()->user()), 'access_token'=>$accessToken]);
 
-        } else {
-            $new_user = new User();
-            $new_user->name = $data['name'];
-            $new_user->email = $data['email'];
-            $new_user->facebook_id = $data['id'];
-            $new_user->avatar = self::get_avatar($data['avatar'],$data['id']);
-            $new_user->password = encrypt('123456');
-            $new_user->save();
-            Auth::login($new_user);
+            } else {
+                $new_user = new User();
+                $new_user->name = $data['name'];
+                $new_user->email = $data['email'];
+                if (isset($data['google_id']))
+                    $new_user->google_id = $data['google_id'];
+                else if (isset($data['facebook_id']))
+                    $new_user->facebook_id = $data['facebook_id'];
+                $new_user->avatar = self::get_avatar($data['avatar'],$data['id']);
+                $new_user->password = encrypt('123456');
+                $new_user->save();
+                Auth::login($new_user);
 
-            $accessToken = auth()->user()->createToken('authToken')->accessToken;
+                $accessToken = auth()->user()->createToken('authToken')->accessToken;
 
-            return response()->json(['user' => new PerformerIndexResource(auth()->user()), 'access_token'=>$accessToken]);
+                return response()->json(['success' => true, 'user' => new PerformerIndexResource(auth()->user()), 'access_token'=>$accessToken]);
+            }
         }
+        return response()->json(['success'  => false, 'message' => 'Not required data']);
+
+
+
     }
 
 
