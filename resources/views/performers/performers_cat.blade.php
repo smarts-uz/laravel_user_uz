@@ -261,9 +261,11 @@
                 <select name="tasks" id="task_name" onchange="showDiv(this)" class="appearance-none focus:outline-none border border-solid border-gray-500 rounded-lg text-gray-500 px-6 py-2 text-lg mt-6 hover:text-yellow-500  hover:border-yellow-500 hover:shadow-xl shadow-yellow-500 mx-auto block"><br>
                     @foreach($tasks as $task)
                         @auth
-                            <option value="{{ $task->id }}">
-                                {{ $task->name }}
-                            </option>
+                            @if ($task->status <= 2)
+                                <option value="{{ $task->id }}">
+                                    {{ $task->name }}
+                                </option>
+                            @endif
                         @endauth
                     @endforeach
                     <option value="1">
@@ -300,8 +302,7 @@
             <!-- modal -->
             <div class="bg-white rounded shadow-lg w-10/12 md:w-1/3 text-center py-12">
                 <!-- modal header -->
-                <h1 class="text-2xl font-bold">{{__('Вы предложили задание "Test" исполнителю Елена Б.')}}</h1>
-                <div class="mx-auto mt-8">
+                <div class="text-2xl font-bold my-6">
                     {{__('Мы отправили ему уведомление.')}}
                 </div>
                 <button onclick="myFunction1()" class="cursor-pointer bg-green-500 text-white rounded-lg p-2 px-4 mt-6 mx-auto">
@@ -310,7 +311,6 @@
             </div>
         </div>
     </div>
-    @csrf
 
     {{-- Modal start --}}
     <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="modal-id12">
