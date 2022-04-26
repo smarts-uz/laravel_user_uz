@@ -23,4 +23,5 @@ class SearchServiceTaskItem
     public $auth_response;
     public $same_tasks;
     public $addresses;
+    public $about;
 }

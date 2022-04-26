@@ -39,7 +39,9 @@ class SearchService
         $item->auth_response = $auth_response ? $task->responses()->where('performer_id', $userId)->with('user')->first() : null;
         $item->same_tasks = $task->category->tasks()->where('id', '!=', $task->id)->where('status', Task::STATUS_OPEN)->take(10)->get();
         $item->addresses = $task->addresses;
-    return $item;
+        $item->about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
+
+        return $item;
     }
 
 }
