@@ -34613,7 +34613,8 @@
                                 "price",
                                 "performer_id",
                                 "created_at",
-                                "updated_at"
+                                "updated_at",
+                                "not_free"
                             ],
                             "type": "string"
                         }

@@ -8,7 +8,7 @@ use App\Models\Task;
 use App\Models\Category;
 use App\Models\User;
 use App\Models\Compliance;
-
+use App\Models\Review;
 class SearchService
 {
     public function ajaxReq(){
@@ -40,7 +40,7 @@ class SearchService
         $item->same_tasks = $task->category->tasks()->where('id', '!=', $task->id)->where('status', Task::STATUS_OPEN)->take(10)->get();
         $item->addresses = $task->addresses;
         $item->about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
-
+        $item->respons_reviews = Review::all();
         return $item;
     }
 

@@ -22,13 +22,14 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Js;
 use TCG\Voyager\Models\Category;
 use App\Http\Controllers\Controller;
+use App\Services\ControllerService;
 
 
 class ControllerAPI extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function home(Request $request)
+    /* public function home(Request $request)
     {
         $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->get();
         $tasks  =  Task::where('status', 1)->orWhere('status',2)->orderBy('id', 'desc')->take(20)->get();
@@ -42,6 +43,16 @@ class ControllerAPI extends Controller
         $reklamas = Reklama::all();
         $trusts = Trust::orderby('id', 'desc')->get();
         return response()->json(['tasks'=>$tasks, 'howitworks'=>$howitworks, 'categories'=>$categories, 'random_category'=>$random_category, 'users_count'=>$users_count, 'advants'=>$advants, 'reklamas'=>$reklamas, 'trusts'=>$trusts]);
+    } */
+
+    public function home()
+    {
+        $service = new ControllerService();
+        $item = $service->home();
+        return response()->json([
+            'categories' => $item->categories,
+            'tasks' => $item->tasks,
+        ]);
     }
 
     public function home_profile()

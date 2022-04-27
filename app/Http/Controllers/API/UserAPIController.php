@@ -41,7 +41,7 @@ class UserAPIController extends Controller
      * @OA\Post(
      *     path="/api/reset",
      *     tags={"UserAPI"},
-     *     summary="User phone_number",
+     *     summary="Reset password by phone - sending code",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -90,7 +90,7 @@ class UserAPIController extends Controller
      * @OA\Post(
      *     path="/api/reset/password",
      *     tags={"UserAPI"},
-     *     summary="User password save",
+     *     summary="Enter a New password",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -149,7 +149,7 @@ class UserAPIController extends Controller
      * @OA\Post(
      *     path="/api/code",
      *     tags={"UserAPI"},
-     *     summary="User reset code",
+     *     summary="Submit SMS code",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (

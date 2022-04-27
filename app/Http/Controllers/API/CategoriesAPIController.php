@@ -47,7 +47,7 @@ class CategoriesAPIController extends Controller
      * @OA\Get(
      *     path="/api/category/search",
      *     tags={"CategoryAPI"},
-     *     summary="Get list of Category",
+     *     summary="Search Category by name",
      *     @OA\Parameter(
      *          in="query",
      *          name="name",
@@ -83,6 +83,25 @@ class CategoriesAPIController extends Controller
         return CategoryIndexResource::collection($categories->get());
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/categories-parent",
+     *     tags={"CategoryAPI"},
+     *     summary="Get All Categories",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     )
+     * )
+     */
     public function parents(Request $request){
         $categories = Category::query()->whereNull('parent_id')->get();
         return CategoryIndexResource::collection($categories);

@@ -23,7 +23,7 @@ class PerformerAPIController extends Controller
      * @OA\Get(
      *     path="/api/performers",
      *     tags={"PerformersAPI"},
-     *     summary="Get list of Performers",
+     *     summary="Get All Performers",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -62,7 +62,7 @@ class PerformerAPIController extends Controller
      * @OA\Get(
      *     path="/api/performers/{performer}",
      *     tags={"PerformersAPI"},
-     *     summary="Get list of Performers",
+     *     summary="Get Performer By ID",
      *     @OA\Parameter(
      *          in="path",
      *          name="performer",

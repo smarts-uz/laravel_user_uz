@@ -180,7 +180,7 @@ class SearchAPIController extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/delete-task/{task}",
-     *     tags={"Search"},
+     *     tags={"TaskAPI"},
      *     summary="Delete Task",
      *     security={
      *         {"token": {}}

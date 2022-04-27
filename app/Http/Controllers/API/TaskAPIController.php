@@ -41,7 +41,7 @@ class TaskAPIController extends Controller
      * @OA\Get(
      *     path="/api/same-tasks/{task}",
      *     tags={"TaskAPI"},
-     *     summary="Same tasks",
+     *     summary="Same tasks by Task ID",
      *     @OA\Parameter (
      *          in="path",
      *          name="task",
@@ -108,7 +108,7 @@ class TaskAPIController extends Controller
      * @OA\Post(
      *     path="/api/task/{task}/response",
      *     tags={"TaskAPI"},
-     *     summary="Response store task",
+     *     summary="Send Response",
      *     @OA\Parameter (
      *          in="path",
      *          name="task",
@@ -167,9 +167,9 @@ class TaskAPIController extends Controller
      * @OA\Get(
      *     path="/api/tasks-filter",
      *     tags={"TaskAPI"},
-     *     summary="Tasks filter",
+     *     summary="Task filter",
      *     @OA\Parameter (
-     *          in="path",
+     *          in="query",
      *          name="categories",
      *          @OA\Schema (
      *              type="array",
@@ -179,42 +179,42 @@ class TaskAPIController extends Controller
      *          )
      *     ),
      *     @OA\Parameter (
-     *          in="path",
+     *          in="query",
      *          name="lat",
      *          @OA\Schema (
      *              type="string"
      *          )
      *     ),
      *     @OA\Parameter (
-     *          in="path",
+     *          in="query",
      *          name="long",
      *          @OA\Schema (
      *              type="string"
      *          )
      *     ),
      *     @OA\Parameter (
-     *          in="path",
+     *          in="query",
      *          name="budget",
      *          @OA\Schema (
      *              type="integer"
      *          )
      *     ),
      *     @OA\Parameter (
-     *          in="path",
+     *          in="query",
      *          name="is_remote",
      *          @OA\Schema (
      *              type="boolean"
      *          )
      *     ),
      *     @OA\Parameter (
-     *          in="path",
+     *          in="query",
      *          name="without_response",
      *          @OA\Schema (
      *              type="boolean"
      *          )
      *     ),
      *     @OA\Parameter (
-     *          in="path",
+     *          in="query",
      *          name="difference",
      *          @OA\Schema (
      *              type="integer"
@@ -271,7 +271,7 @@ class TaskAPIController extends Controller
      * @OA\Get(
      *     path="/api/task/{task}",
      *     tags={"TaskAPI"},
-     *     summary="Show tasks by ID",
+     *     summary="Get Task By ID",
      *     @OA\Parameter(
      *          in="path",
      *          name="task",
@@ -303,7 +303,7 @@ class TaskAPIController extends Controller
      * @OA\Get(
      *     path="/api/my-tasks-count",
      *     tags={"TaskAPI"},
-     *     summary="My tasks count",
+     *     summary="Get My Tasks Count",
      *     @OA\Parameter(
      *          in="query",
      *          name="is_performer",
@@ -352,11 +352,11 @@ class TaskAPIController extends Controller
      * @OA\Get(
      *     path="/api/my-tasks",
      *     tags={"TaskAPI"},
-     *     summary="My tasks all",
+     *     summary="Get My Tasks",
      *     @OA\Parameter(
      *          in="query",
      *          name="is_performer",
-     *          required=true,
+     *          required=false,
      *          @OA\Schema(
      *              type="integer"
      *          ),
@@ -407,6 +407,44 @@ class TaskAPIController extends Controller
 
 
 
+    /**
+     * @OA\Post(
+     *     path="/api/create-task/routing",
+     *     tags={"TaskAPI"},
+     *     summary="Routing",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="category_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="address",
+     *                    type="string",
+     *                 ),
+     *             ), 
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function routing(Request $request)
     {
         $route = $request->route;
@@ -628,7 +666,7 @@ class TaskAPIController extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/for_del_new_task/{task}",
-     *     tags={"TaskAPI"},
+     *     tags={"Search"},
      *     summary="Delete Task",
      *     @OA\Parameter(
      *          in="path",
