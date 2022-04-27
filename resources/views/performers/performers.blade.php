@@ -84,9 +84,9 @@
                                 <div class="flex sm:flex-row items-center text-base">
                                     <p class="text-black ">{{__('Отзывы:')}}</p>
                                     <i class="far fa-thumbs-up text-blue-500 ml-1 mb-1"></i>
-                                    <span class="text-gray-800 mr-2 like{{$user->id}}">{{ $user->reviews()->where('good_bad',1)->count()}}</span>
+                                    <span class="text-gray-800 mr-2 like{{$user->id}}">{{ $user->goodReviews()->count()}}</span>
                                     <i class="far fa-thumbs-down mt-0.5 text-blue-500"></i>
-                                    <span class="text-gray-800 dislike{{$user->id}}">{{ $user->reviews()->where('good_bad',0)->count()}}</span>
+                                    <span class="text-gray-800 dislike{{$user->id}}">{{ $user->badReviews()->count()}}</span>
                                 </div>
                                 <div class="flex flex-row stars{{$user->id}}">
                                 </div>
@@ -130,8 +130,7 @@
                                     <div class="flex items-center sm:my-0 my-2">
                                         @if ($user->is_email_verified && $user->is_phone_number_verified)
                                             <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
-                                                <img
-                                                        src="{{asset('images/verify.png')}}"
+                                                <img src="{{asset('images/verify.png')}}"
                                                         alt="" class="w-10">
                                                 <div id="tooltip-animation_1" role="tooltip"
                                                      class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
@@ -156,8 +155,6 @@
                                             </div>
                                         @endif
                                         @if($user->role_id == 2)
-{{--                                            @foreach($about as $rating)--}}
-{{--                                                @if($rating->id == $user->id)--}}
                                                     <div data-tooltip-target="tooltip-animation_2"
                                                          class="mx-1 tooltip-2">
                                                         <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
@@ -169,10 +166,6 @@
                                                             <div class="tooltip-arrow" data-popper-arrow></div>
                                                         </div>
                                                     </div>
-{{--                                                @else--}}
-{{--                                                    @continue--}}
-{{--                                                @endif--}}
-{{--                                            @endforeach--}}
                                             <div data-tooltip-target="tooltip-animation_3" class="mx-1">
                                                 @if($task_count >= 50)
                                                     <img src="{{ asset('images/50.png') }}" alt="" class="w-10">
@@ -249,113 +242,73 @@
                 </div>
             </div>
         </div>
-        <div id="modal_content"
-             class="modal_content fixed top-0 left-0 h-full w-full bg-black bg-opacity-50 hidden text-center">
-            <div class="modal relative bg-white md:w-5/12 w-4/5 mx-auto p-10 rounded-md justify-center mt-28 ease-in transition duration-500">
-                <h1 class="text-3xl font-semibold">{{__('Выберите задание, которое хотите предложить исполнителью')}}</h1>
-                @foreach($tasks as $task)
-                    <label>
-                        <input type="text" name="tasks_id" class="hidden" value="{{ $task->id }}">
-                    </label>
-                @endforeach
-
-                {{--                <form action="" method="POST">--}}
-                @csrf
-                <select name="tasks" id="task_name" onchange="showDiv(this)"
-                        class="appearance-none focus:outline-none border border-solid border-gray-500 rounded-lg text-gray-500 px-6 py-2 text-lg mt-6 hover:text-yellow-500  hover:border-yellow-500 hover:shadow-xl shadow-yellow-500 mx-auto block"><br>
-
-                    @foreach($tasks as $task)
-                        @auth
-                            <option value="{{ $task->id }}">
-                                {{ $task->name }}
-                            </option>
-                        @endauth
-                    @endforeach
-                    <option value="1">
-                        + {{__('новое задание')}}
-                    </option>
-                </select>
-                <label>
-                    <input type="text" name="csrf" class="hidden" value="{{ csrf_token() }}">
-                </label>
-
-                <div id="hidden_div">
-                    <button type="submit" onclick="myFunc()"
-                            class="cursor-pointer bg-red-500 text-white rounded-lg p-2 px-4 mt-4">
-                        {{__('Предложить работу')}}
-                    </button>
-                    <p class="py-7">
-                        {{__('Каждое задание можно предложить пяти исполнителям из каталога. исполнители получат СМС со ссылкой на ваше задание.')}}</p>
-                </div>
-
-
-                <a href="/categories/1">
-                    <button id="hidden_div2"
-                            class="cursor-pointer bg-green-500 text-white rounded-lg p-2 px-4 mt-6 mx-auto"
-                            style="display: none;">
-                        {{__('Создать новое задание')}}
-                    </button>
-                </a>
-
-                <button class="cursor-pointer close text-gray-400 font-bold rounded-lg p-2 px-4 mt-6 absolute -top-6 right-0 text-2xl">
-                    x
-                </button>
-            </div>
-        </div>
-        <div id="modal" style="display: none">
-            <div class="modal h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-50">
-                <div class="bg-white rounded shadow-lg w-10/12 md:w-1/3 text-center py-12">
-                    <h1 class="text-2xl font-bold namem"></h1>
-                    <div class="mx-auto mt-8">
-                        {{__('Уведомления отправлено.')}}
-                    </div>
-                    <button onclick="myFunction1()"
-                            class="cursor-pointer bg-green-500 text-white rounded-lg p-2 px-4 mt-6 mx-auto">
-                        ok
-                    </button>
-                </div>
-            </div>
-        </div>
-        {{-- Modal start --}}
-        <div class="hidden overflow-x-hidden overflow-y-auto bg-black bg-opacity-50 fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
-             id="modal-id12">
-            <div class="relative w-auto my-6 mx-auto max-w-3xl" id="modal-id12">
-                <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                    <div class=" text-center p-12  rounded-t">
-                        <button type="submit" onclick="toggleModal12('modal-id12')"
-                                class="rounded-md w-100 h-16 absolute top-1 right-4">
-                            <i class="fas fa-times  text-slate-400 hover:text-slate-600 text-xl w-full"></i>
-                        </button>
-                        <h3 class="font-medium text-4xl block mt-4">
-                            {{__('У вас пока нет опубликованных заданий')}}
-                        </h3>
-                    </div>
-                    <!--body-->
-                    <div class="relative p-6 flex-auto">
-                        <p class="my-4  text-lg  text-center">
-                            {!!__('Создайте задание, после чего вы сможете предложить <br> выполнить его исполнителям.')!!}
-                        </p>
-                    </div>
-                    <div class="flex mx-auto items-center justify-end p-6 rounded-b mb-8">
-                        <div class="mt-4 ">
-                            <a class="px-10 py-4 text-center font-sans  text-xl  font-semibold bg-green-500 text-white hover:bg-green-600  h-12 rounded-md text-xl"
-                               href="/categories/1">{{__('Создать задание')}}</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
     </div>
 
+
+    <div id="modal_content"
+             class="modal_content hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" style="background-color:rgba(0,0,0,0.5)">
+            <div class="modal relative w-auto mt-12 mx-auto max-w-3xl">
+                <div class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none text-center py-12">
+                    <h1 class="text-3xl font-semibold">{{__('Выберите задание, которое хотите предложить исполнителью')}}</h1>
+                    @foreach($tasks as $task)
+                        <label>
+                            <input type="text" name="tasks_id" class="hidden" value="{{ $task->id }}">
+                        </label>
+                    @endforeach
+
+                    <select name="tasks" id="task_name" onchange="showDiv(this)"
+                            class="appearance-none focus:outline-none border border-solid border-gray-500 rounded-lg text-gray-500 px-6 py-2 text-lg mt-6 hover:text-yellow-500  hover:border-yellow-500 hover:shadow-xl shadow-yellow-500 mx-auto block"><br>
+
+                            @foreach($tasks as $task)
+                                @auth
+                                    @if ($task->status <= 2)
+                                        <option value="{{ $task->id }}">
+                                            {{ $task->name }}
+                                        </option>
+                                    @endif
+                                @endauth
+                            @endforeach
+                        <option value="1">
+                            + {{__('новое задание')}}
+                        </option>
+                    </select>
+                    <label>
+                        <input type="text" name="csrf" class="hidden" value="{{ csrf_token() }}">
+                    </label>
+
+                    <div id="hidden_div">
+                        <button type="submit" onclick="myFunc()"
+                                class="cursor-pointer bg-red-500 text-white rounded-lg p-2 px-4 mt-4">
+                            {{__('Предложить работу')}}
+                        </button>
+                        <p class="py-7">
+                            {{__('Каждое задание можно предложить пяти исполнителям из каталога. исполнители получат СМС со ссылкой на ваше задание.')}}</p>
+                    </div>
+
+
+                    <a href="/categories/1">
+                        <button id="hidden_div2"
+                                class="cursor-pointer bg-green-500 text-white rounded-lg p-2 px-4 mt-6 mx-auto"
+                                style="display: none;">
+                            {{__('Создать новое задание')}}
+                        </button>
+                    </a>
+
+                    <button class="cursor-pointer close text-gray-400 font-bold rounded-lg p-2 px-4 mt-6 absolute -top-6 right-0 text-2xl">
+                        x
+                    </button>
+                </div>
+            </div>
+    </div>
+    
     <!-- Основной контент страницы -->
     <div id="modal" style="display: none">
         <div class="modal h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-50">
             <!-- modal -->
             <div class="bg-white rounded shadow-lg w-10/12 md:w-1/3 text-center py-12">
                 <!-- modal header -->
-                <h1 class="text-2xl font-bold">{{__('Вы предложили задание "Test" исполнителю Елена Б.')}}</h1>
-                <div class="mx-auto mt-8">
+               
+                <div class="text-2xl font-bold my-6">
                     {{__('Мы отправили ему уведомление.')}}
                 </div>
                 <button onclick="myFunction1()"
@@ -365,7 +318,6 @@
             </div>
         </div>
     </div>
-    @csrf
 
     {{-- Modal start --}}
     <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
@@ -576,12 +528,5 @@
             });
         })
     </script>
-    @if($user->role_id == 2)
-        <script>
-            if ($('.tooltip-2').length === 0) {
-                $("<div data-tooltip-target='tooltip-animation_2' class='mx-4 tooltip-2' ><img src='{{ asset("images/best_gray.png") }}'alt='' class='w-24'><div id='tooltip-animation_2' role='tooltip' class='inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700'><p class='text-center'>{{__('Невходит в ТОП-20 всех исполнителей User.uz')}}</p><div class='tooltip-arrow' data-popper-arrow></div> </div></div>").insertAfter($(".tooltip-1"));
-            }
-        </script>
-    @endif
 @endsection
 

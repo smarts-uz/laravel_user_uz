@@ -139,12 +139,13 @@
             <div class="py-4 mx-auto  text-left ">
                 <div class="mb-4">
                     <div id="formulario" class="flex flex-col gap-y-4">
+                        <label for="car_{{ $custom_field['order'] }}">{{$custom_field['label']}}</label>
+
                         <input
                             placeholder="{{ $custom_field['placeholder'] }}"
                             id="car_{{ $custom_field['order'] }}" name="{{$custom_field['name']}}[]" type="text" value="{{ $custom_field['task_value'] }}"
                             class="shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500"
                             required>
-                        <label for="car_{{ $custom_field['order'] }}">{{$custom_field['label']}}</label>
 
                     </div>
                 </div>

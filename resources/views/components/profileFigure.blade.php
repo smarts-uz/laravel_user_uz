@@ -49,13 +49,13 @@
                                     </span> {{__('задание')}}</a></p>
                                 @switch($user->reviews()->count())
                                     @case(1)
-                                    <span>{{__('Получил')}} {{$user->reviews()->count()}} {{__('Отзыв')}}</span>
+                                    <span>{{__('Получил')}} {{  count($goodReviews) +  count($badReviews) }} {{__('Отзыв')}}</span>
                                     @break
                                     @case(1 && 5)
-                                    <span>{{__('Получил')}} {{$user->reviews()->count()}} {{__('Отзыва')}}</span>
+                                    <span>{{__('Получил')}} {{ count($goodReviews) +  count($badReviews)  }} {{__('Отзыва')}}</span>
                                     @break
                                     @default
-                                    <span>{{__('Получил')}} {{$user->reviews()->count()}} {{__('Отзывов')}}</span>
+                                    <span>{{__('Получил')}} {{ count($goodReviews) +  count($badReviews) }} {{__('Отзывов')}}</span>
                                 @endswitch
                             </div>
             <div>
@@ -112,7 +112,7 @@
                             <div class="tooltip-arrow" data-popper-arrow></div>
                         </div>
                     </div>
-                @else   
+                @else
                     <div data-tooltip-target="tooltip-animation_1" class="mx-4 tooltip-1">
                         <img
                             src="{{asset('images/verify_gray.png') }}"
@@ -126,7 +126,7 @@
                         </div>
                     </div>
                 @endif
-                
+
                 @if($user->role_id == 2)
                     @foreach($about as $rating)
                         @if($rating->id == $user->id)

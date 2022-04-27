@@ -75,7 +75,7 @@ class SearchTaskController extends VoyagerBaseController
 
         return view('task.detailed-tasks',
         ['task' => $task, 'review' => $review, 'complianceType' => $item->complianceType, 'same_tasks' => $item->same_tasks,
-        'auth_response' => $item->auth_response, 'selected' => $item->selected, 'responses' => $item->responses, 'addresses' => $item->addresses]);
+        'auth_response' => $item->auth_response, 'selected' => $item->selected, 'responses' => $item->responses, 'addresses' => $item->addresses, 'about'=>$item->about]);
     }
 
     public function comlianse_save(Request $request)
@@ -87,6 +87,9 @@ class SearchTaskController extends VoyagerBaseController
     public function delete_task(Task $task)
     {
         taskGuard($task);
+        abort_if($task->responses()->count() || $task->status != Task::STATUS_OPEN,403, 'No permission');
+
+
         $this->create_service->delete($task);
         return redirect('/');
     }

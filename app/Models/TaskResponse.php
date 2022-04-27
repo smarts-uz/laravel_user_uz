@@ -10,7 +10,7 @@ class TaskResponse extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'task_id', 'description', 'notificate', 'price', 'performer_id'];
+    protected $fillable = ['user_id', 'task_id', 'description', 'notificate', 'price', 'performer_id','not_free'];
 
 
     protected $with = ['user', 'task'];

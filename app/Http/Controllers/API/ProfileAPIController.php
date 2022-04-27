@@ -2,18 +2,29 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\ClickuzController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\PaynetController;
 use App\Http\Requests\UserPasswordRequest;
 use App\Http\Requests\UserUpdateDataRequest;
+use App\Http\Resources\PortfolioIndexResource;
+use App\Http\Resources\PortfolioResource;
+use App\Http\Resources\ReviewIndexResource;
+use App\Http\Resources\TransactionResource;
 use App\Http\Resources\UserIndexResource;
+use App\Models\All_transaction;
+use App\Models\Portfolio;
+use App\Models\Review;
 use App\Models\Session;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\WalletBalance;
 use App\Services\Profile\ProfileService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -49,6 +60,106 @@ class ProfileAPIController extends Controller
         return new UserIndexResource($user);
     }
 
+    public function portfolios()
+    {
+        $user = auth()->user();
+        return response()->json([
+            'success' => true,
+            'data' => PortfolioIndexResource::collection($user->portfolios)
+        ]);
+    }
+
+    public function reviews()
+    {
+        $user = auth()->user();
+        return response()->json([
+            'success' => true,
+            'data' => ReviewIndexResource::collection(Review::query()->where(['user_id' => $user->id])->get())
+        ]);
+    }
+
+    public function balance()
+    {
+        $user = auth()->user();
+        if (WalletBalance::query()->where('user_id', $user->id)->first() != null)
+            $balance = WalletBalance::query()->where('user_id', $user->id)->first()->balance;
+        else
+            $balance = 0;
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'balance' => $balance,
+                'transactions' => TransactionResource::collection(All_transaction::query()->where(['user_id' => $user->id])->get())
+            ]
+        ]);
+    }
+
+    public function description()
+    {
+        $user = auth()->user();
+        return  response()->json([
+            'success' => true,
+            'data' => $user->description
+        ]);
+    }
+
+    public function phoneEdit()
+    {
+        $user = auth()->user();
+        return response()->json([
+            'data' => [
+                'phone_number' => $user->phone_number
+            ]
+        ]);
+    }
+
+    public function phoneUpdate(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone_number' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'data' => $validator->errors(),
+            ]);
+        }
+        $user = auth()->user();
+        $user->phone_number = $request->get('phone_number');
+        $user->is_phone_number_verified = 0;
+        $user->save();
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'phone_number' => $user->phone_number
+            ]
+        ]);
+    }
+
+    public function payment(Request $request)
+    {
+        $payment = $request->get("paymethod");
+        $request['user_id'] = auth()->user()->id;
+        switch($payment) {
+            case 'Click':
+                return ClickuzController::pay($request);
+            case 'PayMe':
+                $tr = new All_transaction();
+                $tr->user_id = Auth::id();
+                $tr->amount = $request->get("amount");
+                $tr->method = $tr::DRIVER_PAYME;
+                $tr->state = $tr::STATE_WAITING_PAY;
+                $tr->save();
+                return redirect('https://checkout.paycom.uz')->withInput([
+                    'merchant' => config('paycom.merchant_id'),
+                    'amount' => $tr->amount * 100,
+                    'order_id' => $tr->id
+                ]);
+            case 'Paynet':
+                return PaynetController::pay($request);
+        }
+    }
+
 
     /**
      * @OA\Post(
@@ -75,7 +186,7 @@ class ProfileAPIController extends Controller
      *                    type="string",
      *                    format="password",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -143,7 +254,7 @@ class ProfileAPIController extends Controller
      *                    property="image",
      *                    type="file",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -165,11 +276,20 @@ class ProfileAPIController extends Controller
      */
     public function avatar(Request $request)
     {
-        $image = $request->validate(['image' => 'required'])['image'];
-        $name = md5(Carbon::now() . '_' . $image->getClientOriginalName() . '.' . $image->getClientOriginalExtension());
-        $filepath = Storage::disk('public')->putFileAs('/images', $image, $name);
-        $data['avatar'] = $filepath;
-        auth()->user()->update($data);
+        $request->validate([
+            'avatar' => 'required|image'
+        ]);
+        $user = Auth::user();
+        $data = $request->all();
+        $destination = 'storage/' . $user->avatar;
+        if (File::exists($destination)) {
+            File::delete($destination);
+        }
+        $filename = $request->file('avatar');
+        $imagename = "user-avatar/" . $filename->getClientOriginalName();
+        $filename->move(public_path() . '/storage/user-avatar/', $imagename);
+        $data['avatar'] = $imagename;
+        $user->update($data);
 
         return response()->json(['success' => true]);
 
@@ -189,7 +309,7 @@ class ProfileAPIController extends Controller
     }
 
 
-    
+
     /**
      * @OA\Post(
      *     path="/api/profile/settings/update",
@@ -220,7 +340,7 @@ class ProfileAPIController extends Controller
      *                    property="location",
      *                    type="string",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -247,12 +367,8 @@ class ProfileAPIController extends Controller
         $updatedData = $profile->settingsUpdate($data);
         $user = Auth::user();
         $user->update($updatedData);
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'message' => 'Settings updated'
-            ]
-        ]);
+        $user->save();
+        return new UserIndexResource($user);
     }
 
 
@@ -324,9 +440,18 @@ class ProfileAPIController extends Controller
      */
     public function editData()
     {
-        $profile = new ProfileService();
-        $data = $profile->settingsEdit();
-        return response()->json($data);
+        $user = auth()->user();
+        $data = [
+            'name' => $user->name,
+            'last_name' => $user->last_name,
+            'avatar' => $user->avatar,
+            'location' => $user->location,
+            'date_of_birth' => $user->born_date,
+            'email' => $user->email
+        ];
+        return response()->json([
+            'data' => $data
+        ]);
     }
 
 
@@ -412,7 +537,7 @@ class ProfileAPIController extends Controller
      *                    property="category",
      *                    type="string",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -464,7 +589,7 @@ class ProfileAPIController extends Controller
      *                    property="district",
      *                    type="string",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -493,12 +618,7 @@ class ProfileAPIController extends Controller
         $user = Auth::user();
         $user->district = $request->district;
         $user->save();
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'message' => 'District stored'
-            ]
-        ]);
+        return new UserIndexResource($user);
     }
 
 
@@ -516,7 +636,7 @@ class ProfileAPIController extends Controller
      *                    property="image",
      *                    type="file",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -572,7 +692,7 @@ class ProfileAPIController extends Controller
      *                    property="description",
      *                    type="string",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -599,19 +719,30 @@ class ProfileAPIController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'message' => 'Description edited'
+                'message' => 'Description edited',
+                'description' => $request->get('description')
             ]
         ]);
     }
 
     public function userNotifications(Request $request)
     {
-        $profile = new ProfileService();
-        $profile->userNotifications($request);
+        $notification = $request->get('notification');
+        $user = auth()->user();
+        if ($notification) {
+            $user->system_notification = 1;
+            $user->news_notification = 1;
+            $message = 'Notifications turned on';
+        } else {
+            $user->system_notification = 0;
+            $user->news_notification = 0;
+            $message = 'Notifications turned off';
+        };
+        $user->save();
         return response()->json([
             'success' => true,
             'data' => [
-                'message' => 'Subscription for notifications upgraded'
+                'message' => $message
             ]
         ]);
     }
