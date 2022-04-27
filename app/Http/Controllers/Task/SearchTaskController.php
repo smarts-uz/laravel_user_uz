@@ -74,7 +74,7 @@ class SearchTaskController extends VoyagerBaseController
         $item = $this->service->task_service($auth_response, $userId, $task);
 
         return view('task.detailed-tasks',
-        ['task' => $task, 'review' => $review, 'complianceType' => $item->complianceType, 'same_tasks' => $item->same_tasks,
+        ['review_description' => Review::where('task_id',$task)->first(),'task' => $task, 'review' => $review, 'complianceType' => $item->complianceType, 'same_tasks' => $item->same_tasks,
         'auth_response' => $item->auth_response, 'selected' => $item->selected, 'responses' => $item->responses, 'addresses' => $item->addresses, 'about'=>$item->about]);
     }
 

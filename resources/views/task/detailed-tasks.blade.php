@@ -102,7 +102,12 @@
                             @endif
                         </p>
                     </div>
-
+                    @isset($review_description->description)
+                        <div class="ml-4 md:ml-12 flex flex-row mt-8">
+                            <h1 class="font-bold h-auto w-48">Отзыв о работе</h1>
+                            <p class=" h-auto w-96">{{$review_description->description}}</p>
+                        </div>
+                    @endisset
                     @isset($value)
                         @foreach($task->custom_field_values as $value)
                             <div class="ml-4 md:ml-12 flex flex-row mt-8">
