@@ -71,9 +71,11 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::prefix('/profile')->group(function () {
         // Profile
         Route::get('/', [ProfileAPIController::class, 'index']); //end +
-        Route::post('/change-avatar', [ProfileAPIController::class, 'avatar']); //end +
-        Route::get('/cash', [ProfileAPIController::class, 'cash']); //end +
         Route::get('/portfolios', [ProfileAPIController::class, 'portfolios']);
+        Route::post('/portfolio/create', [ProfileAPIController::class, 'portfolioCreate']);
+        Route::get('/portfolio/{portfolio}/edit', [ProfileAPIController::class, 'portfolioEdit']);
+        Route::post('/portfolio/{portfolio}/update', [ProfileAPIController::class, 'portfolioUpdate']);
+        Route::post('/portfolio/{portfolio}/delete', [ProfileAPIController::class, 'portfolioDelete']);
         Route::get('/reviews', [ProfileAPIController::class, 'reviews']);
         Route::get('/balance', [ProfileAPIController::class, 'balance']);
         Route::get('/description', [ProfileAPIController::class, 'description']);
@@ -83,6 +85,7 @@ Route::middleware('custom.auth:api')->group(function () {
         Route::prefix('/settings')->group(function () {
             Route::get('/', [ProfileAPIController::class, 'editData']); //end +
             Route::post('/update', [ProfileAPIController::class, 'updateData']);
+            Route::post('/change-avatar', [ProfileAPIController::class, 'avatar']);
             Route::get('/phone', [ProfileAPIController::class, 'phoneEdit']);
             Route::post('/phone/edit', [ProfileAPIController::class, 'phoneUpdate']);
             Route::post('/password/change', [ProfileAPIController::class, 'change_password']); //end +
@@ -148,7 +151,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/messages/chat/rate/{message}', [ConversationAPIController::class, 'rating']);
     Route::post('/messages/chat/close/{message}', [ConversationAPIController::class, 'close']);
     Route::post('/messages/chat/{id}', [ConversationAPIController::class, 'send']);
-    Route::get("users/activitiy/{user}", [VoyagerUserAPIController::class, "activity"]); 
+    Route::get("users/activitiy/{user}", [VoyagerUserAPIController::class, "activity"]);
     Route::get('/reports', [ReportAPIController::class, 'index']); //end
 });
 
