@@ -40,7 +40,7 @@ class UserAPIController extends Controller
     /**
      * @OA\Post(
      *     path="/api/reset",
-     *     tags={"UserAPI"},
+     *     tags={"Reset Password"},
      *     summary="Reset password by phone - sending code",
      *     @OA\RequestBody (
      *         required=true,
@@ -89,7 +89,7 @@ class UserAPIController extends Controller
     /**
      * @OA\Post(
      *     path="/api/reset/password",
-     *     tags={"UserAPI"},
+     *     tags={"Reset Password"},
      *     summary="Enter a New password",
      *     @OA\RequestBody (
      *         required=true,
@@ -148,7 +148,7 @@ class UserAPIController extends Controller
     /**
      * @OA\Post(
      *     path="/api/code",
-     *     tags={"UserAPI"},
+     *     tags={"Reset Password"},
      *     summary="Submit SMS code",
      *     @OA\RequestBody (
      *         required=true,
@@ -242,7 +242,7 @@ class UserAPIController extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/delete",
-     *     tags={"UserAPI"},
+     *     tags={"Profile"},
      *     summary="Delete User",
      *     @OA\Response(
      *          response=200,

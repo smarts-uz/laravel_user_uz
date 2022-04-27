@@ -32,11 +32,19 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ProfileAPIController extends Controller
 {
+    
+    public function index()
+    {
+        $user = Auth::user();
+        return new UserIndexResource($user);
+    }
+
+
     /**
      * @OA\Get(
-     *     path="/api/profile/pro",
-     *     tags={"ProfileAPI"},
-     *     summary="Your profile",
+     *     path="/api/profile/portfolios",
+     *     tags={"Profile"},
+     *     summary="Profile portfolios",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -54,12 +62,6 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function index()
-    {
-        $user = Auth::user();
-        return new UserIndexResource($user);
-    }
-
     public function portfolios()
     {
         $user = auth()->user();
@@ -69,6 +71,28 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/profile/reviews",
+     *     tags={"Profile"},
+     *     summary="Profile reviews",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function reviews()
     {
         $user = auth()->user();
@@ -78,6 +102,28 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/profile/balance",
+     *     tags={"Profile"},
+     *     summary="Profile balance",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function balance()
     {
         $user = auth()->user();
@@ -94,6 +140,28 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/profile/description",
+     *     tags={"Profile"},
+     *     summary="Profile description",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function description()
     {
         $user = auth()->user();
@@ -103,6 +171,28 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/profile/settings/phone",
+     *     tags={"Profile Settings"},
+     *     summary="Phone",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function phoneEdit()
     {
         $user = auth()->user();
@@ -113,6 +203,41 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/settings/phone/edit",
+     *     tags={"Profile Settings"},
+     *     summary="Phone edit",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="phone_number",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function phoneUpdate(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -163,8 +288,8 @@ class ProfileAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/profile/password/change",
-     *     tags={"ProfileAPI"},
+     *     path="/api/profile/settings/password/change",
+     *     tags={"Profile Settings"},
      *     summary="Change password",
      *     @OA\RequestBody (
      *         required=true,
@@ -242,8 +367,8 @@ class ProfileAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/change-avatar",
-     *     tags={"ProfileAPI"},
+     *     path="/api/profile/change-avatar",
+     *     tags={"Profile"},
      *     summary="Change Avator",
      *     @OA\RequestBody (
      *         required=true,
@@ -313,7 +438,7 @@ class ProfileAPIController extends Controller
     /**
      * @OA\Post(
      *     path="/api/profile/settings/update",
-     *     tags={"PorfolioAPI"},
+     *     tags={"Profile Settings"},
      *     summary="Update settings",
      *     @OA\RequestBody (
      *         required=true,
@@ -419,7 +544,7 @@ class ProfileAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/profile/settings",
-     *     tags={"ProfileAPI"},
+     *     tags={"Profile Settings"},
      *     summary="Your profile data",
      *     @OA\Response (
      *          response=200,
@@ -680,9 +805,9 @@ class ProfileAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/profile/description",
-     *     tags={"ProfileAPI"},
-     *     summary="Profile description",
+     *     path="/api/profile/description/edit",
+     *     tags={"Profile"},
+     *     summary="Profile edit description",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -725,6 +850,41 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/settings/notifications",
+     *     tags={"Profile Settings"},
+     *     summary="Profile edit description",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="notification",
+     *                    type="boolean",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function userNotifications(Request $request)
     {
         $notification = $request->get('notification');

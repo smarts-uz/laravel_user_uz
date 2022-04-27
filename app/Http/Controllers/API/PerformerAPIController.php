@@ -22,7 +22,7 @@ class PerformerAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/performers",
-     *     tags={"PerformersAPI"},
+     *     tags={"Performers"},
      *     summary="Get All Performers",
      *     @OA\Response (
      *          response=200,
@@ -61,7 +61,7 @@ class PerformerAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/performers/{performer}",
-     *     tags={"PerformersAPI"},
+     *     tags={"Performers"},
      *     summary="Get Performer By ID",
      *     @OA\Parameter(
      *          in="path",
@@ -122,6 +122,49 @@ class PerformerAPIController extends Controller
         }
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/become-performer",
+     *     tags={"Become a perfomer"},
+     *     summary="Initial Data",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="name",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="location",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="born_date",
+     *                    type="number",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function becomePerformerData(BecomePerformerRequest $request)
     {
         $data = $request->validated();
@@ -130,12 +173,86 @@ class PerformerAPIController extends Controller
 
         return response()->json(['success' => 'true', 'message' => 'Successfully updated']);
     }
+
+    /**
+     * @OA\Post(
+     *     path="/api/become-performer-phone",
+     *     tags={"Become a perfomer"},
+     *     summary="Email and phone",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="email",
+     *                    type="string",
+     *                    format="email",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="phone_number",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function becomePerformerEmailPhone(BecomePerformerEmailPhone $request)
     {
         $request->validated();
         return response()->json(['success' => 'true', 'message' => 'Successfully updated']);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/become-performer-avatar",
+     *     tags={"Become a perfomer"},
+     *     summary="Avator",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="avatar",
+     *                    type="file",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function becomePerformerAvatar(Request $request)
     {
         $data = $request->validate(['avatar'=>'required']);
@@ -152,7 +269,40 @@ class PerformerAPIController extends Controller
 
     }
 
-
+    /**
+     * @OA\Post(
+     *     path="/api/become-performer-category",
+     *     tags={"Become a perfomer"},
+     *     summary="Categories",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="category_id",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function becomePerformerCategory(Request $request)
     {
         $data = $request->validate(['category_id' => 'required|string']);
@@ -163,6 +313,28 @@ class PerformerAPIController extends Controller
 
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/reviews",
+     *     tags={"PerformersAPI"},
+     *     summary="Performer reviews",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function reviews(Request $request)
     {
         $from_performer = $request->from_performer;

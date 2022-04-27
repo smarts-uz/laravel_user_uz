@@ -43,7 +43,7 @@ class UpdateAPIController extends Controller
     /**
      * @OA\Post(
      *     path="/api/task/{task}/complete",
-     *     tags={"UpdateAPI"},
+     *     tags={"Responses"},
      *     summary="Complete Task",
      *     @OA\Parameter (
      *          in="path",
@@ -85,7 +85,7 @@ class UpdateAPIController extends Controller
     /**
      * @OA\Post(
      *     path="/api/send-review-user/{task}",
-     *     tags={"UpdateAPI"},
+     *     tags={"Responses"},
      *     summary="Complete task",
      *     @OA\Parameter (
      *          in="path",

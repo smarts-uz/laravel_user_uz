@@ -16,7 +16,7 @@ class PortfolioAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/portfolio_albums/{performer}",
-     *     tags={"PortfolioAPI"},
+     *     tags={"Portfolio"},
      *     summary="Get Portfolios By Performer ID",
      *     @OA\Parameter (
      *          in="path",
@@ -49,7 +49,7 @@ class PortfolioAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/portfolio_album/{portfolio}",
-     *     tags={"PortfolioAPI"},
+     *     tags={"Portfolio"},
      *     summary="Get Portfolio By Portfolio ID",
      *     @OA\Parameter (
      *          in="path",
