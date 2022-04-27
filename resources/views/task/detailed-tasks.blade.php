@@ -316,10 +316,10 @@
                                 </a>
                                 <input type="text" name="performer_id" class="hidden"
                                        value="">
-                                <div class="text-gray-700 sm:mt-4 mt-2">
-                                    <i class="fas fa-star text-yellow-500 mr-1"></i>{{ $auth_response->user->reviews()->count()? $auth_response->user->goodReviews()->count()/$auth_response->user->reviews()->count():0 }}
-                                    по {{ $auth_response->user->reviews()->count() }} отзывам
-                                </div>
+                                    <div class="text-gray-700 sm:mt-4 mt-2">
+                                        <i class="fas fa-star text-yellow-500 mr-1"></i>{{ auth()->user()->reviews()->count()? auth()->user()->goodReviews()->count()/auth()->user()->reviews()->count():0 }}
+                                        по {{ auth()->user()->reviews()->count() }} отзывам
+                                    </div>
                             </div>
                             <div class="flex flex-row items-start">
                                 <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
