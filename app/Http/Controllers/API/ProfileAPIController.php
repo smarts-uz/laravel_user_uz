@@ -414,8 +414,8 @@ class ProfileAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/profile/change-avatar",
-     *     tags={"Profile"},
+     *     path="/api/profile/settings/change-avatar",
+     *     tags={"Profile Settings"},
      *     summary="Change Avator",
      *     @OA\RequestBody (
      *         required=true,

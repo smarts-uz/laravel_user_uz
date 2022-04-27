@@ -1370,13 +1370,13 @@
                 ]
             }
         },
-        "\/api\/profile\/change-avatar": {
+        "\/api\/profile\/settings\/change-avatar": {
             "post": {
                 "tags": [
                     "Profile"
                 ],
                 "summary": "Change Avator",
-                "operationId": "f3ddbfab7ecf8c70bfe91d2582206050",
+                "operationId": "0eed7901dca85c5175305075ba95f121",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -11090,6 +11090,7 @@
                                 "name_task",
                                 "type",
                                 "is_read",
+                                "performer_id",
                                 "notification_belongsto_user_relationship",
                                 "notification_hasmany_service_relationship"
                             ],
