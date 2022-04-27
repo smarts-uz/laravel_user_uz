@@ -23,7 +23,7 @@ class ProfileAPIController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/profile/pro",
+     *     path="/api/profile/",
      *     tags={"ProfileAPI"},
      *     summary="Your profile",
      *     @OA\Response (
@@ -131,7 +131,7 @@ class ProfileAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/change-avatar",
+     *     path="/api/profile/change-avatar",
      *     tags={"ProfileAPI"},
      *     summary="Change Avator",
      *     @OA\RequestBody (
@@ -195,33 +195,45 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/settings/update",
      *     tags={"PorfolioAPI"},
      *     summary="Update settings",
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="email",
-     *                    type="string",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="age",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="phone_number",
-     *                    type="string",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="description",
-     *                    type="string",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="location",
-     *                    type="string",
-     *                 ),
-     *             ), 
-     *         ),
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="email",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="age",
+     *          required=false,
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="phone_number",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="description",
+     *          required=false,
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="location",
+     *          required=false,
+     *          @OA\Schema (
+     *              type="string"
+     *          )
      *     ),
      *     @OA\Response (
      *          response=200,
@@ -365,11 +377,11 @@ class ProfileAPIController extends Controller
 
 
     /**
-     * @OA\DELETE(
+     * @OA\Post(
      *     path="/api/profile/delete",
      *     tags={"ProfileAPI"},
      *     summary="Delete User",
-     *     @OA\Response(
+     *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
      *     ),
@@ -604,6 +616,45 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+
+    /**
+     * @OA\Get(
+     *     path="/api/profile/notifications/subscription",
+     *     tags={"ProfileAPI"},
+     *     summary="Notifications",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="notif11",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="notif22",
+     *                    type="integer",
+     *                 ),
+     *             ), 
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function userNotifications(Request $request)
     {
         $profile = new ProfileService();

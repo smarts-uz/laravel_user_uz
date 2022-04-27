@@ -14,7 +14,7 @@ class CustomFieldAPIController extends Controller
      * @OA\Get(
      *     path="/api/custom-field-by-category/{category}",
      *     tags={"CustomField"},
-     *     summary="Get by category ID",
+     *     summary="Get Custom fields By Category ID",
      *     security={
      *      {"token": {}},
      *     },
@@ -47,36 +47,7 @@ class CustomFieldAPIController extends Controller
     }
 
 
-    /**
-     * @OA\Get(
-     *     path="/api/custom-field-values-by-custom-field/{custom_field}",
-     *     tags={"CustomField"},
-     *     summary="Get custom-field by ID",
-     *     security={
-     *      {"token": {}},
-     *     },
-     *     @OA\Parameter(
-     *          in="path",
-     *          name="custom_field",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          ),
-     *     ),
-     *     @OA\Response(
-     *          response=200,
-     *          description="successful operation",
-     *     ),
-     *     @OA\Response(
-     *      response=401,
-     *       description="Unauthenticated"
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="Forbidden"
-     *     )
-     * )
-     */
+    
     public function getByCustomFieldId(CustomField $custom_field)
     {
 
@@ -87,7 +58,7 @@ class CustomFieldAPIController extends Controller
      * @OA\Get(
      *     path="/api/custom-field-values-by-task/{task}",
      *     tags={"CustomField"},
-     *     summary="Get by task ID",
+     *     summary="Get Custom field Values by Task ID",
      *     security={
      *      {"token": {}},
      *     },

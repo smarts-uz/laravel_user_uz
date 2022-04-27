@@ -251,7 +251,7 @@
                 "tags": [
                     "CategoryAPI"
                 ],
-                "summary": "Get list of Category",
+                "summary": "Search Category by name",
                 "operationId": "c177ab8a25cbaa55ef98e7ebdbc848a7",
                 "parameters": [
                     {
@@ -263,6 +263,26 @@
                         }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "\/api\/categories-parent": {
+            "get": {
+                "tags": [
+                    "CategoryAPI"
+                ],
+                "summary": "Get All Categories",
+                "operationId": "e8afb8bb1052e6310214fc871fcbe225",
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -421,46 +441,11 @@
                 "tags": [
                     "CustomField"
                 ],
-                "summary": "Get by category ID",
+                "summary": "Get Custom fields By Category ID",
                 "operationId": "e956115f36720800b5ead04cf0f4daaf",
                 "parameters": [
                     {
                         "name": "category",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/custom-field-values-by-custom-field\/{custom_field}": {
-            "get": {
-                "tags": [
-                    "CustomField"
-                ],
-                "summary": "Get custom-field by ID",
-                "operationId": "360e8ff096242eae7a10a041ccda91cf",
-                "parameters": [
-                    {
-                        "name": "custom_field",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -491,7 +476,7 @@
                 "tags": [
                     "CustomField"
                 ],
-                "summary": "Get by task ID",
+                "summary": "Get Custom field Values by Task ID",
                 "operationId": "96cd8e7408acc1e566878f63b37eff19",
                 "parameters": [
                     {
@@ -764,7 +749,7 @@
                 "tags": [
                     "PerformersAPI"
                 ],
-                "summary": "Get list of Performers",
+                "summary": "Get All Performers",
                 "operationId": "731347e6f7c873d149bc292778b4f161",
                 "responses": {
                     "200": {
@@ -784,7 +769,7 @@
                 "tags": [
                     "PerformersAPI"
                 ],
-                "summary": "Get list of Performers",
+                "summary": "Get Performer By ID",
                 "operationId": "be33fb1d00766c364214bb291f26b42d",
                 "parameters": [
                     {
@@ -809,13 +794,13 @@
                 }
             }
         },
-        "\/api\/profile\/pro": {
+        "\/api\/profile\/": {
             "get": {
                 "tags": [
                     "ProfileAPI"
                 ],
                 "summary": "Your profile",
-                "operationId": "c9ee16d35ab0bfb2689bdc9772de9c25",
+                "operationId": "19ddc09c48f45c607be87bb06f16e8e5",
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -883,13 +868,13 @@
                 ]
             }
         },
-        "\/api\/change-avatar": {
+        "\/api\/profile\/change-avatar": {
             "post": {
                 "tags": [
                     "ProfileAPI"
                 ],
                 "summary": "Change Avator",
-                "operationId": "e24aca199c98465326996bbe44e2d7f0",
+                "operationId": "f3ddbfab7ecf8c70bfe91d2582206050",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -930,33 +915,48 @@
                 ],
                 "summary": "Update settings",
                 "operationId": "827c0d8a45f51d307cc762dd318efd27",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart\/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "email": {
-                                        "type": "string"
-                                    },
-                                    "age": {
-                                        "type": "integer"
-                                    },
-                                    "phone_number": {
-                                        "type": "string"
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    },
-                                    "location": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "age",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "phone_number",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "location",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -1051,12 +1051,12 @@
             }
         },
         "\/api\/profile\/delete": {
-            "delete": {
+            "post": {
                 "tags": [
                     "ProfileAPI"
                 ],
                 "summary": "Delete User",
-                "operationId": "f8088993efebc204c6ba6135018b70c7",
+                "operationId": "564b6423baef1104d1972c405af7991c",
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -1210,6 +1210,49 @@
                                 "properties": {
                                     "description": {
                                         "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/notifications\/subscription": {
+            "get": {
+                "tags": [
+                    "ProfileAPI"
+                ],
+                "summary": "Notifications",
+                "operationId": "f7b0357f7b8116aaf94d804fcf371085",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "notif11": {
+                                        "type": "integer"
+                                    },
+                                    "notif22": {
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -1780,19 +1823,16 @@
         "\/api\/search-task": {
             "get": {
                 "tags": [
-                    "SearchAPI"
+                    "Search"
                 ],
                 "summary": "Get list of Tasks and Categories",
                 "operationId": "127de8717a061012429b03b03240a847",
                 "responses": {
                     "200": {
-                        "description": "Successful operation"
+                        "description": "successful operation"
                     },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
+                    "500": {
+                        "description": "Server error"
                     }
                 }
             }
@@ -1800,19 +1840,16 @@
         "\/api\/tasks-search": {
             "get": {
                 "tags": [
-                    "SearchAPI"
+                    "Search"
                 ],
                 "summary": "Get list of Tasks",
                 "operationId": "fdb13257bd152b1db5c2c5c3e24a63da",
                 "responses": {
                     "200": {
-                        "description": "Successful operation"
+                        "description": "successful operation"
                     },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
+                    "500": {
+                        "description": "Ajax error"
                     }
                 }
             }
@@ -1820,7 +1857,7 @@
         "\/api\/detailed-tasks\/{task}": {
             "get": {
                 "tags": [
-                    "SearchAPI"
+                    "Search"
                 ],
                 "summary": "Get Task by ID",
                 "operationId": "c28cc0364c969c91e25be68618f588b9",
@@ -1837,12 +1874,6 @@
                 "responses": {
                     "200": {
                         "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
                     }
                 }
             }
@@ -1850,7 +1881,7 @@
         "\/api\/delete-task\/{task}": {
             "delete": {
                 "tags": [
-                    "SearchAPI"
+                    "TaskAPI"
                 ],
                 "summary": "Delete Task",
                 "operationId": "769179127b589bbb0f0b9354fa5a4744",
@@ -1885,7 +1916,7 @@
         "\/api\/ajax-request": {
             "post": {
                 "tags": [
-                    "SearchAPI"
+                    "Search"
                 ],
                 "summary": "Add new task",
                 "operationId": "c1da554eab2487a455858b838141274e",
@@ -1921,7 +1952,7 @@
                                                 "type": "string"
                                             },
                                             "notificate": {
-                                                "type": "integer"
+                                                "type": "string"
                                             },
                                             "response_time": {
                                                 "type": "string"
@@ -1943,7 +1974,7 @@
                                     "name_task": "\u042f\u043d\u0433\u0438 \u0437\u0430\u0434\u0430\u0447\u0430",
                                     "user_id": 77,
                                     "good": "\u042f\u0445\u0448\u0438",
-                                    "notificate": "1",
+                                    "notificate": "Salom",
                                     "response_time": "77",
                                     "response_price": "300"
                                 }
@@ -2008,11 +2039,21 @@
                             }
                         }
                     },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
+                    "400": {
+                        "description": "invalid",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string",
+                                            "example": "fail"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -2027,7 +2068,7 @@
                 "tags": [
                     "TaskAPI"
                 ],
-                "summary": "Same tasks",
+                "summary": "Same tasks by Task ID",
                 "operationId": "120ccd09ca7a2be2153ee7a0f2655447",
                 "parameters": [
                     {
@@ -2087,7 +2128,7 @@
                 "tags": [
                     "TaskAPI"
                 ],
-                "summary": "Response store task",
+                "summary": "Send Response",
                 "operationId": "72b3712b916c380767bb13875dd42339",
                 "parameters": [
                     {
@@ -2140,12 +2181,12 @@
                 "tags": [
                     "TaskAPI"
                 ],
-                "summary": "Tasks filter",
+                "summary": "Task filter",
                 "operationId": "01811c7639caa6a28b67d031f8c8be43",
                 "parameters": [
                     {
                         "name": "categories",
-                        "in": "path",
+                        "in": "query",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -2155,42 +2196,42 @@
                     },
                     {
                         "name": "lat",
-                        "in": "path",
+                        "in": "query",
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
                         "name": "long",
-                        "in": "path",
+                        "in": "query",
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
                         "name": "budget",
-                        "in": "path",
+                        "in": "query",
                         "schema": {
                             "type": "integer"
                         }
                     },
                     {
                         "name": "is_remote",
-                        "in": "path",
+                        "in": "query",
                         "schema": {
                             "type": "boolean"
                         }
                     },
                     {
                         "name": "without_response",
-                        "in": "path",
+                        "in": "query",
                         "schema": {
                             "type": "boolean"
                         }
                     },
                     {
                         "name": "difference",
-                        "in": "path",
+                        "in": "query",
                         "schema": {
                             "type": "integer"
                         }
@@ -2214,7 +2255,7 @@
                 "tags": [
                     "TaskAPI"
                 ],
-                "summary": "Show tasks by ID",
+                "summary": "Get Task By ID",
                 "operationId": "f81261f5febbe5e9edecf62e8b165e8f",
                 "parameters": [
                     {
@@ -2244,7 +2285,7 @@
                 "tags": [
                     "TaskAPI"
                 ],
-                "summary": "My tasks count",
+                "summary": "Get My Tasks Count",
                 "operationId": "72718dc806703c197699e0f060cb0935",
                 "parameters": [
                     {
@@ -2279,13 +2320,13 @@
                 "tags": [
                     "TaskAPI"
                 ],
-                "summary": "My tasks all",
+                "summary": "Get My Tasks",
                 "operationId": "1a716f0c34b249580b5d4194baa5f168",
                 "parameters": [
                     {
                         "name": "is_performer",
                         "in": "query",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "integer"
                         }
@@ -2299,6 +2340,49 @@
                         }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/create-task\/routing": {
+            "post": {
+                "tags": [
+                    "TaskAPI"
+                ],
+                "summary": "Routing",
+                "operationId": "75bde0adcddefe8478e20c8b7daeb051",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "category_id": {
+                                        "type": "integer"
+                                    },
+                                    "address": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -2452,7 +2536,7 @@
         "\/api\/for_del_new_task\/{task}": {
             "delete": {
                 "tags": [
-                    "TaskAPI"
+                    "Search"
                 ],
                 "summary": "Delete Task",
                 "operationId": "944c123df58af87508b1e98eda756420",
@@ -2489,7 +2573,7 @@
                 "tags": [
                     "UpdateAPI"
                 ],
-                "summary": "Task complete",
+                "summary": "Complete Task",
                 "operationId": "34274bcd311837ea8443d39da123d261",
                 "parameters": [
                     {
@@ -2524,7 +2608,7 @@
                 "tags": [
                     "UpdateAPI"
                 ],
-                "summary": "Send review",
+                "summary": "Complete task",
                 "operationId": "f440159070ac0fc1e2b350969e9ad62d",
                 "parameters": [
                     {
@@ -2546,10 +2630,10 @@
                                         "type": "string"
                                     },
                                     "good": {
-                                        "type": "integer"
+                                        "type": "boolean"
                                     },
                                     "status": {
-                                        "type": "integer"
+                                        "type": "boolean"
                                     }
                                 },
                                 "type": "object"
@@ -2580,7 +2664,7 @@
                 "tags": [
                     "UserAPI"
                 ],
-                "summary": "User phone_number",
+                "summary": "Reset password by phone - sending code",
                 "operationId": "56a1d9813d571e101444350e67d6dd7d",
                 "requestBody": {
                     "required": true,
@@ -2615,7 +2699,7 @@
                 "tags": [
                     "UserAPI"
                 ],
-                "summary": "User password save",
+                "summary": "Enter a New password",
                 "operationId": "235c0c336670eb4e95abc202257cb924",
                 "requestBody": {
                     "required": true,
@@ -2658,7 +2742,7 @@
                 "tags": [
                     "UserAPI"
                 ],
-                "summary": "User reset code",
+                "summary": "Submit SMS code",
                 "operationId": "3f40aa2d8aa65af2ec2afb498a175340",
                 "requestBody": {
                     "required": true,
@@ -2746,7 +2830,7 @@
                 "tags": [
                     "PortfolioAPI"
                 ],
-                "summary": "Index portfolio",
+                "summary": "Get Portfolios By Performer ID",
                 "operationId": "dae4aab4cf5115526da387ad1cf885a2",
                 "parameters": [
                     {
@@ -2776,7 +2860,7 @@
                 "tags": [
                     "PortfolioAPI"
                 ],
-                "summary": "Show portfolio",
+                "summary": "Get Portfolio By Portfolio ID",
                 "operationId": "fc334dc503d1acd8733579ecbe993f39",
                 "parameters": [
                     {
@@ -36854,7 +36938,8 @@
                                 "price",
                                 "performer_id",
                                 "created_at",
-                                "updated_at"
+                                "updated_at",
+                                "not_free"
                             ],
                             "type": "string"
                         }
