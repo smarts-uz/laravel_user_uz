@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Chat;
 
-use App\Models\ChMessage as Message;
-use App\Models\ChFavorite as Favorite;
+use App\Models\Chat\ChMessage as Message;
+use App\Models\Chat\ChFavorite as Favorite;
 use Illuminate\Support\Facades\Http;
 use Pusher\Pusher;
 use Illuminate\Support\Facades\Auth;
@@ -65,12 +65,12 @@ class ChatifyMessenger
 
     public function push($channel, $event, $data)
     {
-//        return $this->pusher->trigger($channel, $event, $data);
-        return Http::post('http://websocket.loc/api/send-message', [
-            'channel' => $channel,
-            'event' => $event,
-            'data' => $data
-        ])->json();
+        return $this->pusher->trigger($channel, $event, $data);
+//        return Http::post('http://'. env('WEBSOCKET_SERVER_HOST') . '/api/send-message', [
+//            'channel' => $channel,
+//            'event' => $event,
+//            'data' => $data
+//        ])->json();
     }
 
     /**
@@ -78,11 +78,11 @@ class ChatifyMessenger
      *
      * @param string $channelName
      * @param string $socket_id
-     * @param array $data
-     * @return void
+     * @param string $data
+     * @return string
      */
     public function pusherAuth($channelName, $socket_id, $data = null){
-        return $this->pusher->socket_auth($channelName, $socket_id, $data);
+        return $this->pusher->socketAuth($channelName, $socket_id, $data);
     }
 
     /**
@@ -200,9 +200,7 @@ class ChatifyMessenger
      * Get user list's item data [Contact Itme]
      * (e.g. User data, Last message, Unseen Counter...)
      *
-     * @param int $messenger_id
-     * @param Collection $user
-     * @return void
+     * @return string
      */
     public function getContactItem($user){
         // get last message
@@ -214,7 +212,7 @@ class ChatifyMessenger
         return view('Chatify::layouts.listItem', [
             'get' => 'users',
             'user' => $user,
-            'lastMessage' => $lastMessage,
+            'lastMessage' => $lastMessage ?? [],
             'unseenCounter' => $unseenCounter,
         ])->render();
     }

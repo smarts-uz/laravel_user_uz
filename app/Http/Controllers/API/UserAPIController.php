@@ -32,7 +32,7 @@ class UserAPIController extends Controller
 
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
 
-        return response(['user' => auth()->user(), 'access_token'=>$accessToken]);
+        return response()->json(['user' => auth()->user(), 'access_token'=>$accessToken]);
 
     }
 
@@ -49,7 +49,7 @@ class UserAPIController extends Controller
      *             @OA\Schema (
      *                 @OA\Property (
      *                     property="phone_number",
-     *                     type="integer", 
+     *                     type="integer",
      *                 ),
      *             ),
      *         ),
@@ -98,17 +98,17 @@ class UserAPIController extends Controller
      *             @OA\Schema (
      *                 @OA\Property (
      *                     property="phone_number",
-     *                     type="number", 
+     *                     type="number",
      *                 ),
      *                 @OA\Property (
      *                     property="password",
      *                     type="string",
-     *                     format="password", 
+     *                     format="password",
      *                 ),
      *                 @OA\Property (
      *                     property="password_confirmation",
      *                     type="string",
-     *                     format="password", 
+     *                     format="password",
      *                 ),
      *             ),
      *         ),
@@ -157,11 +157,11 @@ class UserAPIController extends Controller
      *             @OA\Schema (
      *                 @OA\Property (
      *                     property="code",
-     *                     type="number", 
+     *                     type="number",
      *                 ),
      *                 @OA\Property (
      *                     property="phone_number",
-     *                     type="number", 
+     *                     type="number",
      *                 ),
      *             ),
      *         ),
@@ -214,7 +214,7 @@ class UserAPIController extends Controller
             Auth::login($user);
             $accessToken = auth()->user()->createToken('authToken')->accessToken;
 
-            return response(['user' => auth()->user(), 'access_token'=>$accessToken]);
+            return response()->json(['user' => auth()->user(), 'access_token'=>$accessToken]);
         } catch (ValidationException $e) {
             return response()->json(array_values($e->errors()));
         }

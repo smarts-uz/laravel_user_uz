@@ -53,6 +53,7 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post("account/change/email", [LoginAPIController::class,'change_email']); //end +
     Route::post("account/change/phone", [LoginAPIController::class,'change_phone_number']); //end +
 
+<<<<<<< HEAD
     Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']); //end +
     Route::post('/select-performer/{response}', [ResponseAPIController::class, 'selectPerformer']); //end -
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); //end +
@@ -94,6 +95,38 @@ Route::middleware('custom.auth:api')->group(function () {
         // comment
         // testBase
         // portfolio/{portfolio}
+=======
+    Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']);
+    Route::post('/select-performer/{response}', [ResponseAPIController::class, 'selectPerformer']);
+    Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']);
+    Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']);
+    Route::post('/become-performer', [PerformerAPIController::class,'becomePerformerData']);
+    Route::post('/become-performer-phone', [PerformerAPIController::class,'becomePerformerEmailPhone']);
+    Route::post('/become-performer-avatar', [PerformerAPIController::class,'becomePerformerAvatar']);
+    Route::post('/become-performer-category', [PerformerAPIController::class,'becomePerformerCategory']);
+    Route::get('/reviews', [PerformerAPIController::class, 'reviews']);
+    // Profile API
+    Route::prefix('/profile')->group(function () {
+        // Profile
+        Route::get('/', [ProfileAPIController::class, 'index']);
+        Route::get('/portfolios', [ProfileAPIController::class, 'portfolios']);
+        Route::get('/reviews', [ProfileAPIController::class, 'reviews']);
+        Route::get('/balance', [ProfileAPIController::class, 'balance']);
+        Route::get('/description', [ProfileAPIController::class, 'description']);
+        Route::post('/description/edit', [ProfileAPIController::class, 'editDesctiption']);
+        Route::post('/payment', [ProfileAPIController::class, 'payment']);
+
+        Route::prefix('/settings')->group(function () {
+            Route::get('/', [ProfileAPIController::class, 'editData']);
+            Route::post('/update', [ProfileAPIController::class, 'updateData']);
+            Route::get('/phone', [ProfileAPIController::class, 'phoneEdit']);
+            Route::post('/phone/edit', [ProfileAPIController::class, 'phoneUpdate']);
+            Route::post('/password/change', [ProfileAPIController::class, 'change_password']);
+            Route::post('/notifications', [ProfileAPIController::class, 'userNotifications']);
+        });
+
+
+>>>>>>> 3949bb50905a704bf0fe2d3a9ce0a678f144f389
     });
 
 });
@@ -125,10 +158,17 @@ Route::post('ajax-request', [SearchAPIController::class, 'task_response']); //no
 Route::get('/detailed-tasks/{task}', [SearchAPIController::class, 'task']); //end
 
 //Categories
+<<<<<<< HEAD
 Route::get('/categories', [CategoriesAPIController::class, 'index']); //end -
 Route::get('/categories-parent', [CategoriesAPIController::class, 'parents']); //end +
 Route::get('/categories/{id}', [CategoriesAPIController::class, 'show']); //end +
 Route::get('/category/search', [CategoriesAPIController::class, 'search']); //end +
+=======
+Route::get('/categories', [CategoriesAPIController::class, 'index']); //end
+Route::get('/categories-parent', [CategoriesAPIController::class, 'parents']); //end
+Route::get('/categories/{id}', [CategoriesAPIController::class, 'show']); //end
+Route::get('/category/search', [CategoriesAPIController::class, 'search']); //end
+>>>>>>> 3949bb50905a704bf0fe2d3a9ce0a678f144f389
 
 //Performers
 Route::get('/performers', [PerformerAPIController::class, 'service']); //end +
@@ -163,7 +203,7 @@ Route::post('/paynet-transaction', [PaynetTransactionAPIController::class, 'crea
 
 
 
-Route::get('login/google/callback',[SocialAPIController::class,'loginWithGoogle']);
+Route::post('login/google/callback',[SocialAPIController::class,'loginWithGoogle']);
 
-Route::get('login/facebook/callback',[SocialAPIController::class,'loginWithFacebook']);
+Route::post('login/callback',[SocialAPIController::class,'loginWithFacebook']);
 

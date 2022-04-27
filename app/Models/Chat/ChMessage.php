@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Chat;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ChFavorite extends Model
+class ChMessage extends Model
 {
     //
 }

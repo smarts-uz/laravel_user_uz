@@ -62,13 +62,13 @@
                                     </span> {{__('задание')}}</a></p>
                                 @switch($user->reviews()->count())
                                     @case(1)
-                                    <span>{{__('Получил')}} {{$user->reviews()->count()}} {{__('Отзыв')}}</span>
+                                    <span>{{__('Получил')}} {{  count($goodReviews) +  count($badReviews) }} {{__('Отзыв')}}</span>
                                     @break
                                     @case(1 && 5)
-                                    <span>{{__('Получил')}} {{$user->reviews()->count()}} {{__('Отзыва')}}</span>
+                                    <span>{{__('Получил')}} {{ count($goodReviews) +  count($badReviews)  }} {{__('Отзыва')}}</span>
                                     @break
                                     @default
-                                    <span>{{__('Получил')}} {{$user->reviews()->count()}} {{__('Отзывов')}}</span>
+                                    <span>{{__('Получил')}} {{ count($goodReviews) +  count($badReviews) }} {{__('Отзывов')}}</span>
                                 @endswitch
                             </div>
                             <div>
@@ -76,10 +76,10 @@
                                     <p class="text-black ">{{__('Отзывы:')}}</p>
                                     <i class="far fa-thumbs-up text-blue-500 ml-1 mb-1"></i>
                                     <span
-                                        class="text-gray-800 mr-2 like{{$user->id}}">{{ $user->reviews()->where('good_bad',1)->count()}}</span>
+                                        class="text-gray-800 mr-2 like{{$user->id}}">{{ count($goodReviews)}}</span>
                                     <i class="far fa-thumbs-down mt-0.5 text-blue-500"></i>
                                     <span
-                                        class="text-gray-800 dislike{{$user->id}}">{{ $user->reviews()->where('good_bad',0)->count()}}</span>
+                                        class="text-gray-800 dislike{{$user->id}}">{{  count($badReviews) }}</span>
                                 </div>
                                 <div class="flex flex-row items-center mt-3" id="str1">
                                     <div class="flex flex-row items-center"><p>{{__('Средняя оценка:')}}</p><span

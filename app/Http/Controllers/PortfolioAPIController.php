@@ -42,7 +42,7 @@ class PortfolioAPIController extends Controller
      */
     public function index(User $performer){
 
-        return PortfolioIndexResource::collection($performer->portfolios);
+        return response()->json(['success' => true,'data'=>PortfolioIndexResource::collection($performer->portfolios)]);
     }
 
 
@@ -75,7 +75,7 @@ class PortfolioAPIController extends Controller
      */
     public function show(Portfolio $portfolio){
 
-        return new PortfolioIndexResource($portfolio);
+        return  response()->json(['success' => true,'data'=> new PortfolioIndexResource($portfolio)]);
     }
 
 
@@ -136,7 +136,7 @@ class PortfolioAPIController extends Controller
      *                    property="description",
      *                    type="string",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (

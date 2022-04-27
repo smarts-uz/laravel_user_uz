@@ -71,7 +71,6 @@ class PerformersController extends Controller
 
         $goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->get();
         $badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->get();
-
         return view('performers/executors-courier',
             [
                 'reviews' => $item->reviews,
@@ -90,10 +89,10 @@ class PerformersController extends Controller
         if ($request->input('user_id') != null) {
             $request->session()->put('given_id', $request->input('user_id'));
         }
-
         $task_id = $request->input('task_id');
-        $task_name = Task::where('id', $task_id)->first();
+
         if (isset($task_id)) {
+            $task_name = Task::where('id', $task_id)->first();
             $users_id = $request->session()->pull('given_id');
             $notification = Notification::create([
                 'user_id' => $users_id,
@@ -125,10 +124,11 @@ class PerformersController extends Controller
             'user' => $user,
             'task_count' => $task_count,
             'categories' => $item->categories,
+            'categories2' => $item->categories2,
             'users' =>$item->users,
             'cur_cat' =>$item->cur_cat,
             'tasks' =>$item->tasks,
-            'cf_id' => $cf_id, 
+            'cf_id' => $cf_id,
         ]);
 
     }

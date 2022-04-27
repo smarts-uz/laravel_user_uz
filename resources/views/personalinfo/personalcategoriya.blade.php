@@ -23,19 +23,21 @@
                                 </div>
                                 <div
                                     class="panel overflow-hidden hidden px-[18px] bg-white p-2">
-                                    @foreach (\TCG\Voyager\Models\Category::query()->where('parent_id', $category->id)->get() as $category2)
-                                        <label class="block">
-                                            @php
-                                                $cat_arr = explode(",",$user->category_id);
-                                                $res_c_arr = array_search($category2->id,$cat_arr);
-                                                //dd($res_c_arr);
-                                            @endphp
-                                            <input type="checkbox"
-                                                   @if($res_c_arr !== false) checked
-                                                   @endif name="category[]"
-                                                   value="{{$category2->id}}"
-                                                   class="mr-2 required:border-yellow-500">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
-                                        </label>
+                                    @foreach ($categories2 as $category2)
+                                        @if($category2->parent_id == $category->id)
+                                            <label class="block">
+                                                @php
+                                                    $cat_arr = explode(",",$user->category_id);
+                                                    $res_c_arr = array_search($category2->id,$cat_arr);
+                                                    //dd($res_c_arr);
+                                                @endphp
+                                                <input type="checkbox"
+                                                    @if($res_c_arr !== false) checked
+                                                    @endif name="category[]"
+                                                    value="{{$category2->id}}"
+                                                    class="mr-2 required:border-yellow-500">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
+                                            </label>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>

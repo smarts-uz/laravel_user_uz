@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PortfolioRequest extends FormRequest
+class BecomePerformerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +24,18 @@ class PortfolioRequest extends FormRequest
     public function rules()
     {
         return [
-            'comment' => 'required|string',
-            'description'=> 'required|string'
+            'name' => 'required|string',
+            'location' => 'required|string',
+            'born_date' => 'required|date',
         ];
     }
+
     public function messages()
     {
         return [
-            'comment.required' => "Comment is required",
-            'description.required' => "description is required",
+            'name.required'  => 'Name is required!',
+            'location.required'  => 'location is required!',
+            'born_date.required'  => 'born_date is required!',
         ];
     }
 }

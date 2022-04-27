@@ -210,7 +210,7 @@ class SearchAPIController extends Controller
     public function delete_task(Task $task)
     {
         if ($task->user_id != auth()->user()->id){
-            abort(403);
+            abort(403,"No Permission");
         }
         $task->responses()->delete();
         $task->reviews()->delete();

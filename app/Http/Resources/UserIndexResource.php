@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\WalletBalance;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\File;
 
@@ -21,6 +22,10 @@ class UserIndexResource extends JsonResource
         }
         $b = File::directories(public_path("Portfolio/{$this->name}"));
         $directories = array_map('basename', $b);
+        if (WalletBalance::query()->where('user_id', $this->id)->first() != null)
+            $balance = WalletBalance::query()->where('user_id', $this->id)->first()->balance;
+        else
+            $balance = 0;
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -43,9 +48,10 @@ class UserIndexResource extends JsonResource
             'phone_number_old' => $this->phone_number_old,
             'system_notification' =>$this->system_notification,
             'news_notification' => $this->news_notification,
-            'portfolios' => PortfolioResource::collection($this->portfolios()),
+            'portfolios' => PortfolioResource::collection($this->portfolios),
             'views' => $this->views,
-            'directories' => $directories
+            'directories' => $directories,
+            'wallet_balance' => $balance
         ];
     }
 }

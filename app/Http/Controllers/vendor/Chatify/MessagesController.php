@@ -2,61 +2,70 @@
 
 namespace App\Http\Controllers\vendor\Chatify;
 
+
+use App\Models\Chat\ChMessage;
+use App\Models\Chat\ChFavorite;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Response;
-use App\Models\ChMessage as Message;
-use App\Models\ChFavorite as Favorite;
-use App\Models\ChatifyMessenger as Chatify;
+use App\Models\Chat\ChatifyMessenger as Chatify;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Str;
+
 class MessagesController extends Controller
 {
     protected $perPage = 30;
     protected $messengerFallbackColor = '#2180f3';
+    /**
+     * @var Chatify
+     */
+    private $chatify;
+
+    public function __construct()
+    {
+        $this->chatify = new Chatify();
+    }
 
     /**
      * Authinticate the connection for pusher
      *
      * @param Request $request
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
 
     public function pusherAuth(Request $request)
     {
         // Auth data
         $authData = json_encode([
-            'user_id' => Auth::user()->id,
+            'user_id' => \auth()->id(),
             'user_info' => [
-                'name' => Auth::user()->name
+                'name' => \auth()->user()->name
             ]
         ]);
         // check if user authorized
         if (Auth::check()) {
-            return redirect()->back();
-//                Chatify::pusherAuth(
-//                $request['channel_name'],
-//                $request['socket_id'],
-//                $authData
-//            );
+            $auth =  $this->chatify->pusherAuth($request['channel_name'], $request['socket_id'], $authData);
+            return \response($auth, 200);
+//            return Http::post('http://' . env('WEBSOCKET_SERVER_HOST') . '/api/pusher/auth', [
+//                'channel_name' => $request['channel_name'],
+//                'socket_id' => $request['socket_id'],
+//                'authData' => $authData
+//            ])->json();
         }
         // if not authorized
-        return response()->json(['message'=>'Unauthorized'], 401);
+        return response()->json(['message' => 'Unauthorized'], 401);
     }
 
-    /**
-     * Returning the view of the app with the required data.
-     *
-     * @param int $id
-     * @return void
-     */
-    public function index( $id = null)
+
+    public function index($id = null)
     {
-        $routeName= FacadesRequest::route()->getName();
-        $type = in_array($routeName, ['user','group'])
+        $routeName = FacadesRequest::route()->getName();
+        $type = in_array($routeName, ['user', 'group'])
             ? $routeName
             : 'user';
 
@@ -73,17 +82,17 @@ class MessagesController extends Controller
      * Fetch data by id for (user/group)
      *
      * @param Request $request
-     * @return collection
+     * @return \Illuminate\Http\JsonResponse
      */
     public function idFetchData(Request $request)
     {
         // Favorite
-        $favorite = Chatify::inFavorite($request['id']);
+        $favorite = $this->chatify->inFavorite($request['id']);
 
         // User data
         if ($request['type'] == 'user') {
             $fetch = User::where('id', $request['id'])->first();
-            if($fetch){
+            if ($fetch) {
                 $userAvatar = asset('/storage/' . config('chatify.user_avatar.folder') . '/' . $fetch->avatar);
             }
         }
@@ -96,13 +105,7 @@ class MessagesController extends Controller
         ]);
     }
 
-    /**
-     * This method to make a links for the attachments
-     * to be downloadable.
-     *
-     * @param string $fileName
-     * @return void
-     */
+
     public function download($fileName)
     {
         $path = storage_path() . '/app/public/' . config('chatify.attachments.folder') . '/' . $fileName;
@@ -117,7 +120,7 @@ class MessagesController extends Controller
      * Send a message to database
      *
      * @param Request $request
-     * @return JSON response
+     * @return \Illuminate\Http\JsonResponse response
      */
     public function send(Request $request)
     {
@@ -132,13 +135,13 @@ class MessagesController extends Controller
         // if there is attachment [file]
         if ($request->hasFile('file')) {
             // allowed extensions
-            $allowed_images = Chatify::getAllowedImages();
-            $allowed_files  = Chatify::getAllowedFiles();
-            $allowed        = array_merge($allowed_images, $allowed_files);
+            $allowed_images = $this->chatify->getAllowedImages();
+            $allowed_files = $this->chatify->getAllowedFiles();
+            $allowed = array_merge($allowed_images, $allowed_files);
 
             $file = $request->file('file');
             // check file size
-            if ($file->getSize() < Chatify::getMaxUploadSize()) {
+            if ($file->getSize() < $this->chatify->getMaxUploadSize()) {
                 if (in_array($file->getClientOriginalExtension(), $allowed)) {
                     // get attachment name
                     $attachment_title = $file->getClientOriginalName();
@@ -158,7 +161,7 @@ class MessagesController extends Controller
         if (!$error->status) {
             // send to database
             $messageID = mt_rand(9, 999999999) + time();
-            Chatify::newMessage([
+            $this->chatify->newMessage([
                 'id' => $messageID,
                 'type' => $request['type'],
                 'from_id' => Auth::user()->id,
@@ -171,13 +174,13 @@ class MessagesController extends Controller
             ]);
 
             // fetch message to send it with the response
-            $messageData = Chatify::fetchMessage($messageID);
+            $messageData = $this->chatify->fetchMessage($messageID);
 
             // send to user using pusher
-            Chatify::push('private-chatify', 'messaging', [
+            $this->chatify->push('private-chatify', 'messaging', [
                 'from_id' => Auth::user()->id,
                 'to_id' => $request['id'],
-                'message' => Chatify::messageCard($messageData, 'default')
+                'message' => $this->chatify->messageCard($messageData, 'default')
             ]);
         }
 
@@ -185,7 +188,7 @@ class MessagesController extends Controller
         return Response::json([
             'status' => '200',
             'error' => $error,
-            'message' => Chatify::messageCard(@$messageData),
+            'message' => $this->chatify->messageCard($messageData),
             'tempID' => $request['temporaryMsgId'],
         ]);
     }
@@ -194,11 +197,11 @@ class MessagesController extends Controller
      * fetch [user/group] messages from database
      *
      * @param Request $request
-     * @return JSON response
+     * @return \Illuminate\Http\JsonResponse response
      */
     public function fetch(Request $request)
     {
-        $query = Chatify::fetchMessagesQuery($request['id'])->latest();
+        $query = $this->chatify->fetchMessagesQuery($request['id'])->latest();
         $messages = $query->paginate($request->per_page ?? $this->perPage);
         $totalMessages = $messages->total();
         $lastPage = $messages->lastPage();
@@ -211,7 +214,7 @@ class MessagesController extends Controller
 
         // if there is no messages yet.
         if ($totalMessages < 1) {
-            $response['messages'] ='<p class="message-hint center-el"><span>Say \'hi\' and start messaging</span></p>';
+            $response['messages'] = '<p class="message-hint center-el"><span>Say \'hi\' and start messaging</span></p>';
             return Response::json($response);
         }
         if (count($messages->items()) < 1) {
@@ -220,8 +223,8 @@ class MessagesController extends Controller
         }
         $allMessages = null;
         foreach ($messages->reverse() as $message) {
-            $allMessages .= Chatify::messageCard(
-                Chatify::fetchMessage($message->id)
+            $allMessages .= $this->chatify->messageCard(
+                $this->chatify->fetchMessage($message->id)
             );
         }
         $response['messages'] = $allMessages;
@@ -232,12 +235,12 @@ class MessagesController extends Controller
      * Make messages as seen
      *
      * @param Request $request
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
     public function seen(Request $request)
     {
         // make as seen
-        $seen = Chatify::makeSeen($request['id']);
+        $seen = $this->chatify->makeSeen($request['id']);
         // send the response
         return Response::json([
             'status' => $seen,
@@ -248,40 +251,43 @@ class MessagesController extends Controller
      * Get contacts list
      *
      * @param Request $request
-     * @return JSON response
+     * @return \Illuminate\Http\JsonResponse response
      */
     public function getContacts(Request $request)
     {
-        // get all users that received/sent message from/to [Auth user]
-        $users = Message::join('users',  function ($join) {
-            $join->on('ch_messages.from_id', '=', 'users.id')
-                ->orOn('ch_messages.to_id', '=', 'users.id');
-        })
-        ->where(function ($q) {
-            $q->where('ch_messages.from_id', Auth::user()->id)
-            ->orWhere('ch_messages.to_id', Auth::user()->id);
-        })
-        ->where('users.id','!=',Auth::user()->id)
-        ->select('users.*',DB::raw('MAX(ch_messages.created_at) max_created_at'))
-        ->orderBy('max_created_at', 'desc')
-        ->groupBy('users.id')
-        ->paginate($request->per_page ?? $this->perPage);
-
-        $usersList =$users->items();
-
-        if (count($usersList) > 0) {
-            $contacts = '';
-            foreach ($usersList as $user) {
-                $contacts .= Chatify::getContactItem($user);
+        $authUser = auth()->user();
+        $messages = ChMessage::query()->select('from_id', 'to_id')
+            ->where('to_id', auth()->id())
+            ->orWhere('from_id', \auth()->id())
+            ->orderByDesc('created_at')->distinct()->get()->toArray();
+        $userIdsList = [];
+        foreach ($messages as $message) {
+            if ($message['from_id'] == $authUser->id) {
+                $userIdsList[] = $message['to_id'];
+            } else {
+                $userIdsList[] = $message['from_id'];
             }
-        }else{
+        }
+        $userIdsList = array_unique($userIdsList);
+        if (($key = array_search($authUser->id, $userIdsList)) !== false) {
+            unset($userIdsList[$key]);
+        }
+
+        $chatItem = new Chatify();
+//        dd($chatItem->getLastMessageQuery($usersList[1]->id));
+        if (count($userIdsList) > 0) {
+            $contacts = '';
+            foreach ($userIdsList as $userId) {
+                $contacts .= $chatItem->getContactItem(User::query()->find($userId));
+            }
+        } else {
             $contacts = '<p class="message-hint center-el"><span>Your contact list is empty</span></p>';
         }
 
         return Response::json([
             'contacts' => $contacts,
-            'total' => $users->total() ?? 0,
-            'last_page' => $users->lastPage() ?? 1,
+//            'total' => $users->total() ?? 0,
+//            'last_page' => $users->lastPage() ?? 1,
         ], 200);
     }
 
@@ -289,18 +295,18 @@ class MessagesController extends Controller
      * Update user's list item data
      *
      * @param Request $request
-     * @return JSON response
+     * @return \Illuminate\Http\JsonResponse response
      */
     public function updateContactItem(Request $request)
     {
         // Get user data
         $user = User::where('id', $request['user_id'])->first();
-        if(!$user){
+        if (!$user) {
             return Response::json([
                 'message' => 'User not found!',
             ], 401);
         }
-        $contactItem = Chatify::getContactItem($user);
+        $contactItem = $this->chatify->getContactItem($user);
 
         // send the response
         return Response::json([
@@ -337,12 +343,12 @@ class MessagesController extends Controller
      * Get favorites list
      *
      * @param Request $request
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getFavorites(Request $request)
     {
         $favoritesList = null;
-        $favorites = Favorite::where('user_id', Auth::user()->id);
+        $favorites = ChFavorite::where('user_id', Auth::user()->id);
         foreach ($favorites->get() as $favorite) {
             // get user data
             $user = User::where('id', $favorite->favorite_id)->first();
@@ -369,9 +375,9 @@ class MessagesController extends Controller
     {
         $getRecords = null;
         $input = trim(filter_var($request['input'], FILTER_SANITIZE_STRING));
-        $records = User::where('id','!=',Auth::user()->id)
-                    ->where('name', 'LIKE', "%{$input}%")
-                    ->paginate($request->per_page ?? $this->perPage);
+        $records = User::where('id', '!=', Auth::user()->id)
+            ->where('name', 'LIKE', "%{$input}%")
+            ->paginate($request->per_page ?? $this->perPage);
         foreach ($records->items() as $record) {
             $getRecords .= view('Chatify::layouts.listItem', [
                 'get' => 'search_item',
@@ -379,7 +385,7 @@ class MessagesController extends Controller
                 'user' => $record,
             ])->render();
         }
-        if($records->total() < 1){
+        if ($records->total() < 1) {
             $getRecords = '<p class="message-hint center-el"><span>Nothing to show.</span></p>';
         }
         // send the response
@@ -398,7 +404,7 @@ class MessagesController extends Controller
      */
     public function sharedPhotos(Request $request)
     {
-        $shared = Chatify::getSharedPhotos($request['user_id']);
+        $shared = $this->chatify->getSharedPhotos($request['user_id']);
         $sharedPhotos = null;
 
         // shared with its template

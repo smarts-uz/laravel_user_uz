@@ -103,6 +103,8 @@ class ProfileController extends Controller
     {
         $service = new ProfileService();
         $item = $service->profileCash();
+        $goodReviews = auth()->user()->goodReviews()->whereHas('task')->whereHas('user')->get();
+        $badReviews = auth()->user()->badReviews()->whereHas('task')->whereHas('user')->get();
         return view('profile.cash',
         [
             'task_count' => $item->task_count,
@@ -110,9 +112,10 @@ class ProfileController extends Controller
             'balance' => $item->balance,
             'task' => $item->task,
             'about' => $item->about,
-            'task_count' => $item->task_count,
             'transactions' => $item->transactions,
             'user' => $item->user,
+            'goodReviews' => $goodReviews,
+            'badReviews' =>$badReviews
         ]);
     }
 
@@ -121,6 +124,7 @@ class ProfileController extends Controller
     {
         $profile = new ProfileService();
         $data = $profile->settingsEdit();
+
         return view('profile.settings', $data);
     }
 
@@ -260,7 +264,8 @@ class ProfileController extends Controller
     public function verificationCategory()
     {
         $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->get();
-        return view('personalinfo.personalcategoriya', compact('categories'));
+        $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
+        return view('personalinfo.personalcategoriya', compact('categories','categories2'));
     }
 
     public function createPortfolio(PortfolioRequest $request)
