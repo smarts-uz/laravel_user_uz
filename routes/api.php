@@ -53,12 +53,16 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post("account/change/email", [LoginAPIController::class,'change_email']); //end +
     Route::post("account/change/phone", [LoginAPIController::class,'change_phone_number']); //end +
 
-<<<<<<< HEAD
     Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']); //end +
     Route::post('/select-performer/{response}', [ResponseAPIController::class, 'selectPerformer']); //end -
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); //end +
     Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); //end +
     Route::put('/change-task/{task}', [TaskAPIController::class, 'changeTask']); //end -
+    Route::post('/become-performer', [PerformerAPIController::class,'becomePerformerData']);
+    Route::post('/become-performer-phone', [PerformerAPIController::class,'becomePerformerEmailPhone']);
+    Route::post('/become-performer-avatar', [PerformerAPIController::class,'becomePerformerAvatar']);
+    Route::post('/become-performer-category', [PerformerAPIController::class,'becomePerformerCategory']);
+    Route::get('/reviews', [PerformerAPIController::class, 'reviews']);
 
     Route::get('/custom-field-by-category/{category}', [CustomFieldAPIController::class, 'getByCategoryId']); //end -
     Route::get('/custom-field-values-by-task/{task}', [CustomFieldAPIController::class, 'getByTaskId']); //end -
@@ -68,47 +72,7 @@ Route::middleware('custom.auth:api')->group(function () {
         // Profile
         Route::get('/', [ProfileAPIController::class, 'index']); //end +
         Route::post('/change-avatar', [ProfileAPIController::class, 'avatar']); //end +
-
-        // Profile Cash
         Route::get('/cash', [ProfileAPIController::class, 'cash']); //end +
-
-        // Profile Settings
-        Route::get('/settings', [ProfileAPIController::class, 'editData']); //end +
-        Route::post('/settings/update', [ProfileAPIController::class, 'updateData']); //end
-        Route::post('/category/update', [ProfileAPIController::class, 'updateCategory']); //end
-        Route::post('/sessions/clear', [ProfileAPIController::class, 'clearSessions']); //end +
-        Route::post('/password/change', [ProfileAPIController::class, 'change_password']); //end +
-        Route::get('/notifications/subscription', [ProfileAPIController::class, 'userNotifications']); //end
-
-        // Profile Delete
-        Route::post('/delete', [ProfileAPIController::class, 'deleteUser']); //end +
-
-        // Profile Details
-        Route::post('/store/district', [ProfileAPIController::class, 'storeDistrict']); //end +
-        Route::post('/store/profile-photo', [ProfileAPIController::class, 'storeProfilePhoto']); //end +
-        Route::post('/description', [ProfileAPIController::class, 'editDesctiption']); //end +
-
-        // Profile Portfolio
-        Route::delete('/delete/portfolio/{portfolio}', [PortfolioAPIController::class, 'delete']); //end -
-        Route::post('/portfolio/create', [PortfolioAPIController::class, 'createPortfolio']); //end +
-
-        // comment
-        // testBase
-        // portfolio/{portfolio}
-=======
-    Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']);
-    Route::post('/select-performer/{response}', [ResponseAPIController::class, 'selectPerformer']);
-    Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']);
-    Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']);
-    Route::post('/become-performer', [PerformerAPIController::class,'becomePerformerData']);
-    Route::post('/become-performer-phone', [PerformerAPIController::class,'becomePerformerEmailPhone']);
-    Route::post('/become-performer-avatar', [PerformerAPIController::class,'becomePerformerAvatar']);
-    Route::post('/become-performer-category', [PerformerAPIController::class,'becomePerformerCategory']);
-    Route::get('/reviews', [PerformerAPIController::class, 'reviews']);
-    // Profile API
-    Route::prefix('/profile')->group(function () {
-        // Profile
-        Route::get('/', [ProfileAPIController::class, 'index']);
         Route::get('/portfolios', [ProfileAPIController::class, 'portfolios']);
         Route::get('/reviews', [ProfileAPIController::class, 'reviews']);
         Route::get('/balance', [ProfileAPIController::class, 'balance']);
@@ -117,16 +81,15 @@ Route::middleware('custom.auth:api')->group(function () {
         Route::post('/payment', [ProfileAPIController::class, 'payment']);
 
         Route::prefix('/settings')->group(function () {
-            Route::get('/', [ProfileAPIController::class, 'editData']);
+            Route::get('/', [ProfileAPIController::class, 'editData']); //end +
             Route::post('/update', [ProfileAPIController::class, 'updateData']);
             Route::get('/phone', [ProfileAPIController::class, 'phoneEdit']);
             Route::post('/phone/edit', [ProfileAPIController::class, 'phoneUpdate']);
-            Route::post('/password/change', [ProfileAPIController::class, 'change_password']);
+            Route::post('/password/change', [ProfileAPIController::class, 'change_password']); //end +
             Route::post('/notifications', [ProfileAPIController::class, 'userNotifications']);
         });
 
 
->>>>>>> 3949bb50905a704bf0fe2d3a9ce0a678f144f389
     });
 
 });
@@ -158,17 +121,11 @@ Route::post('ajax-request', [SearchAPIController::class, 'task_response']); //no
 Route::get('/detailed-tasks/{task}', [SearchAPIController::class, 'task']); //end
 
 //Categories
-<<<<<<< HEAD
-Route::get('/categories', [CategoriesAPIController::class, 'index']); //end -
+
+Route::get('/categories', [CategoriesAPIController::class, 'index']); //end
 Route::get('/categories-parent', [CategoriesAPIController::class, 'parents']); //end +
 Route::get('/categories/{id}', [CategoriesAPIController::class, 'show']); //end +
 Route::get('/category/search', [CategoriesAPIController::class, 'search']); //end +
-=======
-Route::get('/categories', [CategoriesAPIController::class, 'index']); //end
-Route::get('/categories-parent', [CategoriesAPIController::class, 'parents']); //end
-Route::get('/categories/{id}', [CategoriesAPIController::class, 'show']); //end
-Route::get('/category/search', [CategoriesAPIController::class, 'search']); //end
->>>>>>> 3949bb50905a704bf0fe2d3a9ce0a678f144f389
 
 //Performers
 Route::get('/performers', [PerformerAPIController::class, 'service']); //end +
