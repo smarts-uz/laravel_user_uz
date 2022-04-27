@@ -14,8 +14,12 @@ var x = $("#x").val();
 function init() {
 
     var suggestView0 = new ymaps.SuggestView('suggest0');
+    var suggestView1 = new ymaps.SuggestView('suggest1');
 
     suggestView0.events.add('select', function () {
+        myMapFunction();
+    });
+    suggestView1.events.add('select', function () {
         myMapFunction();
     });
     var alp =  ["B", "C", "D", "E", "F","G","H","I","J"];

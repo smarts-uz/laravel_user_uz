@@ -58,11 +58,11 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); //end +
     Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); //end +
     Route::put('/change-task/{task}', [TaskAPIController::class, 'changeTask']); //end -
-    Route::post('/become-performer', [PerformerAPIController::class,'becomePerformerData']); //end +
-    Route::post('/become-performer-phone', [PerformerAPIController::class,'becomePerformerEmailPhone']); //end +
-    Route::post('/become-performer-avatar', [PerformerAPIController::class,'becomePerformerAvatar']); //end +
-    Route::post('/become-performer-category', [PerformerAPIController::class,'becomePerformerCategory']); //end +
-    Route::get('/reviews', [PerformerAPIController::class, 'reviews']); //end
+    Route::post('/become-performer', [PerformerAPIController::class,'becomePerformerData']);
+    Route::post('/become-performer-phone', [PerformerAPIController::class,'becomePerformerEmailPhone']);
+    Route::post('/become-performer-avatar', [PerformerAPIController::class,'becomePerformerAvatar']);
+    Route::post('/become-performer-category', [PerformerAPIController::class,'becomePerformerCategory']);
+    Route::get('/reviews', [PerformerAPIController::class, 'reviews']);
 
     Route::get('/custom-field-by-category/{category}', [CustomFieldAPIController::class, 'getByCategoryId']); //end -
     Route::get('/custom-field-values-by-task/{task}', [CustomFieldAPIController::class, 'getByTaskId']); //end -
@@ -70,23 +70,26 @@ Route::middleware('custom.auth:api')->group(function () {
     // Profile API
     Route::prefix('/profile')->group(function () {
         // Profile
-        Route::get('/', [ProfileAPIController::class, 'index']); 
-        Route::post('/change-avatar', [ProfileAPIController::class, 'avatar']); //end +
-        Route::get('/cash', [ProfileAPIController::class, 'cash']); //end +
-        Route::get('/portfolios', [ProfileAPIController::class, 'portfolios']); //end -
-        Route::get('/reviews', [ProfileAPIController::class, 'reviews']); //end -
-        Route::get('/balance', [ProfileAPIController::class, 'balance']); //end -
-        Route::get('/description', [ProfileAPIController::class, 'description']); //end -
-        Route::post('/description/edit', [ProfileAPIController::class, 'editDesctiption']); //end -
+        Route::get('/', [ProfileAPIController::class, 'index']); //end +
+        Route::get('/portfolios', [ProfileAPIController::class, 'portfolios']);
+        Route::post('/portfolio/create', [ProfileAPIController::class, 'portfolioCreate']);
+        Route::get('/portfolio/{portfolio}/edit', [ProfileAPIController::class, 'portfolioEdit']);
+        Route::post('/portfolio/{portfolio}/update', [ProfileAPIController::class, 'portfolioUpdate']);
+        Route::post('/portfolio/{portfolio}/delete', [ProfileAPIController::class, 'portfolioDelete']);
+        Route::get('/reviews', [ProfileAPIController::class, 'reviews']);
+        Route::get('/balance', [ProfileAPIController::class, 'balance']);
+        Route::get('/description', [ProfileAPIController::class, 'description']);
+        Route::post('/description/edit', [ProfileAPIController::class, 'editDesctiption']);
         Route::post('/payment', [ProfileAPIController::class, 'payment']);
 
         Route::prefix('/settings')->group(function () {
             Route::get('/', [ProfileAPIController::class, 'editData']); //end +
-            Route::post('/update', [ProfileAPIController::class, 'updateData']); //end
-            Route::get('/phone', [ProfileAPIController::class, 'phoneEdit']); //end -
-            Route::post('/phone/edit', [ProfileAPIController::class, 'phoneUpdate']); //end -
+            Route::post('/update', [ProfileAPIController::class, 'updateData']);
+            Route::post('/change-avatar', [ProfileAPIController::class, 'avatar']);
+            Route::get('/phone', [ProfileAPIController::class, 'phoneEdit']);
+            Route::post('/phone/edit', [ProfileAPIController::class, 'phoneUpdate']);
             Route::post('/password/change', [ProfileAPIController::class, 'change_password']); //end +
-            Route::post('/notifications', [ProfileAPIController::class, 'userNotifications']); //end -
+            Route::post('/notifications', [ProfileAPIController::class, 'userNotifications']);
         });
 
 
@@ -148,7 +151,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/messages/chat/rate/{message}', [ConversationAPIController::class, 'rating']);
     Route::post('/messages/chat/close/{message}', [ConversationAPIController::class, 'close']);
     Route::post('/messages/chat/{id}', [ConversationAPIController::class, 'send']);
-    Route::get("users/activitiy/{user}", [VoyagerUserAPIController::class, "activity"]); 
+    Route::get("users/activitiy/{user}", [VoyagerUserAPIController::class, "activity"]);
     Route::get('/reports', [ReportAPIController::class, 'index']); //end
 });
 
@@ -162,5 +165,5 @@ Route::post('/paynet-transaction', [PaynetTransactionAPIController::class, 'crea
 
 Route::post('login/google/callback',[SocialAPIController::class,'loginWithGoogle']);
 
-Route::post('login/callback',[SocialAPIController::class,'loginWithFacebook']); //end
+Route::post('login/callback',[SocialAPIController::class,'loginWithFacebook']);
 

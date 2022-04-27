@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\ClickuzController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PaynetController;
+use App\Http\Requests\PortfolioRequest;
 use App\Http\Requests\UserPasswordRequest;
 use App\Http\Requests\UserUpdateDataRequest;
 use App\Http\Resources\PortfolioIndexResource;
@@ -64,10 +65,56 @@ class ProfileAPIController extends Controller
      */
     public function portfolios()
     {
-        $user = auth()->user();
+        $user = auth()->user()->load('portfolios');
         return response()->json([
             'success' => true,
-            'data' => PortfolioIndexResource::collection($user->portfolios)
+            'data' => PortfolioIndexResource::collection($user->portfolios())
+        ]);
+    }
+
+    public function portfolioCreate(PortfolioRequest $request)
+    {
+        $data = $request->validated();
+        $data['user_id'] = auth()->user()->id;
+        $data['image'] = session()->has('images') ? session('images') : '[]';
+        session()->forget('images');
+        $portfolio = Portfolio::create($data);
+        return response()->json([
+            'success' => true,
+            'data' => new PortfolioIndexResource($portfolio)
+        ]);
+    }
+
+    public function portfolioDelete(Portfolio $portfolio)
+    {
+        portfolioGuard($portfolio);
+        $portfolio->delete();
+
+        return response()->json([
+            'success' => true,
+            'data' => 'Portfolio deleted'
+        ]);
+    }
+
+    public function portfolioEdit(Portfolio $portfolio)
+    {
+        return response()->json([
+            'success' => true,
+            'data' => new PortfolioIndexResource($portfolio)
+        ]);
+    }
+
+    public function portfolioUpdate(PortfolioRequest $request, Portfolio $portfolio)
+    {
+        $data = $request->validated();
+        $data['user_id'] = auth()->user()->id;
+        $data['image'] = session()->has('images') ? session('images') : '[]';
+        session()->forget('images');
+        $portfolio->update($data);
+        $portfolio->save();
+        return response()->json([
+            'success' => true,
+            'data' => new PortfolioIndexResource($portfolio)
         ]);
     }
 
@@ -95,10 +142,10 @@ class ProfileAPIController extends Controller
      */
     public function reviews()
     {
-        $user = auth()->user();
+        $user = auth()->user()->load('reviews');
         return response()->json([
             'success' => true,
-            'data' => ReviewIndexResource::collection(Review::query()->where(['user_id' => $user->id])->get())
+            'data' => ReviewIndexResource::collection($user->reviews())
         ]);
     }
 
@@ -126,7 +173,7 @@ class ProfileAPIController extends Controller
      */
     public function balance()
     {
-        $user = auth()->user();
+        $user = auth()->user()->load('transactions');
         if (WalletBalance::query()->where('user_id', $user->id)->first() != null)
             $balance = WalletBalance::query()->where('user_id', $user->id)->first()->balance;
         else
@@ -135,7 +182,7 @@ class ProfileAPIController extends Controller
             'success' => true,
             'data' => [
                 'balance' => $balance,
-                'transactions' => TransactionResource::collection(All_transaction::query()->where(['user_id' => $user->id])->get())
+                'transactions' => $user->transactins()->paginate(15)
             ]
         ]);
     }
