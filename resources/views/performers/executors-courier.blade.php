@@ -205,6 +205,7 @@
                     <p>{{$user->description}}</p>
                 </div>
                 <div class="mt-8">
+                    <h1>{{__('Примеры работ')}}</h1>
                     <div class="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 w-full mx-auto">
                         @foreach($portfolios as $portfolio)
                             <a href="{{ route('profile.portfolio', $portfolio->id) }}"
