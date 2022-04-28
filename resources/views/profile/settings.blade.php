@@ -332,10 +332,17 @@
                                                         <span class="text-gray-500">браузер {{ $parser->parse($session->user_agent)->ua->family }}</span>
                                                     </div>
 
+                                                    @if($session!=null)
+                                                        <div class="my-3">
+                                                            <a href="{{route('profile.clear_sessions')}}" type="btn" class="focus:outline-none hover:bg-red-600 btn bg-red-400 uppercase p-2 text-white text-sm rounded-xl">удалить сеансы</a>
+                                                        </div>
+                                                    @endif
+
                                                 @endforeach
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -346,6 +353,7 @@
             {{-- right-side-bar --}}
             @include('auth.profile-side-info')
             {{-- tugashi o'ng tomon ispolnitel --}}
+
         </div>
     </div>
     <script>
