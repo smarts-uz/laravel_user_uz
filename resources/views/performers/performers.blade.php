@@ -224,7 +224,8 @@
                                     @auth
                                         @if($tasks->count() > 0)
                                             <a id="open{{$user->id}}">
-                                                <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white">
+                                                <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
+                                                onclick="$('#performer_id').val({{$user->id}}); console.log($('#performer_id').val())">
                                                     {{__('Предложить задание')}}</button>
                                             </a>
                                         @else
@@ -233,6 +234,7 @@
                                                     {{__('Предложить задание')}}</button>
                                             </a>
                                         @endif
+                                            <input type="hidden" id="performer_id" value="">
                                     @endauth
                                 </div>
                             </div>
@@ -300,14 +302,14 @@
                 </div>
             </div>
     </div>
-    
+
     <!-- Основной контент страницы -->
     <div id="modal" style="display: none">
         <div class="modal h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-50">
             <!-- modal -->
             <div class="bg-white rounded shadow-lg w-10/12 md:w-1/3 text-center py-12">
                 <!-- modal header -->
-               
+
                 <div class="text-2xl font-bold my-6">
                     {{__('Мы отправили ему уведомление.')}}
                 </div>
@@ -415,7 +417,7 @@
             var username = $(".{{$user->id}}").text();
             var namem = $(".namem").text('{{__('Вы предложили задание исполнителю')}}' + username);
             $(".modal_content").show();
-            let user_id = $('.{{$user->id}}').attr('id');
+            let user_id = $('#performer_id').val();//$('.{{$user->id}}').attr('id');
             $.ajax({
                 url: "/give-task",
                 type: "POST",

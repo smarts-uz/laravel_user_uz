@@ -55,7 +55,7 @@
                                         @elseif($notification->type == 4)
                                             <div class="w-full">{{__('Вас выбрали исполнителем  в задании')}}
                                                 <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}"  №{{$notification->task_id}}</a>
-                                                <a class="hover:text-blue-500" href="/performers/{{$notification->user_id}}"> {{$notification->user->name}}</a></div>
+                                                <a class="hover:text-blue-500" href="/performers/{{$notification->user_id}}"> {{$notification->user->name ?? 'None'}}</a></div>
                                         @elseif($notification->type == 5)
                                             <div class="w-full">{{__('Отклик к заданию')}}
                                                 <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}" №{{$notification->task_id}}</a>
