@@ -806,68 +806,62 @@
                 @endif
 
                 <div>
-                    @if(count($same_tasks) && $task->status >= 1)
+                    @if(count($same_tasks))
                         <div class=" my-3">
-
                             <h1 class="font-medium text-3xl mt-3">{{__('Похожиe задания')}}</h1>
                             @foreach($same_tasks as $item)
-
-                                <div
-                                    class="border-2 border-gray-500 rounded-xl bg-gray-50 hover:bg-blue-100 h-auto my-3">
-                                    <div class="grid grid-cols-5 w-11/12 mx-auto py-2">
-                                        <div class="sm:col-span-3 col-span-5 flex flex-row">
-                                            <div class="sm:mr-6 mr-3 w-1/6">
-                                                <img src="{{ asset('storage/'.$item->category->ico) }}"
-                                                     class="text-2xl float-left text-blue-400 sm:mr-4 mr-3 h-14 w-14 bg-blue-200 p-2 rounded-xl"/>
+                                @if ($item->user_id !=null)
+                                    <div class="border-2 border-gray-500 rounded-xl bg-gray-50 hover:bg-blue-100 h-auto my-3">
+                                        <div class="grid grid-cols-5 w-11/12 mx-auto py-2">
+                                            <div class="sm:col-span-3 col-span-5 flex flex-row">
+                                                <div class="sm:mr-6 mr-3 w-1/6">
+                                                    <img src="{{ asset('storage/'.$item->category->ico) }}"
+                                                        class="text-2xl float-left text-blue-400 sm:mr-4 mr-3 h-14 w-14 bg-blue-200 p-2 rounded-xl"/>
+                                                </div>
+                                                <div class="w-5/6">
+                                                    <a href="/detailed-tasks/{{$item->id}}"
+                                                    class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">{{ $item->name }}</a>
+                                                    <p class="text-sm">{{ count($addresses)? $addresses[0]->location:'' }}</p>
+                                                    @if($item->date_type == 1 || $item->date_type == 3)
+                                                        <p class="text-sm my-0.5">{{__('Начать')}} {{ $item->start_date }}</p>
+                                                    @endif
+                                                    @if($item->date_type == 3 || $item->date_type == 3)
+                                                        <p class="text-sm my-0.5">{{__('Закончить')}} {{ $item->end_date }}</p>
+                                                    @endif
+                                                    @if($item->oplata == 1)
+                                                        <p class="text-sm">{{__(' Оплата наличными')}}</p>
+                                                    @else
+                                                        <p class="text-sm">{{__('Оплата через карту')}}</p>
+                                                    @endif
+                                                </div>
                                             </div>
-                                            <div class="w-5/6">
-                                                <a href="/detailed-tasks/{{$item->id}}"
-                                                   class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">{{ $item->name }}</a>
-                                                <p class="text-sm">{{ count($addresses)? $addresses[0]->location:'' }}</p>
-                                                @if($item->date_type == 1 || $item->date_type == 3)
-                                                    <p class="text-sm my-0.5">{{__('Начать')}} {{ $item->start_date }}</p>
-                                                @endif
-                                                @if($item->date_type == 3 || $item->date_type == 3)
-                                                    <p class="text-sm my-0.5">{{__('Закончить')}} {{ $item->end_date }}</p>
-                                                @endif
-                                                @if($item->oplata == 1)
-                                                    <p class="text-sm">{{__(' Оплата наличными')}}</p>
+                                            <div class="sm:col-span-2 col-span-5 sm:text-right text-left sm:ml-0 ml-16">
+                                                <p class="sm:text-lg text-sm font-semibold text-gray-700">
+                                                    @if ( __('до') == 'gacha' )
+                                                        {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
+                                                    @else
+                                                        {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
+                                                    @endif
+                                                </p>
+                                                <span class="text-sm sm:mt-5 sm:mt-1 mt-0">{{__('Откликов')}} -
+                                                    @if ($item->response_count>0)
+                                                        {{  $item->response_count }}
+                                                    @else
+                                                        0
+                                                    @endif
+                                                </span>
+                                                <p class="text-sm sm:mt-1 mt-0">{{ $item->category->name }}</p>
+                                                @if (Auth::check() && Auth::user()->id == $item->user->id)
+                                                    <a href="/profile"
+                                                    class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $item->user?$item->user->name:'' }}</a>
                                                 @else
-                                                    <p class="text-sm">{{__('Оплата через карту')}}</p>
+                                                    <a href="/performers/{{$item->user->id}}"
+                                                    class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $item->user?$item->user->name:'' }}</a>
                                                 @endif
                                             </div>
-                                        </div>
-                                        <div class="sm:col-span-2 col-span-5 sm:text-right text-left sm:ml-0 ml-16">
-                                            <p class="sm:text-lg text-sm font-semibold text-gray-700">
-                                                @if ( __('до') == 'gacha' )
-                                                    {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
-                                                @else
-                                                    {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
-                                                @endif
-                                            </p>
-                                            <span class="text-sm sm:mt-5 sm:mt-1 mt-0">{{__('Откликов')}} -
-                                                @if ($item->response_count>0)
-                                                    {{  $item->response_count }}
-                                                @else
-                                                    0
-                                                @endif
-                                            </span>
-                                            <p class="text-sm sm:mt-1 mt-0">{{ $item->category->name }}</p>
-                                            {{-- @if (Auth::check() && Auth::user()->id == $item->user->id)
-                                                <a href="/profile"
-                                                   class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $item->user?$item->user->name:'' }}</a>
-                                            @else
-                                                <a href="/performers/{{$item->user->id}}"
-                                                   class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $item->user?$item->user->name:'' }}</a>
-                                            @endif --}}
-                                            <a href="#"
-                                                class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $item->user?$item->user->name:'' }}</a>
-                                            
-                                            
                                         </div>
                                     </div>
-                                </div>
-
+                                @endif
                             @endforeach
                         </div>
                     @endif
