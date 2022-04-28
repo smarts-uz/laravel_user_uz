@@ -7761,6 +7761,7 @@
                                 "name_task",
                                 "type",
                                 "is_read",
+                                "performer_id",
                                 "notification_belongsto_user_relationship",
                                 "notification_hasmany_service_relationship"
                             ],

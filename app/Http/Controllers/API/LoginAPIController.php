@@ -48,7 +48,7 @@ class LoginAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/account/verification/email",
-     *     tags={"LoginAPI"},
+     *     tags={"Verification"},
      *     summary="Email verification",
      *     @OA\Response (
      *          response=200,
@@ -76,7 +76,7 @@ class LoginAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/account/verification/phone",
-     *     tags={"LoginAPI"},
+     *     tags={"Verification"},
      *     summary="Phone verification",
      *     @OA\Response (
      *          response=200,
@@ -138,7 +138,7 @@ class LoginAPIController extends Controller
     /**
      * @OA\Post(
      *     path="/api/account/verification/phone",
-     *     tags={"LoginAPI"},
+     *     tags={"Verification"},
      *     summary="Verification phone",
      *     @OA\RequestBody (
      *         required=true,
@@ -189,7 +189,7 @@ class LoginAPIController extends Controller
     /**
      * @OA\Post(
      *     path="/api/account/change/email",
-     *     tags={"LoginAPI"},
+     *     tags={"Verification"},
      *     summary="Change email",
      *     @OA\RequestBody (
      *         required=true,
@@ -255,7 +255,7 @@ class LoginAPIController extends Controller
     /**
      * @OA\Post(
      *     path="/api/account/change/phone",
-     *     tags={"LoginAPI"},
+     *     tags={"Verification"},
      *     summary="Change phone number",
      *     @OA\RequestBody (
      *         required=true,

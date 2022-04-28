@@ -8,6 +8,7 @@ use App\Models\CustomFieldsValue;
 use App\Models\Notification;
 use App\Models\Task;
 use App\Models\Review;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use App\Services\Task\CreateService;
 use Illuminate\Support\Arr;
@@ -73,10 +74,15 @@ class UpdateController extends Controller
             ]);
             Notification::create([
                 'user_id' => $task->user_id,
+                'performer_id' => $task->performer_id,
                 'task_id' => $task->id,
                 'name_task' => $task->name,
                 'description' => 1,
                 'type' => Notification::SEND_REVIEW
+            ]);
+
+            NotificationService::sendNotificationRequest([$task->performer_id], [
+                'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
             ]);
         }catch (\Exception $exception){
             DB::rollBack();

@@ -296,17 +296,17 @@ function tasks_list_all(data) {
                             </div>
                             <div class="w-5/6">
                                 <a href="/detailed-tasks/` + data.id + `" class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">` + data.name + `</a>
-                                <p class="text-sm  location ">` + (data.addresses.length ? data.addresses[0].location : 'Можно выполнить удаленно') + `</p>
-                                <p class="text-sm my-0.5">` + (data.date_type == 1 ? 'Начать ' + data.start_date  : '') + `</p>
-                                <p class="text-sm my-0.5">` + (data.date_type == 2 ? 'Закончить ' + data.end_date  : '') + `</p>
-                                <p class="text-sm my-0.5">` + (data.date_type == 3 ? 'Начать ' + data.start_date +'</br>'+ 'Закончить ' + data.end_date : '') + `</p>
-                                <p class="text-sm ">` + (data.oplata == 1 ? 'Оплата наличными' : 'Оплата через карту') + `</p>
-                            </div>
-                        </div>
+                                <p class="text-sm  location ">` + (data.addresses.length ? data.addresses[0].location : Lang.get('Можно выполнить удаленно')) + `</p>
+                                <p class="text-sm my-0.5">` + (data.date_type == 1 ? Lang.get('Начать работу') +' '+ data.start_date  : '') + `</p>
+                                <p class="text-sm my-0.5">` + (data.date_type == 2 ? Lang.get('Закончить работу') +' '+ data.end_date  : '') + `</p>
+                                <p class="text-sm my-0.5">` + (data.date_type == 3 ? Lang.get('Начать') +' '+ data.start_date +'</br>'+ Lang.get('Закончить') +' '+ data.end_date : '') + `</p>
+                                <p class="text-sm ">` + (data.oplata == 1 ? Lang.get('Оплата наличными') : Lang.get('Оплата через карту')) + `</p>
+                            </div>                            
+                        </div>                        
                         <div class="sm:col-span-2 col-span-5 sm:text-right text-left sm:ml-0 ml-16" id="about">
                             <p  class="sm:text-lg text-sm font-semibold text-gray-700">до ` + data.budget + ` сум</p>
-                            <span  class="text-sm sm:mt-5 sm:mt-1 mt-0">Откликов - ` + data.responses.length + `</span>
-                            <p class="text-sm sm:mt-1 mt-0">` + data.category_name + `</p>
+                            <span  class="text-sm sm:mt-5 sm:mt-1 mt-0">`+ Lang.get('Откликов') +' - '+ data.responses.length + `</span>
+                            <p class="text-sm sm:mt-1 mt-0">` + Lang.get(data.category_name) + `</p>
                             <a href="/performers/` + data.userid + `" class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">` + data.user_name + `</a>
                         </div>
                     </div>

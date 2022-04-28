@@ -165,7 +165,7 @@ class UserController extends Controller
                 auth()->login($user);
 
                 // send notification
-                NotificationService::sendTaskNotification($task);
+                NotificationService::sendTaskNotification($task, $user->id);
 
                 return redirect()->route('searchTask.task', $request->for_ver_func);
             } else {
