@@ -4,6 +4,7 @@
 namespace App\Services\Task;
 
 
+use App\Models\Notification;
 use App\Models\Task;
 use App\Models\TaskResponse;
 use App\Models\WalletBalance;
@@ -82,6 +83,18 @@ class ResponseService
             'performer_description' => $performer->description,
             'performer_avatar' => asset('storage/' . $performer->avatar),
         ];
+
+        Notification::query()->create([
+            'user_id' => $response_user->id,
+            'performer_id' => $performer->id,
+            'task_id' => $response->task_id,
+            'name_task' => $task->name,
+            'description' => '123',
+            'type' => 7,
+        ]);
+        NotificationService::sendNotificationRequest([$performer->id], [
+            'url' => 'detailed-tasks' . '/' . $response->task_id, 'name' => $task->name, 'time' => 'recently'
+        ]);
         return ['success' => true,'message' => __('success'), 'data' => $data];
     }
 

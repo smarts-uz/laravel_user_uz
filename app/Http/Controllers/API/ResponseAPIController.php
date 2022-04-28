@@ -58,7 +58,7 @@ class ResponseAPIController extends Controller
     /**
      * @OA\Post(
      *     path="/api/select-performer/{response}",
-     *     tags={"ResponseAPI"},
+     *     tags={"Responses"},
      *     summary="Select performer",
      *     @OA\Parameter (
      *          in="path",

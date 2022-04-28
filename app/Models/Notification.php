@@ -13,7 +13,7 @@ class Notification extends Model
     use Translatable;
 
     protected $translatable = ['description'];
-    protected $fillable = ['user_id', 'service_id', 'task_id', 'cat_id', 'description', 'name_task', 'type', 'is_read'];
+    protected $fillable = ['user_id', 'performer_id', 'service_id', 'task_id', 'cat_id', 'description', 'name_task', 'type', 'is_read'];
 
     public const TASK_CREATED = 1;
     public const NEWS_NOTIFICATION = 2;
@@ -25,5 +25,13 @@ class Notification extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function scopeNewTask($query, $user)
+    {
+        if ($user->role_id == 2) {
+            return $query->orWhere('type', 1);
+        }
+        return $query;
     }
 }

@@ -310,10 +310,17 @@
                                      alt="avatar">
                             </div>
                             <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
-                                <a href="{{ route('performers.performer', auth()->user()->id) }}"
-                                   class="text-blue-400 text-xl font-semibold hover:text-blue-500">
-                                    {{ auth()->user()->name }}
-                                </a>
+                                @if (Auth::check() && Auth::user()->id == auth()->user()->id)
+                                    <a href="/profile"
+                                        class="text-2xl text-blue-500 hover:text-red-500">
+                                        {{ auth()->user()->name }}
+                                    </a>
+                                @else
+                                    <a href="{{ route('performers.performer', auth()->user()->id) }}"
+                                        class="text-blue-400 text-xl font-semibold hover:text-blue-500">
+                                        {{ auth()->user()->name }}
+                                    </a>
+                                @endif
                                 <input type="text" name="performer_id" class="hidden"
                                        value="">
                                     <div class="text-gray-700 sm:mt-4 mt-2">
@@ -439,10 +446,17 @@
                                          @endif alt="avatar">
                                 </div>
                                 <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
-                                    <a href="/performers/{{ $selected->performer->id }}"
-                                       class="text-blue-400 text-xl font-semibold hover:text-blue-500">
+                                    @if (Auth::check() && Auth::user()->id == $selected->performer->id)
+                                        <a href="/profile"
+                                        class="text-2xl text-blue-500 hover:text-red-500">
                                         {{ $selected->performer->name }}
-                                    </a>
+                                        </a>
+                                    @else
+                                        <a href="/performers/{{ $selected->performer->id }}"
+                                            class="text-blue-400 text-xl font-semibold hover:text-blue-500">
+                                            {{ $selected->performer->name }}
+                                        </a>
+                                    @endif
                                     <input type="text" name="performer_id" class="hidden"
                                            value="{{ $selected->performer_id }}">
                                     <div class="text-gray-700 sm:mt-4 mt-2">
@@ -532,7 +546,7 @@
 
                                         <div
                                             class="text-[17px] text-gray-500 my-5">{{$selected->description}}</div>
-                                        @if($selected->not_free == 1)
+                                        @if($selected->not_free == 1 || $task->user_id == auth()->id())
                                             <div
                                                 class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} {{$selected->performer->phone_number}}</div>
                                         @endif
@@ -584,10 +598,16 @@
                                              @endif alt="avatar">
                                     </div>
                                     <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
-                                        <a href="/performers/{{ $response->performer->id }}"
-                                           class="text-blue-400 text-xl font-semibold hover:text-blue-500">
-                                            {{ $response->performer->name }}
-                                        </a>
+                                        @if (Auth::check() && Auth::user()->id == $response->performer->id)
+                                            <a href="/profile"
+                                            class="text-2xl text-blue-500 hover:text-red-500">{{ $response->performer->name }}
+                                            </a>
+                                        @else
+                                            <a href="/performers/{{ $response->performer->id }}"
+                                                class="text-blue-400 text-xl font-semibold hover:text-blue-500">
+                                                {{ $response->performer->name }}
+                                            </a>
+                                        @endif
                                         <input type="text" name="performer_id" class="hidden"
                                                value="{{ $response->performer_id }}">
                                         <div class="text-gray-700 sm:mt-4 mt-2">
@@ -726,7 +746,64 @@
                     @endif
                     <hr>
                 @endauth
-
+                
+                @if ($task->status == 4)
+                    @foreach ($respons_reviews as $respons_review)
+                        @if ($respons_review->good_bad==1 && $respons_review->task_id == $task->id)
+                            <div class="my-6">
+                                <div class="flex flex-row gap-x-2 my-4">
+                                    <img src="@if ($task->user->avatar == ''){{ asset("storage/images/default.png") }}
+                                    @else{{asset("storage/{$task->user->avatar}") }}" @endif alt="#"
+                                        class="w-12 h-12 border-2 rounded-lg border-gray-500">
+                                    <div class="flex flex-col">
+                                       @if (Auth::check() && Auth::user()->id == $task->user->id)
+                                            <a href="/profile"
+                                            class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
+                                            </a>
+                                        @else
+                                            <a href="/performers/{{$task->user->id}}"
+                                            class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
+                                            </a>
+                                        @endif
+                                        <i class="far fa-thumbs-up text-gray-400"></i>
+                                    </div>
+                                </div>
+                                <div class="w-full py-3 px-6 bg-yellow-50 rounded-xl">
+                                    <p>{{__('Задание')}} <a href="#"
+                                                            class="hover:text-red-400 border-b border-gray-300 hover:border-red-400"> {{$task->name}} </a> {{__('выполнено')}}</p>
+                                    <p class="border-t-2 border-gray-300 my-3 pt-3"><i class="far fa-thumbs-up text-gray-400 mr-3"></i>{{$respons_review->description}}</p>
+                                    <p class="text-right">{{$respons_review->created}}</p>
+                                </div>
+                            </div>
+                        @elseif ($respons_review->good_bad==0 && $respons_review->task_id == $task->id)
+                            <div class="my-6">
+                                <div class="flex flex-row gap-x-2 my-4">
+                                    <img src="@if ($task->user->avatar == ''){{ asset("storage/images/default.png") }}
+                                    @else{{asset("storage/{$task->user->avatar}") }}" @endif alt="#"
+                                        class="w-12 h-12 border-2 rounded-lg border-gray-500">
+                                    <div class="flex flex-col">
+                                       @if (Auth::check() && Auth::user()->id == $task->user->id)
+                                            <a href="/profile"
+                                            class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
+                                            </a>
+                                        @else
+                                            <a href="/performers/{{$task->user->id}}"
+                                            class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
+                                            </a>
+                                        @endif
+                                        <i class="far fa-thumbs-down text-gray-400"></i>
+                                    </div>
+                                </div>
+                                <div class="w-full py-3 px-6 bg-yellow-50 rounded-xl">
+                                    <p>{{__('Задание')}} <a href="#"
+                                                            class="hover:text-red-400 border-b border-gray-300 hover:border-red-400"> {{$task->name}} </a> {{__('выполнено')}}</p>
+                                    <p class="border-t-2 border-gray-300 my-3 pt-3"><i class="far fa-thumbs-down text-gray-400 mr-3"></i>{{$respons_review->description}}</p>
+                                    <p class="text-right">{{$respons_review->created}}</p>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+                @endif
 
                 <div>
                     @if(count($same_tasks))
