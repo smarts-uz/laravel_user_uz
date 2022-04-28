@@ -452,7 +452,7 @@
                                         {{ $selected->performer->name }}
                                         </a>
                                     @else
-                                        <a href="/performers/{{ $selected->performer->id }}"
+                                        <a href="/performers/{{$selected->performer->id}}"
                                             class="text-blue-400 text-xl font-semibold hover:text-blue-500">
                                             {{ $selected->performer->name }}
                                         </a>
@@ -603,7 +603,7 @@
                                             class="text-2xl text-blue-500 hover:text-red-500">{{ $response->performer->name }}
                                             </a>
                                         @else
-                                            <a href="/performers/{{ $response->performer->id }}"
+                                            <a href="/performers/{{$response->performer->id}}"
                                                 class="text-blue-400 text-xl font-semibold hover:text-blue-500">
                                                 {{ $response->performer->name }}
                                             </a>
@@ -857,7 +857,7 @@
                                                 <a href="/profile"
                                                    class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $item->user?$item->user->name:'' }}</a>
                                             @else
-                                                <a href="/performers/{$item->user->id}"
+                                                <a href="/performers/{{$item->user->id}}"
                                                    class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $item->user?$item->user->name:'' }}</a>
                                             @endif
                                         </div>
