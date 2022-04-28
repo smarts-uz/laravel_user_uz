@@ -183,7 +183,6 @@ return [
     'search_shown' => "Показано",
     'search_shown2' => "заданий",
     'search_showMore' => "Показать ещё",
-    'search_allCat' => "Все категории",
     'search_tasksNotFound' => "Задания не найдены",
     'search_tryAnOther' => "Попробуйте уточнить запрос или выбрать другие категории",
     'search_sportMaster' => "Спортмастер",
@@ -196,7 +195,7 @@ return [
     'search_byHurry' => "по срочности",
     'search_byRemote' => "по удалённости",
     'search_km' => "км",
-    'search-none' => "нет"
+    'search-none' => "нет",
     // search.blade end
 
     // search2.blade start
@@ -831,7 +830,7 @@ return [
     'signin_registration' => "  Зарегистрируйтесь",
     'singin_withoutUs' => "Еще не с нами?",
     'singin_button' => "Войти",
-    'singin_emailError' => "Электронная почта или пароль неверны. Попробуй снова"
+    'singin_emailError' => "Электронная почта или пароль неверны. Попробуй снова",
     // signin blade ended
 
     // signup blade start
@@ -1012,7 +1011,7 @@ return [
     'faq_text' => "Перейти на сайт Universal Services",
     'faq_text1' => "Ответы на частые вопросы и рекомендации от Universal Services",
     'faq_text2' => "Мы используем Intercom",
-    'faq_text3' => "Поиск ответов"
+    'faq_text3' => "Поиск ответов",
     //faq faq blade ended
 
     //age blade started
