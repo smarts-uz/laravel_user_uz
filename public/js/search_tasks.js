@@ -281,6 +281,7 @@ function dataAjaxFindThree(dataA, str1, str2, num) {
         }
 }
 
+/*
 function tasks_list_all(data) {
     $(".show_tasks").empty();
     $.each(data, function(index, data) {
@@ -307,6 +308,42 @@ function tasks_list_all(data) {
                             <p  class="sm:text-lg text-sm font-semibold text-gray-700">до ` + data.budget + ` сум</p>
                             <span  class="text-sm sm:mt-5 sm:mt-1 mt-0">`+ Lang.get('Откликов') +' - '+ data.responses.length + `</span>
                             <p class="text-sm sm:mt-1 mt-0">` + Lang.get(data.category_name) + `</p>
+                            <a href="/performers/` + data.userid + `" class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">` + data.user_name + `</a>
+                        </div>
+                    </div>
+                </div>
+            </div>`,
+        )
+    });
+}
+*/
+
+function tasks_list_all(data) {
+    $(".show_tasks").empty();
+    $.each(data, function(index, data) {
+        dl++;
+        let json = JSON.parse(data.address);
+        $(".show_tasks").append(
+            `<div class="sort-table print_block my-3" id="` + data.id + `" hidden>
+                <div class="w-full border border-2 rounded-xl p-2 hover:bg-blue-100 h-auto item md:overflow-hidden" data-nomer="`+ data.start_date +`">
+                    <div class="grid grid-cols-5 w-11/12 mx-auto my-1">
+                        <div class="sm:col-span-3 col-span-5 flex flex-row" id="results">
+                            <div class="sm:mr-6 mr-3 w-1/6">
+                                <img src="storage/` + data.icon.replace("\\","/") + `" class="text-2xl float-left text-blue-400 sm:mr-4 mr-3 h-14 w-14 bg-blue-200 p-2 rounded-xl"/>
+                            </div>
+                            <div class="w-5/6">
+                                <a href="/detailed-tasks/` + data.id + `" class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">` + data.name + `</a>
+                                <p class="text-sm  location ">` + (data.addresses.length ? data.addresses[0].location : 'Можно выполнить удаленно') + `</p>
+                                <p class="text-sm my-0.5">` + (data.date_type == 1 ? 'Начать работу ' + data.start_date  : '') + `</p>
+                                <p class="text-sm my-0.5">` + (data.date_type == 2 ? 'Закончить работу ' + data.end_date  : '') + `</p>
+                                <p class="text-sm my-0.5">` + (data.date_type == 3 ? 'Начать ' + data.start_date +`</br>` + 'Закончить ' + data.end_date : '') + `</p>
+                                <p class="text-sm ">` + (data.oplata == 1 ? 'Оплата наличными' : 'Оплата через карту') + `</p>
+                            </div>                            
+                        </div>                        
+                        <div class="sm:col-span-2 col-span-5 sm:text-right text-left sm:ml-0 ml-16" id="about">
+                            <p  class="sm:text-lg text-sm font-semibold text-gray-700">до ` + data.budget + ` сум</p>
+                            <span  class="text-sm sm:mt-5 sm:mt-1 mt-0">`+ 'Откликов' +' - '+ data.responses.length + `</span>
+                            <p class="text-sm sm:mt-1 mt-0">` + data.category_name + `</p>
                             <a href="/performers/` + data.userid + `" class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">` + data.user_name + `</a>
                         </div>
                     </div>
