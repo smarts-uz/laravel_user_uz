@@ -164,62 +164,22 @@ id="modal-id4">
                 method="post">
                 @csrf
                 <header>
-                    <h2 class="font-semibold text-2xl mb-4">{{__('Добавить предложение к заказу')}}</h2>
+                    <h2 class="font-semibold text-3xl mb-4 text-center">{{__('Откликнуться')}}</h2>
                 </header>
                 <main>
+                    <span class="text-base">{{('Описание отклика')}}</span>
                 <textarea required
-                          class="resize-none rounded-md w-full focus:outline-none  focus:border-yellow-500 border border p-4  transition duration-200 my-4"
+                          class="resize-none rounded-md w-full focus:outline-none  focus:border-yellow-500 border border-gray-300 p-4  transition duration-200 mb-4"
                           type="text" id="form8" rows="4"
                           name="description"></textarea>
                     <p id="text1" class="hidden text-lg">
                         {{__(' Если заказчик захочет с вами связаться, мы автоматически
                         спишем стоимость контакта с вашего счёта')}}</p>
-                    <div class="my-2">
-                        <label class=" px-2">
-                            <input type="checkbox"
-                                   name="notificate"
-                                   class="mr-2 my-3 focus:outline-none  focus:border-yellow-500">{{__('Уведомить меня, если исполнителем')}}
-                            <br>
-                        </label>
-                        <label class="px-2">
-                            <input
-                                class="focus:outline-none  focus:border-yellow-500   my-3 coupon_question mr-2"
-                                type="checkbox"
-                                name="coupon_question"
-                                value="1"
-                                onchange="valueChanged()"/>{{__('Указать время актуальности предложения')}}
-                        </label>
-                        <input type="number" class="hidden" id="not_free" name="not_free">
-                        <br>
-                        <select name="response_time"
-                                id="AttorneyEmpresa"
-                                class="answer text-[16px] focus:outline-none border-gray-500 border rounded-lg hover:bg-gray-100 my-2 py-2 px-5 text-gray-500"
-                                style="display: none">
-                            <option value="1" class="">
-                                1 {{__('часов')}}</option>
-                            <option value="2" class="">
-                                2 {{__('часов')}}</option>
-                            <option value="4" class="">
-                                4 {{__('часов')}}</option>
-                            <option value="6" class="">
-                                6 {{__('часов')}}</option>
-                            <option value="8" class="">
-                                8 {{__('часов')}}</option>
-                            <option value="10" class="">
-                                10 {{__('часов')}}</option>
-                            <option value="12" class="">
-                                12 {{__('часов')}}</option>
-                            <option value="24" class="">
-                                24 {{__('часов')}}</option>
-                            <option value="48" class="">
-                                48 {{__('часов')}}</option>
-                        </select>
-                    </div>
                     <label>
                         <input type="text"
                                onkeypress='validate(event)'
                                checked name="price"
-                               class="border rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 my-2">UZS
+                               class="border border-gray-300 rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 my-2">UZS
                         <input type="text" name="pay"
                                class="pays border rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 my-2 hidden"
                                value="0">

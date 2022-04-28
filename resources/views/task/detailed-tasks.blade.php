@@ -806,7 +806,7 @@
                 @endif
 
                 <div>
-                    @if(count($same_tasks))
+                    @if(count($same_tasks) && $task->status >= 1)
                         <div class=" my-3">
 
                             <h1 class="font-medium text-3xl mt-3">{{__('Похожиe задания')}}</h1>
