@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ClickuzService;
 use Illuminate\Http\Request;
 use Teamprodev\Laravel_Payment_Clickuz\Models\Complete;
 use Teamprodev\Laravel_Payment_Clickuz\Models\ClickTransaction;
@@ -23,6 +24,7 @@ class ClickuzController extends Controller
         ])->getBody();
 
     //   return $res;
+
     }
 
     public function pay(Request $request){
@@ -35,39 +37,44 @@ class ClickuzController extends Controller
         return redirect()->to("https://my.click.uz/services/pay?service_id=$service_id&merchant_id=$merchant_id&amount=$amount.00&transaction_param=$article_id&return_url=$return_url");
     }
 
-    public function get_info(Request $request){
-        //Get_info parametrs
-        $doc = User::where('id', $request->params['user_id'])->first();
 
-        if($doc !== NULL){
 
-        $wbal = WalletBalance::where('user_id', $doc->id)->first();
+    public function get_info(Request $request)
+    {
 
-        if(isset($wbal)){
-            $wallbal = $wbal->balance;
-        }else{
-            $wallbal = 0;
-        }
+            //Get_info parametrs
+            $doc = User::where('id', $request->params['user_id'])->first();
 
-        $res = array(
-            'error' => 0,
-            'error_note' => 'Успешно',
-            'params' => array(
-                'user_name' => $doc->name,
-                'user_current_balance' => $wallbal
-            )
-            );
-        }else{
-            $res = array(
-                'error' => -1,
-                'error_note' => 'Абонент не найден'
+            if($doc !== NULL){
+
+                $wbal = WalletBalance::where('user_id', $doc->id)->first();
+
+                if(isset($wbal)){
+                    $wallbal = $wbal->balance;
+                }else{
+                    $wallbal = 0;
+                }
+
+                $res = array(
+                    'error' => 0,
+                    'error_note' => 'Успешно',
+                    'params' => array(
+                        'user_name' => $doc->name,
+                        'user_current_balance' => $wallbal
+                    )
                 );
-        }
+            }else{
+                $res = array(
+                    'error' => -1,
+                    'error_note' => 'Абонент не найден'
+                );
+            }
             // return json_encode($res, JSON_UNESCAPED_UNICODE);
 
             return response()->json($res, 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
+    }
 
-            }
+
 
     public function prepare(Request $request){
 
@@ -96,6 +103,10 @@ class ClickuzController extends Controller
     }
 
 
+
+
+
+
     public function complete(Request $request){
 
         $new_complete = Complete::create([
@@ -112,9 +123,14 @@ class ClickuzController extends Controller
             'sign_string'=> $request->get("sign_string"),
         ]);
 
-return ClickuzController::statusup($new_complete);
+        return ClickuzController::statusup($new_complete);
 
     }
+
+
+
+
+   
 
     public function statusup($new_complete){
 
@@ -150,5 +166,9 @@ return ClickuzController::statusup($new_complete);
         return ['click_trans_id' => $click_trans_id,'merchant_trans_id' => $merchant_trans_id,'merchant_confirm_id' => $merchant_confirm_id,'error' => $error,'error_note' => $error_note];
 
     }
+
+
+
+
 
 }
