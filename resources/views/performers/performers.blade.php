@@ -225,7 +225,7 @@
                                         @if($tasks->count() > 0)
                                             <a id="open{{$user->id}}">
                                                 <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
-                                                onclick="$('#performer_id').val({{$user->id}}); console.log($('#performer_id').val())">
+                                                onclick="$('#performer_id').val({{$user->id}});">
                                                     {{__('Предложить задание')}}</button>
                                             </a>
                                         @else
