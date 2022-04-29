@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Category;
 use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
@@ -92,6 +93,15 @@ class UserIndexResource extends JsonResource
                 'message' => $message
             ];
         }
+        $tasks = Task::query()->where(['performer_id' => 419])->get();
+        $performed_tasks = $tasks->groupBy('category_id');
+        $performed_tasks_count = [];
+        foreach ($performed_tasks as $id => $task) {
+            $performed_tasks_count[] = [
+                'name' => Category::query()->find($id)->name,
+                'count' => $task->count()
+            ];
+        }
         $lastReview = Review::query()->where(['user_id' => $this->id, 'good_bad' => 1])->get()->last();
         return [
             'id' => $this->id,
@@ -99,7 +109,8 @@ class UserIndexResource extends JsonResource
             'last_name' => $this->last_name,
             'email' => $this->email,
             'avatar' => $this->avatar,
-            'acheivements' => $achievements,
+            'tasks_count' => $performed_tasks_count,
+            'achievements' => $achievements,
             'settings' => json_decode($this->settings),
             'phone_number' => $this->phone_number,
             'location' => $this->location,
