@@ -165,7 +165,7 @@ $(document).ready(function () {
     })
     $('#btn2').click(function (){
         $('#not_free').val(0)
-        alert(22)
+        // alert(22)
 
     })
 
