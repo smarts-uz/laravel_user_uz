@@ -142,10 +142,10 @@ class ProfileAPIController extends Controller
      */
     public function reviews()
     {
-        $user = auth()->user()->load('reviews');
+        $user = auth()->user();
         return response()->json([
             'success' => true,
-            'data' => ReviewIndexResource::collection($user->reviews())
+            'data' => ReviewIndexResource::collection(Review::query()->where(['user_id' => $user->id]))->get()
         ]);
     }
 

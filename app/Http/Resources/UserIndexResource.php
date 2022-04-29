@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Models\Review;
 use App\Models\Task;
+use App\Models\User;
 use App\Models\WalletBalance;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\File;
@@ -52,7 +53,6 @@ class UserIndexResource extends JsonResource
                 'review_bad' => $this->review_bad,
                 'review_good' => $this->review_good,
                 'rating' => $this->rating,
-                'last_review' => new ReviewIndexResource(Review::query()->where(['user_id' => $this->id])->latest())
             ],
             'phone_number_old' => $this->phone_number_old,
             'system_notification' =>$this->system_notification,
