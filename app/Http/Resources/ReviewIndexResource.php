@@ -32,7 +32,6 @@ class ReviewIndexResource extends JsonResource
             'good_bad' => $this->good_bad,
             'task' => [
                 'name' => $task->name,
-                'good_bad' => $this->good_bad,
                 'description' => $task->description
             ],
             'created_at' => $this->created_at
