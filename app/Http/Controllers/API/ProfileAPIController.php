@@ -326,7 +326,8 @@ class ProfileAPIController extends Controller
         $request['user_id'] = auth()->user()->id;
         switch($payment) {
             case 'Click':
-                return ClickuzController::pay($request);
+                $payment = new ClickuzController();
+                return $payment->pay($request);
             case 'PayMe':
                 $tr = new All_transaction();
                 $tr->user_id = Auth::id();
