@@ -494,7 +494,8 @@ class ProfileAPIController extends Controller
             'avatar' => $user->avatar,
             'location' => $user->location,
             'date_of_birth' => $user->born_date,
-            'email' => $user->email
+            'email' => $user->email,
+            'gender' => $user->gender,
         ];
         return response()->json([
             'data' => $data
