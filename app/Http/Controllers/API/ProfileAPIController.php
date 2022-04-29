@@ -415,7 +415,18 @@ class ProfileAPIController extends Controller
         $user = Auth::user();
         $user->update($updatedData);
         $user->save();
-        return new UserIndexResource($user);
+        $data = [
+            'name' => $user->name,
+            'last_name' => $user->last_name,
+            'avatar' => $user->avatar,
+            'location' => $user->location,
+            'date_of_birth' => $user->born_date,
+            'email' => $user->email,
+            'gender' => $user->gender,
+        ];
+        return response()->json([
+            'data' => $data
+        ]);
     }
 
 
