@@ -21,6 +21,8 @@ class ReviewObserver
             $bads = $user->review_bad;
             $user->review_rating = round($goods * 5 / (($goods+$bads==0) ? 1 : ($goods + $bads)));
             $user->save();
+            if(PHP_SAPI === 'cli')
+                dd($user->review_good,$user->review_bad,$user->review_rating);
     }
 
     /**

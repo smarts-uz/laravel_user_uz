@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\PerformersService;
@@ -41,7 +42,7 @@ class SardorCmd extends Command
      */
     public function handle()
     {
-        $this->performerService();
+        $this->reviewobserver();
     }
 
 
@@ -52,6 +53,18 @@ class SardorCmd extends Command
         $service = new PerformersService();
         $item = $service->service($authId, $user);
         dd($item);
+    }
+    private function reviewobserver() {
+        $user = User::find(1);
+        $user->review_good = $user->review_good + 1;
+        $user->save();
+        Review::create([
+            'description' => 'description',
+            'good_bad' => 1,
+            'task_id' => 1,
+            'reviewer_id' => 1,
+            'user_id' => 1,
+        ]);
     }
 
 
