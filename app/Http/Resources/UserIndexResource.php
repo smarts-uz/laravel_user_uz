@@ -99,7 +99,7 @@ class UserIndexResource extends JsonResource
         foreach ($performed_tasks as $id => $task) {
             $performed_tasks_count[] = [
                 'name' => Category::query()->find($id)->name,
-                'count' => $task->count()
+                'count' => __('Выполнено ').$task->count().__(' заданий')
             ];
         }
         $lastReview = Review::query()->where(['user_id' => $this->id, 'good_bad' => 1])->get()->last();
