@@ -595,7 +595,11 @@ class TaskAPIController extends Controller
      *                    type="string",
      *                 ),
      *                 @OA\Property (
-     *                    property="address",
+     *                    property="location0",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="coordinates0",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
@@ -645,7 +649,7 @@ class TaskAPIController extends Controller
     public function changeTask(UpdateRequest $request, Task $task){
         taskGuard($task);
         $data = $request->validated();
-        $data = getAddress($data); // шуни комментировать килиб койса swagger да ишлайди
+        //$data = getAddress($data); // шуни комментировать килиб койса swagger да ишлайди
 
         $images = isset($data['photos'])?$data['images']:[];
         $data['photos'] =  [];
