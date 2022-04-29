@@ -65,10 +65,10 @@ class ProfileAPIController extends Controller
      */
     public function portfolios()
     {
-        $user = auth()->user()->load('portfolios');
+        $user = auth()->user();
         return response()->json([
             'success' => true,
-            'data' => PortfolioIndexResource::collection($user->portfolios())
+            'data' => PortfolioIndexResource::collection(Portfolio::query()->where(['user_id' => $user->id])->get())
         ]);
     }
 
@@ -92,7 +92,9 @@ class ProfileAPIController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => 'Portfolio deleted'
+            'data' => [
+                'message' =>'Portfolio deleted'
+            ]
         ]);
     }
 
@@ -145,7 +147,7 @@ class ProfileAPIController extends Controller
         $user = auth()->user();
         return response()->json([
             'success' => true,
-            'data' => ReviewIndexResource::collection(Review::query()->where(['user_id' => $user->id]))->get()
+            'data' => ReviewIndexResource::collection(Review::query()->where(['user_id' => $user->id])->get())
         ]);
     }
 
