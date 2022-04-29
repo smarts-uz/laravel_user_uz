@@ -130,7 +130,7 @@ class TaskAPIController extends Controller
      *                    property="price",
      *                    type="integer",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -220,7 +220,7 @@ class TaskAPIController extends Controller
      *              type="integer"
      *          )
      *     ),
-     *     
+     *
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -425,7 +425,7 @@ class TaskAPIController extends Controller
      *                    property="address",
      *                    type="string",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -524,7 +524,7 @@ class TaskAPIController extends Controller
      *                    property="phone",
      *                    type="string",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -626,7 +626,7 @@ class TaskAPIController extends Controller
      *                    property="phone",
      *                    type="string",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (

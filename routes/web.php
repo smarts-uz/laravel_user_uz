@@ -173,10 +173,11 @@ Route::group(['middleware' => 'auth'], function () {
         // Profile settings
         Route::get('/settings', [ProfileController::class, 'editData'])->name('profile.editData');
         Route::post('/settings/update', [ProfileController::class, 'updateData'])->name('profile.updateData');
-        Route::post('/clear-sessions', [ProfileController::class, 'clear_sessions'])->name('profile.clear_sessions');
+        Route::get('/clear-sessions', [ProfileController::class, 'clear_sessions'])->name('profile.clear_sessions');
 
         // Profile delete
         Route::get('/delete/{id}', [ProfileController::class, 'destroy'])->name('profile.destroy'); // javoxir
+
 
         //added category id
         Route::post('/getcategory', [ProfileController::class, 'getCategory'])->name('profile.getCategory'); // javoxir

@@ -1,12 +1,5 @@
 @php
-    $user = auth()->user();
-    $notifications = App\Models\Notification::query()
-        ->where('is_read', 0)
-        ->where(function ($query) use ($user){
-            $query->where('user_id', $user->id)->newTask($user)->orWhere('performer_id', $user->id);
-        })
-        ->orderByDesc('created_at')
-        ->limit(10)->get();
+    $notifications = \App\Services\NotificationService::getNotifications(auth()->user());
     $count = $notifications->count();
 @endphp
 @if($count > 0)
@@ -31,7 +24,7 @@
                     @if($notification->type == 1)
                         <div class="w-full">{{__('Новая задания')}}
                             <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
-                                "{{$notification->name_task}}"  №{{$notification->task_id}}
+                                "{{$notification->name_task}}" №{{$notification->task_id}}
                             </a>
                         </div>
                     @elseif($notification->type == 2 || $notification->type == 3)
@@ -41,12 +34,12 @@
                         </button>
                     @elseif($notification->type == 4)
                         <div class="w-full">
-                            {{__('Заказчик предложил вам новую задания')}}
+                            {{__('Заказчик предложил вам новую заданию')}}
                             <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
-                                “{{$notification->name_task}}"  №{{$notification->task_id}}
+                                “{{$notification->name_task}}" №{{$notification->task_id}}
                             </a>
                             <a class="hover:text-blue-500" href="/performers/{{$notification->user_id}}">
-                                {{$notification->user->name}}
+                                {{$notification->user->name ?? 'None'}}
                             </a>
                         </div>
                     @elseif($notification->type == 5)
@@ -61,7 +54,7 @@
                         <div class="w-full">
                             {{__('Заказчик указал, что вы выполнили  задание')}}
                             <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
-                                “{{$notification->name_task}}"  №{{$notification->task_id}}
+                                “{{$notification->name_task}}" №{{$notification->task_id}}
                             </a>
                             {{__(' и оставил вам отзыв')}}
                         </div>
@@ -69,7 +62,7 @@
                         <div class="w-full">
                             {{__('Вас выбрали исполнителем  в задании')}}
                             <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
-                                “{{$notification->name_task}}"  №{{$notification->task_id}}
+                                “{{$notification->name_task}}" №{{$notification->task_id}}
                             </a>
                             <a class="hover:text-blue-500" href="/performers/{{$notification->user_id}}">
                                 {{$notification->user->name}}
