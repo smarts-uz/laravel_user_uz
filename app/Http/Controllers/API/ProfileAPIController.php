@@ -76,8 +76,6 @@ class ProfileAPIController extends Controller
     {
         $data = $request->validated();
         $data['user_id'] = auth()->user()->id;
-        $data['image'] = session()->has('images') ? session('images') : '[]';
-        session()->forget('images');
         $portfolio = Portfolio::create($data);
         return response()->json([
             'success' => true,
@@ -110,8 +108,6 @@ class ProfileAPIController extends Controller
     {
         $data = $request->validated();
         $data['user_id'] = auth()->user()->id;
-        $data['image'] = session()->has('images') ? session('images') : '[]';
-        session()->forget('images');
         $portfolio->update($data);
         $portfolio->save();
         return response()->json([
