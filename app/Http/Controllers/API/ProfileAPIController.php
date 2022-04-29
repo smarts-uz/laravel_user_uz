@@ -63,6 +63,15 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
+<<<<<<< HEAD
+    public function index()
+    {
+        $user = auth()->user();
+        return new UserIndexResource($user);
+    }
+
+=======
+>>>>>>> 01ac14b9bc8eb1c4c0ce2ec1fbc4fa9025b813be
     public function portfolios()
     {
         $user = auth()->user()->load('portfolios');
@@ -540,7 +549,18 @@ class ProfileAPIController extends Controller
         $user = Auth::user();
         $user->update($updatedData);
         $user->save();
-        return new UserIndexResource($user);
+        $data = [
+            'name' => $user->name,
+            'last_name' => $user->last_name,
+            'avatar' => $user->avatar,
+            'location' => $user->location,
+            'date_of_birth' => $user->born_date,
+            'email' => $user->email,
+            'gender' => $user->gender,
+        ];
+        return response()->json([
+            'data' => $data
+        ]);
     }
 
 
@@ -619,7 +639,8 @@ class ProfileAPIController extends Controller
             'avatar' => $user->avatar,
             'location' => $user->location,
             'date_of_birth' => $user->born_date,
-            'email' => $user->email
+            'email' => $user->email,
+            'gender' => $user->gender,
         ];
         return response()->json([
             'data' => $data
