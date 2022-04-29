@@ -27,7 +27,8 @@
         "teamprodev/playmobile-sms": "^1.0",
         "temprodev/laravel-one-auth": "dev-main",
         "ua-parser/uap-php": "^3.9",
-        "vemcogroup/laravel-translation": "^3.0"
+        "vemcogroup/laravel-translation": "^3.0",
+        "andywer/js-localization": "dev-laravel-7"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",

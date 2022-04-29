@@ -439,7 +439,7 @@
         "\/api\/custom-field-by-category\/{category}": {
             "get": {
                 "tags": [
-                    "CustomField"
+                    "Task"
                 ],
                 "summary": "Get Custom fields By Category ID",
                 "operationId": "e956115f36720800b5ead04cf0f4daaf",
@@ -474,7 +474,7 @@
         "\/api\/custom-field-values-by-task\/{task}": {
             "get": {
                 "tags": [
-                    "CustomField"
+                    "Task"
                 ],
                 "summary": "Get Custom field Values by Task ID",
                 "operationId": "96cd8e7408acc1e566878f63b37eff19",
@@ -559,7 +559,7 @@
         "\/api\/account\/verification\/email": {
             "get": {
                 "tags": [
-                    "LoginAPI"
+                    "Verification"
                 ],
                 "summary": "Email verification",
                 "operationId": "93b3118bb0818d1dcb1bb1be3dbb8e06",
@@ -584,7 +584,7 @@
         "\/api\/account\/verification\/phone": {
             "get": {
                 "tags": [
-                    "LoginAPI"
+                    "Verification"
                 ],
                 "summary": "Phone verification",
                 "operationId": "6d69dfb7137ac44458f283488e08818f",
@@ -607,7 +607,7 @@
             },
             "post": {
                 "tags": [
-                    "LoginAPI"
+                    "Verification"
                 ],
                 "summary": "Verification phone",
                 "operationId": "3fe3e97c01c6204997ab62e7f3323789",
@@ -647,7 +647,7 @@
         "\/api\/account\/change\/email": {
             "post": {
                 "tags": [
-                    "LoginAPI"
+                    "Verification"
                 ],
                 "summary": "Change email",
                 "operationId": "e4f3c97d90cbbf1a6ea9e302c3aabc16",
@@ -687,7 +687,7 @@
         "\/api\/account\/change\/phone": {
             "post": {
                 "tags": [
-                    "LoginAPI"
+                    "Verification"
                 ],
                 "summary": "Change phone number",
                 "operationId": "e869367af6b12b9b98bc07deb3f324f6",
@@ -747,7 +747,7 @@
         "\/api\/performers": {
             "get": {
                 "tags": [
-                    "PerformersAPI"
+                    "Performers"
                 ],
                 "summary": "Get All Performers",
                 "operationId": "731347e6f7c873d149bc292778b4f161",
@@ -767,7 +767,7 @@
         "\/api\/performers\/{performer}": {
             "get": {
                 "tags": [
-                    "PerformersAPI"
+                    "Performers"
                 ],
                 "summary": "Get Performer By ID",
                 "operationId": "be33fb1d00766c364214bb291f26b42d",
@@ -794,13 +794,34 @@
                 }
             }
         },
-        "\/api\/profile\/": {
-            "get": {
+        "\/api\/become-performer": {
+            "post": {
                 "tags": [
-                    "ProfileAPI"
+                    "Become a perfomer"
                 ],
-                "summary": "Your profile",
-                "operationId": "19ddc09c48f45c607be87bb06f16e8e5",
+                "summary": "Initial Data",
+                "operationId": "fe1fd424a52f6bd274c86a35afdb3af3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "location": {
+                                        "type": "string"
+                                    },
+                                    "born_date": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -819,13 +840,494 @@
                 ]
             }
         },
-        "\/api\/profile\/password\/change": {
+        "\/api\/become-performer-phone": {
             "post": {
                 "tags": [
-                    "ProfileAPI"
+                    "Become a perfomer"
+                ],
+                "summary": "Email and phone",
+                "operationId": "4e36926672cf6bed00d3fb3ef9dfd4a5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "phone_number": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/become-performer-avatar": {
+            "post": {
+                "tags": [
+                    "Become a perfomer"
+                ],
+                "summary": "Avator",
+                "operationId": "a6e205e8c105f40204264bda896100e3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "avatar": {
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/become-performer-category": {
+            "post": {
+                "tags": [
+                    "Become a perfomer"
+                ],
+                "summary": "Categories",
+                "operationId": "8623a4ddae7b115758739689a990bac0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "category_id": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/reviews": {
+            "get": {
+                "tags": [
+                    "reviews"
+                ],
+                "summary": "reviews index",
+                "operationId": "reviews_index",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Global search",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "length",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "description": "Sort by column",
+                        "required": false,
+                        "schema": {
+                            "enum": [
+                                "id",
+                                "user_id",
+                                "description",
+                                "good_bad",
+                                "reviewer_id",
+                                "task_id",
+                                "created_at",
+                                "updated_at"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort_order",
+                        "in": "query",
+                        "description": "Sort by direction",
+                        "required": false,
+                        "schema": {
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[user_id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[description]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[good_bad]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[created_at]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
+                        }
+                    },
+                    {
+                        "name": "filters[reviewer_id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[task_id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#\/components\/schemas\/VoyagerReviewsBrowseResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "$ref": "#\/components\/schemas\/Links"
+                                        },
+                                        "meta": {
+                                            "$ref": "#\/components\/schemas\/Meta"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "reviews"
+                ],
+                "summary": "reviews store",
+                "operationId": "reviews_store",
+                "requestBody": {
+                    "$ref": "#\/components\/requestBodies\/VoyagerReviewsStoreRequest"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#\/components\/schemas\/VoyagerReviewsReadResource"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/portfolios": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Profile portfolios",
+                "operationId": "b08af21d9d4afac7fda0837d32bed96a",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/reviews": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Profile reviews",
+                "operationId": "c02ca91f7f8ebd758830ee20374f4359",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/balance": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Profile balance",
+                "operationId": "ffb780005820a138a39000733724063e",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/description": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Profile description",
+                "operationId": "8fa3e9bd907e2b9895e8ffd7ca6244a0",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/settings\/phone": {
+            "get": {
+                "tags": [
+                    "Profile Settings"
+                ],
+                "summary": "Phone",
+                "operationId": "a3ac77aaf9402239a257a48f9d80bfbd",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/settings\/phone\/edit": {
+            "post": {
+                "tags": [
+                    "Profile Settings"
+                ],
+                "summary": "Phone edit",
+                "operationId": "8a03e4fd8a84f96e1588b87a09233f57",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "phone_number": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/settings\/password\/change": {
+            "post": {
+                "tags": [
+                    "Profile Settings"
                 ],
                 "summary": "Change password",
-                "operationId": "c06fc7a558675fb5c831d01488fb7ed1",
+                "operationId": "dc0486c41591cf176514f18ee69fce2e",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -868,13 +1370,13 @@
                 ]
             }
         },
-        "\/api\/profile\/change-avatar": {
+        "\/api\/profile\/settings\/change-avatar": {
             "post": {
                 "tags": [
-                    "ProfileAPI"
+                    "Profile Settings"
                 ],
                 "summary": "Change Avator",
-                "operationId": "f3ddbfab7ecf8c70bfe91d2582206050",
+                "operationId": "0eed7901dca85c5175305075ba95f121",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -911,52 +1413,37 @@
         "\/api\/profile\/settings\/update": {
             "post": {
                 "tags": [
-                    "PorfolioAPI"
+                    "Profile Settings"
                 ],
                 "summary": "Update settings",
                 "operationId": "827c0d8a45f51d307cc762dd318efd27",
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "age",
-                        "in": "path",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "phone_number",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "description",
-                        "in": "path",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "location",
-                        "in": "path",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "age": {
+                                        "type": "integer"
+                                    },
+                                    "phone_number": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "location": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -1003,7 +1490,7 @@
         "\/api\/profile\/settings": {
             "get": {
                 "tags": [
-                    "ProfileAPI"
+                    "Profile Settings"
                 ],
                 "summary": "Your profile data",
                 "operationId": "149dc7b997029ed7e11d952595dd9023",
@@ -1051,12 +1538,12 @@
             }
         },
         "\/api\/profile\/delete": {
-            "post": {
+            "delete": {
                 "tags": [
                     "ProfileAPI"
                 ],
                 "summary": "Delete User",
-                "operationId": "564b6423baef1104d1972c405af7991c",
+                "operationId": "f8088993efebc204c6ba6135018b70c7",
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -1195,13 +1682,13 @@
                 ]
             }
         },
-        "\/api\/profile\/description": {
+        "\/api\/profile\/description\/edit": {
             "post": {
                 "tags": [
-                    "ProfileAPI"
+                    "Profile"
                 ],
-                "summary": "Profile description",
-                "operationId": "0b092dd0f96f96a3e656bc8ef61cb591",
+                "summary": "Profile edit description",
+                "operationId": "939d0a485408db6dea4775fe847e4498",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1235,24 +1722,21 @@
                 ]
             }
         },
-        "\/api\/profile\/notifications\/subscription": {
-            "get": {
+        "\/api\/profile\/settings\/notifications": {
+            "post": {
                 "tags": [
-                    "ProfileAPI"
+                    "Profile Settings"
                 ],
-                "summary": "Notifications",
-                "operationId": "f7b0357f7b8116aaf94d804fcf371085",
+                "summary": "Profile edit description",
+                "operationId": "895f5a03086cd836dad741774d397045",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "notif11": {
-                                        "type": "integer"
-                                    },
-                                    "notif22": {
-                                        "type": "integer"
+                                    "notification": {
+                                        "type": "boolean"
                                     }
                                 },
                                 "type": "object"
@@ -1788,7 +2272,7 @@
         "\/api\/select-performer\/{response}": {
             "post": {
                 "tags": [
-                    "ResponseAPI"
+                    "Responses"
                 ],
                 "summary": "Select performer",
                 "operationId": "511724f24ec6d5f5b3802a2d6f61dbb6",
@@ -1881,7 +2365,7 @@
         "\/api\/delete-task\/{task}": {
             "delete": {
                 "tags": [
-                    "TaskAPI"
+                    "Task"
                 ],
                 "summary": "Delete Task",
                 "operationId": "769179127b589bbb0f0b9354fa5a4744",
@@ -2063,10 +2547,62 @@
                 ]
             }
         },
+        "\/api\/login\/callback": {
+            "post": {
+                "tags": [
+                    "Social"
+                ],
+                "summary": "Google",
+                "operationId": "7a36dab6b375c9ecdfa12d3d58d9bd75",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "email": {
+                                        "type": "email"
+                                    },
+                                    "avatar": {
+                                        "type": "string"
+                                    },
+                                    "server_code": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "\/api\/same-tasks\/{task}": {
             "get": {
                 "tags": [
-                    "TaskAPI"
+                    "Task"
                 ],
                 "summary": "Same tasks by Task ID",
                 "operationId": "120ccd09ca7a2be2153ee7a0f2655447",
@@ -2096,7 +2632,7 @@
         "\/api\/responses\/{task}": {
             "get": {
                 "tags": [
-                    "TaskAPI"
+                    "Task"
                 ],
                 "summary": "Response tasks",
                 "operationId": "e40467954638499de8484738d2359d0c",
@@ -2126,7 +2662,7 @@
         "\/api\/task\/{task}\/response": {
             "post": {
                 "tags": [
-                    "TaskAPI"
+                    "Responses"
                 ],
                 "summary": "Send Response",
                 "operationId": "72b3712b916c380767bb13875dd42339",
@@ -2179,7 +2715,7 @@
         "\/api\/tasks-filter": {
             "get": {
                 "tags": [
-                    "TaskAPI"
+                    "Task"
                 ],
                 "summary": "Task filter",
                 "operationId": "01811c7639caa6a28b67d031f8c8be43",
@@ -2253,7 +2789,7 @@
         "\/api\/task\/{task}": {
             "get": {
                 "tags": [
-                    "TaskAPI"
+                    "Task"
                 ],
                 "summary": "Get Task By ID",
                 "operationId": "f81261f5febbe5e9edecf62e8b165e8f",
@@ -2283,7 +2819,7 @@
         "\/api\/my-tasks-count": {
             "get": {
                 "tags": [
-                    "TaskAPI"
+                    "Task"
                 ],
                 "summary": "Get My Tasks Count",
                 "operationId": "72718dc806703c197699e0f060cb0935",
@@ -2318,7 +2854,7 @@
         "\/api\/my-tasks": {
             "get": {
                 "tags": [
-                    "TaskAPI"
+                    "Task"
                 ],
                 "summary": "Get My Tasks",
                 "operationId": "1a716f0c34b249580b5d4194baa5f168",
@@ -2361,7 +2897,7 @@
         "\/api\/create-task\/routing": {
             "post": {
                 "tags": [
-                    "TaskAPI"
+                    "Task"
                 ],
                 "summary": "Routing",
                 "operationId": "75bde0adcddefe8478e20c8b7daeb051",
@@ -2404,7 +2940,7 @@
         "\/api\/task\/create": {
             "post": {
                 "tags": [
-                    "TaskAPI"
+                    "Task"
                 ],
                 "summary": "Task create",
                 "operationId": "eaeff5e59900942953b4fdd6602d933b",
@@ -2465,7 +3001,7 @@
         "\/api\/change-task\/{task}": {
             "put": {
                 "tags": [
-                    "TaskAPI"
+                    "Task"
                 ],
                 "summary": "Change task",
                 "operationId": "c7d65b35593a76b8531537f6d0d373d4",
@@ -2488,7 +3024,10 @@
                                     "name": {
                                         "type": "string"
                                     },
-                                    "address": {
+                                    "location0": {
+                                        "type": "string"
+                                    },
+                                    "coordinates0": {
                                         "type": "string"
                                     },
                                     "date_type": {
@@ -2571,7 +3110,7 @@
         "\/api\/task\/{task}\/complete": {
             "post": {
                 "tags": [
-                    "UpdateAPI"
+                    "Responses"
                 ],
                 "summary": "Complete Task",
                 "operationId": "34274bcd311837ea8443d39da123d261",
@@ -2606,7 +3145,7 @@
         "\/api\/send-review-user\/{task}": {
             "post": {
                 "tags": [
-                    "UpdateAPI"
+                    "Responses"
                 ],
                 "summary": "Complete task",
                 "operationId": "f440159070ac0fc1e2b350969e9ad62d",
@@ -2662,7 +3201,7 @@
         "\/api\/reset": {
             "post": {
                 "tags": [
-                    "UserAPI"
+                    "Reset Password"
                 ],
                 "summary": "Reset password by phone - sending code",
                 "operationId": "56a1d9813d571e101444350e67d6dd7d",
@@ -2697,7 +3236,7 @@
         "\/api\/reset\/password": {
             "post": {
                 "tags": [
-                    "UserAPI"
+                    "Reset Password"
                 ],
                 "summary": "Enter a New password",
                 "operationId": "235c0c336670eb4e95abc202257cb924",
@@ -2740,7 +3279,7 @@
         "\/api\/code": {
             "post": {
                 "tags": [
-                    "UserAPI"
+                    "Reset Password"
                 ],
                 "summary": "Submit SMS code",
                 "operationId": "3f40aa2d8aa65af2ec2afb498a175340",
@@ -2778,7 +3317,7 @@
         "\/api\/delete": {
             "delete": {
                 "tags": [
-                    "UserAPI"
+                    "Profile"
                 ],
                 "summary": "Delete User",
                 "operationId": "cb2f0570b508943a718fd4db10b9ccb0",
@@ -2828,7 +3367,7 @@
         "\/api\/portfolio_albums\/{performer}": {
             "get": {
                 "tags": [
-                    "PortfolioAPI"
+                    "Portfolio"
                 ],
                 "summary": "Get Portfolios By Performer ID",
                 "operationId": "dae4aab4cf5115526da387ad1cf885a2",
@@ -2858,7 +3397,7 @@
         "\/api\/portfolio_album\/{portfolio}": {
             "get": {
                 "tags": [
-                    "PortfolioAPI"
+                    "Portfolio"
                 ],
                 "summary": "Get Portfolio By Portfolio ID",
                 "operationId": "fc334dc503d1acd8733579ecbe993f39",
@@ -10554,6 +11093,7 @@
                                 "name_task",
                                 "type",
                                 "is_read",
+                                "performer_id",
                                 "notification_belongsto_user_relationship",
                                 "notification_hasmany_service_relationship"
                             ],
@@ -32694,198 +33234,6 @@
                                     "properties": {
                                         "message": {
                                             "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/reviews": {
-            "get": {
-                "tags": [
-                    "reviews"
-                ],
-                "summary": "reviews index",
-                "operationId": "reviews_index",
-                "parameters": [
-                    {
-                        "name": "q",
-                        "in": "query",
-                        "description": "Global search",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "length",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "order_by",
-                        "in": "query",
-                        "description": "Sort by column",
-                        "required": false,
-                        "schema": {
-                            "enum": [
-                                "id",
-                                "user_id",
-                                "description",
-                                "good_bad",
-                                "reviewer_id",
-                                "task_id",
-                                "created_at",
-                                "updated_at"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "sort_order",
-                        "in": "query",
-                        "description": "Sort by direction",
-                        "required": false,
-                        "schema": {
-                            "enum": [
-                                "asc",
-                                "desc"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[user_id]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[description]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[good_bad]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[created_at]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
-                        }
-                    },
-                    {
-                        "name": "filters[reviewer_id]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[task_id]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#\/components\/schemas\/VoyagerReviewsBrowseResource"
-                                            }
-                                        },
-                                        "links": {
-                                            "$ref": "#\/components\/schemas\/Links"
-                                        },
-                                        "meta": {
-                                            "$ref": "#\/components\/schemas\/Meta"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            },
-            "post": {
-                "tags": [
-                    "reviews"
-                ],
-                "summary": "reviews store",
-                "operationId": "reviews_store",
-                "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerReviewsStoreRequest"
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerReviewsReadResource"
                                         }
                                     }
                                 }

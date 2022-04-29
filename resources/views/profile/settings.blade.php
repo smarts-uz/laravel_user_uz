@@ -323,6 +323,7 @@
                                             </div>
                                             <div class="mt-12">
                                                 <h1 class="font-bold text-black text-3xl">Активные сессии</h1>
+
                                                 @foreach($sessions as $session)
 
                                                     <div class="flex flex-row mt-4 items-center">
@@ -331,11 +332,18 @@
                                                         <h1 class="mx-1">{{ $session->last_active }}, </h1>
                                                         <span class="text-gray-500">браузер {{ $parser->parse($session->user_agent)->ua->family }}</span>
                                                     </div>
-
+                                                @endforeach
+                                                @foreach($sessions as $session)
+                                                @if($session!=null && $loop->index==0)
+                                                    <div class="my-3">
+                                                        <a href="{{route('profile.clear_sessions')}}" type="btn" class="focus:outline-none hover:bg-red-600 btn bg-red-400 uppercase p-2 text-white text-sm rounded-xl">{{__('удалить сеансы')}}</a>
+                                                    </div>
+                                                @endif
                                                 @endforeach
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -346,6 +354,7 @@
             {{-- right-side-bar --}}
             @include('auth.profile-side-info')
             {{-- tugashi o'ng tomon ispolnitel --}}
+
         </div>
     </div>
     <script>

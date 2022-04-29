@@ -15,15 +15,15 @@ class NotificationController extends VoyagerBaseController
 
     public function read_notification(Notification $notification)
     {
-        $notification->is_read = 1;
-        $notification->update();
+//        $notification->is_read = 1;
+        $notification->update(['is_read' => 1]);
         return $notification->is_read;
     }
 
     public function show_notification(Notification $notification)
     {
-        $notification->is_read = 1;
-        $notification->update();
+//        $notification->is_read = 1;
+        $notification->update(['is_read' => 1]);
         return redirect('/detailed-tasks/' . $notification->task_id);
     }
 

@@ -163,6 +163,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
+        JsLocalization\JsLocalizationServiceProvider::class,
         /*
          * Package Service Providers...
          */

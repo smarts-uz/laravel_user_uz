@@ -65,6 +65,7 @@ Route::any('/paynet', function () {
     (new Goodoneuz\PayUz\PayUz)->driver('paynet')->handle();
 });
 
+Route::post('/youtube_link', [ProfileController::class, 'youtube_link'])->name('youtube_link');
 Route::post('/get_info_click', [ClickuzController::class, 'get_info']);
 Route::get('/test_gic', [ClickuzController::class, 'test']);
 
@@ -173,10 +174,11 @@ Route::group(['middleware' => 'auth'], function () {
         // Profile settings
         Route::get('/settings', [ProfileController::class, 'editData'])->name('profile.editData');
         Route::post('/settings/update', [ProfileController::class, 'updateData'])->name('profile.updateData');
-        Route::post('/clear-sessions', [ProfileController::class, 'clear_sessions'])->name('profile.clear_sessions');
+        Route::get('/clear-sessions', [ProfileController::class, 'clear_sessions'])->name('profile.clear_sessions');
 
         // Profile delete
         Route::get('/delete/{id}', [ProfileController::class, 'destroy'])->name('profile.destroy'); // javoxir
+
 
         //added category id
         Route::post('/getcategory', [ProfileController::class, 'getCategory'])->name('profile.getCategory'); // javoxir

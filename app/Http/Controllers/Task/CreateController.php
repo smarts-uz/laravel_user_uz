@@ -243,7 +243,7 @@ class CreateController extends Controller
         $task->phone = $user->phone_number;
         $task->save();
 
-        NotificationService::sendTaskNotification($task);
+        NotificationService::sendTaskNotification($task, $user->id);
 
         return redirect()->route('searchTask.task', $task->id);
     }

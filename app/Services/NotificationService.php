@@ -11,18 +11,48 @@ use Illuminate\Support\Facades\Http;
 
 class NotificationService
 {
-    public static function sendTaskNotification($task)
+    public static function getNotifications($user)
     {
-        $users = User::query()->pluck('category_id', 'id')->toArray();
-        $user_ids = [];
-        foreach ($users as $user_id => $category_id) {
+        return Notification::query()
+            ->where('is_read', 0)
+            ->where(function ($query) use ($user) {
+                $query->where(function ($query) use ($user) {
+                    $query->where('performer_id', '=', $user->id)
+                        ->whereIn('type', [4, 6, 7]);
+                })
+                    ->orWhere(function ($query) use ($user) {
+                        $query->where('user_id', '=', $user->id)->where('type', '=', 5);
+                    });
+                if ($user->role_id == 2)
+                    $query->orWhere(function ($query) use ($user) {
+                        $query->where('performer_id', '=', $user->id)->where('type', '=', 1);
+                    });
+                if ($user->system_notification)
+                    $query->orWhere(function ($query) use ($user) {
+                        $query->where('user_id', '=', $user->id)->where('type', '=', 2);
+                    });
+                if ($user->news_notification)
+                    $query->orWhere(function ($query) use ($user) {
+                        $query->where('user_id', '=', $user->id)->where('type', '=', 3);
+                    });
+            })
+            ->orderByDesc('created_at')
+            ->limit(10)->get();
+    }
+
+    public static function sendTaskNotification($task, $user_id)
+    {
+        $performers = User::query()->where('role_id', 2)->pluck('category_id', 'id')->toArray();
+        $performer_ids = [];
+        foreach ($performers as $performer_id => $category_id) {
             $user_cat_ids = explode(",", $category_id);
             $check_for_true = array_search($task->category_id, $user_cat_ids);
             if ($check_for_true !== false) {
-                $user_ids[] = $user_id;
+                $performer_ids[] = $performer_id;
 
-                Notification::create([
+                Notification::query()->create([
                     'user_id' => $user_id,
+                    'performer_id' => $performer_id,
                     'description' => 1,
                     'task_id' => $task->id,
                     "cat_id" => $task->category_id,
@@ -33,7 +63,7 @@ class NotificationService
         }
 
         Http::post('ws.smarts.uz/api/send-notification', [
-            'user_ids' => $user_ids,
+            'user_ids' => $performer_ids,
             'project' => 'user',
             'data' => ['url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently']
         ]);
@@ -41,7 +71,7 @@ class NotificationService
 
     public static function sendNotification($not, $slug)
     {
-        if ($slug == 'news-notifications'){
+        if ($slug == 'news-notifications') {
             $type = Notification::NEWS_NOTIFICATION;
             $column = 'news_notification';
         } else {
@@ -93,5 +123,10 @@ class NotificationService
             'project' => 'user',
             'data' => ['url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently']
         ]);
+    }
+
+    public function selectPerformer()
+    {
+
     }
 }

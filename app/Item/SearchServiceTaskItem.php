@@ -24,4 +24,5 @@ class SearchServiceTaskItem
     public $same_tasks;
     public $addresses;
     public $about;
+    public $respons_reviews;
 }

@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\Advant;
 use App\Models\Task;
-use App\Models\How_work_it;
 use App\Models\User;
-use App\Models\Reklama;
-use App\Models\Trust;
 use App\Models\UserView;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;

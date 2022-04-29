@@ -13,7 +13,7 @@ class CustomFieldAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/custom-field-by-category/{category}",
-     *     tags={"CustomField"},
+     *     tags={"Task"},
      *     summary="Get Custom fields By Category ID",
      *     security={
      *      {"token": {}},
@@ -57,7 +57,7 @@ class CustomFieldAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/custom-field-values-by-task/{task}",
-     *     tags={"CustomField"},
+     *     tags={"Task"},
      *     summary="Get Custom field Values by Task ID",
      *     security={
      *      {"token": {}},

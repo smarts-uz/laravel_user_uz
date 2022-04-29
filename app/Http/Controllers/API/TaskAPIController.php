@@ -40,7 +40,7 @@ class TaskAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/same-tasks/{task}",
-     *     tags={"TaskAPI"},
+     *     tags={"Task"},
      *     summary="Same tasks by Task ID",
      *     @OA\Parameter (
      *          in="path",
@@ -75,7 +75,7 @@ class TaskAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/responses/{task}",
-     *     tags={"TaskAPI"},
+     *     tags={"Task"},
      *     summary="Response tasks",
      *     @OA\Parameter (
      *          in="path",
@@ -107,7 +107,7 @@ class TaskAPIController extends Controller
     /**
      * @OA\Post(
      *     path="/api/task/{task}/response",
-     *     tags={"TaskAPI"},
+     *     tags={"Responses"},
      *     summary="Send Response",
      *     @OA\Parameter (
      *          in="path",
@@ -130,7 +130,7 @@ class TaskAPIController extends Controller
      *                    property="price",
      *                    type="integer",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -166,7 +166,7 @@ class TaskAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/tasks-filter",
-     *     tags={"TaskAPI"},
+     *     tags={"Task"},
      *     summary="Task filter",
      *     @OA\Parameter (
      *          in="query",
@@ -220,7 +220,7 @@ class TaskAPIController extends Controller
      *              type="integer"
      *          )
      *     ),
-     *     
+     *
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -270,7 +270,7 @@ class TaskAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/task/{task}",
-     *     tags={"TaskAPI"},
+     *     tags={"Task"},
      *     summary="Get Task By ID",
      *     @OA\Parameter(
      *          in="path",
@@ -302,7 +302,7 @@ class TaskAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/my-tasks-count",
-     *     tags={"TaskAPI"},
+     *     tags={"Task"},
      *     summary="Get My Tasks Count",
      *     @OA\Parameter(
      *          in="query",
@@ -351,7 +351,7 @@ class TaskAPIController extends Controller
     /**
      * @OA\Get(
      *     path="/api/my-tasks",
-     *     tags={"TaskAPI"},
+     *     tags={"Task"},
      *     summary="Get My Tasks",
      *     @OA\Parameter(
      *          in="query",
@@ -410,7 +410,7 @@ class TaskAPIController extends Controller
     /**
      * @OA\Post(
      *     path="/api/create-task/routing",
-     *     tags={"TaskAPI"},
+     *     tags={"Task"},
      *     summary="Routing",
      *     @OA\RequestBody (
      *         required=true,
@@ -425,7 +425,7 @@ class TaskAPIController extends Controller
      *                    property="address",
      *                    type="string",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -485,7 +485,7 @@ class TaskAPIController extends Controller
     /**
      * @OA\Post(
      *     path="/api/task/create",
-     *     tags={"TaskAPI"},
+     *     tags={"Task"},
      *     summary="Task create",
      *     @OA\RequestBody (
      *         required=true,
@@ -524,7 +524,7 @@ class TaskAPIController extends Controller
      *                    property="phone",
      *                    type="string",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -575,7 +575,7 @@ class TaskAPIController extends Controller
     /**
      * @OA\Put(
      *     path="/api/change-task/{task}",
-     *     tags={"TaskAPI"},
+     *     tags={"Task"},
      *     summary="Change task",
      *     @OA\Parameter (
      *          in="path",
@@ -595,7 +595,11 @@ class TaskAPIController extends Controller
      *                    type="string",
      *                 ),
      *                 @OA\Property (
-     *                    property="address",
+     *                    property="location0",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="coordinates0",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
@@ -622,7 +626,7 @@ class TaskAPIController extends Controller
      *                    property="phone",
      *                    type="string",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -645,7 +649,7 @@ class TaskAPIController extends Controller
     public function changeTask(UpdateRequest $request, Task $task){
         taskGuard($task);
         $data = $request->validated();
-        $data = getAddress($data); // шуни комментировать килиб койса swagger да ишлайди
+        //$data = getAddress($data); // шуни комментировать килиб койса swagger да ишлайди
 
         $images = isset($data['photos'])?$data['images']:[];
         $data['photos'] =  [];
