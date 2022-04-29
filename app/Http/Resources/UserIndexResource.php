@@ -34,7 +34,7 @@ class UserIndexResource extends JsonResource
 
         $achievements = [];
         if ($this->is_email_verified && $this->is_phone_number_verified) {
-            $email_phone_photo = 'images/verify.png';
+            $email_phone_photo = asset('images/verify.png');
             $message = __('Номер телефона и Е-mail пользователя подтверждены');
             $achievements[] = [
                 'image' => $email_phone_photo,
@@ -42,7 +42,7 @@ class UserIndexResource extends JsonResource
             ];
         }
         else {
-            $email_phone_photo = 'images/verify_gray.png';
+            $email_phone_photo = asset('images/verify_gray.png');
             $message = __('Номер телефона и Е-mail пользователя неподтверждены');
             $achievements[] = [
                 'image' => $email_phone_photo,
@@ -56,7 +56,7 @@ class UserIndexResource extends JsonResource
         if ($this->role_id == 2) {
             foreach ($about as $rating) {
                 if ($rating->id == $this->id) {
-                    $best = 'images/best.png';
+                    $best = asset('images/best.png');
                     $message = __('Входит в ТОП-20 исполнителей User.uz');
                     $achievements[] = [
                         'image' => $best,
@@ -65,14 +65,14 @@ class UserIndexResource extends JsonResource
                 }
             }
             if ($task_count >= 50) {
-                $task_count = 'images/50.png';
+                $task_count = asset('images/50.png');
                 $message = __('Более 50 выполненных заданий');
                 $achievements[] = [
                     'image' => $task_count,
                     'message' => $message
                 ];
             } else {
-                $task_count = 'images/50_gray.png';
+                $task_count = asset('images/50_gray.png');
                 $message = __('Более 50 выполненных заданий');
                 $achievements[] = [
                     'image' => $task_count,
@@ -80,13 +80,13 @@ class UserIndexResource extends JsonResource
                 ];
             }
         } else {
-            $best = 'images/best_gray.png';
+            $best = asset('images/best_gray.png');
             $message = __('Не входит в ТОП-20 всех исполнителей User.uz');
             $achievements[] = [
                 'image' => $best,
                 'message' => $message
             ];
-            $task_count = 'images/50_gray.png';
+            $task_count = asset('images/50_gray.png');
             $message = __('Более 50 выполненных заданий');
             $achievements[] = [
                 'image' => $task_count,
@@ -108,10 +108,9 @@ class UserIndexResource extends JsonResource
             'name' => $this->name,
             'last_name' => $this->last_name,
             'email' => $this->email,
-            'avatar' => $this->avatar,
+            'avatar' => asset($this->avatar),
             'tasks_count' => $performed_tasks_count,
             'achievements' => $achievements,
-            'settings' => json_decode($this->settings),
             'phone_number' => $this->phone_number,
             'location' => $this->location,
             'district' => $this->district,
