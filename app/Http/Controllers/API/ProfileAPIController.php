@@ -532,26 +532,36 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function updateData(UserUpdateDataRequest $request)
+    public function updateData(Request $request)
     {
-        $data = $request->validated();
-        $profile = new ProfileService();
-        $updatedData = $profile->settingsUpdate($data);
-        $user = Auth::user();
-        $user->update($updatedData);
-        $user->save();
-        $data = [
-            'name' => $user->name,
-            'last_name' => $user->last_name,
-            'avatar' => $user->avatar,
-            'location' => $user->location,
-            'date_of_birth' => $user->born_date,
-            'email' => $user->email,
-            'gender' => $user->gender,
-        ];
-        return response()->json([
-            'data' => $data
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'gender' => 'required',
+            'location' => 'nullable',
+            'born_date' => 'required|date',
+            'age' => 'required',
+            'email' => 'required|email'
         ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'data' => $validator->errors()
+            ]);
+        }
+        $validated = $validator->validated();
+        if ($validated['email'] != auth()->user()->email) {
+            $validated['is_email_verified'] = 0;
+            $validated['email_old'] = auth()->user()->email;
+        }
+        $user = auth()->user();
+        $user->update($validated);
+        $user->save();
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'message' => 'Settings updated successfully'
+            ]
+        ], 201);
     }
 
 
