@@ -65,7 +65,8 @@ class UserIndexResource extends JsonResource
             'portfolios' => PortfolioResource::collection($this->portfolios),
             'views' => $this->views,
             'directories' => $directories,
-            'wallet_balance' => $balance
+            'wallet_balance' => $balance,
+            'last_seen' => $this->last_seen
         ];
     }
 }
