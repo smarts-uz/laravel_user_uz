@@ -33,7 +33,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ProfileAPIController extends Controller
 {
-    
+
     public function index()
     {
         $user = Auth::user();
@@ -63,15 +63,6 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-<<<<<<< HEAD
-    public function index()
-    {
-        $user = auth()->user();
-        return new UserIndexResource($user);
-    }
-
-=======
->>>>>>> 01ac14b9bc8eb1c4c0ce2ec1fbc4fa9025b813be
     public function portfolios()
     {
         $user = auth()->user()->load('portfolios');
