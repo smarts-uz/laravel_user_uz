@@ -65,6 +65,7 @@ Route::any('/paynet', function () {
     (new Goodoneuz\PayUz\PayUz)->driver('paynet')->handle();
 });
 
+Route::post('/youtube_link', [ProfileController::class, 'youtube_link'])->name('youtube_link');
 Route::post('/get_info_click', [ClickuzController::class, 'get_info']);
 Route::get('/test_gic', [ClickuzController::class, 'test']);
 
