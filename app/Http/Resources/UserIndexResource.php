@@ -29,7 +29,6 @@ class UserIndexResource extends JsonResource
             $balance = WalletBalance::query()->where('user_id', $this->id)->first()->balance;
         else
             $balance = 0;
-        $latestReview = Review::query()->where(['user_id' => $this->id, 'good_bad' => 1] )->latest();
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -54,10 +53,6 @@ class UserIndexResource extends JsonResource
                 'review_bad' => $this->review_bad,
                 'review_good' => $this->review_good,
                 'rating' => $this->rating,
-                'last_review' => [
-                    'description' => $latestReview->description,
-                    'name' => User::query()->find($latestReview->reviewer_id)->name
-                ]
             ],
             'phone_number_old' => $this->phone_number_old,
             'system_notification' =>$this->system_notification,
