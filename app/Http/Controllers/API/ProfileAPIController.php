@@ -182,7 +182,7 @@ class ProfileAPIController extends Controller
             'success' => true,
             'data' => [
                 'balance' => $balance,
-                'transactions' => $user->transactins()->paginate(15)
+                'transactions' => All_transaction::query()->where(['user_id' => $user->id])->get()
             ]
         ]);
     }
