@@ -48,7 +48,12 @@ class UserIndexResource extends JsonResource
             'born_date' => $this->born_date,
             'created_tasks' => Task::query()->where(['user_id' => $this->id])->get()->count(),
             'performed_tasks' => Task::query()->where(['performer_id' => $this->id])->get()->count(),
-            'reviews' => ReviewResource::collection(Review::query()->where(['user_id' => $this->id])->get()),
+            'reviews' => [
+                'review_bad' => $this->review_bad,
+                'review_good' => $this->review_good,
+                'rating' => $this->rating,
+                'last_review' => new ReviewIndexResource(Review::query()->where(['user_id' => $this->id])->latest())
+            ],
             'phone_number_old' => $this->phone_number_old,
             'system_notification' =>$this->system_notification,
             'news_notification' => $this->news_notification,
