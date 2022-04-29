@@ -296,16 +296,26 @@ class ProfileAPIController extends Controller
                 'data' => $validator->errors(),
             ]);
         }
+        $userPhone = User::query()->where(['phone_number' => $request->get('phone_number')])->first();
         $user = auth()->user();
+        if ($userPhone->id != $user->id) {
+            return response()->json([
+                'success' => false,
+                'data' => [
+                    'message' => 'Phone number already exists'
+                ]
+            ]);
+        }
         $user->phone_number = $request->get('phone_number');
         $user->is_phone_number_verified = 0;
         $user->save();
         return response()->json([
             'success' => true,
             'data' => [
-                'phone_number' => $user->phone_number
+                'phone_number' => 'Phone number updated successfully'
             ]
         ]);
+
     }
 
     public function payment(Request $request)
