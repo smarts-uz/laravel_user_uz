@@ -1,14 +1,4 @@
 // profile text area
-
-function videoYouT()
-{
-    var url = document.getElementById('text');
-    var iframe = document.getElementById('iframe');
-    var result = url.value.replace('watch?v=','embed/');
-    iframe.src = result;
-    iframe.width = "800";
-    iframe.height = "500";
-}
 function fileupdate(){
     var x = document.getElementById("buttons");
     x.style.display = "block";
