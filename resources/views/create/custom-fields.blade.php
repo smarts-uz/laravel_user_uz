@@ -119,7 +119,7 @@
 
                             @foreach($data->options['options'] as $key => $option)
 
-                                <input type="radio"
+                                <input type="radio">
                                        @if(isset($task) && $task->custom_field_values()->where('custom_field_id', $data->id)->first() &&
         is_array( json_decode($task->custom_field_values()->where('custom_field_id', $data->id)->first()->value)) &&
 
