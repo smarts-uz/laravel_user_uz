@@ -202,11 +202,11 @@ $("#noResp").click(function() {
 $("#byDate").click(function() {
     dataAjaxSortByDS(dataAjaxPrint, 1)
     $('#byDate').attr('disabled','disabled');
-    $('#bySroch').removeAttr('disabled');
+    $('#bySearch').removeAttr('disabled');
 });
-$("#bySroch").click(function() {
+$("#bySearch").click(function() {
     dataAjaxSortByDS(dataAjaxPrint, 2)
-    $('#bySroch').attr('disabled','disabled');
+    $('#bySearch').attr('disabled','disabled');
     $('#byDate').removeAttr('disabled');
 });
 
@@ -894,9 +894,9 @@ $(document).ready(function() {
 
 $('#byDate').click(function(){
     $(this).addClass('font-bold')
-    $('#bySroch').removeClass('font-bold')
+    $('#bySearch').removeClass('font-bold')
 })
-$('#bySroch').click(function(){
+$('#bySearch').click(function(){
     $(this).addClass('font-bold')
     $('#byDate').removeClass('font-bold')
 })
