@@ -17,6 +17,10 @@ class ReviewIndexResource extends JsonResource
     {
         $user = $this->user;
         $task = Task::query()->find($this->task_id);
+        if ($task->user_id == $user->id)
+            $performer = 0;
+        else
+            $performer =1;
         return [
             'id' => $this->id,
             'user' => [
@@ -30,6 +34,7 @@ class ReviewIndexResource extends JsonResource
             ],
             'description' => $this->description,
             'good_bad' => $this->good_bad,
+            'performer' => $performer,
             'task' => [
                 'name' => $task->name,
                 'description' => $task->description
