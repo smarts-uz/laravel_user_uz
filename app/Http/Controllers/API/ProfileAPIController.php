@@ -33,7 +33,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ProfileAPIController extends Controller
 {
-    
+
     public function index()
     {
         $user = Auth::user();
@@ -182,7 +182,7 @@ class ProfileAPIController extends Controller
             'success' => true,
             'data' => [
                 'balance' => $balance,
-                'transactions' => $user->transactins()->paginate(15)
+                'transactions' => All_transaction::query()->where(['user_id' => $user->id])->paginate(15)
             ]
         ]);
     }
@@ -296,16 +296,26 @@ class ProfileAPIController extends Controller
                 'data' => $validator->errors(),
             ]);
         }
+        $userPhone = User::query()->where(['phone_number' => $request->get('phone_number')])->first();
         $user = auth()->user();
+        if ($userPhone->id != $user->id) {
+            return response()->json([
+                'success' => false,
+                'data' => [
+                    'message' => 'Phone number already exists'
+                ]
+            ]);
+        }
         $user->phone_number = $request->get('phone_number');
         $user->is_phone_number_verified = 0;
         $user->save();
         return response()->json([
             'success' => true,
             'data' => [
-                'phone_number' => $user->phone_number
+                'phone_number' => 'Phone number updated successfully'
             ]
         ]);
+
     }
 
     public function payment(Request $request)
@@ -532,15 +542,36 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function updateData(UserUpdateDataRequest $request)
+    public function updateData(Request $request)
     {
-        $data = $request->validated();
-        $profile = new ProfileService();
-        $updatedData = $profile->settingsUpdate($data);
-        $user = Auth::user();
-        $user->update($updatedData);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'gender' => 'required',
+            'location' => 'nullable',
+            'born_date' => 'required|date',
+            'age' => 'required',
+            'email' => 'required|email'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'data' => $validator->errors()
+            ]);
+        }
+        $validated = $validator->validated();
+        if ($validated['email'] != auth()->user()->email) {
+            $validated['is_email_verified'] = 0;
+            $validated['email_old'] = auth()->user()->email;
+        }
+        $user = auth()->user();
+        $user->update($validated);
         $user->save();
-        return new UserIndexResource($user);
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'message' => 'Settings updated successfully'
+            ]
+        ], 201);
     }
 
 
@@ -619,7 +650,8 @@ class ProfileAPIController extends Controller
             'avatar' => $user->avatar,
             'location' => $user->location,
             'date_of_birth' => $user->born_date,
-            'email' => $user->email
+            'email' => $user->email,
+            'gender' => $user->gender,
         ];
         return response()->json([
             'data' => $data

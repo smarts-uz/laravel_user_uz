@@ -26,7 +26,6 @@
     </style>
 </head>
 <body class=" text-xl">
-{{----}}@include('js-localization::head')
 
 @include('components.preloader')
 <x-navbar/>
@@ -35,7 +34,7 @@
 @include('sweetalert::alert')
 
 <x-modal></x-modal>
-{{--@yield('js-localization.head')--}}
+
 </body>
 
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
