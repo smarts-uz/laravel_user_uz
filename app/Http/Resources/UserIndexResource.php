@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Models\Review;
 use App\Models\Task;
+use App\Models\User;
 use App\Models\WalletBalance;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\File;
@@ -28,6 +29,7 @@ class UserIndexResource extends JsonResource
             $balance = WalletBalance::query()->where('user_id', $this->id)->first()->balance;
         else
             $balance = 0;
+        $lastReview = Review::query()->where(['user_id' => $this->id, 'good_bad' => 1])->get()->last();
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -51,8 +53,11 @@ class UserIndexResource extends JsonResource
             'reviews' => [
                 'review_bad' => $this->review_bad,
                 'review_good' => $this->review_good,
-                'rating' => $this->rating,
-                'last_review' => new ReviewIndexResource(Review::query()->where(['user_id' => $this->id])->latest())
+                'rating' => $this->review_rating,
+                'last_review' => [
+                    'description' => $lastReview->description,
+                    'reviewer_name' => User::query()->find($lastReview->reviewer_id)->name
+                ]
             ],
             'phone_number_old' => $this->phone_number_old,
             'system_notification' =>$this->system_notification,
