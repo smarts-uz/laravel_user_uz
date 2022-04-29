@@ -57,7 +57,7 @@ class ProfileAPIController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
+        $user = auth()->user();
         return new UserIndexResource($user);
     }
 

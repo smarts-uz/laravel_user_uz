@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Review;
+use App\Models\Task;
 use App\Models\WalletBalance;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\File;
@@ -44,7 +46,9 @@ class UserIndexResource extends JsonResource
             'google_id' => $this->google_id,
             'facebook_id' => $this->facebook_id,
             'born_date' => $this->born_date,
-            'reviews' => $this->reviews,
+            'created_tasks' => Task::query()->where(['user_id' => $this->id])->get()->count(),
+            'performed_tasks' => Task::query()->where(['performer_id' => $this->id])->get()->count(),
+            'reviews' => ReviewResource::collection(Review::query()->where(['user_id' => $this->id])->get()),
             'phone_number_old' => $this->phone_number_old,
             'system_notification' =>$this->system_notification,
             'news_notification' => $this->news_notification,
