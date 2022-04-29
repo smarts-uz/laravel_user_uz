@@ -123,7 +123,7 @@
                                            {{$user->name}}
                                         </a>
                                     @else
-                                <a class="user mr-2" href="performers/{{$user->id}}">
+                                <a class="user mr-2" href="/performers/{{$user->id}}">
                                     <p class="lg:text-3xl text-2xl underline text-blue-500 performer-page{{$user->id}} hover:text-red-500" id="{{$user->id}}"> {{$user->name}}</p>
                                 </a>
                                 @endif
@@ -230,7 +230,8 @@
                                 @auth
                                 @if($tasks->count() > 0)
                                     <a id="open{{$user->id}}">
-                                       <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white">
+                                       <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
+                                               onclick="$('#performer_id').val({{$user->id}});">
                                            {{__('Предложить задание')}}</button>
                                     </a>
                                 @else
@@ -417,7 +418,7 @@
             var username = $(".{{$user->id}}").text();
             var namem = $(".namem").text('{{__('Вы предложили задание исполнителю')}}'+username );
             $(".modal_content").show();
-            let user_id = $('.{{$user->id}}').attr('id');
+            let user_id = $('#performer_id').val();//$('.{{$user->id}}').attr('id');
             $.ajax({
                 url: "/give-task",
                 type:"POST",

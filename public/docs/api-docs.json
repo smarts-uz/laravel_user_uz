@@ -1373,7 +1373,7 @@
         "\/api\/profile\/settings\/change-avatar": {
             "post": {
                 "tags": [
-                    "Profile"
+                    "Profile Settings"
                 ],
                 "summary": "Change Avator",
                 "operationId": "0eed7901dca85c5175305075ba95f121",
@@ -3024,7 +3024,10 @@
                                     "name": {
                                         "type": "string"
                                     },
-                                    "address": {
+                                    "location0": {
+                                        "type": "string"
+                                    },
+                                    "coordinates0": {
                                         "type": "string"
                                     },
                                     "date_type": {

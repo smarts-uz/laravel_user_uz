@@ -28,7 +28,7 @@ class PerformerIndexResource extends JsonResource
             'likes' => $goods,
             'dislikes' => $bads,
             'description' => $this->description,
-            'stars' => round($goods * 5 / (($goods+$bads==0) ? 1 : ($goods + $bads))),
+            'stars' => $this->review_rating,
         ];
     }
 }

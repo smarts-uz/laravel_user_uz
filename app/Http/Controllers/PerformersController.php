@@ -7,6 +7,7 @@ use App\Services\NotificationService;
 use App\Services\PerformersService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use PlayMobile\SMS\SmsService;
 use TCG\Voyager\Models\Category;
 use App\Models\User;
 use App\Models\Task;
@@ -94,8 +95,13 @@ class PerformersController extends Controller
         if (isset($task_id)) {
             $task_name = Task::where('id', $task_id)->first();
             $users_id = $request->session()->pull('given_id');
-            $notification = Notification::create([
-                'user_id' => $users_id,
+            $performer = User::query()->find($users_id);
+            $tesk_url = route("searchTask.task",$task_id);
+            $text = "Заказчик предложил вам новую задания $tesk_url. Контакт заказчика: " . $task_name->user->name . $task_name->user->phone_number;
+            (new SmsService())->send($performer->phone_number, $text);
+            Notification::create([
+                'user_id' => $task_name->user_id,
+                'performer_id' => $users_id,
                 'task_id' => $task_id,
                 'name_task' => $task_name->name,
                 'description' => '123',

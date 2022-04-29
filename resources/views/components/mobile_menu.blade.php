@@ -20,32 +20,7 @@
                 {{-- icon-1 --}}
                 <div class=" float-left">
                     @php
-                        $user = auth()->user();
-                        $notifications = App\Models\Notification::query()
-                            ->where('is_read', 0)
-                            ->where(function ($query) use ($user) {
-                                $query->where(function ($query) use ($user) {
-                                    $query->where('performer_id','=', $user->id)
-                                        ->whereIn('type', [4, 6, 7]);
-                                })
-                                ->orWhere(function ($query) use ($user) {
-                                    $query->where('user_id','=', $user->id)->where('type','=',5);
-                                });
-                                if ($user->role_id == 2)
-                                    $query->orWhere(function ($query) use ($user) {
-                                        $query->where('user_id','=', $user->id)->where('type','=',1);
-                                    });
-                                if ($user->system_notification)
-                                    $query->orWhere(function ($query) use ($user) {
-                                        $query->where('user_id','=', $user->id)->where('type','=',2);
-                                    });
-                                if ($user->news_notification)
-                                    $query->orWhere(function ($query) use ($user) {
-                                        $query->where('user_id','=', $user->id)->where('type','=',3);
-                                    });
-                            })
-                            ->orderByDesc('created_at')
-                            ->limit(10)->get();
+                        $notifications = \App\Services\NotificationService::getNotifications(auth()->user());
                         $count = $notifications->count();
                     @endphp
                     @if($count > 0)
@@ -80,7 +55,7 @@
                                         @elseif($notification->type == 4)
                                             <div class="w-full">{{__('Вас выбрали исполнителем  в задании')}}
                                                 <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}"  №{{$notification->task_id}}</a>
-                                                <a class="hover:text-blue-500" href="/performers/{{$notification->user_id}}"> {{$notification->user->name}}</a></div>
+                                                <a class="hover:text-blue-500" href="/performers/{{$notification->user_id}}"> {{$notification->user->name ?? 'None'}}</a></div>
                                         @elseif($notification->type == 5)
                                             <div class="w-full">{{__('Отклик к заданию')}}
                                                 <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}" №{{$notification->task_id}}</a>
