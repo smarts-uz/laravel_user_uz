@@ -73,10 +73,27 @@ class ProfileAPIController extends Controller
         ]);
     }
 
-    public function portfolioCreate(PortfolioRequest $request)
+    public function portfolioCreate(Request $request)
     {
-        $data = $request->validated();
+        $validator = Validator::make($request->all(), [
+            'comment' => 'required|string',
+            'description' => 'required"string'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'data' => $validator->errors()
+            ]);
+        }
+        $data = $request->all();
         $data['user_id'] = auth()->user()->id;
+        $image = [];
+        foreach($request->file('images') as $uploadedImage){
+            $filename = time() . '_' . $uploadedImage->getClientOriginalName();
+            $path = $uploadedImage->store($filename, 'public');
+            $image[] = $path;
+        }
+        $data['image'] = json_encode($image);
         $portfolio = Portfolio::create($data);
         return response()->json([
             'success' => true,
@@ -105,10 +122,27 @@ class ProfileAPIController extends Controller
         ]);
     }
 
-    public function portfolioUpdate(PortfolioRequest $request, Portfolio $portfolio)
+    public function portfolioUpdate(Request $request, Portfolio $portfolio)
     {
-        $data = $request->validated();
+        $validator = Validator::make($request->all(), [
+            'comment' => 'required|string',
+            'description' => 'required"string'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'data' => $validator->errors()
+            ]);
+        }
+        $data = $request->all();
         $data['user_id'] = auth()->user()->id;
+        $image = [];
+        foreach($request->file('images') as $uploadedImage){
+            $filename = time() . '_' . $uploadedImage->getClientOriginalName();
+            $path = $uploadedImage->store($filename, 'public');
+            $image[] = $path;
+        }
+        $data['image'] = json_encode($image);
         $portfolio->update($data);
         $portfolio->save();
         return response()->json([

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests\Api\TaskFilterRequest;
 use App\Http\Requests\Api\V1\Task\StoreRequest;
 use App\Http\Requests\Task\UpdateRequest;
+use App\Http\Resources\CustomFiledResource;
 use App\Http\Resources\SameTaskResource;
 use App\Http\Resources\TaskIndexResource;
 use App\Http\Resources\TaskPaginationResource;
@@ -13,7 +14,9 @@ use App\Models\CustomField;
 use App\Models\Task;
 use App\Models\TaskResponse;
 use App\Models\User;
+use App\Services\Response;
 use App\Services\Task\CreateService;
+use App\Services\Task\CreateTaskService;
 use App\Services\Task\FilterTaskService;
 use App\Services\Task\ResponseService;
 use Illuminate\Database\Eloquent\Collection;
@@ -26,17 +29,22 @@ use App\Models\CustomFieldsValue;
 
 class TaskAPIController extends Controller
 {
+    use Response;
+
     private $service;
     private $response_service;
     private $filter_service;
+    private $create_task_service;
 
     public function __construct()
     {
         $this->service = new CreateService();
         $this->filter_service = new FilterTaskService();
         $this->response_service = new ResponseService();
+        $this->create_task_service = new CreateTaskService();
 
     }
+
     /**
      * @OA\Get(
      *     path="/api/same-tasks/{task}",
@@ -66,7 +74,7 @@ class TaskAPIController extends Controller
      */
     public function same_tasks(Task $task, Request $request)
     {
-        $tasks = $task->category->tasks()->where('id','!=',$task->id);
+        $tasks = $task->category->tasks()->where('id', '!=', $task->id);
         $tasks = $tasks->where('status', Task::STATUS_OPEN)->take(10)->get();
         return SameTaskResource::collection($tasks);
     }
@@ -152,7 +160,7 @@ class TaskAPIController extends Controller
      */
     public function response_store(Task $task, Request $request)
     {
-        $response = $this->response_service->store($request,$task);
+        $response = $this->response_service->store($request, $task);
 
         return response()->json($response);
     }
@@ -160,7 +168,7 @@ class TaskAPIController extends Controller
     public function selectPerformer(TaskResponse $response)
     {
         $response = $this->response_service->selectPerformer($response);
-        return  response()->json($response);
+        return response()->json($response);
     }
 
     /**
@@ -238,7 +246,7 @@ class TaskAPIController extends Controller
     public function filter(TaskFilterRequest $request)
     {
         $data = $request->validated();
-        $tasks =$this->filter_service->filter($data);
+        $tasks = $this->filter_service->filter($data);
 
         return new TaskPaginationResource($tasks);
     }
@@ -252,18 +260,16 @@ class TaskAPIController extends Controller
 
     public function task_find(Request $request)
     {
-       if (isset($request->s))
-       {
-           $s = $request->s;
-           $tasks = Task::query()->where('status',Task::STATUS_OPEN)
-               ->where('name','like',"%$s%")
-               ->orWhere('description', 'like',"%$s%")
-               ->orWhere('phone', 'like',"%$s%")
-               ->orWhere('budget', 'like',"%$s%")->paginate();
-       }
-       else{
-           $tasks = Task::query()->where('status',Task::STATUS_OPEN)->paginate();
-       }
+        if (isset($request->s)) {
+            $s = $request->s;
+            $tasks = Task::query()->where('status', Task::STATUS_OPEN)
+                ->where('name', 'like', "%$s%")
+                ->orWhere('description', 'like', "%$s%")
+                ->orWhere('phone', 'like', "%$s%")
+                ->orWhere('budget', 'like', "%$s%")->paginate();
+        } else {
+            $tasks = Task::query()->where('status', Task::STATUS_OPEN)->paginate();
+        }
         return new TaskPaginationResource($tasks);
     }
 
@@ -334,17 +340,16 @@ class TaskAPIController extends Controller
         $user = auth()->user();
         $is_performer = $request->is_performer;
 
-        $column = $is_performer ? 'performer_id': 'user_id';
+        $column = $is_performer ? 'performer_id' : 'user_id';
 
-        $open_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_OPEN)->count(),'status' => Task::STATUS_OPEN];
-        $in_process_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_IN_PROGRESS)->count(),'status' => Task::STATUS_IN_PROGRESS];
-        $complete_tasks = ['count' =>  Task::query()->where($column, $user->id)->where('status', Task::STATUS_COMPLETE)->count(),'status' => Task::STATUS_COMPLETE];
-        $cancelled_tasks = ['count' =>  Task::query()->where($column, $user->id)->where('status', Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->count(),'status' => Task::STATUS_COMPLETE_WITHOUT_REVIEWS];
+        $open_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_OPEN)->count(), 'status' => Task::STATUS_OPEN];
+        $in_process_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_IN_PROGRESS)->count(), 'status' => Task::STATUS_IN_PROGRESS];
+        $complete_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_COMPLETE)->count(), 'status' => Task::STATUS_COMPLETE];
+        $cancelled_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->count(), 'status' => Task::STATUS_COMPLETE_WITHOUT_REVIEWS];
         $all = ['count' => $open_tasks['count'] + $in_process_tasks['count'] + $complete_tasks['count'] + $cancelled_tasks['count'], 'status' => 0];
 
 
-
-        return response()->json(['success' => true, 'data' => compact('open_tasks','in_process_tasks', 'complete_tasks','cancelled_tasks','all')]);
+        return response()->json(['success' => true, 'data' => compact('open_tasks', 'in_process_tasks', 'complete_tasks', 'cancelled_tasks', 'all')]);
     }
 
 
@@ -392,19 +397,18 @@ class TaskAPIController extends Controller
         $is_performer = $request->is_performer;
         $status = $request->status;
 
-        $status = in_array($status,[Task::STATUS_OPEN,Task::STATUS_COMPLETE_WITHOUT_REVIEWS,Task::STATUS_COMPLETE,Task::STATUS_IN_PROGRESS])? $status : 0;
+        $status = in_array($status, [Task::STATUS_OPEN, Task::STATUS_COMPLETE_WITHOUT_REVIEWS, Task::STATUS_COMPLETE, Task::STATUS_IN_PROGRESS]) ? $status : 0;
 
-        $column = $is_performer ? 'performer_id': 'user_id';
+        $column = $is_performer ? 'performer_id' : 'user_id';
         $tasks = Task::query()->where($column, $user->id);
 
         if ($status)
             $tasks = $tasks->where('status', $status);
         else
-            $tasks =  $tasks->where('status', '!=',0);
+            $tasks = $tasks->where('status', '!=', 0);
 
         return new TaskPaginationResource($tasks->paginate());
     }
-
 
 
     /**
@@ -447,17 +451,12 @@ class TaskAPIController extends Controller
      */
     public function routing(Request $request)
     {
-        $route = $request->route;
-        $category = Category::find($request->category_id);
+        $category = Category::query()->findOrFail($request->get('category_id'));
         $data = [];
-        switch ($route){
+        switch ($request->get('route')) {
             case CustomField::ROUTE_NAME:
-                if ($category->parent->remote)
-                    $data['route']  = 'remote';
-                else
-                    $data['route']  = CustomField::ROUTE_ADDRESS;
-                $data['custom_fields'] = $category->customFieldsInName;
-
+                $data['title'] = "Nazvaniya zadaniya";
+                $data = $this->create_task_service->name_store($request);
                 break;
             case CustomField::ROUTE_ADDRESS:
                 $data['custom_fields'] = $category->customFieldsInAddress;
@@ -476,10 +475,79 @@ class TaskAPIController extends Controller
                 break;
         }
 
-        return $data;
+        return $this->success($data);
 
     }
 
+    public function getFields(Request $request)
+    {
+        $category = Category::query()->findOrFail($request->get('category_id'));
+        $data = [];
+        switch ($request->get('route')) {
+            case CustomField::ROUTE_NAME:
+                $data['title'] = "Чем вам помочь?";
+                $data['description'] = "";
+                $data['fields'] = [
+                    [
+                        'label' => 'Название задания',
+                        'placeholder' => 'Например,  ' . $category->name,
+                        'type' => 'input',
+                        'name' => 'name'
+                    ]
+                ];
+                break;
+            case CustomField::ROUTE_ADDRESS:
+                $data['title'] = "Где выполнить задание?";
+                $data['description'] = "Укажите адрес или место, чтобы найти исполнителя рядом с вами.";
+                $data['fields'] = [
+                    [
+                        'label' => 'Местоположение',
+                        'placeholder' => "Город, Улица, Дом",
+                        'type' => 'map',
+                        'name' => 'address_a'
+                    ]
+                ];
+                if ($category->parent->double_address) {
+                    $data['fields'][] = [
+                        'label' => 'Местоположение',
+                        'placeholder' => "Город, Улица, Дом",
+                        'type' => 'map',
+                        'name' => 'address_b'
+                    ];
+                }
+                break;
+            case CustomField::ROUTE_BUDGET:
+                $data['custom_fields'] = $category->customFieldsInBudget;
+                break;
+            case CustomField::ROUTE_NOTE:
+                $data['custom_fields'] = $category->customFieldsInNote;
+                break;
+            case CustomField::ROUTE_DATE:
+                $data['custom_fields'] = $category->customFieldsInDate;
+                break;
+            case CustomField::ROUTE_CUSTOM:
+                $data['title'] = "Какие параметры посылки?";
+                $data['description'] = "";
+                $data['fields'] = [
+                    [
+                        'label' => 'Вес посылки, кг',
+                        'placeholder' => "",
+                        'type' => 'input',
+                        'name' => 'weight'
+                    ],
+                    [
+                        'label' => 'Длина, м',
+                        'placeholder' => "Город, Улица, Дом",
+                        'type' => 'input',
+                        'name' => 'length'
+                    ]
+                ];
+                $data['custom_fields'] = CustomFiledResource::collection($category->customFieldsInCustom);
+                break;
+        }
+
+        return $this->success($data);
+    }
 
 
     /**
@@ -549,11 +617,11 @@ class TaskAPIController extends Controller
         $data = $request->validated();
         $data["user_id"] = auth()->user()->id;
 
-        $images = isset($data['photos'])?$data['images']:[];
-        $data['photos'] =  [];
+        $images = isset($data['photos']) ? $data['images'] : [];
+        $data['photos'] = [];
         foreach ($images as $image) {
-            $name = md5(\Carbon\Carbon::now().'_'.$image->getClientOriginalName().'.'.$image->getClientOriginalExtension());
-            $filepath = Storage::disk('public')->putFileAs('/images',$image, $name);
+            $name = md5(\Carbon\Carbon::now() . '_' . $image->getClientOriginalName() . '.' . $image->getClientOriginalExtension());
+            $filepath = Storage::disk('public')->putFileAs('/images', $image, $name);
             $data['photos'][] = $filepath;
         }
 
@@ -646,16 +714,17 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function changeTask(UpdateRequest $request, Task $task){
+    public function changeTask(UpdateRequest $request, Task $task)
+    {
         taskGuard($task);
         $data = $request->validated();
         //$data = getAddress($data); // шуни комментировать килиб койса swagger да ишлайди
 
-        $images = isset($data['photos'])?$data['images']:[];
-        $data['photos'] =  [];
+        $images = isset($data['photos']) ? $data['images'] : [];
+        $data['photos'] = [];
         foreach ($images as $image) {
-            $name = md5(\Carbon\Carbon::now().'_'.$image->getClientOriginalName().'.'.$image->getClientOriginalExtension());
-            $filepath = Storage::disk('public')->putFileAs('/images',$image, $name);
+            $name = md5(\Carbon\Carbon::now() . '_' . $image->getClientOriginalName() . '.' . $image->getClientOriginalExtension());
+            $filepath = Storage::disk('public')->putFileAs('/images', $image, $name);
             $data['photos'][] = $filepath;
         }
 
@@ -702,7 +771,7 @@ class TaskAPIController extends Controller
         $task->delete();
         CustomFieldsValue::where('task_id', $task)->delete();
 
-        if($task){
+        if ($task) {
             return response()->json([
                 'success' => true,
                 'message' => 'Successfully Deleted'
