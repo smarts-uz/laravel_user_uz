@@ -73,10 +73,17 @@ class ProfileAPIController extends Controller
         ]);
     }
 
-    public function portfolioCreate(PortfolioRequest $request)
+    public function portfolioCreate(Request $request)
     {
-        $data = $request->validated();
+        $data = $request->all();
         $data['user_id'] = auth()->user()->id;
+        $image = [];
+        foreach($request->file('images') as $uploadedImage){
+            $filename = time() . '_' . $uploadedImage->getClientOriginalName();
+            $path = $uploadedImage->store($filename, 'public');
+            $image[] = $path;
+        }
+        $data['image'] = json_encode($image);
         $portfolio = Portfolio::create($data);
         return response()->json([
             'success' => true,
