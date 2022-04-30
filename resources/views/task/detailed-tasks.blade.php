@@ -546,10 +546,16 @@
 
                                         <div
                                             class="text-[17px] text-gray-500 my-5">{{$selected->description}}</div>
-                                        @if($selected->not_free == 1 || $task->user_id == auth()->id())
+                                        <!-- @if($selected->not_free == 1 || $task->user_id == auth()->id())
                                             <div
                                                 class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} +998 {{$selected->performer->phone_number}}</div>
+                                        @endif -->
+
+                                        @if($responses->not_free == 1 || $task->user_id == auth()->id())
+                                            <div
+                                                class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} +998 {{$responses->performer->phone_number}}</div>
                                         @endif
+
 
                                         @auth()
                                             @if($task->status == 3 && $selected->performer_id == $task->performer_id)
