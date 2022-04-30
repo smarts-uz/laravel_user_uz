@@ -4,68 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6ff10880c023b721fe9adab219275269",
+    "content-hash": "7777cbfee192d774cdc8e6f3048e0859",
     "packages": [
-        {
-            "name": "andywer/js-localization",
-            "version": "dev-laravel-7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/andywer/laravel-js-localization.git",
-                "reference": "7f6868cc9b40330cb415188bc44fbcc5a7c3dd5a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/andywer/laravel-js-localization/zipball/7f6868cc9b40330cb415188bc44fbcc5a7c3dd5a",
-                "reference": "7f6868cc9b40330cb415188bc44fbcc5a7c3dd5a",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "6.*|7.*|8.*",
-                "php": ">=7.3.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "~1.0",
-                "orchestra/testbench": "4.*",
-                "phpunit/phpunit": "^8.0"
-            },
-            "type": "library",
-            "extra": {
-                "component": "package",
-                "frameworks": [
-                    "Laravel 7",
-                    "Laravel 8"
-                ]
-            },
-            "autoload": {
-                "psr-4": {
-                    "JsLocalization\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Andy Wermke",
-                    "email": "andy@dev.next-step-software.com"
-                }
-            ],
-            "description": "Laravel package to provide localizations to the Javascript code.",
-            "keywords": [
-                "javascript",
-                "laravel",
-                "localization",
-                "messages",
-                "translation"
-            ],
-            "support": {
-                "issues": "https://github.com/andywer/laravel-js-localization/issues",
-                "source": "https://github.com/andywer/laravel-js-localization/tree/laravel-6"
-            },
-            "time": "2020-09-17T07:36:30+00:00"
-        },
         {
             "name": "arrilot/laravel-widgets",
             "version": "3.13.1",
@@ -13332,8 +13272,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "temprodev/laravel-one-auth": 20,
-        "andywer/js-localization": 20
+        "temprodev/laravel-one-auth": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

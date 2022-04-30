@@ -7,11 +7,8 @@
             <div class="col-span-5 lg:col-span-3">
                 <div class="w-full bg-yellow-50 my-5 rounded-md">
                     <div class="px-5 py-5 hidden md:block">
-                    <!-- <form action="{{route('search')}}" method="get"> -->
                         <div class="grid grid-cols-4 gap-4 mb-3">
-
                             <div class="sm:inline-flex block w-full col-span-4 relative">
-                            <!-- <input class="focus:outline-none  w-10/12 text-black-700 border border-black rounded mr-4 px-1" type="text" placeholder="Поиск по ключевым словам" name="s" value="{{$s ?? ''}}" aria-label="Full name"> -->
                                 <input id="filter" type="text"
                                        class="focus:outline-none focus:border-yellow-500 focus:placeholder-transparent w-4/5 py-1 px-3 text-black-700 border-2 rounded-md border-neutral-400 focus:shadow-sm focus:shadow-sky-500 mr-4"
                                        placeholder="{{__('Поиск по ключевым словам')}}">
@@ -20,7 +17,6 @@
                                     class="sm:w-2/12 w-4/12 bg-green-500 hover:bg-green-600 ml-1 py-1 px-1 rounded-md sm:mt-0 text-white" id="findBut"
                                 >{{__('Найти')}}</button>
                             </div>
-
                             <div class="md:inline-flex  block w-full col-span-4 ">
                                 <div class="w-8/12 md:w-4/5 relative">
                                     <label class="lg:text-base md:text-sm mb-1 text-neutral-400">{{__('Город, адрес, метро, район...')}}</label>
@@ -30,7 +26,6 @@
                                         type="text" id="suggest">
                                             <svg class="absolute right-2 bottom-1.5 h-4 w-4 text-purple-500" id="geoBut" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M21 3L14.5 21a.55 .55 0 0 1 -1 0L10 14L3 10.5a.55 .55 0 0 1 0 -1L21 3" /></svg>
                                             <img src="images/close.png" class="absolute right-2 bottom-1.5 cursor-pointer" id="closeBut" hidden>
-{{--                                        </button>--}}
                                     </div>
                                 </div>
                             </div>
@@ -69,13 +64,11 @@
                                 </label>
                             </div>
                         </div>
-                        <!-- </form> -->
                     </div>
                 </div>
 
 
 
-{{--                MOBILE VERSION --}}
                 <div class="w-full my-5 rounded-md md:hidden block">
                     <div class="inline-flex block w-full grid grid-cols-3">
                         <input id="filter2" type="text"
@@ -103,7 +96,7 @@
                     </div>
                 </div>
 
-{{--                mobile bar--}}
+
 
                 <div id="mobile_bar" class="w-full hidden" style="display:none;">
                     <div class="bg-yellow-50 pb-4">
@@ -113,10 +106,8 @@
                                 <div class="bg-white address float-left py-1 px-3 text-black-700 border-2 rounded-md border-neutral-400 focus:border-sky-500 focus:shadow-sm focus:shadow-sky-500  w-full text-black-700">
                                     <input class="float-left bg-transparent border-0 w-11/12 h-full focus:outline-none focus:border-yellow-500"
                                         type="text" id="suggest2" placeholder="Mobile">
-{{--                                    <button class="flex-shrink-0 focus:outline-none float-right text-teal-500 mt-1 text-sm rounded" type="button">--}}
                                         <svg class="h-4 w-4 text-purple-500" id="geobut2" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M21 3L14.5 21a.55 .55 0 0 1 -1 0L10 14L3 10.5a.55 .55 0 0 1 0 -1L21 3" /></svg>
                                         <img src="images/close.png" class="absolute right-2 bottom-1.5 cursor-pointer" id="closeBut2" hidden>
-{{--                                    </button>--}}
                                 </div>
                             </div>
                             <div class="w-full">
@@ -138,8 +129,6 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div class=" w-11/12 mx-auto border-b pb-4">
                         <label class="text-xs mb-1 text-neutral-400">{{__('Стоимость заданий')}}</label>
                         <input type="text" maxlength="7" class="w-full focus:placeholder-transparent border-md py-1 px-2 text-black-700 border-2 rounded-md border-neutral-400 focus:outline-none focus:border-yellow-500 focus:shadow-sm focus:shadow-sky-500  text-black-700" placeholder="UZS" id="price2">
@@ -155,16 +144,9 @@
                             <input type="checkbox" id="noResp2" class="form-checkbox mr-4  h-5 w-5 text-orange-400"
                             ><span class="sm:ml-2  ml-0.5 text-gray-700 lg:text-sm">{{__('Задания без откликов')}}</span>
                         </label>
-{{--                        </label>--}}
                     </div>
-{{--                mobile bar end--}}
 
-{{--                mobile map--}}
-                <div id="big-big" class="h-full my-5 rounded-lg w-full static"></div>
-{{--                mobile map end--}}
-
-{{--                MOBILE VERSION ENDED --}}
-
+                    <div id="big-big" class="h-full my-5 rounded-lg w-full static"></div>
                 </div>
 
 
@@ -178,7 +160,7 @@
                         <div class="inline-flex items-center my-5">
                             <span class="title__994cd">{{__('Сортировать:')}}</span>
                             <button id="byDate" class="mx-5 active">{{__('по дате публикации')}}</button>
-                            <button id="bySroch" class="mx-5 ">{{__('по срочности')}}</button>
+                            <button id="bySearch" class="mx-5 ">{{__('по срочности')}}</button>
                         </div>
                     </div>
                     <div id="scrollbar" class="w-full h-full blog1">
@@ -257,7 +239,6 @@
                             @endforeach
                         </div>
                     </div>
-{{--                    <script src="https://unpkg.com/@themesberg/flowbite@latest/dist/flowbite.bundle.js"></script>--}}
                 </div>
             </div>
         </div>
@@ -281,7 +262,6 @@
 
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
     <script src="https://api-maps.yandex.ru/2.1/?apikey=f4b34baa-cbd1-432b-865b-9562afa3fcdb&lang={{__('ru_RU')}}" type="text/javascript"></script>
-{{--    <script src="{{asset('js/search_tasks.js')}}"></script>--}}
     <script src="js/search_tasks.js"></script>
     <script>
 

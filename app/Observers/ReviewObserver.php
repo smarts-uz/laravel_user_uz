@@ -17,11 +17,12 @@ class ReviewObserver
     public function created(Review $review)
     {
             $user = User::find($review->user_id);
-            $review->good_bad ? $user->increment('review_good',1) : $user->increment('review_bad',1);
             $goods = $user->review_good;
             $bads = $user->review_bad;
             $user->review_rating = round($goods * 5 / (($goods+$bads==0) ? 1 : ($goods + $bads)));
             $user->save();
+            if(PHP_SAPI === 'cli')
+                dd($user->review_good,$user->review_bad,$user->review_rating);
     }
 
     /**

@@ -102,5 +102,11 @@ class SearchTaskController extends VoyagerBaseController
         //        dd($task);
         return view('task.changetask', compact('task', 'addresses'));
     }
+    public function search_new(){
+        $categories = Category::where('parent_id', null)->select('id', 'name')->get();
+        $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
+        $tasks = Task::whereIn('status', [1, 2])->orderBy('id', 'desc')->get();
+        return view('search_task.new_search', compact('tasks','categories','categories2'));
+    }
 
 }

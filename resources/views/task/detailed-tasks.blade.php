@@ -546,15 +546,18 @@
 
                                         <div
                                             class="text-[17px] text-gray-500 my-5">{{$selected->description}}</div>
+                                        
+
                                         @if($selected->not_free == 1 || $task->user_id == auth()->id())
                                             <div
-                                                class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} {{$selected->performer->phone_number}}</div>
+                                                class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} +998 {{$selected->performer->phone_number}}</div>
                                         @endif
+
 
                                         @auth()
                                             @if($task->status == 3 && $selected->performer_id == $task->performer_id)
                                                 <div class="w-10/12 mx-auto">
-                                                    <a href="{{ route('user', $selected->performer->id) }}"
+                                                    <a href="{{ url('/chat/' . $selected->performer->id) }}"
                                                        class="text-semibold text-center w-[200px] mb-2 md:w-[320px] ml-0 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
                                                         {{__('Написать в чат')}}
                                                     </a>
@@ -705,7 +708,7 @@
                                             @auth()
                                                 @if($task->status == 3 && $response->performer_id == $task->performer_id)
                                                     <div class="w-10/12 mx-auto">
-                                                        <a href="{{ route('user', $response->performer->id) }}"
+                                                        <a href="{{ url('/chat/' . $response->performer->id) }}"
                                                            class="text-semibold text-center w-[200px] mb-2 md:w-[320px] ml-0 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
                                                             {{__('Написать в чат')}}
                                                         </a>
@@ -746,7 +749,7 @@
                     @endif
                     <hr>
                 @endauth
-                
+
                 @if ($task->status == 4)
                     @foreach ($respons_reviews as $respons_review)
                         @if ($respons_review->good_bad==1 && $respons_review->task_id == $task->id)
@@ -821,11 +824,11 @@
                                                 <div class="w-5/6">
                                                     <a href="/detailed-tasks/{{$item->id}}"
                                                     class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">{{ $item->name }}</a>
-                                                    <p class="text-sm">{{ count($addresses)? $addresses[0]->location:'' }}</p>
+                                                    <p class="text-sm">{{ count($addresses)? $addresses[0]->location:'Можно выполнить удаленно' }}</p>
                                                     @if($item->date_type == 1 || $item->date_type == 3)
                                                         <p class="text-sm my-0.5">{{__('Начать')}} {{ $item->start_date }}</p>
                                                     @endif
-                                                    @if($item->date_type == 3 || $item->date_type == 3)
+                                                    @if($item->date_type == 2 || $item->date_type == 3)
                                                         <p class="text-sm my-0.5">{{__('Закончить')}} {{ $item->end_date }}</p>
                                                     @endif
                                                     @if($item->oplata == 1)

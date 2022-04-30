@@ -34,7 +34,7 @@ class SearchService
     {
         $item = new SearchServiceTaskItem();
         $item->complianceType = ComplianceType::all();
-        $item->selected = $task->responses()->where('performer_id', $task->performer_id)->first();
+        $item->selected = $task->responses()->where('performer_id', '!=', $task->performer_id)->first();
         $item->responses = $item->selected ? $task->responses()->where('id', '!=', $item->selected->id)->get() : $task->responses;
         $item->auth_response = $auth_response ? $task->responses()->where('performer_id', $userId)->with('user')->first() : null;
         $item->same_tasks = $task->category->tasks()->where('id', '!=', $task->id)->where('status', Task::STATUS_OPEN)->take(10)->get();

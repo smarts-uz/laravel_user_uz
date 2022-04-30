@@ -75,7 +75,6 @@ Route::middleware('custom.auth:api')->group(function () {
         Route::get('/', [ProfileAPIController::class, 'index']); //end +
         Route::get('/portfolios', [ProfileAPIController::class, 'portfolios']); //end
         Route::post('/portfolio/create', [ProfileAPIController::class, 'portfolioCreate']);
-        Route::get('/portfolio/{portfolio}/edit', [ProfileAPIController::class, 'portfolioEdit']);
         Route::post('/portfolio/{portfolio}/update', [ProfileAPIController::class, 'portfolioUpdate']);
         Route::post('/portfolio/{portfolio}/delete', [ProfileAPIController::class, 'portfolioDelete']);
         Route::get('/reviews', [ProfileAPIController::class, 'reviews']); //end

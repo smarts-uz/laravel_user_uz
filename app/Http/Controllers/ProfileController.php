@@ -301,5 +301,12 @@ class ProfileController extends Controller
             echo json_encode(['status' => 0, 'msg' => 'failed']);
         }
     }
+    public function youtube_link(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+        $user->youtube_link = str_replace('watch?v=','embed/',$request->youtube_link);
+        $user->save();
+        return redirect()->back();
+    }
 }
 
