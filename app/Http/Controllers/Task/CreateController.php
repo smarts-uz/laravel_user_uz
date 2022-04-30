@@ -94,10 +94,12 @@ class CreateController extends Controller
     {
         $data = $request->validate(['radio' => 'required']);
 
-        if ($data['radio'] == 'address')
+        if ($data['radio'] === 'address')
         {
             return redirect()->route("task.create.address", $task->id);
-        }else if ($data['radio'] == 'remote')
+        }
+
+        if ($data['radio'] === 'remote')
         {
             return redirect()->route("task.create.date", $task->id);
         }
@@ -151,6 +153,8 @@ class CreateController extends Controller
         $task->budget = preg_replace('/[^0-9.]+/', '', $request->amount1);
         $task->save();
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET);
+
+
         return redirect()->route('task.create.note', $task->id);
 
     }
@@ -205,7 +209,7 @@ class CreateController extends Controller
             'description' => 'required|string',
             'oplata' => 'required',
         ]);
-        if ($request['docs'] == "on") {
+        if ($request['docs'] === "on") {
             $data['docs'] = 1;
         } else {
             $data['docs'] = 0;
