@@ -256,7 +256,7 @@ class MessagesController extends Controller
     public function getContacts(Request $request)
     {
         $authUser = auth()->user();
-        $messages = ChMessage::query()->select('from_id', 'to_id')
+        $messages = ChMessage::query()->select('from_id', 'to_id', 'created_at')
             ->where('to_id', auth()->id())
             ->orWhere('from_id', \auth()->id())
             ->orderByDesc('created_at')->distinct()->get()->toArray();
