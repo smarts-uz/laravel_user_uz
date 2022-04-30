@@ -77,7 +77,7 @@ class ProfileAPIController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'comment' => 'required|string',
-            'description' => 'required"string'
+            'description' => 'required|string'
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -128,7 +128,7 @@ class ProfileAPIController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'comment' => 'required|string',
-            'description' => 'required"string'
+            'description' => 'required|string'
         ]);
         if ($validator->fails()) {
             return response()->json([
