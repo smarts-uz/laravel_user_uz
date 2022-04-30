@@ -106,7 +106,7 @@ class SearchTaskController extends VoyagerBaseController
         $categories = Category::where('parent_id', null)->select('id', 'name')->get();
         $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
         $tasks = Task::whereIn('status', [1, 2])->orderBy('id', 'desc')->get();
-        return view('search_task.desctop_task_search', compact('tasks','categories','categories2'));
+        return view('search_task.new_search', compact('tasks','categories','categories2'));
     }
 
 }
