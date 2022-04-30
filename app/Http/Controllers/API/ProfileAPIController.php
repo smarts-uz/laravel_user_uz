@@ -22,6 +22,7 @@ use App\Models\User;
 use App\Models\WalletBalance;
 use App\Services\Profile\ProfileService;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -138,12 +139,23 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function reviews()
+    public function reviews(Request $request)
     {
         $user = auth()->user();
+        if ($request->get('performer') == 1) {
+            $data = Review::query()->where(['user_id' => $user->id])
+                ->whereHas('task', function (Builder $q) use ($user) {
+                    $q->where(['performer_id' => $user->id]);
+                })->get();
+        } else {
+            $data = Review::query()->where(['user_id' => $user->id])
+                ->whereHas('task', function (Builder $q) use ($user) {
+                    $q->where(['user_id' => $user->id]);
+                })->get();
+        }
         return response()->json([
             'success' => true,
-            'data' => ReviewIndexResource::collection(Review::query()->where(['user_id' => $user->id])->get())
+            'data' => ReviewIndexResource::collection($data)
         ]);
     }
 
