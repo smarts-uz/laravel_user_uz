@@ -10,7 +10,7 @@
         wsPort: 6001,
         forceTLS: false,
         disableStats: true,
-        authEndpoint: 'http://' + {{env('WEBSOCKET_SERVER_HOST')}} +'/chat/pusher/auth',
+        authEndpoint: 'http://' + '{{env('WEBSOCKET_SERVER_HOST')}}' +'/chat/pusher/auth',
         auth: {
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
