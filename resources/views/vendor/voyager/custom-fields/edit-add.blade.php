@@ -113,6 +113,7 @@
 @php $count_for_js++; @endphp
 <div>{{$key}}
 <input type="text" name="options[options][{{$key}}]" style="width:50%; border:1px solid #e4eaec; padding: 2px 12px;" value="{{$option}}">
+<input type="text" name="options_ru[options][{{$key}}]" style="width:50%; border:1px solid #e4eaec; padding: 2px 12px;" value="{{$dataTypeContent->options_ru['options'][$key]}}">
 <input type="button" value="x" style="padding:0 8px 2px 8px; margin-left: 3px;" class="btn btn-danger btnX">
 </div>
 @endforeach
