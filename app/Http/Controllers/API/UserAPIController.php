@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
 use App\Models\User;
+use App\Models\WalletBalance;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -29,10 +30,23 @@ class UserAPIController extends Controller
     function login(UserLoginRequest $request)
     {
         $request->authenticate();
+        $user = auth()->user();
+        $accessToken = $user->createToken('authToken')->accessToken;
 
-        $accessToken = auth()->user()->createToken('authToken')->accessToken;
-
-        return response()->json(['user' => auth()->user(), 'access_token'=>$accessToken]);
+        $balance = WalletBalance::query()->where(['user_id' => $user->id])->first();
+        if (isset($balance))
+            $userBalance = $balance->balance;
+        else
+            $userBalance = null;
+        return response()->json([
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'avatar' => asset($user->avatar),
+                'balance' => $userBalance
+            ],
+            'access_token'=>$accessToken]);
 
     }
 
