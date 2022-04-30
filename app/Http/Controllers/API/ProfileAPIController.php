@@ -22,6 +22,7 @@ use App\Models\User;
 use App\Models\WalletBalance;
 use App\Services\Profile\ProfileService;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -65,10 +66,10 @@ class ProfileAPIController extends Controller
      */
     public function portfolios()
     {
-        $user = auth()->user()->load('portfolios');
+        $user = auth()->user();
         return response()->json([
             'success' => true,
-            'data' => PortfolioIndexResource::collection($user->portfolios())
+            'data' => PortfolioIndexResource::collection(Portfolio::query()->where(['user_id' => $user->id])->get())
         ]);
     }
 
@@ -76,8 +77,6 @@ class ProfileAPIController extends Controller
     {
         $data = $request->validated();
         $data['user_id'] = auth()->user()->id;
-        $data['image'] = session()->has('images') ? session('images') : '[]';
-        session()->forget('images');
         $portfolio = Portfolio::create($data);
         return response()->json([
             'success' => true,
@@ -92,7 +91,9 @@ class ProfileAPIController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => 'Portfolio deleted'
+            'data' => [
+                'message' =>'Portfolio deleted'
+            ]
         ]);
     }
 
@@ -108,8 +109,6 @@ class ProfileAPIController extends Controller
     {
         $data = $request->validated();
         $data['user_id'] = auth()->user()->id;
-        $data['image'] = session()->has('images') ? session('images') : '[]';
-        session()->forget('images');
         $portfolio->update($data);
         $portfolio->save();
         return response()->json([
@@ -140,12 +139,23 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function reviews()
+    public function reviews(Request $request)
     {
         $user = auth()->user();
+        if ($request->get('performer') == 1) {
+            $data = Review::query()->where(['user_id' => $user->id])
+                ->whereHas('task', function (Builder $q) use ($user) {
+                    $q->where(['performer_id' => $user->id]);
+                })->get();
+        } else {
+            $data = Review::query()->where(['user_id' => $user->id])
+                ->whereHas('task', function (Builder $q) use ($user) {
+                    $q->where(['user_id' => $user->id]);
+                })->get();
+        }
         return response()->json([
             'success' => true,
-            'data' => ReviewIndexResource::collection(Review::query()->where(['user_id' => $user->id]))->get()
+            'data' => ReviewIndexResource::collection($data)
         ]);
     }
 
@@ -324,7 +334,8 @@ class ProfileAPIController extends Controller
         $request['user_id'] = auth()->user()->id;
         switch($payment) {
             case 'Click':
-                return ClickuzController::pay($request);
+                $payment = new ClickuzController();
+                return $payment->pay($request);
             case 'PayMe':
                 $tr = new All_transaction();
                 $tr->user_id = Auth::id();
@@ -651,6 +662,7 @@ class ProfileAPIController extends Controller
             'location' => $user->location,
             'date_of_birth' => $user->born_date,
             'email' => $user->email,
+            'phone' => $user->phone_number,
             'gender' => $user->gender,
         ];
         return response()->json([
