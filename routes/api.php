@@ -92,11 +92,11 @@ Route::middleware('custom.auth:api')->group(function () {
             Route::post('/password/change', [ProfileAPIController::class, 'change_password']); //end +
             Route::post('/notifications', [ProfileAPIController::class, 'userNotifications']); //end +
         });
-
-
     });
-
 });
+Route::get('/profile/{id}', [ProfileAPIController::class, 'userProfile']);
+Route::get('/profile/{user}/portfolios', [ProfileAPIController::class, 'userPortfolios']);
+Route::get('/profile/{user}/reviews', [ProfileAPIController::class, 'userReviews']);
 
 
 //User Routes
