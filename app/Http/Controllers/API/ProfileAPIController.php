@@ -73,10 +73,30 @@ class ProfileAPIController extends Controller
         ]);
     }
 
-    public function portfolioCreate(PortfolioRequest $request)
+    public function portfolioCreate(Request $request)
     {
-        $data = $request->validated();
-        $data['user_id'] = auth()->user()->id;
+        $validator = Validator::make($request->all(), [
+            'comment' => 'required|string',
+            'description' => 'required|string'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'data' => $validator->errors()
+            ]);
+        }
+        $user = auth()->user();
+        $data = $validator->validated();
+        $data['user_id'] = $user->id;
+        if ($request->has('images')) {
+            $image = [];
+            foreach ($request->file('images') as $uploadedImage) {
+                $filename = $user->name.'/'.$data['comment'].'/'.time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path().'Portfolio/'.$user->name.'/', $filename);
+                $image[] = $filename;
+            }
+            $data['image'] = json_encode($image);
+        }
         $portfolio = Portfolio::create($data);
         return response()->json([
             'success' => true,
@@ -105,10 +125,30 @@ class ProfileAPIController extends Controller
         ]);
     }
 
-    public function portfolioUpdate(PortfolioRequest $request, Portfolio $portfolio)
+    public function portfolioUpdate(Request $request, Portfolio $portfolio)
     {
-        $data = $request->validated();
-        $data['user_id'] = auth()->user()->id;
+        $validator = Validator::make($request->all(), [
+            'comment' => 'required|string',
+            'description' => 'required|string'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'data' => $validator->errors()
+            ]);
+        }
+        $user = auth()->user();
+        $data = $validator->validated();
+        $data['user_id'] = $user->id;
+        if ($request->has('images')) {
+            $image = [];
+            foreach ($request->file('images') as $uploadedImage) {
+                $filename = $user->name.'/'.$data['comment'].'/'.time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path().'Portfolio/'.$user->name.'/', $filename);
+                $image[] = $filename;
+            }
+            $data['image'] = json_encode($image);
+        }
         $portfolio->update($data);
         $portfolio->save();
         return response()->json([

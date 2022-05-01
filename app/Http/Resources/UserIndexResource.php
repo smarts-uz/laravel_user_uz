@@ -8,6 +8,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Models\WalletBalance;
 use App\Services\Profile\ProfileService;
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\File;
 
@@ -103,6 +104,12 @@ class UserIndexResource extends JsonResource
             ];
         }
         $lastReview = Review::query()->where(['user_id' => $this->id, 'good_bad' => 1])->get()->last();
+        $date = Carbon::now()->subMinutes(2)->toDateTimeString();
+        if ($this->last_seen >= $date) {
+            $lastSeen = 'online';
+        } else {
+            $lastSeen = Carbon::parse($this->last_seen)->diffForHumans();
+        }
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -140,7 +147,7 @@ class UserIndexResource extends JsonResource
             'views' => $this->views,
             'directories' => $directories,
             'wallet_balance' => $balance,
-            'last_seen' => $this->last_seen
+            'last_seen' => $lastSeen
         ];
     }
 }
