@@ -453,7 +453,7 @@ class TaskAPIController extends Controller
     public function routing(Request $request)
     {
         $request->validate(['route' => 'required']);
-        $category = Category::query()->findOrFail($request->get('category_id'));
+//        $category = Category::query()->findOrFail($request->get('category_id'));
         $data = [];
         switch ($request->get('route')) {
             case CustomField::ROUTE_NAME:
