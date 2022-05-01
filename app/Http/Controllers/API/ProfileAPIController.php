@@ -1037,4 +1037,40 @@ class ProfileAPIController extends Controller
             ]
         ]);
     }
+
+    public function userProfile($id)
+    {
+        $user = User::query()->find($id);
+        return response()->json([
+            'success' => true,
+            'data' => new UserIndexResource($user)
+        ]);
+    }
+
+    public function userPortfolios(User $user)
+    {
+        return response()->json([
+            'success' => true,
+            'data' => PortfolioIndexResource::collection(Portfolio::query()->where(['user_id' => $user->id])->get())
+        ]);
+    }
+
+    public function userReviews(Request $request, User $user)
+    {
+        if ($request->get('performer') == 1) {
+            $data = Review::query()->where(['user_id' => $user->id])
+                ->whereHas('task', function (Builder $q) use ($user) {
+                    $q->where(['performer_id' => $user->id]);
+                })->get();
+        } else {
+            $data = Review::query()->where(['user_id' => $user->id])
+                ->whereHas('task', function (Builder $q) use ($user) {
+                    $q->where(['user_id' => $user->id]);
+                })->get();
+        }
+        return response()->json([
+            'success' => true,
+            'data' => ReviewIndexResource::collection($data)
+        ]);
+    }
 }
