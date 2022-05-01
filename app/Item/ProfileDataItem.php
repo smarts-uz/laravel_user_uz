@@ -17,6 +17,9 @@ class ProfileDataItem
     public $b;
     public $directories;
     public $categories;
+    public $review_good;
+    public $review_bad;
+    public $review_rating;
     public $goodReviews;
     public $badReviews;
 }

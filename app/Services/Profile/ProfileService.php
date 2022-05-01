@@ -68,8 +68,9 @@ class ProfileService
         $task_count = Task::where('performer_id', $user->id)->count();
         $sessions = Session::query()->where('user_id', $user->id)->get();
         $parser = Parser::create();
-        $goodReviews = auth()->user()->goodReviews()->whereHas('task')->whereHas('user')->get();
-        $badReviews = auth()->user()->badReviews()->whereHas('task')->whereHas('user')->get();
+        $review_good = User::find($user->id)->review_good;
+        $review_bad = User::find($user->id)->review_bad;
+        $review_rating = User::find($user->id)->review_rating;
         return array(
             'user' => $user,
             'views' => $views,
@@ -80,8 +81,9 @@ class ProfileService
             'task_count' => $task_count,
             'sessions' => $sessions,
             'parser' => $parser,
-            'goodReviews' => $goodReviews,
-            'badReviews' => $badReviews,
+            'review_good' => $review_good,
+            'review_bad' => $review_bad,
+            'review_rating' => $review_rating,
         );
     }
 
@@ -127,7 +129,7 @@ class ProfileService
         $user->save();
     }
 
-    public function profileCash(){
+    public function profileCash($user){
         $item = new ProfileCashItem();
         $item ->user = Auth()->user()->load('transactions');
         $item ->balance =  $item ->user->walletBalance;
@@ -136,9 +138,12 @@ class ProfileService
         $item ->transactions =  $item ->user->transactions()->paginate(15);
         $item ->about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
         $item ->task_count = Task::where('performer_id',  $item ->user->id)->count();
+        $item ->review_rating = User::find($user->id)->review_rating;
+        $item ->review_good = User::find($user->id)->review_good;
+        $item ->review_bad = User::find($user->id)->review_bad;
         return $item;
     }
-    public function profileData( $user){
+    public function profileData($user){
         $item = new ProfileDataItem();
         $item ->views = $user->views_count;
         $item ->task = $user->tasks_count;
@@ -153,8 +158,11 @@ class ProfileService
         $item ->b = File::directories(public_path("Portfolio/{$user->name}"));
         $item ->directories = array_map('basename',  $item ->b );
         $item ->categories = Category::withTranslations(['ru', 'uz'])->get();
-        $item ->goodReviews = $user->goodReviews()->get();
-        $item ->badReviews = $user->badReviews()->get();
+        $item ->review_good = User::find($user->id)->review_good;
+        $item ->review_bad = User::find($user->id)->review_bad;
+        $item ->review_rating = User::find($user->id)->review_rating;
+        $item ->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->get();
+        $item ->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->get();
         return $item;
     }
 }
