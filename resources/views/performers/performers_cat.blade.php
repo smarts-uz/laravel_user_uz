@@ -83,37 +83,16 @@
                     <div class="difficultTask w-12/12 m-5 h-[200px] flex md:flex-none overflow-hidden md:overflow-visible mb-10" id="{{$user->id}}">
                         <div class="float-left">
                             <img class="rounded-lg w-32 h-32 bg-black mb-4 mr-4" @if ($user->avatar == Null)src='{{asset("storage/images/default.jpg")}}' @else src="{{asset("storage/{$user->avatar}")}}" @endif alt="avatar">
-                            <div class="flex flex-row items-center text-base">
+                            <div class="flex sm:flex-row items-center text-base">
                                 <p class="text-black ">{{__('Отзывы:')}}</p>
                                 <i class="far fa-thumbs-up text-blue-500 ml-1 mb-1"></i>
-                                <span class="text-gray-800 mr-2 like{{$user->id}}">{{ $user->reviews()->where('good_bad',1)->count()}}</span>
+                                <span class="text-gray-800 mr-2 like{{$user->id}}">{{$user->review_good}}</span>
                                 <i class="far fa-thumbs-down mt-0.5 text-blue-500"></i>
-                                <span class="text-gray-800 dislike{{$user->id}}">{{ $user->reviews()->where('good_bad',0)->count()}}</span>
+                                <span class="text-gray-800 dislike{{$user->id}}">{{$user->review_bad}}</span>
                             </div>
+                            <span id="review{{$user->id}}" class="hidden">{{$user->review_rating}}</span>
                             <div class="flex flex-row stars{{$user->id}}">
                             </div>
-                            <script>
-                                $(document).ready(function(){
-                                    var good = $(".like{{$user->id}}").text();
-                                    var bad = $(".dislike{{$user->id}}").text();
-                                    var allcount = good * 5;
-                                    var coundlikes = (good * 1) + (bad * 1);
-                                    var overallStars = allcount / coundlikes;
-                                    var star = overallStars.toFixed();
-                                    if (!isNaN(star)) {
-                                        for (let i = 0; i < star; i++) {
-                                            $(".stars{{$user->id}}").append('<i class="fas fa-star text-yellow-500"></i>');
-                                        }
-                                        for (let u = star; u < 5; u++) {
-                                            $(".stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
-                                        }
-                                    }else {
-                                        for (let e = 0; e < 5; e++) {
-                                            $(".stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
-                                        }
-                                    }
-                                });
-                            </script>
                         </div>
                         <div class="w-4/5">
                             <div class="flex sm:flex-row flex-col sm:items-center items-start">
@@ -505,6 +484,22 @@
 
             });
         })
+        @foreach($users as $user)
+            var star = $('#review{{$user->id}}').text();
+            if (star > 0) {
+                for (let i = 0; i < star; i++) {
+                    $(".stars{{$user->id}}").append('<i class="fas fa-star text-yellow-500"></i>');
+                }
+                for (let u = star; u < 5; u++) {
+                    $(".stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
+                }
+            }
+            else {
+                for (let e = 0; e < 5; e++) {
+                    $(".stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
+                }
+            }   
+        @endforeach 
     </script>
 @endsection
 
