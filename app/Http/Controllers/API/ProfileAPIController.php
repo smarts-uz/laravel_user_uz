@@ -85,14 +85,15 @@ class ProfileAPIController extends Controller
                 'data' => $validator->errors()
             ]);
         }
+        $user = auth()->user();
         $data = $validator->validated();
-        $data['user_id'] = auth()->user()->id;
+        $data['user_id'] = $user->id;
         if ($request->has('images')) {
             $image = [];
             foreach ($request->file('images') as $uploadedImage) {
-                $filename = time() . '_' . $uploadedImage->getClientOriginalName();
-                $path = $uploadedImage->store($filename, 'public');
-                $image[] = $path;
+                $filename = $user->name.'/'.$data['comment'].'/'.time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path().'Portfolio/'.$user->name.'/', $filename);
+                $image[] = $filename;
             }
             $data['image'] = json_encode($image);
         }
@@ -136,14 +137,15 @@ class ProfileAPIController extends Controller
                 'data' => $validator->errors()
             ]);
         }
+        $user = auth()->user();
         $data = $validator->validated();
-        $data['user_id'] = auth()->user()->id;
+        $data['user_id'] = $user->id;
         if ($request->has('images')) {
             $image = [];
             foreach ($request->file('images') as $uploadedImage) {
-                $filename = time() . '_' . $uploadedImage->getClientOriginalName();
-                $path = $uploadedImage->store($filename, 'public');
-                $image[] = $path;
+                $filename = $user->name.'/'.$data['comment'].'/'.time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path().'Portfolio/'.$user->name.'/', $filename);
+                $image[] = $filename;
             }
             $data['image'] = json_encode($image);
         }
