@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests\Api\TaskFilterRequest;
 use App\Http\Requests\Api\V1\Task\StoreRequest;
 use App\Http\Requests\Task\UpdateRequest;
+use App\Http\Requests\TaskDateRequest;
 use App\Http\Resources\CustomFiledResource;
 use App\Http\Resources\SameTaskResource;
 use App\Http\Resources\TaskIndexResource;
@@ -451,27 +452,33 @@ class TaskAPIController extends Controller
      */
     public function routing(Request $request)
     {
+        $request->validate(['route' => 'required']);
         $category = Category::query()->findOrFail($request->get('category_id'));
         $data = [];
         switch ($request->get('route')) {
             case CustomField::ROUTE_NAME:
-                $data['title'] = "Nazvaniya zadaniya";
                 $data = $this->create_task_service->name_store($request);
                 break;
+            case CustomField::ROUTE_CUSTOM:
+                $data = $this->create_task_service->custom_store($request);
+                break;
+            case CustomField::ROUTE_REMOTE:
+                $data = $this->create_task_service->remote_store($request);
+                break;
             case CustomField::ROUTE_ADDRESS:
-                $data['custom_fields'] = $category->customFieldsInAddress;
-                break;
-            case CustomField::ROUTE_BUDGET:
-                $data['custom_fields'] = $category->customFieldsInBudget;
-                break;
-            case CustomField::ROUTE_NOTE:
-                $data['custom_fields'] = $category->customFieldsInNote;
+                $data = $this->create_task_service->address_store($request);
                 break;
             case CustomField::ROUTE_DATE:
-                $data['custom_fields'] = $category->customFieldsInDate;
+                $data = $this->create_task_service->date_store($request);
                 break;
-            case CustomField::ROUTE_CUSTOM:
-                $data['custom_fields'] = $category->customFieldsInCustom;
+            case CustomField::ROUTE_BUDGET:
+                $data = $this->create_task_service->budget_store($request);
+                break;
+            case CustomField::ROUTE_NOTE:
+                $data = $this->create_task_service->note_store($request);
+                break;
+            case CustomField::ROUTE_CONTACTS:
+                $data = $this->create_task_service->contact_store($request);
                 break;
         }
 
@@ -485,36 +492,16 @@ class TaskAPIController extends Controller
         $data = [];
         switch ($request->get('route')) {
             case CustomField::ROUTE_NAME:
-                $data['title'] = "Чем вам помочь?";
-                $data['description'] = "";
-                $data['fields'] = [
-                    [
-                        'label' => 'Название задания',
-                        'placeholder' => 'Например,  ' . $category->name,
-                        'type' => 'input',
-                        'name' => 'name'
-                    ]
-                ];
+                $data = $this->create_task_service->get_name($category->name);
+                break;
+            case CustomField::ROUTE_CUSTOM:
+                $data = $this->create_task_service->get_custom($category);
+                break;
+            case CustomField::ROUTE_REMOTE:
+
                 break;
             case CustomField::ROUTE_ADDRESS:
-                $data['title'] = "Где выполнить задание?";
-                $data['description'] = "Укажите адрес или место, чтобы найти исполнителя рядом с вами.";
-                $data['fields'] = [
-                    [
-                        'label' => 'Местоположение',
-                        'placeholder' => "Город, Улица, Дом",
-                        'type' => 'map',
-                        'name' => 'address_a'
-                    ]
-                ];
-                if ($category->parent->double_address) {
-                    $data['fields'][] = [
-                        'label' => 'Местоположение',
-                        'placeholder' => "Город, Улица, Дом",
-                        'type' => 'map',
-                        'name' => 'address_b'
-                    ];
-                }
+                $data = $this->create_task_service->get_address($category->parent->double_address);
                 break;
             case CustomField::ROUTE_BUDGET:
                 $data['custom_fields'] = $category->customFieldsInBudget;
@@ -525,25 +512,7 @@ class TaskAPIController extends Controller
             case CustomField::ROUTE_DATE:
                 $data['custom_fields'] = $category->customFieldsInDate;
                 break;
-            case CustomField::ROUTE_CUSTOM:
-                $data['title'] = "Какие параметры посылки?";
-                $data['description'] = "";
-                $data['fields'] = [
-                    [
-                        'label' => 'Вес посылки, кг',
-                        'placeholder' => "",
-                        'type' => 'input',
-                        'name' => 'weight'
-                    ],
-                    [
-                        'label' => 'Длина, м',
-                        'placeholder' => "Город, Улица, Дом",
-                        'type' => 'input',
-                        'name' => 'length'
-                    ]
-                ];
-                $data['custom_fields'] = CustomFiledResource::collection($category->customFieldsInCustom);
-                break;
+
         }
 
         return $this->success($data);

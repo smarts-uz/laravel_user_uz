@@ -6,15 +6,18 @@ use App\Http\Controllers\LoginController;
 use App\Http\Requests\TaskDateRequest;
 use App\Http\Requests\UserPhoneRequest;
 use App\Http\Requests\UserRequest;
+use App\Http\Resources\CustomFiledResource;
 use App\Models\Category;
 use App\Models\CustomField;
 use App\Models\CustomFieldsValue;
 use App\Models\Task;
+use App\Models\User;
 use App\Services\NotificationService;
 use App\Services\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class CreateTaskService
@@ -36,7 +39,6 @@ class CreateTaskService
         $this->custom_field_service = new CustomFieldService();
     }
 
-
     public function name_store(Request $request)
     {
         $data = $request->validate([
@@ -45,11 +47,10 @@ class CreateTaskService
         ]);
         $task = Task::query()->create($data);
 
-        return $this->custom_get($task);
+        return $this->get_custom($task);
     }
 
-
-    public function custom_get($task)
+    public function get_custom($task)
     {
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM);
         if (!$task->category->customFieldsInCustom->count()) {
@@ -61,89 +62,110 @@ class CreateTaskService
             }
             return ['route' => 'address', 'address' => 1];
         }
-        return ['custom_fields' => $custom_fields];
+        return ['route' => 'custom', 'custom_fields' => $custom_fields];
     }
 
-    public function custom_store(Request $request, Task $task)
+    public function custom_store(Request $request)
     {
+        $task = Task::query()->findOrFail($request->get('task_id'));
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM);
 
         if ($task->category->parent->remote) {
-            return redirect()->route("task.create.remote", $task->id);
+            return $this->get_remote($task);
         }
 
         return redirect()->route('task.create.address', $task->id);
     }
 
-
-    public function remote_store(Request $request, Task $task)
+    public function get_remote($task)
     {
-        $data = $request->validate(['radio' => 'required']);
+        return [
+            'route' => 'remote',
+            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_REMOTE)
+        ];
+    }
 
-        if ($data['radio'] == 'address') {
-            return redirect()->route("task.create.address", $task->id);
-        } else if ($data['radio'] == 'remote') {
-            return redirect()->route("task.create.date", $task->id);
+    public function remote_store(Request $request)
+    {
+        $data = $request->validate(['task_id' => 'required', 'radio' => 'required']);
+        $task = Task::query()->findOrFail($data['task_id']);
+        switch ($data['radio']) {
+            case CustomField::ROUTE_ADDRESS:
+                return $this->get_address($task);
+                break;
+            case CustomField::ROUTE_REMOTE:
+                return $this->get_date($task);
         }
 
         return back();
     }
 
-    public function address(Task $task)
+    public function get_address($task)
     {
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS);
-        return view('create.location', compact('task', 'custom_fields'));
-
+        if ($task->category->parent->double_address) {
+            return ['route' => 'address', 'address' => 2, 'custom_fields' => $custom_fields];
+        }
+        return ['route' => 'address', 'address' => 1, 'custom_fields' => $custom_fields];
     }
 
-    public function address_store(Request $request, Task $task)
-    {
 
+    public function address_store(Request $request)
+    {
+        $task = Task::query()->findOrFail($request->get('task_id'));
         $task->update($this->service->addAdditionalAddress($task, $request));
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS);
-        return redirect()->route("task.create.date", $task->id);
+        return $this->get_date($task);
 
     }
 
-    public function date(Task $task)
+    public function get_date($task)
     {
-        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_DATE);
-
-        return view('create.date', compact('task', 'custom_fields'));
-
+        return [
+            'route' => 'date',
+            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_DATE)
+        ];
     }
 
-    public function date_store(TaskDateRequest $request, Task $task)
+    public function date_store($request)
     {
-        $data = $request->validated();
+        $request->validate(['date_type' => 'required', 'task_id' => 'required']);
+        $request_tasks = app('App\Http\Requests\TaskDateRequest');
+        $request_tasks->setValidator(Validator::make($request->all(), $request_tasks->rules(), $request_tasks->messages()));
+        $data = $request_tasks->validated();
+
+        $task = Task::query()->findOrFail($data['task_id']);
         $task->update($data);
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_DATE);
 
-        return redirect()->route('task.create.budget', $task->id);
+        return $this->get_budget($task);
     }
 
-    public function budget(Task $task)
+    public function get_budget($task)
     {
         $category = Category::findOrFail($task->category_id);
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET);
 
-        return view('create.budget', compact('task', 'category', 'custom_fields'));
+        return ['route' => 'budget', 'custom_fields' => $custom_fields];
+//        return view('create.budget', compact('task', 'category', 'custom_fields'));
     }
 
-    public function budget_store(Task $task, Request $request)
+    public function budget_store(Request $request)
     {
+        $data = $request->validate(['task_id' => 'required', 'amount1']);
+        $task = Task::query()->findOrFail($data['task_id']);
         $task->budget = preg_replace('/[^0-9.]+/', '', $request->amount1);
         $task->save();
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET);
-        return redirect()->route('task.create.note', $task->id);
+        return $this->get_note($task);
 
     }
 
-    public function note(Task $task)
+    public function get_note($task)
     {
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_NOTE);
-
-        return view('create.notes', compact('task', 'custom_fields'));
+        return ['route' => 'note', 'custom_fields' => $custom_fields];
+//        return view('create.notes', compact('task', 'custom_fields'));
     }
 
     public function images_store(Task $task, Request $request)
@@ -180,12 +202,13 @@ class CreateTaskService
                 "file" => $fileName
             ]);
         }
-        $this->note_store();
+//        $this->note_store();
     }
 
-    public function note_store(Task $task, Request $request)
+    public function note_store(Request $request)
     {
         $data = $request->validate([
+            'task_id' => 'required',
             'description' => 'required|string',
             'oplata' => 'required',
         ]);
@@ -194,32 +217,34 @@ class CreateTaskService
         } else {
             $data['docs'] = 0;
         }
+        $task = Task::query()->findOrFail($data['task_id']);
         $task->update($data);
-        return redirect()->route("task.create.contact", $task->id);
+        return $this->get_contact($task);
     }
 
 
-    public function contact(Task $task)
+    public function get_contact($task)
     {
-        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CONTACTS);
-
-        return view('create.contacts', compact('task', 'custom_fields'));
+        return [
+            'route' => 'contact',
+            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CONTACTS)
+        ];
     }
 
 
-    public function contact_store(Task $task, Request $request)
+    public function contact_store(Request $request)
     {
-//        dd($task);
         $user = auth()->user();
-
         $data = $request->validate([
-            'phone_number' => 'required|integer|min:9|unique:users,phone_number,' . $user->id
+            'phone_number' => 'required|integer|min:9|unique:users,phone_number,' . $user->id,
+            'task_id' => 'required',
         ]);
+        $task = Task::query()->findOrFail($data['task_id']);
         if (!$user->is_phone_number_verified || $user->phone_number != $data['phone_number']) {
             $data['is_phone_number_verified'] = 0;
             $user->update($data);
             LoginController::send_verification('phone', $user);
-            return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
+            return $this->verify($task, $user);
         }
 
         $task->status = 1;
@@ -254,7 +279,7 @@ class CreateTaskService
 
     }
 
-    public function verify(Task $task, User $user)
+    public function verify($task, $user)
     {
         return view('create.verify', compact('task', 'user'));
     }
@@ -274,12 +299,38 @@ class CreateTaskService
         return back();
     }
 
-    public function success($data = [], $msg = "Muvaffaqiyatli")
+    public function date_validator($request)
     {
-        return response()->json([
-            'success' => true,
-            'data' => $data,
-            'message' => $msg
+        $request->validate(['date_type' => 'required']);
+        $rules = [];
+        switch ($request->get('date_type')) {
+            case 1:
+                $rules = [
+                    'start_date' => 'required|date',
+                    'date_type' => 'required'
+                ];
+                break;
+            case 2:
+                $rules = [
+                    'end_date' => 'required|date',
+                    'date_type' => 'required'
+                ];
+                break;
+            case 3:
+                $rules = [
+                    'start_date' => 'required|date',
+                    'end_date' => 'required|date',
+                    'date_type' => 'required'
+
+                ];
+                break;
+        }
+        $rules['task_id'] = 'required';
+        return Validator::make($request->all(), $rules, [
+            "start_date.required" => __('dateTime.start_date.required'),
+            "start_date.date" => __('dateTime.start_date.date'),
+            "end_date.required" => __('dateTime.end_date.required'),
+            "end_date.date" => __('dateTime.end_date.date'),
         ]);
     }
 }

@@ -72,7 +72,7 @@ class UserController extends Controller
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
         (new SmsService())->send(preg_replace('/[^0-9]/', '', $user->phone_number), $sms_otp);
-        session()->put('verifications',['key' => 'phone_number', 'value' => $data['phone_number']]);
+        session()->put('verifications', ['key' => 'phone_number', 'value' => $data['phone_number']]);
 
         return redirect()->route('user.reset_code_view');
     }
@@ -93,7 +93,7 @@ class UserController extends Controller
         $user->verify_code = $sms_otp;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
-        session()->put('verifications',['key' => 'email', 'value' => $data['email']]);
+        session()->put('verifications', ['key' => 'email', 'value' => $data['email']]);
 
         Mail::to($user->email)->send(new MessageEmail($sms_otp));
         Alert::success('Congrats', 'Your verification code has been successfully sent to  ' . $user->email);
@@ -150,12 +150,9 @@ class UserController extends Controller
     {
 
         $task = Task::query()->find($request->get('for_ver_func'));
-        $request->validate([
-            'sms_otp' => 'required',
-        ],
-            [
-                'sms_otp.required' => 'Требуется заполнение!'
-            ]
+        $request->validate(
+            ['sms_otp' => 'required'],
+            ['sms_otp.required' => 'Требуется заполнение!']
         );
 
         if ($request->sms_otp == $user->verify_code) {
