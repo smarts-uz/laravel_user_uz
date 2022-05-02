@@ -14,4 +14,6 @@ class ProfileCashItem
     public $transactions;
     public $about;
     public $task_count;
+    public $review_good;
+    public $review_bad;
 }

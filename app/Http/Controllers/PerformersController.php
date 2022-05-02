@@ -44,22 +44,23 @@ class PerformersController extends Controller
      */
     public function service(User $user, Request $request)
     {
-
         $authId = Auth::id();
 
         $service = new PerformersService();
         $item = $service->service($authId, $user);
 
-        return view('performers/performers',
-            [
+       return view('performers/performers',
+           [
                 'users' => $item->users,
                 'tasks' => $item->tasks,
                 'about' => $item->about,
                 'task_count' => $item->task_count,
                 'categories' => $item->categories,
                 'categories2' => $item->categories2,
-                'user_online' => $item ->user_online,
-            ]);
+                'review_good' => $item->review_good,
+                'review_bad' =>$item->review_bad,
+                'review_rating' => $item->review_rating,
+           ]);
     }
 
 
@@ -70,17 +71,17 @@ class PerformersController extends Controller
         $service = new PerformersService();
         $item = $service->performer($user);
 
-        $goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->get();
-        $badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->get();
         return view('performers/executors-courier',
             [
-                'reviews' => $item->reviews,
                 'about' => $item->about,
                 'user' => $user,
                 'task_count' => $item->task_count,
                 'portfolios' => $item->portfolios,
-                'goodReviews' => $goodReviews,
-                'badReviews' => $badReviews,
+                'goodReviews' => $item->goodReviews,
+                'badReviews' => $item->badReviews,
+                'review_good' => $item->review_good,
+                'review_bad' =>$item->review_bad,
+                'review_rating' => $item->review_rating,
             ]);
     }
 
@@ -135,6 +136,9 @@ class PerformersController extends Controller
             'cur_cat' =>$item->cur_cat,
             'tasks' =>$item->tasks,
             'cf_id' => $cf_id,
+            'review_good' => $item->review_good,
+            'review_bad' =>$item->review_bad,
+            'review_rating' => $item->review_rating,
         ]);
 
     }

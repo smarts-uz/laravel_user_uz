@@ -47,57 +47,25 @@
                                     <span>
                                         {{count($user->tasks??[])}}
                                     </span> {{__('задание')}}</a></p>
-                                @switch($user->reviews()->count())
+                                @switch($review_good + $review_bad)
                                     @case(1)
-                                    <span>{{__('Получил')}} {{  count($goodReviews) +  count($badReviews) }} {{__('Отзыв')}}</span>
+                                    <span>{{__('Получил')}} {{($review_good) + ($review_bad) }} {{__('Отзыв')}}</span>
                                     @break
                                     @case(1 && 5)
-                                    <span>{{__('Получил')}} {{ count($goodReviews) +  count($badReviews)  }} {{__('Отзыва')}}</span>
+                                    <span>{{__('Получил')}} {{($review_good) + ($review_bad) }} {{__('Отзыва')}}</span>
                                     @break
                                     @default
-                                    <span>{{__('Получил')}} {{ count($goodReviews) +  count($badReviews) }} {{__('Отзывов')}}</span>
+                                    <span>{{__('Получил')}} {{($review_good) + ($review_bad) }} {{__('Отзывов')}}</span>
                                 @endswitch
                             </div>
-            <div>
-                <div class="flex flex-row items-center text-base hidden">
-                    <p class="text-black ">{{__('Отзывы:')}}</p>
-                    <i class="far fa-thumbs-up text-blue-500 ml-1 mb-1"></i>
-                    <span class="text-gray-800 mr-2 like{{$user->id}}">{{ $user->reviews()->where('good_bad',1)->count()}}</span>
-                    <i class="far fa-thumbs-down mt-0.5 text-blue-500"></i>
-                    <span class="text-gray-800 dislike{{$user->id}}">{{ $user->reviews()->where('good_bad',0)->count()}}</span>
+             <div class="flex flex-row items-center mt-3" id="str1">
+                <div class="flex flex-row items-center"> <p>{{__('Средняя оценка:')}}</p>
+                    <span id="review{{$user->id}}" class="mx-1">{{$review_rating}}</span>
                 </div>
-                <div class="flex flex-row items-center mt-3" id="str1">
-                   <div class="flex flex-row items-center"> <p>{{__('Средняя оценка:')}}</p><span class="mx-1" id="num"></span></div>
-                    <div class="flex flex-row mb-0.5 ml-2 stars{{$user->id}}">
-                    </div>
+                <div class="flex flex-row mb-0.5 ml-2 stars{{$user->id}}">
                 </div>
-                <div class="mt-3 hidden" id="str2">{{__('Нет оценок')}}</div>
-                <script>
-                    $(document).ready(function(){
-                        var good = $(".like{{$user->id}}").text();
-                        var bad = $(".dislike{{$user->id}}").text();
-                        var allcount = good * 5;
-                        var coundlikes = (good * 1) + (bad * 1);
-                        var overallStars = Math.round(allcount / coundlikes);
-                        $('#num').text(overallStars);
-                        var star = overallStars.toFixed();
-                        if (!isNaN(star)) {
-                            for (let i = 0; i < star; i++) {
-                                $(".stars{{$user->id}}").append('<i class="fas fa-star text-yellow-500"></i>');
-                            }
-                            for (let u = star; u < 5; u++) {
-                                $(".stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
-                            }
-                        }else {
-                            for (let e = 0; e < 5; e++) {
-                                $(".stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
-                            }
-                            $('#str1').addClass('hidden');
-                            $('#str2').removeClass('hidden');
-                        }
-                    });
-                </script>
             </div>
+            <div class="mt-3 hidden" id="str2">{{__('Нет оценок')}}</div>
             <div class="flex mt-6 items-center">
                 @if ($user->is_email_verified && $user->is_phone_number_verified)
                     <div data-tooltip-target="tooltip-animation_1" class="mx-4 tooltip-1">
@@ -206,4 +174,20 @@
             alert(message);
         }
     });
-</script>
+    var star = $('#review{{$user->id}}').text();
+    if (star > 0) {
+        for (let i = 0; i < star; i++) {
+            $(".stars{{$user->id}}").append('<i class="fas fa-star text-yellow-500"></i>');
+        }
+        for (let u = star; u < 5; u++) {
+            $(".stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
+        }
+    }
+    else {
+        for (let e = 0; e < 5; e++) {
+            $(".stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
+        }
+    $('#str1').addClass('hidden');
+    $('#str2').removeClass('hidden');
+    }                      
+</script>                     
