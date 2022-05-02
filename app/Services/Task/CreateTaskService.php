@@ -151,7 +151,7 @@ class CreateTaskService
     public function budget_store($data)
     {
         $task = Task::query()->findOrFail($data['task_id']);
-        $task->budget = preg_replace('/[^0-9.]+/', '', $request->amount1);
+        $task->budget = preg_replace('/[^0-9.]+/', '', $data->amount1);
         $task->save();
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET);
         return $this->get_note($task);
