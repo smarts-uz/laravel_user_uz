@@ -36,6 +36,7 @@ class PerformersService
         $item ->review_good = User::select('review_good')->get();
         $item ->review_bad = User::select('review_bad')->get();
         $item ->review_rating = User::select('review_rating')->get();
+        $item-> about = User::where('role_id', 2)->orderBy('review_rating', 'desc')->take(20)->get();
         return $item;
 
 
