@@ -2,27 +2,12 @@
 
 namespace App\Http\Controllers\Task;
 
-use App\Http\Requests\Task\UpdateRequest;
-use App\Http\Resources\ResponseResource;
-use App\Models\Compliance;
-use App\Models\ComplianceType;
-use App\Models\CustomField;
-use App\Models\CustomFieldsValue;
-use App\Models\WalletBalance;
 use App\Services\Task\CreateService;
 use App\Services\Task\CustomFieldService;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Arr;
-use App\Models\User;
 use App\Models\Task;
-use App\Models\Notification;
-use App\Models\TaskResponse;
-use App\Models\Response;
 use TCG\Voyager\Models\Category;
 use App\Models\Review;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
 use App\Services\Task\SearchService;
 
