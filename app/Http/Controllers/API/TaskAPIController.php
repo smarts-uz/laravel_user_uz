@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Requests\Api\TaskBudgetRequest;
+use App\Http\Requests\Api\TaskContactsRequest;
+use App\Http\Requests\Api\TaskCustomRequest;
 use App\Http\Requests\Api\TaskFilterRequest;
+use App\Http\Requests\Api\TaskNameRequest;
+use App\Http\Requests\Api\TaskNoteRequest;
+use App\Http\Requests\Api\TaskRemoteRequest;
 use App\Http\Requests\Api\V1\Task\StoreRequest;
 use App\Http\Requests\Task\UpdateRequest;
 use App\Http\Requests\TaskDateRequest;
@@ -486,13 +492,54 @@ class TaskAPIController extends Controller
 
     }
 
+    public function name(TaskNameRequest $request)
+    {
+        return $this->success($this->create_task_service->name_store($request->validated()));
+    }
+
+    public function custom(TaskCustomRequest $request)
+    {
+        return $this->success($this->create_task_service->custom_store($request->validated()));
+    }
+
+    public function remote(TaskRemoteRequest $request)
+    {
+        return $this->success($this->create_task_service->remote_store($request->validated()));
+    }
+
+    public function address(Request $request)
+    {
+        $this->success($this->create_task_service->address_store($request));
+    }
+
+    public function date(\App\Http\Requests\Api\TaskDateRequest $request)
+    {
+        return $this->success($this->create_task_service->date_store($request->validated()));
+    }
+
+    public function budget(TaskBudgetRequest $request)
+    {
+        return $this->success($this->create_task_service->budget_store($request->validated()));
+    }
+
+    public function note(TaskNoteRequest $request)
+    {
+        return $this->success($this->create_task_service->note_store($request->validated()));
+    }
+
+    public function contacts(TaskContactsRequest $request)
+    {
+        return $this->success($this->create_task_service->contact_store($request->validated()));
+    }
+
+
     public function getFields(Request $request)
     {
         $category = Category::query()->findOrFail($request->get('category_id'));
         $data = [];
         switch ($request->get('route')) {
             case CustomField::ROUTE_NAME:
-                $data = $this->create_task_service->get_name($category->name);
+//                $data = $this->create_task_service->name($category->name);
                 break;
             case CustomField::ROUTE_CUSTOM:
                 $data = $this->create_task_service->get_custom($category);

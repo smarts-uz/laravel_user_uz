@@ -39,14 +39,9 @@ class CreateTaskService
         $this->custom_field_service = new CustomFieldService();
     }
 
-    public function name_store(Request $request)
+    public function name_store($data)
     {
-        $data = $request->validate([
-            'name' => 'required|string',
-            'category_id' => 'required'
-        ]);
         $task = Task::query()->create($data);
-
         return $this->get_custom($task);
     }
 
@@ -55,19 +50,28 @@ class CreateTaskService
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM);
         if (!$task->category->customFieldsInCustom->count()) {
             if ($task->category->parent->remote) {
-                return ['route' => 'remote'];
+                return [
+                    'route' => 'remote', 'task_id' => $task->id,
+                    'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_REMOTE)
+                ];
             }
             if ($task->category->parent->double_address) {
-                return ['route' => 'address', 'address' => 2];
+                return [
+                    'route' => 'address', 'address' => 2, 'task_id' => $task->id,
+                    'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS)
+                ];
             }
-            return ['route' => 'address', 'address' => 1];
+            return [
+                'route' => 'address', 'address' => 1, 'task_id' => $task->id,
+                'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS)
+            ];
         }
-        return ['route' => 'custom', 'custom_fields' => $custom_fields];
+        return ['route' => 'custom', 'task_id' => $task->id, 'custom_fields' => $custom_fields];
     }
 
-    public function custom_store(Request $request)
+    public function custom_store($data)
     {
-        $task = Task::query()->findOrFail($request->get('task_id'));
+        $task = Task::query()->findOrFail($data['task_id']);
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM);
 
         if ($task->category->parent->remote) {
@@ -85,9 +89,8 @@ class CreateTaskService
         ];
     }
 
-    public function remote_store(Request $request)
+    public function remote_store($data)
     {
-        $data = $request->validate(['task_id' => 'required', 'radio' => 'required']);
         $task = Task::query()->findOrFail($data['task_id']);
         switch ($data['radio']) {
             case CustomField::ROUTE_ADDRESS:
@@ -127,13 +130,8 @@ class CreateTaskService
         ];
     }
 
-    public function date_store($request)
+    public function date_store($data)
     {
-        $request->validate(['date_type' => 'required', 'task_id' => 'required']);
-        $request_tasks = app('App\Http\Requests\TaskDateRequest');
-        $request_tasks->setValidator(Validator::make($request->all(), $request_tasks->rules(), $request_tasks->messages()));
-        $data = $request_tasks->validated();
-
         $task = Task::query()->findOrFail($data['task_id']);
         $task->update($data);
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_DATE);
@@ -150,9 +148,8 @@ class CreateTaskService
 //        return view('create.budget', compact('task', 'category', 'custom_fields'));
     }
 
-    public function budget_store(Request $request)
+    public function budget_store($data)
     {
-        $data = $request->validate(['task_id' => 'required', 'amount1']);
         $task = Task::query()->findOrFail($data['task_id']);
         $task->budget = preg_replace('/[^0-9.]+/', '', $request->amount1);
         $task->save();
@@ -165,7 +162,6 @@ class CreateTaskService
     {
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_NOTE);
         return ['route' => 'note', 'custom_fields' => $custom_fields];
-//        return view('create.notes', compact('task', 'custom_fields'));
     }
 
     public function images_store(Task $task, Request $request)
@@ -205,14 +201,9 @@ class CreateTaskService
 //        $this->note_store();
     }
 
-    public function note_store(Request $request)
+    public function note_store($data)
     {
-        $data = $request->validate([
-            'task_id' => 'required',
-            'description' => 'required|string',
-            'oplata' => 'required',
-        ]);
-        if ($request['docs'] == "on") {
+        if ($data['docs'] == "on") {
             $data['docs'] = 1;
         } else {
             $data['docs'] = 0;
@@ -222,7 +213,6 @@ class CreateTaskService
         return $this->get_contact($task);
     }
 
-
     public function get_contact($task)
     {
         return [
@@ -231,14 +221,9 @@ class CreateTaskService
         ];
     }
 
-
-    public function contact_store(Request $request)
+    public function contact_store($data)
     {
         $user = auth()->user();
-        $data = $request->validate([
-            'phone_number' => 'required|integer|min:9|unique:users,phone_number,' . $user->id,
-            'task_id' => 'required',
-        ]);
         $task = Task::query()->findOrFail($data['task_id']);
         if (!$user->is_phone_number_verified || $user->phone_number != $data['phone_number']) {
             $data['is_phone_number_verified'] = 0;
