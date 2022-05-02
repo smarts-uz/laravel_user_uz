@@ -7,6 +7,7 @@ use App\Http\Requests\TaskDateRequest;
 use App\Http\Requests\UserPhoneRequest;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\CustomFiledResource;
+use App\Models\Address;
 use App\Models\Category;
 use App\Models\CustomField;
 use App\Models\CustomFieldsValue;
@@ -73,18 +74,16 @@ class CreateTaskService
     {
         $task = Task::query()->findOrFail($data['task_id']);
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM);
-
         if ($task->category->parent->remote) {
             return $this->get_remote($task);
         }
-
-        return redirect()->route('task.create.address', $task->id);
+        return $this->get_custom($task);
     }
 
     public function get_remote($task)
     {
         return [
-            'route' => 'remote',
+            'route' => 'remote', 'task_id' => $task->id,
             'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_REMOTE)
         ];
     }
@@ -113,10 +112,18 @@ class CreateTaskService
     }
 
 
-    public function address_store(Request $request)
+    public function address_store($data)
     {
-        $task = Task::query()->findOrFail($request->get('task_id'));
-        $task->update($this->service->addAdditionalAddress($task, $request));
+        $task = Task::query()->findOrFail($data['task_id']);
+        foreach ($data['points'] as $point) {
+            Address::query()->create([
+                'task_id' => $data['task_id'],
+                'location' => $point['location'],
+                'latitude' => $point['latitude'],
+                'longitude' => $point['longitude']
+            ]);
+        }
+        $task->update(['coordinates' => $data['points'][0]['latitude'] . ',' . $data['points'][0]['longitude']]);
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS);
         return $this->get_date($task);
 
@@ -125,7 +132,7 @@ class CreateTaskService
     public function get_date($task)
     {
         return [
-            'route' => 'date',
+            'route' => 'date', 'task_id' => $task->id,
             'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_DATE)
         ];
     }
@@ -135,33 +142,43 @@ class CreateTaskService
         $task = Task::query()->findOrFail($data['task_id']);
         $task->update($data);
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_DATE);
-
         return $this->get_budget($task);
     }
 
     public function get_budget($task)
     {
-        $category = Category::findOrFail($task->category_id);
-        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET);
-
-        return ['route' => 'budget', 'custom_fields' => $custom_fields];
-//        return view('create.budget', compact('task', 'category', 'custom_fields'));
+        return [
+            'route' => 'budget', 'task_id' => $task->id, 'price' => Category::findOrFail($task->category_id)->max,
+            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET)
+        ];
     }
 
     public function budget_store($data)
     {
         $task = Task::query()->findOrFail($data['task_id']);
-        $task->budget = preg_replace('/[^0-9.]+/', '', $request->amount1);
+        $task->budget = $data['amount'];
         $task->save();
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET);
         return $this->get_note($task);
-
     }
 
     public function get_note($task)
     {
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_NOTE);
-        return ['route' => 'note', 'custom_fields' => $custom_fields];
+        return ['route' => 'note', 'task_id' => $task->id, 'custom_fields' => $custom_fields];
+    }
+
+
+    public function note_store($data)
+    {
+        if ($data['docs'] == "on") {
+            $data['docs'] = 1;
+        } else {
+            $data['docs'] = 0;
+        }
+        $task = Task::query()->findOrFail($data['task_id']);
+        $task->update($data);
+        return $this->get_contact($task);
     }
 
     public function images_store(Task $task, Request $request)
@@ -201,22 +218,11 @@ class CreateTaskService
 //        $this->note_store();
     }
 
-    public function note_store($data)
-    {
-        if ($data['docs'] == "on") {
-            $data['docs'] = 1;
-        } else {
-            $data['docs'] = 0;
-        }
-        $task = Task::query()->findOrFail($data['task_id']);
-        $task->update($data);
-        return $this->get_contact($task);
-    }
 
     public function get_contact($task)
     {
         return [
-            'route' => 'contact',
+            'route' => 'contact', 'task_id' => $task->id,
             'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CONTACTS)
         ];
     }

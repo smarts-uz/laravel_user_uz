@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Requests\Api\TaskAddressRequest;
 use App\Http\Requests\Api\TaskBudgetRequest;
 use App\Http\Requests\Api\TaskContactsRequest;
 use App\Http\Requests\Api\TaskCustomRequest;
@@ -507,9 +508,9 @@ class TaskAPIController extends Controller
         return $this->success($this->create_task_service->remote_store($request->validated()));
     }
 
-    public function address(Request $request)
+    public function address(TaskAddressRequest $request)
     {
-        $this->success($this->create_task_service->address_store($request));
+        return $this->success($this->create_task_service->address_store($request->validated()));
     }
 
     public function date(\App\Http\Requests\Api\TaskDateRequest $request)

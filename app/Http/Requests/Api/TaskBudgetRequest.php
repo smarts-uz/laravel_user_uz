@@ -7,8 +7,8 @@ class TaskBudgetRequest extends BaseRequest
     public function rules()
     {
         return [
-            'task_id' => 'required',
-            'amount1' => 'required'
+            'task_id' => 'required|numeric',
+            'amount' => 'required|numeric'
         ];
     }
 }
