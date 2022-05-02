@@ -15,7 +15,6 @@
                     {{$category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}
                 </a>
                 </span>
-
             </button>
         @endforeach
     </div>
@@ -24,10 +23,10 @@
         @foreach ($categories as $category2)
             <a class=" flex items-center m-2 text-gray-600 hover:text-yellow-500 "
                href="{{route('categories', ['id'=> $category2->id])}}">
-                {{-- <img src="{{ asset('/images/icons/') }}{{$category2->ico }}" alt="">--}}
                 <span class="flex w-full flex-wrap content-center items-center">
-                <img src="{{ asset('storage/'.$category2->ico) }}" alt="" class="h-8 w-8 sm:block hidden"></i><span
-                    class="sm:ml-4 ml-0 text-base text-gray-600"> {{ $category2->getTranslatedAttribute('name', Session::get('lang') , 'fallbackLocale' )}}</span>
+                <img src="{{ asset('storage/'.$category2->ico) }}" alt="" class="sm:h-8 h-6 sm:w-8 h-6"></i>
+                <span class="sm:ml-4 ml-2 sm:text-xs text-base text-gray-600">
+                     {{ $category2->getTranslatedAttribute('name', Session::get('lang') , 'fallbackLocale' )}}</span>
                 </span>
             </a>
         @endforeach
