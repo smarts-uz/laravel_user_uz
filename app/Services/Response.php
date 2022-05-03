@@ -15,7 +15,7 @@ trait Response
     protected function fail($errors = [], $msg = "Muvaffaqiyatsiz") {
         return response()->json([
             'success' => false,
-            'errors' => $errors,
+            'data' => $errors,
             'message' => $msg
         ]);
     }

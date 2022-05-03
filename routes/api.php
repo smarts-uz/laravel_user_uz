@@ -36,16 +36,17 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('custom.auth:api')->group(function () {
     Route::post('logout', [UserAPIController::class, 'logout']); //end +
 
-    Route::post('task/create', [TaskAPIController::class, 'create']); //end -
-    Route::post('create-task/get-fields', [TaskAPIController::class,'getFields']); 
-    Route::post('create-task/name', [TaskAPIController::class,'name']); //end
-    Route::post('create-task/custom', [TaskAPIController::class,'custom']); //end
-    Route::post('create-task/remote', [TaskAPIController::class,'remote']); //end
-    Route::post('create-task/address', [TaskAPIController::class,'address']); //end
-    Route::post('create-task/date', [TaskAPIController::class,'date']); //end
-    Route::post('create-task/budget', [TaskAPIController::class,'budget']); //end
-    Route::post('create-task/note', [TaskAPIController::class,'note']); //end
-    Route::post('create-task/contacts', [TaskAPIController::class,'contacts']); //end
+    Route::post('task/create', [TaskAPIController::class, 'create']);
+    Route::post('create-task/get-fields', [TaskAPIController::class, 'getFields']);
+    Route::post('create-task/name', [TaskAPIController::class, 'name']);
+    Route::post('create-task/custom', [TaskAPIController::class, 'custom']);
+    Route::post('create-task/remote', [TaskAPIController::class, 'remote']);
+    Route::post('create-task/address', [TaskAPIController::class, 'address']);
+    Route::post('create-task/date', [TaskAPIController::class, 'date']);
+    Route::post('create-task/budget', [TaskAPIController::class, 'budget']);
+    Route::post('create-task/note', [TaskAPIController::class, 'note']);
+    Route::post('create-task/contacts', [TaskAPIController::class, 'contacts']);
+    Route::post('create-task/verify', [TaskAPIController::class, 'verify']);
 
 //    Route::any('/{paysys}',function($paysys){
 //        (new Goodoneuz\PayUz\PayUz)->driver($paysys)->handle();
@@ -60,18 +61,18 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::get('account/verification/email', [LoginAPIController::class, 'send_email_verification']); //end +
     Route::get('account/verification/phone', [LoginAPIController::class, 'send_phone_verification']); //end +
     Route::post('account/verification/phone', [LoginAPIController::class, 'verify_phone']); //end +
-    Route::post("account/change/email", [LoginAPIController::class,'change_email']); //end +
-    Route::post("account/change/phone", [LoginAPIController::class,'change_phone_number']); //end +
+    Route::post("account/change/email", [LoginAPIController::class, 'change_email']); //end +
+    Route::post("account/change/phone", [LoginAPIController::class, 'change_phone_number']); //end +
 
     Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']); //end +
     Route::post('/select-performer/{response}', [ResponseAPIController::class, 'selectPerformer']); //end -
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); //end +
     Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); //end +
     Route::put('/change-task/{task}', [TaskAPIController::class, 'changeTask']); //end -
-    Route::post('/become-performer', [PerformerAPIController::class,'becomePerformerData']); //end +
-    Route::post('/become-performer-phone', [PerformerAPIController::class,'becomePerformerEmailPhone']); //end +
-    Route::post('/become-performer-avatar', [PerformerAPIController::class,'becomePerformerAvatar']); //end +
-    Route::post('/become-performer-category', [PerformerAPIController::class,'becomePerformerCategory']); //end +
+    Route::post('/become-performer', [PerformerAPIController::class, 'becomePerformerData']); //end +
+    Route::post('/become-performer-phone', [PerformerAPIController::class, 'becomePerformerEmailPhone']); //end +
+    Route::post('/become-performer-avatar', [PerformerAPIController::class, 'becomePerformerAvatar']); //end +
+    Route::post('/become-performer-category', [PerformerAPIController::class, 'becomePerformerCategory']); //end +
     Route::get('/reviews', [PerformerAPIController::class, 'reviews']);
 
     Route::get('/custom-field-by-category/{category}', [CustomFieldAPIController::class, 'getByCategoryId']); //end -
@@ -116,8 +117,6 @@ Route::post('/reset/password', [UserAPIController::class, 'reset_password_save']
 Route::post('/code', [UserAPIController::class, 'reset_code'])->name('user.reset_code'); //end +
 
 
-
-
 // FAQ
 Route::get('faq', [FaqAPIController::class, 'index']); //end +
 Route::get('faq/{id}', [FaqAPIController::class, 'questions']); //end +
@@ -148,10 +147,8 @@ Route::get('/portfolio_albums/{performer}', [PortfolioAPIController::class, 'ind
 Route::get('/portfolio_album/{portfolio}', [PortfolioAPIController::class, 'show']); //end +
 
 
-
-
-//Massmedia
-Route::get('/press',[MassmediaAPIController::class, 'index']); //end +
+//MassMedia
+Route::get('/press', [MassmediaAPIController::class, 'index']); //end +
 
 //Conversation
 Route::group(['prefix' => 'admin'], function () {
@@ -171,8 +168,7 @@ Route::post('/complete', [RefillAPIController::class, 'complete']); //end
 Route::post('/paynet-transaction', [PaynetTransactionAPIController::class, 'create'])->name('paynet-transaction');
 
 
+Route::post('login/google/callback', [SocialAPIController::class, 'loginWithGoogle']);
 
-Route::post('login/google/callback',[SocialAPIController::class,'loginWithGoogle']);
-
-Route::post('login/callback',[SocialAPIController::class,'loginWithFacebook']); //end
+Route::post('login/callback', [SocialAPIController::class, 'loginWithFacebook']); //end
 

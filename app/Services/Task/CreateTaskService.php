@@ -3,10 +3,8 @@
 namespace App\Services\Task;
 
 use App\Http\Controllers\LoginController;
-use App\Http\Requests\TaskDateRequest;
 use App\Http\Requests\UserPhoneRequest;
 use App\Http\Requests\UserRequest;
-use App\Http\Resources\CustomFiledResource;
 use App\Models\Address;
 use App\Models\Category;
 use App\Models\CustomField;
@@ -15,6 +13,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Services\NotificationService;
 use App\Services\Response;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -193,11 +192,12 @@ class CreateTaskService
     {
         $user = auth()->user();
         $task = Task::query()->findOrFail($data['task_id']);
+        unset($data['task_id']);
         if (!$user->is_phone_number_verified || $user->phone_number != $data['phone_number']) {
             $data['is_phone_number_verified'] = 0;
             $user->update($data);
             LoginController::send_verification('phone', $user);
-            return $this->verify($task, $user);
+            return $this->get_verify($task, $user);
         }
 
         $task->status = 1;
@@ -207,9 +207,43 @@ class CreateTaskService
 
         NotificationService::sendTaskNotification($task, $user->id);
 
-        return redirect()->route('searchTask.task', $task->id);
+        return [
+            'task_id' => $task->id,
+            'message' => 'Task successfully created'
+        ];
     }
 
+    public function get_verify($task, $user)
+    {
+        return ['route' => 'verify', 'task_id' => $task->id, 'user' => $user, $user->verify_code];
+    }
+
+    public function verification($data)
+    {
+        $task = Task::query()->findOrFail($data['task_id']);
+        $user = User::query()->findOrFail($data['user_id']);
+        if ($data['sms_otp'] == $user->verify_code) {
+            if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
+                $user->update(['is_phone_number_verified' => 1]);
+                $task->update(['status' => 1, 'user_id' => $user->id, 'phone' => $user->phone_number]);
+
+                // send notification
+                NotificationService::sendTaskNotification($task, $user->id);
+
+                return $this->success([
+                    'task_id' => $task->id
+                ], 'Successfully verified');
+            } else {
+                return $this->fail([
+                    'sms_otp' => ['expired_message']
+                ], 'Validation errors');
+            }
+        } else {
+            return $this->fail([
+                'sms_otp' => ['incorrect_message']
+            ], 'Validation errors');
+        }
+    }
 
     public function images_store(Task $task, Request $request)
     {
@@ -268,11 +302,6 @@ class CreateTaskService
         LoginController::send_verification('phone', $user);
         return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id])->with(['not-show', 'true']);
 
-    }
-
-    public function verify($task, $user)
-    {
-        return view('create.verify', compact('task', 'user'));
     }
 
     public function deletetask(Task $task)

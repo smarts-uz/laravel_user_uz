@@ -10,6 +10,7 @@ use App\Http\Requests\Api\TaskFilterRequest;
 use App\Http\Requests\Api\TaskNameRequest;
 use App\Http\Requests\Api\TaskNoteRequest;
 use App\Http\Requests\Api\TaskRemoteRequest;
+use App\Http\Requests\Api\TaskVerificationRequest;
 use App\Http\Requests\Api\V1\Task\StoreRequest;
 use App\Http\Requests\Task\UpdateRequest;
 use App\Http\Requests\TaskDateRequest;
@@ -859,6 +860,10 @@ class TaskAPIController extends Controller
         return $this->success($this->create_task_service->contact_store($request->validated()));
     }
 
+    public function verify(TaskVerificationRequest $request)
+    {
+        return $this->create_task_service->verification($request->validated());
+    }
 
     public function getFields(Request $request)
     {
