@@ -77,7 +77,7 @@ class CreateTaskService
         if ($task->category->parent->remote) {
             return $this->get_remote($task);
         }
-        return $this->get_custom($task);
+        return $this->get_address($task);
     }
 
     public function get_remote($task)
