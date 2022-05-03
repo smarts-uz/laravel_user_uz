@@ -128,17 +128,6 @@
 
                 </div>
             </div>
-
-            <div>
-                {{-- <div class="text-4xl font-semibold my-6">
-                    {{__('У задания')}} {{$task_count}} {{__('откликов')}}
-                </div> --}}
-                <hr>
-                <div>
-
-                </div>
-
-            </div>
         </div>
         <div class="col-span lg:block hidden">
             <div class="w-full h-full mt-5">
