@@ -694,9 +694,9 @@
 
                                             <div
                                                 class="text-[17px] text-gray-500 my-5">{{$response->description}}</div>
-                                            @if($response->not_free == 1)
+                                            @if($response->not_free === 1)
                                                 <div
-                                                    class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} {{$response->performer->phone_number}}</div>
+                                                    class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} +998 {{$response->performer->phone_number}}</div>
                                             @endif
 
                                             @auth()

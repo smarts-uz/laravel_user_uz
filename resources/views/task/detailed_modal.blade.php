@@ -190,6 +190,7 @@ id="modal-id4">
                     </label>
                     <hr>
                 </main>
+                <input type="text" class="hidden" id="not_free" name="not_free">
                 <footer
                     class="flex justify-center bg-transparent">
                     <button type="submit"
