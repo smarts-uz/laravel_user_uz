@@ -4,7 +4,7 @@
     <button id="bySearch" class="mx-5 ">{{__('по срочности')}}</button>
 </div>
 
-
+<div class="show_tasks">
 @foreach ($tasks as $task)
     @if ($task->user_id !=null)
         <div class="border-2 border-gray-500 rounded-xl bg-gray-50 hover:bg-blue-100 h-auto my-3">
@@ -58,8 +58,10 @@
             </div>
         </div>
     @endif
-
-    <script>
+@endforeach
+{{ $tasks->links('pagination::tailwind') }}
+</div>
+<script>
         // script for mobile
     $(document).ready(function() {
         $("#show").click(function() {
@@ -129,4 +131,3 @@
         jqFilter()
     });
     </script>
-@endforeach

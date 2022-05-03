@@ -2937,6 +2937,367 @@
                 ]
             }
         },
+        "\/api\/create-task\/name": {
+            "post": {
+                "tags": [
+                    "Task Create"
+                ],
+                "summary": "Task create name",
+                "operationId": "2b3304f727d506c6f5e2b2f18620fad4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "category_id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/create-task\/custom": {
+            "post": {
+                "tags": [
+                    "Task Create"
+                ],
+                "summary": "Task create custom",
+                "operationId": "b3c4b3eed494f92d6f21515814270c5f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/create-task\/remote": {
+            "post": {
+                "tags": [
+                    "Task Create"
+                ],
+                "summary": "Task create remote",
+                "operationId": "f63a7fc1a92d1ac0de6a19861ed0ff02",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer"
+                                    },
+                                    "radio": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/create-task\/address": {
+            "post": {
+                "tags": [
+                    "Task Create"
+                ],
+                "summary": "Task create address",
+                "operationId": "43ea22831bbc2e1f7f952dd6d595d686",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer"
+                                    },
+                                    "location": {
+                                        "type": "string"
+                                    },
+                                    "latitude": {
+                                        "type": "number"
+                                    },
+                                    "longitude": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/create-task\/date": {
+            "post": {
+                "tags": [
+                    "Task Create"
+                ],
+                "summary": "Task create date",
+                "operationId": "2c0799ac97b6e370ccf3fd2c7b950543",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer"
+                                    },
+                                    "date_type": {
+                                        "type": "integer"
+                                    },
+                                    "start_date": {
+                                        "type": "string"
+                                    },
+                                    "end_date": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/create-task\/budget": {
+            "post": {
+                "tags": [
+                    "Task Create"
+                ],
+                "summary": "Task create budget",
+                "operationId": "d549c5a1835dd9e9de6fc88580c9a09b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer"
+                                    },
+                                    "amount": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/create-task\/note": {
+            "post": {
+                "tags": [
+                    "Task Create"
+                ],
+                "summary": "Task create note",
+                "operationId": "2f27920cad19f7e030fad94789966187",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "oplata": {
+                                        "description": "true - karta, false - naqd",
+                                        "type": "boolean"
+                                    },
+                                    "docs": {
+                                        "description": "true - taqdim etilsin, false - taqdim etilmasin",
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/create-task\/contacts": {
+            "post": {
+                "tags": [
+                    "Task Create"
+                ],
+                "summary": "Task create contacts",
+                "operationId": "02fdcf7814dd7330f8b8aee563d8c488",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer"
+                                    },
+                                    "phone_number": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "\/api\/task\/create": {
             "post": {
                 "tags": [
@@ -3759,6 +4120,7 @@
                                 "name",
                                 "email",
                                 "is_active",
+                                "youtube_link",
                                 "comment_image",
                                 "avatar",
                                 "email_verified_at",
@@ -3811,6 +4173,7 @@
                                 "system_notification",
                                 "news_notification",
                                 "last_seen",
+                                "gender",
                                 "user_belongsto_role_relationship",
                                 "user_belongstomany_role_relationship"
                             ],
@@ -10008,10 +10371,8 @@
                                 "type",
                                 "label",
                                 "placeholder",
-                                "options",
                                 "route",
                                 "order",
-                                "options_ru",
                                 "values"
                             ]
                         }
@@ -10033,10 +10394,8 @@
                                     "type",
                                     "label",
                                     "placeholder",
-                                    "options",
                                     "route",
                                     "order",
-                                    "options_ru",
                                     "values"
                                 ]
                             }
@@ -43347,10 +43706,6 @@
                                     "type": "string",
                                     "description": "Input Placeholder"
                                 },
-                                "options": {
-                                    "type": "string",
-                                    "description": "Options"
-                                },
                                 "route": {
                                     "enum": [
                                         "name",
@@ -43367,10 +43722,6 @@
                                 "order": {
                                     "type": "integer",
                                     "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
-                                },
-                                "options_ru": {
-                                    "type": "string",
-                                    "description": "Options Ru"
                                 },
                                 "values": {
                                     "type": "string",
@@ -43424,10 +43775,6 @@
                                     "type": "string",
                                     "description": "Input Placeholder"
                                 },
-                                "options": {
-                                    "type": "string",
-                                    "description": "Options"
-                                },
                                 "route": {
                                     "enum": [
                                         "name",
@@ -43444,10 +43791,6 @@
                                 "order": {
                                     "type": "integer",
                                     "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
-                                },
-                                "options_ru": {
-                                    "type": "string",
-                                    "description": "Options Ru"
                                 },
                                 "values": {
                                     "type": "string",

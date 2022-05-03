@@ -57,6 +57,7 @@
                                 "name",
                                 "email",
                                 "is_active",
+                                "youtube_link",
                                 "comment_image",
                                 "avatar",
                                 "email_verified_at",
@@ -109,6 +110,7 @@
                                 "system_notification",
                                 "news_notification",
                                 "last_seen",
+                                "gender",
                                 "user_belongsto_role_relationship",
                                 "user_belongstomany_role_relationship"
                             ],
@@ -6676,10 +6678,8 @@
                                 "type",
                                 "label",
                                 "placeholder",
-                                "options",
                                 "route",
                                 "order",
-                                "options_ru",
                                 "values"
                             ]
                         }
@@ -6701,10 +6701,8 @@
                                     "type",
                                     "label",
                                     "placeholder",
-                                    "options",
                                     "route",
                                     "order",
-                                    "options_ru",
                                     "values"
                                 ]
                             }
@@ -40585,10 +40583,6 @@
                                     "type": "string",
                                     "description": "Input Placeholder"
                                 },
-                                "options": {
-                                    "type": "string",
-                                    "description": "Options"
-                                },
                                 "route": {
                                     "enum": [
                                         "name",
@@ -40605,10 +40599,6 @@
                                 "order": {
                                     "type": "integer",
                                     "description": "Последовательность"
-                                },
-                                "options_ru": {
-                                    "type": "string",
-                                    "description": "Options Ru"
                                 },
                                 "values": {
                                     "type": "string",
@@ -40662,10 +40652,6 @@
                                     "type": "string",
                                     "description": "Input Placeholder"
                                 },
-                                "options": {
-                                    "type": "string",
-                                    "description": "Options"
-                                },
                                 "route": {
                                     "enum": [
                                         "name",
@@ -40682,10 +40668,6 @@
                                 "order": {
                                     "type": "integer",
                                     "description": "Последовательность"
-                                },
-                                "options_ru": {
-                                    "type": "string",
-                                    "description": "Options Ru"
                                 },
                                 "values": {
                                     "type": "string",

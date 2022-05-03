@@ -37,15 +37,15 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('logout', [UserAPIController::class, 'logout']); //end +
 
     Route::post('task/create', [TaskAPIController::class, 'create']); //end -
-    Route::post('create-task/get-fields', [TaskAPIController::class,'getFields']); //end -
-    Route::post('create-task/name', [TaskAPIController::class,'name']);
-    Route::post('create-task/custom', [TaskAPIController::class,'custom']);
-    Route::post('create-task/remote', [TaskAPIController::class,'remote']);
-    Route::post('create-task/address', [TaskAPIController::class,'address']);
-    Route::post('create-task/date', [TaskAPIController::class,'date']);
-    Route::post('create-task/budget', [TaskAPIController::class,'budget']);
-    Route::post('create-task/note', [TaskAPIController::class,'note']);
-    Route::post('create-task/contacts', [TaskAPIController::class,'contacts']);
+    Route::post('create-task/get-fields', [TaskAPIController::class,'getFields']); 
+    Route::post('create-task/name', [TaskAPIController::class,'name']); //end
+    Route::post('create-task/custom', [TaskAPIController::class,'custom']); //end
+    Route::post('create-task/remote', [TaskAPIController::class,'remote']); //end
+    Route::post('create-task/address', [TaskAPIController::class,'address']); //end
+    Route::post('create-task/date', [TaskAPIController::class,'date']); //end
+    Route::post('create-task/budget', [TaskAPIController::class,'budget']); //end
+    Route::post('create-task/note', [TaskAPIController::class,'note']); //end
+    Route::post('create-task/contacts', [TaskAPIController::class,'contacts']); //end
 
 //    Route::any('/{paysys}',function($paysys){
 //        (new Goodoneuz\PayUz\PayUz)->driver($paysys)->handle();
