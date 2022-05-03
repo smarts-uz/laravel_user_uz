@@ -478,8 +478,8 @@
     "было отправлено письмо со кодом для подтверждения вашего аккаунта на Universal Services.": "Umumjahon xizmatlar bo'yicha hisobingizni tasdiqlash uchun xatga xat yuborildi.",
     "было отправлено письмо со ссылкой для подтверждения вашей почты на Universal Services.": "Maktubni universal xizmatlar orqali tasdiqlash uchun xat yuborildi.",
     "г": "Gina",
-    "год": "yil",
-    "года": "yilning",
+    "год": "yosh",
+    "года": "yosh",
     "город не обозначен": "shahar belgilanmagan",
     "длина — не менее 8 символов": "Uzunligi - kamida 8 ta belgi",
     "за год": "yiliga",
@@ -609,5 +609,7 @@
     "Вход через:":"Kirish orqali:",
     "Место оказания услуги":"Xizmat ko'rsatish joyi",
     "Можно выполнить удаленно":"Masofadan amalga oshirilishi mumkin",
-    "Нужно присутствие по адресу":"Belgilangan joyda bajarilishi lozim"
+    "Нужно присутствие по адресу":"Belgilangan joyda bajarilishi lozim",
+    "Мужской":"Erkak",
+    "Женской":"Ayol"
 }
