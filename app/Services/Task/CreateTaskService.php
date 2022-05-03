@@ -97,9 +97,9 @@ class CreateTaskService
                 break;
             case CustomField::ROUTE_REMOTE:
                 return $this->get_date($task);
+            default:
+                return [''];
         }
-
-        return back();
     }
 
     public function get_address($task)
@@ -140,6 +140,7 @@ class CreateTaskService
     public function date_store($data)
     {
         $task = Task::query()->findOrFail($data['task_id']);
+        unset($data['task_id']);
         $task->update($data);
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_DATE);
         return $this->get_budget($task);
@@ -168,7 +169,6 @@ class CreateTaskService
         return ['route' => 'note', 'task_id' => $task->id, 'custom_fields' => $custom_fields];
     }
 
-
     public function note_store($data)
     {
         if ($data['docs'] == "on") {
@@ -180,6 +180,36 @@ class CreateTaskService
         $task->update($data);
         return $this->get_contact($task);
     }
+
+    public function get_contact($task)
+    {
+        return [
+            'route' => 'contact', 'task_id' => $task->id,
+            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CONTACTS)
+        ];
+    }
+
+    public function contact_store($data)
+    {
+        $user = auth()->user();
+        $task = Task::query()->findOrFail($data['task_id']);
+        if (!$user->is_phone_number_verified || $user->phone_number != $data['phone_number']) {
+            $data['is_phone_number_verified'] = 0;
+            $user->update($data);
+            LoginController::send_verification('phone', $user);
+            return $this->verify($task, $user);
+        }
+
+        $task->status = 1;
+        $task->user_id = $user->id;
+        $task->phone = $user->phone_number;
+        $task->save();
+
+        NotificationService::sendTaskNotification($task, $user->id);
+
+        return redirect()->route('searchTask.task', $task->id);
+    }
+
 
     public function images_store(Task $task, Request $request)
     {
@@ -216,36 +246,6 @@ class CreateTaskService
             ]);
         }
 //        $this->note_store();
-    }
-
-
-    public function get_contact($task)
-    {
-        return [
-            'route' => 'contact', 'task_id' => $task->id,
-            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CONTACTS)
-        ];
-    }
-
-    public function contact_store($data)
-    {
-        $user = auth()->user();
-        $task = Task::query()->findOrFail($data['task_id']);
-        if (!$user->is_phone_number_verified || $user->phone_number != $data['phone_number']) {
-            $data['is_phone_number_verified'] = 0;
-            $user->update($data);
-            LoginController::send_verification('phone', $user);
-            return $this->verify($task, $user);
-        }
-
-        $task->status = 1;
-        $task->user_id = $user->id;
-        $task->phone = $user->phone_number;
-        $task->save();
-
-        NotificationService::sendTaskNotification($task, $user->id);
-
-        return redirect()->route('searchTask.task', $task->id);
     }
 
     public function contact_register(Task $task, UserRequest $request)
