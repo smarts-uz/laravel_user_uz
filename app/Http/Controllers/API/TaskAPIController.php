@@ -551,6 +551,18 @@ class TaskAPIController extends Controller
      *                    property="task_id",
      *                    type="integer",
      *                 ),
+     *                 @OA\Property (
+     *                    property="weight",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="length",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="date_t",
+     *                    type="integer",
+     *                 ),
      *             ),
      *         ),
      *     ),
@@ -592,7 +604,8 @@ class TaskAPIController extends Controller
      *                 ),
      *                 @OA\Property (
      *                    property="radio",
-     *                    type="boolean",
+     *                    description="Agar udallonna bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
+     *                    type="string",
      *                 ),
      *             ),
      *         ),
@@ -686,14 +699,17 @@ class TaskAPIController extends Controller
      *                 ),
      *                 @OA\Property (
      *                    property="date_type",
+     *                    description="1 dan 3 gacha bersa bo`ladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
      *                    property="start_date",
+     *                    description="2022-06-03 12:00:0 - manashu formatda kiritiladi",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="end_date",
+     *                    description="2022-06-03 12:00:0 - manashu formatda kiritiladi",
      *                    type="string",
      *                 ),
      *             ),
@@ -860,6 +876,49 @@ class TaskAPIController extends Controller
         return $this->success($this->create_task_service->contact_store($request->validated()));
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/create-task/verify",
+     *     tags={"Task Create"},
+     *     summary="Task create verify",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="user_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="sms_otp",
+     *                    description="Telefonga kelgan SMS code",
+     *                    type="integer",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function verify(TaskVerificationRequest $request)
     {
         return $this->create_task_service->verification($request->validated());
