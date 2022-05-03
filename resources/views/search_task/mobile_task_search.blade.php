@@ -76,12 +76,6 @@
     <div id="big-big" class="h-full my-5 rounded-lg w-full static"></div>
 </div>
 
-<div class="col-span-2 lg:col-span-1 lg:block hidden mx-4 lg:mt-0 mt-32">
-    <div class="big-map static">
-
-    </div>
-</div>
-
 
 {{-- tasks --}}
 <div class="w-11/12 mx-auto lg:hidden block">

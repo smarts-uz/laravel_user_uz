@@ -106,6 +106,16 @@
                                                     <p class="text-red-500">{{ $message }}</p>
                                                     @enderror
                                                 </div>
+                                                <div class="w-full block w-full mb-6 mt-2 flex gap-x-5">
+                                                    <div class="flex items-center gap-x-2">
+                                                        <input type="radio" name="gender" id="male" value="1" class="h-4 w-4"  {{$user->gender==1 ? 'checked' : ''}}>
+                                                        <label for="male" class="text-gray-800 text-lg cursor-pointer" {{$user->gender==0 ? 'checked' : ''}}>{{__('Мужской')}}</label>
+                                                    </div>
+                                                    <div class="flex items-center gap-x-2">
+                                                        <input type="radio" name="gender" id="fermale" value="0" class="h-4 w-4">
+                                                        <label for="fermale" class="text-gray-800 text-lg cursor-pointer">{{__('Женской')}}</label>
+                                                    </div>
+                                                </div>
                                                 <div class="w-full block w-full mb-4">
                                                     <label class="mb-2 text-md md:block text-gray-400"
                                                            for="textarea">{{__('Другие сведения')}}</label>
@@ -137,13 +147,13 @@
 
                                                 </div>
                                                 <input type="submit"
-                                                       class="block xl:w-3/5 lg:w-3/4 sm:w-3/5 w-full text-center bg-green-400 hover:bg-green-600 text-white uppercase p-4 rounded-xl mb-5"
+                                                       class="block xl:w-3/5 lg:w-3/4 sm:w-3/5 w-full text-center bg-green-400 hover:bg-green-600 text-white uppercase p-4 rounded-xl mb-5 cursor-pointer"
                                                        name="submit1" value="{{__('Сохранить')}}">
                                                 <hr>
                                             </form>
 
                                             <a href="{{ route('profile.destroy', $user->id) }}" onclick="ConfirmDelete()"
-                                               class="block xl:w-3/5 lg:w-3/4 sm:w-3/5 w-full text-center bg-red-400 hover:bg-red-600 text-white mt-5 uppercase p-4 rounded-xl">{{__('Удалить профиль')}}</a>
+                                               class="block xl:w-3/5 lg:w-3/4 sm:w-3/5 w-full text-center bg-red-400 hover:bg-red-600 text-white mt-5 uppercase p-4 rounded-xl cursor-pointer">{{__('Удалить профиль')}}</a>
                                         </div>
                                     </div>
                                     {{-- settings/ first tab -> base settings end--}}

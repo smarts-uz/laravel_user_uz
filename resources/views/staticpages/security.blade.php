@@ -61,18 +61,11 @@
                         <h3 class="mt-14 text-3xl mb-5">{{__('Служба поддержки')}}</h3>
                         <p>{{__('Наша служба поддержки ежедневно работает с обращениями пользователей и следит за новыми заданиями. На сервисе запрещено публиковать задания, которые нарушают законодательство или противоречат моральным нормам.')}}</p>
                         <p class="mt-5">{{__('Специалисты отдела мониторинга готовы подключиться к любой сложной ситуации и сделать все возможное, чтобы помочь пользователям ее разрешить.')}}</p>
-                        <div class="flex lg:flex-row flex-col mt-10">
-                            <div class="sm:w-1/2 w-full mx-auto">
-                                <a href="#replain-link">
+                        <div class="flex mt-10">
+                            <div class="sm:w-1/2 w-full">
+                                <a target='blank' href="{{setting('site.telegram_admin_url')}}">
                                     <button  class="font-sans  text-2xl mx-2 font-medium bg-green-400 text-white hover:bg-green-300 px-10 py-4 rounded">
                                         {{__('Написать в поддержку')}}
-                                    </button>
-                                </a>
-                            </div>
-                            <div class="sm:w-1/2 w-full mx-auto lg:mt-0 mt-6">
-                                <a href="#">
-                                    <button  class="font-sans  text-2xl mx-2 font-medium  text-black-400 ring-1 ring-gray-300 px-14 py-4 rounded">
-                                        {{__('Перейти в контакты')}}
                                     </button>
                                 </a>
                             </div>

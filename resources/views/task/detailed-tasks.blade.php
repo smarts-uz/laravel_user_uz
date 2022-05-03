@@ -324,8 +324,8 @@
                                 <input type="text" name="performer_id" class="hidden"
                                        value="">
                                     <div class="text-gray-700 sm:mt-4 mt-2">
-                                        <i class="fas fa-star text-yellow-500 mr-1"></i>{{ auth()->user()->reviews()->count()? auth()->user()->goodReviews()->count()/auth()->user()->reviews()->count():0 }}
-                                        по {{ auth()->user()->reviews()->count() }} отзывам
+                                        <i class="fas fa-star text-yellow-500 mr-1"></i>{{ auth()->user()->review_rating }}
+                                        по {{ auth()->user()->review_good + auth()->user()->review_bad }} отзывам
                                     </div>
                             </div>
                             <div class="flex flex-row items-start">
@@ -460,8 +460,8 @@
                                     <input type="text" name="performer_id" class="hidden"
                                            value="{{ $selected->performer_id }}">
                                     <div class="text-gray-700 sm:mt-4 mt-2">
-                                        <i class="fas fa-star text-yellow-500 mr-1"></i>{{ $selected->performer->reviews()->count()? $selected->performer->goodReviews()->count()/$selected->performer->reviews()->count():0 }}
-                                        по {{ $selected->performer->reviews()->count() }} отзывам
+                                        <i class="fas fa-star text-yellow-500 mr-1"></i>{{$selected->performer->review_rating}}
+                                        по {{ $selected->performer->review_good + $selected->performer->review_bad }} отзывам
                                     </div>
                                 </div>
                                 <div class="flex flex-row items-start">
@@ -546,15 +546,12 @@
 
                                         <div
                                             class="text-[17px] text-gray-500 my-5">{{$selected->description}}</div>
+                                        
+
                                         @if($selected->not_free == 1 || $task->user_id == auth()->id())
                                             <div
-                                                class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} +998 {{$selected->phone_number}}</div>
-                                        @endif
-
-                                        <!-- @if($selected->not_free == 1 || $task->user_id == auth()->id())
-                                            <div
                                                 class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} +998 {{$selected->performer->phone_number}}</div>
-                                        @endif -->
+                                        @endif
 
 
                                         @auth()
@@ -571,13 +568,7 @@
                                                     action="{{ route('response.selectPerformer', $selected->id) }}"
                                                     method="post">
                                                     @csrf
-                                                    <button
-                                                        type="submit"
-                                                        class="cursor-pointer text-semibold text-center w-[200px]
-                                        md:w-[320px] md:ml-4 inline-block py-3 px-4 bg-white transition
-                                        duration-200 text-white bg-green-500 hover:bg-green-500 font-medium
-                                        border border-transparent rounded-md"> {{__('Выбрать исполнителем')}}</button>
-
+                                                    <button type="submit" class="cursor-pointer text-semibold text-center w-[200px] md:w-[320px] md:ml-4 inline-block py-3 px-4 bg-white transition duration-200 text-white bg-green-500 hover:bg-green-500 font-medium border border-transparent rounded-md"> {{__('Выбрать исполнителем')}}</button>
                                                 </form>
                                             @endif
 
@@ -617,8 +608,8 @@
                                         <input type="text" name="performer_id" class="hidden"
                                                value="{{ $response->performer_id }}">
                                         <div class="text-gray-700 sm:mt-4 mt-2">
-                                            <i class="fas fa-star text-yellow-500 mr-1"></i>{{ $response->performer->reviews()->count()? number_format($response->performer->goodReviews()->count() / $response->performer->reviews()->count()):0 }}
-                                            по {{ $response->performer->reviews()->count() }} отзывам
+                                            <i class="fas fa-star text-yellow-500 mr-1"></i>{{$response->performer->review_rating}}
+                                        по {{ $response->performer->review_good + $response->performer->review_bad }} отзывам
                                         </div>
                                     </div>
                                     <div class="flex flex-row items-start">

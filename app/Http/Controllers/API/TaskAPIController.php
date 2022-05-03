@@ -2,9 +2,18 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Requests\Api\TaskAddressRequest;
+use App\Http\Requests\Api\TaskBudgetRequest;
+use App\Http\Requests\Api\TaskContactsRequest;
+use App\Http\Requests\Api\TaskCustomRequest;
 use App\Http\Requests\Api\TaskFilterRequest;
+use App\Http\Requests\Api\TaskNameRequest;
+use App\Http\Requests\Api\TaskNoteRequest;
+use App\Http\Requests\Api\TaskRemoteRequest;
 use App\Http\Requests\Api\V1\Task\StoreRequest;
 use App\Http\Requests\Task\UpdateRequest;
+use App\Http\Requests\TaskDateRequest;
+use App\Http\Resources\CustomFiledResource;
 use App\Http\Resources\SameTaskResource;
 use App\Http\Resources\TaskIndexResource;
 use App\Http\Resources\TaskPaginationResource;
@@ -13,7 +22,9 @@ use App\Models\CustomField;
 use App\Models\Task;
 use App\Models\TaskResponse;
 use App\Models\User;
+use App\Services\Response;
 use App\Services\Task\CreateService;
+use App\Services\Task\CreateTaskService;
 use App\Services\Task\FilterTaskService;
 use App\Services\Task\ResponseService;
 use Illuminate\Database\Eloquent\Collection;
@@ -26,17 +37,22 @@ use App\Models\CustomFieldsValue;
 
 class TaskAPIController extends Controller
 {
+    use Response;
+
     private $service;
     private $response_service;
     private $filter_service;
+    private $create_task_service;
 
     public function __construct()
     {
         $this->service = new CreateService();
         $this->filter_service = new FilterTaskService();
         $this->response_service = new ResponseService();
+        $this->create_task_service = new CreateTaskService();
 
     }
+
     /**
      * @OA\Get(
      *     path="/api/same-tasks/{task}",
@@ -66,7 +82,7 @@ class TaskAPIController extends Controller
      */
     public function same_tasks(Task $task, Request $request)
     {
-        $tasks = $task->category->tasks()->where('id','!=',$task->id);
+        $tasks = $task->category->tasks()->where('id', '!=', $task->id);
         $tasks = $tasks->where('status', Task::STATUS_OPEN)->take(10)->get();
         return SameTaskResource::collection($tasks);
     }
@@ -152,7 +168,7 @@ class TaskAPIController extends Controller
      */
     public function response_store(Task $task, Request $request)
     {
-        $response = $this->response_service->store($request,$task);
+        $response = $this->response_service->store($request, $task);
 
         return response()->json($response);
     }
@@ -160,7 +176,7 @@ class TaskAPIController extends Controller
     public function selectPerformer(TaskResponse $response)
     {
         $response = $this->response_service->selectPerformer($response);
-        return  response()->json($response);
+        return response()->json($response);
     }
 
     /**
@@ -238,7 +254,7 @@ class TaskAPIController extends Controller
     public function filter(TaskFilterRequest $request)
     {
         $data = $request->validated();
-        $tasks =$this->filter_service->filter($data);
+        $tasks = $this->filter_service->filter($data);
 
         return new TaskPaginationResource($tasks);
     }
@@ -252,18 +268,16 @@ class TaskAPIController extends Controller
 
     public function task_find(Request $request)
     {
-       if (isset($request->s))
-       {
-           $s = $request->s;
-           $tasks = Task::query()->where('status',Task::STATUS_OPEN)
-               ->where('name','like',"%$s%")
-               ->orWhere('description', 'like',"%$s%")
-               ->orWhere('phone', 'like',"%$s%")
-               ->orWhere('budget', 'like',"%$s%")->paginate();
-       }
-       else{
-           $tasks = Task::query()->where('status',Task::STATUS_OPEN)->paginate();
-       }
+        if (isset($request->s)) {
+            $s = $request->s;
+            $tasks = Task::query()->where('status', Task::STATUS_OPEN)
+                ->where('name', 'like', "%$s%")
+                ->orWhere('description', 'like', "%$s%")
+                ->orWhere('phone', 'like', "%$s%")
+                ->orWhere('budget', 'like', "%$s%")->paginate();
+        } else {
+            $tasks = Task::query()->where('status', Task::STATUS_OPEN)->paginate();
+        }
         return new TaskPaginationResource($tasks);
     }
 
@@ -334,17 +348,16 @@ class TaskAPIController extends Controller
         $user = auth()->user();
         $is_performer = $request->is_performer;
 
-        $column = $is_performer ? 'performer_id': 'user_id';
+        $column = $is_performer ? 'performer_id' : 'user_id';
 
-        $open_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_OPEN)->count(),'status' => Task::STATUS_OPEN];
-        $in_process_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_IN_PROGRESS)->count(),'status' => Task::STATUS_IN_PROGRESS];
-        $complete_tasks = ['count' =>  Task::query()->where($column, $user->id)->where('status', Task::STATUS_COMPLETE)->count(),'status' => Task::STATUS_COMPLETE];
-        $cancelled_tasks = ['count' =>  Task::query()->where($column, $user->id)->where('status', Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->count(),'status' => Task::STATUS_COMPLETE_WITHOUT_REVIEWS];
+        $open_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_OPEN)->count(), 'status' => Task::STATUS_OPEN];
+        $in_process_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_IN_PROGRESS)->count(), 'status' => Task::STATUS_IN_PROGRESS];
+        $complete_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_COMPLETE)->count(), 'status' => Task::STATUS_COMPLETE];
+        $cancelled_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->count(), 'status' => Task::STATUS_COMPLETE_WITHOUT_REVIEWS];
         $all = ['count' => $open_tasks['count'] + $in_process_tasks['count'] + $complete_tasks['count'] + $cancelled_tasks['count'], 'status' => 0];
 
 
-
-        return response()->json(['success' => true, 'data' => compact('open_tasks','in_process_tasks', 'complete_tasks','cancelled_tasks','all')]);
+        return response()->json(['success' => true, 'data' => compact('open_tasks', 'in_process_tasks', 'complete_tasks', 'cancelled_tasks', 'all')]);
     }
 
 
@@ -392,19 +405,18 @@ class TaskAPIController extends Controller
         $is_performer = $request->is_performer;
         $status = $request->status;
 
-        $status = in_array($status,[Task::STATUS_OPEN,Task::STATUS_COMPLETE_WITHOUT_REVIEWS,Task::STATUS_COMPLETE,Task::STATUS_IN_PROGRESS])? $status : 0;
+        $status = in_array($status, [Task::STATUS_OPEN, Task::STATUS_COMPLETE_WITHOUT_REVIEWS, Task::STATUS_COMPLETE, Task::STATUS_IN_PROGRESS]) ? $status : 0;
 
-        $column = $is_performer ? 'performer_id': 'user_id';
+        $column = $is_performer ? 'performer_id' : 'user_id';
         $tasks = Task::query()->where($column, $user->id);
 
         if ($status)
             $tasks = $tasks->where('status', $status);
         else
-            $tasks =  $tasks->where('status', '!=',0);
+            $tasks = $tasks->where('status', '!=', 0);
 
         return new TaskPaginationResource($tasks->paginate());
     }
-
 
 
     /**
@@ -447,20 +459,97 @@ class TaskAPIController extends Controller
      */
     public function routing(Request $request)
     {
-        $route = $request->route;
-        $category = Category::find($request->category_id);
+        $request->validate(['route' => 'required']);
+//        $category = Category::query()->findOrFail($request->get('category_id'));
         $data = [];
-        switch ($route){
+        switch ($request->get('route')) {
             case CustomField::ROUTE_NAME:
-                if ($category->parent->remote)
-                    $data['route']  = 'remote';
-                else
-                    $data['route']  = CustomField::ROUTE_ADDRESS;
-                $data['custom_fields'] = $category->customFieldsInName;
+                $data = $this->create_task_service->name_store($request);
+                break;
+            case CustomField::ROUTE_CUSTOM:
+                $data = $this->create_task_service->custom_store($request);
+                break;
+            case CustomField::ROUTE_REMOTE:
+                $data = $this->create_task_service->remote_store($request);
+                break;
+            case CustomField::ROUTE_ADDRESS:
+                $data = $this->create_task_service->address_store($request);
+                break;
+            case CustomField::ROUTE_DATE:
+                $data = $this->create_task_service->date_store($request);
+                break;
+            case CustomField::ROUTE_BUDGET:
+                $data = $this->create_task_service->budget_store($request);
+                break;
+            case CustomField::ROUTE_NOTE:
+                $data = $this->create_task_service->note_store($request);
+                break;
+            case CustomField::ROUTE_CONTACTS:
+                $data = $this->create_task_service->contact_store($request);
+                break;
+        }
+
+        return $this->success($data);
+
+    }
+
+    public function name(TaskNameRequest $request)
+    {
+        return $this->success($this->create_task_service->name_store($request->validated()));
+    }
+
+    public function custom(TaskCustomRequest $request)
+    {
+        return $this->success($this->create_task_service->custom_store($request->validated()));
+    }
+
+    public function remote(TaskRemoteRequest $request)
+    {
+        return $this->success($this->create_task_service->remote_store($request->validated()));
+    }
+
+    public function address(TaskAddressRequest $request)
+    {
+        return $this->success($this->create_task_service->address_store($request->validated()));
+    }
+
+    public function date(\App\Http\Requests\Api\TaskDateRequest $request)
+    {
+        return $this->success($this->create_task_service->date_store($request->validated()));
+    }
+
+    public function budget(TaskBudgetRequest $request)
+    {
+        return $this->success($this->create_task_service->budget_store($request->validated()));
+    }
+
+    public function note(TaskNoteRequest $request)
+    {
+        return $this->success($this->create_task_service->note_store($request->validated()));
+    }
+
+    public function contacts(TaskContactsRequest $request)
+    {
+        return $this->success($this->create_task_service->contact_store($request->validated()));
+    }
+
+
+    public function getFields(Request $request)
+    {
+        $category = Category::query()->findOrFail($request->get('category_id'));
+        $data = [];
+        switch ($request->get('route')) {
+            case CustomField::ROUTE_NAME:
+//                $data = $this->create_task_service->name($category->name);
+                break;
+            case CustomField::ROUTE_CUSTOM:
+                $data = $this->create_task_service->get_custom($category);
+                break;
+            case CustomField::ROUTE_REMOTE:
 
                 break;
             case CustomField::ROUTE_ADDRESS:
-                $data['custom_fields'] = $category->customFieldsInAddress;
+                $data = $this->create_task_service->get_address($category->parent->double_address);
                 break;
             case CustomField::ROUTE_BUDGET:
                 $data['custom_fields'] = $category->customFieldsInBudget;
@@ -471,15 +560,11 @@ class TaskAPIController extends Controller
             case CustomField::ROUTE_DATE:
                 $data['custom_fields'] = $category->customFieldsInDate;
                 break;
-            case CustomField::ROUTE_CUSTOM:
-                $data['custom_fields'] = $category->customFieldsInCustom;
-                break;
+
         }
 
-        return $data;
-
+        return $this->success($data);
     }
-
 
 
     /**
@@ -549,11 +634,11 @@ class TaskAPIController extends Controller
         $data = $request->validated();
         $data["user_id"] = auth()->user()->id;
 
-        $images = isset($data['photos'])?$data['images']:[];
-        $data['photos'] =  [];
+        $images = isset($data['photos']) ? $data['images'] : [];
+        $data['photos'] = [];
         foreach ($images as $image) {
-            $name = md5(\Carbon\Carbon::now().'_'.$image->getClientOriginalName().'.'.$image->getClientOriginalExtension());
-            $filepath = Storage::disk('public')->putFileAs('/images',$image, $name);
+            $name = md5(\Carbon\Carbon::now() . '_' . $image->getClientOriginalName() . '.' . $image->getClientOriginalExtension());
+            $filepath = Storage::disk('public')->putFileAs('/images', $image, $name);
             $data['photos'][] = $filepath;
         }
 
@@ -646,16 +731,17 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function changeTask(UpdateRequest $request, Task $task){
+    public function changeTask(UpdateRequest $request, Task $task)
+    {
         taskGuard($task);
         $data = $request->validated();
         //$data = getAddress($data); // шуни комментировать килиб койса swagger да ишлайди
 
-        $images = isset($data['photos'])?$data['images']:[];
-        $data['photos'] =  [];
+        $images = isset($data['photos']) ? $data['images'] : [];
+        $data['photos'] = [];
         foreach ($images as $image) {
-            $name = md5(\Carbon\Carbon::now().'_'.$image->getClientOriginalName().'.'.$image->getClientOriginalExtension());
-            $filepath = Storage::disk('public')->putFileAs('/images',$image, $name);
+            $name = md5(\Carbon\Carbon::now() . '_' . $image->getClientOriginalName() . '.' . $image->getClientOriginalExtension());
+            $filepath = Storage::disk('public')->putFileAs('/images', $image, $name);
             $data['photos'][] = $filepath;
         }
 
@@ -702,7 +788,7 @@ class TaskAPIController extends Controller
         $task->delete();
         CustomFieldsValue::where('task_id', $task)->delete();
 
-        if($task){
+        if ($task) {
             return response()->json([
                 'success' => true,
                 'message' => 'Successfully Deleted'

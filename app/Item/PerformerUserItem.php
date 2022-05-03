@@ -20,5 +20,10 @@ class PerformerUserItem
     public $about;
     public $reviews;
     public $portfolios;
+    public $review_good;
+    public $review_bad;
+    public $review_rating;
+    public $goodReviews;
+    public $badReviews;
 
 }

@@ -89,22 +89,24 @@ class ProfileController extends Controller
             'user' => $user,
             'directories' => $item->directories,
             'portfolios' => $item->portfolios,
-            'goodReviews' => $item->goodReviews,
-            'badReviews' => $item->badReviews,
+            'review_good' => $item->review_good,
+            'review_bad' =>$item->review_bad,
             'task_count' => $item->task_count,
             'views' => $item->views,
             'ports' => $item->ports,
             'task' => $item->task,
+            'review_rating' => $item->review_rating,
+            'goodReviews' => $item->goodReviews,
+            'badReviews' =>$item->badReviews,
         ]);
     }
 
     //profile Cash
     public function profileCash()
     {
+        $user = Auth::user();
         $service = new ProfileService();
-        $item = $service->profileCash();
-        $goodReviews = auth()->user()->goodReviews()->whereHas('task')->whereHas('user')->get();
-        $badReviews = auth()->user()->badReviews()->whereHas('task')->whereHas('user')->get();
+        $item = $service->profileCash( $user);
         return view('profile.cash',
         [
             'task_count' => $item->task_count,
@@ -114,8 +116,9 @@ class ProfileController extends Controller
             'about' => $item->about,
             'transactions' => $item->transactions,
             'user' => $item->user,
-            'goodReviews' => $goodReviews,
-            'badReviews' =>$badReviews
+            'review_good' => $item->review_good,
+            'review_bad' =>$item->review_bad,
+            'review_rating' => $item->review_rating,
         ]);
     }
 

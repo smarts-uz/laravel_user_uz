@@ -26,6 +26,7 @@ class UserUpdateDataRequest extends FormRequest
         $validation = [
             'email' => 'required|email|unique:users',
             'age' => 'nullable|int',
+            'gender' => 'nullable|int',
             'phone_number' => 'required|numeric|min:9|unique:users',
             'description' => 'nullable',
             'location' => 'nullable',

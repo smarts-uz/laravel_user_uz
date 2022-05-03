@@ -73,10 +73,30 @@ class ProfileAPIController extends Controller
         ]);
     }
 
-    public function portfolioCreate(PortfolioRequest $request)
+    public function portfolioCreate(Request $request)
     {
-        $data = $request->validated();
-        $data['user_id'] = auth()->user()->id;
+        $validator = Validator::make($request->all(), [
+            'comment' => 'required|string',
+            'description' => 'required|string'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'data' => $validator->errors()
+            ]);
+        }
+        $user = auth()->user();
+        $data = $validator->validated();
+        $data['user_id'] = $user->id;
+        if ($request->has('images')) {
+            $image = [];
+            foreach ($request->file('images') as $uploadedImage) {
+                $filename = $user->name.'/'.$data['comment'].'/'.time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path().'Portfolio/'.$user->name.'/', $filename);
+                $image[] = $filename;
+            }
+            $data['image'] = json_encode($image);
+        }
         $portfolio = Portfolio::create($data);
         return response()->json([
             'success' => true,
@@ -105,10 +125,30 @@ class ProfileAPIController extends Controller
         ]);
     }
 
-    public function portfolioUpdate(PortfolioRequest $request, Portfolio $portfolio)
+    public function portfolioUpdate(Request $request, Portfolio $portfolio)
     {
-        $data = $request->validated();
-        $data['user_id'] = auth()->user()->id;
+        $validator = Validator::make($request->all(), [
+            'comment' => 'required|string',
+            'description' => 'required|string'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'data' => $validator->errors()
+            ]);
+        }
+        $user = auth()->user();
+        $data = $validator->validated();
+        $data['user_id'] = $user->id;
+        if ($request->has('images')) {
+            $image = [];
+            foreach ($request->file('images') as $uploadedImage) {
+                $filename = $user->name.'/'.$data['comment'].'/'.time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path().'Portfolio/'.$user->name.'/', $filename);
+                $image[] = $filename;
+            }
+            $data['image'] = json_encode($image);
+        }
         $portfolio->update($data);
         $portfolio->save();
         return response()->json([
@@ -995,6 +1035,42 @@ class ProfileAPIController extends Controller
             'data' => [
                 'message' => $message
             ]
+        ]);
+    }
+
+    public function userProfile($id)
+    {
+        $user = User::query()->find($id);
+        return response()->json([
+            'success' => true,
+            'data' => new UserIndexResource($user)
+        ]);
+    }
+
+    public function userPortfolios(User $user)
+    {
+        return response()->json([
+            'success' => true,
+            'data' => PortfolioIndexResource::collection(Portfolio::query()->where(['user_id' => $user->id])->get())
+        ]);
+    }
+
+    public function userReviews(Request $request, User $user)
+    {
+        if ($request->get('performer') == 1) {
+            $data = Review::query()->where(['user_id' => $user->id])
+                ->whereHas('task', function (Builder $q) use ($user) {
+                    $q->where(['performer_id' => $user->id]);
+                })->get();
+        } else {
+            $data = Review::query()->where(['user_id' => $user->id])
+                ->whereHas('task', function (Builder $q) use ($user) {
+                    $q->where(['user_id' => $user->id]);
+                })->get();
+        }
+        return response()->json([
+            'success' => true,
+            'data' => ReviewIndexResource::collection($data)
         ]);
     }
 }
