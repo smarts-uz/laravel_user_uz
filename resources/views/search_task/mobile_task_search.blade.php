@@ -84,7 +84,7 @@
 
 
 {{-- tasks --}}
-<div class="w-11/12 mx-auto">
+<div class="w-11/12 mx-auto lg:hidden block">
     @include('search_task.tasks')
 </div>
 {{-- tasks --}}
