@@ -13,27 +13,20 @@ use App\Http\Requests\Api\TaskRemoteRequest;
 use App\Http\Requests\Api\TaskVerificationRequest;
 use App\Http\Requests\Api\V1\Task\StoreRequest;
 use App\Http\Requests\Task\UpdateRequest;
-use App\Http\Requests\TaskDateRequest;
-use App\Http\Resources\CustomFiledResource;
 use App\Http\Resources\SameTaskResource;
 use App\Http\Resources\TaskIndexResource;
 use App\Http\Resources\TaskPaginationResource;
 use App\Http\Resources\TaskResponseResource;
-use App\Models\CustomField;
 use App\Models\Task;
 use App\Models\TaskResponse;
-use App\Models\User;
 use App\Services\Response;
 use App\Services\Task\CreateService;
 use App\Services\Task\CreateTaskService;
 use App\Services\Task\FilterTaskService;
 use App\Services\Task\ResponseService;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Category;
 use App\Models\CustomFieldsValue;
 
 class TaskAPIController extends Controller
@@ -51,7 +44,6 @@ class TaskAPIController extends Controller
         $this->filter_service = new FilterTaskService();
         $this->response_service = new ResponseService();
         $this->create_task_service = new CreateTaskService();
-
     }
 
     /**
@@ -87,7 +79,6 @@ class TaskAPIController extends Controller
         $tasks = $tasks->where('status', Task::STATUS_OPEN)->take(10)->get();
         return SameTaskResource::collection($tasks);
     }
-
 
     /**
      * @OA\Get(
@@ -260,12 +251,10 @@ class TaskAPIController extends Controller
         return new TaskPaginationResource($tasks);
     }
 
-
     public function task_map(Task $task)
     {
         return $task->addresses;
     }
-
 
     public function task_find(Request $request)
     {
@@ -361,7 +350,6 @@ class TaskAPIController extends Controller
         return response()->json(['success' => true, 'data' => compact('open_tasks', 'in_process_tasks', 'complete_tasks', 'cancelled_tasks', 'all')]);
     }
 
-
     /**
      * @OA\Get(
      *     path="/api/my-tasks",
@@ -417,81 +405,6 @@ class TaskAPIController extends Controller
             $tasks = $tasks->where('status', '!=', 0);
 
         return new TaskPaginationResource($tasks->paginate());
-    }
-
-
-    /**
-     * @OA\Post(
-     *     path="/api/create-task/routing",
-     *     tags={"Task"},
-     *     summary="Routing",
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="category_id",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="address",
-     *                    type="string",
-     *                 ),
-     *             ),
-     *         ),
-     *     ),
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
-    public function routing(Request $request)
-    {
-        $request->validate(['route' => 'required']);
-//        $category = Category::query()->findOrFail($request->get('category_id'));
-        $data = [];
-        switch ($request->get('route')) {
-            case CustomField::ROUTE_NAME:
-                $data = $this->create_task_service->name_store($request);
-                break;
-            case CustomField::ROUTE_CUSTOM:
-                $data = $this->create_task_service->custom_store($request);
-                break;
-            case CustomField::ROUTE_REMOTE:
-                $data = $this->create_task_service->remote_store($request);
-                break;
-            case CustomField::ROUTE_ADDRESS:
-                $data = $this->create_task_service->address_store($request);
-                break;
-            case CustomField::ROUTE_DATE:
-                $data = $this->create_task_service->date_store($request);
-                break;
-            case CustomField::ROUTE_BUDGET:
-                $data = $this->create_task_service->budget_store($request);
-                break;
-            case CustomField::ROUTE_NOTE:
-                $data = $this->create_task_service->note_store($request);
-                break;
-            case CustomField::ROUTE_CONTACTS:
-                $data = $this->create_task_service->contact_store($request);
-                break;
-        }
-
-        return $this->success($data);
-
     }
 
     /**
@@ -924,39 +837,6 @@ class TaskAPIController extends Controller
         return $this->create_task_service->verification($request->validated());
     }
 
-    public function getFields(Request $request)
-    {
-        $category = Category::query()->findOrFail($request->get('category_id'));
-        $data = [];
-        switch ($request->get('route')) {
-            case CustomField::ROUTE_NAME:
-//                $data = $this->create_task_service->name($category->name);
-                break;
-            case CustomField::ROUTE_CUSTOM:
-                $data = $this->create_task_service->get_custom($category);
-                break;
-            case CustomField::ROUTE_REMOTE:
-
-                break;
-            case CustomField::ROUTE_ADDRESS:
-                $data = $this->create_task_service->get_address($category->parent->double_address);
-                break;
-            case CustomField::ROUTE_BUDGET:
-                $data['custom_fields'] = $category->customFieldsInBudget;
-                break;
-            case CustomField::ROUTE_NOTE:
-                $data['custom_fields'] = $category->customFieldsInNote;
-                break;
-            case CustomField::ROUTE_DATE:
-                $data['custom_fields'] = $category->customFieldsInDate;
-                break;
-
-        }
-
-        return $this->success($data);
-    }
-
-
     /**
      * @OA\Post(
      *     path="/api/task/create",
@@ -1045,7 +925,6 @@ class TaskAPIController extends Controller
             'success' => false,
         ]);
     }
-
 
     /**
      * @OA\Put(
@@ -1141,7 +1020,6 @@ class TaskAPIController extends Controller
         return response()->json(['success' => true, 'message' => 'Successfully Updated', 'task' => $task]);
 
     }
-
 
     /**
      * @OA\DELETE(

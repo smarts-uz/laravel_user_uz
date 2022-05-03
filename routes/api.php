@@ -37,9 +37,8 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('logout', [UserAPIController::class, 'logout']); //end +
 
     Route::post('task/create', [TaskAPIController::class, 'create']);
-    Route::post('create-task/get-fields', [TaskAPIController::class, 'getFields']);
     Route::post('create-task/name', [TaskAPIController::class, 'name']); //end +
-    Route::post('create-task/custom', [TaskAPIController::class, 'custom']); 
+    Route::post('create-task/custom', [TaskAPIController::class, 'custom']);
     Route::post('create-task/remote', [TaskAPIController::class, 'remote']); //end +
     Route::post('create-task/address', [TaskAPIController::class, 'address']);
     Route::post('create-task/date', [TaskAPIController::class, 'date']); //end +
