@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Requests\Api\TaskAddressRequest;
 use App\Http\Requests\Api\TaskBudgetRequest;
 use App\Http\Requests\Api\TaskContactsRequest;
 use App\Http\Requests\Api\TaskCustomRequest;
@@ -631,6 +632,18 @@ class TaskAPIController extends Controller
      *                    property="task_id",
      *                    type="integer",
      *                 ),
+     *                 @OA\Property (
+     *                    property="location",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="latitude",
+     *                    type="number",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="longitude",
+     *                    type="number",
+     *                 ),
      *             ),
      *         ),
      *     ),
@@ -651,9 +664,9 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function address(Request $request)
+    public function address(TaskAddressRequest $request)
     {
-        $this->success($this->create_task_service->address_store($request));
+        return $this->success($this->create_task_service->address_store($request->validated()));
     }
 
     /**
@@ -676,12 +689,10 @@ class TaskAPIController extends Controller
      *                 ),
      *                 @OA\Property (
      *                    property="start_date",
-     *                    description="2022-06-30 10:30:59",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="end_date",
-     *                    description="2022-06-30 10:30:59",
      *                    type="string",
      *                 ),
      *             ),
@@ -724,7 +735,7 @@ class TaskAPIController extends Controller
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
-     *                    property="amount1",
+     *                    property="amount",
      *                    type="number",
      *                 ),
      *             ),
@@ -772,11 +783,12 @@ class TaskAPIController extends Controller
      *                 ),
      *                 @OA\Property (
      *                    property="oplata",
-     *                    description="0 - karta, 1 - naqd",
-     *                    type="integer",
+     *                    description="true - karta, false - naqd",
+     *                    type="boolean",
      *                 ),
      *                 @OA\Property (
      *                    property="docs",
+     *                    description="true - taqdim etilsin, false - taqdim etilmasin",
      *                    type="boolean",
      *                 ),
      *             ),

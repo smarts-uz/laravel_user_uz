@@ -3078,6 +3078,15 @@
                                 "properties": {
                                     "task_id": {
                                         "type": "integer"
+                                    },
+                                    "location": {
+                                        "type": "string"
+                                    },
+                                    "latitude": {
+                                        "type": "number"
+                                    },
+                                    "longitude": {
+                                        "type": "number"
                                     }
                                 },
                                 "type": "object"
@@ -3123,11 +3132,9 @@
                                         "type": "integer"
                                     },
                                     "start_date": {
-                                        "description": "2022-06-30 10:30:59",
                                         "type": "string"
                                     },
                                     "end_date": {
-                                        "description": "2022-06-30 10:30:59",
                                         "type": "string"
                                     }
                                 },
@@ -3170,7 +3177,7 @@
                                     "task_id": {
                                         "type": "integer"
                                     },
-                                    "amount1": {
+                                    "amount": {
                                         "type": "number"
                                     }
                                 },
@@ -3217,10 +3224,11 @@
                                         "type": "string"
                                     },
                                     "oplata": {
-                                        "description": "0 - karta, 1 - naqd",
-                                        "type": "integer"
+                                        "description": "true - karta, false - naqd",
+                                        "type": "boolean"
                                     },
                                     "docs": {
+                                        "description": "true - taqdim etilsin, false - taqdim etilmasin",
                                         "type": "boolean"
                                     }
                                 },
