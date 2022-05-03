@@ -492,41 +492,356 @@ class TaskAPIController extends Controller
 
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/create-task/name",
+     *     tags={"Task Create"},
+     *     summary="Task create name",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="name",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="category_id",
+     *                    type="integer",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function name(TaskNameRequest $request)
     {
         return $this->success($this->create_task_service->name_store($request->validated()));
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/create-task/custom",
+     *     tags={"Task Create"},
+     *     summary="Task create custom",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    type="integer",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function custom(TaskCustomRequest $request)
     {
         return $this->success($this->create_task_service->custom_store($request->validated()));
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/create-task/remote",
+     *     tags={"Task Create"},
+     *     summary="Task create remote",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="radio",
+     *                    type="boolean",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function remote(TaskRemoteRequest $request)
     {
         return $this->success($this->create_task_service->remote_store($request->validated()));
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/create-task/address",
+     *     tags={"Task Create"},
+     *     summary="Task create address",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    type="integer",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function address(Request $request)
     {
         $this->success($this->create_task_service->address_store($request));
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/create-task/date",
+     *     tags={"Task Create"},
+     *     summary="Task create date",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="date_type",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="start_date",
+     *                    description="2022-06-30 10:30:59",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="end_date",
+     *                    description="2022-06-30 10:30:59",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function date(\App\Http\Requests\Api\TaskDateRequest $request)
     {
         return $this->success($this->create_task_service->date_store($request->validated()));
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/create-task/budget",
+     *     tags={"Task Create"},
+     *     summary="Task create budget",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="amount1",
+     *                    type="number",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function budget(TaskBudgetRequest $request)
     {
         return $this->success($this->create_task_service->budget_store($request->validated()));
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/create-task/note",
+     *     tags={"Task Create"},
+     *     summary="Task create note",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="description",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="oplata",
+     *                    description="0 - karta, 1 - naqd",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="docs",
+     *                    type="boolean",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function note(TaskNoteRequest $request)
     {
         return $this->success($this->create_task_service->note_store($request->validated()));
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/create-task/contacts",
+     *     tags={"Task Create"},
+     *     summary="Task create contacts",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="phone_number",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function contacts(TaskContactsRequest $request)
     {
         return $this->success($this->create_task_service->contact_store($request->validated()));
