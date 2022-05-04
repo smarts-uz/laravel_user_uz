@@ -1181,6 +1181,84 @@
                 ]
             }
         },
+        "\/api\/profile\/portfolio\/create": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Portfolio Create",
+                "operationId": "c316161132765a3101ed0f60d41eb4b0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "comment": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/portfolio\/{portfolio}\/delete": {
+            "post": {
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Delete Portfolio",
+                "operationId": "4beaea32f869fca3ce1ebdd28bea741e",
+                "parameters": [
+                    {
+                        "name": "portfolio",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "\/api\/profile\/reviews": {
             "get": {
                 "tags": [
@@ -1760,6 +1838,96 @@
                         "token": []
                     }
                 ]
+            }
+        },
+        "\/api\/profile\/{id}": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Get Profile By ID",
+                "operationId": "62efd8334f3e8c1a8cab4873f37ff991",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "\/api\/profile\/{user}\/portfolios": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "User Portfolios",
+                "operationId": "661f056cfbfce5a26b547cfce303e0f1",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "\/api\/profile\/{user}\/reviews": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "User Reviews",
+                "operationId": "8388b31fa583afb948fcf3b06da0cad0",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
             }
         },
         "\/api\/ref": {
@@ -2894,49 +3062,6 @@
                 ]
             }
         },
-        "\/api\/create-task\/routing": {
-            "post": {
-                "tags": [
-                    "Task"
-                ],
-                "summary": "Routing",
-                "operationId": "75bde0adcddefe8478e20c8b7daeb051",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart\/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "category_id": {
-                                        "type": "integer"
-                                    },
-                                    "address": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
         "\/api\/create-task\/name": {
             "post": {
                 "tags": [
@@ -3862,49 +3987,6 @@
                         }
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/profile\/portfolio\/create": {
-            "post": {
-                "tags": [
-                    "PorfolioAPI"
-                ],
-                "summary": "Create portfolio",
-                "operationId": "787f52e274cd4ab7479c069f1649ed5e",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart\/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "comment": {
-                                        "type": "string"
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "Successful operation"
