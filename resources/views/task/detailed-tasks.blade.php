@@ -262,8 +262,7 @@
 
                                         @if($task->status == 3 && $task->user_id == auth()->user()->id)
 
-                                            {{--                                                            <form action="{{ route('task.completed', $task->id) }}" method="post">--}}
-                                            @csrf
+                                            
                                             @if(!$review)
                                                 <button
                                                     id="modal-open-id5"

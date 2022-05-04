@@ -40,7 +40,6 @@ class Controller extends BaseController
         [
             'categories' => $item->categories,
             'categories2' => $item->categories2,
-            'datas' => $item->datas,
             'perform_tasks' => $item->perform_tasks,
             'tasks' => $item->tasks,
         ]);
