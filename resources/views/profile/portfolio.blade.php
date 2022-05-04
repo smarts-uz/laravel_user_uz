@@ -3,7 +3,7 @@
 @section('content')
     <div class="w-10/12 mx-auto mt-8">
         <div class="lg:w-7/12 w-full">
-            @if (Auth::user()->id == $user->id)
+            @if ($portfolio->user_id == $user->id)
                 <a class="text-sm text-blue-500 hover:text-red-500" href="/profile"><i
                 class="fas fa-arrow-left"></i> {{__('Венруться в профиль')}}</a>
             @endif
