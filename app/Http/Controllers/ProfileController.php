@@ -91,7 +91,6 @@ class ProfileController extends Controller
             'portfolios' => $item->portfolios,
             'review_good' => $item->review_good,
             'review_bad' =>$item->review_bad,
-            'task_count' => $item->task_count,
             'views' => $item->views,
             'ports' => $item->ports,
             'task' => $item->task,
@@ -109,7 +108,6 @@ class ProfileController extends Controller
         $item = $service->profileCash( $user);
         return view('profile.cash',
         [
-            'task_count' => $item->task_count,
             'views' => $item->views,
             'balance' => $item->balance,
             'task' => $item->task,

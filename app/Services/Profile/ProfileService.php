@@ -6,7 +6,6 @@ use App\Item\ProfileCashItem;
 use App\Item\ProfileDataItem;
 use App\Models\Region;
 use App\Models\Session;
-use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -64,8 +63,7 @@ class ProfileService
         $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->select('id','name')->get();
         $categories2 = Category::where('parent_id','<>', null)->select('id','parent_id','name')->get();
         $regions = Region::withTranslations(['ru', 'uz'])->get();
-        $about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
-        $task_count = Task::where('performer_id', $user->id)->count();
+        $about = User::where('role_id', 2)->orderBy('review_rating', 'desc')->take(20)->get();
         $sessions = Session::query()->where('user_id', $user->id)->get();
         $parser = Parser::create();
         $review_good = User::find($user->id)->review_good;
@@ -78,7 +76,6 @@ class ProfileService
             'categories2' => $categories2,
             'regions' => $regions,
             'about' => $about,
-            'task_count' => $task_count,
             'sessions' => $sessions,
             'parser' => $parser,
             'review_good' => $review_good,
@@ -136,8 +133,7 @@ class ProfileService
         $item ->views =  $item ->user->views()->count();
         $item ->task =  $item ->user->tasks()->count();
         $item ->transactions =  $item ->user->transactions()->paginate(15);
-        $item ->about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
-        $item ->task_count = Task::where('performer_id',  $item ->user->id)->count();
+        $item->about = User::where('role_id', 2)->orderBy('review_rating', 'desc')->take(20)->get();
         $item ->review_rating = User::find($user->id)->review_rating;
         $item ->review_good = User::find($user->id)->review_good;
         $item ->review_bad = User::find($user->id)->review_bad;
@@ -147,10 +143,9 @@ class ProfileService
         $item = new ProfileDataItem();
         $item ->views = $user->views_count;
         $item ->task = $user->tasks_count;
-        $item ->task_count = $user->performer_tasks()->where('status', 4)->count();
         $item ->ports = $user->portfoliocomments;
         $item ->portfolios = $user->portfolios()->where('image', '!=', null)->get();
-        $item ->about = User::where('role_id', 2)->take(20)->get();
+        $item->about = User::where('role_id', 2)->orderBy('review_rating', 'desc')->take(20)->get();
         $item ->file = "Portfolio/{$user->name}";
         if (!file_exists($item ->file)) {
             File::makeDirectory($item ->file);

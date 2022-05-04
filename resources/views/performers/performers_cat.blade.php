@@ -152,7 +152,7 @@
                                             @endif
                                         @endforeach
                                         <div data-tooltip-target="tooltip-animation_3" class="mx-1">
-                                            @if($user->tasks()->count() >= 50)
+                                            @if(($user->review_good)+($user->review_bad) >= 50)
                                                 <img src="{{ asset('images/50.png') }}" alt="" class="w-10">
                                             @else
                                                 <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10">
