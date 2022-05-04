@@ -309,5 +309,11 @@ class ProfileController extends Controller
         $user->save();
         return redirect()->back();
     }
+    public function youtube_link_delete(){
+        $user = User::find(auth()->user()->id);
+        $user->youtube_link = null;
+        $user->save();
+        return redirect()->back();
+    }
 }
 

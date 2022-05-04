@@ -67,9 +67,6 @@ Route::any('/paynet', function () {
     (new Goodoneuz\PayUz\PayUz)->driver('paynet')->handle();
 });
 
-Route::post('/youtube_link', [ProfileController::class, 'youtube_link'])->name('youtube_link');
-Route::post('/get_info_click', [ClickuzController::class, 'get_info']);
-Route::get('/test_gic', [ClickuzController::class, 'test']);
 
 #region performers
 Route::get('/for_del_new_task/{task}', [CreateController::class, 'deletetask']); // javoxir
@@ -168,6 +165,8 @@ Route::get('/badges', [Controller::class, 'badges'])->name('badges'); // javoxir
 #region Profile
 Route::group(['middleware' => 'auth'], function () {
     Route::prefix('profile')->group(function () {
+        Route::post('/youtube_link', [ProfileController::class, 'youtube_link'])->name('youtube_link');
+        Route::get('youtube_link_delete',[ProfileController::class,'youtube_link_delete'])->name('youtube_link_delete');
         //Profile
         Route::get('/', [ProfileController::class, 'profileData'])->name('profile.profileData'); // javoxir
         //Profile cash
@@ -284,6 +283,8 @@ Route::post('/account/password/change', [ProfileController::class, 'change_passw
 #endregion
 
 #region payments
+Route::post('/get_info_click', [ClickuzController::class, 'get_info']);
+Route::get('/test_gic', [ClickuzController::class, 'test']);
 Route::get('send', [RefillController::class, 'ref'])->name('paycom.send'); // javoxir
 Route::get('/ref', 'App\Http\Controllers\RefillController@ref'); // javoxir
 Route::post('/prepare', "App\Http\Controllers\RefillController@prepare")->name('prepare'); // javoxir
