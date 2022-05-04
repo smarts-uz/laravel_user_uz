@@ -84,7 +84,7 @@
                         </form>
                         @if($user->youtube_link != null)
                             <iframe class="my-4 sm:w-full w-5/6" width="644" height="362" id="iframe" src="{{$user->youtube_link}}" frameborder="0"></iframe>
-                                <a href="" class="float-right text-gray-500 hover:text-red-500 mb-3 border-b-2 border-dotted hover:border-red-500 border-gray-500">{{__('Удалить')}}</a>
+                                <a href="{{route('youtube_link_delete')}}" class="float-right text-gray-500 hover:text-red-500 mb-3 border-b-2 border-dotted hover:border-red-500 border-gray-500">{{__('Удалить')}}</a>
                         @endif
                         <div class="example-of-works w-full my-10">
                             <a href="/profile/create">

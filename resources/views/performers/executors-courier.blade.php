@@ -169,7 +169,7 @@
                     <p>{{$user->description}}</p>
                 </div>
                 <div class="mt-8">
-                    @if (count($portfolios))
+                    @if (count($portfolios) || $user->youtube_link != null)
                         <h1 class="text-xl font-semibold mt-2">{{__('Примеры работ')}}</h1>
                     @endif
                     <div class="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 w-full mx-auto">
@@ -189,6 +189,11 @@
                                 </div>
                             </a>
                         @endforeach
+                    </div>
+                    <div class="my-2">
+                        @if($user->youtube_link != null)
+                            <iframe class="my-4 sm:w-full w-5/6" width="644" height="362" id="iframe" src="{{$user->youtube_link}}" frameborder="0"></iframe>
+                        @endif
                     </div>
                 </div>
                 <div class="my-4">
