@@ -32,14 +32,12 @@ class PerformersService
         $item->categories = Category::where('parent_id', null)->select('id', 'name', 'slug')->get();
         $item->categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
         $item->users = User::where('role_id', 2)->orderbyDesc('review_rating')->paginate(50);
-        $item->task_count = $user->performer_tasks_count;
         $item ->review_good = User::select('review_good')->get();
         $item ->review_bad = User::select('review_bad')->get();
         $item ->review_rating = User::select('review_rating')->get();
         $item-> about = User::where('role_id', 2)->orderBy('review_rating', 'desc')->take(20)->get();
         return $item;
-
-
+        
     }
 
 
@@ -53,9 +51,8 @@ class PerformersService
     public function performer($user)
     {
         $item = new PerformerUserItem();
-        $item->about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
+        $item->about = User::where('role_id', 2)->orderBy('review_rating', 'desc')->take(20)->get();
         $item->portfolios = $user->portfolios()->where('image', '!=', null)->get();
-        $item->task_count = $user->performer_tasks_count;
         $item ->review_good = User::find($user->id)->review_good;
         $item ->review_bad = User::find($user->id)->review_bad;
         $item ->review_rating = User::find($user->id)->review_rating;

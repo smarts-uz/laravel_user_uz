@@ -19,7 +19,9 @@ class CustomFiledResource extends JsonResource
             'placeholder' => $this->description,
             'type' => $this->type,
             'name' => $this->name,
-            'options' => $this->options['options']
+            'options' => $this->options['options'],
+            'order' => $this->order,
+
         ];
     }
 }

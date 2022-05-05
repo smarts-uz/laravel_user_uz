@@ -83,7 +83,8 @@
                             </div>
                         </form>
                         @if($user->youtube_link != null)
-                            <iframe width="800" height="500" id="iframe" src="{{$user->youtube_link}}" frameborder="0"></iframe>
+                            <iframe class="my-4 sm:w-full w-5/6" width="644" height="362" id="iframe" src="{{$user->youtube_link}}" frameborder="0"></iframe>
+                                <a href="{{route('youtube_link_delete')}}" class="float-right text-gray-500 hover:text-red-500 mb-3 border-b-2 border-dotted hover:border-red-500 border-gray-500">{{__('Удалить')}}</a>
                         @endif
                         <div class="example-of-works w-full my-10">
                             <a href="/profile/create">
@@ -215,16 +216,6 @@
             display: none;
         }
     </style>
-    <script>
-    </script>
-    <script src="{{ asset('js/profile/profile.js') }}">
-    </script>
-    @if($user->role_id == 2)
-        <script>
-            if ($('.tooltip-2').length === 0) {
-                $("<div data-tooltip-target='tooltip-animation_2' class='mx-4 tooltip-2' ><img src='{{ asset("images/best_gray.png") }}'alt='' class='w-24'><div id='tooltip-animation_2' role='tooltip' class='inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700'><p class='text-center'>{{__('Невходит в ТОП-20 всех исполнителей User.uz')}}</p><div class='tooltip-arrow' data-popper-arrow></div> </div></div>").insertAfter($(".tooltip-1"));
-            }
-        </script>
-    @endif
+    <script src="{{ asset('js/profile/profile.js') }}"></script>
     @include('sweetalert::alert')
 @endsection

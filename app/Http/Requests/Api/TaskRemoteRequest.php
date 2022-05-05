@@ -9,7 +9,7 @@ class TaskRemoteRequest extends BaseRequest
     {
         return [
             'task_id' => 'required',
-            'radio' => 'required'
+            'radio' => 'required|in:address,remote'
         ];
     }
 }

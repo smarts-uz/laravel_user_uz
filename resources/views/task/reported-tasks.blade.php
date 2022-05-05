@@ -8,7 +8,6 @@
             <div class="col-md-12">
                 <h1>Незавершенные задания</h1>
 
-
                 <table class="table table-hover table-striped table-bordered">
                     <thead>
                         <tr>

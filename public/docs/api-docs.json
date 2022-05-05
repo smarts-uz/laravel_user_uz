@@ -1181,6 +1181,84 @@
                 ]
             }
         },
+        "\/api\/profile\/portfolio\/create": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Portfolio Create",
+                "operationId": "c316161132765a3101ed0f60d41eb4b0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "comment": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/portfolio\/{portfolio}\/delete": {
+            "post": {
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Delete Portfolio",
+                "operationId": "4beaea32f869fca3ce1ebdd28bea741e",
+                "parameters": [
+                    {
+                        "name": "portfolio",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "\/api\/profile\/reviews": {
             "get": {
                 "tags": [
@@ -1760,6 +1838,96 @@
                         "token": []
                     }
                 ]
+            }
+        },
+        "\/api\/profile\/{id}": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Get Profile By ID",
+                "operationId": "62efd8334f3e8c1a8cab4873f37ff991",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "\/api\/profile\/{user}\/portfolios": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "User Portfolios",
+                "operationId": "661f056cfbfce5a26b547cfce303e0f1",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "\/api\/profile\/{user}\/reviews": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "User Reviews",
+                "operationId": "8388b31fa583afb948fcf3b06da0cad0",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
             }
         },
         "\/api\/ref": {
@@ -2894,49 +3062,6 @@
                 ]
             }
         },
-        "\/api\/create-task\/routing": {
-            "post": {
-                "tags": [
-                    "Task"
-                ],
-                "summary": "Routing",
-                "operationId": "75bde0adcddefe8478e20c8b7daeb051",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart\/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "category_id": {
-                                        "type": "integer"
-                                    },
-                                    "address": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
         "\/api\/create-task\/name": {
             "post": {
                 "tags": [
@@ -2995,6 +3120,15 @@
                                 "properties": {
                                     "task_id": {
                                         "type": "integer"
+                                    },
+                                    "weight": {
+                                        "type": "integer"
+                                    },
+                                    "length": {
+                                        "type": "integer"
+                                    },
+                                    "date_t": {
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -3037,7 +3171,8 @@
                                         "type": "integer"
                                     },
                                     "radio": {
-                                        "type": "boolean"
+                                        "description": "Agar udallonna bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -3129,12 +3264,15 @@
                                         "type": "integer"
                                     },
                                     "date_type": {
+                                        "description": "1 dan 3 gacha bersa bo`ladi",
                                         "type": "integer"
                                     },
                                     "start_date": {
+                                        "description": "2022-06-03 12:00:0 - manashu formatda kiritiladi",
                                         "type": "string"
                                     },
                                     "end_date": {
+                                        "description": "2022-06-03 12:00:0 - manashu formatda kiritiladi",
                                         "type": "string"
                                     }
                                 },
@@ -3273,6 +3411,53 @@
                                     },
                                     "phone_number": {
                                         "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/create-task\/verify": {
+            "post": {
+                "tags": [
+                    "Task Create"
+                ],
+                "summary": "Task create verify",
+                "operationId": "5c30ad02ae60c0326cff97b318c14178",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer"
+                                    },
+                                    "user_id": {
+                                        "type": "integer"
+                                    },
+                                    "sms_otp": {
+                                        "description": "Telefonga kelgan SMS code",
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -3802,49 +3987,6 @@
                         }
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/profile\/portfolio\/create": {
-            "post": {
-                "tags": [
-                    "PorfolioAPI"
-                ],
-                "summary": "Create portfolio",
-                "operationId": "787f52e274cd4ab7479c069f1649ed5e",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart\/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "comment": {
-                                        "type": "string"
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "Successful operation"

@@ -168,11 +168,11 @@
                 <?php
 
                 $array = isset($task) && $task->custom_field_values()->where('custom_field_id', $data->id)->first() ? json_decode($task->custom_field_values()->where('custom_field_id', $data->id)->first()->value, true) : null;
-                if (is_array($array) || is_array($array) && array_key_exists('_token', $array)) {
+                /* if (is_array($array) || is_array($array) && array_key_exists('_token', $array)) {
 
                     $array = end($array);
 
-                }
+                } */
 
 
                 ?>
