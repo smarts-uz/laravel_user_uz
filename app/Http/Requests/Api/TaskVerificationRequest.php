@@ -9,7 +9,7 @@ class TaskVerificationRequest extends BaseRequest
         return [
             'sms_otp' => 'required',
             'task_id' => 'required',
-            'user_id' => 'required'
+            'phone_number' => 'required'
         ];
     }
 
