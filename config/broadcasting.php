@@ -38,8 +38,8 @@ return [
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
 //                'encrypted' => true,
-                'host' => 'user.loc',
-                'port' => 6001,
+                'host' => env('WEBSOCKET_SERVER_HOST', '127.0.0.1'),
+                'port' => env('WEBSOCKET_SERVER_PORT', 6001),
                 'scheme' => 'http',
                 'forceTLS' => false,
                 'disableStats' => true,

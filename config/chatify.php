@@ -38,8 +38,8 @@ return [
         'options' => [
             'cluster' => env('PUSHER_APP_CLUSTER'),
 //            'encrypted' => false,
-            'host' => (string) env('WEBSOCKET_SERVER_HOST'), // 'bidding.uztelecom.uz',
-            'port' => 6001,
+            'host' => (string) env('WEBSOCKET_SERVER_HOST'),
+            'port' => env('WEBSOCKET_SERVER_PORT'),
             'scheme' => 'http',
             'forceTLS' => false,
             'disableStats' => true,

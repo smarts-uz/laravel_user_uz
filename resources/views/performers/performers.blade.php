@@ -79,7 +79,7 @@
                              id="{{$user->id}}">
                             <div class=" float-left">
                                 <img class="rounded-lg w-32 h-32 bg-black mb-4 mr-4"
-                                     @if ($user->avatar === null)src='{{asset("storage/images/default.jpg")}}'
+                                     @if ($user->avatar === null) src='{{asset("storage/images/default.jpg")}}'
                                      @else src="{{asset("storage/{$user->avatar}")}}" @endif alt="avatar">
                                 <div class="flex sm:flex-row items-center text-base">
                                     <p class="text-black ">{{__('Отзывы:')}}</p>
@@ -211,7 +211,7 @@
                                             <a id="open{{$user->id}}">
                                                 <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
                                                 onclick="$('#performer_id').val({{$user->id}});">
-                                                    {{__('Предложить задание')}} 
+                                                    {{__('Предложить задание')}}
                                                 </button>
                                             </a>
                                         @elseif ($tasks->count() > 0 && Auth::user()->id == $user->id)
@@ -347,7 +347,7 @@
     @if($user->role_id == 2)
         <script>
             if ($('.tooltip-2').length === 0) {
-                $("<div data-tooltip-target='tooltip-animation_2' class='mx-4 tooltip-2' ><img src='{{ asset("images/best_gray.png") }}'alt='' class='w-24'><div id='tooltip-animation_2' role='tooltip' class='inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700'><p class='text-center'>{{__('Невходит в ТОП-20 всех исполнителей User.uz')}}</p><div class='tooltip-arrow' data-popper-arrow></div> </div></div>").insertAfter($(".tooltip-1"));     
+                $("<div data-tooltip-target='tooltip-animation_2' class='mx-4 tooltip-2' ><img src='{{ asset("images/best_gray.png") }}'alt='' class='w-24'><div id='tooltip-animation_2' role='tooltip' class='inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700'><p class='text-center'>{{__('Невходит в ТОП-20 всех исполнителей User.uz')}}</p><div class='tooltip-arrow' data-popper-arrow></div> </div></div>").insertAfter($(".tooltip-1"));
             }
         </script>
     @endif
@@ -541,8 +541,8 @@
                 for (let e = 0; e < 5; e++) {
                     $(".stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
                 }
-            }   
-        @endforeach 
+            }
+        @endforeach
     </script>
 @endsection
 

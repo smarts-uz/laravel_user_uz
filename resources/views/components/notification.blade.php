@@ -112,7 +112,7 @@
             // encrypted: true,
 
             wsHost: '{{env('WEBSOCKET_SERVER_HOST')}}',
-            wsPort: 6001,
+            wsPort: {{env('WEBSOCKET_SERVER_PORT', 6001)}},
             forceTLS: false,
             disableStats: true,
         });

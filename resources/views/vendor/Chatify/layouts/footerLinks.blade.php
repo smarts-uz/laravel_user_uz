@@ -7,7 +7,7 @@
         // encrypted: true,
         cluster: '{{env("PUSHER_APP_CLUSTER")}}',
         wsHost: '{{env('WEBSOCKET_SERVER_HOST')}}',
-        wsPort: 6001,
+        wsPort: {{env('WEBSOCKET_SERVER_PORT', 6001)}},
         forceTLS: false,
         disableStats: true,
         authEndpoint: 'http://' + '{{env('WEBSOCKET_SERVER_HOST')}}' +'/chat/pusher/auth',
