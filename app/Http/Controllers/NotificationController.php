@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\NotificationResource;
 use App\Models\Notification;
 use App\Services\NotificationService;
 use App\Services\Response;
@@ -16,7 +17,9 @@ class NotificationController extends VoyagerBaseController
     use Response;
     public function index(Request $request)
     {
-        return $this->success(NotificationService::getNotifications(auth()->user()));
+        return $this->success(
+            NotificationResource::collection(NotificationService::getNotifications(auth()->user()))
+        );
     }
     public function read_notification(Notification $notification)
     {
