@@ -125,7 +125,7 @@
                                         @endif
                                     @endforeach
                                     <div data-tooltip-target="tooltip-animation_3" class="mx-4">
-                                        @if($task_count >= 50)
+                                        @if(($review_good) + ($review_bad) >= 50)
                                             <img src="{{ asset('images/50.png') }}" alt="" class="w-24">
                                         @else
                                             <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-24">
@@ -169,7 +169,7 @@
                     <p>{{$user->description}}</p>
                 </div>
                 <div class="mt-8">
-                    @if (count($portfolios))
+                    @if (count($portfolios) || $user->youtube_link != null)
                         <h1 class="text-xl font-semibold mt-2">{{__('Примеры работ')}}</h1>
                     @endif
                     <div class="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 w-full mx-auto">
@@ -189,6 +189,11 @@
                                 </div>
                             </a>
                         @endforeach
+                    </div>
+                    <div class="my-2">
+                        @if($user->youtube_link != null)
+                            <iframe class="my-4 sm:w-full w-5/6" width="644" height="362" id="iframe" src="{{$user->youtube_link}}" frameborder="0"></iframe>
+                        @endif
                     </div>
                 </div>
                 <div class="my-4">
@@ -323,7 +328,7 @@
     @if($user->role_id == 2)
         <script>
             if ($('.tooltip-2').length === 0) {
-                $("<div data-tooltip-target='tooltip-animation_2' class='mx-4 tooltip-2' ><img src='{{ asset("images/best_gray.png") }}'alt='' class='w-16'><div id='tooltip-animation_2' role='tooltip' class='inline-block  w-2/12 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700'><p class='text-center'>{{__('Невходит в ТОП-20 всех исполнителей User.uz')}}</p><div class='tooltip-arrow' data-popper-arrow></div> </div></div>").insertAfter($(".tooltip-1"));
+                $("<div data-tooltip-target='tooltip-animation_2' class='mx-4 tooltip-2' ><img src='{{ asset("images/best_gray.png") }}'alt='' class='w-24'><div id='tooltip-animation_2' role='tooltip' class='inline-block  w-2/12 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700'><p class='text-center'>{{__('Невходит в ТОП-20 всех исполнителей User.uz')}}</p><div class='tooltip-arrow' data-popper-arrow></div> </div></div>").insertAfter($(".tooltip-1"));
             }
         </script>
     @endif

@@ -42,18 +42,18 @@
                                 {{__('Пройдите по ссылке и активируйте вашу электронную почту.')}}
                             </p>
 
-                            <a class='text-sm sm:text-xl text-gray-800 send-email border-b sent-email border-dotted @if($errors->has('email') || session()->has('email-message')) hidden @endif border-gray-700 cursor-pointer'
+                            <a class='text-sm sm:text-xl text-yellow-500 hover:text-red-600 send-email border-b sent-email border-dotted @if($errors->has('email') || session()->has('email-message')) hidden @endif border-gray-700 cursor-pointer'
                                href="{{route('login.send_email_verification')}}">{{__('Отправить новое письмо для подтверждения почты')}}</a><br>
 
 
-                            <a class='text-sm sm:text-xl text-gray-800 border-b border-dotted border-gray-700 @if($errors->has('email') || session()->has('email-message') ) hidden @endif change-email cursor-pointer'>
+                            <a class='text-sm sm:text-xl text-yellow-500 hover:text-red-600 border-b border-dotted border-gray-700 @if($errors->has('email') || session()->has('email-message') ) hidden @endif change-email cursor-pointer'>
                                 {{__('Указать другую почту')}}</a>
 
                             <form action="{{route('login.change_email')}}" id="send-data-form"
                                   class="@if(!($errors->has('email') || session()->has('email-message')) ) hidden @endif"
                                   method="post">
                                 @csrf
-                                <a class='text-gray-800  border-b sent-email border-dotted border-gray-700 cursor-pointer'
+                                <a class='text-gray-800 hover:text-red-500  border-b sent-email border-dotted border-gray-700 cursor-pointer'
                                    id="cancel-email">{{__('Отмена')}}</a>
                                 <br>
                                 <div class="my-2">
@@ -71,8 +71,8 @@
                                     @enderror
                                 </div>
 
-                                <button class="w-full h-12 rounded-lg bg-green-500 text-gray-200 uppercase
-                        font-semibold hover:bg-green-500 text-gray-100 transition mb-4">
+                                <button class="w-full h-12 rounded-lg bg-yellow-500 text-gray-200 uppercase
+                        font-semibold hover:bg-yellow-500 text-gray-100 transition mb-4">
                                     {{__('Отправить')}}
                                 </button>
                             </form>
@@ -128,12 +128,12 @@
                                     {{__('Отправить новый код для подтверждения телефонный номер')}}
                                 </p>
 
-                                <a class='text-gray-800 send-email border-b sent-email border-dotted @if($errors->has('phone_number') || session()->has('email-message') || !auth()->user()->phone_number)) hidden @endif border-gray-700 cursor-pointer'
+                                <a class='text-yellow-500 send-email border-b hover:text-red-500 sent-email border-dotted @if($errors->has('phone_number') || session()->has('email-message') || !auth()->user()->phone_number)) hidden @endif border-gray-700 cursor-pointer'
                                    href="{{route('login.send_phone_verification')}}">
                                     {{__('Отправить новый код для подтверждения телефонный номер')}}</a><br>
 
 
-                                <a class='text-gray-800 border-b border-dotted border-gray-700 @if($errors->has('phone_number') || session()->has('email-message') || !auth()->user()->phone_number) ) hidden @endif change-email cursor-pointer'>
+                                <a class='text-yellow-500 hover:text-red-500 border-b border-dotted border-gray-700 @if($errors->has('phone_number') || session()->has('email-message') || !auth()->user()->phone_number) ) hidden @endif change-email cursor-pointer'>
                                     {{__('Указать другой телефонный номер')}}</a>
 
 
@@ -141,7 +141,7 @@
                                       class="@if(!($errors->has('phone_number') || session()->has('email-message') || !auth()->user()->phone_number) || session()->has('code') ) hidden @endif"
                                       method="post">
                                     @csrf
-                                    <a class='text-gray-800  border-b sent-email border-dotted border-gray-700 cursor-pointer'
+                                    <a class='text-gray-800 hover:text-red-500 border-b sent-email border-dotted border-gray-700 cursor-pointer'
                                        id="cancel-email">{{__('Отмена')}}</a>
                                     <br>
                                     <div class="my-2">
@@ -160,8 +160,8 @@
                                         @enderror
                                     </div>
 
-                                    <button class="w-full h-12 rounded-lg bg-green-500 text-gray-200 uppercase
-                        font-semibold hover:bg-green-500 text-gray-100 transition mb-4">
+                                    <button class="w-full h-12 rounded-lg bg-yellow-500 text-gray-200 uppercase
+                        font-semibold hover:bg-yellow-500 text-gray-100 transition mb-4">
                                         {{__('Отправить')}}
                                     </button>
                                 </form>
@@ -213,8 +213,8 @@
                                 @error('code')
                                 <p class="text-red-500">{{ $message }}</p>
                                 @enderror
-                                <button class="w-full h-12 rounded-lg bg-green-500 text-gray-200 uppercase
-                        font-semibold hover:bg-green-500 text-gray-100 transition mb-4">
+                                <button class="w-full h-12 rounded-lg bg-yellow-500 text-gray-200 uppercase
+                        font-semibold hover:bg-yellow-500 text-gray-100 transition mb-4">
                                     {{__('Отправить')}}
                                 </button>
 

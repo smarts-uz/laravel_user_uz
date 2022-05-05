@@ -66,7 +66,7 @@ class CreateTaskService
                 'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS)
             ];
         }
-        return ['route' => 'custom', 'task_id' => $task->id, 'steps' => 7, 'custom_fields' => $custom_fields];
+        return ['route' => 'custom', 'task_id' => $task->id, 'steps' => 6, 'custom_fields' => $custom_fields];
     }
 
     public function custom_store($data)
@@ -169,12 +169,8 @@ class CreateTaskService
 
     public function note_store($data)
     {
-        if ($data['docs'] == "on") {
-            $data['docs'] = 1;
-        } else {
-            $data['docs'] = 0;
-        }
         $task = Task::query()->findOrFail($data['task_id']);
+        unset($data['task_id']);
         $task->update($data);
         return $this->get_contact($task);
     }

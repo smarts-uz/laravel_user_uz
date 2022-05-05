@@ -103,7 +103,7 @@
                                     @else
                                         <a class="user mr-2" href="performers/{{$user->id}}">
                                             <p class="lg:text-3xl text-2xl underline text-blue-500 performer-page{{$user->id}} hover:text-red-500"
-                                               id="{{$user->id}}"> {{$user->name}}</p>
+                                               id="{{$user->id}}"> {{$user->name}} </p>
                                         </a>
                                     @endif
                                     <div class="flex items-center sm:my-0 my-2">
@@ -152,7 +152,7 @@
                                                 @endif
                                             @endforeach
                                             <div data-tooltip-target="tooltip-animation_3" class="mx-1">
-                                                @if($user->tasks()->count() >= 50)
+                                                @if(($user->review_good)+($user->review_bad) >= 50)
                                                     <img src="{{ asset('images/50.png') }}" alt="" class="w-10">
                                                 @else
                                                     <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10">
@@ -166,26 +166,26 @@
                                                 </div>
                                             </div>
                                         @else
-                                        <div data-tooltip-target="tooltip-animation_2" class="mx-4 tooltip-2">
-                                            <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
-                                            <div id="tooltip-animation_2" role="tooltip"
-                                                 class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                                <p class="text-center">
-                                                    {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
-                                                </p>
-                                                <div class="tooltip-arrow" data-popper-arrow></div>
+                                            <div data-tooltip-target="tooltip-animation_2" class="mx-4 tooltip-2">
+                                                <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
+                                                <div id="tooltip-animation_2" role="tooltip"
+                                                    class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                    <p class="text-center">
+                                                        {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
+                                                    </p>
+                                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div data-tooltip-target="tooltip-animation_3" class="mx-1">
-                                                <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10">
-                                            <div id="tooltip-animation_3" role="tooltip"
-                                                 class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                                <p class="text-center">
-                                                    {{__('Более 50 выполненных заданий')}}
-                                                </p>
-                                                <div class="tooltip-arrow" data-popper-arrow></div>
+                                            <div data-tooltip-target="tooltip-animation_3" class="mx-1">
+                                                    <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10">
+                                                <div id="tooltip-animation_3" role="tooltip"
+                                                    class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                    <p class="text-center">
+                                                        {{__('Более 50 выполненных заданий')}}
+                                                    </p>
+                                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                                </div>
                                             </div>
-                                        </div>
                                         @endif
                                     </div>
                                 </div>
@@ -207,10 +207,16 @@
                                 </div>
                                 <div class="mt-6">
                                     @auth
-                                        @if($tasks->count() > 0)
+                                        @if($tasks->count() > 0 && Auth::user()->id != $user->id)
                                             <a id="open{{$user->id}}">
                                                 <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
                                                 onclick="$('#performer_id').val({{$user->id}});">
+                                                    {{__('Предложить задание')}} 
+                                                </button>
+                                            </a>
+                                        @elseif ($tasks->count() > 0 && Auth::user()->id == $user->id)
+                                            <a class="hidden lg:block">
+                                                <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
                                                     {{__('Предложить задание')}}</button>
                                             </a>
                                         @else
@@ -308,7 +314,7 @@
 
     {{-- Modal start --}}
     <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
-         id="modal-id12">
+         id="modal-id12"  style="background-color:rgba(0,0,0,0.5)">
         <div class="relative w-auto my-6 mx-auto max-w-3xl" id="modal-id12">
             <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <div class=" text-center p-12  rounded-t">
@@ -338,6 +344,13 @@
     </div>
     <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id12-backdrop"></div>
     </div>
+    @if($user->role_id == 2)
+        <script>
+            if ($('.tooltip-2').length === 0) {
+                $("<div data-tooltip-target='tooltip-animation_2' class='mx-4 tooltip-2' ><img src='{{ asset("images/best_gray.png") }}'alt='' class='w-24'><div id='tooltip-animation_2' role='tooltip' class='inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700'><p class='text-center'>{{__('Невходит в ТОП-20 всех исполнителей User.uz')}}</p><div class='tooltip-arrow' data-popper-arrow></div> </div></div>").insertAfter($(".tooltip-1"));     
+            }
+        </script>
+    @endif
     <script>
         @foreach ($categories as $category)
         $("#{{ str_replace(' ', '', $category->name) }}").click(function () {

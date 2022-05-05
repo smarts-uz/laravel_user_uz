@@ -172,14 +172,12 @@ id="modal-id4">
                           class="resize-none rounded-md w-full focus:outline-none  focus:border-yellow-500 border border-gray-300 p-4  transition duration-200 mb-4"
                           type="text" id="form8" rows="4"
                           name="description"></textarea>
-                    <p id="text1" class="hidden text-lg">
-                        {{__(' Если заказчик захочет с вами связаться, мы автоматически
-                        спишем стоимость контакта с вашего счёта')}}</p>
+                    <p class="text-base">{{__('Сколько вы предлагаете')}}</p>
                     <label>
                         <input type="text"
                                onkeypress='validate(event)'
                                checked name="price"
-                               class="border border-gray-300 rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 my-2">UZS
+                               class="border border-gray-300 rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 mb-2">UZS
                         <input type="text" name="pay"
                                class="pays border rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 my-2 hidden"
                                value="0">
@@ -252,3 +250,13 @@ style="background-color:rgba(0,0,0,0.5)" id="modal-id33">
 @endif
 <div class="hidden  fixed inset-0 z-40 " id="modal-id33-backdrop"></div>
 {{-- zakazchik ispolnitel tanlagandagi modal end--}}
+<div class='modal' id='modal1'>
+    <div class='content'>
+        <img class="w-64 h-64"
+             src="{{asset('images/cash_icon.png')}}"
+             alt="">
+        <h1 class="title">{{__('Пополните баланс')}}</h1>
+        <a class='btn rounded-lg'
+           href="/profile/cash">{{__('Пополнить')}}</a>
+    </div>
+</div>

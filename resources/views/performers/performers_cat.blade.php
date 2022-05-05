@@ -152,7 +152,7 @@
                                             @endif
                                         @endforeach
                                         <div data-tooltip-target="tooltip-animation_3" class="mx-1">
-                                            @if($user->tasks()->count() >= 50)
+                                            @if(($user->review_good)+($user->review_bad) >= 50)
                                                 <img src="{{ asset('images/50.png') }}" alt="" class="w-10">
                                             @else
                                                 <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10">
@@ -207,18 +207,25 @@
                             </div>
                             <div class="mt-6">
                                 @auth
-                                @if($tasks->count() > 0)
-                                    <a id="open{{$user->id}}">
-                                       <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
-                                               onclick="$('#performer_id').val({{$user->id}});">
-                                           {{__('Предложить задание')}}</button>
-                                    </a>
-                                @else
-                                    <a   onclick="toggleModal12('modal-id12')" class="hidden lg:block">
-                                        <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
-                                            {{__('Предложить задание')}}</button>
-                                    </a>
-                                @endif
+                                    @if($tasks->count() > 0 && Auth::user()->id != $user->id)
+                                        <a id="open{{$user->id}}">
+                                            <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
+                                            onclick="$('#performer_id').val({{$user->id}});">
+                                                {{__('Предложить задание')}} 
+                                            </button>
+                                        </a>
+                                    @elseif ($tasks->count() > 0 && Auth::user()->id == $user->id)
+                                        <a class="hidden lg:block">
+                                            <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
+                                                {{__('Предложить задание')}}</button>
+                                        </a>
+                                    @else
+                                        <a onclick="toggleModal12('modal-id12')" class="hidden lg:block">
+                                            <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
+                                                {{__('Предложить задание')}}</button>
+                                        </a>
+                                    @endif
+                                        <input type="hidden" id="performer_id" value="">
                                 @endauth
                             </div>
                         </div>

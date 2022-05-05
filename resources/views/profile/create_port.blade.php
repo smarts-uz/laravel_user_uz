@@ -40,7 +40,7 @@
                         @csrf
                         <div id="photos" class="bg-yellow-50 p-8 rounded-md my-6"></div>
                         <input type="submit"
-                               class="bg-green-500 hover:bg-green-700 text-white py-2 px-10 mb-4 rounded"
+                               class="bg-green-500 hover:bg-green-700 text-white py-2 px-10 mb-4 cursor-pointer rounded"
                                value="{{__('Сохранить')}}">
                     </div>
                 </div>

@@ -184,7 +184,7 @@
                             </div>
 
                             <input name="coordinates0" type="hidden" id="coordinate"
-                                   value="{{ count($addresses) ? '$addresses[0]->latitude,$addresses[0]->longitude':'' }}">
+                                   value="{{ count($addresses) ? $addresses[0]->latitude|$addresses[0]->longitude:'' }}">
 
                         </div>
                         <div>
@@ -300,7 +300,7 @@
                             class="text-2 xl mr-5 bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded-md ">
                         {{__('Сохранить')}}
                     </button>
-                    <a href="{{ route('searchTask.delete_task.get', $task->id) }}"
+                    <a href="{{ route('searchTask.task', $task->id) }}"
                         class="text-xl delete-task text-blue-500 hover:text-red-500 border-b border-dotted border-blue-500 hover:border-red-500">{{__('Отмена')}}</a>
                 </div>
             </div>

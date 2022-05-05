@@ -176,7 +176,7 @@
                                     <p class="text-gray-500">
                                         <b class="ml-4">{{ $value->custom_field->label  }}:</b>
 
-                                        {{ json_decode($value->value)[0]  }}
+                                        {{ json_decode($value->value)  }}
                                     </p>
                                 </div>
                             </div>
@@ -190,7 +190,7 @@
                             <!-- This is an example component -->
                             <div class="w-full text-center">
                                 @auth
-                                    @if(getAuthUserBalance() >= 4000 || $task->responses_count< setting('site.free_responses'))
+                                    @if(getAuthUserBalance() >= 4000)
                                         @if($task->user_id != auth()->id() && $task->status < 3 && !$auth_response)
                                             <button
                                                 class="sm:w-4/5 w-full font-sans text-lg pay font-semibold bg-green-500 text-white hover:bg-green-600 px-8 pt-1 pb-2 mt-6 rounded-lg transition-all duration-300"
@@ -213,35 +213,28 @@
                                                 </span>
                                             </button>
                                         @endif
-                                    @elseif(getAuthUserBalance() < 4000 || $response_count_user >= setting('site.free_responses'))
+                                    @elseif(getAuthUserBalance() < 4000 )
                                         @if($task->user_id != auth()->id() && $task->status < 3 && !$auth_response)
                                             <a class="open-modal"
                                                data-modal="#modal1">
-                                                <button
-                                                    class='w-1/2 font-sans text-lg font-semibold bg-green-500 text-white hover:bg-green-500 px-8 pt-2 pb-3 mt-6 rounded-lg transition-all duration-300 m-2'>
-                                                    {{__('Откликнуться за 4000 UZS')}}
-                                                </button>
+                                               <button
+                                                class="sm:w-4/5 w-full font-sans text-lg pay font-semibold bg-green-500 text-white hover:bg-green-600 px-8 pt-1 pb-2 mt-6 rounded-lg transition-all duration-300">
+                                                {{__('Откликнуться за 4000 UZS')}}<br>
+                                                <span class="text-sm">
+                                                    {{__('и отправить контакты заказчику')}}<br>
+                                                </span>
+                                            </button>
                                             </a>
                                             <a class="open-modal"
                                                data-modal="#modal1">
-                                                <button
-                                                    class='font-sans text-lg font-semibold bg-yellow-500 text-white hover:bg-orange-500 px-8 pt-2 pb-3 mt-6 rounded-lg transition-all duration-300 m-2'>
-                                                    {{__('Откликнуться на задание бесплатно')}}
-                                                </button>
+                                               <button
+                                                class="sm:w-4/5 w-full font-sans text-lg font-semibold bg-yellow-500 text-white hover:bg-yellow-600 px-8 pt-1 pb-2 mt-6 rounded-lg transition-all duration-300">
+                                                {{__('Откликнуться на задание бесплатно')}}<br>
+                                                <span class="text-sm">
+                                                    {{__('отклик - 0 UZS, контакт с заказчиком - 5000 UZS')}}
+                                                </span>
+                                            </button>
                                             </a>
-                                            <div class='modal' id='modal1'>
-                                                <div class='content'>
-                                                    <img class="w-64 h-64"
-                                                         src="{{asset('images/cash_icon.png')}}"
-                                                         alt="">
-                                                    <h1 class="title">{{__('Пополните баланс')}}</h1>
-                                                    <p>
-                                                        {{__('Для отклика на вашем балансе должно быть 4000 UZS. Если заказчик захочет с вами связаться, мы автоматически спишем стоимость контакта с вашего счёта.')}}
-                                                    </p>
-                                                    <a class='btn'
-                                                       href="/profile/cash">{{__('Пополнить')}}</a>
-                                                </div>
-                                            </div>
                                         @endif
                                     @endif
                                 @else
@@ -262,8 +255,7 @@
 
                                         @if($task->status == 3 && $task->user_id == auth()->user()->id)
 
-                                            {{--                                                            <form action="{{ route('task.completed', $task->id) }}" method="post">--}}
-                                            @csrf
+                                            
                                             @if(!$review)
                                                 <button
                                                     id="modal-open-id5"
@@ -271,6 +263,7 @@
                                                     type="submit">
                                                     {{__('Задание выполнено')}}
                                                 </button>
+
                                                 <button
                                                     class="not_done  sm:w-2/5 w-9/12 text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
                                                     type="button">
@@ -303,118 +296,120 @@
                 @if($auth_response)
                     <div class="mt-3">
                         <h1 class="text-3xl font-semibold text-black">{{__('Ваш отклик')}}</h1>
-                        <div class="my-3 flex flex-row">
-                            <div class="">
-                                <img class="w-24 h-24 rounded-lg border-2"
-                                     src='{{ auth()->user()->avatar? asset('storage/'.auth()->user()->avatar) : asset('images/avatar-avtor-image.png') }}'
-                                     alt="avatar">
-                            </div>
-                            <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
-                                @if (Auth::check() && Auth::user()->id == auth()->user()->id)
-                                    <a href="/profile"
-                                        class="text-2xl text-blue-500 hover:text-red-500">
-                                        {{ auth()->user()->name }}
-                                    </a>
-                                @else
-                                    <a href="{{ route('performers.performer', auth()->user()->id) }}"
-                                        class="text-blue-400 text-xl font-semibold hover:text-blue-500">
-                                        {{ auth()->user()->name }}
-                                    </a>
-                                @endif
-                                <input type="text" name="performer_id" class="hidden"
-                                       value="">
-                                    <div class="text-gray-700 sm:mt-4 mt-2">
-                                        <i class="fas fa-star text-yellow-500 mr-1"></i>{{ auth()->user()->review_rating }}
-                                        по {{ auth()->user()->review_good + auth()->user()->review_bad }} отзывам
-                                    </div>
-                            </div>
-                            <div class="flex flex-row items-start">
-                                <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
-                                    <img
-                                        src="{{ auth()->user()->is_email_verified && auth()->user()->is_phone_number_verified? asset('images/verify.png') : asset('images/verify_gray.png')  }}"
-                                        alt="" class="w-10">
-                                    <div id="tooltip-animation_1" role="tooltip"
-                                         class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                        @if (auth()->user()->is_email_verified && auth()->user()->is_phone_number_verified)
-                                            <p class="text-center">
-                                                {{__('Номер телефона и Е-mail пользователя подтверждены')}}
-                                            </p>
-                                        @else
-                                            <p class="text-center">
-                                                {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
-                                            </p>
-                                        @endif
-                                        <div class="tooltip-arrow" data-popper-arrow></div>
-                                    </div>
+                        <div class="border-2 border-gray-400 p-2 rounded-lg my-2">
+                            <div class="my-3 flex flex-row">
+                                <div class="">
+                                    <img class="w-24 h-24 rounded-lg border-2"
+                                        src='{{ auth()->user()->avatar? asset('storage/'.auth()->user()->avatar) : asset('images/avatar-avtor-image.png') }}'
+                                        alt="avatar">
                                 </div>
-                                @if(auth()->user()->role_id == 2)
-                                    @foreach($about as $rating)
-                                        @if($rating->id == $auth_response->performer_id)
-                                            <div data-tooltip-target="tooltip-animation_2" class="mx-1 tooltip-2">
-                                                <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
-                                                <div id="tooltip-animation_2" role="tooltip"
-                                                    class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                                    <p class="text-center">
-                                                        {{__('Входит в ТОП-20 исполнителей User.uz')}}
-                                                    </p>
-                                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
+                                    @if (Auth::check() && Auth::user()->id == auth()->user()->id)
+                                        <a href="/profile"
+                                            class="text-2xl text-blue-500 hover:text-red-500">
+                                            {{ auth()->user()->name }}
+                                        </a>
+                                    @else
+                                        <a href="{{ route('performers.performer', auth()->user()->id) }}"
+                                            class="text-blue-400 text-xl font-semibold hover:text-blue-500">
+                                            {{ auth()->user()->name }}
+                                        </a>
+                                    @endif
+                                    <input type="text" name="performer_id" class="hidden"
+                                        value="">
+                                        <div class="text-gray-700 sm:mt-4 mt-2">
+                                            <i class="fas fa-star text-yellow-500 mr-1"></i>{{ auth()->user()->review_rating }}
+                                            по {{ auth()->user()->review_good + auth()->user()->review_bad }} отзывам
+                                        </div>
+                                </div>
+                                <div class="flex flex-row items-start">
+                                    <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
+                                        <img
+                                            src="{{ auth()->user()->is_email_verified && auth()->user()->is_phone_number_verified? asset('images/verify.png') : asset('images/verify_gray.png')  }}"
+                                            alt="" class="w-10">
+                                        <div id="tooltip-animation_1" role="tooltip"
+                                            class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                            @if (auth()->user()->is_email_verified && auth()->user()->is_phone_number_verified)
+                                                <p class="text-center">
+                                                    {{__('Номер телефона и Е-mail пользователя подтверждены')}}
+                                                </p>
+                                            @else
+                                                <p class="text-center">
+                                                    {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
+                                                </p>
+                                            @endif
+                                            <div class="tooltip-arrow" data-popper-arrow></div>
+                                        </div>
+                                    </div>
+                                    @if(auth()->user()->role_id == 2)
+                                        @foreach($about as $rating)
+                                            @if($rating->id == $auth_response->performer_id)
+                                                <div data-tooltip-target="tooltip-animation_2" class="mx-1 tooltip-2">
+                                                    <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
+                                                    <div id="tooltip-animation_2" role="tooltip"
+                                                        class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                        <p class="text-center">
+                                                            {{__('Входит в ТОП-20 исполнителей User.uz')}}
+                                                        </p>
+                                                        <div class="tooltip-arrow" data-popper-arrow></div>
+                                                    </div>
                                                 </div>
+                                            @endif
+                                        @endforeach
+                                        <div data-tooltip-target="tooltip-animation_3" class="mx-1">
+                                            @if( (auth()->user()->review_good) + (auth()->user()->review_bad) >= 50)
+                                                <img src="{{ asset('images/50.png') }}" alt="" class="w-10 mt-1">
+                                            @else
+                                                <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
+                                            @endif
+                                            <div id="tooltip-animation_3" role="tooltip"
+                                                class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                <p class="text-center">
+                                                    {{__('Более 50 выполненных заданий')}}
+                                                </p>
+                                                <div class="tooltip-arrow" data-popper-arrow></div>
                                             </div>
-                                        @endif
-                                    @endforeach
-                                    <div data-tooltip-target="tooltip-animation_3" class="mx-1">
-                                        @if(auth()->user()->tasks()->count() >= 50)
-                                            <img src="{{ asset('images/50.png') }}" alt="" class="w-10 mt-1">
-                                        @else
+                                        </div>
+                                    @else
+                                        <div data-tooltip-target="tooltip-animation_2" class="mx-1 tooltip-2">
+                                            <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
+                                            <div id="tooltip-animation_2" role="tooltip"
+                                                class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                <p class="text-center">
+                                                    {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
+                                                </p>
+                                                <div class="tooltip-arrow" data-popper-arrow></div>
+                                            </div>
+                                        </div>
+                                        <div data-tooltip-target="tooltip-animation_3" class="mx-1">
                                             <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
-                                        @endif
-                                        <div id="tooltip-animation_3" role="tooltip"
-                                            class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                            <p class="text-center">
-                                                {{__('Более 50 выполненных заданий')}}
-                                            </p>
-                                               <div class="tooltip-arrow" data-popper-arrow></div>
+                                            <div id="tooltip-animation_3" role="tooltip"
+                                                class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                <p class="text-center">
+                                                    {{__('Более 50 выполненных заданий')}}
+                                                </p>
+                                                <div class="tooltip-arrow" data-popper-arrow></div>
+                                            </div>
                                         </div>
-                                    </div>
-                                @else
-                                    <div data-tooltip-target="tooltip-animation_2" class="mx-1 tooltip-2">
-                                        <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
-                                        <div id="tooltip-animation_2" role="tooltip"
-                                            class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                            <p class="text-center">
-                                                {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
-                                            </p>
-                                            <div class="tooltip-arrow" data-popper-arrow></div>
-                                        </div>
-                                    </div>
-                                    <div data-tooltip-target="tooltip-animation_3" class="mx-1">
-                                        <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
-                                        <div id="tooltip-animation_3" role="tooltip"
-                                             class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                            <p class="text-center">
-                                                {{__('Более 50 выполненных заданий')}}
-                                            </p>
-                                            <div class="tooltip-arrow" data-popper-arrow></div>
-                                        </div>
-                                    </div>
-                                @endif
+                                    @endif
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-6">
-                            <div class="bg-gray-100 rounded-[10px] p-4">
-                                <div class="ml-0">
-                                    <div
-                                        class="text-[17px] text-gray-500 font-semibold">{{__('Стоимость')}} {{ number_format($auth_response->price) }}
-                                        UZS
-                                    </div>
+                            <div class="mb-6">
+                                <div class="bg-gray-100 rounded-[10px] p-4">
+                                    <div class="ml-0">
+                                        <div
+                                            class="text-[17px] text-gray-500 font-semibold">{{__('Стоимость')}} {{ number_format($auth_response->price) }}
+                                            UZS
+                                        </div>
 
-                                    <div
-                                        class="text-[17px] text-gray-500 my-5">{{ $auth_response->description }}
-                                    </div>
+                                        <div
+                                            class="text-[17px] text-gray-500 my-5">{{ $auth_response->description }}
+                                        </div>
 
-                                    <div
-                                        class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}}
-                                        +998 {{ auth()->user()->phone_number }}</div>
+                                        <div
+                                            class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}}
+                                            +998 {{ auth()->user()->phone_number }}</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -436,146 +431,148 @@
 
                         @if($selected && $selected->performer)
                             <h1 class="font-semibold text-2xl">{{__('Выбранный исполнитель')}} </h1>
-                            <div class="my-6 flex flex-row">
-                                <div class="">
-                                    <img class="w-24 h-24 rounded-lg border-2"
-                                         @if ($selected->performer->avatar == Null)
-                                         src='{{asset("storage/images/default.jpg")}}'
-                                         @else
-                                         src="{{asset("storage/{$selected->performer->avatar}")}}"
-                                         @endif alt="avatar">
-                                </div>
-                                <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
-                                    @if (Auth::check() && Auth::user()->id == $selected->performer->id)
-                                        <a href="/profile"
-                                        class="text-2xl text-blue-500 hover:text-red-500">
-                                        {{ $selected->performer->name }}
-                                        </a>
-                                    @else
-                                        <a href="/performers/{{$selected->performer->id}}"
-                                            class="text-blue-400 text-xl font-semibold hover:text-blue-500">
+                            <div class="border-2 border-gray-400 p-2 rounded-lg my-2">
+                                <div class="my-6 flex flex-row">
+                                    <div class="">
+                                        <img class="w-24 h-24 rounded-lg border-2"
+                                            @if ($selected->performer->avatar == Null)
+                                            src='{{asset("storage/images/default.jpg")}}'
+                                            @else
+                                            src="{{asset("storage/{$selected->performer->avatar}")}}"
+                                            @endif alt="avatar">
+                                    </div>
+                                    <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
+                                        @if (Auth::check() && Auth::user()->id == $selected->performer->id)
+                                            <a href="/profile"
+                                            class="text-2xl text-blue-500 hover:text-red-500">
                                             {{ $selected->performer->name }}
-                                        </a>
-                                    @endif
-                                    <input type="text" name="performer_id" class="hidden"
-                                           value="{{ $selected->performer_id }}">
-                                    <div class="text-gray-700 sm:mt-4 mt-2">
-                                        <i class="fas fa-star text-yellow-500 mr-1"></i>{{$selected->performer->review_rating}}
-                                        по {{ $selected->performer->review_good + $selected->performer->review_bad }} отзывам
-                                    </div>
-                                </div>
-                                <div class="flex flex-row items-start">
-                                    <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
-                                        <img
-                                            src="{{ $selected->performer->is_email_verified && $selected->performer->is_phone_number_verified? asset('images/verify.png') : asset('images/verify_gray.png')  }}"
-                                            alt="" class="w-10">
-                                        <div id="tooltip-animation_1" role="tooltip"
-                                             class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                            @if ($selected->performer->is_email_verified && $selected->performer->is_phone_number_verified)
-                                                <p class="text-center">
-                                                    {{__('Номер телефона и Е-mail пользователя подтверждены')}}
-                                                </p>
-                                            @else
-                                                <p class="text-center">
-                                                    {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
-                                                </p>
-                                            @endif
-                                            <div class="tooltip-arrow" data-popper-arrow></div>
-                                        </div>
-                                    </div>
-                                    @if($selected->performer->role_id == 2)
-                                        @foreach($about as $rating)
-                                            @if($rating->id == $selected->performer_id)
-                                                <div data-tooltip-target="tooltip-animation_2" class="mx-1 tooltip-2">
-                                                    <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
-                                                    <div id="tooltip-animation_2" role="tooltip"
-                                                        class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                                        <p class="text-center">
-                                                            {{__('Входит в ТОП-20 исполнителей User.uz')}}
-                                                        </p>
-                                                        <div class="tooltip-arrow" data-popper-arrow></div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                        @endforeach
-                                        <div data-tooltip-target="tooltip-animation_3" class="mx-1">
-                                            @if($selected->performer->tasks()->count() >= 50)
-                                                <img src="{{ asset('images/50.png') }}" alt="" class="w-10 mt-1">
-                                            @else
-                                                <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
-                                            @endif
-                                            <div id="tooltip-animation_3" role="tooltip"
-                                                class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                                <p class="text-center">
-                                                    {{__('Более 50 выполненных заданий')}}
-                                                </p>
-                                                   <div class="tooltip-arrow" data-popper-arrow></div>
-                                            </div>
-                                        </div>
-                                    @else
-                                        <div data-tooltip-target="tooltip-animation_2" class="mx-1 tooltip-2">
-                                            <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
-                                            <div id="tooltip-animation_2" role="tooltip"
-                                                class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                                <p class="text-center">
-                                                    {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
-                                                </p>
-                                                <div class="tooltip-arrow" data-popper-arrow></div>
-                                            </div>
-                                        </div>
-                                        <div data-tooltip-target="tooltip-animation_3" class="mx-1">
-                                            <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
-                                            <div id="tooltip-animation_3" role="tooltip"
-                                                 class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                                <p class="text-center">
-                                                    {{__('Более 50 выполненных заданий')}}
-                                                </p>
-                                                <div class="tooltip-arrow" data-popper-arrow></div>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="mb-6">
-                                <div class="bg-gray-100 rounded-[10px] p-4">
-                                    <div class="ml-0">
-                                        <div
-                                            class="text-[17px] text-gray-500 font-semibold">{{__('Стоимость')}} {{$selected->price}}
-                                            UZS
-                                        </div>
-
-                                        <div
-                                            class="text-[17px] text-gray-500 my-5">{{$selected->description}}</div>
-                                        
-
-                                        @if($selected->not_free == 1 || $task->user_id == auth()->id())
-                                            <div
-                                                class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} +998 {{$selected->performer->phone_number}}</div>
+                                            </a>
+                                        @else
+                                            <a href="/performers/{{$selected->performer->id}}"
+                                                class="text-blue-400 text-xl font-semibold hover:text-blue-500">
+                                                {{ $selected->performer->name }}
+                                            </a>
                                         @endif
-
-
-                                        @auth()
-                                            @if($task->status == 3 && $selected->performer_id == $task->performer_id)
-                                                <div class="w-10/12 mx-auto">
-                                                    <a href="{{ url('/chat/' . $selected->performer->id) }}"
-                                                       class="text-semibold text-center w-[200px] mb-2 md:w-[320px] ml-0 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
-                                                        {{__('Написать в чат')}}
-                                                    </a>
-
+                                        <input type="text" name="performer_id" class="hidden"
+                                            value="{{ $selected->performer_id }}">
+                                        <div class="text-gray-700 sm:mt-4 mt-2">
+                                            <i class="fas fa-star text-yellow-500 mr-1"></i>{{$selected->performer->review_rating}}
+                                            по {{ $selected->performer->review_good + $selected->performer->review_bad }} отзывам
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-row items-start">
+                                        <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
+                                            <img
+                                                src="{{ $selected->performer->is_email_verified && $selected->performer->is_phone_number_verified? asset('images/verify.png') : asset('images/verify_gray.png')  }}"
+                                                alt="" class="w-10">
+                                            <div id="tooltip-animation_1" role="tooltip"
+                                                class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                @if ($selected->performer->is_email_verified && $selected->performer->is_phone_number_verified)
+                                                    <p class="text-center">
+                                                        {{__('Номер телефона и Е-mail пользователя подтверждены')}}
+                                                    </p>
+                                                @else
+                                                    <p class="text-center">
+                                                        {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
+                                                    </p>
+                                                @endif
+                                                <div class="tooltip-arrow" data-popper-arrow></div>
+                                            </div>
+                                        </div>
+                                        @if($selected->performer->role_id == 2)
+                                            @foreach($about as $rating)
+                                                @if($rating->id == $selected->performer_id)
+                                                    <div data-tooltip-target="tooltip-animation_2" class="mx-1 tooltip-2">
+                                                        <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
+                                                        <div id="tooltip-animation_2" role="tooltip"
+                                                            class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                            <p class="text-center">
+                                                                {{__('Входит в ТОП-20 исполнителей User.uz')}}
+                                                            </p>
+                                                            <div class="tooltip-arrow" data-popper-arrow></div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            @endforeach
+                                            <div data-tooltip-target="tooltip-animation_3" class="mx-1">
+                                                @if( ($selected->performer->review_good) + ($selected->performer->review_bad) >= 50)
+                                                    <img src="{{ asset('images/50.png') }}" alt="" class="w-10 mt-1">
+                                                @else
+                                                    <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
+                                                @endif
+                                                <div id="tooltip-animation_3" role="tooltip"
+                                                    class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                    <p class="text-center">
+                                                        {{__('Более 50 выполненных заданий')}}
+                                                    </p>
+                                                    <div class="tooltip-arrow" data-popper-arrow></div>
                                                 </div>
-                                            @elseif($task->status <= 2 && auth()->user()->id == $task->user_id)
-                                                <form
-                                                    action="{{ route('response.selectPerformer', $selected->id) }}"
-                                                    method="post">
-                                                    @csrf
-                                                    <button type="submit" class="cursor-pointer text-semibold text-center w-[200px] md:w-[320px] md:ml-4 inline-block py-3 px-4 bg-white transition duration-200 text-white bg-green-500 hover:bg-green-500 font-medium border border-transparent rounded-md"> {{__('Выбрать исполнителем')}}</button>
-                                                </form>
+                                            </div>
+                                        @else
+                                            <div data-tooltip-target="tooltip-animation_2" class="mx-1 tooltip-2">
+                                                <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
+                                                <div id="tooltip-animation_2" role="tooltip"
+                                                    class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                    <p class="text-center">
+                                                        {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
+                                                    </p>
+                                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                                </div>
+                                            </div>
+                                            <div data-tooltip-target="tooltip-animation_3" class="mx-1">
+                                                <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
+                                                <div id="tooltip-animation_3" role="tooltip"
+                                                    class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                    <p class="text-center">
+                                                        {{__('Более 50 выполненных заданий')}}
+                                                    </p>
+                                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="mb-6">
+                                    <div class="bg-gray-100 rounded-[10px] p-4">
+                                        <div class="ml-0">
+                                            <div
+                                                class="text-[17px] text-gray-500 font-semibold">{{__('Стоимость')}} {{$selected->price}}
+                                                UZS
+                                            </div>
+
+                                            <div
+                                                class="text-[17px] text-gray-500 my-5">{{$selected->description}}</div>
+                                            
+
+                                            @if($selected->not_free == 1 || $task->user_id == auth()->id())
+                                                <div
+                                                    class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} +998 {{$selected->performer->phone_number}}</div>
                                             @endif
 
-                                        @endauth
 
-                                        <div class="text-gray-400 text-[14px] my-6">
-                                            {{__('Выберите исполнителя, чтобы потом оставить отзыв о работе.')}}
+                                            @auth()
+                                                @if($task->status == 3 && $selected->performer_id == $task->performer_id)
+                                                    <div class="w-10/12 mx-auto">
+                                                        <a href="{{ url('/chat/' . $selected->performer->id) }}"
+                                                        class="text-semibold text-center w-[200px] mb-2 md:w-[320px] ml-0 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
+                                                            {{__('Написать в чат')}}
+                                                        </a>
+
+                                                    </div>
+                                                @elseif($task->status <= 2 && auth()->user()->id == $task->user_id)
+                                                    <form
+                                                        action="{{ route('response.selectPerformer', $selected->id) }}"
+                                                        method="post">
+                                                        @csrf
+                                                        <button type="submit" class="cursor-pointer text-semibold text-center w-[200px] md:w-[320px] md:ml-4 inline-block py-3 px-4 bg-white transition duration-200 text-white bg-green-500 hover:bg-green-500 font-medium border border-transparent rounded-md"> {{__('Выбрать исполнителем')}}</button>
+                                                    </form>
+                                                @endif
+
+                                            @endauth
+
+                                            <div class="text-gray-400 text-[14px] my-6">
+                                                {{__('Выберите исполнителя, чтобы потом оставить отзыв о работе.')}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -585,6 +582,7 @@
 
                         @foreach ($responses as $response)
                             @if($response->performer)
+                            <div class="border-2 border-gray-400 p-2 rounded-lg my-2">
                                 <div class="my-6 flex flex-row">
                                     <div class="">
                                         <img class="w-24 h-24 rounded-lg border-2"
@@ -647,7 +645,7 @@
                                                 @endif
                                             @endforeach
                                             <div data-tooltip-target="tooltip-animation_3" class="mx-1">
-                                                @if($response->performer->tasks()->count() >= 50)
+                                                @if( ($response->performer->review_good) + ($response->performer->review_bad) >= 50)
                                                     <img src="{{ asset('images/50.png') }}" alt="" class="w-10 mt-1">
                                                 @else
                                                     <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
@@ -731,6 +729,7 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                             @endif
                         @endforeach
 
@@ -970,6 +969,5 @@
             @endif
         @endforeach
     </div>
-
 @endsection
 

@@ -73,6 +73,44 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/profile/portfolio/create",
+     *     tags={"Profile"},
+     *     summary="Portfolio Create",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="comment",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="description",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function portfolioCreate(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -104,6 +142,36 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/profile/portfolio/{portfolio}/delete",
+     *     tags={"Search"},
+     *     summary="Delete Portfolio",
+     *     @OA\Parameter(
+     *          in="path",
+     *          name="portfolio",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
+     *     ),
+     *     @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function portfolioDelete(Portfolio $portfolio)
     {
         portfolioGuard($portfolio);
@@ -1038,6 +1106,33 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/profile/{id}",
+     *     tags={"Profile"},
+     *     summary="Get Profile By ID",
+     *     @OA\Parameter(
+     *          in="path",
+     *          name="id",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
+     *     ),
+     *     @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     )
+     * )
+     */
     public function userProfile($id)
     {
         $user = User::query()->find($id);
@@ -1047,6 +1142,33 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/profile/{user}/portfolios",
+     *     tags={"Profile"},
+     *     summary="User Portfolios",
+     *     @OA\Parameter(
+     *          in="path",
+     *          name="user",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
+     *     ),
+     *     @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     )
+     * )
+     */
     public function userPortfolios(User $user)
     {
         return response()->json([
@@ -1055,6 +1177,33 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/profile/{user}/reviews",
+     *     tags={"Profile"},
+     *     summary="User Reviews",
+     *     @OA\Parameter(
+     *          in="path",
+     *          name="user",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
+     *     ),
+     *     @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     )
+     * )
+     */
     public function userReviews(Request $request, User $user)
     {
         if ($request->get('performer') == 1) {
