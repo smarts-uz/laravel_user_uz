@@ -95,6 +95,7 @@ Route::get('task/{task}/map', [TaskAPIController::class, 'task_map'])->name('tas
 #region chat
 Route::group(['prefix' => 'chat'], function (){
     Route::get('/getContacts', [MessagesController::class, 'getContacts'])->name('contacts.get');
+    Route::get('/search', [MessagesController::class, 'search'])->name('search');
     Route::post('/favorites', [MessagesController::class, 'getFavorites'])->name('favorites');
     Route::post('/idInfo', [MessagesController::class,'idFetchData']);
     Route::post('/shared', [MessagesController::class, 'sharedPhotos'])->name('shared');

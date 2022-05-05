@@ -205,7 +205,6 @@ class ChatifyMessenger
     public function getContactItem($user){
         // get last message
         $lastMessage = $this->getLastMessageQuery($user->id);
-
         // Get Unseen messages counter
         $unseenCounter = $this->countUnseenMessages($user->id);
 

@@ -20,6 +20,7 @@
 {{-- -------------------- All users/group list -------------------- --}}
 @if($get == 'users')
 <table class="messenger-list-item" data-contact="{{ $user->id }}">
+    @if($lastMessage != null)
     <tr data-action="0">
         {{-- Avatar side --}}
         <td style="position: relative">
@@ -58,6 +59,34 @@
         </td>
 
     </tr>
+    @else
+    <tr data-action="0">
+        {{-- Avatar side --}}
+        <td style="position: relative">
+            @if($user->active_status)
+                <span class="activeStatus"></span>
+            @endif
+        <div class="avatar av-m"
+        style="background-image: url('{{ asset('/storage/'.config('chatify.user_avatar.folder').'/'.$user->avatar) }}');">
+        </div>
+        </td>
+        {{-- center side --}}
+        <td>
+        <p data-id="{{ $user->id }}" data-type="user">
+        {{ strlen($user->name) > 12 ? trim(substr($user->name,0,12)).'..' : $user->name }}
+            <span>asda</span></p>
+        <span>
+            {{-- Last Message user indicator --}}
+        
+            {{-- Last message body --}}
+            
+        </span>
+        {{-- New messages counter --}}
+            {!! $unseenCounter > 0 ? "<b>".$unseenCounter."</b>" : '' !!}
+        </td>
+
+    </tr>
+    @endif
 </table>
 @endif
 

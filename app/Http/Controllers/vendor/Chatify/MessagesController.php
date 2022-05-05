@@ -268,6 +268,13 @@ class MessagesController extends Controller
                 $userIdsList[] = $message['from_id'];
             }
         }
+        foreach (User::query()
+                     ->whereIn('role_id', [1, 6])
+                     ->whereNotIn('id', $userIdsList)
+                     ->distinct()->pluck('id') as $moderator_id) {
+            $userIdsList[] = $moderator_id;
+        }
+
         $userIdsList = array_unique($userIdsList);
         if (($key = array_search($authUser->id, $userIdsList)) !== false) {
             unset($userIdsList[$key]);
@@ -377,6 +384,7 @@ class MessagesController extends Controller
         $input = trim(filter_var($request['input'], FILTER_SANITIZE_STRING));
         $records = User::where('id', '!=', Auth::user()->id)
             ->where('name', 'LIKE', "%{$input}%")
+//            ->where('role_id', 6)
             ->paginate($request->per_page ?? $this->perPage);
         foreach ($records->items() as $record) {
             $getRecords .= view('Chatify::layouts.listItem', [

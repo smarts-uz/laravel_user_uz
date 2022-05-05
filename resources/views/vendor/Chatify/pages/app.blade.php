@@ -18,8 +18,8 @@
             <div class="messenger-listView-tabs">
                 <a  @if($type == 'user') class="active-tab" @endif data-view="users">
                     <span class="far fa-user"></span> People</a>
-                <a  @if($type == 'group') class="active-tab" @endif data-view="groups">
-                    <span class="fas fa-users"></span> Groups</a>
+{{--                <a  @if($type == 'group') class="active-tab" @endif data-view="groups">--}}
+{{--                    <span class="fas fa-users"></span> Groups</a>--}}
             </div>
         </div>
         {{-- tabs and lists --}}
@@ -35,7 +35,7 @@
                </div>
 
                {{-- Saved Messages --}}
-               {!! view('Chatify::layouts.listItem', ['get' => 'saved']) !!}
+{{--               {!! view('Chatify::layouts.listItem', ['get' => 'saved']) !!}--}}
 
                {{-- Contact --}}
                <div class="listOfContacts" style="width: 100%;height: calc(100% - 200px);position: relative;"></div>
@@ -43,15 +43,15 @@
            </div>
 
            {{-- ---------------- [ Group Tab ] ---------------- --}}
-           <div class="@if($type == 'group') show @endif messenger-tab groups-tab app-scroll" data-view="groups">
-                {{-- items --}}
-                <p style="text-align: center;color:grey;margin-top:30px">
-                    <a target="_blank" style="color:{{$messengerColor}};" href="https://chatify.munafio.com/notes#groups-feature">Click here</a> for more info!
-                </p>
-             </div>
+{{--           <div class="@if($type == 'group') show @endif messenger-tab groups-tab app-scroll" data-view="groups">--}}
+{{--                --}}{{-- items --}}
+{{--                <p style="text-align: center;color:grey;margin-top:30px">--}}
+{{--                    <a target="_blank" style="color:{{$messengerColor}};" href="https://chatify.munafio.com/notes#groups-feature">Click here</a> for more info!--}}
+{{--                </p>--}}
+{{--             </div>--}}
 
              {{-- ---------------- [ Search Tab ] ---------------- --}}
-           <div class="messenger-tab search-tab app-scroll"app-scroll" data-view="search">
+           <div class="messenger-tab search-tab app-scroll" data-view="search">
                 {{-- items --}}
                 <p class="messenger-title">Search</p>
                 <div class="search-records">
