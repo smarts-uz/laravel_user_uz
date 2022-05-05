@@ -103,7 +103,7 @@
                                     @else
                                         <a class="user mr-2" href="performers/{{$user->id}}">
                                             <p class="lg:text-3xl text-2xl underline text-blue-500 performer-page{{$user->id}} hover:text-red-500"
-                                               id="{{$user->id}}"> {{$user->name}}</p>
+                                               id="{{$user->id}}"> {{$user->name}} </p>
                                         </a>
                                     @endif
                                     <div class="flex items-center sm:my-0 my-2">
@@ -207,10 +207,16 @@
                                 </div>
                                 <div class="mt-6">
                                     @auth
-                                        @if($tasks->count() > 0)
+                                        @if($tasks->count() > 0 && Auth::user()->id != $user->id)
                                             <a id="open{{$user->id}}">
                                                 <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
                                                 onclick="$('#performer_id').val({{$user->id}});">
+                                                    {{__('Предложить задание')}} 
+                                                </button>
+                                            </a>
+                                        @elseif ($tasks->count() > 0 && Auth::user()->id == $user->id)
+                                            <a class="hidden lg:block">
+                                                <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
                                                     {{__('Предложить задание')}}</button>
                                             </a>
                                         @else
@@ -308,7 +314,7 @@
 
     {{-- Modal start --}}
     <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
-         id="modal-id12">
+         id="modal-id12"  style="background-color:rgba(0,0,0,0.5)">
         <div class="relative w-auto my-6 mx-auto max-w-3xl" id="modal-id12">
             <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <div class=" text-center p-12  rounded-t">

@@ -97,7 +97,7 @@ class PerformersController extends Controller
             $users_id = $request->session()->pull('given_id');
             $performer = User::query()->find($users_id);
             $tesk_url = route("searchTask.task",$task_id);
-            $text = "Заказчик предложил вам новую задания $tesk_url." /* Контакт заказчика:  . $task_name->user->name . $task_name->user->phone_number */;
+            $text = "Заказчик предложил вам новую задания $tesk_url. Имя заказчика: " . $task_name->user->name;
             (new SmsService())->send($performer->phone_number, $text);
             Notification::create([
                 'user_id' => $task_name->user_id,
