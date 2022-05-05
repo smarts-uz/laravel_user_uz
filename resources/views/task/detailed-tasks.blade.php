@@ -176,7 +176,7 @@
                                     <p class="text-gray-500">
                                         <b class="ml-4">{{ $value->custom_field->label  }}:</b>
 
-                                        {{ json_decode($value->value)[0]  }}
+                                        {{ json_decode($value->value)  }}
                                     </p>
                                 </div>
                             </div>
