@@ -55,8 +55,8 @@ class CreateService
             $coordinates = Arr::get($request->all(), 'coordinates' . $i);
             if ($coordinates) {
                 $data_inner['location'] = $location;
-                $data_inner['longitude'] = explode(',', $coordinates[1]);
-                $data_inner['latitude'] = explode(',', $coordinates[0]);
+                $data_inner['longitude'] = explode(',', $coordinates)[1];
+                $data_inner['latitude'] = explode(',', $coordinates)[0];
                 $data_inner['task_id'] = $task->id;
                 Address::create($data_inner);
             }
