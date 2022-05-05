@@ -190,7 +190,7 @@
                             <!-- This is an example component -->
                             <div class="w-full text-center">
                                 @auth
-                                    @if(getAuthUserBalance() >= 4000 || $task->responses_count< setting('site.free_responses'))
+                                    @if(getAuthUserBalance() >= 4000)
                                         @if($task->user_id != auth()->id() && $task->status < 3 && !$auth_response)
                                             <button
                                                 class="sm:w-4/5 w-full font-sans text-lg pay font-semibold bg-green-500 text-white hover:bg-green-600 px-8 pt-1 pb-2 mt-6 rounded-lg transition-all duration-300"
@@ -213,35 +213,28 @@
                                                 </span>
                                             </button>
                                         @endif
-                                    @elseif(getAuthUserBalance() < 4000 || $response_count_user >= setting('site.free_responses'))
+                                    @elseif(getAuthUserBalance() < 4000 )
                                         @if($task->user_id != auth()->id() && $task->status < 3 && !$auth_response)
                                             <a class="open-modal"
                                                data-modal="#modal1">
-                                                <button
-                                                    class='w-1/2 font-sans text-lg font-semibold bg-green-500 text-white hover:bg-green-500 px-8 pt-2 pb-3 mt-6 rounded-lg transition-all duration-300 m-2'>
-                                                    {{__('Откликнуться за 4000 UZS')}}
-                                                </button>
+                                               <button
+                                                class="sm:w-4/5 w-full font-sans text-lg pay font-semibold bg-green-500 text-white hover:bg-green-600 px-8 pt-1 pb-2 mt-6 rounded-lg transition-all duration-300">
+                                                {{__('Откликнуться за 4000 UZS')}}<br>
+                                                <span class="text-sm">
+                                                    {{__('и отправить контакты заказчику')}}<br>
+                                                </span>
+                                            </button>
                                             </a>
                                             <a class="open-modal"
                                                data-modal="#modal1">
-                                                <button
-                                                    class='font-sans text-lg font-semibold bg-yellow-500 text-white hover:bg-orange-500 px-8 pt-2 pb-3 mt-6 rounded-lg transition-all duration-300 m-2'>
-                                                    {{__('Откликнуться на задание бесплатно')}}
-                                                </button>
+                                               <button
+                                                class="sm:w-4/5 w-full font-sans text-lg font-semibold bg-yellow-500 text-white hover:bg-yellow-600 px-8 pt-1 pb-2 mt-6 rounded-lg transition-all duration-300">
+                                                {{__('Откликнуться на задание бесплатно')}}<br>
+                                                <span class="text-sm">
+                                                    {{__('отклик - 0 UZS, контакт с заказчиком - 5000 UZS')}}
+                                                </span>
+                                            </button>
                                             </a>
-                                            <div class='modal' id='modal1'>
-                                                <div class='content'>
-                                                    <img class="w-64 h-64"
-                                                         src="{{asset('images/cash_icon.png')}}"
-                                                         alt="">
-                                                    <h1 class="title">{{__('Пополните баланс')}}</h1>
-                                                    <p>
-                                                        {{__('Для отклика на вашем балансе должно быть 4000 UZS. Если заказчик захочет с вами связаться, мы автоматически спишем стоимость контакта с вашего счёта.')}}
-                                                    </p>
-                                                    <a class='btn'
-                                                       href="/profile/cash">{{__('Пополнить')}}</a>
-                                                </div>
-                                            </div>
                                         @endif
                                     @endif
                                 @else

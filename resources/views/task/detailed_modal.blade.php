@@ -250,3 +250,13 @@ style="background-color:rgba(0,0,0,0.5)" id="modal-id33">
 @endif
 <div class="hidden  fixed inset-0 z-40 " id="modal-id33-backdrop"></div>
 {{-- zakazchik ispolnitel tanlagandagi modal end--}}
+<div class='modal' id='modal1'>
+    <div class='content'>
+        <img class="w-64 h-64"
+             src="{{asset('images/cash_icon.png')}}"
+             alt="">
+        <h1 class="title">{{__('Пополните баланс')}}</h1>
+        <a class='btn rounded-lg'
+           href="/profile/cash">{{__('Пополнить')}}</a>
+    </div>
+</div>
