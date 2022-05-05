@@ -38,7 +38,7 @@ Route::middleware('custom.auth:api')->group(function () {
 
     Route::post('task/create', [TaskAPIController::class, 'create']);
     Route::post('create-task/name', [TaskAPIController::class, 'name']); //end +
-    Route::post('create-task/custom', [TaskAPIController::class, 'custom']);
+    Route::post('create-task/custom', [TaskAPIController::class, 'custom']); //end +
     Route::post('create-task/remote', [TaskAPIController::class, 'remote']); //end +
     Route::post('create-task/address', [TaskAPIController::class, 'address']);
     Route::post('create-task/date', [TaskAPIController::class, 'date']); //end +
@@ -81,12 +81,12 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::prefix('/profile')->group(function () {
         // Profile
         Route::get('/', [ProfileAPIController::class, 'index']); //end +
-        Route::get('/portfolios', [ProfileAPIController::class, 'portfolios']); //end
-        Route::post('/portfolio/create', [ProfileAPIController::class, 'portfolioCreate']);
-        Route::post('/portfolio/{portfolio}/update', [ProfileAPIController::class, 'portfolioUpdate']);
-        Route::post('/portfolio/{portfolio}/delete', [ProfileAPIController::class, 'portfolioDelete']);
-        Route::get('/reviews', [ProfileAPIController::class, 'reviews']); //end
-        Route::get('/balance', [ProfileAPIController::class, 'balance']); //end
+        Route::get('/portfolios', [ProfileAPIController::class, 'portfolios']); //end +
+        Route::post('/portfolio/create', [ProfileAPIController::class, 'portfolioCreate']); //end +
+        Route::post('/portfolio/{portfolio}/update', [ProfileAPIController::class, 'portfolioUpdate']); 
+        Route::post('/portfolio/{portfolio}/delete', [ProfileAPIController::class, 'portfolioDelete']); //end +
+        Route::get('/reviews', [ProfileAPIController::class, 'reviews']); //end  +
+        Route::get('/balance', [ProfileAPIController::class, 'balance']); //end +
         Route::get('/description', [ProfileAPIController::class, 'description']); //end +
         Route::post('/description/edit', [ProfileAPIController::class, 'editDesctiption']); //end +
         Route::post('/payment', [ProfileAPIController::class, 'payment']);
@@ -102,9 +102,9 @@ Route::middleware('custom.auth:api')->group(function () {
         });
     });
 });
-Route::get('/profile/{id}', [ProfileAPIController::class, 'userProfile']);
-Route::get('/profile/{user}/portfolios', [ProfileAPIController::class, 'userPortfolios']);
-Route::get('/profile/{user}/reviews', [ProfileAPIController::class, 'userReviews']);
+Route::get('/profile/{id}', [ProfileAPIController::class, 'userProfile']); //end +
+Route::get('/profile/{user}/portfolios', [ProfileAPIController::class, 'userPortfolios']); //end +
+Route::get('/profile/{user}/reviews', [ProfileAPIController::class, 'userReviews']); //end +
 
 
 //User Routes

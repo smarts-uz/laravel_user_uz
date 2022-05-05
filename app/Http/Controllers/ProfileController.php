@@ -91,7 +91,6 @@ class ProfileController extends Controller
             'portfolios' => $item->portfolios,
             'review_good' => $item->review_good,
             'review_bad' =>$item->review_bad,
-            'task_count' => $item->task_count,
             'views' => $item->views,
             'ports' => $item->ports,
             'task' => $item->task,
@@ -109,7 +108,6 @@ class ProfileController extends Controller
         $item = $service->profileCash( $user);
         return view('profile.cash',
         [
-            'task_count' => $item->task_count,
             'views' => $item->views,
             'balance' => $item->balance,
             'task' => $item->task,
@@ -308,6 +306,12 @@ class ProfileController extends Controller
     {
         $user = User::find(auth()->user()->id);
         $user->youtube_link = str_replace('watch?v=','embed/',$request->youtube_link);
+        $user->save();
+        return redirect()->back();
+    }
+    public function youtube_link_delete(){
+        $user = User::find(auth()->user()->id);
+        $user->youtube_link = null;
         $user->save();
         return redirect()->back();
     }

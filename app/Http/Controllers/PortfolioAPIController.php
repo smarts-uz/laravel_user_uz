@@ -118,44 +118,7 @@ class PortfolioAPIController extends Controller
     }
 
 
-    /**
-     * @OA\Post(
-     *     path="/api/profile/portfolio/create",
-     *     tags={"PorfolioAPI"},
-     *     summary="Create portfolio",
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="comment",
-     *                    type="string",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="description",
-     *                    type="string",
-     *                 ),
-     *             ),
-     *         ),
-     *     ),
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
+    
     public function createPortfolio(PortfolioRequest $request)
     {
         $data = $request->validated();

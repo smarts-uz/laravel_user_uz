@@ -172,14 +172,12 @@ id="modal-id4">
                           class="resize-none rounded-md w-full focus:outline-none  focus:border-yellow-500 border border-gray-300 p-4  transition duration-200 mb-4"
                           type="text" id="form8" rows="4"
                           name="description"></textarea>
-                    <p id="text1" class="hidden text-lg">
-                        {{__(' Если заказчик захочет с вами связаться, мы автоматически
-                        спишем стоимость контакта с вашего счёта')}}</p>
+                    <p class="text-base">{{__('Сколько вы предлагаете')}}</p>
                     <label>
                         <input type="text"
                                onkeypress='validate(event)'
                                checked name="price"
-                               class="border border-gray-300 rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 my-2">UZS
+                               class="border border-gray-300 rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 mb-2">UZS
                         <input type="text" name="pay"
                                class="pays border rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 my-2 hidden"
                                value="0">
