@@ -8,7 +8,8 @@ class TaskBudgetRequest extends BaseRequest
     {
         return [
             'task_id' => 'required|numeric',
-            'amount' => 'required|numeric'
+            'amount' => 'required|numeric',
+            'budget_type' => 'required|numeric'
         ];
     }
 }

@@ -156,6 +156,7 @@ class CreateTaskService
     {
         $task = Task::query()->findOrFail($data['task_id']);
         $task->budget = $data['amount'];
+        $task->oplata = $data['budget_type'];
         $task->save();
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET);
         return $this->get_note($task);

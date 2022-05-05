@@ -9,7 +9,6 @@ class TaskNoteRequest extends BaseRequest
         return [
             'task_id' => 'required',
             'description' => 'required|string',
-            'oplata' => 'required',
             'docs' => ''
         ];
     }

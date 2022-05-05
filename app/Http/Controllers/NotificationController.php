@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Notification;
 use App\Services\NotificationService;
+use App\Services\Response;
 use Illuminate\Http\Request;
 use TCG\Voyager\Events\BreadDataAdded;
 use TCG\Voyager\Facades\Voyager;
@@ -12,7 +13,11 @@ use function Symfony\Component\Translation\t;
 
 class NotificationController extends VoyagerBaseController
 {
-
+    use Response;
+    public function index(Request $request)
+    {
+        return $this->success(NotificationService::getNotifications(auth()->user()));
+    }
     public function read_notification(Notification $notification)
     {
 //        $notification->is_read = 1;
