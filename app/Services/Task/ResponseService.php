@@ -32,7 +32,7 @@ class ResponseService
         $data['performer_id'] = auth()->user()->id;
         $ballance = WalletBalance::where('user_id', auth()->user()->id)->first();
         if ($ballance) {
-            if ($ballance->balance < 4000) {
+            if ($ballance->balance < setting('admin.pullik_otklik')) {
                 $success = false;
                 $message = __('not_enough_balance');
             }else if($task->responses()->where('performer_id', auth()->user()->id)->first()){

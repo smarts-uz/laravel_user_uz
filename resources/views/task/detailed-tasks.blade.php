@@ -190,14 +190,14 @@
                             <!-- This is an example component -->
                             <div class="w-full text-center">
                                 @auth
-                                    @if(getAuthUserBalance() >= 4000)
+                                    @if(getAuthUserBalance() >= setting('admin.pullik_otklik'))
                                         @if($task->user_id != auth()->id() && $task->status < 3 && !$auth_response)
                                             <button
                                                 class="sm:w-4/5 w-full font-sans text-lg pay font-semibold bg-green-500 text-white hover:bg-green-600 px-8 pt-1 pb-2 mt-6 rounded-lg transition-all duration-300"
                                                 id="btn1"
                                                 type="button"
                                                 data-modal-toggle="authentication-modal">
-                                                {{__('Откликнуться за 4000 UZS')}}<br>
+                                                {{__('Откликнуться за ')}} {{setting('admin.pullik_otklik')}} UZS<br>
                                                 <span class="text-sm">
                                                     {{__('и отправить контакты заказчику')}}<br>
                                                 </span>
@@ -209,17 +209,17 @@
                                                 data-modal-toggle="authentication-modal">
                                                 {{__('Откликнуться на задание бесплатно')}}<br>
                                                 <span class="text-sm">
-                                                    {{__('отклик - 0 UZS, контакт с заказчиком - 5000 UZS')}}
+                                                    {{__('отклик - 0 UZS, контакт с заказчиком - ')}} {{setting('admin.bepul_otklik')}} UZS
                                                 </span>
                                             </button>
                                         @endif
-                                    @elseif(getAuthUserBalance() < 4000 )
+                                    @elseif(getAuthUserBalance() < setting('admin.pullik_otklik') )
                                         @if($task->user_id != auth()->id() && $task->status < 3 && !$auth_response)
                                             <a class="open-modal"
                                                data-modal="#modal1">
                                                <button
                                                 class="sm:w-4/5 w-full font-sans text-lg pay font-semibold bg-green-500 text-white hover:bg-green-600 px-8 pt-1 pb-2 mt-6 rounded-lg transition-all duration-300">
-                                                {{__('Откликнуться за 4000 UZS')}}<br>
+                                                {{__('Откликнуться за')}}{{setting('admin.pullik_otklik')}} UZS<br>
                                                 <span class="text-sm">
                                                     {{__('и отправить контакты заказчику')}}<br>
                                                 </span>
@@ -231,7 +231,7 @@
                                                 class="sm:w-4/5 w-full font-sans text-lg font-semibold bg-yellow-500 text-white hover:bg-yellow-600 px-8 pt-1 pb-2 mt-6 rounded-lg transition-all duration-300">
                                                 {{__('Откликнуться на задание бесплатно')}}<br>
                                                 <span class="text-sm">
-                                                    {{__('отклик - 0 UZS, контакт с заказчиком - 5000 UZS')}}
+                                                    {{__('отклик - 0 UZS, контакт с заказчиком - ')}} {{setting('admin.bepul_otklik')}} UZS
                                                 </span>
                                             </button>
                                             </a>
