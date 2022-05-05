@@ -207,7 +207,7 @@
                                 </div>
                                 <div class="mt-6">
                                     @auth
-                                        @if($tasks->count() > 0)
+                                        @if($tasks->count() > 0 && auth()->user()->id != $tasks->performer)
                                             <a id="open{{$user->id}}">
                                                 <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
                                                 onclick="$('#performer_id').val({{$user->id}});">
