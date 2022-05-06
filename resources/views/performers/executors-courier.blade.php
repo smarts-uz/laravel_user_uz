@@ -72,13 +72,13 @@
                                 @endswitch
                             </div>
                             <div class="flex flex-row items-center mt-3" id="str1">
-                                <div class="flex flex-row items-center"> <p>{{__('Средняя оценка:')}}</p>
+                                <div class="flex flex-row items-center text-gray-500 text-base"> <p>{{__('Средняя оценка:')}}</p>
                                     <span id="review{{$user->id}}" class="mx-1">{{$review_rating}}</span>
                                 </div>
-                                <div class="flex flex-row mb-0.5 ml-2 stars{{$user->id}}">
+                                <div class="flex items-center ml-2" id="stars{{$user->id}}">
                                 </div>
                             </div>
-                            <div class="mt-3 hidden" id="str2">{{__('Нет оценок')}}</div>
+                            <div class="text-gray-500 text-base mt-3 hidden" id="str2">{{__('Нет оценок')}}</div>
                             <div class="flex mt-6 items-center">
                                 @if ($user->is_email_verified && $user->is_phone_number_verified)
                                     <div data-tooltip-target="tooltip-animation_1" class="mx-4 tooltip-1">
@@ -348,21 +348,23 @@
             evt.currentTarget.className += "bg-yellow-200 text-gray-900";
           }
         //tabs end
-        var star = $('#review{{$user->id}}').text();
-        if (star > 0) {
-            for (let i = 0; i < star; i++) {
-                $(".stars{{$user->id}}").append('<i class="fas fa-star text-yellow-500"></i>');
-            }
-            for (let u = star; u < 5; u++) {
-                $(".stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
-            }
-        }
-        else {
-            for (let e = 0; e < 5; e++) {
-                $(".stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
-            }
-        $('#str1').addClass('hidden');
-        $('#str2').removeClass('hidden');
-        }    
     </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/raty/3.1.1/jquery.raty.min.css" integrity="sha512-XsO5ywONBZOjW5xo5zqAd0YgshSlNF+YlX39QltzJWIjtA4KXfkAYGbYpllbX2t5WW2tTGS7bmR0uWgAIQ8JLQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/jquery.raty.min.js"></script>
+    <script>
+        var star = $('#review{{$user->id}}').text();
+        if(star>0){
+            $("#stars{{$user->id}}").raty({
+                path: 'https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/images', 
+                readOnly: true, 
+                score: star,
+                size: 12
+            });
+        }
+        else{
+            $('#str1').addClass('hidden');
+            $('#str2').removeClass('hidden');
+        }
+    </script>                   
+    
 @endsection

@@ -90,8 +90,7 @@
                                 <i class="far fa-thumbs-down mt-0.5 text-blue-500"></i>
                                 <span class="text-gray-800 dislike{{$user->id}}">{{$user->review_bad}}</span>
                             </div>
-                            <span id="review{{$user->id}}" class="hidden">{{$user->review_rating}}</span>
-                            <div class="flex flex-row stars{{$user->id}}">
+                            <div class="flex items-center" id="stars{{$user->id}}">
                             </div>
                         </div>
                         <div class="w-4/5">
@@ -342,6 +341,21 @@
     </div>
     <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id12-backdrop"></div>
     </div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/raty/3.1.1/jquery.raty.min.css" integrity="sha512-XsO5ywONBZOjW5xo5zqAd0YgshSlNF+YlX39QltzJWIjtA4KXfkAYGbYpllbX2t5WW2tTGS7bmR0uWgAIQ8JLQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/jquery.raty.min.js"></script>
+
+<script>
+    @foreach ($users as $user)
+        // let star = $('.review{{$user->id}}').text();
+        $("#stars{{$user->id}}").raty({
+            path: 'https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/images', 
+            readOnly: true, 
+            score: {{$user->review_rating}},
+            size: 12
+        });
+    @endforeach
+</script> 
     <script>
         @foreach ($categories as $category)
         $( "#{{ str_replace(' ', '', $category->name) }}" ).click(function() {

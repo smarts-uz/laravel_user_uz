@@ -84,12 +84,11 @@
                                 <div class="flex sm:flex-row items-center text-base">
                                     <p class="text-black ">{{__('Отзывы:')}}</p>
                                     <i class="far fa-thumbs-up text-blue-500 ml-1 mb-1"></i>
-                                    <span class="text-gray-800 mr-2 like{{$user->id}}">{{$user->review_good}}</span>
+                                    <span class="text-gray-800 mr-2 ">{{$user->review_good}}</span>
                                     <i class="far fa-thumbs-down mt-0.5 text-blue-500"></i>
-                                    <span class="text-gray-800 dislike{{$user->id}}">{{$user->review_bad}}</span>
+                                    <span class="text-gray-800">{{$user->review_bad}}</span>
                                 </div>
-                                <span id="review{{$user->id}}" class="hidden">{{$user->review_rating}}</span>
-                                <div class="flex flex-row stars{{$user->id}}">
+                                <div class="flex items-center" id="stars{{$user->id}}">
                                 </div>
                             </div>
                             <div class="w-4/5 ">
@@ -344,6 +343,21 @@
     </div>
     <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id12-backdrop"></div>
     </div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/raty/3.1.1/jquery.raty.min.css" integrity="sha512-XsO5ywONBZOjW5xo5zqAd0YgshSlNF+YlX39QltzJWIjtA4KXfkAYGbYpllbX2t5WW2tTGS7bmR0uWgAIQ8JLQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/jquery.raty.min.js"></script>
+
+<script>
+    @foreach ($users as $user)
+        // let star = $('.review{{$user->id}}').text();
+        $("#stars{{$user->id}}").raty({
+            path: 'https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/images', 
+            readOnly: true, 
+            score: {{$user->review_rating}},
+            size: 12
+        });
+    @endforeach
+</script> 
     @if($user->role_id == 2)
         <script>
             if ($('.tooltip-2').length === 0) {
@@ -407,8 +421,6 @@
         });
     </script>
 
-
-    {{-- Modal end --}}
     <script>
         @foreach($users as $user)
         $("#open{{$user->id}}").click(function () {
@@ -485,7 +497,7 @@
         };
     </script>
 @endsection
-
+    
 @section('javasript')
     <script src="//unpkg.com/alpinejs" defer></script>
     <script>
@@ -527,22 +539,22 @@
 
             });
         })
-        @foreach($users as $user)
-            var star = $('#review{{$user->id}}').text();
-            if (star > 0) {
-                for (let i = 0; i < star; i++) {
-                    $(".stars{{$user->id}}").append('<i class="fas fa-star text-yellow-500"></i>');
-                }
-                for (let u = star; u < 5; u++) {
-                    $(".stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
-                }
-            }
-            else {
-                for (let e = 0; e < 5; e++) {
-                    $(".stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
-                }
-            }
-        @endforeach
+        // @foreach($users as $user)
+        //     var star = $('#review{{$user->id}}').text();
+        //     if (star > 0) {
+        //         for (let i = 0; i < star; i++) {
+        //             $("#stars{{$user->id}}").append('<i class="fas fa-star text-yellow-500"></i>');
+        //         }
+        //         for (let u = star; u < 5; u++) {
+        //             $("#stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
+        //         }
+        //     }
+        //     else {
+        //         for (let e = 0; e < 5; e++) {
+        //             $("#stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
+        //         }
+        //     }
+        // @endforeach
     </script>
 @endsection
 
