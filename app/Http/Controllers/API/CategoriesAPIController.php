@@ -5,8 +5,10 @@ namespace App\Http\Controllers\API;
 use App\Http\Resources\CategoryIndexResource;
 use App\Http\Resources\CategoryShowResource;
 use App\Models\Category;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 
 class CategoriesAPIController extends Controller
 {
@@ -39,8 +41,16 @@ class CategoriesAPIController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::select('parent_id,name,ico')->withTranslation($request->lang)->whereNull('parent_id')->get();
+        $categories = Category::select('parent_id', 'name', 'ico')->withTranslation($request->lang)->whereNull('parent_id')->get();
         return CategoryIndexResource::collection($categories);
+    }
+
+    public function popular()
+    {
+        return Task::query()->with('category:id,name,parent_id,ico')
+            ->select('category_id', DB::raw('count(*) as total'))
+            ->groupBy('category_id')
+            ->get();
     }
 
     /**

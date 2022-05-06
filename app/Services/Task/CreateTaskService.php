@@ -156,6 +156,7 @@ class CreateTaskService
     {
         $task = Task::query()->findOrFail($data['task_id']);
         $task->budget = $data['amount'];
+        $task->oplata = $data['budget_type'];
         $task->save();
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET);
         return $this->get_note($task);
@@ -216,7 +217,7 @@ class CreateTaskService
     public function verification($data)
     {
         $task = Task::query()->findOrFail($data['task_id']);
-        $user = User::query()->findOrFail($data['user_id']);
+        $user = User::query()->where('phone_number', $data['phone_number'])->first();
         if ($data['sms_otp'] == $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
                 $user->update(['is_phone_number_verified' => 1]);

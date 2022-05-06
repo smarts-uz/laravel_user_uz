@@ -18,6 +18,7 @@ use App\Http\Controllers\API\VoyagerUserAPIController; // javoxir -
 use App\Http\Controllers\API\RefillAPIController; // javoxir
 use App\Http\Controllers\API\ReportAPIController; // javoxir
 use App\Http\Controllers\API\PaynetTransactionAPIController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PortfolioAPIController;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +48,8 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('create-task/contacts', [TaskAPIController::class, 'contacts']); //end +
     Route::post('create-task/verify', [TaskAPIController::class, 'verify']); //end +
 
+
+    Route::get('/notifications', [NotificationController::class, 'index']);
 //    Route::any('/{paysys}',function($paysys){
 //        (new Goodoneuz\PayUz\PayUz)->driver($paysys)->handle();
 //    });
@@ -83,7 +86,7 @@ Route::middleware('custom.auth:api')->group(function () {
         Route::get('/', [ProfileAPIController::class, 'index']); //end +
         Route::get('/portfolios', [ProfileAPIController::class, 'portfolios']); //end +
         Route::post('/portfolio/create', [ProfileAPIController::class, 'portfolioCreate']); //end +
-        Route::post('/portfolio/{portfolio}/update', [ProfileAPIController::class, 'portfolioUpdate']); 
+        Route::post('/portfolio/{portfolio}/update', [ProfileAPIController::class, 'portfolioUpdate']);
         Route::post('/portfolio/{portfolio}/delete', [ProfileAPIController::class, 'portfolioDelete']); //end +
         Route::get('/reviews', [ProfileAPIController::class, 'reviews']); //end  +
         Route::get('/balance', [ProfileAPIController::class, 'balance']); //end +
@@ -133,6 +136,7 @@ Route::get('/detailed-tasks/{task}', [SearchAPIController::class, 'task']); //en
 //Categories
 
 Route::get('/categories', [CategoriesAPIController::class, 'index']); //end -
+Route::get('/popular-categories', [CategoriesAPIController::class, 'popular']); //end -
 Route::get('/categories-parent', [CategoriesAPIController::class, 'parents']); //end +
 Route::get('/categories/{id}', [CategoriesAPIController::class, 'show']); //end +
 Route::get('/category/search', [CategoriesAPIController::class, 'search']); //end +
