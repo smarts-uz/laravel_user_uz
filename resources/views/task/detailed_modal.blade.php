@@ -228,10 +228,6 @@ style="background-color:rgba(0,0,0,0.5)" id="modal-id33">
     <div
         class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none">
         <div class=" text-center p-6  rounded-t">
-            <button type="submit" onclick="toggleModal33()"
-                    class="rounded-md w-100 h-16 absolute top-1 right-4 focus:outline-none">
-                <i class="fas fa-times text-xl w-full"></i>
-            </button>
             <h1 class="font-medium text-3xl block mt-6">
                 {{__('Исполнитель выбран')}}
             </h1>

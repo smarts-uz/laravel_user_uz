@@ -50,7 +50,7 @@ class CreateController extends Controller
     {
 
         $data = $request->validate([
-            'name' => 'required|string',
+            'name' => 'required|string|max:255',
             'category_id' => 'required'
         ]);
         $task = Task::create($data);

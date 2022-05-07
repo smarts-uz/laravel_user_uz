@@ -142,7 +142,6 @@
                     <div class="ml-4 md:ml-12 flex flex-wrap mt-8">
                         <h1 class="font-bold h-auto w-48">{{__('Рисунок')}}</h1>
                         @foreach(json_decode($task->photos)??[] as $key => $image)
-                            {{--@if ($loop->first)--}}
 
                             @if($loop->first)
                                 <div class="relative boxItem">
@@ -155,7 +154,7 @@
                                     </a>
                                 </div>
                             @endif
-                            {{--@endif--}}
+
                         @endforeach
                     </div>
                     @if($task->docs == 1)
@@ -323,30 +322,39 @@
                                         </div>
                                 </div>
                                 <div class="flex flex-row items-start">
-                                    <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
-                                        <img
-                                            src="{{ auth()->user()->is_email_verified && auth()->user()->is_phone_number_verified? asset('images/verify.png') : asset('images/verify_gray.png')  }}"
+                                    @if (auth()->user()->is_email_verified && auth()->user()->is_phone_number_verified)
+                                        <div data-tooltip-target="tooltip-animation-verified" class="mx-1 tooltip-1">
+                                            <img
+                                            src="{{asset('images/verify.png')}}"
                                             alt="" class="w-10">
-                                        <div id="tooltip-animation_1" role="tooltip"
+                                            <div id="tooltip-animation-verified" role="tooltip"
                                             class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                            @if (auth()->user()->is_email_verified && auth()->user()->is_phone_number_verified)
                                                 <p class="text-center">
                                                     {{__('Номер телефона и Е-mail пользователя подтверждены')}}
                                                 </p>
-                                            @else
+                                                <div class="tooltip-arrow" data-popper-arrow></div>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div data-tooltip-target="tooltip-animation-not-verified" class="mx-1 tooltip-1">
+                                            <img
+                                                src="{{asset('images/verify_gray.png') }}"
+                                                alt="" class="w-10">
+                                            <div id="tooltip-animation-not-verified" role="tooltip"
+                                            class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                 <p class="text-center">
                                                     {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
                                                 </p>
-                                            @endif
-                                            <div class="tooltip-arrow" data-popper-arrow></div>
+                                                <div class="tooltip-arrow" data-popper-arrow></div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endif
                                     @if(auth()->user()->role_id == 2)
                                         @foreach($about as $rating)
                                             @if($rating->id == $auth_response->performer_id)
-                                                <div data-tooltip-target="tooltip-animation_2" class="mx-1 tooltip-2">
+                                                <div data-tooltip-target="tooltip-animation-on-top" class="mx-1 tooltip-2">
                                                     <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
-                                                    <div id="tooltip-animation_2" role="tooltip"
+                                                    <div id="tooltip-animation-on-top" role="tooltip"
                                                         class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                         <p class="text-center">
                                                             {{__('Входит в ТОП-20 исполнителей User.uz')}}
@@ -356,13 +364,13 @@
                                                 </div>
                                             @endif
                                         @endforeach
-                                        <div data-tooltip-target="tooltip-animation_3" class="mx-1">
+                                        <div data-tooltip-target="tooltip-animation-many" class="mx-1">
                                             @if( (auth()->user()->review_good) + (auth()->user()->review_bad) >= 50)
                                                 <img src="{{ asset('images/50.png') }}" alt="" class="w-10 mt-1">
                                             @else
                                                 <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
                                             @endif
-                                            <div id="tooltip-animation_3" role="tooltip"
+                                            <div id="tooltip-animation-many" role="tooltip"
                                                 class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                 <p class="text-center">
                                                     {{__('Более 50 выполненных заданий')}}
@@ -371,9 +379,9 @@
                                             </div>
                                         </div>
                                     @else
-                                        <div data-tooltip-target="tooltip-animation_2" class="mx-1 tooltip-2">
+                                        <div data-tooltip-target="tooltip-animation-not-on-top" class="mx-1 tooltip-2">
                                             <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
-                                            <div id="tooltip-animation_2" role="tooltip"
+                                            <div id="tooltip-animation-not-on-top" role="tooltip"
                                                 class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                 <p class="text-center">
                                                     {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
@@ -381,9 +389,9 @@
                                                 <div class="tooltip-arrow" data-popper-arrow></div>
                                             </div>
                                         </div>
-                                        <div data-tooltip-target="tooltip-animation_3" class="mx-1">
+                                        <div data-tooltip-target="tooltip-animation-not-many" class="mx-1">
                                             <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
-                                            <div id="tooltip-animation_3" role="tooltip"
+                                            <div id="tooltip-animation-not-many" role="tooltip"
                                                 class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                 <p class="text-center">
                                                     {{__('Более 50 выполненных заданий')}}
@@ -461,30 +469,39 @@
                                         </div>
                                     </div>
                                     <div class="flex flex-row items-start">
-                                        <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
-                                            <img
-                                                src="{{ $selected->performer->is_email_verified && $selected->performer->is_phone_number_verified? asset('images/verify.png') : asset('images/verify_gray.png')  }}"
+                                        @if ($selected->performer->is_email_verified && $selected->performer->is_phone_number_verified)
+                                            <div data-tooltip-target="tooltip-animation-verified" class="mx-1 tooltip-1">
+                                                <img
+                                                src="{{asset('images/verify.png')}}"
                                                 alt="" class="w-10">
-                                            <div id="tooltip-animation_1" role="tooltip"
+                                                <div id="tooltip-animation-verified" role="tooltip"
                                                 class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                                @if ($selected->performer->is_email_verified && $selected->performer->is_phone_number_verified)
                                                     <p class="text-center">
                                                         {{__('Номер телефона и Е-mail пользователя подтверждены')}}
                                                     </p>
-                                                @else
+                                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div data-tooltip-target="tooltip-animation-not-verified" class="mx-1 tooltip-1">
+                                                <img
+                                                    src="{{asset('images/verify_gray.png') }}"
+                                                    alt="" class="w-10">
+                                                <div id="tooltip-animation-not-verified" role="tooltip"
+                                                class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                     <p class="text-center">
                                                         {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
                                                     </p>
-                                                @endif
-                                                <div class="tooltip-arrow" data-popper-arrow></div>
+                                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                         @if($selected->performer->role_id == 2)
                                             @foreach($about as $rating)
                                                 @if($rating->id == $selected->performer_id)
-                                                    <div data-tooltip-target="tooltip-animation_2" class="mx-1 tooltip-2">
+                                                    <div data-tooltip-target="tooltip-animation-on-top" class="mx-1 tooltip-2">
                                                         <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
-                                                        <div id="tooltip-animation_2" role="tooltip"
+                                                        <div id="tooltip-animation-on-top" role="tooltip"
                                                             class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                             <p class="text-center">
                                                                 {{__('Входит в ТОП-20 исполнителей User.uz')}}
@@ -494,13 +511,13 @@
                                                     </div>
                                                 @endif
                                             @endforeach
-                                            <div data-tooltip-target="tooltip-animation_3" class="mx-1">
+                                            <div data-tooltip-target="tooltip-animation-many" class="mx-1">
                                                 @if( ($selected->performer->review_good) + ($selected->performer->review_bad) >= 50)
                                                     <img src="{{ asset('images/50.png') }}" alt="" class="w-10 mt-1">
                                                 @else
                                                     <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
                                                 @endif
-                                                <div id="tooltip-animation_3" role="tooltip"
+                                                <div id="tooltip-animation-many" role="tooltip"
                                                     class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                     <p class="text-center">
                                                         {{__('Более 50 выполненных заданий')}}
@@ -509,9 +526,9 @@
                                                 </div>
                                             </div>
                                         @else
-                                            <div data-tooltip-target="tooltip-animation_2" class="mx-1 tooltip-2">
+                                            <div data-tooltip-target="tooltip-animation-not-on-top" class="mx-1 tooltip-2">
                                                 <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
-                                                <div id="tooltip-animation_2" role="tooltip"
+                                                <div id="tooltip-animation-not-on-top" role="tooltip"
                                                     class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                     <p class="text-center">
                                                         {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
@@ -519,9 +536,9 @@
                                                     <div class="tooltip-arrow" data-popper-arrow></div>
                                                 </div>
                                             </div>
-                                            <div data-tooltip-target="tooltip-animation_3" class="mx-1">
+                                            <div data-tooltip-target="tooltip-animation-not-many" class="mx-1">
                                                 <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
-                                                <div id="tooltip-animation_3" role="tooltip"
+                                                <div id="tooltip-animation-not-many" role="tooltip"
                                                     class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                     <p class="text-center">
                                                         {{__('Более 50 выполненных заданий')}}
@@ -611,30 +628,39 @@
                                         </div>
                                     </div>
                                     <div class="flex flex-row items-start">
-                                        <div data-tooltip-target="tooltip-animation_1" class="mx-1 tooltip-1">
-                                            <img
-                                                src="{{ $response->performer->is_email_verified && $response->performer->is_phone_number_verified? asset('images/verify.png') : asset('images/verify_gray.png')  }}"
+                                        @if ($response->performer->is_email_verified && $response->performer->is_phone_number_verified)
+                                            <div data-tooltip-target="tooltip-animation-verified" class="mx-1 tooltip-1">
+                                                <img
+                                                src="{{asset('images/verify.png')}}"
                                                 alt="" class="w-10">
-                                            <div id="tooltip-animation_1" role="tooltip"
-                                                 class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                                @if ($response->performer->is_email_verified && $response->performer->is_phone_number_verified)
+                                                <div id="tooltip-animation-verified" role="tooltip"
+                                                class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                     <p class="text-center">
                                                         {{__('Номер телефона и Е-mail пользователя подтверждены')}}
                                                     </p>
-                                                @else
+                                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div data-tooltip-target="tooltip-animation-not-verified" class="mx-1 tooltip-1">
+                                                <img
+                                                    src="{{asset('images/verify_gray.png') }}"
+                                                    alt="" class="w-10">
+                                                <div id="tooltip-animation-not-verified" role="tooltip"
+                                                class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                     <p class="text-center">
                                                         {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
                                                     </p>
-                                                @endif
-                                                <div class="tooltip-arrow" data-popper-arrow></div>
+                                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                         @if($response->performer->role_id == 2)
                                             @foreach($about as $rating)
                                                 @if($rating->id == $response->performer_id)
-                                                    <div data-tooltip-target="tooltip-animation_2" class="mx-1 tooltip-2">
+                                                    <div data-tooltip-target="tooltip-animation-on-top" class="mx-1 tooltip-2">
                                                         <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
-                                                        <div id="tooltip-animation_2" role="tooltip"
+                                                        <div id="tooltip-animation-on-top" role="tooltip"
                                                             class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                             <p class="text-center">
                                                                 {{__('Входит в ТОП-20 исполнителей User.uz')}}
@@ -644,24 +670,24 @@
                                                     </div>
                                                 @endif
                                             @endforeach
-                                            <div data-tooltip-target="tooltip-animation_3" class="mx-1">
+                                            <div data-tooltip-target="tooltip-animation-many" class="mx-1">
                                                 @if( ($response->performer->review_good) + ($response->performer->review_bad) >= 50)
                                                     <img src="{{ asset('images/50.png') }}" alt="" class="w-10 mt-1">
                                                 @else
                                                     <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
                                                 @endif
-                                                <div id="tooltip-animation_3" role="tooltip"
+                                                <div id="tooltip-animation-many" role="tooltip"
                                                     class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                     <p class="text-center">
                                                         {{__('Более 50 выполненных заданий')}}
                                                     </p>
-                                                       <div class="tooltip-arrow" data-popper-arrow></div>
+                                                    <div class="tooltip-arrow" data-popper-arrow></div>
                                                 </div>
                                             </div>
                                         @else
-                                            <div data-tooltip-target="tooltip-animation_2" class="mx-1 tooltip-2">
+                                            <div data-tooltip-target="tooltip-animation-not-on-top" class="mx-1 tooltip-2">
                                                 <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
-                                                <div id="tooltip-animation_2" role="tooltip"
+                                                <div id="tooltip-animation-not-on-top" role="tooltip"
                                                     class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                     <p class="text-center">
                                                         {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
@@ -669,10 +695,10 @@
                                                     <div class="tooltip-arrow" data-popper-arrow></div>
                                                 </div>
                                             </div>
-                                            <div data-tooltip-target="tooltip-animation_3" class="mx-1">
+                                            <div data-tooltip-target="tooltip-animation-not-many" class="mx-1">
                                                 <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10 mt-1">
-                                                <div id="tooltip-animation_3" role="tooltip"
-                                                     class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                <div id="tooltip-animation-not-many" role="tooltip"
+                                                    class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                     <p class="text-center">
                                                         {{__('Более 50 выполненных заданий')}}
                                                     </p>
