@@ -196,46 +196,25 @@ class MessagesController extends Controller
         return Response::json($response);
     }
 
-    /**
-     * Make messages as seen
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function seen(Request $request)
-    {
-        // make as seen
-        $seen = Chatify::makeSeen($request['id']);
-        // send the response
-        return Response::json([
-            'status' => $seen,
-        ], 200);
-    }
 
-    /**
-     * Get contacts list
-     *
-     * @param Request $request
-     * @return JSON response
-     */
     public function getContacts(Request $request)
     {
         $userIdsList = ContactService::contactsList(\auth()->user());
 
         $chatItem = new ChatifyMessenger();
         if (count($userIdsList) > 0) {
-            $contacts = '';
+            $contacts = [];
             foreach ($userIdsList as $userId) {
-                $contacts .= $chatItem->getContactItem(User::query()->find($userId));
+                $contacts[] = $chatItem->getContactItemApi(User::query()->find($userId));
             }
         } else {
             $contacts = '<p class="message-hint center-el"><span>Your contact list is empty</span></p>';
         }
 
         return response()->json([
-            'contacts' => $contacts,
-//            'total' => $users->total() ?? 0,
-//            'last_page' => $users->lastPage() ?? 1,
+            'success' => true,
+            'data' => ['contacts' => $contacts],
+            'message' => 'Success'
         ], 200);
     }
 

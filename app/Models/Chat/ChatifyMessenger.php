@@ -4,11 +4,11 @@ namespace App\Models\Chat;
 
 use App\Models\Chat\ChMessage as Message;
 use App\Models\Chat\ChFavorite as Favorite;
-use Illuminate\Support\Facades\Http;
 use Pusher\Pusher;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 use Illuminate\Support\Facades\File;
+use Pusher\PusherException;
 
 class ChatifyMessenger
 {
@@ -24,6 +24,9 @@ class ChatifyMessenger
         return config('chatify.attachments.max_upload_size') * 1048576;
     }
 
+    /**
+     * @throws PusherException
+     */
     public function __construct()
     {
         $this->pusher = new Pusher(
@@ -53,15 +56,6 @@ class ChatifyMessenger
         return config('chatify.attachments.allowed_files');
     }
 
-    /**
-     * Returns an array contains messenger's colors
-     *
-     * @return array
-     */
-    public function getMessengerColors(){
-        return config('chatify.colors');
-    }
-
 
     public function push($channel, $event, $data)
     {
@@ -73,14 +67,7 @@ class ChatifyMessenger
 //        ])->json();
     }
 
-    /**
-     * Authintication for pusher
-     *
-     * @param string $channelName
-     * @param string $socket_id
-     * @param string $data
-     * @return string
-     */
+
     public function pusherAuth($channelName, $socket_id, $data = null){
         return $this->pusher->socketAuth($channelName, $socket_id, $data);
     }
@@ -126,19 +113,14 @@ class ChatifyMessenger
      *
      * @param array $data
      * @param string $viewType
-     * @return void
+     * @return string
      */
     public function messageCard($data, $viewType = null){
         $data['viewType'] = ($viewType) ? $viewType : $data['viewType'];
         return view('Chatify::layouts.messageCard',$data)->render();
     }
 
-    /**
-     * Default fetch messages query between a Sender and Receiver.
-     *
-     * @param int $user_id
-     * @return Collection
-     */
+
     public function fetchMessagesQuery($user_id){
         return Message::where('from_id',Auth::user()->id)->where('to_id',$user_id)
                     ->orWhere('from_id',$user_id)->where('to_id',Auth::user()->id);
@@ -176,22 +158,12 @@ class ChatifyMessenger
         return 1;
     }
 
-    /**
-     * Get last message for a specific user
-     *
-     * @param int $user_id
-     * @return Collection
-     */
+
     public function getLastMessageQuery($user_id){
         return $this->fetchMessagesQuery($user_id)->latest()->first();
     }
 
-    /**
-     * Count Unseen messages
-     *
-     * @param int $user_id
-     * @return Collection
-     */
+
     public function countUnseenMessages($user_id){
         return Message::where('from_id',$user_id)->where('to_id',Auth::user()->id)->where('seen',0)->count();
     }
@@ -216,6 +188,25 @@ class ChatifyMessenger
         ])->render();
     }
 
+    public function getContactItemApi($user)
+    {
+        // get last message
+        $lastMessage = $this->getLastMessageQuery($user->id);
+        // Get Unseen messages counter
+        $unseenCounter = $this->countUnseenMessages($user->id);
+
+        return [
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'active_status' => $user->active_status,
+                'avatar' => $user->avatar
+            ],
+            'lastMessage' => $lastMessage ?? [],
+            'unseenCounter' => $unseenCounter,
+        ];
+    }
+
     /**
      * Check if a user in the favorite list
      *
@@ -224,8 +215,7 @@ class ChatifyMessenger
      */
     public function inFavorite($user_id){
         return Favorite::where('user_id', Auth::user()->id)
-                        ->where('favorite_id', $user_id)->count() > 0
-                        ? true : false;
+                        ->where('favorite_id', $user_id)->count() > 0;
 
     }
 
@@ -244,12 +234,11 @@ class ChatifyMessenger
             $star->user_id = Auth::user()->id;
             $star->favorite_id = $user_id;
             $star->save();
-            return $star ? true : false;
         }else{
             // UnStar
             $star = Favorite::where('user_id',Auth::user()->id)->where('favorite_id',$user_id)->delete();
-            return $star ? true : false;
         }
+        return (bool)$star;
     }
 
     /**
@@ -283,7 +272,7 @@ class ChatifyMessenger
      * @param int $user_id
      * @return boolean
      */
-    public function deleteConversation($user_id){
+    public function deleteConversation(int $user_id){
         try {
             foreach ($this->fetchMessagesQuery($user_id)->get() as $msg) {
                 // delete file attached if exist
