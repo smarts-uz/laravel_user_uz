@@ -27,20 +27,21 @@
 <script src="https://api-maps.yandex.ru/2.1/?apikey=f4b34baa-cbd1-432b-865b-9562afa3fcdb&lang={{__('ru_RU')}}" type="text/javascript"></script>
 <script src="js/search_tasks.js"></script>
 <script>
-    var bodyFormData = new FormData();
-    axios({
-        method: 'get',
-        url: 'search_new',
-        data: bodyFormData,
-        headers: {'Content-Type': 'multipart/form-data' }
-    })
-        .then(function (response) {
-            //handle success
-            console.log(response);
-        })
-        .catch(function (response) {
-            //handle error
-            console.log(response);
+    $("form").on("submit", function(event) {
+        event.preventDefault();
+        let data_seria = $(this).serialize();
+        console.log(data_seria)
+        $.ajax({
+            url: "{{route('searchTask.search_new2')}}",
+            type: 'POST',
+            data: data_seria,
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (error) {
+                console.error("Ajax orqali yuklashda xatolik..." , error);
+            }
         });
+    });
 </script>
 @endsection

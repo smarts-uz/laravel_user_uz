@@ -128,7 +128,6 @@
                         </div>
                     </div>
                 </div>
-                <button>Click Me!</button>
                 </form>
             </div>
         {{-- right end --}}

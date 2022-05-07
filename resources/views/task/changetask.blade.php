@@ -183,11 +183,8 @@
                                 </button>
                             </div>
 
-                            <!-- <input name="coordinates0" type="hidden" id="coordinate"
-                                   value="{{ count($addresses) ? $addresses[0]->latitude . ',' . $addresses[0]->longitude:'' }}"> -->
                             <input name="coordinates0" type="hidden" id="coordinate"
-                                   value="{{ count($addresses) ? '':'' }}">
-
+                                   value="{{ count($addresses) ? $addresses[0]->latitude . ',' . $addresses[0]->longitude:'' }}">
                         </div>
                         <div>
 
