@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\vendor\Chatify\Api;
 
+use App\Models\Chat\ChatifyMessenger;
+use App\Models\Chat\ChMessage;
+use App\Services\Chat\ContactService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
@@ -217,25 +220,22 @@ class MessagesController extends Controller
      */
     public function getContacts(Request $request)
     {
-        // get all users that received/sent message from/to [Auth user]
-        $users = Message::join('users',  function ($join) {
-            $join->on('ch_messages.from_id', '=', 'users.id')
-                ->orOn('ch_messages.to_id', '=', 'users.id');
-        })
-        ->where(function ($q) {
-            $q->where('ch_messages.from_id', Auth::user()->id)
-            ->orWhere('ch_messages.to_id', Auth::user()->id);
-        })
-        ->where('users.id','!=',Auth::user()->id)
-        ->select('users.*',DB::raw('MAX(ch_messages.created_at) max_created_at'))
-        ->orderBy('max_created_at', 'desc')
-        ->groupBy('users.id')
-        ->paginate($request->per_page ?? $this->perPage);
+        $userIdsList = ContactService::contactsList(\auth()->user());
+
+        $chatItem = new ChatifyMessenger();
+        if (count($userIdsList) > 0) {
+            $contacts = '';
+            foreach ($userIdsList as $userId) {
+                $contacts .= $chatItem->getContactItem(User::query()->find($userId));
+            }
+        } else {
+            $contacts = '<p class="message-hint center-el"><span>Your contact list is empty</span></p>';
+        }
 
         return response()->json([
-            'contacts' => $users->items(),
-            'total' => $users->total() ?? 0,
-            'last_page' => $users->lastPage() ?? 1,
+            'contacts' => $contacts,
+//            'total' => $users->total() ?? 0,
+//            'last_page' => $users->lastPage() ?? 1,
         ], 200);
     }
 

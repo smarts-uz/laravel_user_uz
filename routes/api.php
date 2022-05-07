@@ -20,6 +20,7 @@ use App\Http\Controllers\API\ReportAPIController; // javoxir
 use App\Http\Controllers\API\PaynetTransactionAPIController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PortfolioAPIController;
+use App\Http\Controllers\vendor\Chatify\Api\MessagesController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -37,6 +38,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('custom.auth:api')->group(function () {
     Route::post('logout', [UserAPIController::class, 'logout']); //end +
 
+    Route::group(['prefix' => 'chat'], function (){
+        Route::get('/getContacts', [MessagesController::class, 'getContacts']);
+    });
     Route::post('task/create', [TaskAPIController::class, 'create']);
     Route::post('create-task/name', [TaskAPIController::class, 'name']); //end +
     Route::post('create-task/custom', [TaskAPIController::class, 'custom']); //end +

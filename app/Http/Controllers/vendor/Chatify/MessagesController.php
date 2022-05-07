@@ -5,6 +5,7 @@ namespace App\Http\Controllers\vendor\Chatify;
 
 use App\Models\Chat\ChMessage;
 use App\Models\Chat\ChFavorite;
+use App\Services\Chat\ContactService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
@@ -255,31 +256,7 @@ class MessagesController extends Controller
      */
     public function getContacts(Request $request)
     {
-        $authUser = auth()->user();
-        $messages = ChMessage::query()->select('from_id', 'to_id', 'created_at')
-            ->where('to_id', auth()->id())
-            ->orWhere('from_id', \auth()->id())
-            ->orderByDesc('created_at')->distinct()->get()->toArray();
-        $userIdsList = [];
-        foreach ($messages as $message) {
-            if ($message['from_id'] == $authUser->id) {
-                $userIdsList[] = $message['to_id'];
-            } else {
-                $userIdsList[] = $message['from_id'];
-            }
-        }
-        foreach (User::query()
-                     ->whereIn('role_id', [1, 6])
-                     ->whereNotIn('id', $userIdsList)
-                     ->distinct()->pluck('id') as $moderator_id) {
-            $userIdsList[] = $moderator_id;
-        }
-
-        $userIdsList = array_unique($userIdsList);
-        if (($key = array_search($authUser->id, $userIdsList)) !== false) {
-            unset($userIdsList[$key]);
-        }
-
+        $userIdsList = ContactService::contactsList(auth()->user());
         $chatItem = new Chatify();
 //        dd($chatItem->getLastMessageQuery($usersList[1]->id));
         if (count($userIdsList) > 0) {

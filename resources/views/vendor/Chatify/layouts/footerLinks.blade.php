@@ -1,16 +1,15 @@
 <script src="https://js.pusher.com/7.0.3/pusher.min.js"></script>
 <script>
     // Enable pusher logging - don't include this in production
-    // Pusher.logToConsole = true;
-
+    Pusher.logToConsole = true;
     var pusher = new Pusher("{{ config('chatify.pusher.key') }}", {
         // encrypted: true,
-        cluster: '{{env("PUSHER_APP_CLUSTER")}}',
-        wsHost: '{{env('WEBSOCKET_SERVER_HOST')}}',
-        wsPort: {{env('WEBSOCKET_SERVER_PORT', 6001)}},
+        cluster: '{{config("chatify.pusher.options.cluster")}}',
+        wsHost: '{{config('chatify.pusher.options.host')}}',
+        wsPort: {{config('chatify.pusher.options.port', 6001)}},
         forceTLS: false,
         disableStats: true,
-        authEndpoint: 'http://' + '{{env('WEBSOCKET_SERVER_HOST')}}' +'/chat/pusher/auth',
+        authEndpoint: 'http://' + '{{config('chatify.pusher.options.host')}}' +'/chat/pusher/auth',
         auth: {
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
