@@ -15,7 +15,11 @@
                                 {{$task->name}}
                             </a>
                             <p class="text-base mt-2 overflow-hidden whitespace-nowrap text-ellipsis text-gray-400">
-                                {{$task->description}}
+                                @if(strlen($task->description) >= 25)
+                                    {{ Str::limit($task->description, 25) }}
+                                @else 
+                                    {{ $task->description}}
+                                @endif
                             </p>
                         </div>
                     </div>

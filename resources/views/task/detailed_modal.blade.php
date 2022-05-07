@@ -174,7 +174,7 @@ id="modal-id4">
                           name="description"></textarea>
                     <p class="text-base">{{__('Сколько вы предлагаете')}}</p>
                     <label>
-                        <input type="text"
+                        <input type="text" required
                                onkeypress='validate(event)'
                                checked name="price"
                                class="border border-gray-300 rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 mb-2">UZS
