@@ -63,7 +63,7 @@
                         <p class="mt-5">{{__('Специалисты отдела мониторинга готовы подключиться к любой сложной ситуации и сделать все возможное, чтобы помочь пользователям ее разрешить.')}}</p>
                         <div class="flex mt-10">
                             <div class="sm:w-1/2 w-full">
-                                <a target='blank' href="{{setting('site.telegram_admin_url')}}">
+                                <a target='blank' href="{{ setting('site.telegram_url') }}">
                                     <button  class="font-sans  text-2xl mx-2 font-medium bg-green-400 text-white hover:bg-green-300 px-10 py-4 rounded">
                                         {{__('Написать в поддержку')}}
                                     </button>

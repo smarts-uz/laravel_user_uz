@@ -100,7 +100,7 @@
                         </a>
                         <a href="task/create?category_id=22" type="submit" id="createhref"
                            class="float-right sm:hidden block text-lg border bg-blue-900 z-10 border-transparent rounded-xl md:px-3.5 px-2 pt-2 pb-1.5 md:py-2 mr-1 md:mt-2 mt-2.5 -ml-24 -top-14 relative text-white">
-                            Заказать
+                           {{__(' Заказать')}}
                         </a>
                         <div class="mt-8 float-left relative z-10">
                             <a href="{{ setting('site.instagram_url') }}">

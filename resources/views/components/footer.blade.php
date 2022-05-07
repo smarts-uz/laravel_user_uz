@@ -54,7 +54,7 @@
             <a class="text-gray-300 hover:text-yellow-400 text-lg my-2" href="/badges">{{__('Награды и рейтинг')}}</a>
             <a class="text-gray-300 hover:text-yellow-400 text-lg my-2" href="/geotaskshint">{{__('Как это работает')}}</a>
             <a class="text-gray-300 hover:text-yellow-400 text-lg my-2" href="/author-reviews">{{__('Отзывы заказчиков')}}</a>
-            <a class="text-gray-300 hover:text-yellow-400 text-lg my-2" target='blank' href="{{setting('site.telegram_admin_url')}}">{{__('Служба поддержки')}}</a>
+            <a class="text-gray-300 hover:text-yellow-400 text-lg my-2" target='blank' href="{{ setting('site.telegram_url') }}">{{__('Служба поддержки')}}</a>
        </div>
    </div>
 
