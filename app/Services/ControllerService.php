@@ -21,11 +21,12 @@ class ControllerService
      * @link https://user.uz/
      * @return  ControllerItem
      */
-    public function home()
+    public function home($id)
     {
         $item = new ControllerItem();
         $item -> categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->get();
         $item -> tasks  =  Task::where('status', 1)->orWhere('status',2)->orderBy('id', 'desc')->take(20)->get();
+        $item -> child_categories = Category::withTranslations(['ru', 'uz'])->where('parent_id','!=',null)->get();
         return $item;
 
     }
