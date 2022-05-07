@@ -44,7 +44,9 @@ class UserAPIController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'avatar' => asset($user->avatar),
-                'balance' => $userBalance
+                'balance' => $userBalance,
+                'phone_number' => $user->phone_number,
+                'performer_id' => $user->performer_id,
             ],
             'access_token'=>$accessToken]);
 
