@@ -126,7 +126,7 @@ class ProfileAPIController extends Controller
         $user = auth()->user();
         $data = $validator->validated();
         $data['user_id'] = $user->id;
-        if ($request->has('images')) {
+        if ($request->hasFile('images')) {
             $image = [];
             foreach ($request->file('images') as $uploadedImage) {
                 $filename = $user->name.'/'.$data['comment'].'/'.time() . '_' . $uploadedImage->getClientOriginalName();
