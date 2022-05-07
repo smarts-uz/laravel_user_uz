@@ -41,6 +41,7 @@ class CreateTaskService
 
     public function name_store($data)
     {
+        $data['user_id'] = auth()->id();
         $task = Task::query()->create($data);
         return $this->get_custom($task);
     }
