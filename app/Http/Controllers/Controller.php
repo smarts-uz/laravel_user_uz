@@ -19,14 +19,15 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 
-    public function home()
+    public function home(Category $id)
     {
         $service = new ControllerService();
-        $item = $service->home();
+        $item = $service->home($id);
         return view('home',
             [
                 'categories' => $item->categories,
                 'tasks' => $item->tasks,
+                'child_categories' => $item->child_categories,
             ]
         );
     }

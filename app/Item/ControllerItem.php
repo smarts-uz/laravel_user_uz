@@ -10,4 +10,5 @@ class ControllerItem
 {
     public $tasks;
     public $categories;
+    public $child_categories;
 }

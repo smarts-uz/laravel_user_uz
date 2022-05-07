@@ -4,7 +4,12 @@ $("input[name=TypeList]").focusout(function(){
 $(function() {
     $('#header_input').on('input',function() {
         var opt = $('option[value="'+$(this).val()+'"]');
-        $("#createhref").attr("href", '/task/create?category_id='+opt.attr('id'));
+        if(opt.attr('id')==null){
+            $("#createhref").attr("href");
+        }
+        else{
+            $("#createhref").attr("href", '/task/create?category_id='+opt.attr('id'));
+        }
     });
 });
 
