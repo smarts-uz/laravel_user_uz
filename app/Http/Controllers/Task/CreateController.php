@@ -77,6 +77,7 @@ class CreateController extends Controller
 
     public function custom_store(Request $request, Task $task)
     {
+        /* dd($request->all()); */
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM);
 
         if ($task->category->parent->remote){

@@ -2720,8 +2720,58 @@
                 "tags": [
                     "Social"
                 ],
-                "summary": "Google",
+                "summary": "Facebook",
                 "operationId": "7a36dab6b375c9ecdfa12d3d58d9bd75",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "google_id": {
+                                        "type": "integer"
+                                    },
+                                    "facebook_id": {
+                                        "type": "integer"
+                                    },
+                                    "email": {
+                                        "type": "email"
+                                    },
+                                    "avatar": {
+                                        "type": "string"
+                                    },
+                                    "server_code": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "\/api\/login\/google\/callback": {
+            "post": {
+                "tags": [
+                    "Social"
+                ],
+                "summary": "Google",
+                "operationId": "f1b24043f6c0dff2c930a82b5494d8ab",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -2759,12 +2809,7 @@
                     "403": {
                         "description": "Forbidden"
                     }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
+                }
             }
         },
         "\/api\/same-tasks\/{task}": {

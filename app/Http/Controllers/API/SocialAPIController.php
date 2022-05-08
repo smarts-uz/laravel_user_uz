@@ -26,14 +26,18 @@ class SocialAPIController extends Controller
      * @OA\Post(
      *     path="/api/login/callback",
      *     tags={"Social"},
-     *     summary="Google",
+     *     summary="Facebook",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
-     *                    property="id",
+     *                    property="google_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="facebook_id",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
@@ -68,9 +72,6 @@ class SocialAPIController extends Controller
      *          response=403,
      *          description="Forbidden"
      *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
      * )
      */
     public function loginWithFacebook(Request $request)
@@ -152,6 +153,54 @@ class SocialAPIController extends Controller
         return $picture;
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/login/google/callback",
+     *     tags={"Social"},
+     *     summary="Google",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="email",
+     *                    type="email",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="avatar",
+     *                    type="string",
+     *                    
+     *                 ),
+     *                 @OA\Property (
+     *                    property="server_code",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="name",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     * )
+     */
     public function loginWithGoogle(Request $request)
     {
 
