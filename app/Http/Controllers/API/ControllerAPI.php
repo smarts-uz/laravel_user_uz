@@ -41,7 +41,7 @@ class ControllerAPI extends Controller
         return response()->json(['tasks'=>$tasks, 'howitworks'=>$howitworks, 'categories'=>$categories, 'random_category'=>$random_category, 'users_count'=>$users_count, 'advants'=>$advants, 'reklamas'=>$reklamas, 'trusts'=>$trusts]);
     } */
 
-    public function home()
+    /* public function home()
     {
         $service = new ControllerService();
         $item = $service->home();
@@ -49,7 +49,7 @@ class ControllerAPI extends Controller
             'categories' => $item->categories,
             'tasks' => $item->tasks,
         ]);
-    }
+    } */
 
     public function home_profile()
     {
