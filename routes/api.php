@@ -40,6 +40,8 @@ Route::middleware('custom.auth:api')->group(function () {
 
     Route::group(['prefix' => 'chat'], function (){
         Route::get('/getContacts', [MessagesController::class, 'getContacts']);
+        Route::get('/search', [MessagesController::class, 'search']);
+        Route::post('/fetchMessages', [MessagesController::class, 'fetch']);
     });
     Route::post('task/create', [TaskAPIController::class, 'create']);
     Route::post('create-task/name', [TaskAPIController::class, 'name']); //end +

@@ -102,7 +102,7 @@ class MessagesController extends Controller
      * Send a message to database
      *
      * @param Request $request
-     * @return JSON response
+     * @return \Illuminate\Http\JsonResponse response
      */
     public function send(Request $request)
     {
@@ -168,7 +168,7 @@ class MessagesController extends Controller
 
         // send the response
         return Response::json([
-            'status' => '200',
+            'success' => true,
             'error' => $error,
             'message' => $messageData ?? [],
             'tempID' => $request['temporaryMsgId'],
@@ -179,21 +179,18 @@ class MessagesController extends Controller
      * fetch [user/group] messages from database
      *
      * @param Request $request
-     * @return JSON response
+     * @return \Illuminate\Http\JsonResponse response
      */
     public function fetch(Request $request)
     {
         $query = Chatify::fetchMessagesQuery($request['id'])->latest();
         $messages = $query->paginate($request->per_page ?? $this->perPage);
-        $totalMessages = $messages->total();
-        $lastPage = $messages->lastPage();
-        $response = [
-            'total' => $totalMessages,
-            'last_page' => $lastPage,
-            'last_message_id' => collect($messages->items())->last()->id ?? null,
-            'messages' => $messages->items(),
-        ];
-        return Response::json($response);
+
+        return Response::json([
+            'success' => true,
+            'data' => $messages->items(),
+            'message' => 'Success'
+        ]);
     }
 
 
@@ -219,64 +216,23 @@ class MessagesController extends Controller
     }
 
     /**
-     * Put a user in the favorites list
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function favorite(Request $request)
-    {
-        // check action [star/unstar]
-        if (Chatify::inFavorite($request['user_id'])) {
-            // UnStar
-            Chatify::makeInFavorite($request['user_id'], 0);
-            $status = 0;
-        } else {
-            // Star
-            Chatify::makeInFavorite($request['user_id'], 1);
-            $status = 1;
-        }
-
-        // send the response
-        return Response::json([
-            'status' => @$status,
-        ], 200);
-    }
-
-    /**
-     * Get favorites list
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function getFavorites(Request $request)
-    {
-        $favorites = Favorite::where('user_id', Auth::user()->id)->get();
-        foreach ($favorites as $favorite) {
-            $favorite->user = User::where('id', $favorite->favorite_id)->first();
-        }
-        return Response::json([
-            'total' => count($favorites),
-            'favorites' => $favorites ?? [],
-        ], 200);
-    }
-
-    /**
      * Search in messenger
      *
      * @param Request $request
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
     public function search(Request $request)
     {
-        $input = trim(filter_var($request['input'], FILTER_SANITIZE_STRING));
-        $records = User::where('id','!=',Auth::user()->id)
-                    ->where('name', 'LIKE', "%{$input}%")
-                    ->paginate($request->per_page ?? $this->perPage);
+        $input = trim(filter_var($request['name'], FILTER_SANITIZE_STRING));
+        $records = User::query()
+            ->select('id', 'name', 'active_status', 'avatar')
+            ->where('id','!=',Auth::user()->id)
+            ->where('name', 'LIKE', "%{$input}%")
+            ->get();
         return Response::json([
-            'records' => $records->items(),
-            'total' => $records->total(),
-            'last_page' => $records->lastPage()
+            'success' => true,
+            'data' => $records,
+            'message' => 'Success'
         ], 200);
     }
 
