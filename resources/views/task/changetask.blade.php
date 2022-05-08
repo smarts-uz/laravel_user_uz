@@ -341,7 +341,7 @@
                     for (let i=1; i< ajax_location.length; i++){
                     $("#addinput").append('<div class="flex items-center gap-x-2">' +
                         '<div class="flex items-center rounded-lg border  w-full py-1"> ' +
-                        '<button class="Alfavit flex-shrink-0 border-transparent text-teal-500 text-md py-1 px-2 rounded focus:outline-none" type="button">  '+ alp[i] +' </button>' +
+                        '<button class="Alfavit flex-shrink-0 border-transparent text-teal-500 text-md py-1 px-2 rounded focus:outline-none" type="button">  '+ alp[i-1] +' </button>' +
                         ' <input oninput="myMapFunction()" id="suggest'+(x)+'" class="appearance-none bg-transparent w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"' +
                         ' type="search" name="location'+ x +'" placeholder="Город, Улица, Дом" aria-label="Full name" value="'+ajax_location[i].location+'"> ' +
                         '<button id="'+ x +'" onclick="getLocals(this.id)" class="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 px-2 rounded" type="button">'+
