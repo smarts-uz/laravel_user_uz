@@ -1088,15 +1088,22 @@ class ProfileAPIController extends Controller
     {
         $notification = $request->get('notification');
         $user = auth()->user();
-        if ($notification) {
+        if ($notification == 1) {
             $user->system_notification = 1;
             $user->news_notification = 1;
             $message = 'Notifications turned on';
-        } else {
+        } elseif ($notification == 0) {
             $user->system_notification = 0;
             $user->news_notification = 0;
             $message = 'Notifications turned off';
-        };
+        } else {
+            return response()->json([
+                'success' => false,
+                'data' => [
+                    'message' => 'Send 1 to turn on notifications. Send 0 to turn off notifications'
+                ]
+            ]);
+        }
         $user->save();
         return response()->json([
             'success' => true,
