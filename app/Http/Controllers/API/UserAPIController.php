@@ -43,7 +43,7 @@ class UserAPIController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'avatar' => asset($user->avatar),
+                'avatar' => asset('storage/'.$user->avatar),
                 'balance' => $userBalance,
                 'phone_number' => $user->phone_number,
                 'role_id' => $user->role_id,
