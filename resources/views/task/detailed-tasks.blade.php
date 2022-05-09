@@ -416,7 +416,16 @@
 
                                         <div
                                             class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}}
-                                            +998 {{ auth()->user()->phone_number }}</div>
+                                            +998 {{ auth()->user()->phone_number }}
+                                        </div>
+                                        @if ($task->status == 3 && auth()->user()->id == $task->performer_id)
+                                            <div class="w-10/12 mx-auto">
+                                                <a href="{{ url('/chat/' . $selected->performer->id) }}"
+                                                class="text-semibold text-center w-[200px] mb-2 md:w-[320px] ml-0 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
+                                                    {{__('Написать в чат')}}
+                                                </a>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
