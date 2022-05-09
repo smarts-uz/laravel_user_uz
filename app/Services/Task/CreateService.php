@@ -35,12 +35,12 @@ class CreateService
         $task->addresses()->delete();
         $task->delete();
     }
-    public function attachCustomFieldsByRoute($task, $routeName){
+    public function attachCustomFieldsByRoute($task, $routeName, $request){
         foreach ($task->category->custom_fields()->where('route',$routeName)->get() as $data) {
             $value = $task->custom_field_values()->where('custom_field_id', $data->id)->first()?? new CustomFieldsValue();
             $value->task_id = $task->id;
             $value->custom_field_id = $data->id;
-            $arr = $data->name !== null ? Arr::get(request()->all(), $data->name):null;
+            $arr = $data->name !== null ? Arr::get($request->all(), $data->name):null;
             $value->value = is_array($arr) ? json_encode($arr) : $arr;
             $value->save();
         }
