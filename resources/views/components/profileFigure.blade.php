@@ -8,9 +8,9 @@
         <div class="sm:w-1/3 pb-10 w-full">
             <img class="border border-3 border-gray-400 h-44 w-44"
                  @if ($user->avatar == Null)
-                 src='{{asset("storage/images/default.jpg")}}'
+                     src='{{asset("storage/images/default.jpg")}}'
                  @else
-                 src="{{asset("storage/{$user->avatar}")}}"
+                     src="{{asset("storage/{$user->avatar}")}}"
                  @endif alt="avatar">
 
             <div class="rounded-md bg-gray-200 w-44 mt-2 py-1 border-2 border-gray-700" type="button">
@@ -26,9 +26,12 @@
             @isset($user->age)
                 <p class="inline-block mr-2">
                     {{$user->age}}
-                    @if($user->age>20 && $user->age%10==1) {{__('года')}}
-                    @elseif ($user->age>20 && ($user->age%10==2 || $user->age%10==3 || $user->age%10==1)) {{__('года')}}
-                    @else {{__('лет')}}
+                    @if($user->age>20 && $user->age%10==1)
+                        {{__('года')}}
+                    @elseif ($user->age>20 && ($user->age%10==2 || $user->age%10==3 || $user->age%10==1))
+                        {{__('года')}}
+                    @else
+                        {{__('лет')}}
                     @endif
                 </p>
             @endisset
@@ -38,28 +41,29 @@
                                     @isset($user->location)
                                         <i class="fas fa-map-marker-alt"></i>
                                         {{__('Местоположение')}} {{$user->location}}
-                                    @else {{__('город не обозначен')}}
+                                    @else
+                                        {{__('город не обозначен')}}
                                     @endisset
                                 </p>
                             </span>
-                            <div class="text-gray-500 text-base mt-2">
-                                <p class="mt-2">{{__('Создал')}} <a>
+            <div class="text-gray-500 text-base mt-2">
+                <p class="mt-2">{{__('Создал')}} <a>
                                     <span>
                                         {{count($user->tasks??[])}}
                                     </span> {{__('задание')}}</a></p>
-                                @switch($review_good + $review_bad)
-                                    @case(1)
-                                    <span>{{__('Получил')}} {{($review_good) + ($review_bad) }} {{__('Отзыв')}}</span>
-                                    @break
-                                    @case(1 && 5)
-                                    <span>{{__('Получил')}} {{($review_good) + ($review_bad) }} {{__('Отзыва')}}</span>
-                                    @break
-                                    @default
-                                    <span>{{__('Получил')}} {{($review_good) + ($review_bad) }} {{__('Отзывов')}}</span>
-                                @endswitch
-                            </div>
-             <div class="flex flex-row items-center mt-3" id="str1">
-                <div class="flex flex-row items-center"> <p>{{__('Средняя оценка:')}}</p>
+                @switch($review_good + $review_bad)
+                    @case(1)
+                    <span>{{__('Получил')}} {{($review_good) + ($review_bad) }} {{__('Отзыв')}}</span>
+                    @break
+                    @case(1 && 5)
+                    <span>{{__('Получил')}} {{($review_good) + ($review_bad) }} {{__('Отзыва')}}</span>
+                    @break
+                    @default
+                    <span>{{__('Получил')}} {{($review_good) + ($review_bad) }} {{__('Отзывов')}}</span>
+                @endswitch
+            </div>
+            <div class="flex flex-row items-center mt-3" id="str1">
+                <div class="flex flex-row items-center"><p>{{__('Средняя оценка:')}}</p>
                     <span id="review{{$user->id}}" class="mx-1">{{$review_rating}}</span>
                 </div>
                 <div class="flex items-center ml-2" id="stars{{$user->id}}">
@@ -73,7 +77,7 @@
                             src="{{asset('images/verify.png')}}"
                             alt="" class="w-24">
                         <div id="tooltip-animation_1" role="tooltip"
-                            class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                             class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                             <p class="text-center">
                                 {{__('Номер телефона и Е-mail пользователя подтверждены')}}
                             </p>
@@ -86,7 +90,7 @@
                             src="{{asset('images/verify_gray.png') }}"
                             alt="" class="w-24">
                         <div id="tooltip-animation_1" role="tooltip"
-                            class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                             class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                             <p class="text-center">
                                 {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
                             </p>
@@ -95,50 +99,37 @@
                     </div>
                 @endif
 
-                @if($user->role_id == 2)
-                    @foreach($about as $rating)
-                        @if($rating->id == $user->id)
-                            <div data-tooltip-target="tooltip-animation_2" class="mx-4 tooltip-2">
-                                <img src="{{ asset('images/best.png') }}" alt="" class="w-24">
-                                <div id="tooltip-animation_2" role="tooltip"
-                                     class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                    <p class="text-center">
-                                        {{__('Входит в ТОП-20 исполнителей User.uz')}}
-                                    </p>
-                                    <div class="tooltip-arrow" data-popper-arrow></div>
-                                </div>
-                            </div>
-                        @else
-                            @continue
-                        @endif
-                    @endforeach
-                    <div data-tooltip-target="tooltip-animation_3" class="mx-4">
-                        @if(($review_good) + ($review_bad)  >= 50)
-                            <img src="{{ asset('images/50.png') }}" alt="" class="w-24">
-                        @else
-                            <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-24">
-                        @endif
-                        <div id="tooltip-animation_3" role="tooltip"
+                @if(in_array($user->id, $top_users))
+                    <div data-tooltip-target="tooltip-animation_2" class="mx-4 tooltip-2">
+                        <img src="{{ asset('images/best.png') }}" alt="" class="w-24">
+                        <div id="tooltip-animation_2" role="tooltip"
                              class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                             <p class="text-center">
-                                {{__('Более 50 выполненных заданий')}}
+                                {{__('Входит в ТОП-20 исполнителей User.uz')}}
                             </p>
                             <div class="tooltip-arrow" data-popper-arrow></div>
                         </div>
                     </div>
                 @else
-                <div data-tooltip-target="tooltip-animation_2" class="mx-4 tooltip-2">
-                    <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-24">
-                    <div id="tooltip-animation_2" role="tooltip"
-                         class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                        <p class="text-center">
-                            {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
-                        </p>
-                        <div class="tooltip-arrow" data-popper-arrow></div>
+                    <div data-tooltip-target="tooltip-animation-on-top"
+                         class="mx-1 tooltip-2">
+                        <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
+                        <div id="tooltip-animation-on-top" role="tooltip"
+                             class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                            <p class="text-center">
+                                {{__('Невходит в ТОП-20 исполнителей User.uz')}}
+                            </p>
+                            <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
                     </div>
-                </div>
+                @endif
+
                 <div data-tooltip-target="tooltip-animation_3" class="mx-4">
+                    @if(($review_good) + ($review_bad)  >= 50)
+                        <img src="{{ asset('images/50.png') }}" alt="" class="w-24">
+                    @else
                         <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-24">
+                    @endif
                     <div id="tooltip-animation_3" role="tooltip"
                          class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                         <p class="text-center">
@@ -147,18 +138,39 @@
                         <div class="tooltip-arrow" data-popper-arrow></div>
                     </div>
                 </div>
+                @else
+                    <div data-tooltip-target="tooltip-animation_2" class="mx-4 tooltip-2">
+                        <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-24">
+                        <div id="tooltip-animation_2" role="tooltip"
+                             class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                            <p class="text-center">
+                                {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
+                            </p>
+                            <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
+                    </div>
+                    <div data-tooltip-target="tooltip-animation_3" class="mx-4">
+                        <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-24">
+                        <div id="tooltip-animation_3" role="tooltip"
+                             class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                            <p class="text-center">
+                                {{__('Более 50 выполненных заданий')}}
+                            </p>
+                            <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
+                    </div>
                 @endif
             </div>
         </div>
     </div>
 </figure>
-    @if($user->role_id == 2)
-        <script>
-            if ($('.tooltip-2').length === 0) {
-                $("<div data-tooltip-target='tooltip-animation_2' class='mx-4 tooltip-2' ><img src='{{ asset("images/best_gray.png") }}'alt='' class='w-24'><div id='tooltip-animation_2' role='tooltip' class='inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700'><p class='text-center'>{{__('Невходит в ТОП-20 всех исполнителей User.uz')}}</p><div class='tooltip-arrow' data-popper-arrow></div> </div></div>").insertAfter($(".tooltip-1"));
-            }
-        </script>
-    @endif
+@if($user->role_id == 2)
+    <script>
+        if ($('.tooltip-2').length === 0) {
+            $("<div data-tooltip-target='tooltip-animation_2' class='mx-4 tooltip-2' ><img src='{{ asset("images/best_gray.png") }}'alt='' class='w-24'><div id='tooltip-animation_2' role='tooltip' class='inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700'><p class='text-center'>{{__('Невходит в ТОП-20 всех исполнителей User.uz')}}</p><div class='tooltip-arrow' data-popper-arrow></div> </div></div>").insertAfter($(".tooltip-1"));
+        }
+    </script>
+@endif
 <link rel="stylesheet" href="{{ asset('path/ijaboCropTool.min.css') }}">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="{{ asset('path/ijaboCropTool.min.js') }}"></script>
@@ -179,23 +191,24 @@
         onError: function (message, element, status) {
             alert(message);
         }
-    });                     
-</script>  
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/raty/3.1.1/jquery.raty.min.css" integrity="sha512-XsO5ywONBZOjW5xo5zqAd0YgshSlNF+YlX39QltzJWIjtA4KXfkAYGbYpllbX2t5WW2tTGS7bmR0uWgAIQ8JLQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    });
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/raty/3.1.1/jquery.raty.min.css"
+      integrity="sha512-XsO5ywONBZOjW5xo5zqAd0YgshSlNF+YlX39QltzJWIjtA4KXfkAYGbYpllbX2t5WW2tTGS7bmR0uWgAIQ8JLQ=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"/>
 <script src="https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/jquery.raty.min.js"></script>
 <script>
     var star = $('#review{{$user->id}}').text();
-    if(star>0){
+    if (star > 0) {
         $("#stars{{$user->id}}").raty({
-            path: 'https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/images', 
-            readOnly: true, 
+            path: 'https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/images',
+            readOnly: true,
             score: star,
             size: 12
         });
-    }
-    else{
+    } else {
         $('#str1').addClass('hidden');
         $('#str2').removeClass('hidden');
     }
-   
-</script>                   
+
+</script>

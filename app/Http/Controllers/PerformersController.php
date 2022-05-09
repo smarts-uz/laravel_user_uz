@@ -48,12 +48,12 @@ class PerformersController extends Controller
 
         $service = new PerformersService();
         $item = $service->service($authId, $user);
-        
+
        return view('performers/performers',
            [
                 'users' => $item->users,
                 'tasks' => $item->tasks,
-                'about' => $item->about,
+                'top_users' => $item->top_users,
                 'task_count' => $item->task_count,
                 'categories' => $item->categories,
                 'categories2' => $item->categories2,

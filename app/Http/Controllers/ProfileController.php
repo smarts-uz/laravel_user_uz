@@ -91,7 +91,7 @@ class ProfileController extends Controller
         return view('profile.profile',
         [
             'categories' => $item->categories,
-            'about' => $item->about,
+            'top_users' => $item->top_users,
             'user' => $user,
             'directories' => $item->directories,
             'portfolios' => $item->portfolios,
