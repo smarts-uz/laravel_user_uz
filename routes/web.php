@@ -203,6 +203,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/notif_setting', [ProfileController::class, 'notif_setting_ajax'])->name('profile.notif_setting_ajax');
     });
 });
+Route::post('/set-session', [ProfileController::class, 'setSession'])->name('profile.set_session');
 Route::post('/uploadImage', [ProfileController::class, 'UploadImage'])->name('profile.UploadImage');
 #endregion
 

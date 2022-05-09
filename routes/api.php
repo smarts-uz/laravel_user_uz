@@ -54,11 +54,7 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('create-task/contacts', [TaskAPIController::class, 'contacts']); //end +
     Route::post('create-task/verify', [TaskAPIController::class, 'verify']); //end +
 
-
     Route::get('/notifications', [NotificationController::class, 'index']);
-//    Route::any('/{paysys}',function($paysys){
-//        (new Goodoneuz\PayUz\PayUz)->driver($paysys)->handle();
-//    });
 
     Route::get('/my-tasks-count', [TaskAPIController::class, 'my_tasks_count']); //end +
     Route::get('/my-tasks', [TaskAPIController::class, 'my_tasks_all']); //end +

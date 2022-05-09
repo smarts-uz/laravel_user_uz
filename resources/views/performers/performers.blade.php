@@ -18,7 +18,7 @@
                 @if (Auth::check())
                     <a href="/verificationInfo" class="flex flex-row shadow-lg rounded-lg mb-8">
                         <div class="w-1/2 h-24 bg-contain bg-no-repeat bg-center"
-                            style="background-image: url({{asset('images/like.png')}});">
+                             style="background-image: url({{asset('images/like.png')}});">
                         </div>
                         <div class="font-bold text-xs text-gray-700 text-left my-auto">
                             {!!__('Станьте исполнителем <br> U-Ser. И начните <br> зарабатывать.')!!}
@@ -27,7 +27,7 @@
                 @else
                     <a href="/login" class="flex flex-row shadow-lg rounded-lg mb-8">
                         <div class="w-1/2 h-24 bg-contain bg-no-repeat bg-center"
-                            style="background-image: url({{asset('images/like.png')}});">
+                             style="background-image: url({{asset('images/like.png')}});">
                         </div>
                         <div class="font-bold text-xs text-gray-700 text-left my-auto">
                             {!!__('Станьте исполнителем <br> U-Ser. И начните <br> зарабатывать.')!!}
@@ -66,8 +66,9 @@
                         <p>{{__('Все исполнители')}}</p>
                     </div>
                     <div class="form-check flex flex-row mx-8 mt-10">
-                        <input class="focus:outline-none  form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-black-600 checked:border-black-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                               type="checkbox" id="online">
+                        <input
+                            class="focus:outline-none  form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-black-600 checked:border-black-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                            type="checkbox" id="online">
                         <label class="form-check-label inline-block text-gray-800" for="online">
                             {{__('Сейчас на сайте')}}
                         </label>
@@ -75,8 +76,9 @@
                 </div>
                 <div class="sortable">
                     @foreach($users as $user)
-                        <div class="difficultTask score scores{{$user->id}} w-12/12 m-5 h-[200px] flex md:flex-none overflow-hidden md:overflow-visible mb-10 "
-                             id="{{$user->id}}">
+                        <div
+                            class="difficultTask score scores{{$user->id}} w-12/12 m-5 h-[200px] flex md:flex-none overflow-hidden md:overflow-visible mb-10 "
+                            id="{{$user->id}}">
                             <div class=" float-left">
                                 <img class="rounded-lg w-32 h-32 bg-black mb-4 mr-4"
                                      @if ($user->avatar === null) src='{{asset("storage/images/default.jpg")}}'
@@ -107,12 +109,13 @@
                                     @endif
                                     <div class="flex items-center sm:my-0 my-2">
                                         @if ($user->is_email_verified && $user->is_phone_number_verified)
-                                            <div data-tooltip-target="tooltip-animation-verified" class="mx-1 tooltip-1">
+                                            <div data-tooltip-target="tooltip-animation-verified"
+                                                 class="mx-1 tooltip-1">
                                                 <img
                                                     src="{{asset('images/verify.png')}}"
                                                     alt="" class="w-10">
                                                 <div id="tooltip-animation-verified" role="tooltip"
-                                                    class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                     class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                     <p class="text-center">
                                                         {{__('Номер телефона и Е-mail пользователя подтверждены')}}
                                                     </p>
@@ -120,12 +123,13 @@
                                                 </div>
                                             </div>
                                         @else
-                                            <div data-tooltip-target="tooltip-animation-not-verified" class="mx-1 tooltip-1">
+                                            <div data-tooltip-target="tooltip-animation-not-verified"
+                                                 class="mx-1 tooltip-1">
                                                 <img
                                                     src="{{asset('images/verify_gray.png') }}"
                                                     alt="" class="w-10">
                                                 <div id="tooltip-animation-not-verified" role="tooltip"
-                                                    class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                     class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                     <p class="text-center">
                                                         {{__('Номер телефона и Е-mail пользователя неподтверждены')}}
                                                     </p>
@@ -136,7 +140,8 @@
                                         @if($user->role_id == 2)
                                             @foreach($about as $rating)
                                                 @if($rating->id == $user->id)
-                                                    <div data-tooltip-target="tooltip-animation-on-top" class="mx-1 tooltip-2">
+                                                    <div data-tooltip-target="tooltip-animation-on-top"
+                                                         class="mx-1 tooltip-2">
                                                         <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
                                                         <div id="tooltip-animation-on-top" role="tooltip"
                                                              class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
@@ -165,10 +170,11 @@
                                                 </div>
                                             </div>
                                         @else
-                                            <div data-tooltip-target="tooltip-animation-not-on-top" class="mx-4 tooltip-2">
+                                            <div data-tooltip-target="tooltip-animation-not-on-top"
+                                                 class="mx-4 tooltip-2">
                                                 <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
                                                 <div id="tooltip-animation-not-on-top" role="tooltip"
-                                                    class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                     class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                     <p class="text-center">
                                                         {{__('Невходит в ТОП-20 всех исполнителей User.uz')}}
                                                     </p>
@@ -176,9 +182,9 @@
                                                 </div>
                                             </div>
                                             <div data-tooltip-target="tooltip-animation-not-many" class="mx-1">
-                                                    <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10">
+                                                <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10">
                                                 <div id="tooltip-animation-not-many" role="tooltip"
-                                                    class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                                     class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                                     <p class="text-center">
                                                         {{__('Более 50 выполненных заданий')}}
                                                     </p>
@@ -192,7 +198,8 @@
                                     @if(Cache::has('user-is-online-' . $user->id))
                                         <span id="only" class="text-green-500">Online</span>
                                     @else
-                                        <span class="text-gray-500"> {{ Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</span>
+                                        <span
+                                            class="text-gray-500"> {{ Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</span>
                                     @endif
 
                                 </div>
@@ -208,23 +215,26 @@
                                     @auth
                                         @if($tasks->count() > 0 && Auth::user()->id != $user->id)
                                             <a id="open{{$user->id}}">
-                                                <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
-                                                onclick="$('#performer_id').val({{$user->id}});">
+                                                <button
+                                                    class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
+                                                    onclick="$('#performer_id').val({{$user->id}}); $('#performer_id_task').val({{$user->id}});">
                                                     {{__('Предложить задание')}}
                                                 </button>
                                             </a>
                                         @elseif ($tasks->count() > 0 && Auth::user()->id == $user->id)
                                             <a class="hidden lg:block">
-                                                <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
+                                                <button
+                                                    class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
                                                     {{__('Предложить задание')}}</button>
                                             </a>
                                         @else
                                             <a onclick="toggleModal12('modal-id12')" class="hidden lg:block">
-                                                <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
+                                                <button
+                                                    class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
                                                     {{__('Предложить задание')}}</button>
                                             </a>
                                         @endif
-                                            <input type="hidden" id="performer_id" value="">
+                                        <input type="hidden" id="performer_id" value="">
                                     @endauth
                                 </div>
                             </div>
@@ -238,59 +248,64 @@
 
 
     <div id="modal_content"
-             class="modal_content hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" style="background-color:rgba(0,0,0,0.5)">
-            <div class="modal relative w-auto mt-12 mx-auto max-w-3xl">
-                <div class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none text-center py-12">
-                    <h1 class="text-3xl font-semibold">{{__('Выберите задание, которое хотите предложить исполнителью')}}</h1>
-                    @foreach($tasks as $task)
-                        <label>
-                            <input type="text" name="tasks_id" class="hidden" value="{{ $task->id }}">
-                        </label>
-                    @endforeach
-
-                    <select name="tasks" id="task_name" onchange="showDiv(this)"
-                            class="appearance-none focus:outline-none border border-solid border-gray-500 rounded-lg text-gray-500 px-6 py-2 text-lg mt-6 hover:text-yellow-500  hover:border-yellow-500 hover:shadow-xl shadow-yellow-500 mx-auto block"><br>
-
-                            @foreach($tasks as $task)
-                                @auth
-                                    @if ($task->status <= 2)
-                                        <option value="{{ $task->id }}">
-                                            {{ $task->name }}
-                                        </option>
-                                    @endif
-                                @endauth
-                            @endforeach
-                        <option value="1">
-                            + {{__('новое задание')}}
-                        </option>
-                    </select>
+         class="modal_content hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
+         style="background-color:rgba(0,0,0,0.5)">
+        <div class="modal relative w-auto mt-12 mx-auto max-w-3xl">
+            <div
+                class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none text-center py-12">
+                <h1 class="text-3xl font-semibold">{{__('Выберите задание, которое хотите предложить исполнителью')}}</h1>
+                @foreach($tasks as $task)
                     <label>
-                        <input type="text" name="csrf" class="hidden" value="{{ csrf_token() }}">
+                        <input type="text" name="tasks_id" class="hidden" value="{{ $task->id }}">
                     </label>
+                @endforeach
 
-                    <div id="hidden_div">
-                        <button type="submit" onclick="myFunc()"
-                                class="cursor-pointer bg-red-500 text-white rounded-lg p-2 px-4 mt-4">
-                            {{__('Предложить работу')}}
-                        </button>
-                        <p class="py-7">
-                            {{__('Каждое задание можно предложить пяти исполнителям из каталога. исполнители получат СМС со ссылкой на ваше задание.')}}</p>
-                    </div>
+                <select name="tasks" id="task_name" onchange="showDiv(this)"
+                        class="appearance-none focus:outline-none border border-solid border-gray-500 rounded-lg text-gray-500 px-6 py-2 text-lg mt-6 hover:text-yellow-500  hover:border-yellow-500 hover:shadow-xl shadow-yellow-500 mx-auto block"><br>
 
+                    @foreach($tasks as $task)
+                        @auth
+                            @if ($task->status <= 2)
+                                <option value="{{ $task->id }}">
+                                    {{ $task->name }}
+                                </option>
+                            @endif
+                        @endauth
+                    @endforeach
+                    <option value="1">
+                        + {{__('новое задание')}}
+                    </option>
+                </select>
+                <label>
+                    <input type="text" name="csrf" class="hidden" value="{{ csrf_token() }}">
+                </label>
 
-                    <a href="/categories/1">
-                        <button id="hidden_div2"
-                                class="cursor-pointer bg-green-500 text-white rounded-lg p-2 px-4 mt-6 mx-auto"
-                                style="display: none;">
-                            {{__('Создать новое задание')}}
-                        </button>
-                    </a>
-
-                    <button class="cursor-pointer close text-gray-400 font-bold rounded-lg p-2 px-4 mt-6 absolute -top-6 right-0 text-2xl">
-                        x
+                <div id="hidden_div">
+                    <button type="submit" onclick="myFunc()"
+                            class="cursor-pointer bg-red-500 text-white rounded-lg p-2 px-4 mt-4">
+                        {{__('Предложить работу')}}
                     </button>
+                    <p class="py-7">
+                        {{__('Каждое задание можно предложить пяти исполнителям из каталога. исполнители получат СМС со ссылкой на ваше задание.')}}</p>
                 </div>
+
+
+                <form action="{{route('profile.set_session')}}" method="POST">
+                    @csrf
+                    <input type="hidden" name="performer_id" id="performer_id_task">
+                    <button id="hidden_div2" type="submit"
+                            class="cursor-pointer bg-green-500 text-white rounded-lg p-2 px-4 mt-6 mx-auto"
+                            style="display: none;">
+                        {{__('Создать новое задание')}}
+                    </button>
+                </form>
+
+                <button
+                    class="cursor-pointer close text-gray-400 font-bold rounded-lg p-2 px-4 mt-6 absolute -top-6 right-0 text-2xl">
+                    x
+                </button>
             </div>
+        </div>
     </div>
 
     <!-- Основной контент страницы -->
@@ -312,10 +327,12 @@
     </div>
 
     {{-- Modal start --}}
-    <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
-         id="modal-id12"  style="background-color:rgba(0,0,0,0.5)">
+    <div
+        class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
+        id="modal-id12" style="background-color:rgba(0,0,0,0.5)">
         <div class="relative w-auto my-6 mx-auto max-w-3xl" id="modal-id12">
-            <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+            <div
+                class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <div class=" text-center p-12  rounded-t">
                     <button type="submit" onclick="toggleModal12('modal-id12')"
                             class="rounded-md w-100 h-16 absolute top-1 right-4">
@@ -343,21 +360,24 @@
     </div>
     <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id12-backdrop"></div>
     </div>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/raty/3.1.1/jquery.raty.min.css" integrity="sha512-XsO5ywONBZOjW5xo5zqAd0YgshSlNF+YlX39QltzJWIjtA4KXfkAYGbYpllbX2t5WW2tTGS7bmR0uWgAIQ8JLQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/jquery.raty.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/raty/3.1.1/jquery.raty.min.css"
+          integrity="sha512-XsO5ywONBZOjW5xo5zqAd0YgshSlNF+YlX39QltzJWIjtA4KXfkAYGbYpllbX2t5WW2tTGS7bmR0uWgAIQ8JLQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/jquery.raty.min.js"></script>
 
-<script>
-    @foreach ($users as $user)
+    <script>
+        @foreach ($users as $user)
         // let star = $('.review{{$user->id}}').text();
         $("#stars{{$user->id}}").raty({
-            path: 'https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/images', 
-            readOnly: true, 
-            score: {{$user->review_rating}},
+            path: 'https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/images',
+            readOnly: true,
+            score: {{$user->review_rating ?? 0}},
             size: 12
         });
-    @endforeach
-</script> 
+        @endforeach
+    </script>
     @if($user->role_id == 2)
         <script>
             if ($('.tooltip-2').length === 0) {
@@ -497,7 +517,7 @@
         };
     </script>
 @endsection
-    
+
 @section('javasript')
     <script src="//unpkg.com/alpinejs" defer></script>
     <script>
