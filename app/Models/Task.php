@@ -58,8 +58,9 @@ class Task extends Model
         return preg_replace('/[^0-9.]+/', '', $this->budget);
     }
 
-
-    public function getCreatedAtAttribute($value)
+    // Bu erda kerak emas
+    
+    /* public function getCreatedAtAttribute($value)
     {
         $value = Carbon::parse($value)->locale(getLocale());
         return $value->diffForHumans();
@@ -85,7 +86,7 @@ class Task extends Model
         $value->minute<10 ? $minut = '0'.$value->minute : $minut = $value->minute;
         $day = $value == now()->toDateTimeString()? "Bugun": "$value->day-$value->monthName";
         return "$day  $value->noZeroHour:$minut";
-    }
+    } */
 
     public function addresses()
     {
