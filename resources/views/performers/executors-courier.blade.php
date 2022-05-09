@@ -201,64 +201,8 @@
                         <h1 class="text-xl font-semibold mt-2">{{__('Отзывов пока нет')}}</h1>
                     @else
                         <h1 class="text-xl font-semibold mt-2">{{__('Отзывы')}}</h1>
-                        {{-- tabs --}}
-                        <div class="tab my-2">
-                            <button
-                                class="tablinks tablinks border-2 rounded-xl px-2 py-1 mr-4 my-2 border-gray-500  "
-                                onclick="openCity(event, 'first')"><i
-                                    class="far fa-thumbs-up text-blue-500 mr-1"></i> {{__('Положительные')}}
-                            </button>
-                            <button
-                                class="tablinks tablinks border-2 rounded-xl px-2 py-1 my-2  border-gray-500 text-gray-800 "
-                                onclick="openCity(event, 'second')"><i
-                                    class="far fa-thumbs-down text-blue-500 mr-2"></i>{{__('Отрицательные')}}
-                            </button>
-                        </div>
-                        {{-- tab contents --}}
-                        <div id="first" class="tabcontent">
-                            @foreach($goodReviews as $goodReview)
-                                @if($goodReview->user && $goodReview->task)
-                                    <div class="my-6">
-                                        <div class="flex flex-row gap-x-2 my-4">
-                                            <img src="{{ asset('storage/'.$goodReview->user->avatar) }}" alt="#"
-                                                 class="w-12 h-12 border-2 rounded-lg border-gray-500">
-                                            <a href="{{ route('performers.performer',$goodReview->reviewer_id ) }}"
-                                               class="text-blue-500 hover:text-red-500">{{ $goodReview->user->name }}</a>
-                                        </div>
-                                        <div class="sm:w-3/4 w-full p-3 bg-yellow-50 rounded-xl">
-                                            <p>{{__('Задание')}} <a
-                                                    href="{{ route('searchTask.task',$goodReview->task_id) }}"
-                                                    class="hover:text-red-400 border-b border-gray-300 hover:border-red-400">"{{ $goodReview->task->name }}
-                                                    "</a> {{__('выполнено')}}</p>
-                                            <p class="border-t-2 border-gray-300 my-3 pt-3">{{ $goodReview->description }}</p>
-                                            <p class="text-right">{{ $goodReview->created }}</p>
-                                        </div>
-                                    </div>
-                                @endif
-                            @endforeach
-                        </div>
-
-                        <div id="second" class="tabcontent">
-                            @foreach($badReviews as $badReview)
-                                @if($badReview->user && $badReview->task)
-                                    <div class="my-6">
-                                        <div class="flex flex-row gap-x-2 my-4">
-                                            <img src="{{  asset('storage/'.$badReview->user->avatar) }}" alt="#"
-                                                 class="w-12 h-12 border-2 rounded-lg border-gray-500">
-                                            <a href="{{ route('performers.performer',$badReview->reviewer_id ) }}"
-                                               class="text-blue-500 hover:text-red-500">{{ $badReview->user->name }}</a>
-                                        </div>
-                                        <div class="sm:w-3/4 w-full p-3 bg-yellow-50 rounded-xl">
-                                            <p>{{__('Задание')}} <a href="{{ route('searchTask.task',$badReview->task_id) }}"
-                                                                    class="hover:text-red-400 border-b border-gray-300 hover:border-red-400">"{{ $badReview->task->name }}
-                                                    "</a> {{__('выполнено')}}</p>
-                                            <p class="border-t-2 border-gray-300 my-3 pt-3">{{ $badReview->description }}</p>
-                                            <p class="text-right">{{ $badReview->created }}</p>
-                                        </div>
-                                    </div>
-                                @endif
-                            @endforeach
-                        </div>
+                        <!-- Tabs -->
+                        @include('performers.reviews')
                     @endif
                 </div>
             </div>
@@ -319,11 +263,6 @@
             {{-- right sidebar end --}}
         </div>
     </div>
-    <style>
-        .tabcontent {
-            display: none;
-        }
-    </style>
 
     @if($user->role_id == 2)
         <script>
@@ -332,23 +271,7 @@
             }
         </script>
     @endif
-    <script>
-            // tabs
-        function openCity(evt, cityName) {
-            var index, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (index = 0; index < tabcontent.length; index++) {
-              tabcontent[index].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("tablinks");
-            for (index = 0; index < tablinks.length; index++) {
-              tablinks[index].className = tablinks[index].className.replace("bg-yellow-200 text-gray-900", "");
-            }
-            document.getElementById(cityName).style.display = "block";
-            evt.currentTarget.className += "bg-yellow-200 text-gray-900";
-          }
-        //tabs end
-    </script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/raty/3.1.1/jquery.raty.min.css" integrity="sha512-XsO5ywONBZOjW5xo5zqAd0YgshSlNF+YlX39QltzJWIjtA4KXfkAYGbYpllbX2t5WW2tTGS7bmR0uWgAIQ8JLQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/jquery.raty.min.js"></script>
     <script>
@@ -366,5 +289,4 @@
             $('#str2').removeClass('hidden');
         }
     </script>                   
-    
 @endsection
