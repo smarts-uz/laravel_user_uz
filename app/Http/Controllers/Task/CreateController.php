@@ -54,7 +54,7 @@ class CreateController extends Controller
             'category_id' => 'required'
         ]);
         $task = Task::create($data);
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_NAME);
+        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_NAME, $request);
 
         return redirect()->route("task.create.custom.get", $task->id);
     }
@@ -78,7 +78,7 @@ class CreateController extends Controller
     public function custom_store(Request $request, Task $task)
     {
         /* dd($request->all()); */
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM);
+        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM, $request);
 
         if ($task->category->parent->remote){
             return redirect()->route("task.create.remote", $task->id);
@@ -119,7 +119,7 @@ class CreateController extends Controller
     {
 
         $task->update($this->service->addAdditionalAddress($task, $request));
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS);
+        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS, $request);
         return redirect()->route("task.create.date", $task->id);
 
     }
@@ -136,7 +136,7 @@ class CreateController extends Controller
     {
         $data = $request->validated();
         $task->update($data);
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_DATE);
+        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_DATE, $request);
 
         return redirect()->route('task.create.budget', $task->id);
     }
@@ -153,7 +153,7 @@ class CreateController extends Controller
     {
         $task->budget = preg_replace('/[^0-9.]+/', '', $request->amount1);
         $task->save();
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET);
+        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET, $request);
 
 
         return redirect()->route('task.create.note', $task->id);
