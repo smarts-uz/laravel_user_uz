@@ -35,6 +35,28 @@ use RealRashid\SweetAlert\Facades\Alert;
 class ProfileAPIController extends Controller
 {
 
+    /**
+     * @OA\Get(
+     *     path="/api/profile",
+     *     tags={"Profile"},
+     *     summary="Profile index",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function index()
     {
         $user = Auth::user();
@@ -182,14 +204,6 @@ class ProfileAPIController extends Controller
             'data' => [
                 'message' =>'Portfolio deleted'
             ]
-        ]);
-    }
-
-    public function portfolioEdit(Portfolio $portfolio)
-    {
-        return response()->json([
-            'success' => true,
-            'data' => new PortfolioIndexResource($portfolio)
         ]);
     }
 

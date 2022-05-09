@@ -46,6 +46,8 @@ class UserAPIController extends Controller
                 'avatar' => asset('storage/'.$user->avatar),
                 'balance' => $userBalance,
                 'phone_number' => $user->phone_number,
+                'email_verified' => boolval($user->is_email_verified),
+                'phone_verified' => boolval($user->is_phone_number_verified),
                 'role_id' => $user->role_id,
             ],
             'access_token'=>$accessToken]);
