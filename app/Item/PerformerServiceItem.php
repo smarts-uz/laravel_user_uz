@@ -24,7 +24,4 @@ class PerformerServiceItem
     public $users;
     public $task_count;
     public $top_users;
-    public $review_good;
-    public $review_bad;
-    public $review_rating;
 }
