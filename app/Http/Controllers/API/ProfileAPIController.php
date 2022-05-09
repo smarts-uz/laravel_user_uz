@@ -130,7 +130,7 @@ class ProfileAPIController extends Controller
             $image = [];
             foreach ($request->file('images') as $uploadedImage) {
                 $filename = $user->name.'/'.$data['comment'].'/'.time() . '_' . $uploadedImage->getClientOriginalName();
-                $uploadedImage->move(public_path().'Portfolio/'.$user->name.'/', $filename);
+                $uploadedImage->move(public_path().'/Portfolio/'.$user->name.'/', $filename);
                 $image[] = $filename;
             }
             $data['image'] = json_encode($image);
