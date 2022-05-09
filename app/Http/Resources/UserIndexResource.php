@@ -135,15 +135,15 @@ class UserIndexResource extends JsonResource
                 'review_bad' => $this->review_bad,
                 'review_good' => $this->review_good,
                 'rating' => $this->review_rating,
-                'last_review' => [
+                'last_review' => $lastReview ? [
                     'description' => $lastReview->description,
                     'reviewer_name' => User::query()->find($lastReview->reviewer_id)->name
-                ]
+                ] : null
             ],
             'phone_number_old' => $this->phone_number_old,
             'system_notification' =>$this->system_notification,
             'news_notification' => $this->news_notification,
-            'portfolios' => PortfolioResource::collection($this->portfolios),
+            'portfolios' => PortfolioIndexResource::collection($this->portfolios),
             'views' => $this->views,
             'directories' => $directories,
             'wallet_balance' => $balance,
