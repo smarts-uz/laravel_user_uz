@@ -117,7 +117,7 @@ class ProfileController extends Controller
             'views' => $item->views,
             'balance' => $item->balance,
             'task' => $item->task,
-            'about' => $item->about,
+            'top_users' => $item->top_users,
             'transactions' => $item->transactions,
             'user' => $item->user,
             'review_good' => $item->review_good,
