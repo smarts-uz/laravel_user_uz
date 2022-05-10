@@ -206,13 +206,13 @@
                                                 </button>
                                             </a>
                                         @elseif ($tasks->count() > 0 && Auth::user()->id == $user->id)
-                                            <a class="hidden lg:block">
+                                            <a class="">
                                                 <button
                                                     class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
                                                     {{__('Предложить задание')}}</button>
                                             </a>
                                         @else
-                                            <a onclick="toggleModal12('modal-id12')" class="hidden lg:block">
+                                            <a onclick="toggleModal12('modal-id12')" class="">
                                                 <button
                                                     class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
                                                     {{__('Предложить задание')}}</button>
@@ -335,8 +335,14 @@
                 <!--footer-->
                 <div class="flex mx-auto items-center justify-end p-6 rounded-b mb-8">
                     <div class="mt-4 ">
-                        <a class="px-10 py-4 text-center font-sans  text-xl  font-semibold bg-green-500 text-white hover:bg-green-500  h-12 rounded-md text-xl"
-                           href="/categories/1">{{__('Создать задание')}}</a>
+                        <form action="{{route('profile.set_session')}}" method="POST">
+                            @csrf
+                            <input type="hidden" name="performer_id" id="performer_id_task">
+                            <button type="submit"
+                                class="bg-green-500 rounded-lg text-white text-xl py-3 px-6 hover:bg-green-600">
+                                {{__('Создать новое задание')}}
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -353,22 +359,14 @@
 
     <script>
         @foreach ($users as $user)
-        // let star = $('.review{{$user->id}}').text();
-        $("#stars{{$user->id}}").raty({
-            path: 'https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/images',
-            readOnly: true,
-            score: {{$user->review_rating ?? 0}},
-            size: 12
-        });
+            $("#stars{{$user->id}}").raty({
+                path: 'https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/images',
+                readOnly: true,
+                score: {{$user->review_rating ?? 0}},
+                size: 12
+            });
         @endforeach
     </script>
-    @if($user->role_id == 2)
-        <script>
-            if ($('.tooltip-2').length === 0) {
-                $("<div data-tooltip-target='tooltip-animation_2' class='mx-4 tooltip-2' ><img src='{{ asset("images/best_gray.png") }}'alt='' class='w-24'><div id='tooltip-animation_2' role='tooltip' class='inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700'><p class='text-center'>{{__('Невходит в ТОП-20 всех исполнителей User.uz')}}</p><div class='tooltip-arrow' data-popper-arrow></div> </div></div>").insertAfter($(".tooltip-1"));
-            }
-        </script>
-    @endif
     <script>
         @foreach ($categories as $category)
         $("#{{ str_replace(' ', '', $category->name) }}").click(function () {
@@ -543,22 +541,6 @@
 
             });
         })
-        // @foreach($users as $user)
-        //     var star = $('#review{{$user->id}}').text();
-        //     if (star > 0) {
-        //         for (let i = 0; i < star; i++) {
-        //             $("#stars{{$user->id}}").append('<i class="fas fa-star text-yellow-500"></i>');
-        //         }
-        //         for (let u = star; u < 5; u++) {
-        //             $("#stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
-        //         }
-        //     }
-        //     else {
-        //         for (let e = 0; e < 5; e++) {
-        //             $("#stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
-        //         }
-        //     }
-        // @endforeach
     </script>
 @endsection
 
