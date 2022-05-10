@@ -95,6 +95,11 @@ class SearchTaskController extends VoyagerBaseController
     }
 
 public function search_new2(Request $request){
+   
+    dd ($request);
+
+    $html=view("search_task.tasks2", compact('tasks','categories','categories2'))->render();
+        return  response()->json(array('success' => true, 'html'=>$html));
 
 }
 
