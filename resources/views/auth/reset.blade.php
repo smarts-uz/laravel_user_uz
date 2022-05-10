@@ -55,7 +55,7 @@
                     </button>
                 </form>
             </div>
-                <div id="second" class="p-2 @if(!$errors->has('phone_number')) hidden @endif">
+            <div id="second" class="p-2 @if(!$errors->has('phone_number')) hidden @endif">
                 <div class="mx-auto flex items-center justify-center w-full">
                     <p class="mb-4">
                         {!!__("Укажите телефон, привязанный к вашей <br> учетной записи. Мы отправим СМС с кодом.")!!}

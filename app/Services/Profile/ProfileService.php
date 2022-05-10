@@ -145,7 +145,8 @@ class ProfileService
         $item ->task = $user->tasks_count;
         $item ->ports = $user->portfoliocomments;
         $item ->portfolios = $user->portfolios()->where('image', '!=', null)->get();
-        $item->about = User::where('role_id', 2)->orderBy('review_rating', 'desc')->take(20)->get();
+        $item->top_users = User::where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
+            ->limit(20)->pluck('id')->toArray();
         $item ->file = "Portfolio/{$user->name}";
         if (!file_exists($item ->file)) {
             File::makeDirectory($item ->file);

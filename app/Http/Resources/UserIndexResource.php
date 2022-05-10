@@ -34,66 +34,51 @@ class UserIndexResource extends JsonResource
             $balance = 0;
 
         $achievements = [];
+
+        // check verify part
         if ($this->is_email_verified && $this->is_phone_number_verified) {
             $email_phone_photo = asset('images/verify.png');
             $message = __('Номер телефона и Е-mail пользователя подтверждены');
-            $achievements[] = [
-                'image' => $email_phone_photo,
-                'message' => $message
-            ];
         }
         else {
             $email_phone_photo = asset('images/verify_gray.png');
             $message = __('Номер телефона и Е-mail пользователя неподтверждены');
-            $achievements[] = [
-                'image' => $email_phone_photo,
-                'message' => $message
-            ];
         }
+        $achievements[] = [
+            'image' => $email_phone_photo,
+            'message' => $message
+        ];
+
         $service = new ProfileService();
         $item = $service->profileData($this);
-        $about = $item->about;
         $task_count = $item->task_count;
-        if ($this->role_id == 2) {
-            foreach ($about as $rating) {
-                if ($rating->id == $this->id) {
-                    $best = asset('images/best.png');
-                    $message = __('Входит в ТОП-20 исполнителей User.uz');
-                    $achievements[] = [
-                        'image' => $best,
-                        'message' => $message
-                    ];
-                }
-            }
-            if ($task_count >= 50) {
-                $task_count = asset('images/50.png');
-                $message = __('Более 50 выполненных заданий');
-                $achievements[] = [
-                    'image' => $task_count,
-                    'message' => $message
-                ];
-            } else {
-                $task_count = asset('images/50_gray.png');
-                $message = __('Более 50 выполненных заданий');
-                $achievements[] = [
-                    'image' => $task_count,
-                    'message' => $message
-                ];
-            }
+
+        // check top performer part
+        if (in_array($this->id, $item->top_users)) {
+            $best = asset('images/best.png');
+            $message = __('Входит в ТОП-20 исполнителей User.uz');
         } else {
             $best = asset('images/best_gray.png');
             $message = __('Не входит в ТОП-20 всех исполнителей User.uz');
-            $achievements[] = [
-                'image' => $best,
-                'message' => $message
-            ];
-            $task_count = asset('images/50_gray.png');
-            $message = __('Более 50 выполненных заданий');
-            $achievements[] = [
-                'image' => $task_count,
-                'message' => $message
-            ];
         }
+        $achievements[] = [
+            'image' => $best,
+            'message' => $message
+        ];
+
+        // check completed tasks count bigger than 50
+        if ($task_count >= 50) {
+            $task_count = asset('images/50.png');
+            $message = __('Более 50 выполненных заданий');
+        } else {
+            $task_count = asset('images/50_gray.png');
+            $message = __('Не более 50 выполненных заданий');
+        }
+        $achievements[] = [
+            'image' => $task_count,
+            'message' => $message
+        ];
+
         $tasks = Task::query()->where(['performer_id' => $this->id])->get();
         $performed_tasks = $tasks->groupBy('category_id');
         $performed_tasks_count = [];
@@ -135,15 +120,15 @@ class UserIndexResource extends JsonResource
                 'review_bad' => $this->review_bad,
                 'review_good' => $this->review_good,
                 'rating' => $this->review_rating,
-                'last_review' => [
+                'last_review' => $lastReview ? [
                     'description' => $lastReview->description,
                     'reviewer_name' => User::query()->find($lastReview->reviewer_id)->name
-                ]
+                ] : null
             ],
             'phone_number_old' => $this->phone_number_old,
             'system_notification' =>$this->system_notification,
             'news_notification' => $this->news_notification,
-            'portfolios' => PortfolioResource::collection($this->portfolios),
+            'portfolios' => PortfolioIndexResource::collection($this->portfolios),
             'views' => $this->views,
             'directories' => $directories,
             'wallet_balance' => $balance,

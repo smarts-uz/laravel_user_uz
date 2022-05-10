@@ -29,6 +29,12 @@ class ProfileController extends Controller
         $this->agent = new Agent();
     }
 
+    public function setSession(Request $request)
+    {
+        \session()->put('performer_id_for_task', $request->performer_id);
+        return redirect('categories/1');
+    }
+
     public function clear_sessions()
     {
         Session::query()->where('user_id', auth()->user()->id)->delete();
@@ -85,7 +91,7 @@ class ProfileController extends Controller
         return view('profile.profile',
         [
             'categories' => $item->categories,
-            'about' => $item->about,
+            'top_users' => $item->top_users,
             'user' => $user,
             'directories' => $item->directories,
             'portfolios' => $item->portfolios,

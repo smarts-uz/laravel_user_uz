@@ -58,6 +58,7 @@ class Task extends Model
         return preg_replace('/[^0-9.]+/', '', $this->budget);
     }
 
+    // Bu erda kerak emas
 
     public function getCreatedAtAttribute($value)
     {

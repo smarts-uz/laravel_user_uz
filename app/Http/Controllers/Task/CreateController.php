@@ -20,6 +20,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use PlayMobile\SMS\SmsService;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Notification;
 use App\Events\MyEvent;
@@ -48,13 +49,12 @@ class CreateController extends Controller
 
     public function name_store(Request $request)
     {
-
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required'
         ]);
         $task = Task::create($data);
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_NAME);
+        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_NAME, $request);
 
         return redirect()->route("task.create.custom.get", $task->id);
     }
@@ -78,7 +78,7 @@ class CreateController extends Controller
     public function custom_store(Request $request, Task $task)
     {
         /* dd($request->all()); */
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM);
+        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM, $request);
 
         if ($task->category->parent->remote){
             return redirect()->route("task.create.remote", $task->id);
@@ -119,7 +119,7 @@ class CreateController extends Controller
     {
 
         $task->update($this->service->addAdditionalAddress($task, $request));
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS);
+        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS, $request);
         return redirect()->route("task.create.date", $task->id);
 
     }
@@ -136,7 +136,7 @@ class CreateController extends Controller
     {
         $data = $request->validated();
         $task->update($data);
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_DATE);
+        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_DATE, $request);
 
         return redirect()->route('task.create.budget', $task->id);
     }
@@ -153,7 +153,7 @@ class CreateController extends Controller
     {
         $task->budget = preg_replace('/[^0-9.]+/', '', $request->amount1);
         $task->save();
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET);
+        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET, $request);
 
 
         return redirect()->route('task.create.note', $task->id);
@@ -230,7 +230,6 @@ class CreateController extends Controller
 
     public function contact_store(Task $task, Request $request)
     {
-//        dd($task);
         $user = auth()->user();
 
         $data = $request->validate([
@@ -242,14 +241,35 @@ class CreateController extends Controller
             LoginController::send_verification('phone', $user);
             return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
         }
-
         $task->status = 1;
         $task->user_id = $user->id;
         $task->phone = $user->phone_number;
+
+        $performer_id = session()->get('performer_id_for_task');
+        if ($performer_id) {
+            $performer = User::query()->find($performer_id);
+            $text_url = route("searchTask.task", $task->id);
+            $text = "Заказчик предложил вам новую задания $text_url. Имя заказчика: " . $user->name;
+            (new SmsService())->send($performer->phone_number, $text);
+            Notification::query()->create([
+                'user_id' => $task->user_id,
+                'performer_id' => $performer_id,
+                'task_id' => $task->id,
+                'name_task' => $task->name,
+                'description' => '123',
+                'type' => 4,
+            ]);
+
+            NotificationService::sendNotificationRequest([$performer_id], [
+                'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+            ]);
+
+            session()->forget('performer_id_for_task');
+        } else {
+            NotificationService::sendTaskNotification($task, $user->id);
+        }
+
         $task->save();
-
-        NotificationService::sendTaskNotification($task, $user->id);
-
         return redirect()->route('searchTask.task', $task->id);
     }
 

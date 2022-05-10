@@ -12,7 +12,7 @@ class ProfileDataItem
     public $task_count;
     public $ports;
     public $portfolios;
-    public $about;
+    public $top_users;
     public $file;
     public $b;
     public $directories;

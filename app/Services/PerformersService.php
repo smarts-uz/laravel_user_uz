@@ -26,18 +26,16 @@ class PerformersService
      */
     public function service($authId, $user)
     {
-
         $item = new PerformerServiceItem();
         $item->tasks = Task::where('user_id', $authId)->get();
         $item->categories = Category::where('parent_id', null)->select('id', 'name', 'slug')->get();
         $item->categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
-        $item->users = User::where('role_id', 2)->orderbyDesc('review_rating')->paginate(50);
-        $item ->review_good = User::select('review_good')->get();
-        $item ->review_bad = User::select('review_bad')->get();
-        $item ->review_rating = User::select('review_rating')->get();
-        $item-> about = User::where('role_id', 2)->orderBy('review_rating', 'desc')->take(20)->get();
+        $item->users = User::query()
+            ->where('review_rating', '!=', 0)
+            ->where('role_id', 2)
+            ->orderbyRaw('(review_good - review_bad) DESC')->paginate(50);
+        $item->top_users = User::where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')->limit(20)->pluck('id')->toArray();
         return $item;
-        
     }
 
 

@@ -40,6 +40,8 @@ Route::middleware('custom.auth:api')->group(function () {
 
     Route::group(['prefix' => 'chat'], function (){
         Route::get('/getContacts', [MessagesController::class, 'getContacts']);
+        Route::get('/search', [MessagesController::class, 'search']);
+        Route::post('/fetchMessages', [MessagesController::class, 'fetch']);
     });
     Route::post('task/create', [TaskAPIController::class, 'create']);
     Route::post('create-task/name', [TaskAPIController::class, 'name']); //end +
@@ -52,11 +54,7 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('create-task/contacts', [TaskAPIController::class, 'contacts']); //end +
     Route::post('create-task/verify', [TaskAPIController::class, 'verify']); //end +
 
-
     Route::get('/notifications', [NotificationController::class, 'index']);
-//    Route::any('/{paysys}',function($paysys){
-//        (new Goodoneuz\PayUz\PayUz)->driver($paysys)->handle();
-//    });
 
     Route::get('/my-tasks-count', [TaskAPIController::class, 'my_tasks_count']); //end +
     Route::get('/my-tasks', [TaskAPIController::class, 'my_tasks_all']); //end +

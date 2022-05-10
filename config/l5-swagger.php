@@ -39,7 +39,7 @@ return [
                  * Absolute paths to directory containing the swagger annotations are stored.
                 */
                 'annotations' => [
-                    base_path('app'),
+                    base_path('app/Http/Controllers'),
                     base_path('vendor/joy/*api*/src'),
                 ],
 
@@ -137,7 +137,7 @@ return [
              * @note This option overwrites `paths.excludes`
              * @see \OpenApi\scan
             */
-            'exclude' => [],
+            'exclude' => ['vendor', 'storage'],
         ],
 
         /*
