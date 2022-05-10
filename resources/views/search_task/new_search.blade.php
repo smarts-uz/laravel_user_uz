@@ -29,14 +29,17 @@
 <script>
     $("form").on("submit", function(event) {
         event.preventDefault();
-        let data_seria = $(this).serialize();
+        let data_seria = $(this).serializeArray();
         console.log(data_seria)
         $.ajax({
             url: "{{route('searchTask.search_new2')}}",
             type: 'POST',
-            data: data_seria,
-            success: function (data) {
-                console.log(data);
+            data: {zapros:data_seria},
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+                $('.show_tasks').html(data)
             },
             error: function (error) {
                 console.error("Ajax orqali yuklashda xatolik..." , error);

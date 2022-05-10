@@ -4,6 +4,8 @@ function init_map(){
         center: [ 41.311151, 69.279737],
         zoom: 13,
         controls: ['zoomControl'],
+    },{
+        searchControlProvider: 'yandex#search'
     });
 
 }
