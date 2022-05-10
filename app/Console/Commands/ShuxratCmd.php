@@ -6,18 +6,17 @@ use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\PerformersService;
-use App\Services\Task\SearchService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Auth;
 
-class SardorCmd extends Command
+class ShuxratCmd extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'sardor:run';
+    protected $signature = 'shuxrat:run';
 
     /**
      * The console command description.
@@ -43,17 +42,7 @@ class SardorCmd extends Command
      */
     public function handle()
     {
-      //  $this->reviewobserver();
-      $this->testTaskSearch();
-    }
-
-    private function testTaskSearch() {
-
-        $arr_check = [22,104];
-
-        $item = (new SearchService())->search_new_service($arr_check);
-
-        $tasks = $item->tasks;
+        $this->reviewobserver();
     }
 
 
@@ -65,8 +54,6 @@ class SardorCmd extends Command
         $item = $service->service($authId, $user);
         dd($item);
     }
-
-
     private function reviewobserver() {
         $user = User::find(1);
         $user->review_good = $user->review_good + 1;
