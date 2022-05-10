@@ -28,27 +28,28 @@
     type="text/javascript"></script>
 <script src="js/search_tasks.js"></script>
 <script>
-$("#search_form").on("submit", function(event) {
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+$("form").on("submit", function(event) {
     event.preventDefault();
-    let data_seria = $(this).serialize();
+    let data_seria = $(this).serializeArray();
     console.log(data_seria)
     $.ajax({
         url: $(this).attr("action"),
         method: $(this).attr("method"),
-        data: data_seria,
-        processData: false,
+        data: {
+            data: data_seria
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         dataType: 'json',
-        contentType: false,
-
-        beforeSend: function() {},
+        beforeSend: function() {
+            $('#loader').show();
+        },
         success: function(data) {
-            console.log(data)
             $('#dataPlace').html(data.html)
+        },
+        complete: function() {
+            $('#loader').hide();
         }
     })
 });

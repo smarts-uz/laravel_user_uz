@@ -2,8 +2,7 @@
     <div class="grid grid-cols-5 container mx-auto gap-x-2">
         {{-- left start --}}
         <div class="col-span-3">
-            <form id="search_form" method="POST" action="{{route('searchTask.search_new2')}}">
-                @csrf
+            <form id="search_form" method="get" action="{{route('searchTask.search_new2')}}">
                 <div class="w-full bg-yellow-100 my-5 rounded-md  text-sm">
                     <div class="px-5 py-5 hidden md:block">
                         <div class="grid grid-cols-4 gap-4 mb-3">
@@ -92,9 +91,17 @@
 
                     </div>
                 </div>
+                <div class="flex sm:flex-row flex-col gap-x-3 items-center my-5 text-lg">
+                    <span class="title__994cd">{{__('Сортировать:')}}</span>
+                    <button id="byDate" class="mx-5 ">{{__('по дате публикации')}}</button>
+                    <button id="bySearch" class="mx-5 ">{{__('по срочности')}}</button>
+                </div>
 
                 <div id="dataPlace">
-                    @include('search_task.tasks2')
+                    <div id="loader" style="display: none">
+                        @include('search_task.loader')
+                    </div>
+                    @include('search_task.tasks')
                 </div>
         </div>
         {{-- left end --}}

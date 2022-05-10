@@ -3,12 +3,15 @@
 namespace App\Services\Task;
 
 use App\Item\SearchServiceTaskItem;
+use App\Item\SearchNewItem;
 use App\Models\ComplianceType;
 use App\Models\Task;
 use App\Models\Category;
 use App\Models\User;
 use App\Models\Compliance;
 use App\Models\Review;
+use Illuminate\Support\Facades\DB;
+
 class SearchService
 {
     public function ajaxReq(){
@@ -41,7 +44,24 @@ class SearchService
         $item->addresses = $task->addresses;
         $item->about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
         $item->respons_reviews = Review::all();
+        $item->review_description = Review::where('task_id',$task)->first();
         return $item;
     }
 
+    public function search_new_service($arr_check,$filter="", $radius='', $price='', $suggest='')
+    {
+        $users=User::all()->keyBy('id');
+        $categories=Category::all()->keyBy('id');
+
+        $item = new SearchNewItem();
+        $tasks = DB::table('tasks')->whereIn('status', [1, 2])->whereIn('category_id', $arr_check)->get()->keyBy('id');
+        foreach($tasks as $task){
+            $taskNew=$task;
+            $taskNew->user_id=$users->get($task->user_id)->name;
+            $taskNew->category_id=$categories->get($task->category_id)->name;
+            $item->tasks[]=$taskNew;
+        }
+
+        return $item->tasks;
+    }
 }

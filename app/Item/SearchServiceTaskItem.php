@@ -25,4 +25,5 @@ class SearchServiceTaskItem
     public $addresses;
     public $about;
     public $respons_reviews;
+    public $review_description;
 }
