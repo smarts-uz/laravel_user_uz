@@ -45,12 +45,13 @@ Route::middleware('custom.auth:api')->group(function () {
     });
     Route::post('task/create', [TaskAPIController::class, 'create']);
     Route::post('create-task/name', [TaskAPIController::class, 'name']); //end +
-    Route::post('create-task/custom', [TaskAPIController::class, 'custom']); //end +
+    Route::post('create-task/custom', [TaskAPIController::class, 'custom']); //end -
     Route::post('create-task/remote', [TaskAPIController::class, 'remote']); //end +
     Route::post('create-task/address', [TaskAPIController::class, 'address']);
     Route::post('create-task/date', [TaskAPIController::class, 'date']); //end +
     Route::post('create-task/budget', [TaskAPIController::class, 'budget']); //end +
-    Route::post('create-task/note', [TaskAPIController::class, 'note']); //end
+    Route::post('create-task/note', [TaskAPIController::class, 'note']); //end +
+    Route::post('create-task/images', [TaskAPIController::class, 'uploadImages']); //end -
     Route::post('create-task/contacts', [TaskAPIController::class, 'contacts']); //end +
     Route::post('create-task/verify', [TaskAPIController::class, 'verify']); //end +
 

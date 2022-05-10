@@ -498,7 +498,7 @@ class TaskAPIController extends Controller
      */
     public function custom(TaskCustomRequest $request)
     {
-        return $this->success($this->create_task_service->custom_store($request->validated()));
+        return $this->success($this->create_task_service->custom_store($request->validated()), $request);
     }
 
     /**
@@ -744,6 +744,11 @@ class TaskAPIController extends Controller
     public function note(TaskNoteRequest $request)
     {
         return $this->success($this->create_task_service->note_store($request->validated()));
+    }
+
+    public function uploadImages(Request $request)
+    {
+        return $this->create_task_service->image_store($request);
     }
 
     /**

@@ -70,10 +70,10 @@ class CreateTaskService
         return ['route' => 'custom', 'task_id' => $task->id, 'steps' => 6, 'custom_fields' => $custom_fields];
     }
 
-    public function custom_store($data)
+    public function custom_store($data, $request)
     {
         $task = Task::query()->findOrFail($data['task_id']);
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM);
+        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM, $request);
         if ($task->category->parent->remote) {
             return $this->get_remote($task);
         }
@@ -123,7 +123,6 @@ class CreateTaskService
             ]);
         }
         $task->update(['coordinates' => $data['points'][0]['latitude'] . ',' . $data['points'][0]['longitude']]);
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS);
         return $this->get_date($task);
 
     }
@@ -141,7 +140,6 @@ class CreateTaskService
         $task = Task::query()->findOrFail($data['task_id']);
         unset($data['task_id']);
         $task->update($data);
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_DATE);
         return $this->get_budget($task);
     }
 
@@ -159,7 +157,6 @@ class CreateTaskService
         $task->budget = $data['amount'];
         $task->oplata = $data['budget_type'];
         $task->save();
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET);
         return $this->get_note($task);
     }
 
@@ -175,6 +172,36 @@ class CreateTaskService
         unset($data['task_id']);
         $task->update($data);
         return $this->get_contact($task);
+    }
+
+    public function image_store($request)
+    {
+        $validator = Validator::make($request->all(), [
+            'task_id' => 'required',
+            'images' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'data' => $validator->errors()
+            ]);
+        }
+        $user = auth()->user();
+        $data = $validator->validated();
+        $data['user_id'] = $user->id;
+        if ($request->hasFile('images')) {
+            $image = [];
+            foreach ($request->file('images') as $uploadedImage) {
+                $filename = $user->name.'/'.$data['comment'].'/'.time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path().'/Portfolio/'.$user->name.'/'.$data['comment'].'/', $filename);
+                $image[] = $filename;
+            }
+            $data['image'] = json_encode($image);
+        }
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
     }
 
     public function get_contact($task)
