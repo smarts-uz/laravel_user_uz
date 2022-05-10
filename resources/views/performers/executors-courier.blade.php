@@ -12,6 +12,14 @@
                         <h1 class="text-2xl font-semibold mt-2">{{__('Отзывов пока нет')}}</h1>
                     @else
                         <h1 class="text-2xl font-semibold mt-2">{{__('Отзывы')}}</h1>
+                        <ul class="flex flex-row gap-x-2 border-b-2 border-gray-300 pb-2 mt-3">
+                            <li class="text-lg">
+                                <a class="border-b-4 border-green-500 pb-2.5" href="#">От заказчиков</a>
+                            </li>
+                            <li class="text-lg ml-3">
+                                <a href="#">От исполнителей</a>
+                            </li>
+                        </ul>
                         @include('performers.reviews')
                     @endif
                 </div>
@@ -31,7 +39,7 @@
             }
         </script>
     @endif
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/raty/3.1.1/jquery.raty.min.css" integrity="sha512-XsO5ywONBZOjW5xo5zqAd0YgshSlNF+YlX39QltzJWIjtA4KXfkAYGbYpllbX2t5WW2tTGS7bmR0uWgAIQ8JLQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/jquery.raty.min.js"></script>
     <script>

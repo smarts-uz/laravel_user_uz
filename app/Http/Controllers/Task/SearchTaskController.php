@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Task;
 use App\Services\Task\CreateService;
 use App\Services\Task\CustomFieldService;
 use App\Models\Task;
+use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Models\Category;
 use App\Models\Review;
 use Illuminate\Http\Request;
@@ -58,7 +59,7 @@ class SearchTaskController extends VoyagerBaseController
         $userId = auth()->id();
         $item = $this->service->task_service($auth_response, $userId, $task);
         return view('task.detailed-tasks',
-        ['review_description' => Review::where('task_id',$task)->first(),'task' => $task, 'review' => $review, 'complianceType' => $item->complianceType, 'same_tasks' => $item->same_tasks,
+        ['review_description' => $item->review_description,'task' => $task, 'review' => $review, 'complianceType' => $item->complianceType, 'same_tasks' => $item->same_tasks,
         'auth_response' => $item->auth_response, 'selected' => $item->selected, 'responses' => $item->responses, 'addresses' => $item->addresses, 'about'=>$item->about, 'respons_reviews'=>$item->respons_reviews]);
     }
 
@@ -96,6 +97,27 @@ class SearchTaskController extends VoyagerBaseController
 
 public function search_new2(Request $request){
 
+    $b = $request->zapros;
+
+    $c = count($b);
+
+    $filter = $b[0]['value'];
+    $suggest = $b[1]['value'];
+    $radius = $b[2]['value'];
+    $price = $b[3]['value'];
+
+    $arr_check = [];
+    for ($i=0, $k=4; $k < $c; $i++, $k++){
+        $arr_check[$i] = $b[$k]['value'];
+    }
+    /*dd($arr_check);*/
+    $item = $this->service->search_new_service($arr_check);
+    $tasks = $item->tasks;
+    dd($tasks->all());
+   /*$html=view('search_task.tasks', ['tasks'=> $item->tasks])->render();*/
+   /* return  response()->json( array('success' => true, 'html'=>$html) );*/
+    /*return $tasks->all();*/
+    return view('search_task.tasks', ['tasks'=> $item->tasks])->render();
 }
 
 }

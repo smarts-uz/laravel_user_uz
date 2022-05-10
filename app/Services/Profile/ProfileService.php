@@ -63,7 +63,8 @@ class ProfileService
         $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->select('id','name')->get();
         $categories2 = Category::where('parent_id','<>', null)->select('id','parent_id','name')->get();
         $regions = Region::withTranslations(['ru', 'uz'])->get();
-        $about = User::where('role_id', 2)->orderBy('review_rating', 'desc')->take(20)->get();
+        $top_users = User::where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
+            ->limit(20)->pluck('id')->toArray();
         $sessions = Session::query()->where('user_id', $user->id)->get();
         $parser = Parser::create();
         $review_good = User::find($user->id)->review_good;
@@ -75,7 +76,7 @@ class ProfileService
             'categories' => $categories,
             'categories2' => $categories2,
             'regions' => $regions,
-            'about' => $about,
+            'top_users' => $top_users,
             'sessions' => $sessions,
             'parser' => $parser,
             'review_good' => $review_good,
@@ -133,7 +134,8 @@ class ProfileService
         $item ->views =  $item ->user->views()->count();
         $item ->task =  $item ->user->tasks()->count();
         $item ->transactions =  $item ->user->transactions()->paginate(15);
-        $item->about = User::where('role_id', 2)->orderBy('review_rating', 'desc')->take(20)->get();
+        $item->top_users = User::where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
+        ->limit(20)->pluck('id')->toArray();
         $item ->review_rating = User::find($user->id)->review_rating;
         $item ->review_good = User::find($user->id)->review_good;
         $item ->review_bad = User::find($user->id)->review_bad;
