@@ -335,14 +335,8 @@
                 <!--footer-->
                 <div class="flex mx-auto items-center justify-end p-6 rounded-b mb-8">
                     <div class="mt-4 ">
-                        <form action="{{route('profile.set_session')}}" method="POST">
-                            @csrf
-                            <input type="hidden" name="performer_id" id="performer_id_task">
-                            <button type="submit"
-                                class="bg-green-500 rounded-lg text-white text-xl py-3 px-6 hover:bg-green-600">
-                                {{__('Создать новое задание')}}
-                            </button>
-                        </form>
+                        <a class="px-10 py-4 text-center font-sans  text-xl  font-semibold bg-green-500 text-white hover:bg-green-500  h-12 rounded-md text-xl"
+                           href="/categories/1">{{__('Создать задание')}}</a>
                     </div>
                 </div>
             </div>
