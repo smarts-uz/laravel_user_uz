@@ -98,16 +98,20 @@ class SearchTaskController extends VoyagerBaseController
 public function search_new2(Request $request){
 
     $data=$request->data;
-    $filter = isset($data)?$data[0]['value']:'';
-    $suggest =isset($data)?$data[1]['value']:'';
-    $radius =isset($data)?$data[2]['value']:'';
-    $price = isset($data)?$data[3]['value']:'';
-    $count=isset($data)?count($data):0;
+    $filter = $data[0]['value'];
+    $suggest =$data[1]['value'];
+    $radius =$data[2]['value'];
+    $price =$data[3]['value'];
+    $remjob=$data[4]['name']==="remjob";
+    $noresp=$data[5]['name']==="noresp";
+    
+    $count=count($data);
     $arr_check = [];
-    for ($i=0, $k=4; $k < $count; $i++, $k++){
-        $arr_check[$i] = $data[$k]['name'];
+    for ( $k=4; $k < $count; $k++){
+        if(is_numeric($data[$k]['name']))
+        $arr_check[] = $data[$k]['name'];
     }
-    $item = $this->service->search_new_service($arr_check, $filter, $suggest, $price,$radius);
+    $item = $this->service->search_new_service($arr_check, $filter, $suggest,$price,$remjob,$noresp,$radius);
     $tasks=$item->tasks;
     $html=view("search_task.tasks", compact('tasks'))->render();
         return  response()->json(array('success' => true, 'html'=>$html));

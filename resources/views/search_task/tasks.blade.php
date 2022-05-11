@@ -56,5 +56,21 @@
     @endif
 
     @endforeach
+    @else
+
+    <div class="w-11/12">
+        <div class="no_tasks">
+            {{--
+        Show no tasks image
+--}}
+            <div class=" w-3/5 h-3/5 mx-auto">
+                <img src="images/notlikes.png" class="w-full h-full">
+                <div class="text-center w-full h-full">
+                    <p className="text-4xl"><b>{{__('Задания не найдены')}}</b></p>
+                    <p className="text-xl">{{__('Попробуйте уточнить запрос или выбрать другие категории')}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
     @endif
 </div>

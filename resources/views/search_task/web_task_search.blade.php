@@ -70,13 +70,13 @@
                             </div>
                             <div class="inline-flex  block w-full col-span-4">
                                 <label class="inline-flex items-center mt-3">
-                                    <input type="checkbox" id="remJob"
+                                    <input type="checkbox" id="remjob" name="remjob"
                                         class="focus:outline-none form-checkbox checkboxByAs  h-5 w-5 text-orange-400">
                                     <span
                                         class="sm:ml-2 ml-0.5 text-gray-700 lg:text-sm">{{__('Удалённая работа')}}</span>
                                 </label>
                                 <label class="inline-flex items-center mt-3 xl:ml-3 sm:ml-2 ml-0.5">
-                                    <input type="checkbox" id="noResp"
+                                    <input type="checkbox" id="noresp" name="noresp"
                                         class="focus:outline-none form-checkbox  h-5 w-5 text-orange-400">
                                     <span
                                         class="sm:ml-2  ml-0.5 text-gray-700 lg:text-sm">{{__('Задания без откликов')}}</span>
@@ -97,10 +97,10 @@
                     <button id="bySearch" class="mx-5 ">{{__('по срочности')}}</button>
                 </div>
 
+                <div id="loader" style="display: none">
+                    @include('search_task.loader')
+                </div>
                 <div id="dataPlace">
-                    <div id="loader" style="display: none">
-                        @include('search_task.loader')
-                    </div>
                     @include('search_task.tasks')
                 </div>
         </div>
@@ -132,7 +132,7 @@
                                             d="M19 9l-7 7-7-7"></path>
                                     </svg>
                                 </button>
-                                <label class="inline-flex items-center mt-3 hover:cursor-pointer" id="submitData">
+                                <label class="inline-flex items-center mt-3 hover:cursor-pointer">
                                     <input type="checkbox"
                                         class="form-checkbox par_cat mr-1 h-5 w-5 text-orange-400 hover:cursor-pointer"
                                         name="{{$category->id}}" id="par{{$category->id}}"><span
@@ -143,7 +143,7 @@
                                 @foreach ($categories2 as $category2)
                                 @if($category2->parent_id == $category->id)
                                 <div class="par{{$category->id}}">
-                                    <label class="inline-flex items-center mt-3 hover:cursor-pointer" id="submitData">
+                                    <label class="inline-flex items-center mt-3 hover:cursor-pointer">
                                         <input type="checkbox"
                                             class="form-checkbox chi_cat mr-1 h-5 w-5 text-orange-400 hover:cursor-pointer"
                                             name="{{$category2->id}}" id="par{{$category->id}}"><span

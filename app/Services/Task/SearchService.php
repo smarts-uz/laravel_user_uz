@@ -55,12 +55,11 @@ class SearchService
         return $item;
     }
 
-    public function search_new_service($arr_check, $filter = '', $suggest = '',$price): SearchNewItem
+    public function search_new_service($arr_check, $filter = '', $suggest = '',$price,$remjob,$noresp,$radius): SearchNewItem
     {
 
         $users = User::all()->keyBy('id');
         $categories = Category::all()->keyBy('id');
-
         $item = new SearchNewItem();
         $tasks=Task::query();
 
@@ -79,11 +78,9 @@ if( $suggest){
 if( $arr_check){
     $tasks->whereIn('category_id', $arr_check);
 }
-
-        // 
-
-      
-
+if($remjob){
+    $tasks->whereNull('address');
+}
             foreach ( $tasks->get()->keyBy('id') as $task) {
                 $taskNew = $task;
                 $taskNew->user = $users->get($task->user_id);
