@@ -62,37 +62,61 @@ class UpdateController extends Controller
     public function sendReview(Task $task, Request $request)
     {
         taskGuard($task);
-
+// performer review to user
         try {
-            $task->status  =  $request->status ? Task::STATUS_COMPLETE: Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
-            $task->save();
-            $user = User::find($task->performer_id);
-            if($request->good == 1)
-            {
-                $user->review_good = $user->review_good + 1;
-            }else{
-                $user->review_bad = $user->review_bad + 1;
-            }
-            $user->save();
-            Review::create([
-                'description' => $request->comment,
-                'good_bad' => $request->good,
-                'task_id' => $task->id,
-                'reviewer_id' => auth()->id(),
-                'user_id' => $task->performer_id,
-            ]);
-            Notification::create([
-                'user_id' => $task->user_id,
-                'performer_id' => $task->performer_id,
-                'task_id' => $task->id,
-                'name_task' => $task->name,
-                'description' => 1,
-                'type' => Notification::SEND_REVIEW
-            ]);
+            if ($task->user_id == auth()->id()) {
+                $task->status = $request->status ? Task::STATUS_COMPLETE : Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
+                $task->save();
+                $user = User::find($task->performer_id);
+                if ($request->good == 1) {
+                    $user->review_good = $user->review_good + 1;
+                } else {
+                    $user->review_bad = $user->review_bad + 1;
+                }
+                $user->save();
+                Review::create([
+                    'description' => $request->comment,
+                    'good_bad' => $request->good,
+                    'task_id' => $task->id,
+                    'reviewer_id' => $task->user_id,
+                    'user_id' => $task->performer_id,
+                ]);
+                Notification::create([
+                    'user_id' => $task->user_id,
+                    'performer_id' => $task->performer_id,
+                    'task_id' => $task->id,
+                    'name_task' => $task->name,
+                    'description' => 1,
+                    'type' => Notification::SEND_REVIEW
+                ]);
 
-            NotificationService::sendNotificationRequest([$task->performer_id], [
-                'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
-            ]);
+                NotificationService::sendNotificationRequest([$task->performer_id], [
+                    'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+                ]);
+            } elseif ($task->performer_id == auth()->id()) {
+                Review::create([
+                    'description' => $request->comment,
+                    'good_bad' => $request->good,
+                    'task_id' => $task->id,
+                    'reviewer_id' => $task->performer_id,
+                    'user_id' => $task->user_id,
+                    'as_performer' => 1
+                ]);
+                Notification::create([
+                    'user_id' => $task->performer_id,
+                    'performer_id' => $task->user_id,
+                    'task_id' => $task->id,
+                    'name_task' => $task->name,
+                    'description' => 1,
+                    'type' => Notification::SEND_REVIEW
+                ]);
+
+                NotificationService::sendNotificationRequest([$task->user_id], [
+                    'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+                ]);
+                $task->performer_review = 1;
+                $task->save();
+            }
         }catch (\Exception $exception){
             DB::rollBack();
         }

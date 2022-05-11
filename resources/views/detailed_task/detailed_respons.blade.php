@@ -108,7 +108,7 @@
                     </div>
                     @if ($task->status == 3 && auth()->user()->id == $task->performer_id)
                         <div class="w-10/12 mx-auto">
-                            <a href="{{ url('/chat/' . $selected->performer->id) }}"
+                            <a href="{{ url('/chat/' . $task->user_id) }}"
                             class="text-semibold text-center w-[200px] mb-2 md:w-[320px] ml-0 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
                                 {{__('Написать в чат')}}
                             </a>

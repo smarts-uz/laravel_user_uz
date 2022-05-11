@@ -23,7 +23,7 @@ class SearchServiceTaskItem
     public $auth_response;
     public $same_tasks;
     public $addresses;
-    public $about;
+    public $top_users;
     public $respons_reviews;
     public $review_description;
 }
