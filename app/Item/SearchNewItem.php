@@ -17,5 +17,29 @@ use App\Models\Task;
 
 class SearchNewItem
 {
-    public $tasks;
+    public $id;
+    public $name;
+
+    /**
+     * @var
+     * Main Address
+     */
+    public $address_main;
+
+    /**
+     * @var
+     * Additional Addresses
+     */
+    public $address_adds;
+
+    public $budget;
+
+    public $user_name;
+    public $user_image;
+    public $user_email;
+
+    public $category_icon;
+    public $response_count;
+    public $creator_name;
+
 }

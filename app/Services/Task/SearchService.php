@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\Compliance;
 use App\Models\Review;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class SearchService
@@ -47,51 +48,71 @@ class SearchService
         $item->same_tasks = $task->category->tasks()->where('id', '!=', $task->id)->where('status', Task::STATUS_OPEN)->orderBy('created_at', 'desc')->get();
         $item->addresses = $task->addresses;
         $item->top_users = User::query()
-        ->where('review_rating', '!=', 0)
-        ->where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
-        ->limit(20)->pluck('id')->toArray();
+            ->where('review_rating', '!=', 0)
+            ->where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
+            ->limit(20)->pluck('id')->toArray();
         $item->respons_reviews = Review::all();
         $item->review_description = Review::where('task_id', $task)->first();
         return $item;
     }
 
-    public function search_new_service($arr_check, $filter = '', $suggest = '',$price,$remjob,$noresp,$radius): SearchNewItem
+    public function search_new_service($arr_check, $filter = '', $suggest = '', $price, $remjob, $noresp, $radius): array
     {
 
         $users = User::all()->keyBy('id');
         $categories = Category::all()->keyBy('id');
-        $item = new SearchNewItem();
+        $adresses = Address::all()->keyBy('id');
 
+        $tasks = Task::query()
+            ->when($filter !== '', function ($query) use ($filter) {
+                $query->where('name', 'like', "%{$filter}%");
+            })
 
-        $tasks=Task::query()
-        ->when($filter!=='', function ($query) use ($filter) {
-            $query->where('name', 'like', "%{$filter}%");
-        })
-        // ->when($suggest!=='', function ($query) use ($suggest) {
-        //     $query->whereHas('addresses', function ($query) use($suggest) {
-        //         $query->where('location', 'like', "%{$suggest}%");});
-        // })
-        // ->when($price!=='', function ($query) use ($price) {
-        //   $query->where('budget', '>=', $price*0.8)
-        //     ->where('budget', '<=', $price*1.2);
-        // })
-        ->when($arr_check, function ($query) use ($arr_check) {
-            $query->whereIn('category_id', $arr_check);
-        })
-        ->when($remjob, function ($query) {
-            $query->whereNull('address');
-        })
-        ->get()
-        ->keyBy('id');
-        
-            foreach ( $tasks as $task) {
-                $taskNew = $task;
-                $taskNew->user = $users->get($task->user_id);
-                $taskNew->category = $categories->get($task->category_id);
-                $item->tasks[] = $taskNew;
+            // ->when($suggest!=='', function ($query) use ($suggest) {
+            //     $query->whereHas('addresses', function ($query) use($suggest) {
+            //         $query->where('location', 'like', "%{$suggest}%");});
+            // })
+            // ->when($price!=='', function ($query) use ($price) {
+            //   $query->where('budget', '>=', $price*0.8)
+            //     ->where('budget', '<=', $price*1.2);
+            // })
+
+            ->when($arr_check, function ($query) use ($arr_check) {
+                $query->whereIn('category_id', $arr_check);
+            })
+            ->when($remjob, function ($query) {
+                $query->whereNull('address');
+            })
+            ->get()
+            ->keyBy('id');
+
+        $return = [];
+
+        foreach ($tasks as $task) {
+
+            $item = new SearchNewItem();
+            $item->id = $task->id;
+            if ($users->contains($task->user_id)) {
+                $item->user_name = $users->get($task->user_id)->name;
+                $item->user_email = $users->get($task->user_id)->email;
             }
-    
 
-        return $item;
+            /*  if ($task->id === 1865) {*/
+
+            $allAdresses = $adresses->where('task_id', $task->id);
+            $mainAdress = Arr::first($allAdresses);
+            $item->address_main = Arr::get($mainAdress, 'location');
+
+            /*     echo '';            }*/
+
+
+            if ($categories->contains($task->category_id)) {
+                $item->category_icon = $categories->get($task->category_id)->ico;
+            }
+
+            $return[] = $item;
+        }
+
+        return $return;
     }
 }
