@@ -4,12 +4,14 @@ namespace App\Services\Task;
 
 use App\Item\SearchServiceTaskItem;
 use App\Item\SearchNewItem;
+use App\Models\Address;
 use App\Models\ComplianceType;
 use App\Models\Task;
 use App\Models\Category;
 use App\Models\User;
 use App\Models\Compliance;
 use App\Models\Review;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 class SearchService
@@ -53,21 +55,42 @@ class SearchService
         return $item;
     }
 
-    public function search_new_service($arr_check, $filter = '', $suggest = ''): SearchNewItem
+    public function search_new_service($arr_check, $filter = '', $suggest = '',$price,$remjob,$noresp,$radius): SearchNewItem
     {
 
         $users = User::all()->keyBy('id');
         $categories = Category::all()->keyBy('id');
-
         $item = new SearchNewItem();
-        $tasks = DB::table('tasks')->whereIn('status', [1, 2])->whereIn('category_id', $arr_check)->get()->keyBy('id');
 
-        foreach ($tasks as $task) {
-            $taskNew = $task;
-            $taskNew->user_id = $users->get($task->user_id)->name;
-            $taskNew->category_id = $categories->get($task->category_id)->name;
-            $item->tasks[] = $taskNew;
-        }
+
+        $tasks=Task::query()
+        ->when($filter!=='', function ($query) use ($filter) {
+            $query->where('name', 'like', "%{$filter}%");
+        })
+        // ->when($suggest!=='', function ($query) use ($suggest) {
+        //     $query->whereHas('addresses', function ($query) use($suggest) {
+        //         $query->where('location', 'like', "%{$suggest}%");});
+        // })
+        // ->when($price!=='', function ($query) use ($price) {
+        //   $query->where('budget', '>=', $price*0.8)
+        //     ->where('budget', '<=', $price*1.2);
+        // })
+        ->when($arr_check, function ($query) use ($arr_check) {
+            $query->whereIn('category_id', $arr_check);
+        })
+        ->when($remjob, function ($query) {
+            $query->whereNull('address');
+        })
+        ->get()
+        ->keyBy('id');
+        
+            foreach ( $tasks as $task) {
+                $taskNew = $task;
+                $taskNew->user = $users->get($task->user_id);
+                $taskNew->category = $categories->get($task->category_id);
+                $item->tasks[] = $taskNew;
+            }
+    
 
         return $item;
     }
