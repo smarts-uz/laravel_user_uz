@@ -13,7 +13,7 @@ class NotificationService
 {
     public static function getNotifications($user)
     {
-        return Notification::with('user:name')
+        return Notification::with('user:id,name')
             ->where('is_read', 0)
             ->where(function ($query) use ($user) {
                 $query->where(function ($query) use ($user) {
