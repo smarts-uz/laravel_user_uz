@@ -63,6 +63,8 @@ use App\Http\Controllers\ClickuzController;
 
 
 Route::get('/search_new', [SearchTaskController::class, 'search_new'])->name('searchTask.search_new');
+
+
 Route::post('search_new2', [SearchTaskController::class, 'search_new2'])->name('searchTask.search_new2');
 Route::any('/paynet', function () {
     (new Goodoneuz\PayUz\PayUz)->driver('paynet')->handle();
