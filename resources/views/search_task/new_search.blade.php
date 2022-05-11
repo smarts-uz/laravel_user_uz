@@ -28,7 +28,7 @@
     type="text/javascript"></script>
 <script src="js/search_tasks.js"></script>
 <script>
-$("form").on("submit", function(event) {
+$("#search_form").on("submit", function(event) {
     event.preventDefault();
     let data_seria = $(this).serializeArray();
     console.log(data_seria)
@@ -53,5 +53,9 @@ $("form").on("submit", function(event) {
         }
     })
 });
+$("#submitData").click(function() {
+    alert("sd")
+    $("#search_form").submit();
+})
 </script>
 @endsection

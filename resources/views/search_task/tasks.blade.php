@@ -1,6 +1,7 @@
 <div class="show_tasks">
+    @if ($tasks)
     @foreach ($tasks as $task)
-    <!-- @if ($task->user_id !=null) -->
+    @if ($task->user)
     <div class="border-2 border-gray-500 rounded-xl bg-gray-50 hover:bg-blue-100 h-auto my-3">
         <div class="grid grid-cols-5 w-11/12 mx-auto py-2">
             <div class="sm:col-span-3 col-span-5 flex flex-row">
@@ -52,6 +53,8 @@
             </div>
         </div>
     </div>
-    <!-- @endif -->
+    @endif
+
     @endforeach
+    @endif
 </div>

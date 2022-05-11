@@ -167,6 +167,7 @@
                         </div>
                     @endif
 
+
                     @foreach($task->custom_field_values as $value)
                         @if($value->value &&  $value->custom_field)
                             <div class="ml-4 md:ml-12 flex flex-row mt-8">
@@ -175,7 +176,7 @@
                                     <p class="text-gray-500">
                                         <b class="ml-4">{{ $value->custom_field->label  }}:</b>
 
-                                        {{ json_decode($value->value)  }}
+                                        {{ json_decode($value->value)[0]  }}
                                     </p>
                                 </div>
                             </div>
@@ -254,7 +255,7 @@
 
                                         @if($task->status == 3 && $task->user_id == auth()->user()->id)
 
-                                            
+
                                             @if(!$review)
                                                 <button
                                                     id="modal-open-id5"
@@ -568,7 +569,7 @@
 
                                             <div
                                                 class="text-[17px] text-gray-500 my-5">{{$selected->description}}</div>
-                                            
+
 
                                             @if($selected->not_free == 1 || $task->user_id == auth()->id())
                                                 <div

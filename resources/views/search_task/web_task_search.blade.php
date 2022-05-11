@@ -132,7 +132,7 @@
                                             d="M19 9l-7 7-7-7"></path>
                                     </svg>
                                 </button>
-                                <label class="inline-flex items-center mt-3 hover:cursor-pointer">
+                                <label class="inline-flex items-center mt-3 hover:cursor-pointer" id="submitData">
                                     <input type="checkbox"
                                         class="form-checkbox par_cat mr-1 h-5 w-5 text-orange-400 hover:cursor-pointer"
                                         name="{{$category->id}}" id="par{{$category->id}}"><span
@@ -143,7 +143,7 @@
                                 @foreach ($categories2 as $category2)
                                 @if($category2->parent_id == $category->id)
                                 <div class="par{{$category->id}}">
-                                    <label class="inline-flex items-center mt-3 hover:cursor-pointer">
+                                    <label class="inline-flex items-center mt-3 hover:cursor-pointer" id="submitData">
                                         <input type="checkbox"
                                             class="form-checkbox chi_cat mr-1 h-5 w-5 text-orange-400 hover:cursor-pointer"
                                             name="{{$category2->id}}" id="par{{$category->id}}"><span

@@ -31,10 +31,14 @@ class PerformersService
         $item->categories = Category::where('parent_id', null)->select('id', 'name', 'slug')->get();
         $item->categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
         $item->users = User::query()
-            ->where('review_rating', '!=', 0)
-            ->where('role_id', 2)
-            ->orderbyRaw('(review_good - review_bad) DESC')->paginate(50);
-        $item->top_users = User::where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')->limit(20)->pluck('id')->toArray();
+        ->where('role_id', 2)
+        ->orderByDesc('review_rating')
+        ->orderbyRaw('(review_good - review_bad) DESC')->paginate(50);
+
+        $item->top_users = User::query()
+        ->where('review_rating', '!=', 0)
+        ->where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
+        ->limit(20)->pluck('id')->toArray();
         return $item;
     }
 

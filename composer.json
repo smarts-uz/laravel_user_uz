@@ -14,6 +14,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "jenssegers/agent": "^2.6",
         "joy/voyager-api": "^1.2",
+        "kawankoding/laravel-fcm": "^0.2.6",
         "laravel/framework": "^8.78",
         "laravel/passport": "^10.3",
         "laravel/sanctum": "^2.11",
