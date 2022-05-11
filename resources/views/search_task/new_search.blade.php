@@ -40,5 +40,8 @@ $("#search_form").on("submit", function(event) {
 $("input:checkbox").click(function() {
     $("#search_form").submit();
 })
+$(document).ready(function() {
+    $("#search_form").submit();
+})
 </script>
 @endsection

@@ -61,27 +61,30 @@ class SearchService
         $users = User::all()->keyBy('id');
         $categories = Category::all()->keyBy('id');
         $item = new SearchNewItem();
-        $tasks=Task::query();
 
-    
-if($filter){
-    $tasks->where('name', 'LIKE', "%{$filter}%");
-}
-if($price){
-    $tasks->where('budget', '>=', $price*0.8)
-    ->where('budget', '<=', $price*1.2);
-}
-if( $suggest){
-    $tasks->whereHas('addresses', function (Builder $query) use($suggest) {
-         $query->where('location', 'like', "%{$suggest}%");});
-}
-if( $arr_check){
-    $tasks->whereIn('category_id', $arr_check);
-}
-if($remjob){
-    $tasks->whereNull('address');
-}
-            foreach ( $tasks->get()->keyBy('id') as $task) {
+
+        $tasks=Task::query()
+        ->when($filter!=='', function ($query) use ($filter) {
+            $query->where('name', 'like', "%{$filter}%");
+        })
+        // ->when($suggest!=='', function ($query) use ($suggest) {
+        //     $query->whereHas('addresses', function ($query) use($suggest) {
+        //         $query->where('location', 'like', "%{$suggest}%");});
+        // })
+        // ->when($price!=='', function ($query) use ($price) {
+        //   $query->where('budget', '>=', $price*0.8)
+        //     ->where('budget', '<=', $price*1.2);
+        // })
+        ->when($arr_check, function ($query) use ($arr_check) {
+            $query->whereIn('category_id', $arr_check);
+        })
+        ->when($remjob, function ($query) {
+            $query->whereNull('address');
+        })
+        ->get()
+        ->keyBy('id');
+        
+            foreach ( $tasks as $task) {
                 $taskNew = $task;
                 $taskNew->user = $users->get($task->user_id);
                 $taskNew->category = $categories->get($task->category_id);
