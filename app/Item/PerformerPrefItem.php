@@ -9,14 +9,10 @@ use App\Models\Task;
 
 class PerformerPrefItem
 {
-    public $about;
-    public $task_count;
+    public $top_users;
     public $cur_cat;
     public $child_categories;
     public $users;
     public $categories;
     public $tasks;
-    public $review_good;
-    public $review_bad;
-    public $review_rating;
 }

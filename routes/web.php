@@ -63,7 +63,7 @@ use App\Http\Controllers\ClickuzController;
 
 
 Route::get('/search_new', [SearchTaskController::class, 'search_new'])->name('searchTask.search_new');
-Route::post('search_new2', [SearchTaskController::class, 'search_new2'])->name('searchTask.search_new2');
+Route::get('search_new2', [SearchTaskController::class, 'search_new2'])->name('searchTask.search_new2');
 Route::any('/paynet', function () {
     (new Goodoneuz\PayUz\PayUz)->driver('paynet')->handle();
 });
@@ -300,4 +300,3 @@ Route::get('profile/transactions/history', [\App\Http\Controllers\UserTransactio
 Route::get('admin/reported-tasks', [\App\Http\Controllers\VoyagerTaskController::class, 'reported_tasks'])->name('admin.tasks.reported')->middleware('auth');
 Route::get('admin/complete-task/{task}', [\App\Http\Controllers\VoyagerTaskController::class, 'complete_task'])->name('admin.tasks.complete')->middleware('auth');
 Route::delete('admin/complete-task/{task}', [\App\Http\Controllers\VoyagerTaskController::class, 'delete_task'])->name('admin.tasks.reported.delete')->middleware('auth');
-

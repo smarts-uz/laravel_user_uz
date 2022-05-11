@@ -125,7 +125,7 @@
                 @endif
 
                 <div data-tooltip-target="tooltip-animation_3" class="mx-4">
-                    @if(($review_good) + ($review_bad)  >= 50)
+                    @if(($user->review_good)+($user->review_bad) >= 50 && $user->role_id==2)
                         <img src="{{ asset('images/50.png') }}" alt="" class="w-24">
                     @else
                         <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-24">

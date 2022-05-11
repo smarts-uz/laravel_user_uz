@@ -54,7 +54,6 @@ class PerformersController extends Controller
                 'users' => $item->users,
                 'tasks' => $item->tasks,
                 'top_users' => $item->top_users,
-                'task_count' => $item->task_count,
                 'categories' => $item->categories,
                 'categories2' => $item->categories2,
            ]);
@@ -70,7 +69,7 @@ class PerformersController extends Controller
 
         return view('performers/executors-courier',
             [
-                'about' => $item->about,
+                'top_users' => $item->top_users,
                 'user' => $user,
                 'portfolios' => $item->portfolios,
                 'goodReviews' => $item->goodReviews,
@@ -117,24 +116,19 @@ class PerformersController extends Controller
 
     public function perf_ajax($cf_id, User $user)
     {
-        $task_count = $user->performer_tasks_count;
         $service = new PerformersService();
         $item = $service->perf_ajax($cf_id, $user);
         return view('performers/performers_cat',
         [
             'child_categories' => $item->child_categories,
-            'about' => $item->about,
+            'top_users' => $item->top_users,
             'user' => $user,
-            'task_count' => $task_count,
             'categories' => $item->categories,
             'categories2' => $item->categories2,
             'users' =>$item->users,
             'cur_cat' =>$item->cur_cat,
             'tasks' =>$item->tasks,
             'cf_id' => $cf_id,
-            'review_good' => $item->review_good,
-            'review_bad' =>$item->review_bad,
-            'review_rating' => $item->review_rating,
         ]);
 
     }

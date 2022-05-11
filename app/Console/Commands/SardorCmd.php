@@ -51,9 +51,9 @@ class SardorCmd extends Command
 
         $arr_check = [22,104];
 
-        $item = (new SearchService())->search_new_service($arr_check);
+        $item = (new SearchService())->search_new_service($arr_check, '','', null, null, null, null);
 
-        $tasks = $item->tasks;
+        dd($item);
     }
 
 

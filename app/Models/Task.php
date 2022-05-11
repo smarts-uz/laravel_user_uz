@@ -60,7 +60,7 @@ class Task extends Model
 
     // Bu erda kerak emas
 
-    public function getCreatedAtAttribute($value)
+    /* public function getCreatedAtAttribute($value)
     {
         $value = Carbon::parse($value)->locale(getLocale());
         return $value->diffForHumans();
@@ -86,7 +86,7 @@ class Task extends Model
         $value->minute<10 ? $minut = '0'.$value->minute : $minut = $value->minute;
         $day = $value == now()->toDateTimeString()? "Bugun": "$value->day-$value->monthName";
         return "$day  $value->noZeroHour:$minut";
-    }
+    } */
 
     public function addresses()
     {

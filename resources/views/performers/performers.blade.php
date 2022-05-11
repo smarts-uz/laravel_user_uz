@@ -163,7 +163,7 @@
                                             </div>
                                         @endif
                                         <div data-tooltip-target="tooltip-animation-many" class="mx-1">
-                                            @if(($user->review_good)+($user->review_bad) >= 50)
+                                            @if(($user->review_good)+($user->review_bad) >= 50 && $user->role_id==2)
                                                 <img src="{{ asset('images/50.png') }}" alt="" class="w-10">
                                             @else
                                                 <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10">
@@ -206,13 +206,13 @@
                                                 </button>
                                             </a>
                                         @elseif ($tasks->count() > 0 && Auth::user()->id == $user->id)
-                                            <a class="hidden lg:block">
+                                            <a class="">
                                                 <button
                                                     class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
                                                     {{__('Предложить задание')}}</button>
                                             </a>
                                         @else
-                                            <a onclick="toggleModal12('modal-id12')" class="hidden lg:block">
+                                            <a onclick="toggleModal12('modal-id12')" class="">
                                                 <button
                                                     class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
                                                     {{__('Предложить задание')}}</button>
@@ -359,22 +359,14 @@
 
     <script>
         @foreach ($users as $user)
-        // let star = $('.review{{$user->id}}').text();
-        $("#stars{{$user->id}}").raty({
-            path: 'https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/images',
-            readOnly: true,
-            score: {{$user->review_rating ?? 0}},
-            size: 12
-        });
+            $("#stars{{$user->id}}").raty({
+                path: 'https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/images',
+                readOnly: true,
+                score: {{$user->review_rating ?? 0}},
+                size: 12
+            });
         @endforeach
     </script>
-    @if($user->role_id == 2)
-        <script>
-            if ($('.tooltip-2').length === 0) {
-                $("<div data-tooltip-target='tooltip-animation_2' class='mx-4 tooltip-2' ><img src='{{ asset("images/best_gray.png") }}'alt='' class='w-24'><div id='tooltip-animation_2' role='tooltip' class='inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700'><p class='text-center'>{{__('Невходит в ТОП-20 всех исполнителей User.uz')}}</p><div class='tooltip-arrow' data-popper-arrow></div> </div></div>").insertAfter($(".tooltip-1"));
-            }
-        </script>
-    @endif
     <script>
         @foreach ($categories as $category)
         $("#{{ str_replace(' ', '', $category->name) }}").click(function () {
@@ -549,22 +541,6 @@
 
             });
         })
-        // @foreach($users as $user)
-        //     var star = $('#review{{$user->id}}').text();
-        //     if (star > 0) {
-        //         for (let i = 0; i < star; i++) {
-        //             $("#stars{{$user->id}}").append('<i class="fas fa-star text-yellow-500"></i>');
-        //         }
-        //         for (let u = star; u < 5; u++) {
-        //             $("#stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
-        //         }
-        //     }
-        //     else {
-        //         for (let e = 0; e < 5; e++) {
-        //             $("#stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
-        //         }
-        //     }
-        // @endforeach
     </script>
 @endsection
 

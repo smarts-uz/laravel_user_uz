@@ -11,7 +11,7 @@ use App\Models\Review;
 use Illuminate\Http\Request;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
 use App\Services\Task\SearchService;
-
+use Illuminate\Support\Arr;
 
 class SearchTaskController extends VoyagerBaseController
 {
@@ -30,7 +30,9 @@ class SearchTaskController extends VoyagerBaseController
     {
         $categories = Category::where('parent_id', null)->select('id', 'name')->get();
         $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
-        return view('task.search', compact('categories', 'categories2'));
+        // return view('task.search', compact('categories', 'categories2'));
+        return view('task.search');
+
     }
 
     public function search(Request $request)
@@ -59,8 +61,8 @@ class SearchTaskController extends VoyagerBaseController
         $userId = auth()->id();
         $item = $this->service->task_service($auth_response, $userId, $task);
         return view('task.detailed-tasks',
-        ['review_description' => $item->review_description,'task' => $task, 'review' => $review, 'complianceType' => $item->complianceType, 'same_tasks' => $item->same_tasks,
-        'auth_response' => $item->auth_response, 'selected' => $item->selected, 'responses' => $item->responses, 'addresses' => $item->addresses, 'about'=>$item->about, 'respons_reviews'=>$item->respons_reviews]);
+            ['review_description' => $item->review_description, 'task' => $task, 'review' => $review, 'complianceType' => $item->complianceType, 'same_tasks' => $item->same_tasks,
+                'auth_response' => $item->auth_response, 'selected' => $item->selected, 'responses' => $item->responses, 'addresses' => $item->addresses, 'top_users' => $item->top_users, 'respons_reviews' => $item->respons_reviews]);
     }
 
     public function comlianse_save(Request $request)
@@ -72,7 +74,7 @@ class SearchTaskController extends VoyagerBaseController
     public function delete_task(Task $task)
     {
         taskGuard($task);
-        abort_if($task->responses()->count() || $task->status != Task::STATUS_OPEN,403, 'No permission');
+        abort_if($task->responses()->count() || $task->status != Task::STATUS_OPEN, 403, 'No permission');
 
 
         $this->create_service->delete($task);
@@ -83,41 +85,43 @@ class SearchTaskController extends VoyagerBaseController
     {
         taskGuard($task);
         if ($task->responses_count)
-            abort(403,"No Permission");
+            abort(403, "No Permission");
         $addresses = $task->addresses;
         //        dd($task);
         return view('task.changetask', compact('task', 'addresses'));
     }
-    public function search_new(){
-            $categories = Category::where('parent_id', null)->select('id', 'name')->get();
-            $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
-            $tasks = Task::whereIn('status', [1, 2])->orderBy('id', 'desc')->paginate(20);
-            return view('search_task.new_search', compact('tasks','categories','categories2'));
+
+    public function search_new()
+    {
+        $categories = Category::where('parent_id', null)->select('id', 'name')->get();
+        $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
+        $tasks = Task::whereIn('status', [1, 2])->orderBy('id', 'desc')->paginate(20);
+        return view('search_task.new_search', compact('tasks', 'categories', 'categories2'));
     }
 
-public function search_new2(Request $request){
+    public function search_new2(Request $request)
+    {
 
-    $b = $request->zapros;
+        $data = $request->data;
+        $filter = $data[0]['value'];
+        $suggest = $data[1]['value'];
+        $radius = $data[2]['value'];
+        $price = $data[3]['value'];
+        $remjob = $data[4]['name'] === "remjob";
+        $noresp = $data[5]['name'] === "noresp";
 
-    $c = count($b);
+        $count = count($data);
+        $arr_check = [];
+        for ($k = 4; $k < $count; $k++) {
+            if (is_numeric($data[$k]['name']))
+                $arr_check[] = $data[$k]['name'];
+        }
+        $item = $this->service->search_new_service($arr_check, $filter, $suggest, $price, $remjob, $noresp, $radius);
 
-    $filter = $b[0]['value'];
-    $suggest = $b[1]['value'];
-    $radius = $b[2]['value'];
-    $price = $b[3]['value'];
 
-    $arr_check = [];
-    for ($i=0, $k=4; $k < $c; $i++, $k++){
-        $arr_check[$i] = $b[$k]['value'];
+        $tasks = $item->tasks;
+        $html = view("search_task.tasks", compact('tasks'))->render();
+        return response()->json(array('success' => true, 'html' => $html));
     }
-    /*dd($arr_check);*/
-    $item = $this->service->search_new_service($arr_check);
-    $tasks = $item->tasks;
-    dd($tasks->all());
-   /*$html=view('search_task.tasks', ['tasks'=> $item->tasks])->render();*/
-   /* return  response()->json( array('success' => true, 'html'=>$html) );*/
-    /*return $tasks->all();*/
-    return view('search_task.tasks', ['tasks'=> $item->tasks])->render();
-}
 
 }
