@@ -46,7 +46,10 @@ class SearchService
         $item->auth_response = $auth_response ? $task->responses()->where('performer_id', $userId)->with('user')->first() : null;
         $item->same_tasks = $task->category->tasks()->where('id', '!=', $task->id)->where('status', Task::STATUS_OPEN)->orderBy('created_at', 'desc')->get();
         $item->addresses = $task->addresses;
-        $item->about = User::where('role_id', 2)->orderBy('reviews', 'desc')->take(20)->get();
+        $item->top_users = User::query()
+        ->where('review_rating', '!=', 0)
+        ->where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
+        ->limit(20)->pluck('id')->toArray();
         $item->respons_reviews = Review::all();
         $item->review_description = Review::where('task_id', $task)->first();
         return $item;

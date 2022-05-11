@@ -16,9 +16,7 @@ use App\Models\User;
 
 class PerformerUserItem
 {
-    public $task_count;
-    public $about;
-    public $reviews;
+    public $top_users;
     public $portfolios;
     public $review_good;
     public $review_bad;
