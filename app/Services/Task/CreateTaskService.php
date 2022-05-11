@@ -122,7 +122,10 @@ class CreateTaskService
                 'longitude' => $point['longitude']
             ]);
         }
-        $task->update(['coordinates' => $data['points'][0]['latitude'] . ',' . $data['points'][0]['longitude']]);
+        $task->update([
+            'address' => $data['points'][0]['location'],
+            'coordinates' => $data['points'][0]['latitude'] . ',' . $data['points'][0]['longitude']
+        ]);
         return $this->get_date($task);
 
     }

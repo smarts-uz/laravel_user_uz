@@ -7,19 +7,19 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class NotificationResource extends JsonResource
 {
 
-    protected function titles($type, $title) {
+    protected function titles($type) {
         switch ($type) {
             case 1:
-                return 'Новая задания';
+                return 'Создана новая задача';
             case 3:
             case 2:
-                return $title;
+                return 'Новости о сайте';
             case 4:
-                return 'Новая задания для вас';
+                return 'Назначение заказчика';
             case 5:
-                return 'Новый отклик';
+                return 'Отклик задания';
             case 6:
-                return 'Новый отзыв';
+                return 'Задача была оценена';
             case 7:
                 return 'Вас выбрали';
             default:
@@ -27,15 +27,15 @@ class NotificationResource extends JsonResource
         }
     }
 
-    protected function descriptions($type, $description) {
+    protected function descriptions($type, $notification) {
         switch ($type) {
             case 1:
-                return 'Новая задания';
+                return 'Новая задания ' . $notification->name_task . ' №'. $notification->task_id;
             case 3:
             case 2:
-                return $description;
+                return $notification->description;
             case 4:
-                return 'Новая задания для вас';
+                return 'Заказчик предложил вам новую заданию ' . $notification->name_task . '№' . $notification->task_id;
             case 5:
                 return 'Новый отклик';
             case 6:
@@ -56,9 +56,12 @@ class NotificationResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'title' => $this->name_task,//$this->titles($this->type, $this->name_task),
+            'title' => $this->titles($this->type),
             'type' => $this->type,
-            'description' => $this->description, //$this->descriptions($this->type, $this->description)
+            'task_id' => $this->task_id,
+            'task_name' => $this->name_task,
+            'user_id' => $this->user_id,
+            'user_name' => $this->user->name ?? null,
             'created_at' => $this->created_at->format('d.m.Y')
         ];
     }
