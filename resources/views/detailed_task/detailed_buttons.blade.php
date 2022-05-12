@@ -64,11 +64,14 @@
                     type="submit">
                     {{__('Задание выполнено')}}
                 </button>
-                <button
-                    class="sm:w-2/5 w-9/12 text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
-                    type="button">
-                    {{__('Задание не выполнено')}}
-                </button>
+                <form action="{{route('update.not_completed', [$task])}}" method="POST">
+                    @csrf
+                    <button
+                        class="sm:w-2/5 w-9/12 text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
+                        type="button">
+                        {{__('Задание не выполнено')}}
+                    </button>
+                </form>
             @endif
 
             @if($task->status == 4 && $task->performer_id == auth()->user()->id && !$task->performer_review)
@@ -78,12 +81,15 @@
                     type="submit">
                     {{__('Задание выполнено')}}
                 </button>
-                <button
-                    class="sm:w-2/5 w-9/12 text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
-                    type="button">
-                    {{__('Задание не выполнено')}}
-                </button>
-            @endif     
+                <form action="{{route('update.not_completed', [$task])}}" method="POST">
+                    @csrf
+                    <button
+                        class="sm:w-2/5 w-9/12 text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
+                        type="button">
+                        {{__('Задание не выполнено')}}
+                    </button>
+                </form>
+            @endif
         @endauth
     </div>
 </div>

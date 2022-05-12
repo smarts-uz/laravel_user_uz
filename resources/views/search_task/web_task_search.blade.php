@@ -34,6 +34,8 @@
                                         </svg>
                                         <img src="images/close.png" class="absolute right-2 bottom-1.5 cursor-pointer"
                                             id="closeBut" hidden>
+                                        <input type="hidden" name="user_lat" id="user_lat" value="">
+                                        <input type="hidden" name="user_long" id="user_long" value="">
                                     </div>
                                 </div>
                             </div>

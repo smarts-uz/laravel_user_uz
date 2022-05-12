@@ -158,6 +158,8 @@ $("#geobut2").click(function() {
 
 $("#closeBut").click(function() {
     $('#suggest').val('');
+    $('#user_lat').val('');
+    $('#user_long').val('');
     $('#closeBut').hide();
     $('#geoBut').show();
     jqFilter()
@@ -552,33 +554,15 @@ function map_pos(mm) {
         ymaps.ready(init);
         function init() {
             let location = ymaps.geolocation;
-            suggestVal = document.getElementById("suggest").value;
-            if (suggestVal != '') {
-                var myGeo = ymaps.geocode(suggestVal);
-                myGeo.then(
-                    function (res) {
-                        // let userCoord = res.geoObjects.get(0).geometry.getCoordinates();
-                        // userCoordinates = userCoord;
-                        userCoordinates = res.geoObjects.get(0).geometry.getCoordinates();
-                        myMap2.geoObjects.add(result.geoObjects)
-                        // myMap.setCenter( res.geoObjects.get(0).geometry.getCoordinates());
-                    }
-                );
-            }else {
-                // var suggestView = new ymaps.SuggestView('suggest');
-                // let myInput = new ymaps.SuggestView('suggest');
-                // console.log(myInput)
-                // let myInput = document.getElementById("suggest");
-
+            if (userCoordinates[0].length == 0) {
                 location.get({
                     mapStateAutoApply: true
                 })
                     .then(
                         function (result) {
-                            // let userCoord = result.geoObjects.get(0).geometry.getCoordinates();
-                            // userCoordinates = userCoord;
                             userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
-                            // myMap2.geoObjects.add(result.geoObjects)
+                            myMap2.geoObjects.add(result.geoObjects)
+                            myMap2.setCenter(res.geoObjects.get(0).geometry.getCoordinates());
                         },
                         function (err) {
                             console.log('Ошибка: ' + err)
@@ -586,7 +570,22 @@ function map_pos(mm) {
                     );
             }
 
-            // var suggestView1 = new ymaps.SuggestView('suggest');
+            var suggestView = new ymaps.SuggestView('suggest');
+            suggestView.events.add('select', function (e) {
+                myMapCoordinates(e);
+            });
+
+            function myMapCoordinates(e){
+                var myGeo = ymaps.geocode(e.get('item').value);
+                myGeo.then(
+                    function (res) {
+                        userCoordinates = res.geoObjects.get(0).geometry.getCoordinates();
+                        myMap2.geoObjects.add(res.geoObjects)
+                        $("#user_lat").val(userCoordinates[0]);
+                        $("#user_long").val(userCoordinates[1]);
+                    }
+                );
+            }
             let myMap2 = new ymaps.Map('map2', {
                 center: [userCoordinates[0], userCoordinates[1]],
                 zoom: 13,
@@ -605,6 +604,8 @@ function map_pos(mm) {
                         function(result) {
                             document.getElementById("suggest").value = result.geoObjects.get(0).properties.get('text');
                             userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
+                            $("#user_lat").val(userCoordinates[0]);
+                            $("#user_long").val(userCoordinates[1]);
                             myMap2.geoObjects.add(result.geoObjects)
                             myMap2.setCenter(result.geoObjects.get(0).geometry.getCoordinates());
                         },
@@ -613,8 +614,6 @@ function map_pos(mm) {
                         }
                     );
             });
-
-
 
             clusterer = new ymaps.Clusterer({
                 preset: 'islands#invertedGreenClusterIcons',

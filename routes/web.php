@@ -244,6 +244,7 @@ Route::prefix("task")->group(function () {
 #region
 Route::post('select-performer/{response}', [ResponseController::class, 'selectPerformer'])->name('response.selectPerformer'); // javoxir
 Route::post('tasks/{task}/complete', [UpdateController::class, 'completed'])->name('update.completed'); // javoxir
+Route::post('tasks/{task}/not-complete', [UpdateController::class, 'not_completed'])->name('update.not_completed'); // javoxir
 Route::post('send-review-user/{task}', [UpdateController::class, 'sendReview'])->name('update.sendReview'); // javoxir
 Route::get('/categories/{id}', [Controller::class, 'category'])->name("categories"); // javoxir
 Route::get('/lang/{lang}', [Controller::class, 'lang'])->name('lang'); // javoxir
