@@ -66,7 +66,7 @@
 
                 @if($task->status == 3 && $task->user_id == auth()->user()->id)
                     <button
-                        id="modal-open-id5"
+                        onclick="toggleModal4()"
                         class="not_done  sm:w-2/5 w-9/12 text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
                         type="submit">
                         {{__('Задание выполнено')}}
@@ -81,7 +81,7 @@
 
                 @if($task->status == 4 && $task->performer_id == auth()->user()->id && !$task->performer_review)
                     <button
-                        id="modal-open-id5"
+                        onclick="toggleModal4()"
                         class="not_done  sm:w-2/5 w-9/12 text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
                         type="submit">
                         {{__('Задание выполнено')}}
