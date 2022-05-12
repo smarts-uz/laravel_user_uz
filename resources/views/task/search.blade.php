@@ -26,6 +26,8 @@
                                         type="text" id="suggest">
                                             <svg class="absolute right-2 bottom-1.5 h-4 w-4 text-purple-500" id="geoBut" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M21 3L14.5 21a.55 .55 0 0 1 -1 0L10 14L3 10.5a.55 .55 0 0 1 0 -1L21 3" /></svg>
                                             <img src="images/close.png" class="absolute right-2 bottom-1.5 cursor-pointer" id="closeBut" hidden>
+                                        <input type="hidden" name="user_lat" id="user_lat" value="">
+                                        <input type="hidden" name="user_long" id="user_long" value="">
                                     </div>
                                 </div>
                             </div>
