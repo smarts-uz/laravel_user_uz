@@ -33,13 +33,14 @@ class SearchNewItem
     public $address_adds;
 
     public $budget;
+    public $date_type;
+    public $start_date;
+    public $end_date;
 
+    public $user_id;
     public $user_name;
-    public $user_image;
-    public $user_email;
 
     public $category_icon;
     public $response_count;
-    public $creator_name;
 
 }

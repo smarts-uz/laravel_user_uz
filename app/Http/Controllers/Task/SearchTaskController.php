@@ -99,8 +99,7 @@ class SearchTaskController extends VoyagerBaseController
     {
         $categories = Category::where('parent_id', null)->select('id', 'name')->get();
         $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
-        $tasks = Task::whereIn('status', [1, 2])->orderBy('id', 'desc')->paginate(20);
-        return view('search_task.new_search', compact('tasks', 'categories', 'categories2'));
+        return view('search_task.new_search', compact('categories', 'categories2'));
     }
 
     public function search_new2(Request $request)
@@ -111,19 +110,25 @@ class SearchTaskController extends VoyagerBaseController
         $suggest = $data[1]['value'];
         $radius = $data[2]['value'];
         $price = $data[3]['value'];
-        $remjob = $data[4]['name'] === "remjob";
-        $noresp = $data[5]['name'] === "noresp";
 
-        $count = count($data);
         $arr_check = [];
-        for ($k = 4; $k < $count; $k++) {
-            if (is_numeric($data[$k]['name']))
-                $arr_check[] = $data[$k]['name'];
+        $remjob =false;
+        $noresp=false;
+        $count = count($data);
+        
+        if(isset($data[4])){
+            $remjob = $data[4]['name'] === "remjob";
+            $noresp = $data[5]['name'] === "noresp";
+            
+            for ($k = 4; $k < $count; $k++) {
+                if (is_numeric($data[$k]['name']))
+                    $arr_check[] = $data[$k]['name'];
+            }
         }
-        $item = $this->service->search_new_service($arr_check, $filter, $suggest, $price, $remjob, $noresp, $radius);
+        
+        $tasks = $this->service->search_new_service($arr_check, $filter, $suggest, $price, $remjob, $noresp, $radius);
 
 
-        $tasks = $item->tasks;
         $html = view("search_task.tasks", compact('tasks'))->render();
         return response()->json(array('success' => true, 'html' => $html));
     }
