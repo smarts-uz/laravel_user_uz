@@ -39,6 +39,7 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('logout', [UserAPIController::class, 'logout']); //end +
 
     Route::group(['prefix' => 'chat'], function (){
+        Route::post('/sendMessage', [MessagesController::class, 'send']);
         Route::get('/getContacts', [MessagesController::class, 'getContacts']);
         Route::get('/search', [MessagesController::class, 'search']);
         Route::post('/fetchMessages', [MessagesController::class, 'fetch']);
