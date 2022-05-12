@@ -170,10 +170,10 @@
                                                     class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">{{ $item->name }}</a>
                                                     <p class="text-sm">{{ count($addresses)? $addresses[0]->location:'Можно выполнить удаленно' }}</p>
                                                     @if($item->date_type == 1 || $item->date_type == 3)
-                                                        <p class="text-sm my-0.5">{{__('Начать')}} {{ $item->start_date }}</p>
+                                                        <p class="text-sm my-0.5">{{__('Начать')}} {{ $start}}</p>
                                                     @endif
                                                     @if($item->date_type == 2 || $item->date_type == 3)
-                                                        <p class="text-sm my-0.5">{{__('Закончить')}} {{ $item->end_date }}</p>
+                                                        <p class="text-sm my-0.5">{{__('Закончить')}} {{ $end }}</p>
                                                     @endif
                                                     @if($item->oplata == 1)
                                                         <p class="text-sm">{{__(' Оплата наличными')}}</p>

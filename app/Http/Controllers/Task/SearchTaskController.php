@@ -11,6 +11,7 @@ use App\Models\Review;
 use Illuminate\Http\Request;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
 use App\Services\Task\SearchService;
+use Carbon\Carbon;
 
 
 class SearchTaskController extends VoyagerBaseController
@@ -55,11 +56,21 @@ class SearchTaskController extends VoyagerBaseController
             $task->views++;
             $task->save();
         }
+
+        $value = Carbon::parse($task->end_date)->locale(getLocale());
+        $value->minute<10 ? $minut = '0'.$value->minute : $minut = $value->minute;
+        $end = "$value->day-$value->monthName  $value->noZeroHour:$minut";
+
+        $value = Carbon::parse($task->start_date)->locale(getLocale());
+        $value->minute<10 ? $minut = '0'.$value->minute : $minut = $value->minute;
+        $day = $value == now()->toDateTimeString()? "Bugun": "$value->day-$value->monthName";
+        $start = "$day  $value->noZeroHour:$minut";
+
         $auth_response = auth()->check();
         $userId = auth()->id();
         $item = $this->service->task_service($auth_response, $userId, $task);
         return view('task.detailed-tasks',
-        ['review_description' => $item->review_description,'task' => $task, 'review' => $review, 'complianceType' => $item->complianceType, 'same_tasks' => $item->same_tasks,
+        ['review_description' => $item->review_description,'task' => $task, 'end' => $end, 'start' => $start, 'review' => $review, 'complianceType' => $item->complianceType, 'same_tasks' => $item->same_tasks,
         'auth_response' => $item->auth_response, 'selected' => $item->selected, 'responses' => $item->responses, 'addresses' => $item->addresses, 'top_users'=>$item->top_users, 'respons_reviews'=>$item->respons_reviews]);
     }
 

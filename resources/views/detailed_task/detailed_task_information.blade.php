@@ -15,13 +15,13 @@
                     <div class="ml-4 md:ml-12 flex flex-row mt-8">
                         @if($task->date_type == 1)
                             <h1 class="font-bold h-auto w-48">{{__('Начать работу')}}</h1>
-                            {{ $task->start_date     }}
+                            {{ $start    }}
                         @elseif($task->date_type == 2)
                             <h1 class="font-bold h-auto w-48">{{__('Закончить работу')}}</h1>
-                            {{ $task->end_date     }}
+                            {{ $end   }}
                         @else
                             <h1 class="font-bold h-auto w-48">{{__('Указать период')}}</h1>
-                            <p class=" h-auto w-96">{{ $task->start_date     }} - {{ $task->end_date     }}  </p>
+                            <p class=" h-auto w-96">{{ $start }} - {{ $end     }}  </p>
 
                         @endif
                     </div>
