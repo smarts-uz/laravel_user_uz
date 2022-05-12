@@ -73,7 +73,7 @@
                                             class="mr-2  h-4 w-4" type="checkbox"
                                             value="{{$option}}" name="{{$data->name}}[]">
 
-                                        <span class="text-slate-900">
+                                        <span class="text-slate-900">67
                                                     {{$option}}
                                                     </span>
                                     </label>
@@ -135,12 +135,6 @@
 
                         </div>
                     </div>
-
-                    <div>
-                        <!-- <span class="underline hover:text-gray-400 decoration-dotted cursor-pointer float-right">Приватная информация</span> -->
-                    </div>
-
-
                 </div>
             </div>
         </div>

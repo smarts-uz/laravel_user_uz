@@ -9,17 +9,9 @@
                     alt="avatar">
             </div>
             <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
-                @if (Auth::check() && Auth::user()->id == auth()->user()->id)
-                    <a href="/profile"
-                        class="text-2xl text-blue-500 hover:text-red-500">
-                        {{ auth()->user()->name }}
-                    </a>
-                @else
-                    <a href="{{ route('performers.performer', auth()->user()->id) }}"
-                        class="text-blue-400 text-xl font-semibold hover:text-blue-500">
-                        {{ auth()->user()->name }}
-                    </a>
-                @endif
+                <a href="/profile" class="text-2xl text-blue-500 hover:text-red-500">
+                    {{ auth()->user()->name }}
+                </a>
                 <input type="text" name="performer_id" class="hidden"
                     value="">
                     <div class="text-gray-700 sm:mt-4 mt-2">
@@ -116,7 +108,7 @@
                     </div>
                     @if ($task->status == 3 && auth()->user()->id == $task->performer_id)
                         <div class="w-10/12 mx-auto">
-                            <a href="{{ url('/chat/' . $selected->performer->id) }}"
+                            <a href="{{ url('/chat/' . $task->user_id) }}"
                             class="text-semibold text-center w-[200px] mb-2 md:w-[320px] ml-0 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
                                 {{__('Написать в чат')}}
                             </a>

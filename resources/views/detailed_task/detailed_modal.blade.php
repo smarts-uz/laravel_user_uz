@@ -1,143 +1,143 @@
 {{-- podelitsa modal start --}}
 <div
-class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none        justify-center items-center"
-style="background-color:rgba(0,0,0,0.5)" id="modal-id45">
-<div class="relative w-full my-6 mx-auto max-w-3xl" id="modal45">
-    <div
-        class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none">
-        <div class=" text-center p-6  rounded-t">
-            <button type="submit" onclick="toggleModal45()"
-                    class="rounded-md w-100 h-16 absolute top-1 right-4 focus:outline-none">
-                <i class="fas fa-times text-xl w-full"></i>
-            </button>
-            <h1 class="font-medium text-3xl block mt-6">
-                {{__('Напишите свое возражение по созданной задаче')}}
-            </h1>
-        </div>
-        <div class="text-center my-6">
+    class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none        justify-center items-center"
+    style="background-color:rgba(0,0,0,0.5)" id="modal-id45">
+    <div class="relative w-full my-6 mx-auto max-w-3xl" id="modal45">
+        <div
+            class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none">
+            <div class=" text-center p-6  rounded-t">
+                <button type="submit" onclick="toggleModal45()"
+                        class="rounded-md w-100 h-16 absolute top-1 right-4 focus:outline-none">
+                    <i class="fas fa-times text-xl w-full"></i>
+                </button>
+                <h1 class="font-medium text-3xl block mt-6">
+                    {{__('Напишите свое возражение по созданной задаче')}}
+                </h1>
+            </div>
+            <div class="text-center my-6">
 
-            <form action="{{route('searchTask.comlianse_save')}}" method="POST">
-                @csrf
-                <input type="hidden" name="taskId" value="{{ $task->id }}">
-                <input type="hidden" name="userId"
-                       value="{{ Auth::check() ? Auth::user()->id : $task->user->id}}">
-                <select name="c_type" id=""
-                        class="w-4/5 border-2 border-gray-500 rounded-lg mb-4 py-2 px-2 focus:outline-none hover:border-yellow-500">
-                    @foreach ($complianceType as $complType)
-                        <option value="{{$complType->id}}">{{$complType->name}}</option>
-                    @endforeach
-                </select>
-                <textarea name="c_text" id="" required
-                          class="border-2 border-gray-500 rounded-lg p-2 w-4/5 focus:outline-none hover:border-yellow-500"></textarea>
-                <input type="submit" value="{{__('Отправить')}}" required
-                       class="bg-yellow-500 mt-4 py-3 px-5 rounded-lg text-white text-xl cursor-pointer font-medium border-2 border-gray-500 hover:bg-yellow-600">
-            </form>
+                <form action="{{route('searchTask.comlianse_save')}}" method="POST">
+                    @csrf
+                    <input type="hidden" name="taskId" value="{{ $task->id }}">
+                    <input type="hidden" name="userId"
+                           value="{{ Auth::check() ? Auth::user()->id : $task->user->id}}">
+                    <select name="c_type" id=""
+                            class="w-4/5 border-2 border-gray-500 rounded-lg mb-4 py-2 px-2 focus:outline-none hover:border-yellow-500">
+                        @foreach ($complianceType as $complType)
+                            <option value="{{$complType->id}}">{{$complType->name}}</option>
+                        @endforeach
+                    </select>
+                    <textarea name="c_text" id="" required
+                              class="border-2 border-gray-500 rounded-lg p-2 w-4/5 focus:outline-none hover:border-yellow-500"></textarea>
+                    <input type="submit" value="{{__('Отправить')}}" required
+                           class="bg-yellow-500 mt-4 py-3 px-5 rounded-lg text-white text-xl cursor-pointer font-medium border-2 border-gray-500 hover:bg-yellow-600">
+                </form>
 
+            </div>
         </div>
     </div>
-</div>
 </div>
 <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id45-backdrop"></div>
 {{-- podelitsa modal end --}}
 
- {{-- share modal start --}}
- <div
- class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none        justify-center items-center"
- style="background-color:rgba(0,0,0,0.5)" id="modal-id44">
- <div class="relative w-full my-32 mx-auto max-w-3xl" id="modal44">
-     <div
-         class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none">
-         <div class=" text-center p-6  rounded-t">
-             <button type="submit" onclick="toggleModal44()"
-                     class="rounded-md w-100 h-16 absolute top-1 right-4 focus:outline-none">
-                 <i class="fas fa-times text-xl w-full"></i>
-             </button>
-             <h1 class="font-bold text-3xl block mt-6">
-                 {{__('Рассказать о заказе')}}
-             </h1>
-             <p class="my-3">{{__('Расскажите об этом заказе в социальных сетях — оно заслуживает того, чтобы его увидели.')}}</p>
-         </div>
-         <div class="text-center mb-8 flex flex-wrap md:w-4/5 w-full mx-auto">
+{{-- share modal start --}}
+<div
+    class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none        justify-center items-center"
+    style="background-color:rgba(0,0,0,0.5)" id="modal-id44">
+    <div class="relative w-full my-32 mx-auto max-w-3xl" id="modal44">
+        <div
+            class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none">
+            <div class=" text-center p-6  rounded-t">
+                <button type="submit" onclick="toggleModal44()"
+                        class="rounded-md w-100 h-16 absolute top-1 right-4 focus:outline-none">
+                    <i class="fas fa-times text-xl w-full"></i>
+                </button>
+                <h1 class="font-bold text-3xl block mt-6">
+                    {{__('Рассказать о заказе')}}
+                </h1>
+                <p class="my-3">{{__('Расскажите об этом заказе в социальных сетях — оно заслуживает того, чтобы его увидели.')}}</p>
+            </div>
+            <div class="text-center mb-8 flex flex-wrap md:w-4/5 w-full mx-auto">
              <span class="telegram"><i
                      class="fab fa-telegram px-4 py-3 bg-blue-500 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
-             <span class="instagram"><i
-                     class="fab fa-instagram px-4 py-3 bg-red-700 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
-             <span class="whatsapp"><i
-                     class="fab fa-whatsapp px-4 py-3 bg-green-700 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
-             <span class="facebook"><i
-                     class="fab fa-facebook px-4 py-3 bg-blue-700 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
-             <span class="email"><i
-                     class="fas fa-at px-4 py-3 bg-yellow-600 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
-             <span class="twitter"><i
-                     class="fab fa-twitter px-3 py-2.5 text-blue-500 text-white rounded-lg m-4 text-4xl cursor-pointer border-2 border-blue-500"></i></span>
-             <span class="linkedin"><i
-                     class="fab fa-linkedin px-4 py-3 bg-blue-400 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
-             <span class="google"><i
-                     class="fab fa-google px-4 py-3 bg-red-700 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
-         </div>
-     </div>
- </div>
+                <span class="instagram"><i
+                        class="fab fa-instagram px-4 py-3 bg-red-700 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
+                <span class="whatsapp"><i
+                        class="fab fa-whatsapp px-4 py-3 bg-green-700 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
+                <span class="facebook"><i
+                        class="fab fa-facebook px-4 py-3 bg-blue-700 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
+                <span class="email"><i
+                        class="fas fa-at px-4 py-3 bg-yellow-600 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
+                <span class="twitter"><i
+                        class="fab fa-twitter px-3 py-2.5 text-blue-500 text-white rounded-lg m-4 text-4xl cursor-pointer border-2 border-blue-500"></i></span>
+                <span class="linkedin"><i
+                        class="fab fa-linkedin px-4 py-3 bg-blue-400 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
+                <span class="google"><i
+                        class="fab fa-google px-4 py-3 bg-red-700 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id45-backdrop"></div>
 {{-- share modal end --}}
 
 {{-- Modal start --}}
 <div
-class="hidden overflow-x-auto bg-black bg-opacity-50 overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
-id="modal-id4">
-<form id="updatereview" action="{{route('update.sendReview', $task->id)}}" method="POST">
-    @csrf
-    <div class="relative my-6 mx-auto max-w-xl" id="modal4">
-        <input type="number" hidden name="status" id="status" value="">
-        <div
-            class="border-0 top-32 rounded-lg shadow-2xl px-10 py-10 relative flex mx-auto flex-col w-full bg-white outline-none focus:outline-none">
-            <div class=" text-center  rounded-t">
-                <button id="close-id4"
-                        class=" w-100 h-16 absolute top-1 right-4">
-                </button>
-                <h3 class="font-semibold text-gray-700 text-3xl block">
-                    {{__(' Оставить отзыв')}}
-                </h3>
-            </div>
-            <div class="text-center h-56 w-full mx-auto text-base">
-                <div class="">
-                    <div class="flex flex-row justify-center w-full my-4 mx-auto">
-                        <label id="class_demo"
-                               class="cursor-pointer w-32 text-gray-500 border rounded-l hover:bg-green-500 transition duration-300 hover:text-white">
-                            <input type="radio" name="good"
-                                   class="good border hidden rounded ml-6 w-8/12"
-                                   value="1">
-                            <i class="far fa-thumbs-up text-2xl mr-2"></i><span
-                                class="relative -top-1">good</span>
-                        </label>
-                        <label id="class_demo1"
-                               class="cursor-pointer w-32 text-gray-500 border rounded-r hover:bg-red-500 transition duration-300 hover:text-white">
-                            <input type="radio" name="good"
-                                   class="good border hidden rounded ml-6  w-8/12"
-                                   value="0">
-                            <i class="far fa-thumbs-down text-2xl mr-2"></i><span
-                                class="relative -top-1">bad</span>
-                        </label>
-                    </div>
-                    <textarea name="comment" class="h-24 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white shadow-lg drop-shadow-xl
+    class="hidden overflow-x-auto bg-black bg-opacity-50 overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
+    id="modal-id4">
+    <form id="updatereview" action="{{route('update.sendReview', $task->id)}}" method="POST">
+        @csrf
+        <div class="relative my-6 mx-auto max-w-xl" id="modal4">
+            <input type="number" hidden name="status" id="status" value="">
+            <div
+                class="border-0 top-32 rounded-lg shadow-2xl px-10 py-10 relative flex mx-auto flex-col w-full bg-white outline-none focus:outline-none">
+                <div class=" text-center  rounded-t">
+                    <button id="close-id4" class=" w-100 h-16 absolute top-1 right-4">
+                        Close
+                    </button>
+                    <h3 class="font-semibold text-gray-700 text-3xl block">
+                        {{__(' Оставить отзыв')}}
+                    </h3>
+                </div>
+                <div class="text-center h-56 w-full mx-auto text-base">
+                    <div class="">
+                        <div class="flex flex-row justify-center w-full my-4 mx-auto">
+                            <label id="class_demo"
+                                   class="cursor-pointer w-32 text-gray-500 border rounded-l hover:bg-green-500 transition duration-300 hover:text-white">
+                                <input type="radio" name="good"
+                                       class="good border hidden rounded ml-6 w-8/12"
+                                       value="1">
+                                <i class="far fa-thumbs-up text-2xl mr-2"></i><span
+                                    class="relative -top-1">good</span>
+                            </label>
+                            <label id="class_demo1"
+                                   class="cursor-pointer w-32 text-gray-500 border rounded-r hover:bg-red-500 transition duration-300 hover:text-white">
+                                <input type="radio" name="good"
+                                       class="good border hidden rounded ml-6  w-8/12"
+                                       value="0">
+                                <i class="far fa-thumbs-down text-2xl mr-2"></i><span
+                                    class="relative -top-1">bad</span>
+                            </label>
+                        </div>
+                        <textarea name="comment" class="h-24 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white shadow-lg drop-shadow-xl
                             border resize-none w-full border-solid border-gray-200 rounded transition ease-in-out m-0 focus:outline-none  focus:border-yellow-500 "></textarea>
 
-                    <button
-                        class="font-sans w-full text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-12 pt-2 pb-3 rounded transition-all duration-300 mt-8"
-                        type="submit">
-                        {{__('Отправить')}}
-                    </button>
+                        <button
+                            class="font-sans w-full text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-12 pt-2 pb-3 rounded transition-all duration-300 mt-8"
+                            type="submit">
+                            {{__('Отправить')}}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
 </div>
 <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id4-backdrop"></div>
 {{--        share in webpages--}}
 
 {{-- otklik modal  --}}
-     <div id="authentication-modal"
+<div id="authentication-modal"
      aria-hidden="true"
      class="btn-preloader hidden overflow-x-hidden overflow-y-auto fixed h-modal md:h-full top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center">
     <div
@@ -168,10 +168,10 @@ id="modal-id4">
                 </header>
                 <main>
                     <span class="text-base">{{('Описание отклика')}}</span>
-                <textarea required
-                          class="resize-none rounded-md w-full focus:outline-none  focus:border-yellow-500 border border-gray-300 p-4  transition duration-200 mb-4"
-                          type="text" id="form8" rows="4"
-                          name="description"></textarea>
+                    <textarea required
+                              class="resize-none rounded-md w-full focus:outline-none  focus:border-yellow-500 border border-gray-300 p-4  transition duration-200 mb-4"
+                              type="text" id="form8" rows="4"
+                              name="description"></textarea>
                     <p class="text-base">{{__('Сколько вы предлагаете')}}</p>
                     <label>
                         <input type="text" required
@@ -221,27 +221,31 @@ id="modal-id4">
 
 {{-- zakazchik ispolnitel tanlagandagi modal --}}
 @if(session()->has('data'))
-<div
-class="{{ session()->has('data') ?"":'hidden' }} overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none        justify-center items-center"
-style="background-color:rgba(0,0,0,0.5)" id="modal-id33">
-<div class="relative w-full my-6 mx-auto max-w-3xl" id="modal33">
     <div
-        class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none">
-        <div class=" text-center p-6  rounded-t">
-            <h1 class="font-medium text-3xl block mt-6">
-                {{__('Исполнитель выбран')}}
-            </h1>
-        </div>
-        <div class="text-center mb-6 mx-auto">
-            <img class="border-2 rounded-xl w-28 h-28 mx-auto" src="{{ session('data')['performer_avatar'] }}" alt="user_avatar">
-            <h1 class="my-2 font-medium hover:text-red-500 ">{{ session('data')['performer_name'] }}</h1>
-            <p class="mb-2">+998 {{  session('data')['performer_phone'] }}</p>
-            <p>{{  session('data')['performer_description'] }}</p>
-            <button  onclick="toggleModal33()" type="submit" class="cursor-pointer mt-2 text-semibold text-center inline-block py-3 px-4 bg-white transition duration-200 text-white bg-green-500 hover:bg-green-500 font-medium border border-transparent rounded-md">{{__('Хорошо')}}</button>
+        class="{{ session()->has('data') ?"":'hidden' }} overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
+        style="background-color:rgba(0,0,0,0.5)" id="modal-id33">
+        <div class="relative w-full my-6 mx-auto max-w-3xl" id="modal33">
+            <div
+                class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none">
+                <div class=" text-center p-6  rounded-t">
+                    <h1 class="font-medium text-3xl block mt-6">
+                        {{__('Исполнитель выбран')}}
+                    </h1>
+                </div>
+                <div class="text-center mb-6 mx-auto">
+                    <img class="border-2 rounded-xl w-28 h-28 mx-auto" src="{{ session('data')['performer_avatar'] }}"
+                         alt="user_avatar">
+                    <h1 class="my-2 font-medium hover:text-red-500 ">{{ session('data')['performer_name'] }}</h1>
+                    <p class="mb-2">+998 {{  session('data')['performer_phone'] }}</p>
+                    <p>{{  session('data')['performer_description'] }}</p>
+                    <button onclick="toggleModal33()" type="submit" class="cursor-pointer mt-2 text-semibold text-center
+                    inline-block py-3 px-4 bg-white transition duration-200 text-white bg-green-500 hover:bg-green-500 font-medium border border-transparent rounded-md">
+                        {{__('Хорошо')}}
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-</div>
 
 @endif
 <div class="hidden  fixed inset-0 z-40 " id="modal-id33-backdrop"></div>

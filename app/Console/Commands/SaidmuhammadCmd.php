@@ -10,21 +10,21 @@ use App\Services\Task\SearchService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Auth;
 
-class SardorCmd extends Command
+class SaidmuhammadCmd extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'sardor:run';
+    protected $signature = 'saidmuhammad:run';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Sardor CMD';
+    protected $description = 'Saidmuhammad CMD';
 
     /**
      * Create a new command instance.
@@ -43,9 +43,10 @@ class SardorCmd extends Command
      */
     public function handle()
     {
-      //  $this->reviewobserver();
-      $this->testTaskSearch();
+       
+        $this-> testTaskSearch();
     }
+
 
     private function testTaskSearch() {
 
@@ -55,30 +56,7 @@ class SardorCmd extends Command
 
         dd($item);
     }
-
-
-    private function performerService() {
-        $id = 434;
-        $user = User::find($id);
-        $authId = $id;
-        $service = new PerformersService();
-        $item = $service->service($authId, $user);
-        dd($item);
-    }
-
-
-    private function reviewobserver() {
-        $user = User::find(1);
-        $user->review_good = $user->review_good + 1;
-        $user->save();
-        Review::create([
-            'description' => 'description',
-            'good_bad' => 1,
-            'task_id' => 1,
-            'reviewer_id' => 1,
-            'user_id' => 1,
-        ]);
-    }
+   
 
 
 }

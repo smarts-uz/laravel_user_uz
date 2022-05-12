@@ -8,14 +8,17 @@ use App\Services\Task\CreateService;
 if (!function_exists('amount_format')) {
     function amount_format($amount)
     {
-        return number_format((int)$amount, 0, ",", ".").' UZS';
+        return number_format((int)$amount, 0, ",", ".") . ' UZS';
     }
 }
 
-function getMyText(){
+function getMyText()
+{
     return 'Hello World';
 }
-function getAddress($data){
+
+function getAddress($data)
+{
     $array = (new CreateService())->addAdditionalAddress(request());
     $data['address'] = $array['address'];
     $data['address_add'] = $array['address_add'];
@@ -25,24 +28,28 @@ function getAddress($data){
     return $data;
 }
 
-function portfolioGuard($portfolio){
-    if ($portfolio->user_id != auth()->user()->id){
-        abort(403,"No Permission");
+function portfolioGuard($portfolio)
+{
+    if ($portfolio->user_id != auth()->user()->id) {
+        abort(403, "No Permission");
     }
 }
-function getAdditionalAddress($data){
+
+function getAdditionalAddress($data)
+{
     $address = [];
     $address['location'] = $data['address'];
-    $address['latitude'] = explode(',',$data['coordinates'])[0];
-    $address['longitude'] = explode(',',$data['coordinates'])[1];
+    $address['latitude'] = explode(',', $data['coordinates'])[0];
+    $address['longitude'] = explode(',', $data['coordinates'])[1];
 
     return $data;
 }
 
-function getLocale(){
+function getLocale()
+{
     $locale = app()->getLocale();
 
-    if ($locale == 'uz' ) $locale = 'uz_Latn';
+    if ($locale == 'uz') $locale = 'uz_Latn';
     return $locale;
 
 }
@@ -65,7 +72,8 @@ function setView($user)
 
 }
 
-function categories(){
+function categories()
+{
 
 
     $datas = Category::with('translations')->get();
@@ -74,10 +82,9 @@ function categories(){
     $parent_categories = [];
 
     foreach ($datas as $data) {
-        if ($data->parent_id == null)
-        {
+        if ($data->parent_id == null) {
             $parent_categories[] = $data;
-        }else{
+        } else {
             $child_categories[] = $data;
         }
 
@@ -86,7 +93,7 @@ function categories(){
     foreach ($parent_categories as $parent_category) {
 
         foreach ($child_categories as $child_category) {
-            if ($parent_category->id == $child_category->parent_id){
+            if ($parent_category->id == $child_category->parent_id) {
                 $categories[$parent_category->id][] = $child_category;
             }
 
@@ -95,33 +102,39 @@ function categories(){
     }
 
 
-
     return $categories;
 
 }
 
 
-function getAllCategories(){
+function getAllCategories()
+{
     return Category::withTranslations()->get();
 }
 
-function getCategoriesByParent($parent){
-    return Category::withTranslations(['uz','ru'])->where('parent_id', $parent)->get();
+function getCategoriesByParent($parent)
+{
+    return Category::withTranslations(['uz', 'ru'])->where('parent_id', $parent)->get();
 }
-function getFaqCategories(){
+
+function getFaqCategories()
+{
     return FaqCategories::all();
 }
 
-function getAuthUserBalance(){
+function getAuthUserBalance()
+{
     return auth()->user() && auth()->user()->walletBalance ? auth()->user()->walletBalance->balance : null;
 }
 
-function taskGuard($task){
-          if ($task->user_id != auth()->user()->id){
-              abort(403,"No Permission");
-          }
+function taskGuard($task)
+{
+    if ($task->user_id != auth()->id() && $task->performer_id != auth()->id()) {
+        abort(403, "No Permission");
+    }
 }
 
-function generate_url() {
+function generate_url()
+{
     return "http://ws.smarts.uz/api/send-notification";
 }
