@@ -79,7 +79,7 @@ class SocialAPIController extends Controller
         $data = $request->validate([
            'google_id' => 'nullable',
            'facebook_id' => 'required|nullable',
-           'email' => 'nullable|email',
+           'email' => 'nullable', //email
            'name' => 'string', //required
            'avatar' => 'string', //required
            'server_code' => 'string', //required
@@ -207,7 +207,7 @@ class SocialAPIController extends Controller
         try {
             $data = $request->validate([
                 'id' => 'required',
-                'email' => 'nullable|email',
+                'email' => 'nullable', //email
                 'name' => 'string', //required
                 'avatar' => 'string', //required
                 'server_code' => 'string', //required
