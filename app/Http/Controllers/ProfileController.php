@@ -141,7 +141,7 @@ class ProfileController extends Controller
         $profile = new ProfileService();
         $updatedData = $profile->settingsUpdate($data);
         Auth::user()->update($updatedData);
-        Alert::success(__('Настройки успешно сохранены'));
+        Alert::success(__('lang.setting_alert'));
         return redirect()->route('profile.editData');
     }
 
@@ -196,7 +196,7 @@ class ProfileController extends Controller
         $data['password'] = Hash::make($data['password']);
         auth()->user()->update($data);
 
-        Alert::success("Success!", "Your Password was successfully updated");
+        Alert::success(__('lang.new_password'));
 
         return redirect()->back()->with([
             'password' => 'password'

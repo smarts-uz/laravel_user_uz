@@ -58,37 +58,39 @@
         @endauth
         @auth
             @if($task->status == 3 && $task->user_id == auth()->user()->id)
-                <button
-                    onclick="toggleModal4()"
-                    class="sm:w-2/5 w-9/12 text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
-                    type="submit">
-                    {{__('Задание выполнено')}}
-                </button>
-                <form action="{{route('update.not_completed', [$task])}}" method="POST">
-                    @csrf
-                    <button
-                        class="sm:w-2/5 w-9/12 text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
-                        type="button">
-                        {{__('Задание не выполнено')}}
+                <div class="flex sm:flex-row flex-col w-11/12 mx-auto">
+                    <button onclick="toggleModal4()"
+                        class="text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-10 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
+                        type="submit">
+                        {{__('Задание выполнено')}}
                     </button>
-                </form>
+                    <form action="{{route('update.not_completed', [$task])}}" method="POST">
+                        @csrf
+                        <button
+                            class="text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
+                            type="button">
+                            {{__('Задание не выполнено')}}
+                        </button>
+                    </form>
+                </div>
             @endif
 
             @if($task->status == 4 && $task->performer_id == auth()->user()->id && !$task->performer_review)
-                <button
-                    onclick="toggleModal4()"
-                    class="sm:w-2/5 w-9/12 text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
-                    type="submit">
-                    {{__('Задание выполнено')}}
-                </button>
-                <form action="{{route('update.not_completed', [$task])}}" method="POST">
-                    @csrf
-                    <button
-                        class="sm:w-2/5 w-9/12 text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
-                        type="button">
-                        {{__('Задание не выполнено')}}
+                <div class="flex sm:flex-row flex-col w-11/12 mx-auto">
+                    <button onclick="toggleModal4()"
+                        class="text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-10 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
+                        type="submit">
+                        {{__('Задание выполнено')}}
                     </button>
-                </form>
+                    <form action="{{route('update.not_completed', [$task])}}" method="POST">
+                        @csrf
+                        <button
+                            class="text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
+                            type="button">
+                            {{__('Задание не выполнено')}}
+                        </button>
+                    </form>
+                </div>
             @endif
         @endauth
     </div>
