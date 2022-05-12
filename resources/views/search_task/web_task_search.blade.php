@@ -2,7 +2,7 @@
     <div class="grid grid-cols-5 container mx-auto gap-x-2">
         {{-- left start --}}
         <div class="col-span-3">
-            <form id="search_form" method="get" action="{{route('searchTask.search_new2')}}">
+            <form id="search_form" method="post" action="{{route('searchTask.search_new2')}}">
                 <div class="w-full bg-yellow-100 my-5 rounded-md  text-sm">
                     <div class="px-5 py-5 hidden md:block">
                         <div class="grid grid-cols-4 gap-4 mb-3">
@@ -163,8 +163,3 @@
         {{-- right end --}}
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
-<script src="https://api-maps.yandex.ru/2.1/?apikey=f4b34baa-cbd1-432b-865b-9562afa3fcdb&lang={{__('ru_RU')}}"
-    type="text/javascript"></script>
-<script src="js/search_tasks.js"></script>

@@ -1,19 +1,19 @@
 <div class="show_tasks">
+    @if (isset($tasks))
     @if ($tasks)
     @foreach ($tasks as $task)
-    @if ($task->user)
     <div class="border-2 border-gray-500 rounded-xl bg-gray-50 hover:bg-blue-100 h-auto my-3">
         <div class="grid grid-cols-5 w-11/12 mx-auto py-2">
             <div class="sm:col-span-3 col-span-5 flex flex-row">
                 <div class="sm:mr-6 mr-3 w-1/6">
-                    <img src="{{ asset('storage/'.$task->category->ico) }}"
+                    <img src="{{ asset('storage/'.$task->category_icon) }}"
                         class="text-2xl float-left text-blue-400 sm:mr-4 mr-3 h-14 w-14 bg-blue-200 p-2 rounded-xl" />
                 </div>
                 <div class="w-5/6">
                     <a href="/detailed-tasks/{{$task->id}}"
                         class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">{{ $task->name }}</a>
                     <p class="text-sm">
-                        {{ count($task->addresses)? $task->addresses[0]->location:'Можно выполнить удаленно' }}</p>
+                        {{ ($task->address_main)? $task->address_main:'Можно выполнить удаленно' }}</p>
                     @if($task->date_type == 1 || $task->date_type == 3)
                     <p class="text-sm my-0.5">{{__('Начать')}} {{ $task->start_date }}</p>
                     @endif
@@ -42,18 +42,17 @@
                     0
                     @endif
                 </span>
-                <p class="text-sm sm:mt-1 mt-0">{{ $task->category->name }}</p>
+                <p class="text-sm sm:mt-1 mt-0">{{ $task->category_name }}</p>
                 @if (Auth::check() && Auth::user()->id == $task->user_id)
                 <a href="/profile"
-                    class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $task->user?$task->user->name:'' }}</a>
+                    class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $task->user_name?$task->user_name:'' }}</a>
                 @else
                 <a href="/performers/{{$task->user_id}}"
-                    class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $task->user?$task->user->name:'' }}</a>
+                    class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $task->user_name?$task->user_name:'' }}</a>
                 @endif
             </div>
         </div>
     </div>
-    @endif
 
     @endforeach
     @else
@@ -72,5 +71,6 @@
             </div>
         </div>
     </div>
+    @endif
     @endif
 </div>

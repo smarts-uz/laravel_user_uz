@@ -56,7 +56,7 @@ class SearchService
         return $item;
     }
 
-    public function search_new_service($arr_check, $filter = '', $suggest = '', $price, $remjob, $noresp, $radius): array
+    public function search_new_service($arr_check, $filter = '', $suggest = '', $price=null, $remjob, $noresp, $radius): array
     {
 
         $users = User::all()->keyBy('id');
@@ -67,16 +67,14 @@ class SearchService
             ->when($filter !== '', function ($query) use ($filter) {
                 $query->where('name', 'like', "%{$filter}%");
             })
-
-            // ->when($suggest!=='', function ($query) use ($suggest) {
-            //     $query->whereHas('addresses', function ($query) use($suggest) {
-            //         $query->where('location', 'like', "%{$suggest}%");});
-            // })
-            // ->when($price!=='', function ($query) use ($price) {
-            //   $query->where('budget', '>=', $price*0.8)
-            //     ->where('budget', '<=', $price*1.2);
-            // })
-
+             ->when($suggest!=='', function ($query) use ($suggest) {
+                $query->whereHas('addresses', function ($query) use($suggest) {
+                    $query->where('location', 'like', "%{$suggest}%");});
+            })
+            ->when($price!==null, function ($query) use ($price) {
+              $query->where('budget', '>=', $price*0.8)
+                ->where('budget', '<=', $price*1.2);
+            })
             ->when($arr_check, function ($query) use ($arr_check) {
                 $query->whereIn('category_id', $arr_check);
             })
@@ -89,27 +87,20 @@ class SearchService
         $return = [];
 
         foreach ($tasks as $task) {
-
             $item = new SearchNewItem();
-            $item->id = $task->id;
-            if ($users->contains($task->user_id)) {
-                $item->user_name = $users->get($task->user_id)->name;
-                $item->user_email = $users->get($task->user_id)->email;
+           $item=$task;
+           if ($users->contains($task->user_id)) {
+               $item->user_name = $users->get($task->user_id)->name;
             }
-
-            /*  if ($task->id === 1865) {*/
-
+            
             $allAdresses = $adresses->where('task_id', $task->id);
             $mainAdress = Arr::first($allAdresses);
             $item->address_main = Arr::get($mainAdress, 'location');
 
-            /*     echo '';            }*/
-
-
             if ($categories->contains($task->category_id)) {
                 $item->category_icon = $categories->get($task->category_id)->ico;
+                $item->category_name = $categories->get($task->category_id)->name;
             }
-
             $return[] = $item;
         }
 
