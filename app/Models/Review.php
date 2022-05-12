@@ -11,7 +11,7 @@ class Review extends Model
     use HasFactory;
 
     protected $table = 'reviews';
-    protected $fillable = ['user_id','description','good_bad','reviewer_id','task_id'];
+    protected $fillable = ['user_id','description','good_bad','reviewer_id','task_id', 'as_performer'];
     protected $with = ['user', 'reviewer','task'];
 
 
