@@ -41,8 +41,7 @@
 {{-- podelitsa modal end --}}
 
 {{-- share modal start --}}
-<div
-    class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none        justify-center items-center"
+<div class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none        justify-center items-center"
     style="background-color:rgba(0,0,0,0.5)" id="modal-id44">
     <div class="relative w-full my-32 mx-auto max-w-3xl" id="modal44">
         <div
@@ -81,45 +80,44 @@
 <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id45-backdrop"></div>
 {{-- share modal end --}}
 
-{{-- Modal start --}}
-<div
-    class="hidden overflow-x-auto bg-black bg-opacity-50 overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
-    id="modal-id4">
-    <form id="updatereview" action="{{route('update.sendReview', $task->id)}}" method="POST">
-        @csrf
-        <div class="relative my-6 mx-auto max-w-xl" id="modal4">
-            <input type="number" hidden name="status" id="status" value="">
-            <div
-                class="border-0 top-32 rounded-lg shadow-2xl px-10 py-10 relative flex mx-auto flex-col w-full bg-white outline-none focus:outline-none">
-                <div class=" text-center  rounded-t">
-                    <button id="close-id4" class=" w-100 h-16 absolute top-1 right-4">
-                        Close
-                    </button>
-                    <h3 class="font-semibold text-gray-700 text-3xl block">
-                        {{__(' Оставить отзыв')}}
-                    </h3>
-                </div>
-                <div class="text-center h-56 w-full mx-auto text-base">
+{{-- review modal --}}
+<div class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none        justify-center items-center"
+    style="background-color:rgba(0,0,0,0.5)" id="modal-id4">
+    <div class="relative w-full my-32 mx-auto max-w-3xl" id="modal4">
+        <div
+            class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none">
+            <div class=" text-center p-6  rounded-t">
+                <button id="close_btn" type="button" onclick="toggleModal4()"
+                        class="rounded-md w-100 h-16 absolute top-1 right-4 focus:outline-none">
+                    <i class="fas fa-times text-xl w-full"></i>
+                </button>
+                <h3 class="font-semibold text-gray-700 text-3xl block">
+                    {{__(' Оставить отзыв')}}
+                </h3>
+            </div>
+            <div class="text-center h-64 w-full mx-auto text-base mb-4">
+                <form id="updatereview" action="{{route('update.sendReview', $task->id)}}" method="POST">
+                    @csrf
                     <div class="">
                         <div class="flex flex-row justify-center w-full my-4 mx-auto">
                             <label id="class_demo"
-                                   class="cursor-pointer w-32 text-gray-500 border rounded-l hover:bg-green-500 transition duration-300 hover:text-white">
-                                <input type="radio" name="good"
-                                       class="good border hidden rounded ml-6 w-8/12"
-                                       value="1">
-                                <i class="far fa-thumbs-up text-2xl mr-2"></i><span
-                                    class="relative -top-1">good</span>
+                                class="cursor-pointer w-32 text-gray-500 border rounded-l hover:bg-green-500 transition duration-300 hover:text-white">
+                                <input type="radio" name="good" checked
+                                    class="good border hidden rounded ml-6 w-8/12"
+                                    value="1">
+                                <i id="icon" class="far fa-thumbs-up text-2xl mr-2"></i><span
+                                    class="relative -top-1" id="good">good</span>
                             </label>
                             <label id="class_demo1"
-                                   class="cursor-pointer w-32 text-gray-500 border rounded-r hover:bg-red-500 transition duration-300 hover:text-white">
+                                class="cursor-pointer w-32 text-gray-500 border rounded-r hover:bg-red-500 transition duration-300 hover:text-white">
                                 <input type="radio" name="good"
-                                       class="good border hidden rounded ml-6  w-8/12"
-                                       value="0">
+                                    class="good border hidden rounded ml-6  w-8/12"
+                                    value="0">
                                 <i class="far fa-thumbs-down text-2xl mr-2"></i><span
                                     class="relative -top-1">bad</span>
                             </label>
                         </div>
-                        <textarea name="comment" class="h-24 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white shadow-lg drop-shadow-xl
+                        <textarea name="comment" required class="h-24 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white shadow-lg drop-shadow-xl
                             border resize-none w-full border-solid border-gray-200 rounded transition ease-in-out m-0 focus:outline-none  focus:border-yellow-500 "></textarea>
 
                         <button
@@ -128,13 +126,13 @@
                             {{__('Отправить')}}
                         </button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
-    </form>
+    </div>
 </div>
 <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id4-backdrop"></div>
-{{--        share in webpages--}}
+{{-- review modal end--}}
 
 {{-- otklik modal  --}}
 <div id="authentication-modal"

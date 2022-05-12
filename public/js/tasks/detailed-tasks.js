@@ -1,19 +1,13 @@
+function toggleModal4() {
+    document.getElementById("modal-id4").classList.toggle("hidden");
+    document.getElementById("modal-id4" + "-backdrop").classList.toggle("hidden");
+    document.getElementById("modal-id4").classList.toggle("flex");
+    document.getElementById("modal-id4" + "-backdrop").classList.toggle("flex");
+    document.getElementById("class_demo").classList.add("bg-green-500");
+    document.getElementById("good").classList.toggle("text-white");
+    document.getElementById("icon").classList.toggle("text-white");
+}
 $(document).ready(function () {
-    $("#close-id4").click(function () {
-        $("#modal-id4").hide();
-        $("#modal-id4-backdrop").hide();
-    });
-    $("#modal-open-id4").click(function () {
-        $('#status').val(0);
-
-        $("#modal-id4").show();
-        $("#class_demo1").click();
-    });
-    $("#modal-open-id5").click(function () {
-        $('#status').val(1);
-        $("#modal-id4").show();
-        $("#class_demo").click();
-    });
     $("#class_demo").click(function () {
         $("#class_demo").addClass("bg-green-500");
         $("#class_demo").addClass("text-white");
@@ -26,9 +20,17 @@ $(document).ready(function () {
         $("#class_demo1").addClass("text-white");
         $("#class_demo1").removeClass("text-gray-500");
         $("#class_demo").removeClass("bg-green-500");
+        $("#good").removeClass("text-white");
+        $("#icon").removeClass("text-white");
         $("#class_demo").addClass("text-gray-500");
     });
-
+    $('#close_btn').click(function(){
+        $("#class_demo").addClass("bg-green-500");
+        $("#class_demo").addClass("text-white");
+        $("#class_demo").removeClass("text-gray-500");
+        $("#class_demo1").removeClass("bg-red-500");
+        $("#class_demo1").addClass("text-gray-500");
+    })
 });
 
 
@@ -40,13 +42,6 @@ $(document).ready(function () {
     var $temp = $("<input>");
     var $url = $(location).attr('href');
 });
-
-function valueChanged() {
-    if ($('.coupon_question').is(":checked"))
-        $(".answer").show();
-    else
-        $(".answer").hide();
-}
 
 $(".save-data").click(function (event) {
     event.preventDefault();
@@ -118,49 +113,11 @@ $(".open-modal").on('click', function (e) {
 
 });
 
-$(".close-modal").on('click', function (e) {
-    e.preventDefault();
-    e.stopImmediatePropagation;
-
-    var $this = $(this),
-        modal = $($this).data("modal");
-
-    $(modal).removeClass("open");
-    setTimeout(function () {
-        $(modal).parents(".overlay").removeClass("open");
-    }, 50);
-
-});
-
-
-$(".send-comment").click(function (event) {
-    event.preventDefault();
-    window.setTimeout(function () {
-
-    }, 3000);
-    window.location.reload();
-});
-
-
-$(document).ready(function () {
-    $(".st-remove-label").each(function () {
-        $(this).removeAttr("style");
-        $(this).addClass("my-4");
-        var tweet = $(this).attr("data-network");
-        if (tweet == 'twitter') {
-            $(this).after('<br>');
-        }
-    });
-
-
-});
 $('#btn1').click(function () {
     $('#not_free').val(1)
 })
 $('#btn2').click(function () {
     $('#not_free').val(0)
-    // alert(22)
-
 })
 
 function toggleModal44() {

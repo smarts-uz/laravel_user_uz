@@ -57,6 +57,11 @@ class SearchTaskController extends VoyagerBaseController
             $task->save();
         }
 
+        
+        $value = Carbon::parse($task->created_at)->locale(getLocale());
+        $day = $value == now()->toDateTimeString()? "Bugun": "$value->day-$value->monthName";
+        $created = "$day  $value->noZeroHour:$value->minute";
+
         $value = Carbon::parse($task->end_date)->locale(getLocale());
         $value->minute<10 ? $minut = '0'.$value->minute : $minut = $value->minute;
         $end = "$value->day-$value->monthName  $value->noZeroHour:$minut";
@@ -70,7 +75,7 @@ class SearchTaskController extends VoyagerBaseController
         $userId = auth()->id();
         $item = $this->service->task_service($auth_response, $userId, $task);
         return view('task.detailed-tasks',
-        ['review_description' => $item->review_description,'task' => $task, 'end' => $end, 'start' => $start, 'review' => $review, 'complianceType' => $item->complianceType, 'same_tasks' => $item->same_tasks,
+        ['review_description' => $item->review_description,'task' => $task, 'created' => $created, 'end' => $end, 'start' => $start, 'review' => $review, 'complianceType' => $item->complianceType, 'same_tasks' => $item->same_tasks,
         'auth_response' => $item->auth_response, 'selected' => $item->selected, 'responses' => $item->responses, 'addresses' => $item->addresses, 'top_users'=>$item->top_users, 'respons_reviews'=>$item->respons_reviews]);
     }
 
