@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\UpdateRequest;
-use App\Models\CustomFieldsValue;
 use App\Models\Notification;
 use App\Models\Task;
 use App\Models\Review;
@@ -12,9 +11,7 @@ use App\Models\User;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use App\Services\Task\CreateService;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use mysql_xdevapi\Exception;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class UpdateController extends Controller
@@ -58,6 +55,12 @@ class UpdateController extends Controller
 
     }
 
+    public function not_completed(Task $task)
+    {
+        $task->update(['status' => Task::STATUS_COMPLETE_WITHOUT_REVIEWS]);
+        Alert::success('Success');
+        return back();
+    }
 
     public function sendReview(Task $task, Request $request)
     {
@@ -65,15 +68,14 @@ class UpdateController extends Controller
 // performer review to user
         try {
             if ($task->user_id == auth()->id()) {
-                $task->status = $request->status ? Task::STATUS_COMPLETE : Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
+                $task->status = Task::STATUS_COMPLETE;
                 $task->save();
-                $user = User::find($task->performer_id);
+                $performer = User::find($task->performer_id);
                 if ($request->good == 1) {
-                    $user->review_good = $user->review_good + 1;
+                    $performer->increment('review_good');
                 } else {
-                    $user->review_bad = $user->review_bad + 1;
+                    $performer->increment('review_bad');
                 }
-                $user->save();
                 Review::create([
                     'description' => $request->comment,
                     'good_bad' => $request->good,
@@ -89,7 +91,6 @@ class UpdateController extends Controller
                     'description' => 1,
                     'type' => Notification::SEND_REVIEW
                 ]);
-
                 NotificationService::sendNotificationRequest([$task->performer_id], [
                     'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
                 ]);

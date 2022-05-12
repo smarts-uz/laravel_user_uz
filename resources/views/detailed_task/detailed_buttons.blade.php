@@ -57,43 +57,38 @@
             </a>
         @endauth
         @auth
-            @if ($task->performer_id == auth()->user()->id || $task->user_id == auth()->user()->id)
-                <button id="sendbutton"
-                        class="font-sans w-full text-lg font-semibold bg-green-500 hidden text-white hover:bg-green-400 px-12 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
-                        type="button">
-                    {{__('Оставить отзыв')}}
+            @if($task->status == 3 && $task->user_id == auth()->user()->id)
+                <button
+                    onclick="toggleModal4()"
+                    class="sm:w-2/5 w-9/12 text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
+                    type="submit">
+                    {{__('Задание выполнено')}}
                 </button>
-
-                @if($task->status == 3 && $task->user_id == auth()->user()->id)
+                <form action="{{route('update.not_completed', [$task])}}" method="POST">
+                    @csrf
                     <button
-                        id="modal-open-id5"
-                        class="not_done  sm:w-2/5 w-9/12 text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
-                        type="submit">
-                        {{__('Задание выполнено')}}
-                    </button>
-
-                    <button
-                        class="not_done  sm:w-2/5 w-9/12 text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
+                        class="sm:w-2/5 w-9/12 text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
                         type="button">
                         {{__('Задание не выполнено')}}
                     </button>
-                @endif
+                </form>
+            @endif
 
-                @if($task->status == 4 && $task->performer_id == auth()->user()->id && !$task->performer_review)
+            @if($task->status == 4 && $task->performer_id == auth()->user()->id && !$task->performer_review)
+                <button
+                    onclick="toggleModal4()"
+                    class="sm:w-2/5 w-9/12 text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
+                    type="submit">
+                    {{__('Задание выполнено')}}
+                </button>
+                <form action="{{route('update.not_completed', [$task])}}" method="POST">
+                    @csrf
                     <button
-                        id="modal-open-id5"
-                        class="not_done  sm:w-2/5 w-9/12 text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
-                        type="submit">
-                        {{__('Задание выполнено')}}
-                    </button>
-
-                    <button
-                        class="not_done  sm:w-2/5 w-9/12 text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
+                        class="sm:w-2/5 w-9/12 text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
                         type="button">
                         {{__('Задание не выполнено')}}
                     </button>
-                @endif
-
+                </form>
             @endif
         @endauth
     </div>

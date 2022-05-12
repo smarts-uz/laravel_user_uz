@@ -104,7 +104,7 @@
     "Выбрать тариф": "Tarifni tanlang",
     "Выгодные цены": "Qulay narxlar",
     "Выполнил": "Tugallangan",
-    "Выход": "Chiqindi",
+    "Выход": "Chiqish",
     "Где выполнить задание?": "Vazifani qayerdan to'ldirish kerak?",
     "Гибкий график работы: время начала с 8:00 до 12:00 и окончания с 17:00 до 21:00 соответственно, перерыв на обед — один час;": "Moslashuvchan ish jadvali: soat 8:00 dan 12:00 gacha, mos ravishda soat 8:00 dan 12:00 gacha, mos ravishda soat 17:00 dan 21:00 gacha, tushlik tanaffusi bir soat;",
     "Город": "Shahar",
@@ -227,7 +227,7 @@
     "На ваш телефонный номер": "Telefon raqamingizga",
     "На ваш электронный адрес": "Elektron pochta manzilingizga",
     "На какой бюджет вы рассчитываете?": "Siz qaysi byudjetni hisoblaysiz?",
-    "На какую сумму хотите пополнить <br> кошелёк": "Wallet-ni to'ldirishni juda xohlaysiz",
+    "На какую сумму хотите пополнить <br> кошелёк": "Hamyonni to'ldirishni juda xohlaysizmi ?",
     "Награды и рейтинг": "Mukofotlar va reyting",
     "Надежные <br/> исполнители <br/> бизнеса": "Ishonchi <br/> Ijrochilar <br/> Business",
     "Надежные исполнители": "Ishonchli ijrochilar",
@@ -551,5 +551,7 @@
     "странице рейтинга": "Reyting sahifasi",
     "сум": "So'm",
     "удалить сеансы": "Sessiyalarni o'chirish",
-    "максимум 20та символом":"maksimal 20 ta belgi"
+    "максимум 20та символом": "maksimal 20 ta belgi",
+    "Успешно": "Omadli"
+
 }

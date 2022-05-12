@@ -31,7 +31,7 @@ class SocialController extends Controller
         if ($findUser) {
             $findUser->facebook_id = $user->id;
             $findUser->save();
-            Alert::success('Success', 'You\'ve Successfully linked your facebook account');
+            Alert::success('Успешно', 'Вы успешно связали свой аккаунт Feecbook');
             Auth::login($findUser);
             return redirect()->route('profile.profileData');
         } else {
@@ -86,7 +86,7 @@ class SocialController extends Controller
                 $findUser->google_id = $user->id;
                 $findUser->save();
                 Auth::login($findUser);
-                Alert::success('Success', 'You\'ve Successfully linked your google account');
+                Alert::success('Успешно', 'Вы успешно связали свой аккаунт Google');
                 return redirect()->route('profile.profileData');
             } else {
                 $new_user = new User();

@@ -113,27 +113,31 @@ class SearchTaskController extends VoyagerBaseController
 
 public function search_new2(Request $request){
 
-    $b = $request->zapros;
-
-    $c = count($b);
-
-    $filter = $b[0]['value'];
-    $suggest = $b[1]['value'];
-    $radius = $b[2]['value'];
-    $price = $b[3]['value'];
+    $data = $request->data;
+    $filter = $data[0]['value'];
+    $suggest = $data[1]['value'];
+    $radius = $data[2]['value'];
+    $price = $data[3]['value'];
 
     $arr_check = [];
-    for ($i=0, $k=4; $k < $c; $i++, $k++){
-        $arr_check[$i] = $b[$k]['value'];
+    $remjob =false;
+    $noresp=false;
+    $count = count($data);
+    
+    if(isset($data[4])){
+        $remjob = $data[4]['name'] === "remjob";
+        $noresp = $data[5]['name'] === "noresp";
+        
+        for ($k = 4; $k < $count; $k++) {
+            if (is_numeric($data[$k]['name']))
+                $arr_check[] = $data[$k]['name'];
+        }
     }
-    /*dd($arr_check);*/
-    $item = $this->service->search_new_service($arr_check);
-    $tasks = $item->tasks;
-    dd($tasks->all());
-   /*$html=view('search_task.tasks', ['tasks'=> $item->tasks])->render();*/
-   /* return  response()->json( array('success' => true, 'html'=>$html) );*/
-    /*return $tasks->all();*/
-    return view('search_task.tasks', ['tasks'=> $item->tasks])->render();
-}
+    
+    $tasks = $this->service->search_new_service($arr_check, $filter, $suggest, $price, $remjob, $noresp, $radius);
 
+
+    $html = view("search_task.tasks", compact('tasks'))->render();
+    return response()->json(array('success' => true, 'html' => $html));
+}
 }
