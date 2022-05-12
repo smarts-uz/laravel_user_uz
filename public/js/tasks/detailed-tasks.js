@@ -43,13 +43,6 @@ $(document).ready(function () {
     var $url = $(location).attr('href');
 });
 
-function valueChanged() {
-    if ($('.coupon_question').is(":checked"))
-        $(".answer").show();
-    else
-        $(".answer").hide();
-}
-
 $(".save-data").click(function (event) {
     event.preventDefault();
     let response_desc = $('textarea#form8').val();
