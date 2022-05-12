@@ -23,7 +23,7 @@ class VoyagerTaskController extends Controller
         $tasks = Task::query()->where('status',Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->with(['reviews','user','performer'])
             ->whereHas('user')
             ->whereHas('performer')
-            ->whereHas('reviews')
+//            ->whereHas('reviews')
             ->paginate(60);
         return view('task.reported-tasks',compact('tasks'));
     }
