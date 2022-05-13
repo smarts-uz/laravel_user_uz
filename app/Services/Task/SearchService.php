@@ -52,7 +52,6 @@ class SearchService
             ->where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(20)->pluck('id')->toArray();
         $item->respons_reviews = Review::all();
-        $item->review_description = Review::where('task_id', $task)->first();
         return $item;
     }
 

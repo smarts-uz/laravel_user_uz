@@ -35,23 +35,6 @@
                             @endif
                         </p>
                     </div>
-                    @isset($value)
-                        @foreach($task->custom_field_values as $value)
-                            <div class="ml-4 md:ml-12 flex flex-row mt-8">
-
-                                <h1 class="font-bold h-auto w-48">{{ $value->custom_field->getTranslatedAttribute('title') }}</h1>
-                                <p class=" h-auto w-96">
-                                    @foreach(json_decode($value->value, true) as $value_obj)
-                                        @if ($loop->last)
-                                            {{$value_obj}}
-                                        @else
-                                            {{$value_obj}},
-                                        @endif
-                                    @endforeach
-                                </p>
-                            </div>
-                        @endforeach
-                    @endisset
                     <div class="ml-4 md:ml-12 flex flex-row mt-8">
                         <h1 class="font-bold h-auto w-48">{{__('Оплата задания')}}</h1>
                         <div class=" h-auto w-96">
@@ -95,17 +78,15 @@
                             <h1 class="font-bold h-auto w-48">{{__('Не предоставил(а) документы')}}</h1>
                         </div>
                     @endif
-                    @foreach($task->custom_field_values as $value)
-                        @if($value->value &&  $value->custom_field)
-                            <div class="ml-4 md:ml-12 flex flex-row mt-8">
-                                <h1 class="font-bold text-gray-600 h-auto w-48">{{ $value->custom_field->title }}</h1>
-                                <div class=" h-auto w-96">
-                                    <p class="text-gray-500">
-                                        <b class="ml-4">{{ $value->custom_field->label  }}:</b>
-
-                                        {{ json_decode($value->value)[0]  }}
-                                    </p>
-                                </div>
-                            </div>
-                        @endif
-                    @endforeach
+                    <div class="ml-4 md:ml-12 flex flex-row mt-8">
+                        <h1 class="font-bold h-auto w-48">Какие параметры посылки?</h1>
+                        <div class="flex flex-wrap gap-x-2">
+                            @foreach($task->custom_field_values as $value)
+                                @if($value->value &&  $value->custom_field)
+                                    <h1 class="ml-4">
+                                        {{ $value->custom_field->label  }}: {{ json_decode($value->value)[0]  }}
+                                    </h1>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
