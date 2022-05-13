@@ -99,20 +99,40 @@
                         @if ($respons_review->good_bad==1 && $respons_review->task_id == $task->id)
                             <div class="my-6">
                                 <div class="flex flex-row gap-x-2 my-4">
-                                    <img src="@if ($task->user->avatar == ''){{ asset("storage/images/default.png") }}
-                                    @else{{asset("storage/{$task->user->avatar}") }}" @endif alt="#"
-                                        class="w-12 h-12 border-2 rounded-lg border-gray-500">
+                                    @if ($respons_review->as_performer == 0)
+                                        <img src="@if ($task->user->avatar == ''){{ asset("storage/images/default.png") }}
+                                        @else{{asset("storage/{$task->user->avatar}") }}" @endif alt="#"
+                                            class="w-12 h-12 border-2 rounded-lg border-gray-500">
+                                    @elseif ($respons_review->as_performer == 1)
+                                        <img src="@if ($respons_review->user->avatar == ''){{ asset("storage/images/default.png") }}
+                                        @else{{asset("storage/{$respons_review->user->avatar}") }}" @endif alt="#"
+                                            class="w-12 h-12 border-2 rounded-lg border-gray-500">
+                                    @endif
+                                   
                                     <div class="flex flex-col">
-                                       @if (Auth::check() && Auth::user()->id == $task->user->id)
-                                            <a href="/profile"
+                                        @if ($respons_review->as_performer == 0)
+                                            <a @if (Auth::check() && Auth::user()->id == $task->user->id) 
+                                                href="/profile"
+                                            @else href="/performers/{{$task->user->id}}"
+                                             @endif 
                                             class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
                                             </a>
-                                        @else
-                                            <a href="/performers/{{$task->user->id}}"
-                                            class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
+                                        @elseif ( $respons_review->as_performer == 1)
+                                            <a  @if (Auth::check() && Auth::user()->id == $respons_review->user->id) 
+                                                href="/profile"
+                                                @else href="/performers/{{$respons_review->user->id}}"
+                                                @endif 
+                                            class="text-2xl text-blue-500 hover:text-red-500">{{$respons_review->user->name ?? $respons_review->user_name}}
                                             </a>
                                         @endif
-                                        <i class="far fa-thumbs-up text-gray-400"></i>
+                                        <div class="flex flex-row gap-x-2">
+                                            <i class="far fa-thumbs-up text-gray-400"></i>
+                                            @if ($respons_review->as_performer==0)
+                                                <p class="text-base"> - Заказчик</p>
+                                            @elseif ($respons_review->as_performer==1)
+                                                <p class="text-base"> - Исполнитель</p>
+                                            @endif
+                                       </div>
                                     </div>
                                 </div>
                                 <div class="w-full py-3 px-6 bg-yellow-50 rounded-xl">
@@ -125,20 +145,39 @@
                         @elseif ($respons_review->good_bad==0 && $respons_review->task_id == $task->id)
                             <div class="my-6">
                                 <div class="flex flex-row gap-x-2 my-4">
-                                    <img src="@if ($task->user->avatar == ''){{ asset("storage/images/default.png") }}
-                                    @else{{asset("storage/{$task->user->avatar}") }}" @endif alt="#"
-                                        class="w-12 h-12 border-2 rounded-lg border-gray-500">
+                                    @if ($respons_review->as_performer == 0)
+                                        <img src="@if ($task->user->avatar == ''){{ asset("storage/images/default.png") }}
+                                        @else{{asset("storage/{$task->user->avatar}") }}" @endif alt="#"
+                                            class="w-12 h-12 border-2 rounded-lg border-gray-500">
+                                    @elseif ($respons_review->as_performer == 1)
+                                        <img src="@if ($respons_review->user->avatar == ''){{ asset("storage/images/default.png") }}
+                                        @else{{asset("storage/{$respons_review->user->avatar}") }}" @endif alt="#"
+                                            class="w-12 h-12 border-2 rounded-lg border-gray-500">
+                                    @endif
                                     <div class="flex flex-col">
-                                       @if (Auth::check() && Auth::user()->id == $task->user->id)
-                                            <a href="/profile"
+                                        @if ($respons_review->as_performer == 0)
+                                            <a @if (Auth::check() && Auth::user()->id == $task->user->id) 
+                                                href="/profile"
+                                            @else href="/performers/{{$task->user->id}}"
+                                            @endif 
                                             class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
                                             </a>
-                                        @else
-                                            <a href="/performers/{{$task->user->id}}"
-                                            class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
+                                        @elseif ( $respons_review->as_performer == 1)
+                                            <a  @if (Auth::check() && Auth::user()->id == $respons_review->user->id) 
+                                                href="/profile"
+                                                @else href="/performers/{{$respons_review->user->id}}"
+                                                @endif 
+                                            class="text-2xl text-blue-500 hover:text-red-500">{{$respons_review->user->name ?? $respons_review->user_name}}
                                             </a>
                                         @endif
-                                        <i class="far fa-thumbs-down text-gray-400"></i>
+                                       <div class="flex flex-row gap-x-2">
+                                            <i class="far fa-thumbs-down text-gray-400"></i>
+                                            @if ($respons_review->as_performer==0)
+                                                <p class="text-base"> - Заказчик</p>
+                                            @elseif ($respons_review->as_performer==1)
+                                                <p class="text-base"> - Исполнитель</p>
+                                            @endif
+                                       </div>
                                     </div>
                                 </div>
                                 <div class="w-full py-3 px-6 bg-yellow-50 rounded-xl">

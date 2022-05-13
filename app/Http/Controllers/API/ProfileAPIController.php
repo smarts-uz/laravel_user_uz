@@ -207,6 +207,45 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/portfolio/create",
+     *     tags={"Profile"},
+     *     summary="Portfolio Update",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="comment",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="description",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function portfolioUpdate(Request $request, Portfolio $portfolio)
     {
         $validator = Validator::make($request->all(), [
@@ -236,6 +275,69 @@ class ProfileAPIController extends Controller
         return response()->json([
             'success' => true,
             'data' => new PortfolioIndexResource($portfolio)
+        ]);
+    }
+
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/video",
+     *     tags={"Profile"},
+     *     summary="Profile Video Store",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="link",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function videoStore(Request $request)
+    {
+        $user = auth()->user();
+        $validator = Validator::make($request->all(), [
+            'link' => 'required|url'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Send valid youtube link'
+            ]);
+        }
+        $validated = $validator->validated();
+        $link = $validated['link'];
+        if (!str_starts_with($link, 'https://www.youtube.com/')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Send valid youtube link'
+            ]);
+        }
+        $user->youtube_link = str_replace('watch?v=','embed/',$request->youtube_link);;
+        $user->save();
+        return response()->json([
+            'success' => true,
+            'message' => 'Youtube link updated'
         ]);
     }
 
@@ -610,6 +712,29 @@ class ProfileAPIController extends Controller
 
     }
 
+
+    /**
+     * @OA\Get(
+     *     path="/api/profile/settings",
+     *     tags={"Profile Settings"},
+     *     summary="Profile Settings",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function settings()
     {
         $user = User::find(Auth::user()->id);
@@ -863,58 +988,6 @@ class ProfileAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/profile/category/update",
-     *     tags={"ProfileAPI"},
-     *     summary="Profile category update",
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="category",
-     *                    type="string",
-     *                 ),
-     *             ),
-     *         ),
-     *     ),
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
-    public function updateCategory(Request $request)
-    {
-        $request->validate([
-            'category' => 'required'
-        ]);
-        $user = Auth::user();
-        $user->role_id = 2;
-        $checkbox = implode(",", $request->get('category'));
-        $user->update(['category_id' => $checkbox]);
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'message' => 'Category updated'
-            ]
-        ]);
-    }
-
-
-    /**
-     * @OA\Post(
      *     path="/api/profile/store/district",
      *     tags={"ProfileAPI"},
      *     summary="Profile district",
@@ -957,62 +1030,6 @@ class ProfileAPIController extends Controller
         $user->district = $request->district;
         $user->save();
         return new UserIndexResource($user);
-    }
-
-
-    /**
-     * @OA\Post(
-     *     path="/api/profile/store/profile-photo",
-     *     tags={"ProfileAPI"},
-     *     summary="Profile Photo",
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="image",
-     *                    type="file",
-     *                 ),
-     *             ),
-     *         ),
-     *     ),
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
-    public function storeProfilePhoto(Request $request)
-    {
-        $profile = new ProfileService();
-        $photoName = $profile->storeProfilePhoto($request);
-        if ($photoName) {
-            return response()->json([
-                'success' => true,
-                'data' => [
-                    'message' => 'Profile photo stored',
-                    'photo_name' => $photoName
-                ]
-            ]);
-        }
-        return response()->json([
-            'success' => false,
-            'data' => [
-                'message' => 'Failed to store profile photo',
-            ]
-        ]);
     }
 
 
@@ -1241,6 +1258,27 @@ class ProfileAPIController extends Controller
         return response()->json([
             'success' => true,
             'data' => ReviewIndexResource::collection($data)
+        ]);
+    }
+
+    public function youtube_link(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+        $user->youtube_link = str_replace('watch?v=','embed/',$request->youtube_link);
+        $user->save();
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ]);
+    }
+
+    public function youtube_link_delete(){
+        $user = User::find(auth()->user()->id);
+        $user->youtube_link = null;
+        $user->save();
+        return response()->json([
+            'success' => false,
+            'message' => 'Yuklanmadi'
         ]);
     }
 }

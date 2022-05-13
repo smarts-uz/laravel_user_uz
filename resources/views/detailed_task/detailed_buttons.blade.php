@@ -30,7 +30,7 @@
                        data-modal="#modal1">
                         <button
                             class="sm:w-4/5 w-full font-sans text-lg pay font-semibold bg-green-500 text-white hover:bg-green-600 px-8 pt-1 pb-2 mt-6 rounded-lg transition-all duration-300">
-                            {{__('Откликнуться за')}}{{setting('admin.pullik_otklik')}} UZS<br>
+                            {{__('Откликнуться за')}} {{setting('admin.pullik_otklik')}} UZS<br>
                             <span class="text-sm">
                             {{__('и отправить контакты заказчику')}}<br>
                         </span>
@@ -68,7 +68,7 @@
                         @csrf
                         <button
                             class="text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
-                            type="button">
+                            type="submit">
                             {{__('Задание не выполнено')}}
                         </button>
                     </form>
@@ -86,7 +86,7 @@
                         @csrf
                         <button
                             class="text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
-                            type="button">
+                            type="submit">
                             {{__('Задание не выполнено')}}
                         </button>
                     </form>
