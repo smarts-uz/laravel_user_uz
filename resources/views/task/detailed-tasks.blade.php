@@ -103,7 +103,7 @@
                                     @else{{asset("storage/{$task->user->avatar}") }}" @endif alt="#"
                                         class="w-12 h-12 border-2 rounded-lg border-gray-500">
                                     <div class="flex flex-col">
-                                       @if (Auth::check() && Auth::user()->id == $task->user->id)
+                                       @if (Auth::check() && Auth::user()->id == $task->user->id )
                                             <a href="/profile"
                                             class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
                                             </a>
