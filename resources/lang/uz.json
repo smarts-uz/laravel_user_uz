@@ -111,7 +111,7 @@
     "Город, Улица, Дом": "Shahar, ko'cha, uy",
     "Город, адрес, метро, район...": "Shahar, Manzil, Metro, tuman ...",
     "Город,Улица,Дом": "Shahar, ko'cha, uy",
-    "Далее": "Keyinchalik",
+    "Далее": "Keyingi sahifa",
     "Дата и время": "Sana va vaqt",
     "Дата рождения": "Tug'ilgan kun",
     "Для отклика на вашем балансе должно быть 4000 UZS. Если заказчик захочет с вами связаться, мы автоматически спишем стоимость контакта с вашего счёта.": "Sizning hisobingizdagi javob uchun 4000 so'm bo'lishi kerak. Agar mijoz siz bilan bog'lanmoqchi bo'lsa, biz avtomatik ravishda hisobingizdan aloqa xarajatlarini yozamiz.",
@@ -210,9 +210,9 @@
     "Место оказания услуги": "Xizmat ko'rsatish joyi",
     "Местоположение": "Manzil",
     "Мне нужно": "Menga kerak",
-    "Может быть вы хотите стать": "Ehtimol siz bo'lishni xohlaysiz",
+    "Можетvalid быть вы хотите стать": "Ehtimol siz bo'lishni xohlaysiz",
     "Можно выполнить удаленно": "Masofadan bajarilishi mumkin",
-    "Мои заказы": "Mening buyrug'im",
+    "Мои заказы": "Mening buyurtmalarim",
     "Мужской": "Erkak",
     "Мы активно растем, в том числе за счет больших рекламных кампаний в интернете и по ТВ. Серия роликов «Дела делаются» в 2018 году попала в список победителей рекламного конкурса на Sostav.ru. С момента основания сервис получил множество престижных номинаций и наград. Среди них: премия Рунета, конкурс Forbes «Стартап года», «Золотой сайт» и т. д. В 2017 году Universal Services вошло в список лучших приложений в номинации «Тренды года» в App Store. В 2019 году Universal Services вошло в топ-20 самых дорогих компаний Рунета по версии Forbes.": "Biz faol o'sib boramiz, shu jumladan Internetda va televizorda katta reklama kampaniyalari tufayli biz o'sib boramiz. 2018 yilda \"Dujna\" ning 2018 yildagi bir qator videolari SOSTASTA.RUda reklama tanlovi g'oliblari ro'yxati keltirilgan. Jamg'armadan beri xizmat ko'plab nufuzli nominatsiyalar va mukofotlar oldi. Ular orasida: Runet mukofoti \"Yilni ishga tushirish\" tanlovi \"Oltin Sayt\" va boshqalar \"Yil tendentsiyalari\" ning \"Yil tendentsiyalari\" ning \"Yil tendentsiyalari\" nominatsiyasini kiritdi. 2019 yilda Forbesga ko'ra eng qimmat rejali retet kompaniyalarining eng qimmat 20-o'rinlariga kiritilgan.",
     "Мы готовы помочь вам в решении самых разнообразных задач": "Biz sizga turli xil muammolarni hal qilishda yordam berishga tayyormiz",
@@ -319,7 +319,7 @@
     "Оформление по ТК РФ": "Rossiya Federatsiyasining Mehnat kodeksiga muvofiq ro'yxatdan o'tish",
     "Оценить консультацию по телефону.": "Telefon orqali maslahatni baholang.",
     "Очень крутой сервис, напоминает Uber. Удобно пользоваться, особенно со стороны заказчика — быстро и дешево решаются любые сложные": "Juda salqin xizmat, uberga o'xshaydi. Bu, ayniqsa mijozdan foydalanish qulay bo'lgan - har qanday murakkab va arzon hal qilingan",
-    "Очень крутой сервис, напоминает Uber. Удобно пользоваться, особенно со стороны заказчика — быстро и дешево решаются любые сложныеи не очень проблемы. Как исполнитель, работающий по безлимитным пакетам, могу сказать, что стоимость полностью отбил, остался в плюсе, думаю насчет продления. Было бы круто, чтобы сервис работал по всему Узбекистану, например, в Ташкенте. Прилетел отдыхать на месяц, по 3 часа в день работаешь — остался на 2 месяца. Процветания и успехов вам! Очень рад сотрудничеству!": "Juda salqin xizmat, uberga o'xshaydi. Bu, ayniqsa mijozning tomonidan foydalanish qulay, har qanday murakkab va unchalik muhim emas. Cheksiz paketlarda ishlaydigan ijrochi sifatida, narx butunlay rad etilgan, deb ayta olamanki, men qo'shimcha bo'lib qoldi, men uzaytirish haqida o'ylayman. Masalan, Toshkentda O'zbekiston bo'ylab ishlash salqin bo'lar edi. Men bir oy dam olishdan uchib, kuniga 3 soat ishlayman - 2 oy davomida qoldim. Obod va muvaffaqiyatlar! Men hamkorlikdan juda xursandman!",
+    "Очень крутой сервис, напоминает Uber. Удобно пользоваться, особенно со стороны заказчика — быстро и дешево решаются любые сложныеи не очень проблемы. Как исполнитель, работающий по безлимитным пакетам, могу сказать, что стоимость полностью отбил, остался в плюсе, думаю насчет продления. Было бы круто, чтобы сервис работал по всему Узбекистану, например, в Ташкенте. Прилетел отдыхать на месяц, по 3 часа в день работаешь — остался на 2 месяца. Процветания и успехов вам! Очень рад сотрудничеству!": "Juda salqin xizmat, uberga o'xshaydi. Bu, ayniqsa mijozning tomonidan foydalanish qulay, har qanday murakkab va unchalik muhim   . Cheksiz paketlarda ishlaydigan ijrochi sifatida, narx butunlay rad etilgan, deb ayta olamanki, men qo'shimcha bo'lib qoldi, men uzaytirish haqida o'ylayman. Masalan, Toshkentda O'zbekiston bo'ylab ishlash salqin bo'lar edi. Men bir oy dam olishdan uchib, kuniga 3 soat ishlayman - 2 oy davomida qoldim. Obod va muvaffaqiyatlar! Men hamkorlikdan juda xursandman!",
     "Пароль": "Parol",
     "Перед началом работы попросите исполнителя показать паспорт, сверьте имя в профиле на Universal Services и в документе.": "Ishni boshlashdan oldin, pudratchidan pasportni ko'rsatishni so'rang, universal xizmatlar va hujjatdagi profildagi nomni aylantiring.",
     "Перейти на сайт Universal Services": "Saytga o'ting Universal xizmatlar",
@@ -421,7 +421,7 @@
     "Создать новое задание": "Yangi vazifani yarating",
     "Создать фотоальбом": "Fotoalbom yarating",
     "Сортировать:": "Saralash:",
-    "Сохранить": "Tejash",
+    "Сохранить": "Saqlash",
     "Сохранить новый пароль": "Yangi parolni saqlang",
     "Специалисты отдела мониторинга готовы подключиться к любой сложной ситуации и сделать все возможное, чтобы помочь пользователям ее разрешить.": "Monitoring bo'limi mutaxassislari har qanday qiyin vaziyatga ulanishga va foydalanuvchilarga ruxsat berishlariga yordam beradigan hamma narsani qilishlari mumkin.",
     "Списания со счета": "Hisob qaydnomasini yozing",
@@ -554,7 +554,9 @@
     "максимум 20та символом": "maksimal 20 ta belgi",
     "Вы успешно связали свой аккаунт Feecbook": "Muvaffaqiyatli Feecbook akkauntingiz orqali kirdingiz",
     "Вы успешно связали свой аккаунт Google": "Muvaffaqiyatli Google akkauntingiz orqali kirdingiz",
-    "Успешно": "Muvaffaqiyatli"
-
-
+    "Успешно": "Muvaffaqiyatli",
+    "Поздравляю": "Tabriklaymiz",
+    "Ваш адрес электронной почты успешно подтвержден": "Emailingiz muvaffaqiyatli tasdiqlandi",
+    "Ваш телефон успешно подтвержден": "Telefoningiz muvaffaqiyatli tasdiqlandi",
+    "Отправить действующую ссылку на Youtube": "Toʻgʻri Youtube havolasini yuboring"
 }

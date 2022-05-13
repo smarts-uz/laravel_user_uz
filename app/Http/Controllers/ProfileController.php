@@ -316,12 +316,12 @@ class ProfileController extends Controller
             'youtube_link' => 'required|url'
         ]);
         if ($validator->fails()) {
-            Alert::error(__('Send valid youtube link'));
+            Alert::error(__('Отправить действующую ссылку на Youtube'));
         }
         $validated = $validator->validated();
         $link = $validated['youtube_link'];
         if (!str_starts_with($link, 'https://www.youtube.com/')) {
-            Alert::error(__('Send valid youtube link'));
+            Alert::error(__('Отправить действующую ссылку на Youtube'));
         }
         $user->youtube_link = str_replace('watch?v=','embed/',$request->youtube_link);
         $user->save();
