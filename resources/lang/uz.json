@@ -111,7 +111,7 @@
     "Город, Улица, Дом": "Shahar, ko'cha, uy",
     "Город, адрес, метро, район...": "Shahar, Manzil, Metro, tuman ...",
     "Город,Улица,Дом": "Shahar, ko'cha, uy",
-    "Далее": "Keyinchalik",
+    "Далее": "Keyingi sahifa",
     "Дата и время": "Sana va vaqt",
     "Дата рождения": "Tug'ilgan kun",
     "Для отклика на вашем балансе должно быть 4000 UZS. Если заказчик захочет с вами связаться, мы автоматически спишем стоимость контакта с вашего счёта.": "Sizning hisobingizdagi javob uchun 4000 so'm bo'lishi kerak. Agar mijoz siz bilan bog'lanmoqchi bo'lsa, biz avtomatik ravishda hisobingizdan aloqa xarajatlarini yozamiz.",
@@ -319,7 +319,7 @@
     "Оформление по ТК РФ": "Rossiya Federatsiyasining Mehnat kodeksiga muvofiq ro'yxatdan o'tish",
     "Оценить консультацию по телефону.": "Telefon orqali maslahatni baholang.",
     "Очень крутой сервис, напоминает Uber. Удобно пользоваться, особенно со стороны заказчика — быстро и дешево решаются любые сложные": "Juda salqin xizmat, uberga o'xshaydi. Bu, ayniqsa mijozdan foydalanish qulay bo'lgan - har qanday murakkab va arzon hal qilingan",
-    "Очень крутой сервис, напоминает Uber. Удобно пользоваться, особенно со стороны заказчика — быстро и дешево решаются любые сложныеи не очень проблемы. Как исполнитель, работающий по безлимитным пакетам, могу сказать, что стоимость полностью отбил, остался в плюсе, думаю насчет продления. Было бы круто, чтобы сервис работал по всему Узбекистану, например, в Ташкенте. Прилетел отдыхать на месяц, по 3 часа в день работаешь — остался на 2 месяца. Процветания и успехов вам! Очень рад сотрудничеству!": "Juda salqin xizmat, uberga o'xshaydi. Bu, ayniqsa mijozning tomonidan foydalanish qulay, har qanday murakkab va unchalik muhim emas. Cheksiz paketlarda ishlaydigan ijrochi sifatida, narx butunlay rad etilgan, deb ayta olamanki, men qo'shimcha bo'lib qoldi, men uzaytirish haqida o'ylayman. Masalan, Toshkentda O'zbekiston bo'ylab ishlash salqin bo'lar edi. Men bir oy dam olishdan uchib, kuniga 3 soat ishlayman - 2 oy davomida qoldim. Obod va muvaffaqiyatlar! Men hamkorlikdan juda xursandman!",
+    "Очень крутой сервис, напоминает Uber. Удобно пользоваться, особенно со стороны заказчика — быстро и дешево решаются любые сложныеи не очень проблемы. Как исполнитель, работающий по безлимитным пакетам, могу сказать, что стоимость полностью отбил, остался в плюсе, думаю насчет продления. Было бы круто, чтобы сервис работал по всему Узбекистану, например, в Ташкенте. Прилетел отдыхать на месяц, по 3 часа в день работаешь — остался на 2 месяца. Процветания и успехов вам! Очень рад сотрудничеству!": "Juda salqin xizmat, uberga o'xshaydi. Bu, ayniqsa mijozning tomonidan foydalanish qulay, har qanday murakkab va unchalik muhim   . Cheksiz paketlarda ishlaydigan ijrochi sifatida, narx butunlay rad etilgan, deb ayta olamanki, men qo'shimcha bo'lib qoldi, men uzaytirish haqida o'ylayman. Masalan, Toshkentda O'zbekiston bo'ylab ishlash salqin bo'lar edi. Men bir oy dam olishdan uchib, kuniga 3 soat ishlayman - 2 oy davomida qoldim. Obod va muvaffaqiyatlar! Men hamkorlikdan juda xursandman!",
     "Пароль": "Parol",
     "Перед началом работы попросите исполнителя показать паспорт, сверьте имя в профиле на Universal Services и в документе.": "Ishni boshlashdan oldin, pudratchidan pasportni ko'rsatishni so'rang, universal xizmatlar va hujjatdagi profildagi nomni aylantiring.",
     "Перейти на сайт Universal Services": "Saytga o'ting Universal xizmatlar",
@@ -554,7 +554,9 @@
     "максимум 20та символом": "maksimal 20 ta belgi",
     "Вы успешно связали свой аккаунт Feecbook": "Muvaffaqiyatli Feecbook akkauntingiz orqali kirdingiz",
     "Вы успешно связали свой аккаунт Google": "Muvaffaqiyatli Google akkauntingiz orqali kirdingiz",
-    "Успешно": "Muvaffaqiyatli"
-
+    "Успешно": "Muvaffaqiyatli",
+    "Поздравляю": "Tabriklaymiz",
+    "Ваш адрес электронной почты успешно подтвержден": "Emailingiz muvaffaqiyatli tasdiqlandi",
+    "Ваш телефон успешно подтвержден": "Telefoningiz muvaffaqiyatli tasdiqlandi"
 
 }
