@@ -94,7 +94,7 @@ Route::middleware('custom.auth:api')->group(function () {
         Route::post('/portfolio/{portfolio}/delete', [ProfileAPIController::class, 'portfolioDelete']); //end +
         Route::get('/reviews', [ProfileAPIController::class, 'reviews']); //end  +
         Route::get('/video', [ProfileAPIController::class, 'videoIndex']);
-        Route::get('/video', [ProfileAPIController::class, 'videoStore']);
+        Route::post('/video', [ProfileAPIController::class, 'videoStore']);
         Route::get('/balance', [ProfileAPIController::class, 'balance']); //end +
         Route::get('/description', [ProfileAPIController::class, 'description']); //end +
         Route::post('/description/edit', [ProfileAPIController::class, 'editDesctiption']); //end +
