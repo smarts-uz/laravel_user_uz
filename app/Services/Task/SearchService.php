@@ -52,26 +52,28 @@ class SearchService
             ->where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(20)->pluck('id')->toArray();
         $item->respons_reviews = Review::all();
-        $item->review_description = Review::where('task_id', $task)->first();
         return $item;
     }
 
-    public function search_new_service($arr_check, $filter = '', $suggest = '', $price=null, $remjob, $noresp, $radius): array
+    public function search_new_service($arr_check, $filter = '', $suggest = '', $price=null, $remjob, $noresp, $radius,$lat,$lon): array
     {
 
         $users = User::all()->keyBy('id');
         $categories = Category::all()->keyBy('id');
         $adresses = Address::all()->keyBy('id');
         $adressesQuery ="
-        SELECT task_id FROM ( SELECT task_id, ( ( ( acos( sin(( 41.817288 * pi() / 180)) * sin(( `latitude` * pi() / 180)) + cos(( 41.817288 * pi() /180 )) * cos(( `latitude` * pi() / 180)) * cos((( 63.259686 - `longitude`) * pi()/180))) ) * 180/pi() ) * 60 * 1.1515 * 1.609344 ) as distance FROM `addresses` ) addresses WHERE distance <= 400
-        ";
+        SELECT task_id FROM ( SELECT task_id, 
+        6371 * acos(cos(radians($lat)) 
+		        * cos(radians(`latitude`)) 
+		        * cos(radians(`longitude`) - radians($lon)) 
+		        + sin(radians($lat)) 
+		        * sin(radians(`latitude`))) as distance FROM `addresses` ) addresses WHERE distance <=$radius";
         $results=DB::select(DB::raw($adressesQuery));
 
 $relatedAdress=[];
 foreach ($results as $result) {
     $relatedAdress[]=$result->task_id;
 }
-
 
         $tasks = Task::query()
             ->whereIn('id', $relatedAdress)
