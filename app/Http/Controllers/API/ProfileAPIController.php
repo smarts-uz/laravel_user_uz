@@ -272,7 +272,7 @@ class ProfileAPIController extends Controller
         } elseif (!str_starts_with($link, 'https://youtu.be/')) {
             return response()->json([
                 'success' => false,
-                'message' => 'Send link of video, not page'
+                'message' => 'Send valid youtube link'
             ]);
         }
         $user->youtube_link = $link;
