@@ -368,7 +368,11 @@ class PerformerAPIController extends Controller
             ->fromWhichType($request->get('from'))
             ->get();
 
-        return ReviewIndexResource::collection($reviews);
+        return response()->json([
+            'success' => true,
+            'data' => ReviewIndexResource::collection($reviews),
+            'message' => 'Success'
+        ]);
     }
 
     public function getByCategories()

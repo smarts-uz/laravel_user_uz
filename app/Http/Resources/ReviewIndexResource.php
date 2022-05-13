@@ -16,7 +16,7 @@ class ReviewIndexResource extends JsonResource
     public function toArray($request)
     {
         $user = $this->user;
-        $task = Task::query()->find($this->task_id);
+        $task = $this->task;
         return [
             'id' => $this->id,
             'user' => [
@@ -26,7 +26,7 @@ class ReviewIndexResource extends JsonResource
                 'review_good' => $user->review_good,
                 'review_bad' => $user->review_bad,
                 'rating' => $user->review_rating,
-                'avatar' => $user->avatar
+                'avatar' => url('/storage') . '/' . $user->avatar
             ],
             'description' => $this->description,
             'good_bad' => $this->good_bad,
