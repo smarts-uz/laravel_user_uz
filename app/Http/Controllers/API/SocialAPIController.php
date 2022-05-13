@@ -207,7 +207,7 @@ class SocialAPIController extends Controller
         try {
             $data = $request->validate([
                 'id' => 'required',
-                'email' => 'nullable', //email
+                'email' => '', //email
                 'name' => 'string', //required
                 'avatar' => 'string', //required
                 'server_code' => 'string', //required
@@ -221,8 +221,7 @@ class SocialAPIController extends Controller
 
                 ]
             );
-            $data['email'] = isset($data['email'])? $data['email']:null;
-            $findUser = User::orWhere('email', $data['email'])->orWhere('google_id', $data['id'])->first();
+            $findUser = User::where('email', $data['email'] ?? '')->orWhere('google_id', $data['id'])->first();
         
 
 
