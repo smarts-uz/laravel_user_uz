@@ -75,6 +75,7 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); //end +
     Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); //end +
     Route::put('/change-task/{task}', [TaskAPIController::class, 'changeTask']); //end -
+    Route::post('give-task', [PerformerAPIController::class, 'give_task']); // javoxir
     Route::post('/become-performer', [PerformerAPIController::class, 'becomePerformerData']); //end +
     Route::post('/become-performer-phone', [PerformerAPIController::class, 'becomePerformerEmailPhone']); //end +
     Route::post('/become-performer-avatar', [PerformerAPIController::class, 'becomePerformerAvatar']); //end +

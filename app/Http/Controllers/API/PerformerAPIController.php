@@ -5,16 +5,21 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BecomePerformerEmailPhone;
 use App\Http\Requests\BecomePerformerRequest;
+use App\Http\Requests\GiveTaskRequest;
 use App\Http\Requests\PerformerRegisterRequest;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Resources\PerformerIndexResource;
 use App\Http\Resources\PerformerPaginateResource;
 use App\Http\Resources\ReviewPaginationResource;
+use App\Models\Notification;
 use App\Models\Review;
+use App\Models\Task;
 use App\Models\User;
+use App\Services\NotificationService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use PlayMobile\SMS\SmsService;
 use function Symfony\Component\String\s;
 
 class PerformerAPIController extends Controller
@@ -93,9 +98,29 @@ class PerformerAPIController extends Controller
         return $performer->role_id == 5 ? new PerformerIndexResource($performer) : abort(404);
     }
 
-    public function register(PerformerRegisterRequest $request)
+    public function give_task(GiveTaskRequest $request)
     {
+        $data = $request->validated();
+        $task = Task::where('id', $data['task_id'])->first();
+        $users_id = $request->session()->pull('given_id');
+        $performer = User::query()->find($data['performer_id']);
+        $text_url = route("searchTask.task",$data['task_id']);
+        $text = "Заказчик предложил вам новую задания $text_url. Имя заказчика: " . $task->user->name;
+        (new SmsService())->send($performer->phone_number, $text);
+        Notification::create([
+            'user_id' => $task->user_id,
+            'performer_id' => $data['performer_id'],
+            'task_id' => $data['task_id'],
+            'name_task' => $task->name,
+            'description' => '123',
+            'type' => 4,
+        ]);
 
+        NotificationService::sendNotificationRequest([$data['performer_id']], [
+            'url' => 'detailed-tasks' . '/' . $data['task_id'], 'name' => $task->name, 'time' => 'recently'
+        ]);
+
+        return response()->json(['success' => $users_id]);
     }
 
     public function validatorRules($step)
