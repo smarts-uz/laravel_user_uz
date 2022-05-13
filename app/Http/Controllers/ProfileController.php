@@ -8,6 +8,7 @@ use App\Http\Requests\UserPasswordRequest;
 use App\Http\Requests\UserUpdateDataRequest;
 use App\Models\Session;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Jenssegers\Agent\Agent;
 use \TCG\Voyager\Models\Category;
 use App\Models\Portfolio;
@@ -141,7 +142,7 @@ class ProfileController extends Controller
         $profile = new ProfileService();
         $updatedData = $profile->settingsUpdate($data);
         Auth::user()->update($updatedData);
-        Alert::success(__('Настройки успешно сохранены'));
+        Alert::success(__('lang.setting_alert'));
         return redirect()->route('profile.editData');
     }
 
@@ -196,7 +197,7 @@ class ProfileController extends Controller
         $data['password'] = Hash::make($data['password']);
         auth()->user()->update($data);
 
-        Alert::success("Success!", "Your Password was successfully updated");
+        Alert::success(__('lang.new_password'));
 
         return redirect()->back()->with([
             'password' => 'password'
@@ -311,6 +312,17 @@ class ProfileController extends Controller
     public function youtube_link(Request $request)
     {
         $user = User::find(auth()->user()->id);
+        $validator = Validator::make($request->all(), [
+            'youtube_link' => 'required|url'
+        ]);
+        if ($validator->fails()) {
+            Alert::error(__('Send valid youtube link'));
+        }
+        $validated = $validator->validated();
+        $link = $validated['youtube_link'];
+        if (!str_starts_with($link, 'https://www.youtube.com/')) {
+            Alert::error(__('Send valid youtube link'));
+        }
         $user->youtube_link = str_replace('watch?v=','embed/',$request->youtube_link);
         $user->save();
         return redirect()->back();

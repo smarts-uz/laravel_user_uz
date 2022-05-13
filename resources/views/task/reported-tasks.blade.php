@@ -15,7 +15,6 @@
                             <th>Названия задании</th>
                             <th>Создатель</th>
                             <th>Исполнитель</th>
-                            <th>Комментарий создателья</th>
                             <th>Опции</th>
                         </tr>
                     </thead>
@@ -27,7 +26,6 @@
                             <td><a target="_blank" href="{{ route('searchTask.task', $task->id) }}">{{ $task->name }}</a></td>
                             <td><a  target="_blank" href="{{ route('performers.performer', $task->user_id) }}">{{ $task->user->name }}</a></td>
                             <td><a  target="_blank" href="{{ route('performers.performer', $task->performer_id) }}">{{ $task->performer->name }}</a></td>
-                            <td>{{ $task->reviews_count? $task->reviews[0]->description:'' }}</td>
                             <td>
                                 <a href="{{ route('admin.tasks.complete', $task->id) }}" class="btn btn-primary">Завершить заданию</a>
                                 <form action="{{ route('admin.tasks.reported.delete', $task->id) }}" method="post">

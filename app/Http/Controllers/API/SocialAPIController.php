@@ -78,11 +78,11 @@ class SocialAPIController extends Controller
     {
         $data = $request->validate([
            'google_id' => 'nullable',
-           'facebook_id' => 'nullable',
-           'email' => 'nullable|email',
-           'name' => 'required|string',
-           'avatar' => 'required|string',
-           'server_code' => 'required|string',
+           'facebook_id' => 'required|nullable',
+           'email' => 'nullable', //email
+           'name' => 'string', //required
+           'avatar' => 'string', //required
+           'server_code' => 'string', //required
         ],
             [
                 'id.required' => "id  required",
@@ -207,10 +207,10 @@ class SocialAPIController extends Controller
         try {
             $data = $request->validate([
                 'id' => 'required',
-                'email' => 'nullable|email',
-                'name' => 'required|string',
-                'avatar' => 'required|string',
-                'server_code' => 'required|string',
+                'email' => 'nullable', //email
+                'name' => 'string', //required
+                'avatar' => 'string', //required
+                'server_code' => 'string', //required
             ],
                 [
                     'id.required' => "id  required",

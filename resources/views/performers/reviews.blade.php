@@ -23,13 +23,19 @@
     @foreach($goodReviews as $goodReview)
         @if($goodReview->user && $goodReview->task)
             <div class="my-6">
-                <div class="flex flex-row gap-x-2 my-4">
+                <div class="flex flex-row gap-x-2 my-4 items-start">
                     <img src="{{ asset('storage/'.$goodReview->user->avatar) }}" alt="#"
                          class="w-12 h-12 border-2 rounded-lg border-gray-500">
                     <a href="{{ route('performers.performer',$goodReview->reviewer_id ) }}"
-                       class="text-blue-500 hover:text-red-500">{{ $goodReview->user->name }}</a>
+                       class="text-blue-500 hover:text-red-500 text-xl">{{ $goodReview->user->name }}</a>
+                    @if ($goodReview->as_performer==0)
+                        <p> - Заказчик</p>
+                    @elseif ($goodReview->as_performer==1)
+                        <p> - Исполнитель</p>
+                    @endif
+                       
                 </div>
-                <div class="sm:w-3/4 w-full p-3 bg-yellow-50 rounded-xl">
+                <div class="w-full p-3 bg-yellow-50 rounded-xl">
                     <p>{{__('Задание')}} <a
                             href="{{ route('searchTask.task',$goodReview->task_id) }}"
                             class="hover:text-red-400 border-b border-gray-300 hover:border-red-400">"{{ $goodReview->task->name }}
@@ -46,13 +52,18 @@
     @foreach($badReviews as $badReview)
         @if($badReview->user && $badReview->task)
             <div class="my-6">
-                <div class="flex flex-row gap-x-2 my-4">
+                <div class="flex flex-row gap-x-2 my-4 items-start">
                     <img src="{{  asset('storage/'.$badReview->user->avatar) }}" alt="#"
                          class="w-12 h-12 border-2 rounded-lg border-gray-500">
                     <a href="{{ route('performers.performer',$badReview->reviewer_id ) }}"
-                       class="text-blue-500 hover:text-red-500">{{ $badReview->user->name }}</a>
+                       class="text-blue-500 hover:text-red-500 text-xl">{{ $badReview->user->name }}</a>
+                    @if ($goodReview->as_performer==0)
+                       <p> - Заказчик</p>
+                    @elseif ($goodReview->as_performer==1)
+                       <p> - Исполнитель</p>
+                    @endif  
                 </div>
-                <div class="sm:w-3/4 w-full p-3 bg-yellow-50 rounded-xl">
+                <div class="w-full p-3 bg-yellow-50 rounded-xl">
                     <p>{{__('Задание')}} <a href="{{ route('searchTask.task',$badReview->task_id) }}"
                                             class="hover:text-red-400 border-b border-gray-300 hover:border-red-400">"{{ $badReview->task->name }}
                             "</a> {{__('выполнено')}}</p>
