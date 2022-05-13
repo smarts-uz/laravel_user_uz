@@ -313,20 +313,15 @@ class ProfileController extends Controller
     {
         $user = User::find(auth()->user()->id);
         $validator = Validator::make($request->all(), [
-            'link' => 'required|url'
+            'youtube_link' => 'required|url'
         ]);
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Send valid youtube link'
-            ]);
+            Alert::error(__('Send valid youtube link'));
         }
         $validated = $validator->validated();
-        $link = $validated['link'];
+        $link = $validated['youtube_link'];
         if (!str_starts_with($link, 'https://www.youtube.com/')) {
-            return redirect()->back()->with([
-                'message' => 'Send valid youtube link'
-            ]);
+            Alert::error(__('Send valid youtube link'));
         }
         $user->youtube_link = str_replace('watch?v=','embed/',$request->youtube_link);
         $user->save();
