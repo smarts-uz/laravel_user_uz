@@ -7,6 +7,7 @@ namespace App\Services\Task;
 use App\Models\Notification;
 use App\Models\Task;
 use App\Models\TaskResponse;
+use App\Models\UserExpense;
 use App\Models\WalletBalance;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
@@ -41,9 +42,16 @@ class ResponseService
             } else {
                 $success = true;
                 $message = __('success');
-                $ballance->balance = $ballance->balance - $request->pay;
+                $ballance->balance = $ballance->balance - setting('admin.pullik_otklik');
                 $ballance->save();
-                $r = TaskResponse::create($data);
+                TaskResponse::create($data);
+                UserExpense::query()->create([
+                    'user_id' => $data['performer_id'],
+                    'task_id' => $data['task_id'],
+                    'client_id' => $data['user_id'],
+                    'amount' => setting('admin.pullik_otklik')
+                ]);
+
 
                 NotificationService::sendTaskSelectedNotification($task);
             }
@@ -94,6 +102,14 @@ class ResponseService
         ]);
         NotificationService::sendNotificationRequest([$performer->id], [
             'url' => 'detailed-tasks' . '/' . $response->task_id, 'name' => $task->name, 'time' => 'recently'
+        ]);
+        $ballance = WalletBalance::where('user_id', $performer->id)->first();
+        $ballance->balance = $ballance->balance - setting('admin.pullik_otklik');
+        UserExpense::query()->create([
+            'user_id' => $performer->id,
+            'task_id' => $response->task_id,
+            'client_id' => $response_user->id,
+            'amount' => setting('admin.pullik_otklik')
         ]);
         return ['success' => true,'message' => __('success'), 'data' => $data];
     }
