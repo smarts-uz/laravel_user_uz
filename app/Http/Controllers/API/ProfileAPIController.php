@@ -280,39 +280,6 @@ class ProfileAPIController extends Controller
 
 
     /**
-     * @OA\Get(
-     *     path="/api/profile/video",
-     *     tags={"Profile"},
-     *     summary="Profile Video",
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
-    public function videoIndex()
-    {
-        $user = auth()->user();
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'youtube_link' => $user->youtube_link
-            ]
-        ]);
-    }
-
-    /**
      * @OA\Post(
      *     path="/api/profile/video",
      *     tags={"Profile"},
