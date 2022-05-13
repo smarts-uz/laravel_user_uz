@@ -271,6 +271,7 @@ class ProfileAPIController extends Controller
             ]);
         }
         $user->youtube_link = $link;
+        $user->save();
         return response()->json([
             'success' => true,
             'message' => 'Youtube link updated'
