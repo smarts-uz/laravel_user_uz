@@ -1298,4 +1298,25 @@ class ProfileAPIController extends Controller
             'data' => ReviewIndexResource::collection($data)
         ]);
     }
+
+    public function youtube_link(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+        $user->youtube_link = str_replace('watch?v=','embed/',$request->youtube_link);
+        $user->save();
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ]);
+    }
+
+    public function youtube_link_delete(){
+        $user = User::find(auth()->user()->id);
+        $user->youtube_link = null;
+        $user->save();
+        return response()->json([
+            'success' => false,
+            'message' => 'Yuklanmadi'
+        ]);
+    }
 }
