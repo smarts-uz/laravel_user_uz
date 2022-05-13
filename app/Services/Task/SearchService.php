@@ -62,14 +62,21 @@ class SearchService
         $users = User::all()->keyBy('id');
         $categories = Category::all()->keyBy('id');
         $adresses = Address::all()->keyBy('id');
+        $adressesQuery ="
+        SELECT task_id FROM ( SELECT task_id, ( ( ( acos( sin(( 41.817288 * pi() / 180)) * sin(( `latitude` * pi() / 180)) + cos(( 41.817288 * pi() /180 )) * cos(( `latitude` * pi() / 180)) * cos((( 63.259686 - `longitude`) * pi()/180))) ) * 180/pi() ) * 60 * 1.1515 * 1.609344 ) as distance FROM `addresses` ) addresses WHERE distance <= 400
+        ";
+        $results=DB::select(DB::raw($adressesQuery));
+
+$relatedAdress=[];
+foreach ($results as $result) {
+    $relatedAdress[]=$result->task_id;
+}
+
 
         $tasks = Task::query()
+            ->whereIn('id', $relatedAdress)
             ->when($filter !== '', function ($query) use ($filter) {
                 $query->where('name', 'like', "%{$filter}%");
-            })
-             ->when($suggest!=='', function ($query) use ($suggest) {
-                $query->whereHas('addresses', function ($query) use($suggest) {
-                    $query->where('location', 'like', "%{$suggest}%");});
             })
             ->when($price!==null, function ($query) use ($price) {
               $query->where('budget', '>=', $price*0.8)
@@ -92,10 +99,12 @@ class SearchService
            if ($users->contains($task->user_id)) {
                $item->user_name = $users->get($task->user_id)->name;
             }
-            
-            $allAdresses = $adresses->where('task_id', $task->id);
-            $mainAdress = Arr::first($allAdresses);
-            $item->address_main = Arr::get($mainAdress, 'location');
+            // if($addresses->contains($task->id)){
+
+                $allAdresses = $adresses->where('task_id', $task->id);
+                $mainAdress = Arr::first($allAdresses);
+                $item->address_main = Arr::get($mainAdress, 'location');
+            // }
 
             if ($categories->contains($task->category_id)) {
                 $item->category_icon = $categories->get($task->category_id)->ico;
