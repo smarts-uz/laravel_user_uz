@@ -210,7 +210,7 @@
     "Место оказания услуги": "Xizmat ko'rsatish joyi",
     "Местоположение": "Manzil",
     "Мне нужно": "Menga kerak",
-    "Может быть вы хотите стать": "Ehtimol siz bo'lishni xohlaysiz",
+    "Можетvalid быть вы хотите стать": "Ehtimol siz bo'lishni xohlaysiz",
     "Можно выполнить удаленно": "Masofadan bajarilishi mumkin",
     "Мои заказы": "Mening buyurtmalarim",
     "Мужской": "Erkak",
@@ -421,7 +421,7 @@
     "Создать новое задание": "Yangi vazifani yarating",
     "Создать фотоальбом": "Fotoalbom yarating",
     "Сортировать:": "Saralash:",
-    "Сохранить": "Tejash",
+    "Сохранить": "Saqlash",
     "Сохранить новый пароль": "Yangi parolni saqlang",
     "Специалисты отдела мониторинга готовы подключиться к любой сложной ситуации и сделать все возможное, чтобы помочь пользователям ее разрешить.": "Monitoring bo'limi mutaxassislari har qanday qiyin vaziyatga ulanishga va foydalanuvchilarga ruxsat berishlariga yordam beradigan hamma narsani qilishlari mumkin.",
     "Списания со счета": "Hisob qaydnomasini yozing",
@@ -557,6 +557,6 @@
     "Успешно": "Muvaffaqiyatli",
     "Поздравляю": "Tabriklaymiz",
     "Ваш адрес электронной почты успешно подтвержден": "Emailingiz muvaffaqiyatli tasdiqlandi",
-    "Ваш телефон успешно подтвержден": "Telefoningiz muvaffaqiyatli tasdiqlandi"
-
+    "Ваш телефон успешно подтвержден": "Telefoningiz muvaffaqiyatli tasdiqlandi",
+    "Отправить действующую ссылку на Youtube": "Toʻgʻri Youtube havolasini yuboring"
 }
