@@ -35,7 +35,7 @@ class UserAPIController extends Controller
         $user = auth()->user();
         $accessToken = $user->createToken('authToken')->accessToken;
 
-        $balance = WalletBalance::query()->where(['user_id' => $user->id])->first();
+        $balance = WalletBalance::query()->where(['user_id' => $user->id])->firstOrFail();
         if (isset($balance))
             $userBalance = $balance->balance;
         else
@@ -148,7 +148,7 @@ class UserAPIController extends Controller
     public function reset_password_save(ResetPasswordRequest $request)
     {
         $data = $request->validated();
-        $user = User::query()->where('phone_number',$data['phone_number'])->first();
+        $user = User::query()->where('phone_number',$data['phone_number'])->firstOrFail();
         $user->password = Hash::make($data['password']);
         $user->save();
 
@@ -200,7 +200,7 @@ class UserAPIController extends Controller
             'phone_number' => 'required|numeric|exists:users'
         ]);
 
-        $user = User::query()->where('phone_number', $data['phone_number'])->first();
+        $user = User::query()->where('phone_number', $data['phone_number'])->firstOrFail();
 
         if ($data['code'] == $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
@@ -243,7 +243,7 @@ class UserAPIController extends Controller
                 'password' => 'required|min:8|max:16',
             ]);
 
-            $user = User::where('id', $id)->first();
+            $user = User::query()->where('id', $id)->firstOrFail();
             $user->update($request->all());
 
             return response()->json(['status' => true, 'message' => 'User data updated!']);
