@@ -125,7 +125,14 @@
                                             class="text-2xl text-blue-500 hover:text-red-500">{{$respons_review->user->name ?? $respons_review->user_name}}
                                             </a>
                                         @endif
-                                        <i class="far fa-thumbs-up text-gray-400"></i>
+                                        <div class="flex flex-row gap-x-2">
+                                            <i class="far fa-thumbs-up text-gray-400"></i>
+                                            @if ($respons_review->as_performer==0)
+                                                <p class="text-base"> - Заказчик</p>
+                                            @elseif ($respons_review->as_performer==1)
+                                                <p class="text-base"> - Исполнитель</p>
+                                            @endif
+                                       </div>
                                     </div>
                                 </div>
                                 <div class="w-full py-3 px-6 bg-yellow-50 rounded-xl">
@@ -163,7 +170,14 @@
                                             class="text-2xl text-blue-500 hover:text-red-500">{{$respons_review->user->name ?? $respons_review->user_name}}
                                             </a>
                                         @endif
-                                        <i class="far fa-thumbs-down text-gray-400"></i>
+                                       <div class="flex flex-row gap-x-2">
+                                            <i class="far fa-thumbs-down text-gray-400"></i>
+                                            @if ($respons_review->as_performer==0)
+                                                <p class="text-base"> - Заказчик</p>
+                                            @elseif ($respons_review->as_performer==1)
+                                                <p class="text-base"> - Исполнитель</p>
+                                            @endif
+                                       </div>
                                     </div>
                                 </div>
                                 <div class="w-full py-3 px-6 bg-yellow-50 rounded-xl">
