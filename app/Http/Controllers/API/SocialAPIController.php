@@ -221,8 +221,9 @@ class SocialAPIController extends Controller
 
                 ]
             );
+            $data['email'] = isset($data['email'])? $data['email']:null;
             $findUser = User::orWhere('email', $data['email'])->orWhere('google_id', $data['id'])->first();
-
+        
 
 
             if ($findUser) {
