@@ -239,6 +239,44 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+    public function videoIndex()
+    {
+        $user = auth()->user();
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'youtube_link' => $user->youtube_link
+            ]
+        ]);
+    }
+
+    public function videoStore(Request $request)
+    {
+        $user = auth()->user();
+        $validator = Validator::make($request->all(), [
+            'link' => 'required|url'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Send valid youtube link'
+            ]);
+        }
+        $validated = $validator->validated();
+        $link = $validated['link'];
+        if (!str_starts_with($link, 'https://www.youtube.com/')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Send valid youtube link'
+            ]);
+        }
+        $user->youtube_link = $link;
+        return response()->json([
+            'success' => true,
+            'message' => 'Youtube link updated'
+        ]);
+    }
+
     /**
      * @OA\Get(
      *     path="/api/profile/reviews",
