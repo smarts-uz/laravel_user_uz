@@ -264,10 +264,15 @@ class ProfileAPIController extends Controller
         }
         $validated = $validator->validated();
         $link = $validated['link'];
-        if (!str_starts_with($link, 'https://www.youtube.com/')) {
+        if (str_starts_with($link, 'https://www.youtube.com/')) {
             return response()->json([
                 'success' => false,
-                'message' => 'Send valid youtube link'
+                'message' => 'Send link of video, not page'
+            ]);
+        } elseif (!str_starts_with($link, 'https://youtu.be/')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Send link of video, not page'
             ]);
         }
         $user->youtube_link = $link;
