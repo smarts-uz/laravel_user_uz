@@ -239,6 +239,50 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+    public function videoIndex()
+    {
+        $user = auth()->user();
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'youtube_link' => $user->youtube_link
+            ]
+        ]);
+    }
+
+    public function videoStore(Request $request)
+    {
+        $user = auth()->user();
+        $validator = Validator::make($request->all(), [
+            'link' => 'required|url'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Send valid youtube link'
+            ]);
+        }
+        $validated = $validator->validated();
+        $link = $validated['link'];
+        if (str_starts_with($link, 'https://www.youtube.com/')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Send link of video, not page'
+            ]);
+        } elseif (!str_starts_with($link, 'https://youtu.be/')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Send valid youtube link'
+            ]);
+        }
+        $user->youtube_link = $link;
+        $user->save();
+        return response()->json([
+            'success' => true,
+            'message' => 'Youtube link updated'
+        ]);
+    }
+
     /**
      * @OA\Get(
      *     path="/api/profile/reviews",
@@ -1241,6 +1285,27 @@ class ProfileAPIController extends Controller
         return response()->json([
             'success' => true,
             'data' => ReviewIndexResource::collection($data)
+        ]);
+    }
+
+    public function youtube_link(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+        $user->youtube_link = str_replace('watch?v=','embed/',$request->youtube_link);
+        $user->save();
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ]);
+    }
+
+    public function youtube_link_delete(){
+        $user = User::find(auth()->user()->id);
+        $user->youtube_link = null;
+        $user->save();
+        return response()->json([
+            'success' => false,
+            'message' => 'Yuklanmadi'
         ]);
     }
 }
