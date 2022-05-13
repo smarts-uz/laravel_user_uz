@@ -34,4 +34,13 @@ class Review extends Model
         $day = $value == now()->toDateTimeString()? "Bugun": "$value->day-$value->monthName";
         return "$day  $value->noZeroHour:$minut";
     }
+
+    public function scopeFromWhichType($query, $type)
+    {
+        if ($type == 'user') {
+            return $query->where('as_performer', 0);
+        } elseif ($type == 'performer') {
+            return $query->where('as_performer', 1);
+        }
+    }
 }

@@ -10,6 +10,7 @@ use App\Http\Requests\PerformerRegisterRequest;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Resources\PerformerIndexResource;
 use App\Http\Resources\PerformerPaginateResource;
+use App\Http\Resources\ReviewIndexResource;
 use App\Http\Resources\ReviewPaginationResource;
 use App\Models\Notification;
 use App\Models\Review;
@@ -102,7 +103,6 @@ class PerformerAPIController extends Controller
     {
         $data = $request->validated();
         $task = Task::where('id', $data['task_id'])->first();
-        $users_id = $request->session()->pull('given_id');
         $performer = User::query()->find($data['performer_id']);
         $text_url = route("searchTask.task",$data['task_id']);
         $text = "Заказчик предложил вам новую задания $text_url. Имя заказчика: " . $task->user->name;
@@ -120,7 +120,7 @@ class PerformerAPIController extends Controller
             'url' => 'detailed-tasks' . '/' . $data['task_id'], 'name' => $task->name, 'time' => 'recently'
         ]);
 
-        return response()->json(['success' => $users_id]);
+        return response()->json(['success' => true, 'message' => 'Success']);
     }
 
     public function validatorRules($step)
@@ -362,10 +362,13 @@ class PerformerAPIController extends Controller
      */
     public function reviews(Request $request)
     {
-        $from_performer = $request->from_performer;
-        $reviews = Review::query()->whereHas('task')->whereHas('user')->where('user_id',auth()->user()->id)->paginate();
+        $reviews = Review::query()
+            ->whereHas('task')->whereHas('user')
+            ->where('user_id',auth()->user()->id)
+            ->fromWhichType($request->get('from'))
+            ->get();
 
-        return new ReviewPaginationResource($reviews);
+        return ReviewIndexResource::collection($reviews);
     }
 
     public function getByCategories()
