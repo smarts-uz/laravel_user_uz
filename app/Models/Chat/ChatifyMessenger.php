@@ -2,6 +2,7 @@
 
 namespace App\Models\Chat;
 
+use App\Http\Resources\MessageResource;
 use App\Models\Chat\ChMessage as Message;
 use App\Models\Chat\ChFavorite as Favorite;
 use Pusher\Pusher;
@@ -200,9 +201,10 @@ class ChatifyMessenger
                 'id' => $user->id,
                 'name' => $user->name,
                 'active_status' => $user->active_status,
-                'avatar' => $user->avatar
+                'avatar' => url('/storage') . '/' . $user->avatar,
+                'last_seen' => $user->last_seen
             ],
-            'lastMessage' => $lastMessage ?? [],
+            'lastMessage' => $lastMessage ? MessageResource::collection(collect([$lastMessage])) :  [],
             'unseenCounter' => $unseenCounter,
         ];
     }

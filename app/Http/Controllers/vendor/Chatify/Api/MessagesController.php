@@ -156,7 +156,7 @@ class MessagesController extends Controller
     {
         $input = trim(filter_var($request['name'], FILTER_SANITIZE_STRING));
         $records = User::query()
-            ->select('id', 'name', 'active_status', 'avatar')
+            ->select('id', 'name', 'active_status', 'avatar', 'last_seen')
             ->where('id','!=',Auth::user()->id)
             ->where('name', 'LIKE', "%{$input}%")
             ->get();
