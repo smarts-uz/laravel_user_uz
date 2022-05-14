@@ -107,7 +107,7 @@ class ResponseService
         $ballance->balance = $ballance->balance - setting('admin.pullik_otklik');
         UserExpense::query()->create([
             'user_id' => $performer->id,
-            'task_id' => $response->task_id,
+            'task_id' => $task->id,
             'client_id' => $response_user->id,
             'amount' => setting('admin.pullik_otklik')
         ]);
