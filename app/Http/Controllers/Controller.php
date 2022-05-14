@@ -34,10 +34,8 @@ class Controller extends BaseController
 
     public function my_tasks()
     {
-        $authUser = auth()->user();
         $service = new ControllerService();
-        $item = $service->my_tasks($authUser);
-        /*dd($item->tasks);*/
+        $item = $service->my_tasks();
         return view('task.mytasks',
         [
             'categories' => $item->categories,
