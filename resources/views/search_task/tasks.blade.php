@@ -53,8 +53,21 @@
             </div>
         </div>
     </div>
-
     @endforeach
+    <div class="w-full h-full lM mt-5" id="loadData">
+        <div class="text-center">
+            <p class="text-center">{{__('Показано')}}
+                {{$tasks->currentPage()*$tasks->perPage()<=$tasks->total()?$tasks->currentPage()*$tasks->perPage():$tasks->total()}}
+                из
+                <span>{{ $tasks->total()}}</span>
+            </p>
+            @if($tasks->currentPage()*$tasks->perPage()<=$tasks->total())
+                <button
+                    class="butt mt-2 px-5 py-1 border border-black rounded hover:cursor-pointer">{{__('Показать ещё')}}</button>
+                @endif
+
+        </div>
+    </div>
     @else
 
     <div class="w-11/12">

@@ -1,7 +1,9 @@
+let page = 0;
 $("#search_form").on("submit", function (event) {
     event.preventDefault();
+    page++;
     $.ajax({
-        url: $(this).attr("action"),
+        url: $(this).attr("action") + "?page=" + page,
         method: $(this).attr("method"),
         data: {
             data: $(this).serializeArray(),
@@ -14,7 +16,8 @@ $("#search_form").on("submit", function (event) {
             $("#loader").show();
         },
         success: function (data) {
-            $("#dataPlace").html(data.html);
+            $("#loadData").remove();
+            $("#dataPlace").append(data.html);
         },
         complete: function () {
             $("#loader").hide();
@@ -22,8 +25,17 @@ $("#search_form").on("submit", function (event) {
     });
 });
 $("input:checkbox").click(function () {
+    page = 0;
+    $("#dataPlace").html("");
     $("#search_form").submit();
 });
 $(document).ready(function () {
+    page = 0;
+    $("#dataPlace").html("");
+    $("#search_form").submit();
+});
+$("#findBut").click(function () {
+    page = 0;
+    $("#dataPlace").html("");
     $("#search_form").submit();
 });

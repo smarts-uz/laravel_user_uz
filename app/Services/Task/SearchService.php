@@ -55,7 +55,7 @@ class SearchService
         return $item;
     }
 
-    public function search_new_service($arr_check, $filter = '', $suggest = '', $price=null, $remjob, $noresp, $radius,$lat,$lon): array
+    public function search_new_service($arr_check, $filter = '', $suggest = '', $price=null, $remjob, $noresp, $radius,$lat,$lon)
     {
 
         $users = User::all()->keyBy('id');
@@ -90,31 +90,25 @@ foreach ($results as $result) {
             ->when($remjob, function ($query) {
                 $query->whereNull('address');
             })
-            ->get()
-            ->keyBy('id');
+           ->paginate(5);
 
-        $return = [];
 
-        foreach ($tasks as $task) {
-            $item = new SearchNewItem();
-           $item=$task;
-           if ($users->contains($task->user_id)) {
-               $item->user_name = $users->get($task->user_id)->name;
-            }
-            // if($addresses->contains($task->id)){
-
-                $allAdresses = $adresses->where('task_id', $task->id);
-                $mainAdress = Arr::first($allAdresses);
-                $item->address_main = Arr::get($mainAdress, 'location');
-            // }
-
-            if ($categories->contains($task->category_id)) {
-                $item->category_icon = $categories->get($task->category_id)->ico;
-                $item->category_name = $categories->get($task->category_id)->name;
-            }
-            $return[] = $item;
-        }
-
-        return $return;
+        $tasks->transform(function ($task) use($users,$adresses,$categories){
+               if ($users->contains($task->user_id)) {
+                   $task->user_name = $users->get($task->user_id)->name;
+                }
+                    $allAdresses = $adresses->where('task_id', $task->id);
+                    $mainAdress = Arr::first($allAdresses);
+                    $task->address_main = Arr::get($mainAdress, 'location');
+                    
+                if ($categories->contains($task->category_id)) {
+                    $task->category_icon = $categories->get($task->category_id)->ico;
+                    $task->category_name = $categories->get($task->category_id)->name;
+                }
+            
+            return $task;
+        });
+    
+        return  $tasks;
     }
 }

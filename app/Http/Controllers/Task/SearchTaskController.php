@@ -107,8 +107,7 @@ class SearchTaskController extends VoyagerBaseController
     public function search_new(){
             $categories = Category::where('parent_id', null)->select('id', 'name')->get();
             $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
-            $tasks = Task::whereIn('status', [1, 2])->orderBy('id', 'desc')->paginate(20);
-            return view('search_task.new_search', compact('tasks','categories','categories2'));
+            return view('search_task.new_search', compact('categories','categories2'));
     }
 
 public function search_new2(Request $request){
@@ -145,7 +144,7 @@ public function search_new2(Request $request){
     $tasks = $this->service->search_new_service($arr_check, $filter, $suggest, $price, $remjob, $noresp, $radius,$lat,$lon);
 
 
-    $html = view("search_task.tasks", compact('tasks'))->render();
-    return response()->json(array('success' => true, 'html' => $html));
+    $html = view("search_task.tasks", ['tasks'=>$tasks])->render();
+    return response()->json(array('success' =>true , 'html' => $html));
 }
 }

@@ -12,7 +12,7 @@
                                     placeholder="{{__('Поиск по ключевым словам')}}">
                                 <img src="images/close.png" class="fill-current absolute left-3/4 top-2 cursor-pointer"
                                     id="svgClose" hidden>
-                                <button
+                                <button type="button"
                                     class="sm:w-2/12 w-4/12 bg-green-500 hover:bg-green-600 ml-1 py-1 px-1 rounded-md sm:mt-0 text-white"
                                     id="findBut">{{__('Найти')}}</button>
                             </div>
