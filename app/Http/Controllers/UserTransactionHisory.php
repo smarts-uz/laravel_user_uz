@@ -25,7 +25,7 @@ class UserTransactionHisory extends Controller
                 $transactionMethod = All_transaction::query()->where(['user_id' => $user->id]);
                 break;
             case 'Paynet':
-                $transactionMethod = PaynetTransaction::query()->where(['transactionable_id' => $user->id]);
+                $transactionMethod = PaynetTransaction::query()->where(['user_id' => $user->id]);
                 break;
             case 'Expense':
                 $transactionMethod = UserExpense::query()->where(['user_id' => $user->id]);
