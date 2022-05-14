@@ -121,9 +121,8 @@ public function search_new2(Request $request){
     $lon =$data['user_lon']['value']??69.281910;
 
     // default radius is 50km
-    $radius = $data["radius"]['value']??50;
+    $radius = $data["radius"]['value']?:50;
     $price = $data["price"]['value']??null;
-
     
     
     $filterByStartDate=$data["sortBySearch"]['value']??false;
