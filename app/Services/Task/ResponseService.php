@@ -33,7 +33,13 @@ class ResponseService
         $data['performer_id'] = auth()->user()->id;
         $balance = WalletBalance::where('user_id', auth()->user()->id)->first();
         if ($balance) {
-            if ($balance->balance < setting('admin.pullik_otklik')) {
+            $freeResponsesCount = TaskResponse::query()->where(['performer_id' => $data['performer_id'], 'not_free' => 0])->get()->count();
+            if ($request->get('not_free') == 1) {
+                $balanceSufficient = $balance->balance < setting('admin.pullik_otklik') + $freeResponsesCount * setting('admin.bepul_otklik');
+            } else {
+                $balanceSufficient = $balance->balance < setting('admin.bepul_otklik') + $freeResponsesCount * setting('admin.bepul_otklik');
+            }
+            if ($balanceSufficient) {
                 $success = false;
                 $message = __('not_enough_balance');
             }else if($task->responses()->where('performer_id', auth()->user()->id)->first()){

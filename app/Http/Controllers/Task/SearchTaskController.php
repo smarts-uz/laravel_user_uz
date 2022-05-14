@@ -112,39 +112,36 @@ class SearchTaskController extends VoyagerBaseController
 
 public function search_new2(Request $request){
 
-    $data = $request->data;
-
-    $filter = $data[0]['value'];
-    $suggest = $data[1]['value'];
+    $data =collect($request->data)->keyBy('name');
+    $filter = $data['filter']['value']??null;
+    $suggest = $data['suggest']['value']??null;
 
 // default value is SmartSoware office location
-    $lat = $data[2]['value']?:41.364252;
-    $lon = $data[3]['value']?:69.281910;
+    $lat = $data['user_lat']['value']??41.364252;
+    $lon =$data['user_lon']['value']??69.281910;
 
     // default radius is 50km
-    $radius = $data[4]['value']?:50;
-    $price = $data[5]['value'];
-
-
-    $arr_check = [];
-    $remjob =false;
-    $noresp=false;
-    $count = count($data);
+    $radius = $data["radius"]['value']?:50;
+    $price = $data["price"]['value']??null;
     
-    if(isset($data[6])){
-        $remjob = $data[6]['name'] === "remjob";
-        $noresp = $data[6]['name'] === "noresp";
-        
-        for ($k = 6; $k < $count; $k++) {
-            if (is_numeric($data[$k]['name']))
-                $arr_check[] = $data[$k]['name'];
-        }
-    }
     
-    $tasks = $this->service->search_new_service($arr_check, $filter, $suggest, $price, $remjob, $noresp, $radius,$lat,$lon);
+    $filterByStartDate=$data["sortBySearch"]['value']??false;
+    $arr_check =  $data->pluck('name');
+    $remjob = $data['remjob']['value']??false;
+    $noresp = $data['noresp']['value']??false;
+    
+
+   
+    
+    $tasks = $this->service->search_new_service(
+                        $arr_check, $filter,
+                         $suggest, $price, $remjob,
+                          $noresp, $radius,$lat,$lon,
+                          $filterByStartDate
+                        );
 
 
-    $html = view("search_task.tasks", ['tasks'=>$tasks])->render();
-    return response()->json(array('success' =>true , 'html' => $html));
+    $html = view("search_task.tasks", ['tasks'=>$tasks[0]])->render();
+    return response()->json(array('dataForMap' =>$tasks[1] , 'html' => $html));
 }
 }

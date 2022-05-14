@@ -45,7 +45,7 @@ class SearchService
         $item->selected = $task->responses()->where('performer_id', $task->performer_id)->first();
         $item->responses = $item->selected ? $task->responses()->where('id', '!=', $item->selected->id)->get() : $task->responses;
         $item->auth_response = $auth_response ? $task->responses()->where('performer_id', $userId)->with('user')->first() : null;
-        $item->same_tasks = $task->category->tasks()->where('id', '!=', $task->id)->where('status', Task::STATUS_OPEN)->orderBy('created_at', 'desc')->get();
+        $item->same_tasks = $task->category->tasks()->where('id', '!=', $task->id)->where('status', [1,2])->orderBy('created_at', 'desc')->get();
         $item->addresses = $task->addresses;
         $item->top_users = User::query()
             ->where('review_rating', '!=', 0)
@@ -55,7 +55,7 @@ class SearchService
         return $item;
     }
 
-    public function search_new_service($arr_check, $filter = '', $suggest = '', $price=null, $remjob, $noresp, $radius,$lat,$lon)
+    public function search_new_service($arr_check, $filter, $suggest, $price, $remjob, $noresp, $radius,$lat,$lon,$filterByStartDate)
     {
 
         $users = User::all()->keyBy('id');
@@ -80,7 +80,7 @@ foreach ($results as $result) {
             ->when($filter !== '', function ($query) use ($filter) {
                 $query->where('name', 'like', "%{$filter}%");
             })
-            ->when($price!==null, function ($query) use ($price) {
+            ->when($price, function ($query) use ($price) {
               $query->where('budget', '>=', $price*0.8)
                 ->where('budget', '<=', $price*1.2);
             })
@@ -89,6 +89,15 @@ foreach ($results as $result) {
             })
             ->when($remjob, function ($query) {
                 $query->whereNull('address');
+            })
+            ->when($noresp, function ($query) {
+                $query->whereIn('status', [1, 2]);
+            })
+            ->when($filterByStartDate,function ($query) {
+                $query->orderBy('start_date','desc');
+            })
+            ->when(!$filterByStartDate,function ($query) {
+                $query->latest();
             })
            ->paginate(5);
 
@@ -100,6 +109,8 @@ foreach ($results as $result) {
                     $allAdresses = $adresses->where('task_id', $task->id);
                     $mainAdress = Arr::first($allAdresses);
                     $task->address_main = Arr::get($mainAdress, 'location');
+                    $task->latitude = Arr::get($mainAdress, 'latitude');
+                    $task->longitude = Arr::get($mainAdress, 'longitude');
                     
                 if ($categories->contains($task->category_id)) {
                     $task->category_icon = $categories->get($task->category_id)->ico;
@@ -108,7 +119,12 @@ foreach ($results as $result) {
             
             return $task;
         });
+        $dataForMap=$tasks->map(function ($task) {
+            return collect($task)
+            ->only(['id', 'name', 'start_date', 'end_date', 'budget', 'latitude', 'longitude'])
+            ->toArray();
+          });
     
-        return  $tasks;
+        return [$tasks, $dataForMap];
     }
 }
