@@ -55,7 +55,7 @@ class SearchService
         return $item;
     }
 
-    public function search_new_service($arr_check, $filter = '', $suggest = '', $price=null, $remjob, $noresp, $radius,$lat,$lon)
+    public function search_new_service($arr_check, $filter, $suggest, $price, $remjob, $noresp, $radius,$lat,$lon,$filterByStartDate)
     {
 
         $users = User::all()->keyBy('id');
@@ -93,7 +93,12 @@ foreach ($results as $result) {
             ->when($noresp, function ($query) {
                 $query->whereIn('status', [1, 2]);
             })
-           ->latest()
+            ->when($filterByStartDate,function ($query) {
+                $query->orderBy('start_date','desc');
+            })
+            ->when(!$filterByStartDate,function ($query) {
+                $query->latest();
+            })
            ->paginate(5);
 
 

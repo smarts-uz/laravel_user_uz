@@ -95,8 +95,12 @@
                 </div>
                 <div class="flex sm:flex-row flex-col gap-x-3 items-center my-5 text-lg">
                     <span class="title__994cd">{{__('Сортировать:')}}</span>
-                    <button id="byDate" class="mx-5 ">{{__('по дате публикации')}}</button>
-                    <button id="bySearch" class="mx-5 ">{{__('по срочности')}}</button>
+                    <button id="byDate" class="mx-5 font-bold">{{__('по дате публикации')}}
+                    </button>
+                    <button id="bySearch" class="mx-5 ">
+                        {{__('по срочности')}}
+                    </button>
+                    <input type="checkbox" name="sortBySearch" id="sortBySearch" style="display: none">
                 </div>
 
                 <div id="dataPlace">
