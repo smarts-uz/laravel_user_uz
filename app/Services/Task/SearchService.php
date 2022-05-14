@@ -80,7 +80,7 @@ foreach ($results as $result) {
             ->when($filter !== '', function ($query) use ($filter) {
                 $query->where('name', 'like', "%{$filter}%");
             })
-            ->when($price!==null, function ($query) use ($price) {
+            ->when($price, function ($query) use ($price) {
               $query->where('budget', '>=', $price*0.8)
                 ->where('budget', '<=', $price*1.2);
             })
@@ -90,6 +90,10 @@ foreach ($results as $result) {
             ->when($remjob, function ($query) {
                 $query->whereNull('address');
             })
+            ->when($noresp, function ($query) {
+                $query->whereIn('status', [1, 2]);
+            })
+           ->latest()
            ->paginate(5);
 
 
@@ -100,6 +104,8 @@ foreach ($results as $result) {
                     $allAdresses = $adresses->where('task_id', $task->id);
                     $mainAdress = Arr::first($allAdresses);
                     $task->address_main = Arr::get($mainAdress, 'location');
+                    $task->latitude = Arr::get($mainAdress, 'latitude');
+                    $task->longitude = Arr::get($mainAdress, 'longitude');
                     
                 if ($categories->contains($task->category_id)) {
                     $task->category_icon = $categories->get($task->category_id)->ico;
@@ -108,7 +114,12 @@ foreach ($results as $result) {
             
             return $task;
         });
+        $dataForMap=$tasks->map(function ($task) {
+            return collect($task)
+            ->only(['id', 'name', 'start_date', 'end_date', 'budget', 'latitude', 'longitude'])
+            ->toArray();
+          });
     
-        return  $tasks;
+        return [$tasks, $dataForMap];
     }
 }
