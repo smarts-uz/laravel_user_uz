@@ -34,41 +34,81 @@
                         <div class="px-4 py-3">
                             <span class="block text-base font-bold">{{__('Уведомления')}}</span>
                         </div>
-                        <ul class="py-1" aria-labelledby="notification">
+                        <ul class="py-1 overflow-y-auto max-h-96" id="notifs" aria-labelledby="dropdown">
                             @foreach($notifications as $notification)
                                 <li class="border-b-2 border-gray-500 flex gap-x-2 p-3 text-gray-800">
-                                    <div class="">
-                                        <i class="fas fa-star text-yellow-500"></i>
-                                    </div>
                                     <div class="flex flex-col w-full">
-                                        <p class="mb-2 text-right">{{$notification->created_at->format('d M')}}</p>
+                                        <p class="text-right text-sm">{{$notification->created_at->format('d M')}}</p>
                                         @if($notification->type == 1)
-                                            <div class="w-full">{{__('Отклик к заданию')}}
-                                                <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">"{{$notification->name_task}}"  №{{$notification->task_id}}</a>
-                                                {{__('задания отправлен')}}
+                                            <div class="w-full flex flex-row gap-x-4">
+                                                <i class="fas fa-bell text-yellow-500 text-xl"></i>
+                                                <div>
+                                                    <p>{{__('Новая задания')}}</p>
+                                                    <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
+                                                        "{{$notification->name_task}}" №{{$notification->task_id}}
+                                                    </a>
+                                                </div>
                                             </div>
                                         @elseif($notification->type == 2 || $notification->type == 3)
-                                            <button onclick="toggleModal121('modal-id121', '{{$notification->name_task}}', '{{$notification->description}}', {{$notification->id}})"
-                                                    class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">
-                                                {{$notification->name_task}}
-                                            </button>
-                                        @elseif($notification->type == 4)
-                                            <div class="w-full">{{__('Вас выбрали исполнителем  в задании')}}
-                                                <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}"  №{{$notification->task_id}}</a>
-                                                <a class="hover:text-blue-500" href="/performers/{{$notification->user_id}}"> {{$notification->user->name ?? 'None'}}</a></div>
-                                        @elseif($notification->type == 5)
-                                            <div class="w-full">{{__('Отклик к заданию')}}
-                                                <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}" №{{$notification->task_id}}</a>
-                                                {{__('задания отправлен')}}
+                                            <div class="w-full flex flex-row gap-x-4">
+                                                <i class="fas fa-bookmark text-xl text-green-500"></i>
+                                                <button onclick="toggleModal121('modal-id121', '{{$notification->name_task}}', '{{$notification->description}}', {{$notification->id}})"
+                                                        class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">
+                                                    {{$notification->name_task}}
+                                                </button>
                                             </div>
-                                        @else
-                                            <div class="w-full"> {{__('Заказчик указал, что вы выполнили  задание')}}
-                                                <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">“{{$notification->name_task}}"  №{{$notification->task_id}}</a>
-                                                {{__(' и оставил вам отзыв')}}
+                                        @elseif($notification->type == 4)
+                                            <div class="w-full flex flex-row gap-x-4">
+                                                <i class="fas fa-comment text-xl text-yellow-500"></i>
+                                                <div>
+                                                    <p>{{__('Заказчик предложил вам новую заданию')}}</p>
+                                                    <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
+                                                        “{{$notification->name_task}}" №{{$notification->task_id}}
+                                                    </a>
+                                                    <a class="hover:text-blue-500" href="/performers/{{$notification->user_id}}">
+                                                        {{$notification->user->name ?? 'None'}}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        @elseif($notification->type == 5)
+                                            <div class="w-full flex flex-row gap-x-4">
+                                                <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                                                <div>
+                                                    <p> {{__('Отклик к заданию')}}</p>
+                                                    <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
+                                                        “{{$notification->name_task}}" №{{$notification->task_id}}
+                                                    </a>
+                                                    {{__('отправлен')}}
+                                                </div>
+                                            </div>
+                                        @elseif($notification->type == 6)
+                                            <div class="w-full flex flex-row gap-x-4">
+                                                <i class="fas fa-star text-xl text-yellow-500"></i>
+                                                <div>
+                                                    <p>{{__('Заказчик указал, что вы выполнили  задание')}}</p>
+                                                    <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
+                                                        “{{$notification->name_task}}" №{{$notification->task_id}}
+                                                    </a>
+                                                    {{__(' и оставил вам отзыв')}}
+                                                </div>
+                                            </div>
+                                        @elseif($notification->type == 7)
+                                            <div class="w-full flex flex-row gap-x-4">
+                                                <i class="fas fa-user text-xl text-green-500"></i>
+                                                <div>
+                                                    <p>{{__('Вас выбрали исполнителем  в задании')}}</p>
+                                                    <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
+                                                        “{{$notification->name_task}}" №{{$notification->task_id}}
+                                                    </a>
+                                                    <a class="hover:text-blue-500" href="/performers/{{$notification->user_id}}">
+                                                        {{$notification->user->name}}
+                                                    </a>
+                                                </div>
                                             </div>
                                         @endif
                                     </div>
                                 </li>
+                    
                             @endforeach
                         </ul>
                     </div>
