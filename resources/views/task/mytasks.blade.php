@@ -221,7 +221,9 @@
                 },
                 points = [
                         @foreach($tasks as $data)
-                            [{{$data->coordinates}}],
+                            @if($data->coordinates)
+                                [{{$data->coordinates}}],
+                            @endif
                         @endforeach
                 ],
                 geoObjects = [];
