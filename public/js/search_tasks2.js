@@ -38,6 +38,7 @@ $("input:checkbox").click(function () {
     $("#search_form").submit();
 });
 $(document).ready(function () {
+
     $("#search_form").submit();
 });
 

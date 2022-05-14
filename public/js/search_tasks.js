@@ -540,6 +540,26 @@ function chicat_check_print() {
     return i;
 }
 
+function firstCoordinates(){
+    ymaps.ready(init);
+    function init() {
+        let location = ymaps.geolocation;
+        location.get({
+            mapStateAutoApply: true
+        })
+            .then(
+                function(result) {
+                    userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
+                    $("#user_lat").val(userCoordinates[0]);
+                    $("#user_long").val(userCoordinates[1]);
+                },
+                function(err) {
+                    console.log('Ошибка: ' + err)
+                }
+            );
+    }
+}
+
 function map_pos(mm) {
     if (mm) {
         k=1;
@@ -570,22 +590,6 @@ function map_pos(mm) {
                     );
             }
 
-            var suggestView = new ymaps.SuggestView('suggest');
-            suggestView.events.add('select', function (e) {
-                myMapCoordinates(e);
-            });
-
-            function myMapCoordinates(e){
-                var myGeo = ymaps.geocode(e.get('item').value);
-                myGeo.then(
-                    function (res) {
-                        userCoordinates = res.geoObjects.get(0).geometry.getCoordinates();
-                        myMap2.geoObjects.add(res.geoObjects)
-                        $("#user_lat").val(userCoordinates[0]);
-                        $("#user_long").val(userCoordinates[1]);
-                    }
-                );
-            }
             let myMap2 = new ymaps.Map('map2', {
                 center: [userCoordinates[0], userCoordinates[1]],
                 zoom: 13,
@@ -595,6 +599,46 @@ function map_pos(mm) {
             }, {
                 searchControlProvider: 'yandex#search'
             });
+
+            /*var searchControl = new ymaps.control.SearchControl({
+                options: {
+                    provider: 'yandex#map',
+                }
+            });
+            myMap2.controls.add(searchControl);*/
+
+            var suggestView = new ymaps.SuggestView('suggest',{boundedBy: myMap2.getBounds()});
+            suggestView.events.add('select', function (e) {
+                myMapCoordinates(e);
+            });
+
+            function myMapCoordinates(e){
+                var myGeo = ymaps.geocode(e.get('item').value);
+                myGeo.then(
+                    function (res) {
+                        userCoordinates = res.geoObjects.get(0).geometry.getCoordinates();
+                        /*myMap2.geoObjects.add(res.geoObjects)*/
+                        $("#user_lat").val(userCoordinates[0]);
+                        $("#user_long").val(userCoordinates[1]);
+                    }
+                );
+            }
+
+            /*var searchControl = new ymaps.control.SearchControl({
+                options: {
+                    provider: 'yandex#search'
+                }
+            });
+            myMap2.controls.add(searchControl);*/
+
+
+
+            // Добавим контрол на карту.
+            /*myMap2.controls.add(regionControl);*/
+            // Узнавать о изменениях параметров RegionControl можно следующим образом.
+            /*regionControl.events.add('statechange', function (e) {
+                console.log(e.get('target').get('values'));
+            });*/
 
             $("#geoBut").click(function(){
                 location.get({
@@ -615,7 +659,7 @@ function map_pos(mm) {
                     );
             });
 
-            clusterer = new ymaps.Clusterer({
+            /*clusterer = new ymaps.Clusterer({
                 preset: 'islands#invertedGreenClusterIcons',
                 // hasBalloon: false,
                 gridSize: 80,
@@ -653,7 +697,7 @@ function map_pos(mm) {
             myMap2.setBounds(clusterer.getBounds(), {
                 boundsAutoApply: true,
                 checkZoomRange: true
-            });
+            });*/
 
             circle = new ymaps.Circle([userCoordinates, r*1000], null, { draggable: false, fill: false, outline: true, strokeColor: '#32CD32', strokeWidth: 3});
             myMap2.geoObjects.add(circle);
