@@ -1264,11 +1264,30 @@ class ProfileAPIController extends Controller
     public function youtube_link(Request $request)
     {
         $user = User::find(auth()->user()->id);
+        $validator = Validator::make($request->all(), [
+            'youtube_link' => 'required|url'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Отправить действующую ссылку на Youtube'
+            ]);
+        }
+        $validated = $validator->validated();
+        $link = $validated['youtube_link'];
+        if (!str_starts_with($link, 'https://www.youtube.com/')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Отправить действующую ссылку на Youtube'
+            ]);
+        }
         $user->youtube_link = str_replace('watch?v=','embed/',$request->youtube_link);
         $user->save();
         return response()->json([
             'success' => true,
-            'data' => $user
+            'data' => [
+                'yputube_link' => $user->youtube_link
+            ]
         ]);
     }
 
