@@ -16,7 +16,7 @@ return [
     | This is the service account email that you need to create.
     | https://console.developers.google.com/apis/credentials
     */
-    'serviceAccountEmail' => env('TS_SERVICE_ACCOUNT_EMAIL', '***@***.iam.gserviceaccount.com'),
+    'serviceAccountEmail' => env('TS_SERVICE_ACCOUNT_EMAIL', 'appuz-30@sheetapi-342806.iam.gserviceaccount.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -34,7 +34,7 @@ return [
     | You can find the ID in the spreadsheet URL.
     | (https://docs.google.com/spreadsheets/d/{spreadsheetId}/edit#gid=0)
     */
-    'spreadsheetId' => env('TS_SPREADSHEET_ID', '***'),
+    'spreadsheetId' => env('TS_SPREADSHEET_ID', '2c61341e6504d87d1f554b00d7d156c6af8ca912'),
 
     /*
     |--------------------------------------------------------------------------
@@ -42,7 +42,7 @@ return [
     |--------------------------------------------------------------------------
     | List here the app locales
     */
-    'locales' => env('TS_LOCALES', ['ru']),
+    'locales' => env('TS_LOCALES', ['ru, uz']),
 
     /*
     |--------------------------------------------------------------------------
@@ -60,10 +60,8 @@ return [
     |   'foo::bar.*',
     */
     'exclude' => [
-        'dateTime*',
-        'lang*',
-        'login*',
-        'profile*',
+
+
         ],
 
     /**
