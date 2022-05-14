@@ -144,11 +144,11 @@
                                 </div>
                                 <div id="{{$category->slug}}" class="px-8 py-1 hidden">
                                     @foreach ($categories2 as $category2)
-
-                                        <div class="child_cat">
-                                            <a  class="text-blue-500 hover:text-red-500 my-1 send-request cursor-pointer" id="{{$category2->id}}" data-id="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</a>
-                                        </div>
-
+                                        @if($category2->parent_id == $category->id)
+                                            <div class="child_cat">
+                                                <a  class="text-blue-500 hover:text-red-500 my-1 send-request cursor-pointer" id="{{$category2->id}}" data-id="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</a>
+                                            </div>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>
