@@ -21,6 +21,7 @@ class Notification extends Model
     public const PERFORMER_SELECTED = 4;
     public const TASK_SELECTED = 5;
     public const SEND_REVIEW = 6;
+    public const SEND_REVIEW_PERFORMER = 8;
 
     public function user()
     {
