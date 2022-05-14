@@ -38,14 +38,7 @@ $("input:checkbox").click(function () {
     $("#search_form").submit();
 });
 $(document).ready(function () {
-
     $("#search_form").submit();
-});
-
-$("#search_form").on("click", "#loadMoreData", function (e) {
-    page++;
-    loadTask(e);
-    $(this).attr("disabled", "disabled");
 });
 
 $("#search_form").on("click", "#loadMoreData", function (e) {
