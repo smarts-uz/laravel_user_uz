@@ -149,7 +149,7 @@ class LoginAPIController extends Controller
      *                    property="code",
      *                    type="string",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -200,7 +200,7 @@ class LoginAPIController extends Controller
      *                    property="email",
      *                    type="string",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -266,7 +266,7 @@ class LoginAPIController extends Controller
      *                    property="phone_number",
      *                    type="string",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -312,7 +312,7 @@ class LoginAPIController extends Controller
             self::send_verification('phone_number', auth()->user());
 
             return response()->json([
-                'message' => 'Код отправлено!',
+                'message' => 'Код отправлен!',
                 'success' => true
             ]);
         }

@@ -1,6 +1,6 @@
 <?php
 
 return [
-    "next" => "",
-    "previous" => ""
+    "next" => "#VALUE!",
+    "previous" => "#VALUE!"
 ];
