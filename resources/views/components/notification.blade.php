@@ -84,6 +84,17 @@
                                 </a>
                             </div>
                         </div>
+                    @elseif($notification->type == 8)
+                        <div class="w-full flex flex-row gap-x-4">
+                            <i class="fas fa-star text-xl text-yellow-500"></i>
+                            <div>
+                                <p>{{__('Заказчик указал, что он выполнил задания')}}</p>
+                                <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
+                                    “{{$notification->name_task}}" №{{$notification->task_id}}
+                                </a>
+                                {{__(' и оставил вам отзыв')}}
+                            </div>
+                        </div>
                     @endif
                 </div>
             </li>
