@@ -107,37 +107,44 @@ class SearchTaskController extends VoyagerBaseController
     public function search_new(){
             $categories = Category::where('parent_id', null)->select('id', 'name')->get();
             $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
-            $tasks = Task::whereIn('status', [1, 2])->orderBy('id', 'desc')->paginate(20);
-            return view('search_task.new_search', compact('tasks','categories','categories2'));
+            return view('search_task.new_search', compact('categories','categories2'));
     }
 
 public function search_new2(Request $request){
 
     $data = $request->data;
+
     $filter = $data[0]['value'];
     $suggest = $data[1]['value'];
-    $radius = $data[2]['value'];
-    $price = $data[3]['value'];
+
+// default value is SmartSoware office location
+    $lat = $data[2]['value']?:41.364252;
+    $lon = $data[3]['value']?:69.281910;
+
+    // default radius is 50km
+    $radius = $data[4]['value']?:50;
+    $price = $data[5]['value'];
+
 
     $arr_check = [];
     $remjob =false;
     $noresp=false;
     $count = count($data);
     
-    if(isset($data[4])){
-        $remjob = $data[4]['name'] === "remjob";
-        $noresp = $data[5]['name'] === "noresp";
+    if(isset($data[6])){
+        $remjob = $data[6]['name'] === "remjob";
+        $noresp = $data[6]['name'] === "noresp";
         
-        for ($k = 4; $k < $count; $k++) {
+        for ($k = 6; $k < $count; $k++) {
             if (is_numeric($data[$k]['name']))
                 $arr_check[] = $data[$k]['name'];
         }
     }
     
-    $tasks = $this->service->search_new_service($arr_check, $filter, $suggest, $price, $remjob, $noresp, $radius);
+    $tasks = $this->service->search_new_service($arr_check, $filter, $suggest, $price, $remjob, $noresp, $radius,$lat,$lon);
 
 
-    $html = view("search_task.tasks", compact('tasks'))->render();
-    return response()->json(array('success' => true, 'html' => $html));
+    $html = view("search_task.tasks", ['tasks'=>$tasks])->render();
+    return response()->json(array('success' =>true , 'html' => $html));
 }
 }

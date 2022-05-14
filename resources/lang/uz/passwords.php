@@ -1,9 +1,9 @@
 <?php
 
 return [
-    "reset" => "",
-    "sent" => "",
-    "throttled" => "",
-    "token" => "",
-    "user" => ""
+    "reset" => "#VALUE!",
+    "sent" => "#VALUE!",
+    "throttled" => "#VALUE!",
+    "token" => "#VALUE!",
+    "user" => "#VALUE!"
 ];

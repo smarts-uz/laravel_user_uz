@@ -99,11 +99,11 @@
                     <button id="bySearch" class="mx-5 ">{{__('по срочности')}}</button>
                 </div>
 
-                <div id="loader" style="display: none">
-                    @include('search_task.loader')
-                </div>
                 <div id="dataPlace">
                     @include('search_task.tasks')
+                </div>
+                <div id="loader" style="display: none">
+                    @include('search_task.loader')
                 </div>
         </div>
         {{-- left end --}}

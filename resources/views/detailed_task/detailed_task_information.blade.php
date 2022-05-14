@@ -70,9 +70,8 @@
                     </div>
                     <div class="ml-4 md:ml-12 flex flex-wrap mt-8">
                         <h1 class="font-bold h-auto w-48">{{__('Рисунок')}}</h1>
-                        @foreach(json_decode($task->photos)??[] as $key => $image)
+                        @foreach(json_decode($task->photos) as $image)
 
-                            @if($loop->first)
                                 <div class="relative boxItem">
                                     <a class="boxItem relative" href="{{ asset('storage/uploads/'.$image) }}"
                                        data-fancybox="img1"
@@ -82,7 +81,6 @@
                                         </div>
                                     </a>
                                 </div>
-                            @endif
 
                         @endforeach
                     </div>

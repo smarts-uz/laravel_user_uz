@@ -1,7 +1,7 @@
 <?php
 
 return [
-    "failed" => "",
-    "password" => "",
-    "throttle" => ""
+    "failed" => "#VALUE!",
+    "password" => "#VALUE!",
+    "throttle" => "#VALUE!"
 ];

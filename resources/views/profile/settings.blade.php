@@ -332,13 +332,13 @@
 
                                             </div>
                                             <div class="mt-12">
-                                                <h1 class="font-bold text-black text-3xl">Активные сессии</h1>
+                                                <h1 class="font-bold text-black text-3xl">Aktiv sessiyalar</h1>
 
                                                 @foreach($sessions as $session)
 
                                                     <div class="flex flex-row mt-4 items-center">
                                                         <i class="fas fa-desktop mr-2 text-yellow-500"></i>
-                                                        <p class="mx-1">{{ $session->ip_address == request()->ip()? "Текущая — " :"" }}{{ $parser->parse($session->user_agent)->os->family }},</p>
+                                                        <p class="mx-1">{{ $session->ip_address == request()->ip()? "Xozirgi " :"" }}{{ $parser->parse($session->user_agent)->os->family }},</p>
                                                         <h1 class="mx-1">{{ $session->last_active }}, </h1>
                                                         <span class="text-gray-500">браузер {{ $parser->parse($session->user_agent)->ua->family }}</span>
                                                     </div>

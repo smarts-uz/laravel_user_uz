@@ -17,9 +17,11 @@
 {{--        advantages section--}}
         @include('homepage.advantages')
 
+        <h1>{__("Пивет всем")}</h1>
+
 {{--        What is being ordered at Universal Service right now--}}
         @include('homepage.posts_section')
     </main>
-    
+
     <script src="{{ asset('js/home.js') }}"></script>
 @endsection

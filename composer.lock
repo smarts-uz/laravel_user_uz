@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "551265841e7954527f08f18c50d718bf",
+    "content-hash": "5f7e1c975c0c63e97106c0d9da02d2dc",
     "packages": [
         {
             "name": "arrilot/laravel-widgets",
@@ -1569,23 +1569,28 @@
         },
         {
             "name": "firebase/php-jwt",
-            "version": "v6.1.2",
+            "version": "v6.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "c297139da7c6873dbd67cbd1093f09ec0bbd0c50"
+                "reference": "d28e6df83830252650da4623c78aaaf98fb385f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/c297139da7c6873dbd67cbd1093f09ec0bbd0c50",
-                "reference": "c297139da7c6873dbd67cbd1093f09ec0bbd0c50",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/d28e6df83830252650da4623c78aaaf98fb385f3",
+                "reference": "d28e6df83830252650da4623c78aaaf98fb385f3",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1||^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^7.5||9.5"
+                "guzzlehttp/guzzle": "^6.5||^7.4",
+                "phpspec/prophecy-phpunit": "^1.1",
+                "phpunit/phpunit": "^7.5||^9.5",
+                "psr/cache": "^1.0||^2.0",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.0"
             },
             "suggest": {
                 "paragonie/sodium_compat": "Support EdDSA (Ed25519) signatures when libsodium is not present"
@@ -1620,9 +1625,9 @@
             ],
             "support": {
                 "issues": "https://github.com/firebase/php-jwt/issues",
-                "source": "https://github.com/firebase/php-jwt/tree/v6.1.2"
+                "source": "https://github.com/firebase/php-jwt/tree/v6.2.0"
             },
-            "time": "2022-04-21T14:37:18+00:00"
+            "time": "2022-05-13T20:54:50+00:00"
         },
         {
             "name": "fruitcake/laravel-cors",
@@ -7178,16 +7183,16 @@
         },
         {
             "name": "swagger-api/swagger-ui",
-            "version": "v4.11.0",
+            "version": "v4.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swagger-api/swagger-ui.git",
-                "reference": "2e471949f26e1a52a27acbd27eef7cd1aaeab45d"
+                "reference": "c70b9d7b7c4f59229c81e897fc8fd09e0e1361cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swagger-api/swagger-ui/zipball/2e471949f26e1a52a27acbd27eef7cd1aaeab45d",
-                "reference": "2e471949f26e1a52a27acbd27eef7cd1aaeab45d",
+                "url": "https://api.github.com/repos/swagger-api/swagger-ui/zipball/c70b9d7b7c4f59229c81e897fc8fd09e0e1361cd",
+                "reference": "c70b9d7b7c4f59229c81e897fc8fd09e0e1361cd",
                 "shasum": ""
             },
             "type": "library",
@@ -7233,9 +7238,9 @@
             ],
             "support": {
                 "issues": "https://github.com/swagger-api/swagger-ui/issues",
-                "source": "https://github.com/swagger-api/swagger-ui/tree/v4.11.0"
+                "source": "https://github.com/swagger-api/swagger-ui/tree/v4.11.1"
             },
-            "time": "2022-05-05T17:48:04+00:00"
+            "time": "2022-05-13T15:41:25+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -13338,5 +13343,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.1.0"
 }

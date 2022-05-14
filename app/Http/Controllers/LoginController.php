@@ -93,7 +93,7 @@ class LoginController extends Controller
     {
         self::send_verification('phone', auth()->user());
         return redirect()->back()->with([
-            'code' => 'Код отправлено!'
+            'code' => 'Код отправлен!'
         ]);
     }
 
@@ -125,7 +125,7 @@ class LoginController extends Controller
     {
         self::verifyColum($request, 'email', $user, $hash);
         auth()->login($user);
-        Alert::success('Congrats', 'Your Email have successfully verified');
+        Alert::success(__('Поздравляю'), __('Ваш адрес электронной почты успешно подтвержден'));
         return redirect()->route('profile.profileData');
 
     }
@@ -136,7 +136,7 @@ class LoginController extends Controller
             'code' => 'required'
         ]);
         if (self::verifyColum($request, 'phone_number', auth()->user(), $request->code)) {
-            Alert::success('Congrats', 'Your Phone have successfully verified');
+            Alert::success(__('Поздравляю'), __('Ваш телефон успешно подтвержден'));
             return redirect()->route('profile.profileData');
         } else {
             return back()->with([
@@ -203,7 +203,7 @@ class LoginController extends Controller
             self::send_verification('phone_number', auth()->user());
 
             return redirect()->back()->with([
-                'code' => 'Код отправлено!'
+                'code' => 'Код отправлен!'
             ]);
         }
     }
