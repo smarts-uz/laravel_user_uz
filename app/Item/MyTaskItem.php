@@ -7,10 +7,10 @@ use TCG\Voyager\Models\Category;
 
 class MyTaskItem
 {
-    public $user;
+    /*public $user;*/
     public $tasks;
     public $perform_tasks;
-    public $datas;
+    /*public $datas;*/
     public $categories;
     public $categories2;
 }
