@@ -333,11 +333,21 @@ class ProfileAPIController extends Controller
                 'message' => 'Send valid youtube link'
             ]);
         }
-        $user->youtube_link = str_replace('watch?v=','embed/',$request->youtube_link);;
+        $user->youtube_link = str_replace('watch?v=','embed/',$link);
         $user->save();
         return response()->json([
             'success' => true,
             'message' => 'Youtube link updated'
+        ]);
+    }
+
+    public function videoDelete(){
+        $user = auth()->user();
+        $user->youtube_link = null;
+        $user->save();
+        return response()->json([
+            'success' => false,
+            'message' => 'Yuklanmadi'
         ]);
     }
 
@@ -1258,46 +1268,6 @@ class ProfileAPIController extends Controller
         return response()->json([
             'success' => true,
             'data' => ReviewIndexResource::collection($data)
-        ]);
-    }
-
-    public function youtube_link(Request $request)
-    {
-        $user = User::find(auth()->user()->id);
-        $validator = Validator::make($request->all(), [
-            'youtube_link' => 'required|url'
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Отправить действующую ссылку на Youtube'
-            ]);
-        }
-        $validated = $validator->validated();
-        $link = $validated['youtube_link'];
-        if (!str_starts_with($link, 'https://www.youtube.com/')) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Отправить действующую ссылку на Youtube'
-            ]);
-        }
-        $user->youtube_link = str_replace('watch?v=','embed/',$request->youtube_link);
-        $user->save();
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'yputube_link' => $user->youtube_link
-            ]
-        ]);
-    }
-
-    public function youtube_link_delete(){
-        $user = User::find(auth()->user()->id);
-        $user->youtube_link = null;
-        $user->save();
-        return response()->json([
-            'success' => false,
-            'message' => 'Yuklanmadi'
         ]);
     }
 }
