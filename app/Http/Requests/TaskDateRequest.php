@@ -39,7 +39,7 @@ class TaskDateRequest extends FormRequest
             case 3:
                 return [
                     'start_date'=>'required|date|after:now',
-                    'end_date'=>'required|date|after:end_date',
+                    'end_date'=>'required|date|after:start_date',
                     'date_type' => 'required'
 
                 ];
