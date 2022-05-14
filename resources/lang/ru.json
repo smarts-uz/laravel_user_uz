@@ -31,6 +31,8 @@
     "Universal Services — это удобное мобильное приложение и сайт для заказа любых услуг напрямую у специалистов и поиска клиентов.": "Universal Services — это удобное мобильное приложение и сайт для заказа любых услуг напрямую у специалистов и поиска клиентов.",
     "already_had": "already_had",
     "dateTime.end_date.date": "dateTime.end_date.date",
+    "dateTime.start_date.after": "dateTime.start_date.after",
+    "dateTime.end_date.after": "dateTime.end_date.after",
     "dateTime.end_date.required": "dateTime.end_date.required",
     "dateTime.start_date.date": "dateTime.start_date.date",
     "dateTime.start_date.required": "dateTime.start_date.required",
