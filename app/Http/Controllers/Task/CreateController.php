@@ -183,26 +183,6 @@ class CreateController extends Controller
         $task->photos = json_encode($imgData);
         $task->save();
     }
-
-    public function uploadImage(Task $task, Request $request)
-    {
-        $folder_task = Task::orderBy('created_at', 'desc')->first();
-        if ($request->file()) {
-            $fileName = time() . '_' . $request->file->getClientOriginalName();
-            $filePath = $request->file('file')
-                ->move(public_path("storage/Uploads/{$folder_task->name}"), $fileName);
-
-            $fileModelname = time() . '_' . $request->file->getClientOriginalName();
-            $fileModelfile_path = '/storage/' . $filePath;
-            return response()->json([
-                "success" => true,
-                "message" => "File successfully uploaded",
-                "file" => $fileName
-            ]);
-        }
-        $this->note_store();
-    }
-
     public function note_store(Task $task, Request $request)
     {
         $data = $request->validate([

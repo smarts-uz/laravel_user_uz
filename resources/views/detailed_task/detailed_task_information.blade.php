@@ -74,11 +74,11 @@
 
                             @if($loop->first)
                                 <div class="relative boxItem">
-                                    <a class="boxItem relative" href="{{ asset('storage/'.$image) }}"
+                                    <a class="boxItem relative" href="{{ asset('storage/uploads/'.$image) }}"
                                        data-fancybox="img1"
                                        data-caption="<span>{{  $task->created_at}}</span>">
                                         <div class="mediateka_photo_content">
-                                            <img src="{{ asset('storage/'.$image) }}" alt="">
+                                            <img src="{{ asset('storage/uploads/'.$image) }}" alt="">
                                         </div>
                                     </a>
                                 </div>
