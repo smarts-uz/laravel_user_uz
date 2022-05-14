@@ -26,8 +26,8 @@ class UserExpense extends Model
     protected $fillable = [
         'user_id',
         'amount',
-        'order_id',
-        'service_id'
+        'task_id',
+        'client_id'
     ];
 
     /**

@@ -7,7 +7,7 @@ return [
         "unique" => "Пользователь с такой почтой уже существует!"
     ],
     "emailError" => "Elektron pochta yoki parol notogri. Qayta urinib koring",
-    "loggingin" => "Tizimga kirish",
+    "loggingin" => "Авторизоваться",
     "name" => [
         "required" => "Требуется заполнение!",
         "unique" => "Пользователь с таким именем уже существует!"
@@ -24,6 +24,6 @@ return [
         "required" => "Требуется заполнение!",
         "unique" => "Этот номер есть в системе!"
     ],
-    "signin_below" => "Boshqaruv paneliga kirish",
+    "signin_below" => "Доступ к панели управления",
     "welcome" => "Панель управления, которой не хватало в Laravel"
 ];

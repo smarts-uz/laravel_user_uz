@@ -7,7 +7,7 @@ return [
         "unique" => "Bunday pochtadagi foydalanuvchi allaqachon mavjud!"
     ],
     "emailError" => "Elektron pochta yoki Parol Notogri. Qayta urinib koring",
-    "loggingin" => "Tizimga Kirish",
+    "loggingin" => "Manmanlik",
     "name" => [
         "required" => "To'ldirish talab qilinadi!",
         "unique" => "Ushbu ismli foydalanuvchi allaqachon mavjud!"
@@ -24,6 +24,6 @@ return [
         "required" => "To'ldirish talab qilinadi!",
         "unique" => "Bu raqam tizimda!"
     ],
-    "signin_below" => "Boshqaruv paneliga borish",
+    "signin_below" => "Boshqarish paneliga kirish",
     "welcome" => "Katakchada yo'qolgan boshqaruv paneli"
 ];

@@ -31,9 +31,9 @@ class ResponseService
         $data['task_id'] = $task->id;
         $data['user_id'] = $task->user_id;
         $data['performer_id'] = auth()->user()->id;
-        $ballance = WalletBalance::where('user_id', auth()->user()->id)->first();
-        if ($ballance) {
-            if ($ballance->balance < setting('admin.pullik_otklik')) {
+        $balance = WalletBalance::where('user_id', auth()->user()->id)->first();
+        if ($balance) {
+            if ($balance->balance < setting('admin.pullik_otklik')) {
                 $success = false;
                 $message = __('not_enough_balance');
             }else if($task->responses()->where('performer_id', auth()->user()->id)->first()){
@@ -42,15 +42,17 @@ class ResponseService
             } else {
                 $success = true;
                 $message = __('success');
-                $ballance->balance = $ballance->balance - setting('admin.pullik_otklik');
-                $ballance->save();
                 TaskResponse::create($data);
-                UserExpense::query()->create([
-                    'user_id' => $data['performer_id'],
-                    'task_id' => $data['task_id'],
-                    'client_id' => $data['user_id'],
-                    'amount' => setting('admin.pullik_otklik')
-                ]);
+                if ($request->get('not_free') == 1) {
+                    $balance->balance = $balance->balance - setting('admin.pullik_otklik');
+                    $balance->save();
+                    UserExpense::query()->create([
+                        'user_id' => $data['performer_id'],
+                        'task_id' => $data['task_id'],
+                        'client_id' => $data['user_id'],
+                        'amount' => setting('admin.pullik_otklik')
+                    ]);
+                }
 
 
                 NotificationService::sendTaskSelectedNotification($task);
@@ -103,13 +105,14 @@ class ResponseService
         NotificationService::sendNotificationRequest([$performer->id], [
             'url' => 'detailed-tasks' . '/' . $response->task_id, 'name' => $task->name, 'time' => 'recently'
         ]);
-        $ballance = WalletBalance::where('user_id', $performer->id)->first();
-        $ballance->balance = $ballance->balance - setting('admin.pullik_otklik');
+        $balance = WalletBalance::where('user_id', $performer->id)->first();
+        $balance->balance = $balance->balance - setting('admin.bepul_otklik');
+        $balance->save();
         UserExpense::query()->create([
             'user_id' => $performer->id,
-            'task_id' => $response->task_id,
+            'task_id' => $task->id,
             'client_id' => $response_user->id,
-            'amount' => setting('admin.pullik_otklik')
+            'amount' => setting('admin.bepul_otklik')
         ]);
         return ['success' => true,'message' => __('success'), 'data' => $data];
     }

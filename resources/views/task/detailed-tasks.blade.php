@@ -128,9 +128,9 @@
                                         <div class="flex flex-row gap-x-2">
                                             <i class="far fa-thumbs-up text-gray-400"></i>
                                             @if ($respons_review->as_performer==0)
-                                                <p class="text-base"> - Заказчик</p>
+                                                <p class="text-base"> - {{__('Заказчик')}}</p>
                                             @elseif ($respons_review->as_performer==1)
-                                                <p class="text-base"> - Исполнитель</p>
+                                                <p class="text-base"> - {{__('Исполнитель')}}</p>
                                             @endif
                                        </div>
                                     </div>
@@ -173,9 +173,9 @@
                                        <div class="flex flex-row gap-x-2">
                                             <i class="far fa-thumbs-down text-gray-400"></i>
                                             @if ($respons_review->as_performer==0)
-                                                <p class="text-base"> - Заказчик</p>
+                                                <p class="text-base"> - {{class_uses_recursive('Foo\Bar\Baz')('Заказчик')}}</p>
                                             @elseif ($respons_review->as_performer==1)
-                                                <p class="text-base"> - Исполнитель</p>
+                                                <p class="text-base"> - {{__('Исполнитель')}}</p>
                                             @endif
                                        </div>
                                     </div>
@@ -207,12 +207,12 @@
                                                 <div class="w-5/6">
                                                     <a href="/detailed-tasks/{{$item->id}}"
                                                     class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">{{ $item->name }}</a>
-                                                    <p class="text-sm">{{ count($addresses)? $addresses[0]->location:'Можно выполнить удаленно' }}</p>
+                                                    <p class="text-sm">{{ count($item->addresses)? $item->addresses[0]->location:'Можно выполнить удаленно' }}</p>
                                                     @if($item->date_type == 1 || $item->date_type == 3)
                                                         <p class="text-sm my-0.5">{{__('Начать')}} {{ $start}}</p>
                                                     @endif
                                                     @if($item->date_type == 2 || $item->date_type == 3)
-                                                        <p class="text-sm my-0.5">{{__('Закончить')}} {{ $end }}</p>
+                                                        <p class="text-sm my-0.5">{{__('Закончить')}} {{$end }}</p>
                                                     @endif
                                                     @if($item->oplata == 1)
                                                         <p class="text-sm">{{__(' Оплата наличными')}}</p>
@@ -224,9 +224,9 @@
                                             <div class="sm:col-span-2 col-span-5 sm:text-right text-left sm:ml-0 ml-16">
                                                 <p class="sm:text-lg text-sm font-semibold text-gray-700">
                                                     @if ( __('до') == 'gacha' )
-                                                        {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
+                                                        {{ number_format($item->budget) }} {{__('сум')}}{{__('до')}}
                                                     @else
-                                                        {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
+                                                        {{__('до')}} {{ number_format($item->budget) }} {{__('сум')}}
                                                     @endif
                                                 </p>
                                                 <span class="text-sm sm:mt-5 sm:mt-1 mt-0">{{__('Откликов')}} -

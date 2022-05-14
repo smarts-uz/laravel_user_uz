@@ -109,7 +109,7 @@ class UpdateController extends Controller
                     'task_id' => $task->id,
                     'name_task' => $task->name,
                     'description' => 1,
-                    'type' => Notification::SEND_REVIEW
+                    'type' => Notification::SEND_REVIEW_PERFORMER
                 ]);
 
                 NotificationService::sendNotificationRequest([$task->user_id], [
