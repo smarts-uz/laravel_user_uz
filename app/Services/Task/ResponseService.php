@@ -19,7 +19,6 @@ class ResponseService
 
     public function store($request, $task)
     {
-        dd($request->all());
         if ($task->user_id == auth()->user()->id)
             abort(403,"Bu o'zingizning taskingiz");
         $data = $request->validate([
@@ -32,9 +31,9 @@ class ResponseService
         $data['task_id'] = $task->id;
         $data['user_id'] = $task->user_id;
         $data['performer_id'] = auth()->user()->id;
-        $ballance = WalletBalance::where('user_id', auth()->user()->id)->first();
-        if ($ballance) {
-            if ($ballance->balance < setting('admin.pullik_otklik')) {
+        $balance = WalletBalance::where('user_id', auth()->user()->id)->first();
+        if ($balance) {
+            if ($balance->balance < setting('admin.pullik_otklik')) {
                 $success = false;
                 $message = __('not_enough_balance');
             }else if($task->responses()->where('performer_id', auth()->user()->id)->first()){
@@ -45,8 +44,8 @@ class ResponseService
                 $message = __('success');
                 TaskResponse::create($data);
                 if ($request->get('not_free') == 1) {
-                    $ballance->balance = $ballance->balance - setting('admin.pullik_otklik');
-                    $ballance->save();
+                    $balance->balance = $balance->balance - setting('admin.pullik_otklik');
+                    $balance->save();
                     UserExpense::query()->create([
                         'user_id' => $data['performer_id'],
                         'task_id' => $data['task_id'],
@@ -106,8 +105,9 @@ class ResponseService
         NotificationService::sendNotificationRequest([$performer->id], [
             'url' => 'detailed-tasks' . '/' . $response->task_id, 'name' => $task->name, 'time' => 'recently'
         ]);
-        $ballance = WalletBalance::where('user_id', $performer->id)->first();
-        $ballance->balance = $ballance->balance - setting('admin.bepul_otklik');
+        $balance = WalletBalance::where('user_id', $performer->id)->first();
+        $balance->balance = $balance->balance - setting('admin.bepul_otklik');
+        $balance->save();
         UserExpense::query()->create([
             'user_id' => $performer->id,
             'task_id' => $task->id,
