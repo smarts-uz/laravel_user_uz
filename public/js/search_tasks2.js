@@ -1,12 +1,11 @@
-let page = 0;
-$("#search_form").on("submit", function (event) {
+let page = 1;
+function loadTask(event) {
     event.preventDefault();
-    page++;
     $.ajax({
-        url: $(this).attr("action") + "?page=" + page,
-        method: $(this).attr("method"),
+        url: $("#search_form").attr("action") + "?page=" + page,
+        method: $("#search_form").attr("method"),
         data: {
-            data: $(this).serializeArray(),
+            data: $("#search_form").serializeArray(),
         },
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -14,28 +13,30 @@ $("#search_form").on("submit", function (event) {
         dataType: "json",
         beforeSend: function () {
             $("#loader").show();
+            $("#loadData").remove();
         },
         success: function (data) {
-            $("#loadData").remove();
             $("#dataPlace").append(data.html);
         },
         complete: function () {
             $("#loader").hide();
         },
     });
-});
-$("input:checkbox").click(function () {
-    page = 0;
+}
+$("#search_form").on("submit", function (e) {
+    page = 1;
     $("#dataPlace").html("");
+    loadTask(e);
+});
+
+$("input:checkbox").click(function () {
     $("#search_form").submit();
 });
 $(document).ready(function () {
-    page = 0;
-    $("#dataPlace").html("");
     $("#search_form").submit();
 });
-$("#findBut").click(function () {
-    page = 0;
-    $("#dataPlace").html("");
-    $("#search_form").submit();
+
+$("#search_form").on("click", "#loadMoreData", function (e) {
+    page++;
+    loadTask(e);
 });
