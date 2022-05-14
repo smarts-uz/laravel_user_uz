@@ -103,14 +103,6 @@ class ResponseService
         NotificationService::sendNotificationRequest([$performer->id], [
             'url' => 'detailed-tasks' . '/' . $response->task_id, 'name' => $task->name, 'time' => 'recently'
         ]);
-        $ballance = WalletBalance::where('user_id', $performer->id)->first();
-        $ballance->balance = $ballance->balance - setting('admin.pullik_otklik');
-        UserExpense::query()->create([
-            'user_id' => $performer->id,
-            'task_id' => $task->id,
-            'client_id' => $response_user->id,
-            'amount' => setting('admin.pullik_otklik')
-        ]);
         return ['success' => true,'message' => __('success'), 'data' => $data];
     }
 
