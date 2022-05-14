@@ -144,7 +144,7 @@ public function search_new2(Request $request){
     $tasks = $this->service->search_new_service($arr_check, $filter, $suggest, $price, $remjob, $noresp, $radius,$lat,$lon);
 
 
-    $html = view("search_task.tasks", ['tasks'=>$tasks])->render();
-    return response()->json(array('success' =>true , 'html' => $html));
+    $html = view("search_task.tasks", ['tasks'=>$tasks[0]])->render();
+    return response()->json(array('dataForMap' =>$tasks[1] , 'html' => $html));
 }
 }

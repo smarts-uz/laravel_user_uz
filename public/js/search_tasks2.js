@@ -1,7 +1,11 @@
 let page = 1;
+let request = null;
 function loadTask(event) {
+    if (request && request.readyState != 4) {
+        request.abort();
+    }
     event.preventDefault();
-    $.ajax({
+    request = $.ajax({
         url: $("#search_form").attr("action") + "?page=" + page,
         method: $("#search_form").attr("method"),
         dataType: "json",
@@ -16,6 +20,7 @@ function loadTask(event) {
             $("#loadData").remove();
         },
         success: function (data) {
+            console.log(data.dataForMap);
             $("#dataPlace").append(data.html);
         },
         complete: function () {
@@ -24,28 +29,9 @@ function loadTask(event) {
     });
 }
 $("#search_form").on("submit", function (event) {
-    event.preventDefault();
-    $.ajax({
-        url: $(this).attr("action") + "?page=" + 1,
-        method: $(this).attr("method"),
-        data: {
-            data: $(this).serializeArray(),
-        },
-        headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-        },
-        dataType: "json",
-        beforeSend: function () {
-            $("#loader").show();
-            $("#dataPlace").html("");
-        },
-        success: function (data) {
-            $("#dataPlace").html(data.html);
-        },
-        complete: function () {
-            $("#loader").hide();
-        },
-    });
+    page = 1;
+    $("#dataPlace").html(" ");
+    loadTask(event);
 });
 
 $("input:checkbox").click(function () {
