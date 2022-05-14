@@ -30,7 +30,7 @@
                         </div>
                     @elseif($notification->type == 2 || $notification->type == 3)
                         <div class="w-full flex flex-row gap-x-4">
-                            <i class="fas fa-bookmark text-xl text-green-500"></i>
+                            <i class="fas fa-bookmark text-xl text-yellow-500"></i>
                             <button onclick="toggleModal121('modal-id121', '{{$notification->name_task}}', '{{$notification->description}}', {{$notification->id}})"
                                     class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">
                                 {{$notification->name_task}}
@@ -51,7 +51,7 @@
                         </div>
                     @elseif($notification->type == 5)
                         <div class="w-full flex flex-row gap-x-4">
-                            <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                            <i class="fas fa-check-circle text-yellow-500 text-xl"></i>
                             <div>
                                 <p> {{__('Отклик к заданию')}}</p>
                                 <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
@@ -73,7 +73,7 @@
                         </div>
                     @elseif($notification->type == 7)
                         <div class="w-full flex flex-row gap-x-4">
-                            <i class="fas fa-user text-xl text-green-500"></i>
+                            <i class="fas fa-user text-xl text-yellow-500"></i>
                             <div>
                                 <p>{{__('Вас выбрали исполнителем  в задании')}}</p>
                                 <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
@@ -84,7 +84,8 @@
                                 </a>
                             </div>
                         </div>
-                    @elseif($notification->type == 8)
+                    @endif
+                    @if ($notification->type == 8)
                         <div class="w-full flex flex-row gap-x-4">
                             <i class="fas fa-star text-xl text-yellow-500"></i>
                             <div>
