@@ -553,13 +553,15 @@ class ProfileAPIController extends Controller
         }
         $userPhone = User::query()->where(['phone_number' => $request->get('phone_number')])->first();
         $user = auth()->user();
-        if ($userPhone->id != $user->id) {
-            return response()->json([
-                'success' => false,
-                'data' => [
-                    'message' => 'Phone number already exists'
-                ]
-            ]);
+        if ($userPhone) {
+            if ($userPhone->id != $user->id) {
+                return response()->json([
+                    'success' => false,
+                    'data' => [
+                        'message' => 'Phone number already exists'
+                    ]
+                ]);
+            }
         }
         $user->phone_number = $request->get('phone_number');
         $user->is_phone_number_verified = 0;
