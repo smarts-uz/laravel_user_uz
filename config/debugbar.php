@@ -19,7 +19,9 @@ return [
         'telescope*',
         'horizon*',
         'chat/*',
-        'api/chat/*'
+        'api/chat/*',
+        'click',
+        'payme'
     ],
 
     /*
