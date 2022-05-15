@@ -550,8 +550,10 @@ function firstCoordinates(){
             .then(
                 function(result) {
                     userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
+                    console.log(userCoordinates)
                     $("#user_lat").val(userCoordinates[0]);
                     $("#user_long").val(userCoordinates[1]);
+                    $("#search_form").submit();
                 },
                 function(err) {
                     console.log('Ошибка: ' + err)
@@ -997,9 +999,13 @@ $("#search_form").on("submit", function (event) {
 $("input:checkbox").click(function () {
     $("#search_form").submit();
 });
+
 $(document).ready(function () {
-    $("#search_form").submit();
+    firstCoordinates();
 });
+/*$(window).load(function () {
+
+});*/
 
 $("#search_form").on("click", "#loadMoreData", function (e) {
     page++;

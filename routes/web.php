@@ -67,7 +67,7 @@ Route::get('/search_new', [SearchTaskController::class, 'search_new'])->name('se
 
 Route::post('search_new2', [SearchTaskController::class, 'search_new2'])->name('searchTask.search_new2');
 
-Route::any('/profile/{payment}', function ($payment) {
+Route::any('/profile/{$payment}', function ($payment) {
     if ($payment == 'paynet' or $payment == 'payme' or $payment == 'click') {
         (new Goodoneuz\PayUz\PayUz)->driver($payment)->handle();
     }
