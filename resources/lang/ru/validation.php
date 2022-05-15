@@ -90,7 +90,7 @@ return [
     "multiple_of" => "valyation.multiple_of",
     "not_in" => "Validation.not_in",
     "not_regex" => "valyation.not_regex",
-    "numeric" => "Validation.Nemeric",
+    "numeric" => "вам нужно ввести номер телефона",
     "password" => "valyation.password",
     "present" => "Validation.present",
     "prohibited" => "valyation.prohibited",
