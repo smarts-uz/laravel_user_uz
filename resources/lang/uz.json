@@ -41,7 +41,7 @@
     "lang.setting_alert": "Lang.Setting_alert",
     "login.email.email": "Emailingizni kiriting",
     "login.email.required": "Loading...",
-    "login.email.unique": "Kirish.email.unikuq",
+    "login.email.unique": "Bu pochta ro'yxatdan o'tgan",
     "login.emailError": "Login.Memeroror",
     "login.name.required": "Loading...",
     "login.name.unique": "Login.name.unik",
