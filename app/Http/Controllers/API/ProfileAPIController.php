@@ -380,16 +380,21 @@ class ProfileAPIController extends Controller
             $data = Review::query()->where(['user_id' => $user->id])
                 ->whereHas('task', function (Builder $q) use ($user) {
                     $q->where(['performer_id' => $user->id]);
-                })->get();
+                });
         } else {
             $data = Review::query()->where(['user_id' => $user->id])
                 ->whereHas('task', function (Builder $q) use ($user) {
                     $q->where(['user_id' => $user->id]);
-                })->get();
+                });
+        }
+        if ($request->get('review') == 'good') {
+            $data = $data->where(['good_bad' => 1]);
+        } elseif ($request->get('review') == 'bad') {
+            $data = $data->where(['good_bad' => 0]);
         }
         return response()->json([
             'success' => true,
-            'data' => ReviewIndexResource::collection($data)
+            'data' => ReviewIndexResource::collection($data->get())
         ]);
     }
 
