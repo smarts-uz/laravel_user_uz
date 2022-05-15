@@ -1,6 +1,6 @@
 <?php
 
-if ($amount >= 1000) {
+if ($amount >= 500) {
     return true;
 } else {
     return false;
