@@ -93,6 +93,7 @@
                             <h1 class="font-bold h-auto w-48">{{__('Не предоставил(а) документы')}}</h1>
                         </div>
                     @endif
+                    @if($task->custom_field_values != '[]')
                     <div class="ml-4 md:ml-12 flex flex-row mt-8">
                         <h1 class="font-bold h-auto w-48">{{__('Какие параметры посылки?')}}</h1>
                         <div class="flex flex-wrap gap-x-2">
@@ -105,3 +106,4 @@
                             @endforeach
                         </div>
                     </div>
+                        @endif
