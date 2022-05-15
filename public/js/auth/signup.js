@@ -6,16 +6,16 @@ var maskOptions = {
 }
 var mask = new IMask(element, maskOptions);
 
-$("#phone_number").keyup(function () {
-    var text = $(this).val()
-    text = text.replace(/[^0-9.]/g, "")
-    text = text.slice(3)
-    $("#phone").val(text)
-})
-  //   input eye
-$(function () {
+$("#phone_number").keyup(function() {
+        var text = $(this).val()
+        text = text.replace(/[^0-9.]/g, "")
+        text = text.slice(3)
+        $("#phone").val(text)
+    })
+    //   input eye
+$(function() {
 
-    $('#eye').click(function () {
+    $('#eye').click(function() {
         if ($(this).hasClass('fa-eye-slash')) {
             $(this).removeClass('fa-eye-slash');
             $(this).addClass('fa-eye');
@@ -28,10 +28,10 @@ $(function () {
     });
 
 });
- //input eye2
-$(function () {
+//input eye2
+$(function() {
 
-    $('#eye1').click(function () {
+    $('#eye1').click(function() {
         if ($(this).hasClass('fa-eye-slash')) {
             $(this).removeClass('fa-eye-slash');
             $(this).addClass('fa-eye');
@@ -49,10 +49,9 @@ $(function () {
 
 $("#checkbox1").change(function() {
     if (this.checked) {
-       $('#btn11').addClass('hidden')
-       $('#btn22').removeClass('hidden')
-    }
-    else if (!this.checked){
+        $('#btn11').addClass('hidden')
+        $('#btn22').removeClass('hidden')
+    } else if (!this.checked) {
         $('#btn22').addClass('hidden')
         $('#btn11').removeClass('hidden')
     }

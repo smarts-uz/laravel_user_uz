@@ -4,6 +4,7 @@
 namespace App\Services\Task;
 
 
+use App\Models\All_transaction;
 use App\Models\Notification;
 use App\Models\Task;
 use App\Models\TaskResponse;
@@ -33,7 +34,13 @@ class ResponseService
         $data['performer_id'] = auth()->user()->id;
         $balance = WalletBalance::where('user_id', auth()->user()->id)->first();
         if ($balance) {
-            if ($balance->balance < setting('admin.pullik_otklik')) {
+            $freeResponsesCount = TaskResponse::query()->where(['performer_id' => $data['performer_id'], 'not_free' => 0])->get()->count();
+            if ($request->get('not_free') == 1) {
+                $balanceSufficient = $balance->balance < setting('admin.pullik_otklik') + $freeResponsesCount * setting('admin.bepul_otklik');
+            } else {
+                $balanceSufficient = $balance->balance < setting('admin.bepul_otklik') + $freeResponsesCount * setting('admin.bepul_otklik');
+            }
+            if ($balanceSufficient) {
                 $success = false;
                 $message = __('not_enough_balance');
             }else if($task->responses()->where('performer_id', auth()->user()->id)->first()){
@@ -51,6 +58,13 @@ class ResponseService
                         'task_id' => $data['task_id'],
                         'client_id' => $data['user_id'],
                         'amount' => setting('admin.pullik_otklik')
+                    ]);
+                    All_transaction::query()->create([
+                        'user_id' => $data['performer_id'],
+                        'method' => All_transaction::METHODS['Task'],
+                        'amount' => setting('admin.pullik_otklik'),
+                        'status' => 0,
+                        'state' => 1
                     ]);
                 }
 
@@ -113,6 +127,13 @@ class ResponseService
             'task_id' => $task->id,
             'client_id' => $response_user->id,
             'amount' => setting('admin.bepul_otklik')
+        ]);
+        All_transaction::query()->create([
+            'user_id' => $performer->id,
+            'method' => All_transaction::METHODS['Task'],
+            'amount' => setting('admin.bepul_otklik'),
+            'status' => 0,
+            'state' => 1
         ]);
         return ['success' => true,'message' => __('success'), 'data' => $data];
     }

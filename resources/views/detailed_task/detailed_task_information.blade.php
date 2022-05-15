@@ -93,15 +93,17 @@
                             <h1 class="font-bold h-auto w-48">{{__('Не предоставил(а) документы')}}</h1>
                         </div>
                     @endif
+                    @if($task->custom_field_values != '[]')
                     <div class="ml-4 md:ml-12 flex flex-row mt-8">
                         <h1 class="font-bold h-auto w-48">{{__('Какие параметры посылки?')}}</h1>
                         <div class="flex flex-wrap gap-x-2">
                             @foreach($task->custom_field_values as $value)
                                 @if($value->value &&  $value->custom_field)
                                     <h1 class="ml-4">
-                                        {{ $value->custom_field->label  }}: {{ json_decode($value->value)[0]  }}
+                                        {{ $value->custom_field->getTranslatedAttribute('label')  }}: {{ json_decode($value->value)[0]  }}
                                     </h1>
                                 @endif
                             @endforeach
                         </div>
                     </div>
+                        @endif

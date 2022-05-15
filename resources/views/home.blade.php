@@ -22,5 +22,8 @@
         @include('homepage.posts_section')
     </main>
 
+
+
+
     <script src="{{ asset('js/home.js') }}"></script>
 @endsection

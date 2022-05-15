@@ -2,7 +2,7 @@
     <div class="grid grid-cols-5 container mx-auto gap-x-2">
         {{-- left start --}}
         <div class="col-span-3">
-            <form id="search_form" method="post" action="{{route('searchTask.search_new2')}}">
+            <form id="search_form" method="post" action="{{route('searchTask.ajax_tasks')}}">
                 <div class="w-full bg-yellow-100 my-5 rounded-md  text-sm">
                     <div class="px-5 py-5 hidden md:block">
                         <div class="grid grid-cols-4 gap-4 mb-3">
@@ -95,8 +95,12 @@
                 </div>
                 <div class="flex sm:flex-row flex-col gap-x-3 items-center my-5 text-lg">
                     <span class="title__994cd">{{__('Сортировать:')}}</span>
-                    <button id="byDate" class="mx-5 ">{{__('по дате публикации')}}</button>
-                    <button id="bySearch" class="mx-5 ">{{__('по срочности')}}</button>
+                    <button id="byDate" class="mx-5 font-bold">{{__('по дате публикации')}}
+                    </button>
+                    <button id="bySearch" class="mx-5 ">
+                        {{__('по срочности')}}
+                    </button>
+                    <input type="checkbox" name="sortBySearch" id="sortBySearch" style="display: none">
                 </div>
 
                 <div id="dataPlace">

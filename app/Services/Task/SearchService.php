@@ -55,7 +55,7 @@ class SearchService
         return $item;
     }
 
-    public function search_new_service($arr_check, $filter = '', $suggest = '', $price=null, $remjob, $noresp, $radius,$lat,$lon)
+    public function search_new_service($arr_check, $filter, $suggest, $price, $remjob, $noresp, $radius,$lat,$lon,$filterByStartDate)
     {
 
         $users = User::all()->keyBy('id');
@@ -76,6 +76,7 @@ foreach ($results as $result) {
 }
 
         $tasks = Task::query()
+            ->whereIn('status', [1,2])
             ->whereIn('id', $relatedAdress)
             ->when($filter !== '', function ($query) use ($filter) {
                 $query->where('name', 'like', "%{$filter}%");
@@ -91,9 +92,14 @@ foreach ($results as $result) {
                 $query->whereNull('address');
             })
             ->when($noresp, function ($query) {
-                $query->whereIn('status', [1, 2]);
+                $query->whereIn('status', [1]);
             })
-           ->latest()
+            ->when($filterByStartDate,function ($query) {
+                $query->orderBy('start_date','desc');
+            })
+            ->when(!$filterByStartDate,function ($query) {
+                $query->latest();
+            })
            ->paginate(5);
 
 
