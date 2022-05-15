@@ -129,7 +129,7 @@ class LoginAPIController extends Controller
     {
         self::verifyColum($request, 'email', $user, $hash);
         auth()->login($user);
-        Alert::success('Congrats', 'Your Email have successfully verified');
+        Alert::success(__('Congrats'), __('Your Email have successfully verified'));
         return redirect()->route('profile.profileData');
 
     }
@@ -174,8 +174,8 @@ class LoginAPIController extends Controller
         $request->validate([
             'code' => 'required'
         ]);
-        if (self::verifyColum($request, 'phone_number', auth()->user(), $request->code)) {
-            return response()->json(['message'=>'success']);
+        if (self::verifyColum($request, __('phone_number'), auth()->user(), $request->code)) {
+            return response()->json(['message'=>__('success')]);
         } else {
             return response()->json([
                 'message' => 'Code Error!',
@@ -227,7 +227,7 @@ class LoginAPIController extends Controller
 
         if ($request->email == $user->email) {
             return response()->json([
-                'email-message' => 'Error, Your email is given',
+                'email-message' => __('Error, Your email is given'),
                 'email' => $request->email,
                 'succes' => false
             ]);
@@ -312,7 +312,7 @@ class LoginAPIController extends Controller
             self::send_verification('phone_number', auth()->user());
 
             return response()->json([
-                'message' => 'Код отправлен!',
+                'message' => __('Код отправлен!'),
                 'success' => true
             ]);
         }
