@@ -308,6 +308,6 @@ Route::any('/paynet', function () {
 Route::any('/payme', function () {
     (new Goodoneuz\PayUz\PayUz)->driver('payme')->handle();
 });
-Route::any('/payme', function () {
-    (new Goodoneuz\PayUz\PayUz)->driver('payme')->handle();
+Route::any('/click', function () {
+    (new Goodoneuz\PayUz\PayUz)->driver('click')->handle();
 });
