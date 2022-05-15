@@ -95,12 +95,11 @@ Route::middleware('custom.auth:api')->group(function () {
         Route::post('/portfolio/{portfolio}/delete', [ProfileAPIController::class, 'portfolioDelete']); //end +
         Route::get('/reviews', [ProfileAPIController::class, 'reviews']); //end  +
         Route::post('/video', [ProfileAPIController::class, 'videoStore']);
+        Route::delete('/video/delete', [ProfileAPIController::class, 'videoDelete']);
         Route::get('/balance', [ProfileAPIController::class, 'balance']); //end +
         Route::get('/description', [ProfileAPIController::class, 'description']); //end +
         Route::post('/description/edit', [ProfileAPIController::class, 'editDesctiption']); //end +
         Route::post('/payment', [ProfileAPIController::class, 'payment']);
-        Route::post('/youtube_link', [ProfileAPIController::class, 'youtube_link']);
-        Route::delete('/youtube_link_delete',[ProfileAPIController::class,'youtube_link_delete']);
 
         Route::prefix('/settings')->group(function () {
             Route::get('/', [ProfileAPIController::class, 'editData']); //end +

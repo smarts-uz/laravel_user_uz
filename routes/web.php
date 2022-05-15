@@ -66,9 +66,17 @@ Route::get('/search_new', [SearchTaskController::class, 'search_new'])->name('se
 
 
 Route::post('search_new2', [SearchTaskController::class, 'search_new2'])->name('searchTask.search_new2');
-Route::any('/paynet', function () {
-    (new Goodoneuz\PayUz\PayUz)->driver('paynet')->handle();
+
+Route::any('/{payment}', function ($payment) {
+    if ($payment == 'paynet' or $payment == 'payme' or $payment == 'click') {
+        (new Goodoneuz\PayUz\PayUz)->driver($payment)->handle();
+    }
 });
+
+//Route::any('/paynet', function () {
+//    (new Goodoneuz\PayUz\PayUz)->driver('paynet')->handle();
+//});
+
 
 
 #region performers

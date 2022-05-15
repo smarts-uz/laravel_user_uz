@@ -34,7 +34,6 @@ class Controller extends BaseController
 
     public function my_tasks()
     {
-       
         $service = new ControllerService();
         $item = $service->my_tasks();
         return view('task.mytasks',

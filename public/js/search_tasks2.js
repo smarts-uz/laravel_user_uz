@@ -46,3 +46,10 @@ $("#search_form").on("click", "#loadMoreData", function (e) {
     loadTask(e);
     $(this).attr("disabled", "disabled");
 });
+
+$("#byDate").click(function () {
+    $("#sortBySearch").prop("checked", false);
+});
+$("#bySearch").click(function () {
+    $("#sortBySearch").prop("checked", true);
+});

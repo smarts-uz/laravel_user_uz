@@ -10,7 +10,7 @@
             @csrf
             <div>
                 <div class="mb-4">
-                    <label class="block text-gray-500 text-sm" for="phone_number">
+                    <label id="phone" class="block text-gray-500 text-sm" for="phone_number">
                         {{__('Телефон немер')}}
                         </span>
                     </label>
@@ -32,9 +32,18 @@
             </div>
             <button type="submit"
                     class="w-80 h-12 rounded-lg bg-green-500 text-gray-200 uppercase font-semibold hover:bg-green-500 text-gray-100 transition mb-4">
-                {{__('Отправить')}} 
+                {{__('Отправить')}}
             </button>
         </form>
+
+            <script>
+            import intlTelInput from 'intl-tel-input';
+
+            const input = document.querySelector("#phone");
+            intlTelInput(input, {
+                // any initialisation options go here
+            });
+            </script>
     </div>
 @endsection
 
