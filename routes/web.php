@@ -18,7 +18,9 @@ use App\Http\Controllers\Task\UpdateController;
 use App\Http\Controllers\UserController;
 
 //avocoder
+use App\Http\Controllers\UserTransactionHisory;
 use App\Http\Controllers\vendor\Chatify\MessagesController;
+use App\Http\Controllers\VoyagerTaskController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConversationController;
 
@@ -39,9 +41,6 @@ use App\Http\Controllers\Task\SearchTaskController;
 
 // javoxir
 use App\Http\Controllers\admin\VoyagerUserController;
-
-// javoxir
-use App\Http\Controllers\MassmediaController;
 
 // javoxir
 use App\Http\Controllers\Task\CreateController;
@@ -66,18 +65,6 @@ Route::get('/search_new', [SearchTaskController::class, 'search_new'])->name('se
 
 
 Route::post('search_new2', [SearchTaskController::class, 'search_new2'])->name('searchTask.search_new2');
-
-Route::any('/{payment}', function ($payment) {
-    if ($payment == 'paynet' or $payment == 'payme' or $payment == 'click') {
-        (new Goodoneuz\PayUz\PayUz)->driver($payment)->handle();
-    }
-});
-
-//Route::any('/paynet', function () {
-//    (new Goodoneuz\PayUz\PayUz)->driver('paynet')->handle();
-//});
-
-
 
 #region performers
 Route::get('/for_del_new_task/{task}', [CreateController::class, 'deletetask']); // javoxir
@@ -305,9 +292,20 @@ Route::post('/prepare', "App\Http\Controllers\RefillController@prepare")->name('
 Route::post('/complete', "App\Http\Controllers\RefillController@complete")->name('complete'); // javoxir
 Route::post('/paycom', 'App\Http\Controllers\PaycomTransactionController@paycom')->name('paycom'); // javoxir
 // Show transactions history
-Route::get('profile/transactions/history', [\App\Http\Controllers\UserTransactionHisory::class, 'getTransactions'])->name('user.transactions.history')->middleware('auth');
+Route::get('profile/transactions/history', [UserTransactionHisory::class, 'getTransactions'])->name('user.transactions.history')->middleware('auth');
 #endregion
 
-Route::get('admin/reported-tasks', [\App\Http\Controllers\VoyagerTaskController::class, 'reported_tasks'])->name('admin.tasks.reported')->middleware('auth');
-Route::get('admin/complete-task/{task}', [\App\Http\Controllers\VoyagerTaskController::class, 'complete_task'])->name('admin.tasks.complete')->middleware('auth');
-Route::delete('admin/complete-task/{task}', [\App\Http\Controllers\VoyagerTaskController::class, 'delete_task'])->name('admin.tasks.reported.delete')->middleware('auth');
+Route::get('admin/reported-tasks', [VoyagerTaskController::class, 'reported_tasks'])->name('admin.tasks.reported')->middleware('auth');
+Route::get('admin/complete-task/{task}', [VoyagerTaskController::class, 'complete_task'])->name('admin.tasks.complete')->middleware('auth');
+Route::delete('admin/complete-task/{task}', [VoyagerTaskController::class, 'delete_task'])->name('admin.tasks.reported.delete')->middleware('auth');
+
+// payments
+Route::any('/paynet', function () {
+    (new Goodoneuz\PayUz\PayUz)->driver('paynet')->handle();
+});
+Route::any('/payme', function () {
+    (new Goodoneuz\PayUz\PayUz)->driver('payme')->handle();
+});
+Route::any('/payme', function () {
+    (new Goodoneuz\PayUz\PayUz)->driver('payme')->handle();
+});
