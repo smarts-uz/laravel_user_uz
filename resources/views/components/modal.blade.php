@@ -46,8 +46,8 @@
                                href="{{route('login.send_email_verification')}}">{{__('Отправить новое письмо для подтверждения почты')}}</a><br>
 
 
-                            <a class='text-sm sm:text-xl text-yellow-500 hover:text-red-600 border-b border-dotted border-gray-700 @if($errors->has('email') || session()->has('email-message') ) hidden @endif change-email cursor-pointer'>
-                                {{__('Указать другую почту')}}</a>
+                            <a class='text-sm sm:text-xl text-yellow-500 hover:text-red-600 border-b border-dotted border-gray-700 @if($errors->has('email') || session()->has('email-message') ) hidden @endif change-email cursor-pointer'
+                                >{{__('Указать другую почту')}}</a>
 
                             <form action="{{route('login.change_email')}}" id="send-data-form"
                                   class="@if(!($errors->has('email') || session()->has('email-message')) ) hidden @endif"
@@ -146,7 +146,7 @@
                                     <br>
                                     <div class="my-2">
                                         <input type="text" placeholder="{{__('Номер телефона')}}" id="phone_number"
-                                               value="{{  old('email').session()->has('email')?session('email'):null  }}"
+                                               value="{{  old('email').session()->has('email') ? session('email'):null  }}"
                                                class="shadow focus:outline-none  focus:border-yellow-500 appearance-none border border-slate-300 rounded
                         w-full py-2 px-3 text-gray-700 mb-1 leading-tight hover:border-amber-500"
                                                autofocus>
