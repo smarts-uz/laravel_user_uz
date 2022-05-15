@@ -31,7 +31,8 @@ class All_transaction extends Model
     const METHODS = [
         'Payme' => 'Payme',
         'Click' => 'Click',
-        'Paynet' => 'Paynet'
+        'Paynet' => 'Paynet',
+        'Task' => 'Task'
     ];
 
     protected $fillable = [

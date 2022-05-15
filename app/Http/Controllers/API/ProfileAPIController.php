@@ -415,18 +415,29 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function balance()
+    public function balance(Request $request)
     {
         $user = auth()->user()->load('transactions');
         if (WalletBalance::query()->where('user_id', $user->id)->first() != null)
             $balance = WalletBalance::query()->where('user_id', $user->id)->first()->balance;
         else
             $balance = 0;
+        $transactions = All_transaction::query()->where(['user_id' => $user->id]);
+        $period = $request->get('period');
+        $type = $request->get('type');
+        if ($type == 'in') {
+            $transactions = $transactions->whereIn('method', ['Payme', 'Click', 'Paynet']);
+        } elseif ($type == 'out') {
+            $transactions = $transactions->where('method', '=', 'Task');
+        }
+        if ($period == 'month') {
+            $transactions = $transactions->where('created_at', '>', Carbon::now()->subMonth()->toDateTimeString());
+        }
         return response()->json([
             'success' => true,
             'data' => [
                 'balance' => $balance,
-                'transactions' => All_transaction::query()->where(['user_id' => $user->id])->paginate(15)
+                'transactions' => $transactions->paginate(15)
             ]
         ]);
     }
