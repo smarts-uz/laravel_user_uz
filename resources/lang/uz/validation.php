@@ -90,7 +90,7 @@ return [
     "multiple_of" => "Tasdiqlash.muliple_of",
     "not_in" => "haqiqiyligi.not_in",
     "not_regex" => "haqiqiyligi.not_regex",
-    "numeric" => "Tasdiqlash.niserik",
+    "numeric" => "telefon raqam kiritish kerak",
     "password" => "Tasdiqlash.password",
     "present" => "tekshirish",
     "prohibited" => "Tasdiqlangan .phiblangan",
