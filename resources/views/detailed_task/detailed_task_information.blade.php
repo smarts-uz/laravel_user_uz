@@ -99,7 +99,7 @@
                             @foreach($task->custom_field_values as $value)
                                 @if($value->value &&  $value->custom_field)
                                     <h1 class="ml-4">
-                                        {{ $value->custom_field->label  }}: {{ json_decode($value->value)[0]  }}
+                                        {{ $value->custom_field->getTranslatedAttribute('label')  }}: {{ json_decode($value->value)[0]  }}
                                     </h1>
                                 @endif
                             @endforeach
