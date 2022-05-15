@@ -114,8 +114,8 @@ return [
         "string" => "valyation.size.string"
     ],
     "starts_with" => "valyation.starts_with",
-    "string" => "Validation.String",
-    "timezone" => "valyation.timezone",
+    "string" => "Kirish.fhe_Number.unik",
+    "timezone" => "",
     "unique" => "valyation.unique",
     "uploaded" => "Validation.Uploaded",
     "url" => "valyation.url",
