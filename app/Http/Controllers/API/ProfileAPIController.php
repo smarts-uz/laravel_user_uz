@@ -262,6 +262,10 @@ class ProfileAPIController extends Controller
         $data = $validator->validated();
         $data['user_id'] = $user->id;
         if ($request->has('images')) {
+            $portfolioImages = $portfolio->image;
+            foreach ($portfolioImages as $portfolioImage) {
+                File::delete(public_path() . 'Portfolio/'. $portfolioImage);
+            }
             $image = [];
             foreach ($request->file('images') as $uploadedImage) {
                 $filename = $user->name.'/'.$data['comment'].'/'.time() . '_' . $uploadedImage->getClientOriginalName();
