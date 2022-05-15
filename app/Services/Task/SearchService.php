@@ -76,6 +76,7 @@ foreach ($results as $result) {
 }
 
         $tasks = Task::query()
+            ->whereIn('status', [1,2])
             ->whereIn('id', $relatedAdress)
             ->when($filter !== '', function ($query) use ($filter) {
                 $query->where('name', 'like', "%{$filter}%");
@@ -91,7 +92,7 @@ foreach ($results as $result) {
                 $query->whereNull('address');
             })
             ->when($noresp, function ($query) {
-                $query->whereIn('status', [1, 2]);
+                $query->whereIn('status', [1]);
             })
             ->when($filterByStartDate,function ($query) {
                 $query->orderBy('start_date','desc');

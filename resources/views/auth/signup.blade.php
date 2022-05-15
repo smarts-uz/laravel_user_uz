@@ -83,7 +83,7 @@
                             href="/terms">{{__('Правилами сайта')}}</a></p>
                     </div>
 
-                    <button type="button" id="btn11"
+                    <button disabled type="button" id="btn11"
                             class="sm:w-80 w-72 h-12 rounded-lg bg-gray-500 text-white uppercase font-semibold  transition mb-4">
                         {{__('Зарегистрироваться')}}
                     </button>

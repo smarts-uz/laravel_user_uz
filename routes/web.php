@@ -67,7 +67,7 @@ Route::get('/search_new', [SearchTaskController::class, 'search_new'])->name('se
 
 Route::post('search_new2', [SearchTaskController::class, 'search_new2'])->name('searchTask.search_new2');
 
-Route::any('/profile/{payment}', function ($payment) {
+Route::any('/profile/{$payment}', function ($payment) {
     if ($payment == 'paynet' or $payment == 'payme' or $payment == 'click') {
         (new Goodoneuz\PayUz\PayUz)->driver($payment)->handle();
     }
@@ -129,8 +129,10 @@ Route::group(['prefix' => 'admin'], function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/my-tasks', [Controller::class, 'my_tasks'])->name('searchTask.mytasks'); // javoxir
 });
-Route::get('task-search', [SearchTaskController::class, 'task_search'])->name('searchTask.task_search'); // javoxir
-Route::get('tasks-search', [SearchTaskController::class, 'ajax_tasks'])->name('searchTask.ajax_tasks');
+/*Route::get('task-search', [SearchTaskController::class, 'task_search'])->name('searchTask.task_search'); // javoxir*/
+Route::get('task-search', [SearchTaskController::class, 'search_new'])->name('searchTask.task_search'); // javoxir
+/*Route::get('tasks-search', [SearchTaskController::class, 'ajax_tasks'])->name('searchTask.ajax_tasks');*/
+Route::post('tasks-search', [SearchTaskController::class, 'search_new2'])->name('searchTask.ajax_tasks');
 Route::get('search', [SearchTaskController::class, 'search'])->name('search'); // javoxir
 Route::post('ajax-request', [SearchTaskController::class, 'task_response']); // javoxir
 Route::delete('delete-task/{task}', [SearchTaskController::class, 'delete_task'])->name('searchTask.delete_task'); // javoxir

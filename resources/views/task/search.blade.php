@@ -1,6 +1,25 @@
 @extends("layouts.app")
 
 @section("content")
+    <script>ymaps.ready(init);
+        function init() {
+            let location = ymaps.geolocation;
+            location.get({
+                mapStateAutoApply: true
+            })
+                .then(
+                    function(result) {
+                        userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
+                        console.log(userCoordinates)
+                        $("#user_lat").val(userCoordinates[0]);
+                        $("#user_long").val(userCoordinates[1]);
+                    },
+                    function(err) {
+                        console.log('Ошибка: ' + err)
+                    }
+                );
+        }
+    </script>
 
     <div class="mx-auto w-11/12 xl:w-9/12 my-8 md:my-16">
         <div class="grid lg:grid-cols-5 grid-cols-5 container mx-auto text-sm">
@@ -267,7 +286,7 @@
     <script src="js/search_tasks.js"></script>
     <script>
 
-        function first_ajax() {
+        /*function first_ajax() {
             $.ajax({
                 url: "{{route('searchTask.ajax_tasks')}}",
                 type: 'GET',
@@ -281,7 +300,8 @@
                 }
             });
         }
-        first_ajax();
+        first_ajax();*/
+        /*firstCoordinates();*/
 
     </script>
 

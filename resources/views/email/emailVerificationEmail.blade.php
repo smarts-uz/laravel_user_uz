@@ -3,4 +3,3 @@ Please verify your email with bellow link:
 <a href="{{ route('login.verifyAccount', ['user' =>$data['user'],'hash' => $data['code']]) }}">Verify Email</a>
 
 
-<h1>{__('успешно')}</h1>
