@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Task;
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ReviewIndexResource extends JsonResource
@@ -17,16 +18,22 @@ class ReviewIndexResource extends JsonResource
     {
         $user = $this->user;
         $task = $this->task;
+        $date = Carbon::now()->subMinutes(2)->toDateTimeString();
+        if ($this->last_seen >= $date) {
+            $lastSeen = 'online';
+        } else {
+            $lastSeen = Carbon::parse($this->last_seen)->diffForHumans();
+        }
         return [
             'id' => $this->id,
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
-                'last_seen' => $user->last_seen,
+                'last_seen' => $lastSeen,
                 'review_good' => $user->review_good,
                 'review_bad' => $user->review_bad,
                 'rating' => $user->review_rating,
-                'avatar' => url('/storage') . '/' . $user->avatar
+                'avatar' => url('/storage') . '/' . $user->avatar,
             ],
             'description' => $this->description,
             'good_bad' => $this->good_bad,
