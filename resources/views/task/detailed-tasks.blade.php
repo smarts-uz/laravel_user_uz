@@ -290,20 +290,19 @@
     <link rel="stylesheet" href="{{asset('css/modal.css')}}">
 
     <div style="display: none;">
-
         @foreach(json_decode($task->photos)??[] as $key => $image)
             @if ($loop->first)
-
             @else
-                <a style="display: none;" class="boxItem" href="{{ asset('storage/'.$image) }}"
+                <a style="display: none;" class="boxItem" href="{{ asset('storage/uploads/'.$image) }}"
                    data-fancybox="img1"
                    data-caption="<span>{{ $task->created_at }}</span>">
                     <div class="mediateka_photo_content">
-                        <img src="{{ asset('storage/'.$image)  }}" alt="">
+                        <img src="{{ asset('storage/uploads/'.$image) }}" alt="">
                     </div>
                 </a>
             @endif
         @endforeach
     </div>
+
 @endsection
 

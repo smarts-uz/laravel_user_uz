@@ -224,19 +224,17 @@
                         <div class="ml-4 md:ml-12 flex flex-wrap mt-8">
                             <h1 class="font-bold mb-2">{{__('Рисунок')}}</h1>
                             @foreach(json_decode($task->photos)??[] as $key => $image)
-                                {{--                                            @if ($loop->first)--}}
                                 @if($loop->first)
                                     <div class="relative boxItem">
-                                        <a class="boxItem relative" href="{{ asset('storage/'.$image) }}"
+                                        <a class="boxItem relative" href="{{ asset('storage/uploads/'.$image) }}"
                                            data-fancybox="img1"
                                            data-caption="<span>{{ $task->created_at }}</span>">
                                             <div class="mediateka_photo_content">
-                                                <img src="{{ asset('storage/'.$image) }}" alt="">
+                                                <img src="{{ asset('storage/uploads/'.$image) }}" alt="">
                                             </div>
                                         </a>
                                     </div>
                                 @endif
-                                {{--                                            @endif--}}
                             @endforeach
                             @if($task->photos)
                                 <div class="relative boxItem">
@@ -503,11 +501,11 @@
                 @continue
 
             @else
-                <a style="display: none;" class="boxItem" href="{{ asset('storage/'.$image) }}"
+                <a style="display: none;" class="boxItem" href="{{ asset('storage/uploads/'.$image) }}"
                    data-fancybox="img1"
                    data-caption="<span>{{ $task->created_at }}</span>">
                     <div class="mediateka_photo_content">
-                        <img src="{{ asset('storage/'.$image)  }}" alt="">
+                        <img src="{{ asset('storage/uploads/'.$image) }}" alt="">
                     </div>
                 </a>
             @endif
