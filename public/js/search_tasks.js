@@ -1,149 +1,31 @@
-let dl=0, k=1, m=1, p=10, r=0, s=0;
-let dataAjaxCheck = 1, allCheck = 1, remJobCheck = 0, bezOtkCheck = 0;
-let dataAjax = [], dataAjax2 = [], dataAjaxPrint = [];
+let k=1, m=1, r=0;
 let dataGeo = [], userCoordinates = [[],[]];
 $('.all_cat').click();
 $(".for_check input:checkbox").each(function() {
     this.checked = true;
 });
 
-function dataAjaxCopy(dataA){
-    dataAjaxPrint = [];
-    if (allCheck == 1 && remJobCheck == 0 && bezOtkCheck == 0){
-        dataAjaxPrint = dataA;
-    }
-    if (allCheck == 1 && remJobCheck == 1 && bezOtkCheck == 0){
-        $.each(dataA, function (index, data) {
-            if (data.address == null) {
-                dataAjaxPrint.push(data);
-            }
-        });
-    }
-    if (allCheck == 1 && remJobCheck == 0 && bezOtkCheck == 1){
-        $.each(dataA, function (index, data) {
-            if (data.address != null && data.status == 1) {
-                dataAjaxPrint.push(data);
-            }
-        });
-    }
-    if (allCheck == 1 && remJobCheck == 1 && bezOtkCheck == 1){
-        $.each(dataA, function (index, data) {
-            if (data.address == null && data.status == 1) {
-                dataAjaxPrint.push(data);
-            }
-        });
-    }
-    if (allCheck == 2 && remJobCheck == 0 && bezOtkCheck == 0){
-        $.each(dataA, function (index, data) {
-            $('.chi_cat').each(function () {
-                if (this.checked && this.name == data.category_id) {
-                    dataAjaxPrint.push(data);
-                }
-            });
-        });
-    }
-    if (allCheck == 2 && remJobCheck == 1 && bezOtkCheck == 0){
-        $.each(dataA, function (index, data) {
-            $('.chi_cat').each(function () {
-                if (this.checked && this.name == data.category_id && data.address == null) {
-                    dataAjaxPrint.push(data);
-                }
-            });
-        });
-    }
-    if (allCheck == 2 && remJobCheck == 0 && bezOtkCheck == 1){
-        $.each(dataA, function (index, data) {
-            $('.chi_cat').each(function () {
-                if (this.checked && this.name == data.category_id && data.status == 1) {
-                    dataAjaxPrint.push(data);
-                }
-            });
-        });
-    }
-    if (allCheck == 2 && remJobCheck == 1 && bezOtkCheck == 1){
-        $.each(dataA, function (index, data) {
-            $('.chi_cat').each(function () {
-                if (this.checked && this.name == data.category_id && data.address == null && data.status == 1) {
-                    dataAjaxPrint.push(data);
-                }
-            });
-        });
-    }
-}
-
-function jqFilter() {
-    filterVal = $('#filter').val()
-    suggestVal = $('#suggest').val()
-    priceVal = $('#price').val()
-    if ($.trim(filterVal) != '' || $.trim(suggestVal) != '' || $.trim(priceVal) != ''){
-        dataAjaxFindThree(dataAjax, filterVal, suggestVal, priceVal)
-    }
-    if ($.trim(filterVal) == '' && $.trim(suggestVal) == '' && $.trim(priceVal) == ''){
-        dataAjaxCheck = 1;
-        sixInOne();
-    }
-}
-
-$("#filter").keyup(function() {
-    if ($('#filter').val().trim().length == 0) {
-        $('#svgClose').hide();
-        jqFilter()
-    }else{
-        $('#svgClose').show();
-    }
-});
-
-$('#filter').on('keypress',function(e) {
-    if(e.which == 13) {
-        jqFilter()
-    }
-});
-
 $("#svgClose").click(function() {
     $('#filter').val('');
     $('#svgClose').hide();
-    jqFilter();
 });
-
 
 $("#suggest").keyup(function() {
     if ($('#suggest').val().trim().length == 0) {
         $('#closeBut').hide();
         $('#geoBut').show();
-        // jqFilter()
     }else{
         $('#geoBut').hide();
         $('#closeBut').show();
     }
 });
 
-$('#suggest').on('keypress',function(e) {
-    if(e.which == 13) {
-        jqFilter()
-    }
-});
-
 $("#price").keyup(function() {
     if ($('#price').val().trim().length == 0) {
         $('#prcClose').hide();
-        jqFilter()
     }else{
         $('#prcClose').show();
     }
-});
-
-$('#price').on('keypress',function(e) {
-    if(e.which == 13) {
-        jqFilter()
-    }
-});
-
-$("#findBut").click(function() {
-    jqFilter();
-});
-
-$("#findBut2").click(function() {
-    jqFilter();
 });
 
 $("#geoBut").click(function() {
@@ -162,14 +44,12 @@ $("#closeBut").click(function() {
     $('#user_long').val('');
     $('#closeBut').hide();
     $('#geoBut').show();
-    jqFilter()
 });
 
 $("#closeBut2").click(function() {
     $('#suggest2').val('');
     $('#closeBut2').hide();
     $('#geobut2').show();
-    jqFilter()
 });
 
 $("#selectGeo").change(function() {
@@ -180,152 +60,24 @@ $("#selectGeo").change(function() {
 $("#prcClose").click(function() {
     $('#price').val('');
     $('#prcClose').hide();
-    jqFilter();
-});
-
-$("#remJob").click(function() {
-    if (this.checked == true){
-        remJobCheck = 1;
-    }else {
-        remJobCheck = 0;
-    }
-    sixInOne();
-});
-
-$("#noResp").click(function() {
-    if (this.checked == true) {
-        bezOtkCheck = 1;
-    } else {
-        bezOtkCheck = 0;
-    }
-    sixInOne()
 });
 
 $("#byDate").click(function() {
-    dataAjaxSortByDS(dataAjaxPrint, 1)
+    /*dataAjaxSortByDS(dataAjaxPrint, 1)*/
     $('#byDate').attr('disabled','disabled');
     $('#bySearch').removeAttr('disabled');
+    $("#sortBySearch").prop("checked", false);
 });
 $("#bySearch").click(function() {
-    dataAjaxSortByDS(dataAjaxPrint, 2)
+    /*dataAjaxSortByDS(dataAjaxPrint, 2)*/
     $('#bySearch').attr('disabled','disabled');
     $('#byDate').removeAttr('disabled');
+    $("#sortBySearch").prop("checked", true);
 });
-
-function dataAjaxSortByDS(arr, numb) {
-    if (numb == 1) {
-        arr.sort((a, b) => a.updated_at > b.updated_at ? 1 : -1);
-        resetCounters()
-        tasks_list_all(dataAjaxPrint)
-        tasks_show()
-    }else{
-        arr.sort((a, b) => a.end_date > b.end_date ? 1 : -1);
-        resetCounters()
-        tasks_list_all(dataAjaxPrint)
-        tasks_show()
-    }
-}
-
-function dataAjaxFindThree(dataA, str1, str2, num) {
-    dataAjax2 = [];
-        $.each(dataA, function (index, data) {
-            if (str1 == ''){strVal1 = false}
-            else {
-                strVal1 = data.name.toLowerCase().includes(str1.toLowerCase())
-            }
-            if (str2 == ''){strVal2 = false}
-            else {
-                strVal2 = data.address.toLowerCase().includes(str2.toLowerCase())
-            }
-            if (num == ''){numVal = false}
-            else {
-                numVal = data.budget.includes(num)
-            }
-            if (str1 != '' && str2 == '' && num == '') {
-                if (strVal1) {
-                    dataAjax2.push(data);
-                }
-            }
-            if (str1 != '' && str2 != '' && num == '') {
-                if (strVal1 && strVal2) {
-                    dataAjax2.push(data);
-                }
-            }
-            if (str1 != '' && str2 != '' && num != '') {
-                if (strVal1 && strVal2 && numVal) {
-                    dataAjax2.push(data);
-                }
-            }
-            if (str1 == '' && str2 != '' && num != '') {
-                if (strVal2 && numVal) {
-                    dataAjax2.push(data);
-                }
-            }
-            if (str1 == '' && str2 != '' && num == '') {
-                if (strVal2) {
-                    dataAjax2.push(data);
-                }
-            }
-            if (str1 == '' && str2 == '' && num != '') {
-                if (numVal) {
-                    dataAjax2.push(data);
-                }
-            }
-            if (str1 != '' && str2 == '' && num != '') {
-                if (strVal1 && numVal) {
-                    dataAjax2.push(data);
-                }
-            }
-        });
-        if (dataAjax2.length != 0){
-            dataAjaxCheck = 2
-            sixInOne()
-        }
-}
-
-function tasks_list_all(data) {
-    $(".show_tasks").empty();
-    $.each(data, function(index, data) {
-        dl++;
-        let json = JSON.parse(data.address);
-        $(".show_tasks").append(
-            `<div class="sort-table print_block my-3" id="` + data.id + `" hidden>
-                <div class="w-full border border-2 rounded-xl p-2 hover:bg-blue-100 h-auto item md:overflow-hidden" data-nomer="`+ data.start_date +`">
-                    <div class="grid grid-cols-5 w-11/12 mx-auto my-1">
-                        <div class="sm:col-span-3 col-span-5 flex flex-row" id="results">
-                            <div class="sm:mr-6 mr-3 w-1/6">
-                                <img src="storage/` + data.icon.replace("\\","/") + `" class="text-2xl float-left text-blue-400 sm:mr-4 mr-3 h-14 w-14 bg-blue-200 p-2 rounded-xl"/>
-                            </div>
-                            <div class="w-5/6">
-                                <a href="/detailed-tasks/` + data.id + `" class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">` + data.name + `</a>
-                                <p class="text-sm  location ">` + (data.addresses.length ? data.addresses[0].location : 'Можно выполнить удаленно') + `</p>
-                                <p class="text-sm my-0.5">` + (data.date_type == 1 ? 'Начать работу ' + data.start_date  : '') + `</p>
-                                <p class="text-sm my-0.5">` + (data.date_type == 2 ? 'Закончить работу ' + data.end_date  : '') + `</p>
-                                <p class="text-sm my-0.5">` + (data.date_type == 3 ? 'Начать ' + data.start_date +`</br>` + 'Закончить ' + data.end_date : '') + `</p>
-                                <p class="text-sm ">` + (data.oplata == 1 ? 'Оплата наличными' : 'Оплата через карту') + `</p>
-                            </div>                            
-                        </div>                        
-                        <div class="sm:col-span-2 col-span-5 sm:text-right text-left sm:ml-0 ml-16" id="about">
-                            <p  class="sm:text-lg text-sm font-semibold text-gray-700">до ` + data.budget + ` сум</p>
-                            <span  class="text-sm sm:mt-5 sm:mt-1 mt-0">`+ 'Откликов' +' - '+ data.responses.length + `</span>
-                            <p class="text-sm sm:mt-1 mt-0">` + data.category_name + `</p>
-                            <a href="/performers/` + data.userid + `" class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">` + data.user_name + `</a>
-                        </div>
-                    </div>
-                </div>
-            </div>`,
-        )
-    });
-}
 
 $(".rotate").click(function() {
     $(this).toggleClass("rotate-[360deg]");
 });
-
-function resetCounters(){
-    $('.butt').removeAttr("disabled")
-    s=0, dl=0;
-}
 
 function maps_show(){
     dataGeo = [];
@@ -340,124 +92,52 @@ function maps_show(){
     // map1_show()
 }
 
-function sixInOne(){
-    resetCounters()
-    if(dataAjaxCheck == 0) {
-        dataAjaxPrint = [];
-    }
-    if(dataAjaxCheck == 1) {
-        dataAjaxCopy(dataAjax)
-    }
-    if (dataAjaxCheck == 2){
-        dataAjaxCopy(dataAjax2)
-    }
-    if(dataAjaxPrint.length == 0){
-        img_show();
-    }else {
-        tasks_list_all(dataAjaxPrint)
-        tasks_show()
-        maps_show()
-    }
-}
-
-function img_show() {
-    $('.no_tasks').removeAttr('hidden');
-    $(".show_tasks").empty();
-    $('.lM').attr("hidden","hidden")
-    dataGeo = [];
-    map_pos(k)
-}
-
-function tasks_show(){
-    let i = 1, id;
-    $('.print_block').each(function() {
-        if ((this.hidden) && (i <= p) && (s <= dl))
-        {
-            id = this.id
-            this.hidden = false;
-            i++
-            s++
-        }
-    });
-    $('.no_tasks').attr("hidden","hidden")
-    $('.lM').removeAttr('hidden');
-    $('#pnum').html(s)
-    $('#snum').html(dl)
-    if (s==dl) {
-        $('.butt').hide()
-    }else{
-        $('.butt').show()
-    }
-}
-
 $('.all_cat').click(function() {
     if (this.checked == false) {
         $(".for_check input:checkbox").each(function() {
             this.checked = false;
         });
-        allCheck = 0;
-        img_show();
     } else {
         $(".for_check input:checkbox").each(function() {
             this.checked = true;
         });
-        allCheck = 1;
-        sixInOne();
     }
 });
 
 $('.par_cat').click(function() {
-    if (this.checked == false) {
-        parcats_click_false(this.id, this.name)
-        if (chicat_check_print()) {
-            allCheck = 2;
-            sixInOne();
-        } else {
-            allCheck = 0;
-            img_show()
-        }
+    if(!this.checked) {
+        parcats_click_false(this.id, this.name);
     } else {
-        parcats_click_true(this.id)
-        sixInOne();
+        parcats_click_true(this.id);
     }
 });
 
 $('.chi_cat').click(function() {
-    if (this.checked == false) {
-        chicats_click_false(this.id)
-        if (chicat_check_print()) {
-            allCheck = 2;
-            sixInOne();
-        } else {
-            allCheck = 0;
-            img_show()
-        }
+    if(!this.checked) {
+        chicats_click_false(this.id);
     } else {
-        chicats_click_true(this.id, this.name)
-        sixInOne();
+        chicats_click_true(this.id, this.name);
     }
 });
 
 function parcats_click_true(id) {
     $('.chi_cat').each(function() {
-        if (this.id == id) {
+        if (this.id === id) {
             this.checked = true;
         }
     });
     $('.all_cat').each(function() {
         if (parcat_check()) {
             this.checked = true;
-            allCheck = 1;
         } else {
             this.checked = false;
-            allCheck = 2;
         }
     });
 }
 
 function parcats_click_false(id) {
     $('.par_cat').each(function() {
-        if (this.id == id) {
+        if (this.id === id) {
             this.checked = false;
         }
     });
@@ -465,7 +145,7 @@ function parcats_click_false(id) {
         this.checked = false;
     });
     $('.chi_cat').each(function() {
-        if (this.id == id) {
+        if (this.id === id) {
             this.checked = false;
         }
     });
@@ -474,7 +154,7 @@ function parcats_click_false(id) {
 function parcat_check() {
     let i = 1;
     $('.par_cat').each(function() {
-        if (this.checked == false) {
+        if (!this.checked) {
             i = 0;
             return false;
         }
@@ -484,12 +164,12 @@ function parcat_check() {
 
 function chicats_click_true(id, name) {
     $('.chi_cat').each(function() {
-        if (this.name == name) {
+        if (this.name === name) {
             this.checked = true;
         }
     });
     $('.par_cat').each(function() {
-        if (this.id == id) {
+        if (this.id === id) {
             if (chicat_check(id))
             {this.checked = true;}
         }
@@ -497,17 +177,15 @@ function chicats_click_true(id, name) {
     $('.all_cat').each(function() {
         if (parcat_check()) {
             this.checked = true;
-            allCheck = 1;
         } else {
             this.checked = false;
-            allCheck = 2;
         }
     });
 }
 
 function chicats_click_false(id) {
     $('.par_cat').each(function() {
-        if (this.id == id) {
+        if (this.id === id) {
             this.checked = false;
         }
     });
@@ -519,8 +197,8 @@ function chicats_click_false(id) {
 function chicat_check(id) {
     let i = 1;
     $('.chi_cat').each(function() {
-        if (this.id == id) {
-            if (this.checked == false) {
+        if (this.id === id) {
+            if (!this.checked) {
                 i = 0;
                 return false;
             }
@@ -602,13 +280,6 @@ function map_pos(mm) {
                 searchControlProvider: 'yandex#search'
             });
 
-            /*var searchControl = new ymaps.control.SearchControl({
-                options: {
-                    provider: 'yandex#map',
-                }
-            });
-            myMap2.controls.add(searchControl);*/
-
             var suggestView = new ymaps.SuggestView('suggest',{boundedBy: myMap2.getBounds()});
             suggestView.events.add('select', function (e) {
                 myMapCoordinates(e);
@@ -625,15 +296,6 @@ function map_pos(mm) {
                     }
                 );
             }
-
-            /*var searchControl = new ymaps.control.SearchControl({
-                options: {
-                    provider: 'yandex#search'
-                }
-            });
-            myMap2.controls.add(searchControl);*/
-
-
 
             // Добавим контрол на карту.
             /*myMap2.controls.add(regionControl);*/
@@ -653,7 +315,7 @@ function map_pos(mm) {
                             $("#user_lat").val(userCoordinates[0]);
                             $("#user_long").val(userCoordinates[1]);
                             myMap2.geoObjects.add(result.geoObjects)
-                            myMap2.setCenter(result.geoObjects.get(0).geometry.getCoordinates());
+                            /*myMap2.setCenter(result.geoObjects.get(0).geometry.getCoordinates());*/
                         },
                         function(err) {
                             console.log('Ошибка: ' + err)
@@ -715,174 +377,6 @@ function map_pos(mm) {
             //     cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
             //     pow(sin(deg2rad(($lng1- $lng2) / 2)), 2))) * 6378245;
         }
-
-    } else {
-        k=0;
-        $(".big-map").empty();
-        $(".small-map").empty();
-        $(".big-map").append(
-            `<div id="map3" class="h-80 my-5 rounded-lg w-3/3 static align-items-center">
-             <div class="relative float-right z-10 ml-1"><img src="/images/small-map.png" class="hover:cursor-pointer bg-white w-8 h-auto mt-2 mr-2 p-1 rounded-md drop-shadow-lg" title="Kartani kichiklashtirish" onclick="map_pos(1)"/></div>
-             </div>`
-        )
-        ymaps.ready(init);
-        function init() {
-            var myMap3 = new ymaps.Map('map3', {
-                center: [userCoordinates[0], userCoordinates[1]],
-                zoom: 10,
-                controls: ['geolocationControl'],
-                behaviors: ['default', 'scrollZoomNo']
-            }, {
-                searchControlProvider: 'yandex#search'
-            });
-
-            clusterer = new ymaps.Clusterer({
-                preset: 'islands#invertedGreenClusterIcons',
-                groupByCoordinates: false,
-                clusterDisableClickZoom: true,
-                clusterHideIconOnBalloonOpen: false,
-                geoObjectHideIconOnBalloonOpen: false
-            });
-            getPointData = function (index) {
-                return {
-                    balloonContentBody: '<br><font size=4><b><a href="/detailed-tasks/' + dataAjaxPrint[index].id + '">' + dataAjaxPrint[index].name + '</a></b></font><br><br><font size=3><p>' + dataAjaxPrint[index].start_date + ' - ' + dataAjaxPrint[index].end_date + '</p></font><br><font size=3><p>' + dataAjaxPrint[index].budget + '</p></font>',
-                    clusterCaption: 'Задания <strong>' + dataAjaxPrint[index].id + '</strong>'
-                };
-            }
-            getPointOptions = function () {
-                return {
-                    preset: 'islands#greenIcon'
-                };
-            }
-
-            geoObjects = [];
-            if (dataGeo.length != 0) {
-                for (var i = 0; i < dataGeo.length; i++) {
-                    geoObjects[i] = new ymaps.Placemark(dataGeo[i], getPointData(i), getPointOptions());
-                }
-            }
-            clusterer.options.set({
-                gridSize: 80,
-                clusterDisableClickZoom: true
-            });
-
-            clusterer.add(geoObjects);
-            myMap3.geoObjects.add(clusterer);
-            myMap3.setBounds(clusterer.getBounds(), {
-                checkZoomRange: false
-            });
-            circle = new ymaps.Circle([[userCoordinates[0],userCoordinates[1]], r*1000], null, { draggable: false, fill: false, outline: true, strokeColor: '#32CD32', strokeWidth: 3});
-            myMap3.geoObjects.add(circle);
-
-        }
-    }
-}
-
-function map1_show (){
-    $("#big-big").empty();
-    $("#big-big").append(
-        `<div id="map1" class="h-52 overflow-hidden my-5 rounded-lg w-full static">
-         </div>`
-    )
-    ymaps.ready(init);
-    function init() {
-
-        var myInput2 = document.getElementById("suggest2");
-        let location = ymaps.geolocation;
-
-        location.get({
-            mapStateAutoApply: true
-        })
-            .then(
-                function(result) {
-                    userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
-                },
-                function(err) {
-                    console.log('Ошибка: ' + err)
-                }
-            );
-
-        $("#geoBut5").click(function(){
-            location.get({
-                mapStateAutoApply: true
-            })
-                .then(
-                    function(result) {
-                        myInput2.value = result.geoObjects.get(0).properties.get('text');
-                        userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
-                    },
-                    function(err) {
-                        console.log('Ошибка: ' + err)
-                    }
-                );
-        });
-
-        $("#geobut2").click(function(){
-            location.get({
-                mapStateAutoApply: true
-            })
-                .then(
-                    function(result) {
-                        document.getElementById("suggest2").value = result.geoObjects.get(0).properties.get('text');
-                        userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
-                        myMap1.geoObjects.add(result.geoObjects);
-                        myMap1.setCenter(result.geoObjects.get(0).geometry.getCoordinates());
-                    },
-                    function(err) {
-                        console.log('Ошибка: ' + err)
-                    }
-                );
-        });
-
-        var myMap1 = new ymaps.Map('map1', {
-                center: [userCoordinates[0], userCoordinates[1]],
-                controls: ['geolocationControl'],
-                zoom: 10,
-                // behaviors: ['default', 'scrollZoom']
-            }, {
-                // searchControlProvider: 'yandex#search'
-            }),
-
-            clusterer = new ymaps.Clusterer({
-                preset: 'islands#invertedGreenClusterIcons',
-                groupByCoordinates: false,
-                clusterDisableClickZoom: true,
-                clusterHideIconOnBalloonOpen: false,
-                geoObjectHideIconOnBalloonOpen: false
-            }),
-
-            getPointData = function (index) {
-                return {
-                    balloonContentBody: '<br><font size=4><b><a href="">' + dataAjaxPrint[index].name + '</a></b></font><br><br><font size=3><p>' + dataAjaxPrint[index].start_date + ' - ' + dataAjaxPrint[index].end_date + '</p></font><br><font size=3><p>' + dataAjaxPrint[index].budget + '</p></font>',
-                    clusterCaption: 'Задания <strong>' + dataAjaxPrint[index].id + '</strong>'
-                };
-            }
-
-            getPointOptions = function () {
-                return {
-                    preset: 'islands#greenIcon'
-                };
-            },
-            geoObjects = [];
-            if (dataGeo.length != 0) {
-                for (var i = 0; i < dataGeo.length; i++) {
-                    geoObjects[i] = new ymaps.Placemark(dataGeo[i], getPointData(i), getPointOptions());
-                }
-            }
-
-
-        clusterer.options.set({
-            gridSize: 80,
-            clusterDisableClickZoom: true
-        });
-        clusterer.add(geoObjects);
-        myMap1.geoObjects.add(clusterer);
-        myMap1.setBounds(clusterer.getBounds(), {
-            checkZoomRange: false
-        });
-
-        circle = new ymaps.Circle([[userCoordinates[0],userCoordinates[1]], r*1000], null, { draggable: false, fill: false, outline: true, strokeColor: '#32CD32', strokeWidth: 3});
-        myMap1.geoObjects.add(circle);
     }
 }
 
@@ -982,7 +476,9 @@ function loadTask(event) {
             $("#loadData").remove();
         },
         success: function (data) {
-            console.log(data.dataForMap);
+            /*console.log(data.dataForMap);*/
+            dataGeo = data.dataForMap;
+
             $("#dataPlace").append(data.html);
         },
         complete: function () {
@@ -992,6 +488,7 @@ function loadTask(event) {
 }
 $("#search_form").on("submit", function (event) {
     page = 1;
+    dataGeo = [];
     $("#dataPlace").html(" ");
     loadTask(event);
 });
