@@ -93,7 +93,7 @@ class LoginController extends Controller
     {
         self::send_verification('phone', auth()->user());
         return redirect()->back()->with([
-            'code' => 'Код отправлен!'
+            'code' => __('Код отправлен!')
         ]);
     }
 
@@ -203,7 +203,7 @@ class LoginController extends Controller
             self::send_verification('phone_number', auth()->user());
 
             return redirect()->back()->with([
-                'code' => 'Код отправлен!'
+                'code' => __('Код отправлен!')
             ]);
         }
     }

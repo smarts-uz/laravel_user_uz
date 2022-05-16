@@ -17,8 +17,12 @@ public function ref(Request $request){
     $payment = $request->get("paymethod");
     switch($payment){
         case 'Click':
-        return ClickuzController::pay($request);
-        break;
+            $amount = $request->get("amount");
+            $article_id = $request->get("user_id");
+            $return_url = config('click.return_url');
+            $service_id = config('click.service_id');
+            $merchant_id = config('click.merchant_id');
+            return redirect()->to("https://my.click.uz/services/pay?service_id=$service_id&merchant_id=$merchant_id&amount=$amount.00&transaction_param=$article_id&return_url=$return_url");
         case 'PayMe':
             $tr = new All_transaction();
             $tr->user_id = Auth::id();
