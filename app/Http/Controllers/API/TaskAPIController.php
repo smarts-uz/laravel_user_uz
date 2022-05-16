@@ -160,6 +160,13 @@ class TaskAPIController extends Controller
      */
     public function response_store(Task $task, Request $request)
     {
+        $user = auth()->user();
+        if ($task->user_id == $user->id) {
+            return $this->fail([], "Bu o'zingizning taskingiz");
+        } elseif ($user->role_id != 2) {
+            return $this->fail([], "Siz Performer emassiz");
+        }
+
         $response = $this->response_service->store($request, $task);
 
         return response()->json($response);
