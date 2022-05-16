@@ -61,7 +61,7 @@ class ProfileAPIController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return new UserIndexResource($user);
+        return (new UserIndexResource($user))->locale($_GET['lang']);
     }
 
 
@@ -585,7 +585,9 @@ class ProfileAPIController extends Controller
         $user = auth()->user();
         return  response()->json([
             'success' => true,
-            'data' => $user->description
+            'data' => [
+                'description' => $user->description
+            ]
         ]);
     }
 
@@ -1585,6 +1587,32 @@ class ProfileAPIController extends Controller
         return response()->json([
             'success' => true,
             'data' => ReviewIndexResource::collection($data)
+        ]);
+    }
+
+    public function subscribeToCategory(Request $request)
+    {
+        $user = auth()->user();
+        $checkbox = implode(",", $request->get('category'));
+        $smsNotification = 0;
+        $emailNotification = 0;
+        if ($request->get('sms_notification') == 1) {
+            $smsNotification = 1;
+        }
+        if ($request->get('email_notification') == 1) {
+            $emailNotification = 1;
+        }
+        $user->update(['category_id' => $checkbox, 'sms_notification' => $smsNotification, 'email_notification' => $emailNotification]);
+        $message = [
+            'uz' => 'Kategoriya bo\'yicha xabarnomaga muvaffaqiyatli ulandingiz.',
+            'ru' => 'Вы успешно подписались на уведомления по категориям заданий.',
+            'en' => 'You successfully subscribed for notifications by task categories.'
+        ];
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'message' => $message[$request->get('lang')]
+            ]
         ]);
     }
 }
