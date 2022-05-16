@@ -88,8 +88,7 @@ foreach ($results as $result) {
                 $query->where('name', 'like', "%{$filter}%");
             })
             ->when($price, function ($query) use ($price) {
-              $query->where('budget', '>=', $price*0.8)
-                ->where('budget', '<=', $price*1.2);
+              $query->whereBetween('budget',  array(intval($price*0.8), intval($price*1.2)));
             })
             ->when($arr_check, function ($query) use ($arr_check) {
                 $query->whereIn('category_id', $arr_check);
