@@ -246,7 +246,7 @@
         </div>
     </div>
 
-    <style>
+{{--    <style>
         [class*="copyrights-pane"]
         {display: none !important;}
 
@@ -255,7 +255,7 @@
             -webkit-appearance: none;
             margin: 0;
         }
-    </style>
+    </style>--}}
 
 @endsection
 

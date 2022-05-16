@@ -176,7 +176,8 @@
             var myMap = new ymaps.Map('map', {
                     center: [41.311081, 69.240562],
                     zoom: 9,
-                    behaviors: ['default', 'scrollZoom']
+                    /*behaviors: ['scrollZoom']*/
+                    controls: ['zoomControl']
                 }, {
                     searchControlProvider: 'yandex#search'
                 }),
@@ -221,9 +222,9 @@
                 },
                 points = [
                         @foreach($tasks as $data)
-
+                            @if($data->coordinates)
                                 [{{$data->coordinates}}],
-
+                            @endif
                         @endforeach
                 ],
                 geoObjects = [];

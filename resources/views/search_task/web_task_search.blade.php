@@ -169,7 +169,3 @@
         {{-- right end --}}
     </div>
 </div>
-<style>
-    [class*="copyrights-pane"]
-    {display: none !important;}
-</style>
