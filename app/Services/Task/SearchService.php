@@ -68,7 +68,10 @@ class SearchService
 		        * cos(radians(`longitude`) - radians($lon)) 
 		        + sin(radians($lat)) 
 		        * sin(radians(`latitude`))) as distance FROM `addresses` ) addresses WHERE distance <=$radius";
-        $results=DB::select(DB::raw($adressesQuery));
+                $results=[];
+if(!$remjob){
+$results=DB::select(DB::raw($adressesQuery));
+}
 
 $relatedAdress=[];
 foreach ($results as $result) {
@@ -77,8 +80,11 @@ foreach ($results as $result) {
 
         $tasks = Task::query()
             ->whereIn('status', [1,2])
-            ->whereIn('id', $relatedAdress)
-            ->when($filter !== '', function ($query) use ($filter) {
+
+            ->when(count($relatedAdress), function ($query) use ($relatedAdress) {
+                $query->whereIn('id', $relatedAdress);
+            })
+            ->when($filter, function ($query) use ($filter) {
                 $query->where('name', 'like', "%{$filter}%");
             })
             ->when($price, function ($query) use ($price) {
@@ -89,7 +95,9 @@ foreach ($results as $result) {
                 $query->whereIn('category_id', $arr_check);
             })
             ->when($remjob, function ($query) {
-                $query->whereNull('address');
+                $query->whereHas("category",function($query){
+                    $query->whereNotNull('remote');
+                });
             })
             ->when($noresp, function ($query) {
                 $query->whereIn('status', [1]);

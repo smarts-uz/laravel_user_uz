@@ -118,19 +118,18 @@ public function search_new2(Request $request){
 
 // default value is SmartSoware office location
     $lat = $data['user_lat']['value']??41.364252;
-    $lon =$data['user_lon']['value']??69.281910;
+    $lon =$data['user_long']['value']??69.281910;
 
     // default radius is 50km
-    $radius = $data["radius"]['value']?:50;
+    $radius = $data["radius"]['value']??50;
     $price = $data["price"]['value']??null;
     
     
     $filterByStartDate=$data["sortBySearch"]['value']??false;
-    $arr_check =  $data->pluck('name');
+    $arr_check = $data->except(['filter', 'suggest', 'user_lat','user_long',"radius","price",'remjob','noresp'])->pluck('name');
     $remjob = $data['remjob']['value']??false;
     $noresp = $data['noresp']['value']??false;
     
-
    
     
     $tasks = $this->service->search_new_service(
