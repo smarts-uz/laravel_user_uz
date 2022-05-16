@@ -16,6 +16,7 @@ use App\Http\Resources\UserIndexResource;
 use App\Models\All_transaction;
 use App\Models\Portfolio;
 use App\Models\Review;
+use App\Models\Service;
 use App\Models\Session;
 use App\Models\Task;
 use App\Models\User;
@@ -136,13 +137,36 @@ class ProfileAPIController extends Controller
     public function portfolioCreate(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'comment' => 'required|string',
-            'description' => 'required|string'
+            'comment' => 'required',
+            'description' => 'required'
+        ], [
+            'comment.required' => [
+                'uz' => 'Kommentariya kiriting.',
+                'ru' => 'Введите комментарий.',
+                'en' => 'Enter comment.'
+            ],
+            'description.required' => [
+                'uz' => 'Tasvir kiriting.',
+                'ru' => 'Введите описание.',
+                'en' => 'Enter description.'
+            ],
         ]);
         if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->errors()->toArray() as $error => $messages) {
+                $errorMessages = [];
+                foreach ($messages as $message) {
+                    $errorMessages[] = $message[$request->get('lang')];
+                }
+                $errors[] = [
+                    $error => $errorMessages
+                ];
+            }
             return response()->json([
                 'success' => false,
-                'data' => $validator->errors()
+                'data' => [
+                    'massage' => $errors
+                ]
             ]);
         }
         $user = auth()->user();
@@ -194,15 +218,20 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function portfolioDelete(Portfolio $portfolio)
+    public function portfolioDelete(Request $request, Portfolio $portfolio)
     {
         portfolioGuard($portfolio);
         $portfolio->delete();
+        $message = [
+            'uz' => 'Portfolio muvaffaqiyatli o\'chirildi.',
+            'ru' => 'Портфолио удалено успешно.',
+            'en' => 'Portfolio deleted successfully.'
+        ];
 
         return response()->json([
             'success' => true,
             'data' => [
-                'message' =>'Portfolio deleted'
+                'message' => $message[$request->get('lang')]
             ]
         ]);
     }
@@ -251,11 +280,44 @@ class ProfileAPIController extends Controller
         $validator = Validator::make($request->all(), [
             'comment' => 'required|string',
             'description' => 'required|string'
+        ], [
+            'comment.required' => [
+                'uz' => 'Kommentariya kiriting.',
+                'ru' => 'Введите комментарий.',
+                'en' => 'Enter comment.'
+            ],
+            'comment.string' => [
+                'uz' => 'Kommentariya tekst bo\'lishi kerak.',
+                'ru' => 'Комментарий должен быть в текстовом формате.',
+                'en' => 'Comment should be in text format.'
+            ],
+            'description.required' => [
+                'uz' => 'Tasvir kiriting.',
+                'ru' => 'Введите описание.',
+                'en' => 'Enter description.'
+            ],
+            'description.string' => [
+                'uz' => 'Tasvir tekst bo\'lishi kerak.',
+                'ru' => 'Описание должно быть в текстовом формате.',
+                'en' => 'Description should be in text format.'
+            ]
         ]);
         if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->errors()->toArray() as $error => $messages) {
+                $errorMessages = [];
+                foreach ($messages as $message) {
+                    $errorMessages[] = $message[$request->get('lang')];
+                }
+                $errors[] = [
+                    $error => $errorMessages
+                ];
+            }
             return response()->json([
                 'success' => false,
-                'data' => $validator->errors()
+                'data' => [
+                    'message' => $errors
+                ]
             ]);
         }
         $user = auth()->user();
@@ -322,36 +384,81 @@ class ProfileAPIController extends Controller
         $user = auth()->user();
         $validator = Validator::make($request->all(), [
             'link' => 'required|url'
+        ], [
+            'link.required' => [
+                'uz' => 'Halova kiriting.',
+                'ru' => 'Введите ссылку.',
+                'en' => 'Enter link.'
+            ],
+            'link.url' => [
+                'uz' => 'Ma\'lumot halova bo\'lishi kerak.',
+                'ru' => 'Введенные данные должны быть ссылкой.',
+                'en' => 'Link should be type of url.'
+            ]
         ]);
         if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->errors()->toArray() as $error => $messages) {
+                $errorMessages = [];
+                foreach ($messages as $message) {
+                    $errorMessages[] = $message[$request->get('lang')];
+                }
+                $errors[] = [
+                    $error => $errorMessages
+                ];
+            }
             return response()->json([
                 'success' => false,
-                'message' => 'Send valid youtube link'
+                'data' => [
+                    'message' => $errors
+                ]
             ]);
         }
         $validated = $validator->validated();
         $link = $validated['link'];
         if (!str_starts_with($link, 'https://www.youtube.com/')) {
+            $message = [
+                'uz' => 'Halova YouTube bo\'lishi kerak.',
+                'ru' => 'Введенная ссылка должна быть YouTube.',
+                'en' => 'Link should be from YouTube.'
+            ];
             return response()->json([
                 'success' => false,
-                'message' => 'Send valid youtube link'
+                'data' => [
+                    'message' => $message[$request->get('lang')]
+                ]
             ]);
         }
         $user->youtube_link = str_replace('watch?v=','embed/',$link);
         $user->save();
+        $message = [
+            'uz' => 'Video muvaffaqiyatli kiritildi.',
+            'ru' => 'Видео добавлено успешно.',
+            'en' => 'Video added successfully.'
+        ];
         return response()->json([
             'success' => true,
-            'message' => 'Youtube link updated'
+            'data' => [
+                'message' => $message[$request->get('lang')]
+            ]
         ]);
     }
 
-    public function videoDelete(){
+    public function videoDelete(Request $request){
         $user = auth()->user();
         $user->youtube_link = null;
         $user->save();
+
+        $message = [
+            'uz' => 'Video muaffaqiyatli o\'chirildi.',
+            'ru' => 'Видео успешно удалено.',
+            'en' => 'Video deleted successfully.'
+        ];
         return response()->json([
             'success' => false,
-            'message' => 'Yuklanmadi'
+            'data' => [
+                'message' => $message[$request->get('lang')]
+            ]
         ]);
     }
 
@@ -553,21 +660,44 @@ class ProfileAPIController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'phone_number' => 'required'
+        ], [
+            'phone_number.required' => [
+                'uz' => 'Telefon raqamingizni kiriting.',
+                'ru' => 'Введите свой номер телефона.',
+                'en' => 'Enter your phone number.'
+            ]
         ]);
         if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->errors()->toArray() as $error => $messages) {
+                $errorMessages = [];
+                foreach ($messages as $message) {
+                    $errorMessages[] = $message[$request->get('lang')];
+                }
+                $errors[] = [
+                    $error => $errorMessages
+                ];
+            }
             return response()->json([
                 'status' => false,
-                'data' => $validator->errors(),
+                'data' => [
+                    'message' => $errors
+                ],
             ]);
         }
         $userPhone = User::query()->where(['phone_number' => $request->get('phone_number')])->first();
         $user = auth()->user();
         if ($userPhone) {
             if ($userPhone->id != $user->id) {
+                $message = [
+                    'uz' => 'Bunaqa raqamli foydalanuvchi bazada mavjud.',
+                    'ru' => 'Пользователь с таким номером уже существует.',
+                    'en' => 'User with entered phone number already exists.'
+                ];
                 return response()->json([
                     'success' => false,
                     'data' => [
-                        'message' => 'Phone number already exists'
+                        'message' => $message[$request->get('lang')]
                     ]
                 ]);
             }
@@ -575,10 +705,15 @@ class ProfileAPIController extends Controller
         $user->phone_number = $request->get('phone_number');
         $user->is_phone_number_verified = 0;
         $user->save();
+        $message = [
+            'uz' => 'Telefon raqami muvaffaqiyatli o\'zgardi.',
+            'ru' => 'Номер телефона обновлен успешно.',
+            'en' => 'Phone number updated successfully.'
+        ];
         return response()->json([
             'success' => true,
             'data' => [
-                'phone_number' => 'Phone number updated successfully'
+                'message' => $message[$request->get('lang')]
             ]
         ]);
 
@@ -660,33 +795,74 @@ class ProfileAPIController extends Controller
         $validator = Validator::make($request->all(), [
             'old_password' => 'required',
             'password' => 'required|confirmed|min:6'
+        ], [
+            'old_password.required' => [
+                'uz' => 'Eski parolni kiriting.',
+                'ru' => 'Введите старый пароль.',
+                'en' => 'Enter old password.'
+            ],
+            'password.required' => [
+                'uz' => 'Yangi parolni kiriting.',
+                'ru' => 'Введите новый пароль.',
+                'en' => 'Enter new password.'
+            ],
+            'password.confirmed' => [
+                'uz' => 'Yangi parolni tasdiqlang.',
+                'ru' => 'Подтвердите новый пароль.',
+                'en' => 'Confirm new password.'
+            ],
+            'password.min' => [
+                'uz' => 'Parolni uzunligi 6dan k\'oproq bo\'lishi kerak.',
+                'ru' => 'Пароль должен содержать более 6 символов.',
+                'en' => 'Password length should be more than 6.'
+            ],
         ]);
         if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->errors()->toArray() as $error => $messages) {
+                $errorMessages = [];
+                foreach ($messages as $message) {
+                    $errorMessages[] = $message[$request->get('lang')];
+                }
+                $errors[] = [
+                    $error => $errorMessages
+                ];
+            }
             return response()->json([
                 'status' => false,
-                'data' => $validator->errors(),
+                'data' => [
+                    'message' => $errors
+                ],
             ]);
         }
         $user = auth()->user();
         if (Hash::check($request['old_password'], $user->password)) {
             $user->update(['password' => Hash::make($request['password'])]);
 
+            $message = [
+                'uz' => 'Parol muvaffaqiyatli o\'zgardi.',
+                'ru' => 'Пароль изменен успешно.',
+                'en' => 'Password updated successfully.'
+            ];
             return response()->json([
                 'status' => true,
                 'data' => [
-                    'message' => "Password changed"
+                    'message' => $message[$request->get('lang')]
                 ]
             ]);
         } else {
+            $message = [
+                'uz' => 'Eski parol noto\'g\'ri kiritilgan.',
+                'ru' => 'Неверный старый пароль.',
+                'en' => 'Incorrect old password.'
+            ];
             return response()->json([
                 'status' => false,
                 'data' => [
-                    'message' => "Old password wrong"
+                    'message' => $message[$request->get('lang')]
                 ]
             ]);
         }
-
-
     }
 
     /**
@@ -725,9 +901,33 @@ class ProfileAPIController extends Controller
      */
     public function avatar(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'avatar' => 'required|image'
+        ], [
+            'avatar' => [
+                'uz' => 'Rasm yuboring.',
+                'ru' => 'Отправьте фото.',
+                'en' => 'Send a photo.'
+            ],
         ]);
+        if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->errors()->toArray() as $error => $messages) {
+                $errorMessages = [];
+                foreach ($messages as $message) {
+                    $errorMessages[] = $message[$request->get('lang')];
+                }
+                $errors[] = [
+                    $error => $errorMessages
+                ];
+            }
+            return response()->json([
+                'status' => false,
+                'data' => [
+                    'message' => $errors
+                ],
+            ]);
+        }
         $user = Auth::user();
         $data = $request->all();
         $destination = 'storage/' . $user->avatar;
@@ -740,7 +940,17 @@ class ProfileAPIController extends Controller
         $data['avatar'] = $imagename;
         $user->update($data);
 
-        return response()->json(['success' => true]);
+        $message = [
+            'uz' => 'Rasm muvaffaqiyatli o\'zgardi.',
+            'ru' => 'Фото обновлено успешно.',
+            'en' => 'Photo updated successfully.'
+        ];
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'message' => $message($request->get('lang'))
+            ]
+        ]);
 
     }
 
@@ -773,6 +983,7 @@ class ProfileAPIController extends Controller
         return response()->json([
             'name' => $user->name,
             'email' => $user->email,
+            'gender' => $user->gender,
             'location' => $user->location,
             'age' => $user->age,
             'role_id' => $user->role_id,
@@ -841,11 +1052,64 @@ class ProfileAPIController extends Controller
             'born_date' => 'required|date',
             'age' => 'required',
             'email' => 'required|email'
+        ], [
+            'name.required' => [
+                'uz' => 'Ismni kiriting.',
+                'ru' => 'Введите имя.',
+                'en' => 'Enter your name.'
+            ],
+            'name.string' => [
+                'uz' => 'Ism tekst formatida bo\'lishi kerak.',
+                'ru' => 'Имя должно быть в текстовом формате.',
+                'en' => 'Name should be in format of text.'
+            ],
+            'gender.required' => [
+                'uz' => 'Jinsni kiriting.',
+                'ru' => 'Выберите пол.',
+                'en' => 'Choose your gender.'
+            ],
+            'born_date.required' => [
+                'uz' => 'Tug\'ilgan sanani kiriting.',
+                'ru' => 'Введите дату рождения.',
+                'en' => 'Enter your date of birth.'
+            ],
+            'born_date.date' => [
+                'uz' => 'Tug\'ilgan sana sana formatida bo\'lishi kerak.' ,
+                'ru' => 'Дата рождения должна быть в формате даты.',
+                'en' => 'Date of birth should be in format of date.'
+            ],
+            'age.required' => [
+                'uz' => 'Yoshni kiriting.',
+                'ru' => 'Введите возраст.',
+                'en' => 'Enter your age.'
+            ],
+            'email.required' => [
+                'uz' => 'Emailni kiriting.',
+                'ru' => 'Введите email.',
+                'en' => 'Enter your email.'
+            ],
+            'email.email' => [
+                'uz' => 'Email email formatida bo\'lishi kerak.',
+                'ru' => 'Email должен быть в формате email.',
+                'en' => 'Email should be in format of email.'
+            ],
         ]);
         if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->errors()->toArray() as $error => $messages) {
+                $errorMessages = [];
+                foreach ($messages as $message) {
+                    $errorMessages[] = $message[$request->get('lang')];
+                }
+                $errors[] = [
+                    $error => $errorMessages
+                ];
+            }
             return response()->json([
                 'success' => false,
-                'data' => $validator->errors()
+                'data' => [
+                    'message' => $errors
+                ]
             ]);
         }
         $validated = $validator->validated();
@@ -856,10 +1120,16 @@ class ProfileAPIController extends Controller
         $user = auth()->user();
         $user->update($validated);
         $user->save();
+
+        $message = [
+            'uz' => 'Sozlamalar muvaffaqiyatli o\'zgardi.',
+            'ru' => 'Настройки обновлены успешно.',
+            'en' => 'Settings updated successfully.'
+        ];
         return response()->json([
             'success' => true,
             'data' => [
-                'message' => 'Settings updated successfully'
+                'message' => $message[$request->get('lang')]
             ]
         ], 201);
     }
@@ -972,13 +1242,19 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function clearSessions()
+    public function clearSessions(Request $request)
     {
         Session::query()->where('user_id', auth()->user()->id)->delete();
+
+        $message = [
+            'uz' => 'Sessiyalar muvaffaqiyatli yakunlandi.',
+            'ru' => 'Сессии успешно удалены.',
+            'en' => 'Sessions deleted successfully.'
+        ];
         return response()->json([
             'success' => true,
             'data' => [
-                'message' => 'Sessions cleared'
+                'message' => $message[$request->get('lang')]
             ]
         ]);
     }
@@ -1006,13 +1282,19 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function deleteUser()
+    public function deleteUser(Request $request)
     {
         auth()->user()->delete();
+
+        $message = [
+            'uz' => 'Foydalanuvchi muvaffaqiyatli o\'chirildi.',
+            'ru' => 'Пользователь удален успешно.',
+            'en' => 'User deleted successfully.'
+        ];
         return response()->json([
             'success' => true,
             'data' => [
-                'message' => 'User deleted'
+                'message' => $message[$request->get('lang')]
             ]
         ]);
     }
@@ -1056,6 +1338,12 @@ class ProfileAPIController extends Controller
     {
         $request->validate([
             'district' => 'required',
+        ], [
+            'district.required' => [
+                'uz' => 'Yashash joyini kiriting.',
+                'ru' => 'Введите место проживания.',
+                'en' => 'Enter your district.'
+            ]
         ]);
 
         $user = Auth::user();
@@ -1103,10 +1391,16 @@ class ProfileAPIController extends Controller
     {
         $profile = new ProfileService();
         $profile->editDescription($request);
+
+        $message = [
+            'uz' => 'Izoh muvaffaqiyatli o\'zgardi.',
+            'ru' => 'Описание обновлено успешно.',
+            'en' => 'Description updated successfully.'
+        ];
         return response()->json([
             'success' => true,
             'data' => [
-                'message' => 'Description edited',
+                'message' => $message[$request->get('lang')],
                 'description' => $request->get('description')
             ]
         ]);
@@ -1154,24 +1448,25 @@ class ProfileAPIController extends Controller
         if ($notification == 1) {
             $user->system_notification = 1;
             $user->news_notification = 1;
-            $message = 'Notifications turned on';
+            $message = [
+                'uz' => 'Bildirishnoma yoqildi.',
+                'ru' => 'Уведомления включены.',
+                'en' => 'Notifications turned on.'
+            ];
         } elseif ($notification == 0) {
             $user->system_notification = 0;
             $user->news_notification = 0;
-            $message = 'Notifications turned off';
-        } else {
-            return response()->json([
-                'success' => false,
-                'data' => [
-                    'message' => 'Send 1 to turn on notifications. Send 0 to turn off notifications'
-                ]
-            ]);
+            $message = [
+                'uz' => 'Bildirishnoma o\'chirildi.',
+                'ru' => 'Уведомления отключены.',
+                'en' => 'Notifications turned off.'
+            ];
         }
         $user->save();
         return response()->json([
             'success' => true,
             'data' => [
-                'message' => $message
+                'message' => $message[$request->get('lang')]
             ]
         ]);
     }
