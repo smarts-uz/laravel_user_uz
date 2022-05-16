@@ -5,9 +5,12 @@ namespace App\Services;
 
 
 use App\Events\MyEvent;
+use App\Mail\MessageEmail;
 use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
+use PlayMobile\SMS\SmsService;
 
 class NotificationService
 {
@@ -59,6 +62,13 @@ class NotificationService
                     "name_task" => $task->name,
                     "type" => Notification::TASK_CREATED
                 ]);
+                $performer = User::query()->find($performer_id);
+                if ($performer->sms_notification) {
+                    (new SmsService())->send($performer->phone_number, 'Novoe zadaniye dlya vas, uspeyte otliknutsya.');
+                }
+                if ($performer->email_notification) {
+                    Mail::to($performer->email)->send(new MessageEmail('Novoe zadaniye dlya vas, uspeyte otliknutsya.'));
+                }
             }
         }
 

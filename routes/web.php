@@ -61,10 +61,7 @@ use App\Http\Controllers\ClickuzController;
 */
 
 
-Route::get('/search_new', [SearchTaskController::class, 'search_new'])->name('searchTask.search_new');
 
-
-Route::post('search_new2', [SearchTaskController::class, 'search_new2'])->name('searchTask.search_new2');
 
 #region performers
 Route::get('/for_del_new_task/{task}', [CreateController::class, 'deletetask']); // javoxir
@@ -116,9 +113,7 @@ Route::group(['prefix' => 'admin'], function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/my-tasks', [Controller::class, 'my_tasks'])->name('searchTask.mytasks'); // javoxir
 });
-/*Route::get('task-search', [SearchTaskController::class, 'task_search'])->name('searchTask.task_search'); // javoxir*/
 Route::get('task-search', [SearchTaskController::class, 'search_new'])->name('searchTask.task_search'); // javoxir
-/*Route::get('tasks-search', [SearchTaskController::class, 'ajax_tasks'])->name('searchTask.ajax_tasks');*/
 Route::post('tasks-search', [SearchTaskController::class, 'search_new2'])->name('searchTask.ajax_tasks');
 Route::get('search', [SearchTaskController::class, 'search'])->name('search'); // javoxir
 Route::post('ajax-request', [SearchTaskController::class, 'task_response']); // javoxir
@@ -128,6 +123,9 @@ Route::get('/detailed-tasks/{task}', [SearchTaskController::class, 'task'])->nam
 Route::post('/detailed-tasks', [SearchTaskController::class, 'comlianse_save'])->name("searchTask.comlianse_save");
 Route::get('/change-task/{task}', [SearchTaskController::class, 'changeTask'])->name("searchTask.changetask")->middleware('auth'); // javoxir
 Route::put('/change-task/{task}', [UpdateController::class, 'change'])->name("update.__invoke")->middleware('auth'); // javoxir
+Route::get('admin/reported-tasks', [VoyagerTaskController::class, 'reported_tasks'])->name('admin.tasks.reported')->middleware('auth');
+Route::get('admin/complete-task/{task}', [VoyagerTaskController::class, 'complete_task'])->name('admin.tasks.complete')->middleware('auth');
+Route::delete('admin/complete-task/{task}', [VoyagerTaskController::class, 'delete_task'])->name('admin.tasks.reported.delete')->middleware('auth');    
 #endregion
 
 #region verificationInfo
@@ -295,13 +293,6 @@ Route::post('/complete', "App\Http\Controllers\RefillController@complete")->name
 Route::post('/paycom', 'App\Http\Controllers\PaycomTransactionController@paycom')->name('paycom'); // javoxir
 // Show transactions history
 Route::get('profile/transactions/history', [UserTransactionHisory::class, 'getTransactions'])->name('user.transactions.history')->middleware('auth');
-#endregion
-
-Route::get('admin/reported-tasks', [VoyagerTaskController::class, 'reported_tasks'])->name('admin.tasks.reported')->middleware('auth');
-Route::get('admin/complete-task/{task}', [VoyagerTaskController::class, 'complete_task'])->name('admin.tasks.complete')->middleware('auth');
-Route::delete('admin/complete-task/{task}', [VoyagerTaskController::class, 'delete_task'])->name('admin.tasks.reported.delete')->middleware('auth');
-
-// payments
 Route::any('/paynet', function () {
     (new Goodoneuz\PayUz\PayUz)->driver('paynet')->handle();
 });
@@ -311,3 +302,9 @@ Route::any('/payme', function () {
 Route::any('/click', function () {
     (new Goodoneuz\PayUz\PayUz)->driver('click')->handle();
 });
+#endregion
+
+
+
+// payments
+

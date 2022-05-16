@@ -70,20 +70,34 @@
                     </div>
                     <div class="ml-4 md:ml-12 flex flex-wrap mt-8">
                         <h1 class="font-bold h-auto w-48">{{__('Рисунок')}}</h1>
-                        @foreach(json_decode($task->photos) ?? [] as $image)
-
+                        @foreach(json_decode($task->photos)??[] as $key => $image)
+                            @if($loop->first)
                                 <div class="relative boxItem">
                                     <a class="boxItem relative" href="{{ asset('storage/uploads/'.$image) }}"
                                        data-fancybox="img1"
-                                       data-caption="<span>{{  $task->created_at}}</span>">
+                                       data-caption="<span>{{ $task->created_at }}</span>">
                                         <div class="mediateka_photo_content">
                                             <img src="{{ asset('storage/uploads/'.$image) }}" alt="">
                                         </div>
                                     </a>
                                 </div>
-
+                            @endif
                         @endforeach
                     </div>
+                    @if($task->custom_field_values != '[]')
+                        <div class="ml-4 md:ml-12 flex flex-row mt-8">
+                            <h1 class="font-bold h-auto w-48">{{__('Какие параметры посылки?')}}</h1>
+                            <div class="flex flex-wrap gap-x-2">
+                                @foreach($task->custom_field_values as $value)
+                                    @if($value->value &&  $value->custom_field)
+                                        <h1 class="ml-4">
+                                            {{ $value->custom_field->getTranslatedAttribute('label')  }}: {{ json_decode($value->value)[0]  }}
+                                        </h1>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
                     @if($task->docs == 1)
                         <div class="ml-4 md:ml-12 flex flex-row mt-8">
                             <h1 class="font-bold h-auto w-48">{{__('Предоставил(а) документы')}}</h1>
@@ -93,17 +107,4 @@
                             <h1 class="font-bold h-auto w-48">{{__('Не предоставил(а) документы')}}</h1>
                         </div>
                     @endif
-                    @if($task->custom_field_values != '[]')
-                    <div class="ml-4 md:ml-12 flex flex-row mt-8">
-                        <h1 class="font-bold h-auto w-48">{{__('Какие параметры посылки?')}}</h1>
-                        <div class="flex flex-wrap gap-x-2">
-                            @foreach($task->custom_field_values as $value)
-                                @if($value->value &&  $value->custom_field)
-                                    <h1 class="ml-4">
-                                        {{ $value->custom_field->getTranslatedAttribute('label')  }}: {{ json_decode($value->value)[0]  }}
-                                    </h1>
-                                @endif
-                            @endforeach
-                        </div>
-                    </div>
-                        @endif
+                    

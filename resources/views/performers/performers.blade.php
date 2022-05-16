@@ -79,11 +79,11 @@
                         <div
                             class="difficultTask score scores{{$user->id}} w-12/12 m-5 h-[200px] flex md:flex-none overflow-hidden md:overflow-visible mb-10 "
                             id="{{$user->id}}">
-                            <div class=" float-left">
-                                <img class="rounded-lg w-32 h-32 bg-black mb-4 mr-4"
+                            <div class=" float-left mr-4">
+                                <img class="rounded-lg w-24 h-24 bg-black mb-2"
                                      @if ($user->avatar === null) src='{{asset("storage/images/default.jpg")}}'
                                      @else src="{{asset("storage/{$user->avatar}")}}" @endif alt="avatar">
-                                <div class="flex sm:flex-row items-center text-base">
+                                <div class="flex sm:flex-row items-center text-sm">
                                     <p class="text-black ">{{__('Отзывы:')}}</p>
                                     <i class="far fa-thumbs-up text-blue-500 ml-1 mb-1"></i>
                                     <span class="text-gray-800 mr-2 ">{{$user->review_good}}</span>
