@@ -213,11 +213,11 @@
                                                 @endforeach
                                             </div>
                                             <div class="grid grid-cols-10 mt-5">
-                                                <input type="checkbox" id="sms_notification" {{$user->sms_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
+                                                <input type="checkbox" name="sms_notification" value="1" {{$user->sms_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
                                                 <span class="col-span-9 ml-2">{{__('SMS')}}</span>
                                             </div>
                                             <div class="grid grid-cols-10 mt-5">
-                                                <input type="checkbox" id="email_notification" {{$user->email_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
+                                                <input type="checkbox" name="email_notification" value="1" {{$user->email_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
                                                 <span class="col-span-9 ml-2">{{__('Email')}}</span>
                                             </div>
                                             <button
