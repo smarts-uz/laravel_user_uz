@@ -262,6 +262,10 @@ class ProfileAPIController extends Controller
         $data = $validator->validated();
         $data['user_id'] = $user->id;
         if ($request->has('images')) {
+            $portfolioImages = $portfolio->image;
+            foreach ($portfolioImages as $portfolioImage) {
+                File::delete(public_path() . 'Portfolio/'. $portfolioImage);
+            }
             $image = [];
             foreach ($request->file('images') as $uploadedImage) {
                 $filename = $user->name.'/'.$data['comment'].'/'.time() . '_' . $uploadedImage->getClientOriginalName();
@@ -380,16 +384,21 @@ class ProfileAPIController extends Controller
             $data = Review::query()->where(['user_id' => $user->id])
                 ->whereHas('task', function (Builder $q) use ($user) {
                     $q->where(['performer_id' => $user->id]);
-                })->get();
+                });
         } else {
             $data = Review::query()->where(['user_id' => $user->id])
                 ->whereHas('task', function (Builder $q) use ($user) {
                     $q->where(['user_id' => $user->id]);
-                })->get();
+                });
+        }
+        if ($request->get('review') == 'good') {
+            $data = $data->where(['good_bad' => 1]);
+        } elseif ($request->get('review') == 'bad') {
+            $data = $data->where(['good_bad' => 0]);
         }
         return response()->json([
             'success' => true,
-            'data' => ReviewIndexResource::collection($data)
+            'data' => ReviewIndexResource::collection($data->get())
         ]);
     }
 
@@ -553,13 +562,15 @@ class ProfileAPIController extends Controller
         }
         $userPhone = User::query()->where(['phone_number' => $request->get('phone_number')])->first();
         $user = auth()->user();
-        if ($userPhone->id != $user->id) {
-            return response()->json([
-                'success' => false,
-                'data' => [
-                    'message' => 'Phone number already exists'
-                ]
-            ]);
+        if ($userPhone) {
+            if ($userPhone->id != $user->id) {
+                return response()->json([
+                    'success' => false,
+                    'data' => [
+                        'message' => 'Phone number already exists'
+                    ]
+                ]);
+            }
         }
         $user->phone_number = $request->get('phone_number');
         $user->is_phone_number_verified = 0;

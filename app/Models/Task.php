@@ -92,4 +92,8 @@ class Task extends Model
     {
         return $this->hasMany(Address::class);
     }
+    public function categories()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

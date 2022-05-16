@@ -498,6 +498,7 @@ $("input:checkbox").click(function () {
 });
 
 $(document).ready(function () {
+    $("#loader").show();
     firstCoordinates();
 });
 /*$(window).load(function () {
@@ -509,3 +510,23 @@ $("#search_form").on("click", "#loadMoreData", function (e) {
     loadTask(e);
     $(this).attr("disabled", "disabled");
 });
+
+$("#byDate").click(function () {
+    $("#sortBySearch").prop("checked", false);
+    $("#search_form").submit();
+});
+$("#bySearch").click(function () {
+    $("#sortBySearch").prop("checked", true);
+    $("#search_form").submit();
+});
+
+$("#remjob").click(function(){
+    if($('#remjob').is(':checked')){
+        $(".disalable").find("select,input").prop("disabled",true)
+        $(".disalable").find("select,input").addClass("bg-gray-200 relative z-10 cursor-not-allowed")
+    }
+    if($('#remjob').is(':not(:checked)')){
+        $(".disalable").find("select,input").prop("disabled",false)
+        $(".disalable").find("select,input").removeClass("bg-gray-200 relative z-10 cursor-not-allowed")
+    }
+})
