@@ -212,9 +212,17 @@
                                                     </div>
                                                 @endforeach
                                             </div>
-                                            <input
-                                                    class="focus:outline-none  block md:w-3/5 w-full text-center bg-green-400 hover:bg-green-600 text-white uppercase p-4 rounded-xl mb-5"
-                                                    type="submit" name="submit" value="{{__('Сохранить')}}">
+                                            <div class="grid grid-cols-10 mt-5">
+                                                <input type="checkbox" id="sms_notification" {{$user->sms_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
+                                                <span class="col-span-9 ml-2">{{__('SMS')}}</span>
+                                            </div>
+                                            <div class="grid grid-cols-10 mt-5">
+                                                <input type="checkbox" id="email_notification" {{$user->email_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
+                                                <span class="col-span-9 ml-2">{{__('Email')}}</span>
+                                            </div>
+                                            <button
+                                                    class="block  md:w-1/2 w-full mt-10 bg-green-400 hover:bg-green-600 text-white uppercase p-4 rounded-xl"
+                                                    type="submit">{{__('Сохранить')}}</button>
                                         </form>
                                         <script>
                                             var acc = document.getElementsByClassName("accordion");

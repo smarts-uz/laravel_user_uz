@@ -161,7 +161,15 @@ class ProfileController extends Controller
         $user = Auth::user();
         $user->role_id = 2;
         $checkbox = implode(",", $request->get('category'));
-        $user->update(['category_id' => $checkbox]);
+        $smsNotification = 0;
+        $emailNotification = 0;
+        if ($request->get('sms_notification') == 1) {
+            $smsNotification = 1;
+        }
+        if ($request->get('email_notification') == 1) {
+            $emailNotification = 1;
+        }
+        $user->update(['category_id' => $checkbox, 'sms_notification' => $smsNotification, 'email_notification' => $emailNotification]);
         return redirect()->route('profile.profileData');
     }
 
