@@ -143,9 +143,9 @@
 
                         <input
                             placeholder="{{ $custom_field['placeholder'] }}"
-                            id="car_{{ $custom_field['order'] }}" name="{{$custom_field['name']}}[]" type="text" value="{{ $custom_field['task_value'] }}"
+                            id="car_{{ $custom_field['order'] }}" name="{{$custom_field['name']}}[]" type="number" value="{{ $custom_field['task_value'] }}"
                             class="shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500"
-                            required>
+                            >
 
                     </div>
                 </div>
@@ -173,7 +173,7 @@
                             min="0" placeholder="{{ $custom_field['placeholder'] }}"
                             id="car_{{ $custom_field['order'] }}" name="{{$custom_field['name']}}[]" type="number" value="{{ $custom_field['task_value'] }}"
                             class="shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500"
-                            required>
+                            >
 
                     </div>
                 </div>
