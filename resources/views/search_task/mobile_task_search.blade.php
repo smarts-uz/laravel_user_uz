@@ -88,7 +88,7 @@
             </label>
         </div>
 
-        <div id="big-big" class="h-full my-5 rounded-lg w-full static"></div>
+        <div id="mobile-map" class="h-full my-5 rounded-lg w-full static"></div>
     </div>
 </form>
 

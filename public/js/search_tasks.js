@@ -54,7 +54,7 @@ $("#closeBut2").click(function() {
 
 $("#selectGeo").change(function() {
     r = $('#selectGeo').val();
-    map_pos(k)
+    map_reset(k);
 });
 
 $("#prcClose").click(function() {
@@ -78,19 +78,6 @@ $("#bySearch").click(function() {
 $(".rotate").click(function() {
     $(this).toggleClass("rotate-[360deg]");
 });
-
-function maps_show(){
-    dataGeo = [];
-    if (dataAjaxPrint.length != 0) {
-        for (var i = 0; i < dataAjaxPrint.length; i++) {
-            if (dataAjaxPrint[i].coordinates != null){
-                dataGeo.push(dataAjaxPrint[i].coordinates.split(','));
-            }
-        }
-    }
-    map_pos(k)
-    // map1_show()
-}
 
 $('.all_cat').click(function() {
     if (this.checked == false) {
@@ -228,49 +215,62 @@ function firstCoordinates(){
             .then(
                 function(result) {
                     userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
-                    console.log(userCoordinates)
                     $("#user_lat").val(userCoordinates[0]);
                     $("#user_long").val(userCoordinates[1]);
                     $("#search_form").submit();
                 },
                 function(err) {
-                    console.log('Ошибка: ' + err)
+                    console.log('Ошибка: ' + err);
                 }
             );
     }
 }
 
-function map_pos(mm) {
-    if (mm) {
-        k=1;
-        $(".small-map").empty();
-        $(".big-map").empty();
-        $(".small-map").append(
-            `<div id="map2" class="h-60 my-5 rounded-lg w-full static">
-             <div class="relative float-right z-10 ml-1"><img src="/images/big-map.png" class="hover:cursor-pointer bg-white w-8 h-auto mt-2 mr-2 p-1 rounded-md drop-shadow-lg" title="Kartani kattalashtirish" onclick="map_pos(0)"/></div>
+function map_reset(mapReset){
+    $(".small-map").empty();
+    $(".big-map").empty();
+    $(".mobile-map").empty();
+    mapReset === 1
+    ? $(".small-map").append(
+        `<div id="map" class="h-60 my-5 rounded-lg w-full static">
+                <div class="relative float-right z-10 ml-1">
+                    <img src="/images/big-map.png" class="hover:cursor-pointer bg-white w-8 h-auto mt-2 mr-2 p-1 rounded-md drop-shadow-lg" title="Kartani kattalashtirish" onclick="k = 2; map_reset(k);"/>
+                </div>
              </div>`
-        );
+    )
+    :$(".big-map").append(
+        `<div id="map" class="h-80 my-5 rounded-lg w-3/3 static align-items-center">
+                <div class="relative float-right z-10 ml-1">
+                    <img src="/images/small-map.png" class="hover:cursor-pointer bg-white w-8 h-auto mt-2 mr-2 p-1 rounded-md drop-shadow-lg" title="Kartani kichiklashtirish" onclick="k = 1; map_reset(k)"/>
+                </div>
+             </div>`
+    );
 
+    $(".mobile-map").append(
+        `<div id="map" class="h-80 my-5 rounded-lg w-3/3 static align-items-center"></div>`
+    );
+    map_show();
+}
+
+function map_show() {
         ymaps.ready(init);
         function init() {
             let location = ymaps.geolocation;
-            if (userCoordinates[0].length == 0) {
+            if (userCoordinates[0].length === 0) {
                 location.get({
                     mapStateAutoApply: true
                 })
                     .then(
                         function (result) {
                             userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
-                            myMap2.geoObjects.add(result.geoObjects)
-                            myMap2.setCenter(res.geoObjects.get(0).geometry.getCoordinates());
                         },
                         function (err) {
-                            console.log('Ошибка: ' + err)
+                            console.log('Ошибка: ' + err);
                         }
                     );
             }
 
-            let myMap2 = new ymaps.Map('map2', {
+            let myMap2 = new ymaps.Map('map', {
                 center: [userCoordinates[0], userCoordinates[1]],
                 zoom: 13,
                 controls: [],
@@ -282,10 +282,6 @@ function map_pos(mm) {
 
             var suggestView = new ymaps.SuggestView('suggest',{boundedBy: myMap2.getBounds()});
             suggestView.events.add('select', function (e) {
-                myMapCoordinates(e);
-            });
-
-            function myMapCoordinates(e){
                 var myGeo = ymaps.geocode(e.get('item').value);
                 myGeo.then(
                     function (res) {
@@ -295,14 +291,7 @@ function map_pos(mm) {
                         $("#user_long").val(userCoordinates[1]);
                     }
                 );
-            }
-
-            // Добавим контрол на карту.
-            /*myMap2.controls.add(regionControl);*/
-            // Узнавать о изменениях параметров RegionControl можно следующим образом.
-            /*regionControl.events.add('statechange', function (e) {
-                console.log(e.get('target').get('values'));
-            });*/
+            });
 
             $("#geoBut").click(function(){
                 location.get({
@@ -314,16 +303,16 @@ function map_pos(mm) {
                             userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
                             $("#user_lat").val(userCoordinates[0]);
                             $("#user_long").val(userCoordinates[1]);
-                            myMap2.geoObjects.add(result.geoObjects)
+                            myMap2.geoObjects.add(result.geoObjects);
                             /*myMap2.setCenter(result.geoObjects.get(0).geometry.getCoordinates());*/
                         },
                         function(err) {
-                            console.log('Ошибка: ' + err)
+                            console.log('Ошибка: ' + err);
                         }
                     );
             });
 
-            /*clusterer = new ymaps.Clusterer({
+            clusterer = new ymaps.Clusterer({
                 preset: 'islands#invertedGreenClusterIcons',
                 // hasBalloon: false,
                 gridSize: 80,
@@ -334,8 +323,8 @@ function map_pos(mm) {
             });
             getPointData = function (index) {
                 return {
-                    balloonContentBody: '<br><font size=4><b><a href="/detailed-tasks/' + dataAjaxPrint[index].id + '">' + dataAjaxPrint[index].name + '</a></b></font><br><br><font size=3><p>' + dataAjaxPrint[index].start_date + ' - ' + dataAjaxPrint[index].end_date + '</p></font><br><font size=3><p>' + dataAjaxPrint[index].budget + '</p></font>',
-                    clusterCaption: 'Задания <strong>' + dataAjaxPrint[index].id + '</strong>'
+                    balloonContentBody: '<br><font size=4><b><a href="/detailed-tasks/' + dataGeo[index].id + '">' + dataGeo[index].name + '</a></b></font><br><br><font size=3><p>' + dataGeo[index].start_date + ' - ' + dataGeo[index].end_date + '</p></font><br><font size=3><p>' + dataGeo[index].budget + '</p></font>',
+                    clusterCaption: 'Задания <strong>' + dataGeo[index].id + '</strong>'
                 };
             }
             getPointOptions = function () {
@@ -347,37 +336,23 @@ function map_pos(mm) {
             geoObjects = [];
             if (dataGeo.length != 0) {
                 for (var i = 0; i < dataGeo.length; i++) {
-                    geoObjects[i] = new ymaps.Placemark(dataGeo[i], getPointData(i), getPointOptions());
+                    geoObjects[i] = new ymaps.Placemark([dataGeo[i].latitude,dataGeo[i].longitude], getPointData(i), getPointOptions());
                 }
             }
 
-            clusterer.options.set({
-                // gridSize: 80,
-                // clusterDisableClickZoom: true
-            });
+            /*clusterer.options.set({
+            });*/
 
             clusterer.add(geoObjects);
             myMap2.geoObjects.add(clusterer);
             myMap2.setBounds(clusterer.getBounds(), {
                 boundsAutoApply: true,
                 checkZoomRange: true
-            });*/
+            });
 
             circle = new ymaps.Circle([userCoordinates, r*1000], null, { draggable: false, fill: false, outline: true, strokeColor: '#32CD32', strokeWidth: 3});
             myMap2.geoObjects.add(circle);
-
-            // circle.events.add('visible', function () {
-            //     var objectsInsideCircle = objects.searchInside(circle);
-            //     objectsInsideCircle.setOptions('visible', 'true');
-            //     objects.remove(objectsInsideCircle).setOptions('visible', 'false');
-            // });
-
-            // Circle ichiga joylashish nuqtasini hisoblash formulasi...
-            // $distance = 2 * asin(sqrt( pow(sin(deg2rad( ($lat1-$lat2) / 2)), 2) +
-            //     cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
-            //     pow(sin(deg2rad(($lng1- $lng2) / 2)), 2))) * 6378245;
         }
-    }
 }
 
 // script for mobile
@@ -476,10 +451,9 @@ function loadTask(event) {
             $("#loadData").remove();
         },
         success: function (data) {
-            /*console.log(data.dataForMap);*/
-            dataGeo = data.dataForMap;
-
             $("#dataPlace").append(data.html);
+            dataGeo.push.apply(dataGeo, data.dataForMap);
+            map_reset(k);
         },
         complete: function () {
             $("#loader").hide();
@@ -502,7 +476,6 @@ $(document).ready(function () {
     firstCoordinates();
 });
 /*$(window).load(function () {
-
 });*/
 
 $("#search_form").on("click", "#loadMoreData", function (e) {
