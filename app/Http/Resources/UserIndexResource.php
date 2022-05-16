@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\File;
 
 class UserIndexResource extends JsonResource
 {
+    protected $locale;
+
+    public function locale($value){
+        $this->locale = $value . '_' . strtoupper($value);
+        return $this;
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -93,7 +100,9 @@ class UserIndexResource extends JsonResource
         if ($this->last_seen >= $date) {
             $lastSeen = 'online';
         } else {
-            $lastSeen = Carbon::parse($this->last_seen)->diffForHumans();
+            $seenDate = Carbon::parse($this->last_seen);
+            $seenDate->locale($this->locale);
+            $lastSeen = $seenDate->diffForHumans();
         }
         return [
             'id' => $this->id,
