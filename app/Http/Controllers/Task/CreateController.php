@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Storage;
 use PlayMobile\SMS\SmsService;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Notification;
-use App\Events\MyEvent;
+use App\Models\Address;
 
 class CreateController extends Controller
 {
@@ -101,6 +101,8 @@ class CreateController extends Controller
 
         if ($data['radio'] === 'remote')
         {
+            $task->remote = 1;
+            $task->save();
             return redirect()->route("task.create.date", $task->id);
         }
 
@@ -124,9 +126,8 @@ class CreateController extends Controller
     }
 
     public function date(Task $task)
-    {
+    {   
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_DATE);
-
         return view('create.date', compact('task','custom_fields'));
 
     }
