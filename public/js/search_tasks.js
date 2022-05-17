@@ -217,7 +217,25 @@ function firstCoordinates(){
                     userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
                     $("#user_lat").val(userCoordinates[0]);
                     $("#user_long").val(userCoordinates[1]);
+                    $("#geoBut").click(); 
+                    location.get({
+                        mapStateAutoApply: true
+                    })
+                        .then(
+                            function(result) {
+                                document.getElementById("suggest").value = result.geoObjects.get(0).properties.get('text');
+                                userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
+                                $("#user_lat").val(userCoordinates[0]);
+                                $("#user_long").val(userCoordinates[1]);
+                                myMap2.geoObjects.add(result.geoObjects);
+                                /*myMap2.setCenter(result.geoObjects.get(0).geometry.getCoordinates());*/
+                            },
+                            function(err) {
+                                console.log('Ошибка: ' + err);
+                            }
+                        );
                     $("#search_form").submit();
+                    
                 },
                 function(err) {
                     console.log('Ошибка: ' + err);
@@ -473,6 +491,7 @@ $("input:checkbox").click(function () {
 
 $(document).ready(function () {
     $("#loader").show();
+    $("#selectGeo").change();
     firstCoordinates();
 });
 /*$(window).load(function () {
@@ -503,3 +522,12 @@ $("#remjob").click(function(){
         $(".disalable").find("select,input").removeClass("bg-gray-200 relative z-10 cursor-not-allowed")
     }
 })
+$('#selectGeo').on('change', function() {
+ if(this.value===""){
+    $("#suggest").prop("disabled",true).addClass("bg-gray-200 relative z-10 cursor-not-allowed")
+ }
+ else{
+    $("#suggest").prop("disabled",false).removeClass("bg-gray-200 relative z-10 cursor-not-allowed")
+ }
+ $("#search_form").submit();
+  });

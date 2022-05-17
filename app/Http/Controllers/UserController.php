@@ -175,4 +175,35 @@ class UserController extends Controller
         }
 
     }
+
+    public function verifyProfil2(Request $request, User $user, Task $task, $data)
+    {
+
+        $task = Task::query()->find($request->get('for_ver_func'));
+        $request->validate(
+            ['sms_otp' => 'required'],
+            ['sms_otp.required' => 'Требуется заполнение!']
+        );
+
+        if ($request->sms_otp == $task->verify_code) {
+            if (strtotime($task->verify_expiration) >= strtotime(Carbon::now())) {
+                /*$task->update(['is_phone_number_verified' => 1]);*/
+                Task::findOrFail($request->for_ver_func)->update(['status' => 1, 'user_id' => $user->id, 'phone' => $data]);
+                auth()->login($user);
+
+                // send notification
+                NotificationService::sendTaskNotification($task, $user->id);
+
+                return redirect()->route('searchTask.task', $request->for_ver_func);
+            } else {
+                auth()->logout();
+                return back()->with('expired_message', __('lang.contact_expired'));
+            }
+        } else {
+            auth()->logout();
+            return back()->with('incorrect_message', __('lang.contact_notVerify'));
+        }
+
+    }
+
 }

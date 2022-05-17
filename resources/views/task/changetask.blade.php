@@ -59,9 +59,6 @@
                                 value="{{ $category->id }}" {{ $category->id == $task->category_id ? 'selected' : null }} >{{ $category->name }}</option>
                         @endforeach
                     </select>
-                    {{--                    @error('category_id')--}}
-                    {{--                    <p class="text-red-500">{{ $message }}</p>--}}
-                    {{--                    @enderror--}}
                 </div>
                 <div>
                     <label class="text-xs text-gray-500">
@@ -72,11 +69,6 @@
                         @error('description')
                         <p class="text-red-500">{{ $message }}</p>
                         @enderror
-                    </label>
-                </div>
-                <div>
-                    <label class="text-sm text-gray-500">
-                        <input type="checkbox"> {{__('Забрать у получителя оплату за товар и вернуть заказчику?')}}
                     </label>
                 </div>
                 <div class="my-4">
@@ -98,7 +90,6 @@
                             </select>
                         </div>
                         <div class="grid-cols-2 gap-4">
-                            @if($task->getRawOriginal('start_date'))
                                 <div class="col-span-1">
                                     <div class="flatpickr inline-block flex items-center sm:mb-0 mb-4 hidden" id="start-date">
                                         <div class="flex ">
@@ -118,10 +109,7 @@
                                             </a>
                                         </div>
                                     </div>
-                                </div>
-                            @endif
-
-                            @if($task->getRawOriginal('end_date'))
+                                </div>    
                                 <div class="col-span-1 mt-1">
                                     <div class="flatpickr inline-block flex items-center {{ $task->getRawOriginal('end_date')?'':"hidden" }} " id="end-date">
                                         <div class="flex">
@@ -142,7 +130,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endif
+                            {{-- @endif --}}
                         </div>
                     </label>
                 </div>
@@ -214,43 +202,59 @@
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <label class="text-base">
-                            <input type="checkbox">
-                            {{__('Отдаю предпочтение застрахованным исполнительям ?')}}
-                        </label>
-                    </div>
-                    <div>
-                        <div class="ml-4 md:ml-12 flex flex-wrap mt-8">
-                            <h1 class="font-bold mb-2">{{__('Рисунок')}}</h1>
-                            @foreach(json_decode($task->photos)??[] as $key => $image)
-                                @if($loop->first)
-                                    <div class="relative boxItem">
-                                        <a class="boxItem relative" href="{{ asset('storage/uploads/'.$image) }}"
-                                           data-fancybox="img1"
-                                           data-caption="<span>{{ $task->created_at }}</span>">
-                                            <div class="mediateka_photo_content">
-                                                <img src="{{ asset('storage/uploads/'.$image) }}" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                @endif
-                            @endforeach
-                            @if($task->photos)
+                </div>
+                <div>
+                    <div class="ml-4 md:ml-12 flex flex-wrap mt-8">
+                        <h1 class="font-bold mb-2">{{__('Рисунок')}}</h1>
+                        @foreach(json_decode($task->photos)??[] as $key => $image)
+                            @if($loop->first)
                                 <div class="relative boxItem">
-                                    @csrf
-                                    <a href="{{ route('task.images.delete', $task->id) }}" type="submit">
-                                        <div class="mediateka_photo_content text-center">
-                                            <i class="fas fa-trash text-black-50" style="font-size: 72px"></i>
+                                    <a class="boxItem relative" href="{{ asset('storage/uploads/'.$image) }}"
+                                       data-fancybox="img1"
+                                       data-caption="<span>{{ $task->created_at }}</span>">
+                                        <div class="mediateka_photo_content">
+                                            <img src="{{ asset('storage/uploads/'.$image) }}" alt="">
                                         </div>
                                     </a>
                                 </div>
                             @endif
-                        </div>
-                        <div id="photos" class="w-full"></div>
-
+                        @endforeach
+                        @if($task->photos)
+                            <div class="relative boxItem">
+                                @csrf
+                                <a href="{{ route('task.images.delete', $task->id) }}" type="submit">
+                                    <div class="mediateka_photo_content text-center">
+                                        <i class="fas fa-trash text-black-50" style="font-size: 72px"></i>
+                                    </div>
+                                </a>
+                            </div>
+                        @endif
                     </div>
+                    <div id="photos" class="w-full"></div>
 
+                </div>
+                <div>
+                    <label class="md:w-2/3 block mt-6">
+                        <input class="focus:outline-none  mr-2 h-4 w-4"  {{$task->docs == 1 ? 'checked' : ''}} type="checkbox" name="docs">
+                        <span class="text-slate-900">
+                            {{__('Предоставить документы')}}
+                            <br><p class="text-sm text-slate-500">{{__('Для оформления расписки/доверенности')}}</p>
+                        </span>
+                    </label>
+                    <label class="md:w-2/3 block mt-6">
+                        <input class="focus:outline-none  mr-2 h-4 w-4" type="radio" name="oplata"
+                          {{$task->oplata == 0 ? 'checked' : ''}} value="0">
+                        <span class="text-slate-900">
+                            {{__('Оплата через карту')}}
+                        </span>
+                    </label>
+                    <label class="md:w-2/3 block mt-6">
+                        <input class="focus:outline-none  mr-2 h-4 w-4" type="radio" name="oplata"
+                        {{$task->oplata == 1 ? 'checked' : ''}} value="1">
+                        <span class="text-slate-900">
+                            {{__('Оплата наличными')}}
+                        </span>
+                    </label>
                 </div>
                 <div class="text-base my-6 bg-white rounded-md shadow-md p-4">
                     <h1 class="text-xl font-semibold py-4">{{__('На какой бюджет вы рассчитываете?')}}</h1>

@@ -35,6 +35,16 @@ class UpdateController extends Controller
         unset($data['location0']);
         unset($data['coordinates0']);
         $task->update($data);
+        $note = $request->validate([
+            'description' => 'required|string',
+            'oplata' => 'required',
+        ]);
+        if ($request['docs'] === "on") {
+            $note['docs'] = 1;
+        } else {
+            $note['docs'] = 0;
+        }
+        $task->update($note);
         $this->service->syncCustomFields($task);
         Alert::success('Success');
 

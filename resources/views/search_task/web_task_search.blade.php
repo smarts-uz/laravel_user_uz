@@ -50,8 +50,8 @@
                                         <option value="1.5">1.5 {{__('км')}}</option>
                                         <option value="3">3 {{__('км')}}</option>
                                         <option value="5">5 {{__('км')}}</option>
-                                        <option value="10">10 {{__('км')}}</option>
-                                        <option value="15">15 {{__('км')}}</option>
+                                        <option value="10" selected="selected">10 {{__('км')}}</option>
+                                        <option value="15" >15 {{__('км')}}</option>
                                         <option value="20">20 {{__('км')}}</option>
                                         <option value="30">30 {{__('км')}}</option>
                                         <option value="50">50 {{__('км')}}</option>
