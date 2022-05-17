@@ -100,6 +100,7 @@ Route::middleware('custom.auth:api')->group(function () {
         Route::get('/description', [ProfileAPIController::class, 'description']); //end +
         Route::post('/description/edit', [ProfileAPIController::class, 'editDesctiption']); //end +
         Route::post('/payment', [ProfileAPIController::class, 'payment']);
+        Route::post('/categories-subscribe', [ProfileAPIController::class, 'subscribeToCategory']);
 
         Route::prefix('/settings')->group(function () {
             Route::get('/', [ProfileAPIController::class, 'editData']); //end +

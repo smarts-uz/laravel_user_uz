@@ -212,6 +212,7 @@
                                                     </div>
                                                 @endforeach
                                             </div>
+                                            <p class="font-bold text-1xl mb-7"> {{__('Дополнительные типы уведомлений:')}}</p>
                                             <div class="grid grid-cols-10 mt-5">
                                                 <input type="checkbox" name="sms_notification" value="1" {{$user->sms_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
                                                 <span class="col-span-9 ml-2">{{__('SMS')}}</span>
