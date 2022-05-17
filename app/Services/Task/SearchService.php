@@ -67,9 +67,10 @@ class SearchService
 		        * cos(radians(`latitude`)) 
 		        * cos(radians(`longitude`) - radians($lon)) 
 		        + sin(radians($lat)) 
-		        * sin(radians(`latitude`))) as distance FROM `addresses` ) addresses WHERE distance <=$radius";
+		        * sin(radians(`latitude`))) as distance FROM `addresses` where `default` = 1 ) addresses WHERE distance <=$radius";
                 $results=[];
-if(!$remjob){
+
+if(!$remjob && $lat && $lon && $radius){
 $results=DB::select(DB::raw($adressesQuery));
 }
 
@@ -80,7 +81,6 @@ foreach ($results as $result) {
 
         $tasks = Task::query()
             ->whereIn('status', [1,2])
-
             ->when(count($relatedAdress), function ($query) use ($relatedAdress) {
                 $query->whereIn('id', $relatedAdress);
             })
@@ -94,9 +94,7 @@ foreach ($results as $result) {
                 $query->whereIn('category_id', $arr_check);
             })
             ->when($remjob, function ($query) {
-                $query->whereHas("category",function($query){
-                    $query->whereNotNull('remote');
-                });
+                $query->where('remote',1);
             })
             ->when($noresp, function ($query) {
                 $query->whereIn('status', [1]);

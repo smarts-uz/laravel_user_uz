@@ -1,4 +1,3 @@
-<form id="#search_form1" method="post" action="{{route('searchTask.search_new2')}}">
     <div class="w-11/12 mx-auto my-5 rounded-md lg:hidden block">
         <div class="flex flex-col block w-full gap-4">
             <input id="filter1" name="filter1" type="text"
@@ -90,7 +89,6 @@
 
         <div id="mobile-map" class="h-full my-5 rounded-lg w-full static"></div>
     </div>
-</form>
 
 
 {{-- tasks --}}
