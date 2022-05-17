@@ -794,6 +794,49 @@
                 }
             }
         },
+        "\/api\/give-task": {
+            "post": {
+                "tags": [
+                    "Task"
+                ],
+                "summary": "Give task by task ID and perfomer ID",
+                "operationId": "0e31576c4838d8c9e29c2b0bcee2c3d6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer"
+                                    },
+                                    "performer_id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "\/api\/become-performer": {
             "post": {
                 "tags": [
@@ -1253,7 +1296,7 @@
         "\/api\/profile\/portfolio\/{portfolio}\/delete": {
             "post": {
                 "tags": [
-                    "Search"
+                    "Profile"
                 ],
                 "summary": "Delete Portfolio",
                 "operationId": "4beaea32f869fca3ce1ebdd28bea741e",
@@ -3428,6 +3471,49 @@
                                     "docs": {
                                         "description": "true - taqdim etilsin, false - taqdim etilmasin",
                                         "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/create-task\/images": {
+            "post": {
+                "tags": [
+                    "Task Create"
+                ],
+                "summary": "Task create images",
+                "operationId": "0a245f8d9ae4a7502c9b42ba20ef460e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer"
+                                    },
+                                    "images": {
+                                        "type": "file"
                                     }
                                 },
                                 "type": "object"
@@ -10839,8 +10925,7 @@
                                 "created_at",
                                 "updated_at",
                                 "name",
-                                "address",
-                                "address_add",
+                                "remote",
                                 "return_to_b",
                                 "date_type",
                                 "start_date",
@@ -10862,6 +10947,8 @@
                                 "docs",
                                 "views",
                                 "responses_count",
+                                "verify_code",
+                                "verify_expiration",
                                 "task_hasmany_custom_field_relationship",
                                 "task_belongsto_service_relationship",
                                 "task_belongsto_category_relationship"

@@ -6944,8 +6944,7 @@
                                 "created_at",
                                 "updated_at",
                                 "name",
-                                "address",
-                                "address_add",
+                                "remote",
                                 "return_to_b",
                                 "date_type",
                                 "start_date",
@@ -6967,6 +6966,8 @@
                                 "docs",
                                 "views",
                                 "responses_count",
+                                "verify_code",
+                                "verify_expiration",
                                 "task_hasmany_custom_field_relationship",
                                 "task_belongsto_service_relationship",
                                 "task_belongsto_category_relationship"

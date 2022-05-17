@@ -48,11 +48,11 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('create-task/name', [TaskAPIController::class, 'name']); //end +
     Route::post('create-task/custom', [TaskAPIController::class, 'custom']); //end -
     Route::post('create-task/remote', [TaskAPIController::class, 'remote']); //end +
-    Route::post('create-task/address', [TaskAPIController::class, 'address']);
+    Route::post('create-task/address', [TaskAPIController::class, 'address']); //end
     Route::post('create-task/date', [TaskAPIController::class, 'date']); //end +
     Route::post('create-task/budget', [TaskAPIController::class, 'budget']); //end +
     Route::post('create-task/note', [TaskAPIController::class, 'note']); //end +
-    Route::post('create-task/images', [TaskAPIController::class, 'uploadImages']); //end -
+    Route::post('create-task/images', [TaskAPIController::class, 'uploadImages']); //end +
     Route::post('create-task/contacts', [TaskAPIController::class, 'contacts']); //end +
     Route::post('create-task/verify', [TaskAPIController::class, 'verify']); //end +
 
@@ -75,12 +75,12 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); //end +
     Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); //end +
     Route::put('/change-task/{task}', [TaskAPIController::class, 'changeTask']); //end -
-    Route::post('give-task', [PerformerAPIController::class, 'give_task']); // javoxir
+    Route::post('give-task', [PerformerAPIController::class, 'give_task']); // end +
     Route::post('/become-performer', [PerformerAPIController::class, 'becomePerformerData']); //end +
     Route::post('/become-performer-phone', [PerformerAPIController::class, 'becomePerformerEmailPhone']); //end +
     Route::post('/become-performer-avatar', [PerformerAPIController::class, 'becomePerformerAvatar']); //end +
     Route::post('/become-performer-category', [PerformerAPIController::class, 'becomePerformerCategory']); //end +
-    Route::get('/reviews', [PerformerAPIController::class, 'reviews']);
+    Route::get('/reviews', [PerformerAPIController::class, 'reviews']); //end
 
     Route::get('/custom-field-by-category/{category}', [CustomFieldAPIController::class, 'getByCategoryId']); //end -
     Route::get('/custom-field-values-by-task/{task}', [CustomFieldAPIController::class, 'getByTaskId']); //end -
