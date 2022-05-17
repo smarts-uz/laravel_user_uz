@@ -72,7 +72,7 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-
+                                        
                                         @endforeach
 
                                     </div>
@@ -114,11 +114,17 @@
             $('.child-category').removeClass('hidden')
             $('.child-category').addClass('hidden')
             $('.child-category-'+$(this).val()).removeClass('hidden')
+            window.location.href = "/task/create?category_id=" + 
+             $('*[data-parent="' + $(this).val() + '"]:first').val();
             $('#username').attr('placeholder',$('#naprimer').text() + $('*[data-parent="' + $(this).val() + '"]:first').text())
         })
         $('.child-category1').change(function (){
             window.location.href = "/task/create?category_id=" + $(this).val();
         })
+
+        // $('.parent-category').change(function (){
+        //     console.log($('.child-category-'+$(this).val()).val())
+        // })
 
         $('.child-category-'+parentCategory+'').removeClass('hidden')
 

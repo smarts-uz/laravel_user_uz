@@ -63,9 +63,9 @@
                                 <div class="relative pl-5 md:w-2/5">
                                     <label
                                         class="lg:text-base md:text-sm mb-1 text-neutral-400">{{__('Стоимость заданий')}}</label>
-                                    <input type="number" min="1" max="999999999" name="price"
+                                    <input type="text" min="1" max="999999999" name="price"
                                         class="form-input focus:border-yellow-500 focus:placeholder-transparent w-full border-md py-1 px-2 text-black-700 border-2 rounded-md border-neutral-400 focus:shadow-sm   text-black-700"
-                                        placeholder="UZS" id="price">
+                                        placeholder="UZS" onkeypress="validate(event)" id="price">
                                     <img src="images/close.png" class="absolute right-2 bottom-2.5 cursor-pointer"
                                         id="prcClose" hidden>
                                 </div>

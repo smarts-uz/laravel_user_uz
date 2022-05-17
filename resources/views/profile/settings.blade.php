@@ -340,7 +340,8 @@
 
                                             </div>
                                             <div class="mt-12">
-                                                <h1 class="font-bold text-black text-3xl">Aktiv sessiyalar</h1>
+                                                <h1 class="font-bold text-black text-3xl">
+                                                    {{__('Активные сессии')}}</h1>
 
                                                 @foreach($sessions as $session)
 

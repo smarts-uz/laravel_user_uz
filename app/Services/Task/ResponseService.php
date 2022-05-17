@@ -114,7 +114,7 @@ class ResponseService
             'task_id' => $response->task_id,
             'name_task' => $task->name,
             'description' => '123',
-            'type' => 7,
+            'type' => Notification::SELECT_PERFORMER,
         ]);
         NotificationService::sendNotificationRequest([$performer->id], [
             'url' => 'detailed-tasks' . '/' . $response->task_id, 'name' => $task->name, 'time' => 'recently'

@@ -24,6 +24,10 @@
             font-family: 'Montserrat', sans-serif !important;
         }
     </style>
+    <style>
+        [class*="copyrights-pane"]
+        {display: none !important;}
+    </style>
 </head>
 <body class=" text-xl">
 

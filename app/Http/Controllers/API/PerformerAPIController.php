@@ -113,7 +113,7 @@ class PerformerAPIController extends Controller
             'task_id' => $data['task_id'],
             'name_task' => $task->name,
             'description' => '123',
-            'type' => 4,
+            'type' => Notification::GIVE_TASK,
         ]);
 
         NotificationService::sendNotificationRequest([$data['performer_id']], [
