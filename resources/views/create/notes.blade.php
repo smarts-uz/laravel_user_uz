@@ -48,7 +48,7 @@
                     <div id="photos" class="w-full"></div>
                 </div>
              <div class="my-6">
-                <label class="md:w-2/3 block mt-6">
+                  <label class="md:w-2/3 block mt-6">
                     <input class="focus:outline-none  mr-2 h-4 w-4" type="checkbox" name="docs">
                     <span class="text-slate-900">
                         {{__('Предоставить документы')}}
