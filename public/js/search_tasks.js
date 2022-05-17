@@ -523,8 +523,11 @@ $("#remjob").click(function(){
     }
 })
 $('#selectGeo').on('change', function() {
- if(this.value==""){
+ if(this.value===""){
     $("#suggest").prop("disabled",true).addClass("bg-gray-200 relative z-10 cursor-not-allowed")
+ }
+ else{
+    $("#suggest").prop("disabled",false).removeClass("bg-gray-200 relative z-10 cursor-not-allowed")
  }
  $("#search_form").submit();
   });
