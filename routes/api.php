@@ -178,7 +178,7 @@ Route::post('/complete', [RefillAPIController::class, 'complete']); //end
 Route::post('/paynet-transaction', [PaynetTransactionAPIController::class, 'create'])->name('paynet-transaction');
 
 
-Route::post('login/google/callback', [SocialAPIController::class, 'loginWithGoogle']);
+Route::post('login/google/callback', [SocialAPIController::class, 'loginWithGoogle']); //end +
 
-Route::post('login/callback', [SocialAPIController::class, 'loginWithFacebook']); //end
+Route::post('login/callback', [SocialAPIController::class, 'loginWithFacebook']); //end +
 

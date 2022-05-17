@@ -40,23 +40,6 @@ class SocialAPIController extends Controller
      *                    property="facebook_id",
      *                    type="integer",
      *                 ),
-     *                 @OA\Property (
-     *                    property="email",
-     *                    type="email",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="avatar",
-     *                    type="string",
-     *                    
-     *                 ),
-     *                 @OA\Property (
-     *                    property="server_code",
-     *                    type="string",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="name",
-     *                    type="string",
-     *                 ),
      *             ),
      *         ),
      *     ),
@@ -167,23 +150,6 @@ class SocialAPIController extends Controller
      *                    property="id",
      *                    type="integer",
      *                 ),
-     *                 @OA\Property (
-     *                    property="email",
-     *                    type="email",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="avatar",
-     *                    type="string",
-     *                    
-     *                 ),
-     *                 @OA\Property (
-     *                    property="server_code",
-     *                    type="string",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="name",
-     *                    type="string",
-     *                 ),
      *             ),
      *         ),
      *     ),
@@ -222,7 +188,7 @@ class SocialAPIController extends Controller
                 ]
             );
             $findUser = User::where('email', $data['email'] ?? '')->orWhere('google_id', $data['id'])->first();
-        
+
 
 
             if ($findUser) {
