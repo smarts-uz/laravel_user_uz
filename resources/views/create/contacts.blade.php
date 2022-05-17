@@ -42,7 +42,7 @@
                                        class="nav-link w-full block font-medium text-xs
                                         tab-name
                                         @if(session("phone_another"))
-                                           error
+
                                            @endif
 
                                        leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 my-2 hover:border-transparent hover:bg-gray-100 focus:border-transparent active"

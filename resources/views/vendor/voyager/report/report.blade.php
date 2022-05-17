@@ -16,24 +16,24 @@
                                             <th class="no-sort no-click bread-actions">
                                                 {{ $get_name_of->Field }}
                                             </th>
-                                        @endforeach
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($task_parent as $parent)
-                                @php
-                                    $categories_array = \App\Models\Category::where('parent_id', $parent->id)->pluck('id')->toarray();
-                                    $category_count = \App\Models\Task::whereIn('category_id', $categories_array)->count();                                        
-                                    $categories_array1 = \App\Models\Category::where('parent_id', $parent->id)->pluck('id')->toarray();
-                                    $category_count1 = \App\Models\Task::whereIn('category_id', $categories_array1)->pluck('budget')->toArray();                                        
-                                    $budgets = str_replace(array('до', 'сум', 'от'), '', $category_count1);
-                                    $all_budget = array_sum($budgets);                                
-                                @endphp
-                                    <tr>
-                                        <td>
-                                            {{$parent->id}}
-                                        </td>
-                                        <td>
+                                                @endforeach
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($task_parent as $parent)
+                                        @php
+                                            $categories_array = \App\Models\Category::where('parent_id', $parent->id)->pluck('id')->toarray();
+                                            $category_count = \App\Models\Task::whereIn('category_id', $categories_array)->count();
+                                            $categories_array1 = \App\Models\Category::where('parent_id', $parent->id)->pluck('id')->toarray();
+                                            $category_count1 = \App\Models\Task::whereIn('category_id', $categories_array1)->pluck('budget')->toArray();
+                                            $budgets = str_replace(array('до', 'сум', 'от'), '', $category_count1);
+                                            $all_budget = array_sum($budgets);
+                                        @endphp
+                                            <tr>
+                                                <td>
+                                                    {{$parent->id}}
+                                                </td>
+                                                <td>
                                             {{$parent->name}}
                                         </td>
                                         <td>
@@ -42,7 +42,7 @@
                                                     {{ $task->name }}
                                                 @endforeach
                                             @endif -->
-                                            
+
                                             {{$category_count}}
                                         </td>
                                         <td>
@@ -60,7 +60,7 @@
                             </table>
                         </div>
                         <div class="pull-left">
-                        
+
                     </div>
                         <div class="pull-right">
                             </div>
