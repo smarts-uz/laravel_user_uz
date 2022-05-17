@@ -224,7 +224,9 @@ Route::prefix("task")->group(function () {
         Route::post('/contact/{task}/store/register', [CreateController::class, 'contact_register'])->name('task.create.contact.store.register')->middleware('guest');
         Route::post('/contact/{task}/store/login/', [CreateController::class, 'contact_login'])->name('task.create.contact.store.login')->middleware('guest');
         Route::get('/verify/{task}/{user}', [CreateController::class, 'verify'])->name('task.create.verify');
+        Route::get('/verify/{task}/{user}/{data}', [CreateController::class, 'verify2'])->name('task.create.verify.phone');
         Route::post('/verify/{user}', [UserController::class, 'verifyProfil'])->name('task.create.verification');
+        Route::post('/verify/{task}', [UserController::class, 'verifyProfil2'])->name('task.create.verification.phone');
         Route::post('/upload', [CreateController::class, 'uploadImage']);
         Route::get('task/{task}/images/delete', [CreateController::class, 'deleteAllImages'])->name('task.images.delete')->middleware('auth');
         Route::post("/detailed-task/{task}/response", [ResponseController::class, 'store'])->name('task.response.store'); // javoxir

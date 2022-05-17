@@ -215,12 +215,19 @@ class CreateController extends Controller
         $data = $request->validate([
             'phone_number' => 'required|integer|min:9|unique:users,phone_number,' . $user->id
         ]);
-        if (!$user->is_phone_number_verified || $user->phone_number != $data['phone_number']) {
+        /*if (!$user->is_phone_number_verified || $user->phone_number != $data['phone_number']) {*/
+        if (!$user->is_phone_number_verified && $user->phone_number == $data['phone_number']) {
             $data['is_phone_number_verified'] = 0;
             $user->update($data);
             LoginController::send_verification('phone', $user);
             return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
         }
+
+        if ($user->is_phone_number_verified && $user->phone_number != $data['phone_number']) {
+            LoginController::send_verification_for_task_phone($task);
+            return redirect()->route('task.create.verify.phone', ['task' => $task->id, 'user' => $user->id, 'data' => $data['phone_number']]);
+        }
+
         $task->status = 1;
         $task->user_id = $user->id;
         $task->phone = $user->phone_number;
@@ -278,6 +285,11 @@ class CreateController extends Controller
     public function verify(Task $task, User $user)
     {
         return view('create.verify', compact('task', 'user'));
+    }
+
+    public function verify2(Task $task, User $user, $data)
+    {
+        return view('create.verify2', compact('task', 'user', 'data'));
     }
 
     public function deletetask(Task $task)
