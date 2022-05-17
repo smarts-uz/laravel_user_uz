@@ -101,7 +101,7 @@ class PerformersController extends Controller
                 'task_id' => $task_id,
                 'name_task' => $task_name->name,
                 'description' => '123',
-                'type' => 4,
+                'type' => Notification::GIVE_TASK,
             ]);
 
             NotificationService::sendNotificationRequest([$users_id], [

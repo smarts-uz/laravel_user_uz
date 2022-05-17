@@ -30,9 +30,6 @@ use App\Http\Controllers\SocialController;
 // avocoder
 use App\Http\Controllers\PerformersController;
 
-//++
-use App\Http\Controllers\ReportController;
-
 // javoxir
 use App\Http\Controllers\RefillController;
 
@@ -61,10 +58,7 @@ use App\Http\Controllers\ClickuzController;
 */
 
 
-Route::get('/search_new', [SearchTaskController::class, 'search_new'])->name('searchTask.search_new');
 
-
-Route::post('search_new2', [SearchTaskController::class, 'search_new2'])->name('searchTask.search_new2');
 
 #region performers
 Route::get('/for_del_new_task/{task}', [CreateController::class, 'deletetask']); // javoxir
@@ -103,7 +97,6 @@ Route::group(['prefix' => 'chat'], function (){
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
-    Route::get('/reports', [ReportController::class, 'report'])->name("voyager.reports.index"); // javoxir
     Route::get("users/activitiy/{user}", [VoyagerUserController::class, "activity"])->name("voyagerUser.activity"); // javoxir
     Route::get('/messages/chat/{id}', [ConversationController::class, 'showChat'])->name("conversation.showChat"); // javoxir
     Route::post('/messages/chat/rate/{message}', [ConversationController::class, 'rating'])->name("conversation.rating"); // javoxir
@@ -116,9 +109,7 @@ Route::group(['prefix' => 'admin'], function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/my-tasks', [Controller::class, 'my_tasks'])->name('searchTask.mytasks'); // javoxir
 });
-/*Route::get('task-search', [SearchTaskController::class, 'task_search'])->name('searchTask.task_search'); // javoxir*/
 Route::get('task-search', [SearchTaskController::class, 'search_new'])->name('searchTask.task_search'); // javoxir
-/*Route::get('tasks-search', [SearchTaskController::class, 'ajax_tasks'])->name('searchTask.ajax_tasks');*/
 Route::post('tasks-search', [SearchTaskController::class, 'search_new2'])->name('searchTask.ajax_tasks');
 Route::get('search', [SearchTaskController::class, 'search'])->name('search'); // javoxir
 Route::post('ajax-request', [SearchTaskController::class, 'task_response']); // javoxir
@@ -128,6 +119,9 @@ Route::get('/detailed-tasks/{task}', [SearchTaskController::class, 'task'])->nam
 Route::post('/detailed-tasks', [SearchTaskController::class, 'comlianse_save'])->name("searchTask.comlianse_save");
 Route::get('/change-task/{task}', [SearchTaskController::class, 'changeTask'])->name("searchTask.changetask")->middleware('auth'); // javoxir
 Route::put('/change-task/{task}', [UpdateController::class, 'change'])->name("update.__invoke")->middleware('auth'); // javoxir
+Route::get('admin/reported-tasks', [VoyagerTaskController::class, 'reported_tasks'])->name('admin.tasks.reported')->middleware('auth');
+Route::get('admin/complete-task/{task}', [VoyagerTaskController::class, 'complete_task'])->name('admin.tasks.complete')->middleware('auth');
+Route::delete('admin/complete-task/{task}', [VoyagerTaskController::class, 'delete_task'])->name('admin.tasks.reported.delete')->middleware('auth');    
 #endregion
 
 #region verificationInfo
@@ -230,7 +224,9 @@ Route::prefix("task")->group(function () {
         Route::post('/contact/{task}/store/register', [CreateController::class, 'contact_register'])->name('task.create.contact.store.register')->middleware('guest');
         Route::post('/contact/{task}/store/login/', [CreateController::class, 'contact_login'])->name('task.create.contact.store.login')->middleware('guest');
         Route::get('/verify/{task}/{user}', [CreateController::class, 'verify'])->name('task.create.verify');
+        Route::get('/verify/{task}/{user}/{data}', [CreateController::class, 'verify2'])->name('task.create.verify.phone');
         Route::post('/verify/{user}', [UserController::class, 'verifyProfil'])->name('task.create.verification');
+        Route::post('/verify/{task}', [UserController::class, 'verifyProfil2'])->name('task.create.verification.phone');
         Route::post('/upload', [CreateController::class, 'uploadImage']);
         Route::get('task/{task}/images/delete', [CreateController::class, 'deleteAllImages'])->name('task.images.delete')->middleware('auth');
         Route::post("/detailed-task/{task}/response", [ResponseController::class, 'store'])->name('task.response.store'); // javoxir
@@ -295,19 +291,18 @@ Route::post('/complete', "App\Http\Controllers\RefillController@complete")->name
 Route::post('/paycom', 'App\Http\Controllers\PaycomTransactionController@paycom')->name('paycom'); // javoxir
 // Show transactions history
 Route::get('profile/transactions/history', [UserTransactionHisory::class, 'getTransactions'])->name('user.transactions.history')->middleware('auth');
-#endregion
-
-Route::get('admin/reported-tasks', [VoyagerTaskController::class, 'reported_tasks'])->name('admin.tasks.reported')->middleware('auth');
-Route::get('admin/complete-task/{task}', [VoyagerTaskController::class, 'complete_task'])->name('admin.tasks.complete')->middleware('auth');
-Route::delete('admin/complete-task/{task}', [VoyagerTaskController::class, 'delete_task'])->name('admin.tasks.reported.delete')->middleware('auth');
-
-// payments
 Route::any('/paynet', function () {
     (new Goodoneuz\PayUz\PayUz)->driver('paynet')->handle();
 });
 Route::any('/payme', function () {
     (new Goodoneuz\PayUz\PayUz)->driver('payme')->handle();
 });
-Route::any('/payme', function () {
-    (new Goodoneuz\PayUz\PayUz)->driver('payme')->handle();
+Route::any('/click', function () {
+    (new Goodoneuz\PayUz\PayUz)->driver('click')->handle();
 });
+#endregion
+
+
+
+// payments
+
