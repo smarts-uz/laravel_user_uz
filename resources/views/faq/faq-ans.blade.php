@@ -27,7 +27,6 @@
                 </div>
                 <h1 class="text-white lg:text-3xl md:text-2xl sm:text-xl font-light  my-6">
                     {{__('Ответы на частые вопросы и рекомендации от Universal Services')}}</h1>
-                {{-- input --}}
             <form class="">
                 <div class="flex relative mx-auto w-full">
                     <button type="submit" class="absolute left-5 top-5">
@@ -53,66 +52,8 @@
                     <div class="px-6 py-3">
                         <h4 class="lg:text-[28px] md:text-[24px] sm:text-[20px] text-gray-500 text-[16px] mb-1">{{$fc->getTranslatedAttribute('title',Session::get('lang') , 'fallbackLocale')}}</h4>
                         <p class=" lg:text-[16px] md:text-[14px] sm:text-[12px] leading-6 text-gray-400 mb-3 pr-3 text-[10px]">{{$fc->getTranslatedAttribute('description',Session::get('lang') , 'fallbackLocale')}} </p>
-                        <div class="flex flex-row items-center">
-                            <!-- <img src="{{asset('images/avatar-avtor-image.png')}}" alt="avatar" class="h-8 rounded-full mr-3 object-cover "> -->
-
-                                <!-- <div class="flex flex-col">
-                                    <a  class="text-slate-500 text-sm">16 статей в этой коллекции </a>
-                                    <span class="text-sm">Автор:<a  class="text-slate-600"> Агния</a> </span>
-                                </div> -->
-                        </div>
                     </div>
-            </div>
-            <div class="w-full">
-                <h5 class="lg:md:text-base sm:text-sm text-xs font-semibold mb-3">{{__('Общие вопросы')}}</h5>
-            </div>
-            <div class="w-full bg-white border border-gray-300 rounded-t-md lg:p-[25px] md:p-[20px] sm:p-[15px] p-[10px] divide-y">
-              @foreach($fq as $faq)
-                <div class="w-full lg:py-4 md:py-3 sm:py-2 py-1">
-                    <!-- <a > -->
-                        <h2 class="text-gray-800 lg:md:text-base sm:text-sm text-xs">{{$faq->getTranslatedAttribute('question',Session::get('lang') , 'fallbackLocale')}}</h2>
-                    <!-- </a> -->
-                    <p class="text-gray-600 lg:md:text-base sm:text-sm text-xs">{{$faq->getTranslatedAttribute('q_descript',Session::get('lang') , 'fallbackLocale')}}</p>
-                    <div class="flex flex-row items-center">
-                      <p class="text-gray-600 lg:md:text-base sm:text-sm text-xs">Ответ: {{$faq->getTranslatedAttribute('answer_text',Session::get('lang') , 'fallbackLocale')}}</p>
-
-                                <!-- <img src="{{asset('images/avatar-avtor-image.png')}}" alt="avatar" class="h-8 rounded-full mr-3 object-cover "> -->
-                            <!-- <div class="flex flex-col"> -->
-                                <!-- <a  class="text-slate-500 text-sm">16 статей в этой коллекции </a> -->
-                                <!-- <span class="text-sm">Автор:<a  class="text-slate-600"> Агния</a> </span> -->
-                            <!-- </div> -->
-                    </div>
-                 </div>
-                 @endforeach
-                <!-- <div class="w-full py-4">
-                    <a >
-                        <h2 class="text-gray-800 text-xl">Как зарегистрироваться на сайте</h2>
-                    </a>
-                    <p class="text-gray-600">О возможных вариантах регистрации и этапах этого процесса</p>
-                    <div class="flex flex-row items-center">
-                                <img src="{{asset('images/avatar-avtor-image.png')}}" alt="avatar" class="h-8 rounded-full mr-3 object-cover ">
-                            <div class="flex flex-col">
-                                <a  class="text-slate-500 text-sm">16 статей в этой коллекции </a>
-                                <span class="text-sm">Автор:<a  class="text-slate-600"> Агния</a> </span>
-                            </div>
-                    </div>
-                </div>
-                <div class="w-full py-4">
-                    <a >
-                        <h2 class="text-gray-800 text-xl">Как зарегистрироваться на сайте</h2>
-                    </a>
-                    <p class="text-gray-600">О возможных вариантах регистрации и этапах этого процесса</p>
-                    <div class="flex flex-row items-center">
-                                <img src="{{asset('images/avatar-avtor-image.png')}}" alt="avatar" class="h-8 rounded-full mr-3 object-cover ">
-                            <div class="flex flex-col">
-                                <a  class="text-slate-500 text-sm">16 статей в этой коллекции </a>
-                                <span class="text-sm">Автор:<a  class="text-slate-600"> Агния</a> </span>
-                            </div>
-                    </div>
-                </div> -->
             </div>
         </div>
     </section>
-
-
 </body>

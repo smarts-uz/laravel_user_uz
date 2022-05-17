@@ -95,7 +95,7 @@ class CreateController extends Controller
         $data = $request->validate(['radio' => 'required']);
 
         if ($data['radio'] === 'address')
-        {
+        {   
             return redirect()->route("task.create.address", $task->id);
         }
 
