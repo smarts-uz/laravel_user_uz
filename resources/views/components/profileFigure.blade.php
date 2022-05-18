@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <div class="sm:w-2/3 w-full text-base text-gray-500 ml-4">
+        <div class="sm:w-2/3 w-full text-base text-gray-500 sm:ml-4 ml-0">
             @isset($user->age)
                 <p class="inline-block mr-2">
                     {{$user->age}}
