@@ -54,6 +54,9 @@ class CreateService
             $location = Arr::get($request->all(), 'location' . $i);
             $coordinates = Arr::get($request->all(), 'coordinates' . $i);
             if ($coordinates) {
+                if ($i == 0) {
+                    $data_inner['default'] = 1;
+                }
                 $data_inner['location'] = $location;
                 $data_inner['longitude'] = explode(',', $coordinates)[1];
                 $data_inner['latitude'] = explode(',', $coordinates)[0];
