@@ -53,7 +53,7 @@
     "login.phone_number.regex": "login.phone_number.regex",
     "login.phone_number.required": "Требуется заполнение!",
     "login.phone_number.unique": "Этот номер зарегистрирован",
-    "not_enough_balance": "not_enough_balance",
+    "not_enough_balance": "На балансе недостаточно средств",
     "ru": "ru",
     "ru_RU": "ru_RU",
     "success": "success",
