@@ -976,6 +976,11 @@ class TaskAPIController extends Controller
         ]);
     }
 
+    public function getTask(Task $task)
+    {
+        return $task;
+    }
+
     /**
      * @OA\Put(
      *     path="/api/change-task/{task}",
