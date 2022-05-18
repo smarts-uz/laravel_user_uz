@@ -212,14 +212,18 @@
                                                     </div>
                                                 @endforeach
                                             </div>
-                                            <p class="font-bold text-1xl mb-7"> {{__('Дополнительные типы уведомлений:')}}</p>
-                                            <div class="grid grid-cols-10 mt-5">
-                                                <input type="checkbox" name="sms_notification" value="1" {{$user->sms_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
-                                                <span class="col-span-9 ml-2">{{__('SMS')}}</span>
-                                            </div>
-                                            <div class="grid grid-cols-10 mt-5">
-                                                <input type="checkbox" name="email_notification" value="1" {{$user->email_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
-                                                <span class="col-span-9 ml-2">{{__('Email')}}</span>
+                                            <p class="font-bold text-xl mb-7"> {{__('Дополнительные типы уведомлений:')}}</p>
+                                            <div class="flex sm:flex-row flex-col itens-center">
+                                                <div class="items-center mr-8">
+                                                    <input type="checkbox" id="sms" name="sms_notification" value="1" {{$user->sms_notification==1 ? 'checked' : ''}} class="w-5 h-5"/>
+                                                    <label class="cursor-pointer text-2xl" for="sms">
+                                                    <i class="fas fa-mobile text-yellow-600 text-2xl mx-1"></i>{{__('SMS')}}</label>
+                                               </div>
+                                                <div class="items-center">
+                                                    <input type="checkbox" id="email_notif" name="email_notification" value="1" {{$user->email_notification==1 ? 'checked' : ''}} class="w-5 h-5"/>
+                                                    <label class="cursor-pointer mx-1 text-xl" for="email_notif"> 
+                                                    <i class="fas fa-envelope text-yellow-600 text-2xl mx-1"></i>{{__('EMAIL')}}</label>
+                                                </div>  
                                             </div>
                                             <button
                                                     class="block  md:w-1/2 w-full mt-10 bg-green-400 hover:bg-green-600 text-white uppercase p-4 rounded-xl"
