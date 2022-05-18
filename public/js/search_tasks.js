@@ -1,44 +1,50 @@
-let k=1, m=1, r=0;
-let dataGeo = [], userCoordinates = [[],[]];
+let k = 1,
+    m = 1,
+    r = 0;
+let dataGeo = [],
+    userCoordinates = [
+        [],
+        []
+    ];
 $('.all_cat').click();
-$(".for_check input:checkbox").each(function() {
+$(".for_check input:checkbox").each(function () {
     this.checked = true;
 });
 
-$("#svgClose").click(function() {
+$("#svgClose").click(function () {
     $('#filter').val('');
     $('#svgClose').hide();
 });
 
-$("#suggest").keyup(function() {
+$("#suggest").keyup(function () {
     if ($('#suggest').val().trim().length == 0) {
         $('#closeBut').hide();
         $('#geoBut').show();
-    }else{
+    } else {
         $('#geoBut').hide();
         $('#closeBut').show();
     }
 });
 
-$("#price").keyup(function() {
+$("#price").keyup(function () {
     if ($('#price').val().trim().length == 0) {
         $('#prcClose').hide();
-    }else{
+    } else {
         $('#prcClose').show();
     }
 });
 
-$("#geoBut").click(function() {
+$("#geoBut").click(function () {
     $('#closeBut').show();
     $('#geoBut').hide();
 });
 
-$("#geobut2").click(function() {
+$("#geobut2").click(function () {
     $('#closeBut2').show();
     $('#geobut2').hide();
 });
 
-$("#closeBut").click(function() {
+$("#closeBut").click(function () {
     $('#suggest').val('');
     $('#user_lat').val('');
     $('#user_long').val('');
@@ -46,61 +52,108 @@ $("#closeBut").click(function() {
     $('#geoBut').show();
 });
 
-$("#closeBut2").click(function() {
+$("#closeBut2").click(function () {
     $('#suggest2').val('');
     $('#closeBut2').hide();
     $('#geobut2').show();
 });
 
-$("#selectGeo").change(function() {
+$("#selectGeo").change(function () {
     r = $('#selectGeo').val();
     map_reset(k);
 });
 
-$("#prcClose").click(function() {
+$("#prcClose").click(function () {
     $('#price').val('');
     $('#prcClose').hide();
 });
 
-$("#byDate").click(function() {
-    /*dataAjaxSortByDS(dataAjaxPrint, 1)*/
-    $('#byDate').attr('disabled','disabled');
+if ($(".byDate").hasClass('font-bold')) {
+    $(".byDate").css({
+        background: '#0d6efd',
+        padding: '5px 15px',
+        borderRadius: "10px",
+        color: "white",
+        fontWeight: 'bold'
+    })
+}else{
+    $(".bySearch").css({
+        background: '#0d6efd',
+        padding: '5px 15px',
+        borderRadius: "10px",
+        color: "white",
+        fontWeight: 'bold'
+    })
+}
+
+
+
+$("#byDate").click(function () {
+    /* dataAjaxSortByDS(dataAjaxPrint, 1) */
+    $('#byDate').attr('disabled', 'disabled');
     $('#bySearch').removeAttr('disabled');
+    $(".byDate").css({
+        background: '#0d6efd',
+        padding: '5px 15px',
+        borderRadius: "10px",
+        color: "white",
+        fontWeight: 'bold'
+    })
+    $('.bySearch').css({
+        background: 'transparent',
+        color: "black",
+        padding: '5px 15px',
+        fontWeight: 'normal'
+    });
     $("#sortBySearch").prop("checked", false);
 });
-$("#bySearch").click(function() {
-    /*dataAjaxSortByDS(dataAjaxPrint, 2)*/
-    $('#bySearch').attr('disabled','disabled');
+
+$("#bySearch").click(function () {
+    /* dataAjaxSortByDS(dataAjaxPrint, 2) */
+    $('#bySearch').attr('disabled', 'disabled');
     $('#byDate').removeAttr('disabled');
     $("#sortBySearch").prop("checked", true);
+     $(".bySearch").css({
+         background: '#0d6efd',
+         padding: '5px 15px',
+         borderRadius: "10px ",
+         color: "white",
+         fontWeight: 'bold'
+     })
+    $('.byDate').css({
+        background: 'transparent',
+        color: "black",
+        padding: '5px 15px',
+        fontWeight: 'normal'
+    });
 });
 
-$(".rotate").click(function() {
+$(".rotate").click(function () {
     $(this).toggleClass("rotate-[360deg]");
 });
 
-$('.all_cat').click(function() {
+$('.all_cat').click(function () {
     if (this.checked == false) {
-        $(".for_check input:checkbox").each(function() {
+        $(".for_check input:checkbox").each(function () {
             this.checked = false;
         });
     } else {
-        $(".for_check input:checkbox").each(function() {
+        $(".for_check input:checkbox").each(function () {
             this.checked = true;
         });
     }
 });
 
-$('.par_cat').click(function() {
-    if(!this.checked) {
+$('.par_cat').click(function () {
+    if (!this.checked) {
         parcats_click_false(this.id, this.name);
     } else {
         parcats_click_true(this.id);
     }
 });
 
-$('.chi_cat').click(function() {
-    if(!this.checked) {
+$('.chi_cat').click(function () {
+    if (!this.checked) {
         chicats_click_false(this.id);
     } else {
         chicats_click_true(this.id, this.name);
@@ -108,12 +161,12 @@ $('.chi_cat').click(function() {
 });
 
 function parcats_click_true(id) {
-    $('.chi_cat').each(function() {
+    $('.chi_cat').each(function () {
         if (this.id === id) {
             this.checked = true;
         }
     });
-    $('.all_cat').each(function() {
+    $('.all_cat').each(function () {
         if (parcat_check()) {
             this.checked = true;
         } else {
@@ -123,15 +176,15 @@ function parcats_click_true(id) {
 }
 
 function parcats_click_false(id) {
-    $('.par_cat').each(function() {
+    $('.par_cat').each(function () {
         if (this.id === id) {
             this.checked = false;
         }
     });
-    $('.all_cat').each(function() {
+    $('.all_cat').each(function () {
         this.checked = false;
     });
-    $('.chi_cat').each(function() {
+    $('.chi_cat').each(function () {
         if (this.id === id) {
             this.checked = false;
         }
@@ -140,7 +193,7 @@ function parcats_click_false(id) {
 
 function parcat_check() {
     let i = 1;
-    $('.par_cat').each(function() {
+    $('.par_cat').each(function () {
         if (!this.checked) {
             i = 0;
             return false;
@@ -150,18 +203,19 @@ function parcat_check() {
 }
 
 function chicats_click_true(id, name) {
-    $('.chi_cat').each(function() {
+    $('.chi_cat').each(function () {
         if (this.name === name) {
             this.checked = true;
         }
     });
-    $('.par_cat').each(function() {
+    $('.par_cat').each(function () {
         if (this.id === id) {
-            if (chicat_check(id))
-            {this.checked = true;}
+            if (chicat_check(id)) {
+                this.checked = true;
+            }
         }
     });
-    $('.all_cat').each(function() {
+    $('.all_cat').each(function () {
         if (parcat_check()) {
             this.checked = true;
         } else {
@@ -171,19 +225,19 @@ function chicats_click_true(id, name) {
 }
 
 function chicats_click_false(id) {
-    $('.par_cat').each(function() {
+    $('.par_cat').each(function () {
         if (this.id === id) {
             this.checked = false;
         }
     });
-    $('.all_cat').each(function() {
+    $('.all_cat').each(function () {
         this.checked = false;
     });
 }
 
 function chicat_check(id) {
     let i = 1;
-    $('.chi_cat').each(function() {
+    $('.chi_cat').each(function () {
         if (this.id === id) {
             if (!this.checked) {
                 i = 0;
@@ -196,7 +250,7 @@ function chicat_check(id) {
 
 function chicat_check_print() {
     let i = 0;
-    $('.chi_cat').each(function() {
+    $('.chi_cat').each(function () {
         if (this.checked) {
             i = 1;
             return false;
@@ -205,24 +259,25 @@ function chicat_check_print() {
     return i;
 }
 
-function firstCoordinates(){
+function firstCoordinates() {
     ymaps.ready(init);
+
     function init() {
         let location = ymaps.geolocation;
         location.get({
-            mapStateAutoApply: true
-        })
+                mapStateAutoApply: true
+            })
             .then(
-                function(result) {
+                function (result) {
                     userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
                     $("#user_lat").val(userCoordinates[0]);
                     $("#user_long").val(userCoordinates[1]);
-                    $("#geoBut").click(); 
+                    $("#geoBut").click();
                     location.get({
-                        mapStateAutoApply: true
-                    })
+                            mapStateAutoApply: true
+                        })
                         .then(
-                            function(result) {
+                            function (result) {
                                 document.getElementById("suggest").value = result.geoObjects.get(0).properties.get('text');
                                 userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
                                 $("#user_lat").val(userCoordinates[0]);
@@ -230,39 +285,39 @@ function firstCoordinates(){
                                 myMap2.geoObjects.add(result.geoObjects);
                                 /*myMap2.setCenter(result.geoObjects.get(0).geometry.getCoordinates());*/
                             },
-                            function(err) {
+                            function (err) {
                                 console.log('Ошибка: ' + err);
                             }
                         );
                     $("#search_form").submit();
-                    
+
                 },
-                function(err) {
+                function (err) {
                     console.log('Ошибка: ' + err);
                 }
             );
     }
 }
 
-function map_reset(mapReset){
+function map_reset(mapReset) {
     $(".small-map").empty();
     $(".big-map").empty();
     $(".mobile-map").empty();
-    mapReset === 1
-    ? $(".small-map").append(
-        `<div id="map" class="h-60 my-5 rounded-lg w-full static">
+    mapReset === 1 ?
+        $(".small-map").append(
+            `<div id="map" class="h-60 my-5 rounded-lg w-full static">
                 <div class="relative float-right z-10 ml-1">
                     <img src="/images/big-map.png" class="hover:cursor-pointer bg-white w-8 h-auto mt-2 mr-2 p-1 rounded-md drop-shadow-lg" title="Kartani kattalashtirish" onclick="k = 2; map_reset(k);"/>
                 </div>
              </div>`
-    )
-    :$(".big-map").append(
-        `<div id="map" class="h-80 my-5 rounded-lg w-3/3 static align-items-center">
+        ) :
+        $(".big-map").append(
+            `<div id="map" class="h-80 my-5 rounded-lg w-3/3 static align-items-center">
                 <div class="relative float-right z-10 ml-1">
                     <img src="/images/small-map.png" class="hover:cursor-pointer bg-white w-8 h-auto mt-2 mr-2 p-1 rounded-md drop-shadow-lg" title="Kartani kichiklashtirish" onclick="k = 1; map_reset(k)"/>
                 </div>
              </div>`
-    );
+        );
 
     $(".mobile-map").append(
         `<div id="map" class="h-80 my-5 rounded-lg w-3/3 static align-items-center"></div>`
@@ -271,112 +326,121 @@ function map_reset(mapReset){
 }
 
 function map_show() {
-        ymaps.ready(init);
-        function init() {
-            let location = ymaps.geolocation;
-            if (userCoordinates[0].length === 0) {
-                location.get({
+    ymaps.ready(init);
+
+    function init() {
+        let location = ymaps.geolocation;
+        if (userCoordinates[0].length === 0) {
+            location.get({
                     mapStateAutoApply: true
                 })
-                    .then(
-                        function (result) {
-                            userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
-                        },
-                        function (err) {
-                            console.log('Ошибка: ' + err);
-                        }
-                    );
-            }
-
-            let myMap2 = new ymaps.Map('map', {
-                center: [userCoordinates[0], userCoordinates[1]],
-                zoom: 13,
-                controls: [],
-                // controls: ['zoomControl','geolocationControl'],
-                // behaviors: ['default', 'scrollZoom']
-            }, {
-                searchControlProvider: 'yandex#search'
-            });
-
-            var suggestView = new ymaps.SuggestView('suggest',{boundedBy: myMap2.getBounds()});
-            suggestView.events.add('select', function (e) {
-                var myGeo = ymaps.geocode(e.get('item').value);
-                myGeo.then(
-                    function (res) {
-                        userCoordinates = res.geoObjects.get(0).geometry.getCoordinates();
-                        /*myMap2.geoObjects.add(res.geoObjects)*/
-                        $("#user_lat").val(userCoordinates[0]);
-                        $("#user_long").val(userCoordinates[1]);
+                .then(
+                    function (result) {
+                        userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
+                    },
+                    function (err) {
+                        console.log('Ошибка: ' + err);
                     }
                 );
-            });
+        }
 
-            $("#geoBut").click(function(){
-                location.get({
+        let myMap2 = new ymaps.Map('map', {
+            center: [userCoordinates[0], userCoordinates[1]],
+            zoom: 13,
+            controls: [],
+            // controls: ['zoomControl','geolocationControl'],
+            // behaviors: ['default', 'scrollZoom']
+        }, {
+            searchControlProvider: 'yandex#search'
+        });
+
+        var suggestView = new ymaps.SuggestView('suggest', {
+            boundedBy: myMap2.getBounds()
+        });
+        suggestView.events.add('select', function (e) {
+            var myGeo = ymaps.geocode(e.get('item').value);
+            myGeo.then(
+                function (res) {
+                    userCoordinates = res.geoObjects.get(0).geometry.getCoordinates();
+                    /*myMap2.geoObjects.add(res.geoObjects)*/
+                    $("#user_lat").val(userCoordinates[0]);
+                    $("#user_long").val(userCoordinates[1]);
+                }
+            );
+        });
+
+        $("#geoBut").click(function () {
+            location.get({
                     mapStateAutoApply: true
                 })
-                    .then(
-                        function(result) {
-                            document.getElementById("suggest").value = result.geoObjects.get(0).properties.get('text');
-                            userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
-                            $("#user_lat").val(userCoordinates[0]);
-                            $("#user_long").val(userCoordinates[1]);
-                            myMap2.geoObjects.add(result.geoObjects);
-                            /*myMap2.setCenter(result.geoObjects.get(0).geometry.getCoordinates());*/
-                        },
-                        function(err) {
-                            console.log('Ошибка: ' + err);
-                        }
-                    );
-            });
+                .then(
+                    function (result) {
+                        document.getElementById("suggest").value = result.geoObjects.get(0).properties.get('text');
+                        userCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
+                        $("#user_lat").val(userCoordinates[0]);
+                        $("#user_long").val(userCoordinates[1]);
+                        myMap2.geoObjects.add(result.geoObjects);
+                        /*myMap2.setCenter(result.geoObjects.get(0).geometry.getCoordinates());*/
+                    },
+                    function (err) {
+                        console.log('Ошибка: ' + err);
+                    }
+                );
+        });
 
-            clusterer = new ymaps.Clusterer({
-                preset: 'islands#invertedGreenClusterIcons',
-                // hasBalloon: false,
-                gridSize: 80,
-                groupByCoordinates: false,
-                clusterDisableClickZoom: true,
-                clusterHideIconOnBalloonOpen: false,
-                geoObjectHideIconOnBalloonOpen: false
-            });
-            getPointData = function (index) {
-                return {
-                    balloonContentBody: '<br><font size=4><b><a href="/detailed-tasks/' + dataGeo[index].id + '">' + dataGeo[index].name + '</a></b></font><br><br><font size=3><p>' + dataGeo[index].start_date + ' - ' + dataGeo[index].end_date + '</p></font><br><font size=3><p>' + dataGeo[index].budget + '</p></font>',
-                    clusterCaption: 'Задания <strong>' + dataGeo[index].id + '</strong>'
-                };
-            }
-            getPointOptions = function () {
-                return {
-                    preset: 'islands#greenIcon'
-                };
-            }
-
-            geoObjects = [];
-            if (dataGeo.length != 0) {
-                for (var i = 0; i < dataGeo.length; i++) {
-                    geoObjects[i] = new ymaps.Placemark([dataGeo[i].latitude,dataGeo[i].longitude], getPointData(i), getPointOptions());
-                }
-            }
-
-            /*clusterer.options.set({
-            });*/
-
-            clusterer.add(geoObjects);
-            myMap2.geoObjects.add(clusterer);
-            myMap2.setBounds(clusterer.getBounds(), {
-                boundsAutoApply: true,
-                checkZoomRange: true
-            });
-
-            circle = new ymaps.Circle([userCoordinates, r*1000], null, { draggable: false, fill: false, outline: true, strokeColor: '#32CD32', strokeWidth: 3});
-            myMap2.geoObjects.add(circle);
+        clusterer = new ymaps.Clusterer({
+            preset: 'islands#invertedGreenClusterIcons',
+            // hasBalloon: false,
+            gridSize: 80,
+            groupByCoordinates: false,
+            clusterDisableClickZoom: true,
+            clusterHideIconOnBalloonOpen: false,
+            geoObjectHideIconOnBalloonOpen: false
+        });
+        getPointData = function (index) {
+            return {
+                balloonContentBody: '<br><font size=4><b><a href="/detailed-tasks/' + dataGeo[index].id + '">' + dataGeo[index].name + '</a></b></font><br><br><font size=3><p>' + dataGeo[index].start_date + ' - ' + dataGeo[index].end_date + '</p></font><br><font size=3><p>' + dataGeo[index].budget + '</p></font>',
+                clusterCaption: 'Задания <strong>' + dataGeo[index].id + '</strong>'
+            };
         }
+        getPointOptions = function () {
+            return {
+                preset: 'islands#greenIcon'
+            };
+        }
+
+        geoObjects = [];
+        if (dataGeo.length != 0) {
+            for (var i = 0; i < dataGeo.length; i++) {
+                geoObjects[i] = new ymaps.Placemark([dataGeo[i].latitude, dataGeo[i].longitude], getPointData(i), getPointOptions());
+            }
+        }
+
+        /*clusterer.options.set({
+        });*/
+
+        clusterer.add(geoObjects);
+        myMap2.geoObjects.add(clusterer);
+        myMap2.setBounds(clusterer.getBounds(), {
+            boundsAutoApply: true,
+            checkZoomRange: true
+        });
+
+        circle = new ymaps.Circle([userCoordinates, r * 1000], null, {
+            draggable: false,
+            fill: false,
+            outline: true,
+            strokeColor: '#32CD32',
+            strokeWidth: 3
+        });
+        myMap2.geoObjects.add(circle);
+    }
 }
 
 // script for mobile
 
-$(document).ready(function() {
-    $("#show").click(function() {
+$(document).ready(function () {
+    $("#show").click(function () {
         map1_show();
         $("#hide").css('display', 'block');
         $("#show").css('display', 'none');
@@ -384,7 +448,7 @@ $(document).ready(function() {
         $("footer").css('display', 'none');
         $('#big-big').removeClass("hidden");
     });
-    $("#hide").click(function() {
+    $("#hide").click(function () {
         $('#big-big').addClass("hidden");
         $("#hide").css('display', 'none');
         $("#show").css('display', 'block');
@@ -393,21 +457,21 @@ $(document).ready(function() {
     });
 });
 
-$(document).ready(function() {
-    $("#show_2").click(function() {
+$(document).ready(function () {
+    $("#show_2").click(function () {
         $("#hide_2").css('display', 'block');
         $("#show_2").css('display', 'none');
         $("#mobile_bar").css('display', 'block');
     });
-    $("#hide_2").click(function() {
+    $("#hide_2").click(function () {
         $("#hide_2").css('display', 'none');
         $("#show_2").css('display', 'block');
         $("#mobile_bar").css('display', 'none');
     });
 });
 
-$(document).ready(function() {
-    $("#show").click(function() {
+$(document).ready(function () {
+    $("#show").click(function () {
         map1_show();
         $("#hide").css('display', 'block');
         $("#show").css('display', 'none');
@@ -415,7 +479,7 @@ $(document).ready(function() {
         $("footer").css('display', 'none');
         $('#big-big').removeClass("hidden");
     });
-    $("#hide").click(function() {
+    $("#hide").click(function () {
         $('#big-big').addClass("hidden");
         $("#hide").css('display', 'none');
         $("#show").css('display', 'block');
@@ -424,22 +488,22 @@ $(document).ready(function() {
     });
 });
 
-$('#byDate').click(function(){
+$('#byDate').click(function () {
     $(this).addClass('font-bold')
     $('#bySearch').removeClass('font-bold')
 })
-$('#bySearch').click(function(){
+$('#bySearch').click(function () {
     $(this).addClass('font-bold')
     $('#byDate').removeClass('font-bold')
 })
 
-$('.has-clear input[type="text"]').on('input propertychange', function() {
+$('.has-clear input[type="text"]').on('input propertychange', function () {
     var $this = $(this);
     var visible = Boolean($this.val());
     $this.siblings('.form-control-clear').toggleClass('hidden', !visible);
 }).trigger('propertychange');
 
-$('.form-control-clear').click(function() {
+$('.form-control-clear').click(function () {
     $(this).siblings('input[type="text"]').val('')
         .trigger('propertychange').focus();
 });
@@ -449,6 +513,7 @@ $('.form-control-clear').click(function() {
 /* SaidMuxammad code lari*/
 let page = 1;
 let request = null;
+
 function loadTask(event) {
     if (request && request.readyState != 4) {
         request.abort();
@@ -512,22 +577,21 @@ $("#bySearch").click(function () {
     $("#search_form").submit();
 });
 
-$("#remjob").click(function(){
-    if($('#remjob').is(':checked')){
-        $(".disalable").find("select,input").prop("disabled",true)
+$("#remjob").click(function () {
+    if ($('#remjob').is(':checked')) {
+        $(".disalable").find("select,input").prop("disabled", true)
         $(".disalable").find("select,input").addClass("bg-gray-200 relative z-10 cursor-not-allowed")
     }
-    if($('#remjob').is(':not(:checked)')){
-        $(".disalable").find("select,input").prop("disabled",false)
+    if ($('#remjob').is(':not(:checked)')) {
+        $(".disalable").find("select,input").prop("disabled", false)
         $(".disalable").find("select,input").removeClass("bg-gray-200 relative z-10 cursor-not-allowed")
     }
 })
-$('#selectGeo').on('change', function() {
- if(this.value===""){
-    $("#suggest").prop("disabled",true).addClass("bg-gray-200 relative z-10 cursor-not-allowed")
- }
- else{
-    $("#suggest").prop("disabled",false).removeClass("bg-gray-200 relative z-10 cursor-not-allowed")
- }
- $("#search_form").submit();
-  });
+$('#selectGeo').on('change', function () {
+    if (this.value === "") {
+        $("#suggest").prop("disabled", true).addClass("bg-gray-200 relative z-10 cursor-not-allowed")
+    } else {
+        $("#suggest").prop("disabled", false).removeClass("bg-gray-200 relative z-10 cursor-not-allowed")
+    }
+    $("#search_form").submit();
+});

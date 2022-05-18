@@ -8,6 +8,10 @@ button{
     font-family: 'Montserrat', sans-serif;
 }
 
+.gag{
+    background: blue;
+}
+
 * {
     margin: 0px;
     padding: 0px;
