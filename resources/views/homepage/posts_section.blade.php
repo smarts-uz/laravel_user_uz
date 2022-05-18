@@ -7,14 +7,14 @@
             <div class="w-full overflow-y-scroll h-screen border rounded-lg px-4 home-categories">
                 @foreach($tasks as $task)
                     <div class="w-full grid grid-cols-5 gap-2 items-center border rounded-lg my-2 h-28 overflow-hidden force-overflow">
-                        <div class="icon col-span-1 mx-auto">
-                            <img src="{{ asset('storage/'.$task->category->ico) }}" alt="" class="h-14 w-14 bg-blue-200 p-2 rounded-xl">
+                        <div class="icon sm:col-span-1 col-span-2 mx-auto">
+                            <img src="{{ asset('storage/'.$task->category->ico) }}" alt="" class="sm:h-14 h-10 sm:w-14 w-10 bg-blue-200 p-2 rounded-xl">
                         </div>
-                        <div class="col-span-4">
-                            <a href="/detailed-tasks/{{$task->id}}" class="xl:text-2xl md:text-xl text-xl hover:text-yellow-500">
+                        <div class="sm:col-span-4 col-span-2">
+                            <a href="/detailed-tasks/{{$task->id}}" class="sm:text-xl text-sm hover:text-yellow-500">
                                 {{$task->name}}
                             </a>
-                            <p class="text-base mt-2 overflow-hidden whitespace-nowrap text-ellipsis text-gray-400">
+                            <p class="sm:text-lg text-xs mt-2 overflow-hidden text-gray-400">
                                 @if(strlen($task->description) >= 25)
                                     {{ Str::limit($task->description, 25) }}
                                 @else 

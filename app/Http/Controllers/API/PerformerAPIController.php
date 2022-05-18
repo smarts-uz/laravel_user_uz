@@ -99,6 +99,44 @@ class PerformerAPIController extends Controller
         return $performer->role_id == 5 ? new PerformerIndexResource($performer) : abort(404);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/give-task",
+     *     tags={"Task"},
+     *     summary="Give task by task ID and perfomer ID",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="performer_id",
+     *                    type="integer",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function give_task(GiveTaskRequest $request)
     {
         $data = $request->validated();
@@ -338,10 +376,11 @@ class PerformerAPIController extends Controller
 
     }
 
+    
     /**
      * @OA\Get(
      *     path="/api/reviews",
-     *     tags={"PerformersAPI"},
+     *     tags={"Performers"},
      *     summary="Performer reviews",
      *     @OA\Response (
      *          response=200,

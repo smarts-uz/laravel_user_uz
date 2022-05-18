@@ -753,6 +753,44 @@ class TaskAPIController extends Controller
         return $this->success($this->create_task_service->note_store($request->validated()));
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/create-task/images",
+     *     tags={"Task Create"},
+     *     summary="Task create images",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="images",
+     *                    type="file",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function uploadImages(Request $request)
     {
         return $this->create_task_service->image_store($request);

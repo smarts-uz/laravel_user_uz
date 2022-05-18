@@ -3,13 +3,11 @@
 
 namespace App\Services;
 
-use Illuminate\Database\Eloquent\Collection;
-use App\Events\MyEvent;
 use App\Item\ControllerItem;
 use App\Item\SearchServiceTaskItem;
 use App\Item\MyTaskItem;
 use App\Models\Task;
-use Illuminate\Support\Facades\Http;
+use App\Models\TaskResponse;
 use TCG\Voyager\Models\Category;
 
 class ControllerService

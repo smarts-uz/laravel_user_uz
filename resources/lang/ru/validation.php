@@ -93,7 +93,7 @@ return [
     "numeric" => "вам нужно ввести номер телефона",
     "password" => "valyation.password",
     "present" => "Validation.present",
-    "prohibited" => "valyation.prohibited",
+    "prohibited" => "Validation.prohibited",
     "prohibited_if" => "Validation.prohibited_if",
     "prohibited_unless" => "valyation.prohibited_unless",
     "prohibits" => "valyation.prohibits",

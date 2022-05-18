@@ -30,9 +30,6 @@ use App\Http\Controllers\SocialController;
 // avocoder
 use App\Http\Controllers\PerformersController;
 
-//++
-use App\Http\Controllers\ReportController;
-
 // javoxir
 use App\Http\Controllers\RefillController;
 
@@ -100,7 +97,6 @@ Route::group(['prefix' => 'chat'], function (){
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
-    Route::get('/reports', [ReportController::class, 'report'])->name("voyager.reports.index"); // javoxir
     Route::get("users/activitiy/{user}", [VoyagerUserController::class, "activity"])->name("voyagerUser.activity"); // javoxir
     Route::get('/messages/chat/{id}', [ConversationController::class, 'showChat'])->name("conversation.showChat"); // javoxir
     Route::post('/messages/chat/rate/{message}', [ConversationController::class, 'rating'])->name("conversation.rating"); // javoxir
@@ -228,7 +224,9 @@ Route::prefix("task")->group(function () {
         Route::post('/contact/{task}/store/register', [CreateController::class, 'contact_register'])->name('task.create.contact.store.register')->middleware('guest');
         Route::post('/contact/{task}/store/login/', [CreateController::class, 'contact_login'])->name('task.create.contact.store.login')->middleware('guest');
         Route::get('/verify/{task}/{user}', [CreateController::class, 'verify'])->name('task.create.verify');
+        Route::get('/verify/{task}/{user}/{data}', [CreateController::class, 'verify2'])->name('task.create.verify.phone');
         Route::post('/verify/{user}', [UserController::class, 'verifyProfil'])->name('task.create.verification');
+        Route::post('/verify/{task}', [UserController::class, 'verifyProfil2'])->name('task.create.verification.phone');
         Route::post('/upload', [CreateController::class, 'uploadImage']);
         Route::get('task/{task}/images/delete', [CreateController::class, 'deleteAllImages'])->name('task.images.delete')->middleware('auth');
         Route::post("/detailed-task/{task}/response", [ResponseController::class, 'store'])->name('task.response.store'); // javoxir

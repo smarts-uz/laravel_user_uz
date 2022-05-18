@@ -38,7 +38,7 @@ class ProfileAPIController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/profile",
+     *     path="/api/profile/",
      *     tags={"Profile"},
      *     summary="Profile index",
      *     @OA\Response (
@@ -239,9 +239,17 @@ class ProfileAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/profile/portfolio/create",
+     *     path="/api/portfolio/{portfolio}/update",
      *     tags={"Profile"},
      *     summary="Portfolio Update",
+     *     @OA\Parameter(
+     *          in="path",
+     *          name="portfolio",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
+     *     ),
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -957,28 +965,7 @@ class ProfileAPIController extends Controller
     }
 
 
-    /**
-     * @OA\Get(
-     *     path="/api/profile/settings",
-     *     tags={"Profile Settings"},
-     *     summary="Profile Settings",
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
+    
     public function settings()
     {
         $user = User::find(Auth::user()->id);
