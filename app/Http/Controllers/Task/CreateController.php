@@ -169,17 +169,13 @@ class CreateController extends Controller
     public function images_store(Task $task, Request $request)
     {
         $imgData = json_decode($task->photos);
-
         if ($request->hasFile('images')) {
-
             $fileName = time() . '_' .$request->images->getClientOriginalName();
             $filePath = $request->file('images')
-                ->move(public_path("storage/uploads/"), $fileName);
+                    ->move(public_path("storage/uploads/"), $fileName);
 
             $imgData[] = $fileName;
-
         }
-
         $task->photos = json_encode($imgData);
         $task->save();
     }
