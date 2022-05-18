@@ -1,6 +1,7 @@
 @extends("layouts.app")
 
 @section("content")
+<div class="hidden" id="map_route">{{ route('task.map', $task->id) }}</div>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -8,7 +9,7 @@
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/uz_latn.js"></script>
-<script src="{{ asset('js/detailed-task-map.js') }}"></script>
+{{--<script src="{{ asset('js/detailed-task-map.js') }}"></script>--}}
 {{--    <style>.flatpickr-calendar{width:230px;} </style>--}}
 <style>.flatpickr-calendar{max-width: 295px; width: 100%;} </style>
     <script>
@@ -329,7 +330,7 @@
 
 
         function ch_task(){
-            @php $host = request()->getHost();@endphp
+            {{--@php $host = request()->getHost();@endphp--}}
             var settings = {
                 "url": "{{ route('task.map', $task->id) }}",
                 "method": "GET",
@@ -354,6 +355,7 @@
                         '<path d="M14.704 6.72a.8.8 0 1 1 1.592.16l-.996 9.915a2.799 2.799 0 0 1-2.8 2.802h-7c-1.55 0-2.8-1.252-2.796-2.723l-1-9.994a.8.8 0 1 1 1.592-.16L4.3 16.794c0 .668.534 1.203 1.2 1.203h7c.665 0 1.2-.536 1.204-1.282l1-9.995z" fill="#666"/>' +
                         '<path d="M12.344 7.178a.75.75 0 1 0-1.494-.13l-.784 8.965a.75.75 0 0 0 1.494.13l.784-8.965zm-6.779 0a.75.75 0 0 1 1.495-.13l.784 8.965a.75.75 0 0 1-1.494.13l-.785-8.965z" fill="#666"/></svg> </button> ' +
                         '<input name="coordinates'+ x +'" type="hidden" id="coordinate'+ x +'" value="'+ajax_location[i].latitude +','+ajax_location[i].longitude+'"> </div>    ');
+                        myMapFunction2(ajax_location[i].latitude , ajax_location[i].longitude);
                     x++;
                     }
                 }

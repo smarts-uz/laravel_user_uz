@@ -222,8 +222,8 @@
                 },
                 points = [
                         @foreach($tasks as $data)
-                            @if($data->coordinates)
-                                [{{$data->coordinates}}],
+                            @if(strlen($data->coordinates) === 18)
+                                [{{$data->coordinates}}]
                             @endif
                         @endforeach
                 ],

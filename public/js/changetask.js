@@ -4,18 +4,18 @@ var alp =  ["B", "C", "D", "E", "F","G","H","I","J"];
 var suggestView = [];
 
 function getMapData() {
-    var result = false
+    var result = false;
     $.ajax({
         url: $("#map_route").text(),
         dataType: "json",
         type: "get",
         async: false,
         success: function (data) {
-            result = data
+            result = data;
         },
     });
 
-    return result
+    return result;
 }
 
 function init_map(){
@@ -30,7 +30,7 @@ function init_map(){
 
 ymaps.ready(init_map);
 
-// myMapFunction();
+/*myMapFunction();*/
 
 function init() {
 
@@ -56,6 +56,7 @@ function init() {
                 '<path d="M12.344 7.178a.75.75 0 1 0-1.494-.13l-.784 8.965a.75.75 0 0 0 1.494.13l.784-8.965zm-6.779 0a.75.75 0 0 1 1.495-.13l.784 8.965a.75.75 0 0 1-1.494.13l-.785-8.965z" fill="#666"/></svg> </button> ' +
                 '<input class="Input_Coord" name="coordinates'+ x +'" type="hidden" id="coordinate'+ x +'"> </div>    ');
             x++;
+            /*myMapFunction();*/
         }
         if(x == 10){
             $("#addbtn").hide();
@@ -148,6 +149,10 @@ function getLocals(xx) {
 }
 
 // Mapga joyni yuklash
+
+function myMapFunction2(lat, long) {
+
+}
 
 function myMapFunction() {
     place = document.getElementById("suggest0").value;
@@ -297,7 +302,8 @@ function myMapFunction() {
 
 
     myMap = new ymaps.Map('map', {
-        center: [ 41.311151,69.279737],
+        /*center: [ 41.311151,69.279737],*/
+        center: [ data[0].latitude, data[0].longitude],
         zoom: 13,
         controls: ['zoomControl']
 
