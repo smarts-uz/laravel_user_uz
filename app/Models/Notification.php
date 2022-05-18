@@ -18,9 +18,10 @@ class Notification extends Model
     public const TASK_CREATED = 1;
     public const NEWS_NOTIFICATION = 2;
     public const SYSTEM_NOTIFICATION = 3;
-    public const PERFORMER_SELECTED = 4;
+    public const GIVE_TASK = 4;
     public const TASK_SELECTED = 5;
     public const SEND_REVIEW = 6;
+    public const SELECT_PERFORMER = 7;
     public const SEND_REVIEW_PERFORMER = 8;
 
     public function user()

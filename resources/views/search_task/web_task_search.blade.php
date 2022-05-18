@@ -2,7 +2,7 @@
     <div class="grid grid-cols-5 container mx-auto gap-x-2">
         {{-- left start --}}
         <div class="col-span-3">
-            <form id="search_form" method="post" action="{{route('searchTask.search_new2')}}">
+            <form id="search_form" method="post" action="{{route('searchTask.ajax_tasks')}}"  autocomplete="off">
                 <div class="w-full bg-yellow-100 my-5 rounded-md  text-sm">
                     <div class="px-5 py-5 hidden md:block">
                         <div class="grid grid-cols-4 gap-4 mb-3">
@@ -16,13 +16,13 @@
                                     class="sm:w-2/12 w-4/12 bg-green-500 hover:bg-green-600 ml-1 py-1 px-1 rounded-md sm:mt-0 text-white"
                                     id="findBut">{{__('Найти')}}</button>
                             </div>
-                            <div class="md:inline-flex  block w-full col-span-4 ">
+                            <div class="md:inline-flex  block w-full col-span-4 disalable">
                                 <div class="w-8/12 md:w-4/5 relative">
                                     <label
                                         class="lg:text-base md:text-sm mb-1 text-neutral-400">{{__('Город, адрес, метро, район...')}}</label>
                                     <div class="">
                                         <input
-                                            class="form-input bg-white address float-left py-1 px-2 text-black-700 border-2 rounded-md focus:shadow-sm w-full text-black-700 focus:border-yellow-500 focus:outline-none  float-left bg-transparent border-0 mr-3.5 h-full"
+                                            class="form-input bg-white address float-left py-1 px-2 text-black-700 border-2 rounded-md focus:shadow-sm w-full text-black-700 focus:border-yellow-500 focus:outline-none  float-left bg-transparent border-0 mr-3.5 h-full "
                                             type="text" id="suggest" name="suggest">
                                         <svg class="absolute right-2 bottom-1.5 h-4 w-4 text-purple-500" id="geoBut"
                                             width="12" height="12" viewBox="0 0 24 24" stroke-width="2"
@@ -40,18 +40,18 @@
                                 </div>
                             </div>
                             <div class="md:inline-flex  block w-full col-span-4 ">
-                                <div class="md:w-2/5 pr-5">
+                                <div class="md:w-2/5 pr-5 disalable">
                                     <label
                                         class="lg:text-base md:text-sm mb-1 text-neutral-400">{{__('Радиус поиска')}}</label>
                                     <select name="radius" id="selectGeo"
                                         class="form-select py-1 px-2 w-full text-gray-700 border-2 rounded-md focus:shadow-sm focus:border-yellow-500 text-lg-left text-black-700 rounded"
                                         onchange="">
-                                        <option value="0">{{__('Без ограничений')}}</option>
+                                        <option value="">{{__('Без ограничений')}}</option>
                                         <option value="1.5">1.5 {{__('км')}}</option>
                                         <option value="3">3 {{__('км')}}</option>
                                         <option value="5">5 {{__('км')}}</option>
-                                        <option value="10">10 {{__('км')}}</option>
-                                        <option value="15">15 {{__('км')}}</option>
+                                        <option value="10" selected="selected">10 {{__('км')}}</option>
+                                        <option value="15" >15 {{__('км')}}</option>
                                         <option value="20">20 {{__('км')}}</option>
                                         <option value="30">30 {{__('км')}}</option>
                                         <option value="50">50 {{__('км')}}</option>
@@ -63,9 +63,9 @@
                                 <div class="relative pl-5 md:w-2/5">
                                     <label
                                         class="lg:text-base md:text-sm mb-1 text-neutral-400">{{__('Стоимость заданий')}}</label>
-                                    <input type="number" min="1" max="999999999" name="price"
+                                    <input type="text" min="1" max="999999999" name="price"
                                         class="form-input focus:border-yellow-500 focus:placeholder-transparent w-full border-md py-1 px-2 text-black-700 border-2 rounded-md border-neutral-400 focus:shadow-sm   text-black-700"
-                                        placeholder="UZS" id="price">
+                                        placeholder="UZS" onkeypress="validate(event)" id="price">
                                     <img src="images/close.png" class="absolute right-2 bottom-2.5 cursor-pointer"
                                         id="prcClose" hidden>
                                 </div>

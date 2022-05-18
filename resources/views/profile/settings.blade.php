@@ -212,9 +212,18 @@
                                                     </div>
                                                 @endforeach
                                             </div>
-                                            <input
-                                                    class="focus:outline-none  block md:w-3/5 w-full text-center bg-green-400 hover:bg-green-600 text-white uppercase p-4 rounded-xl mb-5"
-                                                    type="submit" name="submit" value="{{__('Сохранить')}}">
+                                            <p class="font-bold text-1xl mb-7"> {{__('Дополнительные типы уведомлений:')}}</p>
+                                            <div class="grid grid-cols-10 mt-5">
+                                                <input type="checkbox" name="sms_notification" value="1" {{$user->sms_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
+                                                <span class="col-span-9 ml-2">{{__('SMS')}}</span>
+                                            </div>
+                                            <div class="grid grid-cols-10 mt-5">
+                                                <input type="checkbox" name="email_notification" value="1" {{$user->email_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
+                                                <span class="col-span-9 ml-2">{{__('Email')}}</span>
+                                            </div>
+                                            <button
+                                                    class="block  md:w-1/2 w-full mt-10 bg-green-400 hover:bg-green-600 text-white uppercase p-4 rounded-xl"
+                                                    type="submit">{{__('Сохранить')}}</button>
                                         </form>
                                         <script>
                                             var acc = document.getElementsByClassName("accordion");
@@ -332,7 +341,8 @@
 
                                             </div>
                                             <div class="mt-12">
-                                                <h1 class="font-bold text-black text-3xl">Aktiv sessiyalar</h1>
+                                                <h1 class="font-bold text-black text-3xl">
+                                                    {{__('Активные сессии')}}</h1>
 
                                                 @foreach($sessions as $session)
 
@@ -340,7 +350,7 @@
                                                         <i class="fas fa-desktop mr-2 text-yellow-500"></i>
                                                         <p class="mx-1">{{ $session->ip_address == request()->ip()? "Xozirgi " :"" }}{{ $parser->parse($session->user_agent)->os->family }},</p>
                                                         <h1 class="mx-1">{{ $session->last_active }}, </h1>
-                                                        <span class="text-gray-500">браузер {{ $parser->parse($session->user_agent)->ua->family }}</span>
+                                                        <span class="text-gray-500">{{__('браузер')}} {{ $parser->parse($session->user_agent)->ua->family }}</span>
                                                     </div>
                                                 @endforeach
                                                 @foreach($sessions as $session)

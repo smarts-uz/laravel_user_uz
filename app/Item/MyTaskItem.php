@@ -2,7 +2,6 @@
 
 namespace App\Item;
 
-use TCG\Voyager\Models\Category;
 
 
 class MyTaskItem

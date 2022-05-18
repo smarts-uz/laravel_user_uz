@@ -67,8 +67,12 @@ class SearchService
 		        * cos(radians(`latitude`)) 
 		        * cos(radians(`longitude`) - radians($lon)) 
 		        + sin(radians($lat)) 
-		        * sin(radians(`latitude`))) as distance FROM `addresses` ) addresses WHERE distance <=$radius";
-        $results=DB::select(DB::raw($adressesQuery));
+		        * sin(radians(`latitude`))) as distance FROM `addresses` where `default` = 1 ) addresses WHERE distance <=$radius";
+                $results=[];
+
+if(!$remjob && $lat && $lon && $radius){
+$results=DB::select(DB::raw($adressesQuery));
+}
 
 $relatedAdress=[];
 foreach ($results as $result) {
@@ -76,22 +80,24 @@ foreach ($results as $result) {
 }
 
         $tasks = Task::query()
-            ->whereIn('id', $relatedAdress)
-            ->when($filter !== '', function ($query) use ($filter) {
+            ->whereIn('status', [1,2])
+            ->when(count($relatedAdress), function ($query) use ($relatedAdress) {
+                $query->whereIn('id', $relatedAdress);
+            })
+            ->when($filter, function ($query) use ($filter) {
                 $query->where('name', 'like', "%{$filter}%");
             })
             ->when($price, function ($query) use ($price) {
-              $query->where('budget', '>=', $price*0.8)
-                ->where('budget', '<=', $price*1.2);
+              $query->whereBetween('budget',  array(intval($price*0.8), intval($price*1.2)));
             })
             ->when($arr_check, function ($query) use ($arr_check) {
                 $query->whereIn('category_id', $arr_check);
             })
             ->when($remjob, function ($query) {
-                $query->whereNull('address');
+                $query->where('remote',1);
             })
             ->when($noresp, function ($query) {
-                $query->whereIn('status', [1, 2]);
+                $query->whereIn('status', [1]);
             })
             ->when($filterByStartDate,function ($query) {
                 $query->orderBy('start_date','desc');

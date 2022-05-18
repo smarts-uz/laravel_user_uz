@@ -82,6 +82,17 @@ class LoginController extends Controller
 
     }
 
+    public static function send_verification_for_task_phone($task, $phone)
+    {
+        $code = rand(100000, 999999);
+        (new SmsService())->send($phone, $code);
+
+        $task->verify_code = $code;
+        $task->verify_expiration = Carbon::now()->addMinutes(5);
+        $task->update();
+
+    }
+
     public function send_email_verification()
     {
         self::send_verification('email',auth()->user());
@@ -93,7 +104,7 @@ class LoginController extends Controller
     {
         self::send_verification('phone', auth()->user());
         return redirect()->back()->with([
-            'code' => 'Код отправлен!'
+            'code' => __('Код отправлен!')
         ]);
     }
 
@@ -203,7 +214,7 @@ class LoginController extends Controller
             self::send_verification('phone_number', auth()->user());
 
             return redirect()->back()->with([
-                'code' => 'Код отправлен!'
+                'code' => __('Код отправлен!')
             ]);
         }
     }

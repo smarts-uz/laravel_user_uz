@@ -86,7 +86,7 @@
                                         <div class="md:grid md:grid-cols-10 p-2">
                                             @foreach ($categories2 as $category2)
                                                 @if ($category2->id == $task->category_id)
-                                                <img src=" {{ asset('storage/'.$category2->ico) }}" alt="" class="h-12 w-12 bg-blue-200 p-2 rounded-xl md:mb-0 mb-3">
+                                                <img src=" {{ asset('storage/'.$category2->ico) }}" alt="" class="h-10 w-10 bg-blue-200 p-2 rounded-xl md:mb-0 mb-3">
                                                 @endif
                                             @endforeach
                                             <div class="col-span-6">
@@ -176,7 +176,8 @@
             var myMap = new ymaps.Map('map', {
                     center: [41.311081, 69.240562],
                     zoom: 9,
-                    behaviors: ['default', 'scrollZoom']
+                    /*behaviors: ['scrollZoom']*/
+                    controls: ['zoomControl']
                 }, {
                     searchControlProvider: 'yandex#search'
                 }),
@@ -221,9 +222,9 @@
                 },
                 points = [
                         @foreach($tasks as $data)
-
+                            @if($data->coordinates)
                                 [{{$data->coordinates}}],
-
+                            @endif
                         @endforeach
                 ],
                 geoObjects = [];
@@ -330,11 +331,6 @@
             if (category.is(":visible")){
                     $(".lenght").text(`{{__("Количество заданий :")}}` + category.length);
                 }
-        });
-    </script>
-    <script>
-        $(document).ready(function(){
-
         });
     </script>
 @endsection
