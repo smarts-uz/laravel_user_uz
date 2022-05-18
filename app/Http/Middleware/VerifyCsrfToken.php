@@ -24,6 +24,7 @@ class VerifyCsrfToken extends Middleware
         '/paynet',
         '/payme',
         '/click',
+        '/click/user-balance'
 //        '/send-review/*'
     ];
 }
