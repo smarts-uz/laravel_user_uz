@@ -121,23 +121,24 @@ class ResponseService
         ]);
         $taskResponse = TaskResponse::query()->where(['task_id' => $task->id])->where(['performer_id' => $performer->id])->first();
         if ($taskResponse->not_free == 0) {
-                $balance = WalletBalance::where('user_id', $performer->id)->first();
-                $balance->balance = $balance->balance - setting('admin.bepul_otklik');
-                $balance->save();
-                UserExpense::query()->create([
-                    'user_id' => $performer->id,
-                    'task_id' => $task->id,
-                    'client_id' => $response_user->id,
-                    'amount' => setting('admin.bepul_otklik')
-                ]);
-                All_transaction::query()->create([
-                    'user_id' => $performer->id,
-                    'method' => All_transaction::METHODS['Task'],
-                    'amount' => setting('admin.bepul_otklik'),
-                    'status' => 0,
-                    'state' => 1
-                ]);
-            }
+            $balance = WalletBalance::where('user_id', $performer->id)->first();
+            $balance->balance = $balance->balance - setting('admin.bepul_otklik');
+            $balance->save();
+            UserExpense::query()->create([
+                'user_id' => $performer->id,
+                'task_id' => $task->id,
+                'client_id' => $response_user->id,
+                'amount' => setting('admin.bepul_otklik')
+            ]);
+            All_transaction::query()->create([
+                'user_id' => $performer->id,
+                'method' => All_transaction::METHODS['Task'],
+                'amount' => setting('admin.bepul_otklik'),
+                'status' => 0,
+                'state' => 1
+            ]);
+        }
+        TaskResponse::query()->where(['task_id' => $task->id, 'not_free' => 0])->where('performer_id', '!=', $performer->id)->delete();
         return ['success' => true,'message' => __('success'), 'data' => $data];
     }
 
