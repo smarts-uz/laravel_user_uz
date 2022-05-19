@@ -71,9 +71,6 @@
                         </div>
                     </div>
 
-                    <input id="suggest" class="hidden" type="text">
-                    <button id="mpshow" class="hidden"></button>
-
                 </div>
 
                 <div id="second" class="hidden">
@@ -169,23 +166,43 @@
             type="text/javascript"></script>
     <script type="text/javascript">
         let mytaskCoordinates = [];
+        let myCoordinates = [[],[]];
         mytaskCoordinates = $.parseJSON(JSON.stringify({!! $tasks !!}));
-        console.log(mytaskCoordinates.length);
+        /*console.log(mytaskCoordinates);*/
 
-        ymaps.ready(function () {
+
+        ymaps.ready(init);
+        function init() {
+            let location = ymaps.geolocation;
+                location.get({
+                    mapStateAutoApply: true
+                })
+                    .then(
+                        function (result) {
+                            myCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
+                            /*myMap.setCenter(result.geoObjects.get(0).geometry.getCoordinates());*/
+                        },
+                        function (err) {
+                            console.log('Ошибка: ' + err);
+                        }
+                    );
+
             var myMap = new ymaps.Map('map', {
-                    center: [41.311081, 69.240562],
+                    center: [mytaskCoordinates[0].coordinates],
                     zoom: 9,
-                    /*behaviors: ['scrollZoom']*/
+                    /*behaviors: ['scrollZoom'],*/
                     controls: ['zoomControl']
                 }, {
                     searchControlProvider: 'yandex#search'
                 }),
+
+
+
                 clusterer = new ymaps.Clusterer({
 
                     preset: 'islands#invertedVioletClusterIcons',
 
-                    groupByCoordinates: false,
+                    groupByCoordinates: true,
 
                     clusterDisableClickZoom: true,
                     clusterHideIconOnBalloonOpen: false,
@@ -220,18 +237,12 @@
                         preset: 'islands#violetIcon'
                     };
                 },
-                points = [
-                        @foreach($tasks as $data)
-                            @if($data->coordinates)
-                                [{{$data->coordinates}}],
-                            @endif
-                        @endforeach
-                ],
+
                 geoObjects = [];
 
-
-            for(var i = 0, len = points.length; i < len; i++) {
-                geoObjects[i] = new ymaps.Placemark(points[i], getPointData(i), getPointOptions());
+            for(var i = 0, len = mytaskCoordinates.length; i < len; i++) {
+                geoObjects[i] = new ymaps.Placemark(mytaskCoordinates[i].coordinates, getPointData(i),
+                getPointOptions());
             }
 
 
@@ -247,9 +258,10 @@
 
 
             myMap.setBounds(clusterer.getBounds(), {
+                boundsAutoApply: true,
                 checkZoomRange: true
             });
-        });
+        }
     </script>
 
 
@@ -257,7 +269,6 @@
         let tabsContainer = document.querySelector("#tabs");
 
         let tabTogglers = tabsContainer.querySelectorAll("a");
-        console.log(tabTogglers);
 
         tabTogglers.forEach(function(toggler) {
         toggler.addEventListener("click", function(e) {

@@ -340,8 +340,19 @@ function map_show() {
                 geoObjectHideIconOnBalloonOpen: false
             });
             getPointData = function (index) {
+            let sd='', ed='';
+                if(dataGeo[index].start_date) {
+                    sd = 'Начать ' + dataGeo[index].start_date;
+                }else{
+                    sd = '';
+                }
+                if(dataGeo[index].end_date) {
+                    ed = 'Закончить ' + dataGeo[index].end_date;
+                }else{
+                    ed = '';
+                }
                 return {
-                    balloonContentBody: '<br><font size=4><b><a href="/detailed-tasks/' + dataGeo[index].id + '">' + dataGeo[index].name + '</a></b></font><br><br><font size=3><p>' + dataGeo[index].start_date + ' - ' + dataGeo[index].end_date + '</p></font><br><font size=3><p>' + dataGeo[index].budget + '</p></font>',
+                    balloonContentBody: '<br><font size=4><b><a class="text-blue-500" href="/detailed-tasks/' + dataGeo[index].id + '">' + dataGeo[index].name + '</a></b></font><br><br><font size=3><p>'+sd+'</p><p>' + ed + '</p></font><br><font size=3><p>до ' + dataGeo[index].budget + ' сум</p></font>',
                     clusterCaption: 'Задания <strong>' + dataGeo[index].id + '</strong>'
                 };
             }
