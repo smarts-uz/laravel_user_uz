@@ -958,7 +958,7 @@ class ProfileAPIController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'message' => $message($request->get('lang'))
+                'message' => $message[$request->get('lang')]
             ]
         ]);
 
