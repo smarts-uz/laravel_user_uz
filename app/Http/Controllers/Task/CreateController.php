@@ -95,7 +95,7 @@ class CreateController extends Controller
         $data = $request->validate(['radio' => 'required']);
 
         if ($data['radio'] === 'address')
-        {   
+        {
             return redirect()->route("task.create.address", $task->id);
         }
 
@@ -126,7 +126,7 @@ class CreateController extends Controller
     }
 
     public function date(Task $task)
-    {   
+    {
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_DATE);
         return view('create.date', compact('task','custom_fields'));
 
