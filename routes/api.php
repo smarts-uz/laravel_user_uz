@@ -74,6 +74,7 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('/select-performer/{response}', [ResponseAPIController::class, 'selectPerformer']); //end -
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); //end +
     Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); //end +
+    Route::get('/change-task/{task}', [TaskAPIController::class, 'getTask']);
     Route::put('/change-task/{task}', [TaskAPIController::class, 'changeTask']); //end -
     Route::post('give-task', [PerformerAPIController::class, 'give_task']); // end +
     Route::post('/become-performer', [PerformerAPIController::class, 'becomePerformerData']); //end +

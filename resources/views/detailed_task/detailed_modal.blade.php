@@ -165,7 +165,7 @@
                     <h2 class="font-semibold text-3xl mb-4 text-center">{{__('Откликнуться')}}</h2>
                 </header>
                 <main>
-                    <span class="text-base">{{('Описание отклика')}}</span>
+                    <span class="text-base">{{__('Описание отклика')}}</span>
                     <textarea required
                               class="resize-none rounded-md w-full focus:outline-none  focus:border-yellow-500 border border-gray-300 p-4  transition duration-200 mb-4"
                               type="text" id="form8" rows="4"

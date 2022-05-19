@@ -21,7 +21,8 @@ return [
         'chat/*',
         'api/chat/*',
         'click',
-        'payme'
+        'payme',
+        'click/user-balance'
     ],
 
     /*

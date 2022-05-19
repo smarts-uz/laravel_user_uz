@@ -121,7 +121,7 @@ Route::get('/change-task/{task}', [SearchTaskController::class, 'changeTask'])->
 Route::put('/change-task/{task}', [UpdateController::class, 'change'])->name("update.__invoke")->middleware('auth'); // javoxir
 Route::get('admin/reported-tasks', [VoyagerTaskController::class, 'reported_tasks'])->name('admin.tasks.reported')->middleware('auth');
 Route::get('admin/complete-task/{task}', [VoyagerTaskController::class, 'complete_task'])->name('admin.tasks.complete')->middleware('auth');
-Route::delete('admin/complete-task/{task}', [VoyagerTaskController::class, 'delete_task'])->name('admin.tasks.reported.delete')->middleware('auth');    
+Route::delete('admin/complete-task/{task}', [VoyagerTaskController::class, 'delete_task'])->name('admin.tasks.reported.delete')->middleware('auth');
 #endregion
 
 #region verificationInfo
@@ -291,6 +291,8 @@ Route::post('/complete', "App\Http\Controllers\RefillController@complete")->name
 Route::post('/paycom', 'App\Http\Controllers\PaycomTransactionController@paycom')->name('paycom'); // javoxir
 // Show transactions history
 Route::get('profile/transactions/history', [UserTransactionHisory::class, 'getTransactions'])->name('user.transactions.history')->middleware('auth');
+
+#payments
 Route::any('/paynet', function () {
     (new Goodoneuz\PayUz\PayUz)->driver('paynet')->handle();
 });
@@ -300,6 +302,7 @@ Route::any('/payme', function () {
 Route::any('/click', function () {
     (new Goodoneuz\PayUz\PayUz)->driver('click')->handle();
 });
+Route::post('/click/user-balance', [RefillController::class, 'getBalanceForClick']);
 #endregion
 
 

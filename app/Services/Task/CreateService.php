@@ -49,11 +49,14 @@ class CreateService
 
     public function addAdditionalAddress($task, $request){
         $data_inner = [];
-        $dataMain['coordinates'] = $request->coordinates0;
+        $dataMain = $request->coordinates0;
         for ($i = 0; $i < setting('site.max_address')??10; $i++) {
             $location = Arr::get($request->all(), 'location' . $i);
             $coordinates = Arr::get($request->all(), 'coordinates' . $i);
             if ($coordinates) {
+                if ($i == 0) {
+                    $data_inner['default'] = 1;
+                }
                 $data_inner['location'] = $location;
                 $data_inner['longitude'] = explode(',', $coordinates)[1];
                 $data_inner['latitude'] = explode(',', $coordinates)[0];
