@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use TCG\Voyager\Traits\Translatable;
 
@@ -20,6 +21,15 @@ class Category extends Model
         return $this->hasMany(Task::class);
 
     }
+
+    public function getIcoAttribute($value)
+    {	 
+        if($value==null){
+            $parentCategory = Category::find($this->parent_id);
+            return $parentCategory->ico;
+        }	
+        return ucfirst($value);
+    }	 	 
 
 
     public function custom_fields(){
