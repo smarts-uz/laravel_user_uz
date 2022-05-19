@@ -84,7 +84,7 @@ class ResponseService
     public function selectPerformer($response)
     {
         $task = $response->task;
-        if ($task->status >= 3 || $task->responses_count ||  auth()->user()->id == $response->performer_id ) {
+        if ($task->status >= 3 || auth()->user()->id == $response->performer_id ) {
             abort(403, 'No Permission');
         }
         $data = [
