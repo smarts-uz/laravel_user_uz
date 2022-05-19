@@ -32,7 +32,7 @@
                                     <div class="md:grid md:grid-cols-10 p-2">
                                         @foreach ($categories2 as $category2)
                                             @if ($category2->id == $task->category_id)
-                                                 <img src=" {{ asset('storage/'.$category2->ico) }}" alt="" class="h-10 w-10 bg-blue-200 p-2 rounded-xl md:mb-0 mb-3">
+                                                 <img src=" {{ asset('storage/'.$task->category->ico) }}" alt="" class="h-10 w-10 bg-blue-200 p-2 rounded-xl md:mb-0 mb-3">
                                             @endif
                                         @endforeach
                                         <div class="col-span-6">
@@ -83,7 +83,7 @@
                                         <div class="md:grid md:grid-cols-10 p-2">
                                             @foreach ($categories2 as $category2)
                                                 @if ($category2->id == $task->category_id)
-                                                <img src=" {{ asset('storage/'.$category2->ico) }}" alt="" class="h-10 w-10 bg-blue-200 p-2 rounded-xl md:mb-0 mb-3">
+                                                <img src=" {{ asset('storage/'.$task->category->ico) }}" alt="" class="h-10 w-10 bg-blue-200 p-2 rounded-xl md:mb-0 mb-3">
                                                 @endif
                                             @endforeach
                                             <div class="col-span-6">
