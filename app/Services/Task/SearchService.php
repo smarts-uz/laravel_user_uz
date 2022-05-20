@@ -105,7 +105,7 @@ foreach ($results as $result) {
             ->when(!$filterByStartDate,function ($query) {
                 $query->latest();
             })
-           ->paginate(5);
+           ->paginate(20);
 
 
         $tasks->transform(function ($task) use($users,$adresses,$categories){
@@ -127,7 +127,7 @@ foreach ($results as $result) {
         });
         $dataForMap=$tasks->map(function ($task) {
             return collect($task)
-            ->only(['id', 'name', 'start_date', 'end_date', 'budget', 'latitude', 'longitude'])
+            ->only(['id', 'name', 'address_main', 'start_date', 'end_date', 'budget', 'latitude', 'longitude'])
             ->toArray();
           });
 
