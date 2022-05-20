@@ -340,9 +340,11 @@ function map_show() {
                 geoObjectHideIconOnBalloonOpen: false
             });
             getPointData = function (index) {
-            let sd='', ed='';
+            let app_lcl = $('html').attr('lang');
+            console.log(app_lcl);
+            let sd='', ed='', addrM='';
                 if(dataGeo[index].start_date) {
-                    sd = 'Начать ' + dataGeo[index].start_date;
+                    sd = '{{__('Найти')}}' + dataGeo[index].start_date;
                 }else{
                     sd = '';
                 }
@@ -351,16 +353,21 @@ function map_show() {
                 }else{
                     ed = '';
                 }
+                if(dataGeo[index].address_main) {
+                    addrM = dataGeo[index].address_main;
+                }else{
+                    addrM = 'Можно выполнить удаленно';
+                }
                 return {
-                    balloonContentBody: '<br><font size=4><b><a class="text-blue-500" href="/detailed-tasks/' + dataGeo[index].id + '">' + dataGeo[index].name + '</a></b></font><br><br><font size=3><p>'+sd+'</p><p>' + ed + '</p></font><br><font size=3><p>до ' + dataGeo[index].budget + ' сум</p></font>',
+                    balloonContentBody: '<br><font size=4><b><a class="text-blue-500" href="/detailed-tasks/' + dataGeo[index].id + '">' + dataGeo[index].name + '</a></b></font><br><br><font size=3><p>' + addrM + '</p><br><p>'+sd+'</p><p>' + ed + '</p></font><br><font size=3><p>до ' + dataGeo[index].budget + ' сум</p></font>',
                     clusterCaption: 'Задания <strong>' + dataGeo[index].id + '</strong>'
                 };
-            }
+            },
             getPointOptions = function () {
                 return {
                     preset: 'islands#greenIcon'
                 };
-            }
+            },
 
             geoObjects = [];
             if (dataGeo.length != 0) {
@@ -482,6 +489,7 @@ function loadTask(event) {
         success: function (data) {
             $("#dataPlace").append(data.html);
             dataGeo.push.apply(dataGeo, data.dataForMap);
+            console.log(dataGeo)
             map_reset(k);
         },
         complete: function () {
