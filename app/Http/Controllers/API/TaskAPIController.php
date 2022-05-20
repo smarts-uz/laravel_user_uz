@@ -110,18 +110,13 @@ class TaskAPIController extends Controller
      */
     public function responses(Request $request, Task $task)
     {
-        $query = $task->responses()
-            ->orderByDesc(User::query()
-                ->select('review_rating')
-                ->whereColumn('users.id', 'task_responses.user_id'));
-
-        return TaskResponseResource::collection(
-            $task->responses()
-                ->orderByDesc(User::query()
-                    ->select('review_rating')
-                    ->whereColumn('users.id', 'task_responses.user_id'))
-                ->paginate(5)
-        );
+        if ($request->get('filter') == 'rating') {
+            $responses = TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')
+                ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating');
+        } else {
+            $responses = $task->responses();
+        }
+        return TaskResponseResource::collection($responses->paginate(10));
     }
 
     /**
