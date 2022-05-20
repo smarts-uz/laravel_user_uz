@@ -113,6 +113,10 @@ class TaskAPIController extends Controller
         if ($request->get('filter') == 'rating') {
             $responses = TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')
                 ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating');
+        } elseif ($request->get('filter') == 'date') {
+            $responses = $task->responses()->orderByDesc('created_at');
+        } elseif ($request->get('filter') == 'price') {
+            $responses = $task->responses()->orderBy('price');
         } else {
             $responses = $task->responses();
         }
