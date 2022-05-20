@@ -116,7 +116,7 @@ class TaskAPIController extends Controller
         } else {
             $responses = $task->responses();
         }
-        return TaskResponseResource::collection($responses->paginate(10));
+        return TaskResponseResource::collection($responses->paginate(5));
     }
 
     /**
