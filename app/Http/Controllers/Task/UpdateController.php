@@ -86,6 +86,7 @@ class UpdateController extends Controller
                 } else {
                     $performer->increment('review_bad');
                 }
+                $performer->increment('reviews');
                 Review::create([
                     'description' => $request->comment,
                     'good_bad' => $request->good,
