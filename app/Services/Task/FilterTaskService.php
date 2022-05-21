@@ -58,7 +58,7 @@ class FilterTaskService
 
         if (isset($data['search']))
         {
-            $s = $data['s'];
+            $s = $data['search'];
             $tasks->where('name','like',"%$s%")
                 ->orWhere('description', 'like',"%$s%")
                 ->orWhere('phone', 'like',"%$s%")
