@@ -22,6 +22,7 @@ return [
         'api/chat/*',
         'click',
         'payme',
+        'paynet',
         'click/user-balance'
     ],
 

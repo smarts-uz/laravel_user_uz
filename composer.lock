@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5f7e1c975c0c63e97106c0d9da02d2dc",
+    "content-hash": "41520a4f5639775fc0a73911c812a172",
     "packages": [
         {
             "name": "arrilot/laravel-widgets",
@@ -9777,6 +9777,59 @@
             "time": "2021-11-09T08:33:29+00:00"
         },
         {
+            "name": "teamprodev/laravel-payment",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/teamprodev/laravel-payment.git",
+                "reference": "e336ff62cf0889a8964d9c58ba108117954135e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/teamprodev/laravel-payment/zipball/e336ff62cf0889a8964d9c58ba108117954135e5",
+                "reference": "e336ff62cf0889a8964d9c58ba108117954135e5",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "5.7.*|5.8.*|6.*|7.*|^8.0",
+                "php": "^7.1|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Teamprodev\\LaravelPayment\\PayUzServiceProvider"
+                    ],
+                    "aliases": {
+                        "PayUz": "Teamprodev\\LaravelPayment\\PayUzFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Teamprodev\\LaravelPayment\\": "src/",
+                    "Teamprodev\\LaravelPayment\\database\\seeds\\": "src/database/seeds"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Faxriddin077",
+                    "email": "faxriddinqodirov077@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Payment package based on GoodOneUz payment package",
+            "support": {
+                "issues": "https://github.com/teamprodev/laravel-payment/issues",
+                "source": "https://github.com/teamprodev/laravel-payment/tree/1.0.0"
+            },
+            "time": "2022-05-20T19:56:23+00:00"
+        },
+        {
             "name": "teamprodev/laravel-payment-payme",
             "version": "1.1.0",
             "source": {
@@ -13343,5 +13396,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.3.0"
 }

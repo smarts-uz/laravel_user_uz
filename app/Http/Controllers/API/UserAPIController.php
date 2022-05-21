@@ -220,6 +220,10 @@ class UserAPIController extends Controller
             $data['password'] = Hash::make($data['password']);
             unset($data['password_confirmation']);
             $user = User::create($data);
+            $wallBal = new WalletBalance();
+            $wallBal->balance = setting('admin.bonus');
+            $wallBal->user_id = $user->id;
+            $wallBal->save();
             $user->api_token = Str::random(60);
             $user->remember_token = Str::random(60);
 

@@ -32,7 +32,7 @@
                                     <div class="md:grid md:grid-cols-10 p-2">
                                         @foreach ($categories2 as $category2)
                                             @if ($category2->id == $task->category_id)
-                                                 <img src=" {{ asset('storage/'.$category2->ico) }}" alt="" class="h-10 w-10 bg-blue-200 p-2 rounded-xl md:mb-0 mb-3">
+                                                 <img src=" {{ asset('storage/'.$task->category->ico) }}" alt="" class="h-14 w-14 bg-blue-200 p-2 rounded-xl md:mb-0 mb-3">
                                             @endif
                                         @endforeach
                                         <div class="col-span-6">
@@ -71,9 +71,6 @@
                         </div>
                     </div>
 
-                    <input id="suggest" class="hidden" type="text">
-                    <button id="mpshow" class="hidden"></button>
-
                 </div>
 
                 <div id="second" class="hidden">
@@ -86,7 +83,7 @@
                                         <div class="md:grid md:grid-cols-10 p-2">
                                             @foreach ($categories2 as $category2)
                                                 @if ($category2->id == $task->category_id)
-                                                <img src=" {{ asset('storage/'.$category2->ico) }}" alt="" class="h-10 w-10 bg-blue-200 p-2 rounded-xl md:mb-0 mb-3">
+                                                <img src=" {{ asset('storage/'.$task->category->ico) }}" alt="" class="h-14 w-14 bg-blue-200 p-2 rounded-xl md:mb-0 mb-3">
                                                 @endif
                                             @endforeach
                                             <div class="col-span-6">
@@ -169,23 +166,43 @@
             type="text/javascript"></script>
     <script type="text/javascript">
         let mytaskCoordinates = [];
+        let myCoordinates = [[],[]];
         mytaskCoordinates = $.parseJSON(JSON.stringify({!! $tasks !!}));
-        console.log(mytaskCoordinates.length);
+        /*console.log(mytaskCoordinates);*/
 
-        ymaps.ready(function () {
+
+        ymaps.ready(init);
+        function init() {
+            let location = ymaps.geolocation;
+                location.get({
+                    mapStateAutoApply: true
+                })
+                    .then(
+                        function (result) {
+                            myCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
+                            /*myMap.setCenter(result.geoObjects.get(0).geometry.getCoordinates());*/
+                        },
+                        function (err) {
+                            console.log('Ошибка: ' + err);
+                        }
+                    );
+
             var myMap = new ymaps.Map('map', {
-                    center: [41.311081, 69.240562],
+                    center: [mytaskCoordinates[0].coordinates],
                     zoom: 9,
-                    /*behaviors: ['scrollZoom']*/
+                    /*behaviors: ['scrollZoom'],*/
                     controls: ['zoomControl']
                 }, {
                     searchControlProvider: 'yandex#search'
                 }),
+
+
+
                 clusterer = new ymaps.Clusterer({
 
                     preset: 'islands#invertedVioletClusterIcons',
 
-                    groupByCoordinates: false,
+                    groupByCoordinates: true,
 
                     clusterDisableClickZoom: true,
                     clusterHideIconOnBalloonOpen: false,
@@ -220,18 +237,12 @@
                         preset: 'islands#violetIcon'
                     };
                 },
-                points = [
-                        @foreach($tasks as $data)
-                            @if(strlen($data->coordinates) === 18)
-                                [{{$data->coordinates}}]
-                            @endif
-                        @endforeach
-                ],
+
                 geoObjects = [];
 
-
-            for(var i = 0, len = points.length; i < len; i++) {
-                geoObjects[i] = new ymaps.Placemark(points[i], getPointData(i), getPointOptions());
+            for(var i = 0, len = mytaskCoordinates.length; i < len; i++) {
+                geoObjects[i] = new ymaps.Placemark(mytaskCoordinates[i].coordinates, getPointData(i),
+                getPointOptions());
             }
 
 
@@ -247,9 +258,10 @@
 
 
             myMap.setBounds(clusterer.getBounds(), {
+                boundsAutoApply: true,
                 checkZoomRange: true
             });
-        });
+        }
     </script>
 
 
@@ -257,7 +269,6 @@
         let tabsContainer = document.querySelector("#tabs");
 
         let tabTogglers = tabsContainer.querySelectorAll("a");
-        console.log(tabTogglers);
 
         tabTogglers.forEach(function(toggler) {
         toggler.addEventListener("click", function(e) {

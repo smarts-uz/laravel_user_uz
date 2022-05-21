@@ -43,7 +43,7 @@ class SearchService
         $item = new SearchServiceTaskItem();
         $item->complianceType = ComplianceType::all();
         $item->selected = $task->responses()->where('performer_id', $task->performer_id)->first();
-        $item->responses = $item->selected ? $task->responses()->where('id', '!=', $item->selected->id)->get() : $task->responses;
+        $item->responses = $item->selected ? $task->responses()->where('id', '!=', $item->selected->id)->get() : $task->responses();
         $item->auth_response = $auth_response ? $task->responses()->where('performer_id', $userId)->with('user')->first() : null;
         $item->same_tasks = $task->category->tasks()->where('id', '!=', $task->id)->where('status', [1,2])->orderBy('created_at', 'desc')->get();
         $item->addresses = $task->addresses;
@@ -62,11 +62,11 @@ class SearchService
         $categories = Category::all()->keyBy('id');
         $adresses = Address::all()->keyBy('id');
         $adressesQuery ="
-        SELECT task_id FROM ( SELECT task_id, 
-        6371 * acos(cos(radians($lat)) 
-		        * cos(radians(`latitude`)) 
-		        * cos(radians(`longitude`) - radians($lon)) 
-		        + sin(radians($lat)) 
+        SELECT task_id FROM ( SELECT task_id,
+        6371 * acos(cos(radians($lat))
+		        * cos(radians(`latitude`))
+		        * cos(radians(`longitude`) - radians($lon))
+		        + sin(radians($lat))
 		        * sin(radians(`latitude`))) as distance FROM `addresses` where `default` = 1 ) addresses WHERE distance <=$radius";
                 $results=[];
 
@@ -105,7 +105,7 @@ foreach ($results as $result) {
             ->when(!$filterByStartDate,function ($query) {
                 $query->latest();
             })
-           ->paginate(5);
+           ->paginate(20);
 
 
         $tasks->transform(function ($task) use($users,$adresses,$categories){
@@ -117,20 +117,20 @@ foreach ($results as $result) {
                     $task->address_main = Arr::get($mainAdress, 'location');
                     $task->latitude = Arr::get($mainAdress, 'latitude');
                     $task->longitude = Arr::get($mainAdress, 'longitude');
-                    
+
                 if ($categories->contains($task->category_id)) {
                     $task->category_icon = $categories->get($task->category_id)->ico;
                     $task->category_name = $categories->get($task->category_id)->name;
                 }
-            
+
             return $task;
         });
         $dataForMap=$tasks->map(function ($task) {
             return collect($task)
-            ->only(['id', 'name', 'start_date', 'end_date', 'budget', 'latitude', 'longitude'])
+            ->only(['id', 'name', 'address_main', 'start_date', 'end_date', 'budget', 'latitude', 'longitude'])
             ->toArray();
           });
-    
+
         return [$tasks, $dataForMap];
     }
 }

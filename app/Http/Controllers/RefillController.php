@@ -62,6 +62,7 @@ class RefillController extends Controller
             "error" => 0,
             "error_note" => "Успешно",
             "params" => [
+                'title' => "Balance",
                 'balance' => $user->walletBalance->balance ?? 0
             ]
         ]);

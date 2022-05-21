@@ -14,8 +14,8 @@ class UserInTaskResource extends JsonResource
      */
     public function toArray($request)
     {
-        $goods = $this->goodReviews()->count();
-        $bads =  $this->badReviews()->count();
+        $goods = $this->review_good;
+        $bads =  $this->review_bad;
         return [
             'id' => $this->id,
             'name' => $this->name,

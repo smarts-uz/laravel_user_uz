@@ -939,7 +939,7 @@ class ProfileAPIController extends Controller
             ]);
         }
         $user = Auth::user();
-        $data = $request->all();
+        $data = $request->except('lang');
         $destination = 'storage/' . $user->avatar;
         if (File::exists($destination)) {
             File::delete($destination);
@@ -958,14 +958,14 @@ class ProfileAPIController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'message' => $message($request->get('lang'))
+                'message' => $message[$request->get('lang')]
             ]
         ]);
 
     }
 
 
-    
+
     public function settings()
     {
         $user = User::find(Auth::user()->id);

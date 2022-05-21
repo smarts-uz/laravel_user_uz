@@ -19,6 +19,7 @@ use App\Http\Resources\TaskPaginationResource;
 use App\Http\Resources\TaskResponseResource;
 use App\Models\Task;
 use App\Models\TaskResponse;
+use App\Models\User;
 use App\Services\Response;
 use App\Services\Task\CreateService;
 use App\Services\Task\CreateTaskService;
@@ -107,9 +108,19 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function responses(Task $task)
+    public function responses(Request $request, Task $task)
     {
-        return TaskResponseResource::collection($task->responses);
+        if ($request->get('filter') == 'rating') {
+            $responses = TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')
+                ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating');
+        } elseif ($request->get('filter') == 'date') {
+            $responses = $task->responses()->orderByDesc('created_at');
+        } elseif ($request->get('filter') == 'price') {
+            $responses = $task->responses()->orderBy('price');
+        } else {
+            $responses = $task->responses();
+        }
+        return TaskResponseResource::collection($responses->paginate(5));
     }
 
     /**

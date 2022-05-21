@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Task;
 
+use App\Models\TaskResponse;
 use App\Services\Task\CreateService;
 use App\Services\Task\CustomFieldService;
 use App\Models\Task;
@@ -45,7 +46,7 @@ class SearchTaskController extends VoyagerBaseController
         return $this->service->ajaxReq();
     }
 
-    public function task(Task $task)
+    public function task(Task $task, Request $request)
     {
         if (!$task->user_id) {
             abort(404);
@@ -57,7 +58,7 @@ class SearchTaskController extends VoyagerBaseController
             $task->save();
         }
 
-        
+
         $value = Carbon::parse($task->created_at)->locale(getLocale());
         $day = $value == now()->toDateTimeString()? "Bugun": "$value->day-$value->monthName";
         $created = "$day  $value->noZeroHour:$value->minute";
@@ -74,9 +75,21 @@ class SearchTaskController extends VoyagerBaseController
         $auth_response = auth()->check();
         $userId = auth()->id();
         $item = $this->service->task_service($auth_response, $userId, $task);
+        if ($request->get('filter') == 'rating') {
+            $responses = TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')
+                ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating')->get();
+        } elseif ($request->get('filter') == 'date') {
+            $responses = $item->responses->orderByDesc('created_at')->get();
+        } elseif ($request->get('filter') == 'reviews') {
+            $responses = TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')
+                ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.reviews')->get();
+        } else {
+            $responses = $item->responses->get();
+        }
+//        dd($responses);
         return view('task.detailed-tasks',
         ['review_description' => $item->review_description,'task' => $task, 'created' => $created, 'end' => $end, 'start' => $start, 'review' => $review, 'complianceType' => $item->complianceType, 'same_tasks' => $item->same_tasks,
-        'auth_response' => $item->auth_response, 'selected' => $item->selected, 'responses' => $item->responses, 'addresses' => $item->addresses, 'top_users'=>$item->top_users, 'respons_reviews'=>$item->respons_reviews]);
+        'auth_response' => $item->auth_response, 'selected' => $item->selected, 'responses' => $responses, 'addresses' => $item->addresses, 'top_users'=>$item->top_users, 'respons_reviews'=>$item->respons_reviews]);
     }
 
     public function comlianse_save(Request $request)
@@ -122,15 +135,15 @@ public function search_new2(Request $request){
 
     $radius = $data["radius"]['value']??null;
     $price = $data["price"]['value']??null;
-    
-    
+
+
     $filterByStartDate=$data["sortBySearch"]['value']??false;
     $arr_check = $data->except(['filter', 'suggest', 'user_lat','user_long',"radius","price",'remjob','noresp'])->pluck('name');
     $remjob = $data['remjob']['value']??false;
     $noresp = $data['noresp']['value']??false;
-    
-   
-    
+
+
+
     $tasks = $this->service->search_new_service(
                         $arr_check, $filter,
                          $suggest, $price, $remjob,
