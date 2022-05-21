@@ -495,25 +495,24 @@ class ProfileAPIController extends Controller
     public function reviews(Request $request)
     {
         $user = auth()->user();
+        $reviews = Review::query()->where(['user_id' => $user->id]);
         if ($request->get('performer') == 1) {
-            $data = Review::query()->where(['user_id' => $user->id])
-                ->whereHas('task', function (Builder $q) use ($user) {
-                    $q->where(['performer_id' => $user->id]);
-                });
-        } else {
-            $data = Review::query()->where(['user_id' => $user->id])
-                ->whereHas('task', function (Builder $q) use ($user) {
-                    $q->where(['user_id' => $user->id]);
-                });
+            $reviews->whereHas('task', function (Builder $q) use ($user) {
+                $q->where(['as_performer' => 1]);
+            });
+        } elseif ($request->get('performer') == 0) {
+            $reviews->whereHas('task', function (Builder $q) use ($user) {
+                $q->where(['as_performer' => 0]);
+            });
         }
         if ($request->get('review') == 'good') {
-            $data = $data->where(['good_bad' => 1]);
+            $reviews->where(['good_bad' => 1]);
         } elseif ($request->get('review') == 'bad') {
-            $data = $data->where(['good_bad' => 0]);
+            $reviews->where(['good_bad' => 0]);
         }
         return response()->json([
             'success' => true,
-            'data' => ReviewIndexResource::collection($data->get())
+            'data' => ReviewIndexResource::collection($reviews->get())
         ]);
     }
 
@@ -1560,20 +1559,24 @@ class ProfileAPIController extends Controller
      */
     public function userReviews(Request $request, User $user)
     {
+        $reviews = Review::query()->where(['user_id' => $user->id]);
         if ($request->get('performer') == 1) {
-            $data = Review::query()->where(['user_id' => $user->id])
-                ->whereHas('task', function (Builder $q) use ($user) {
-                    $q->where(['performer_id' => $user->id]);
-                })->get();
-        } else {
-            $data = Review::query()->where(['user_id' => $user->id])
-                ->whereHas('task', function (Builder $q) use ($user) {
-                    $q->where(['user_id' => $user->id]);
-                })->get();
+            $reviews->whereHas('task', function (Builder $q) use ($user) {
+                $q->where(['as_performer' => 1]);
+            });
+        } elseif ($request->get('performer') == 0) {
+            $reviews->whereHas('task', function (Builder $q) use ($user) {
+                $q->where(['as_performer' => 0]);
+            });
+        }
+        if ($request->get('review') == 'good') {
+            $reviews->where(['good_bad' => 1]);
+        } elseif ($request->get('review') == 'bad') {
+            $reviews->where(['good_bad' => 0]);
         }
         return response()->json([
             'success' => true,
-            'data' => ReviewIndexResource::collection($data)
+            'data' => ReviewIndexResource::collection($reviews->get())
         ]);
     }
 
