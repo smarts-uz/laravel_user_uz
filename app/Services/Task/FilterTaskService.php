@@ -45,7 +45,7 @@ class FilterTaskService
         if (isset($data['budget'])) {
             $tasks->where('budget', ">=", (int) $data['budget'] )->pluck('id')->toArray();
         }
-        if (isset($data['is_remote']) && !(isset($data['lat']) && isset($data['long']) && isset($data['difference']))) {
+        if (isset($data['is_remote']) && !(isset($data['lat']) && !isset($data['long']) && !isset($data['difference']))) {
             $is_remote = $data['is_remote'];
             if ($is_remote == 1)
                 $tasks->whereDoesntHave('addresses');
@@ -56,7 +56,7 @@ class FilterTaskService
                 $tasks->whereDoesntHave('responses');
         }
 
-        if (isset($data['s']))
+        if (isset($data['search']))
         {
             $s = $data['s'];
             $tasks->where('name','like',"%$s%")
