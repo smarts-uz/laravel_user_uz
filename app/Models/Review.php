@@ -35,12 +35,23 @@ class Review extends Model
         return "$day  $value->noZeroHour:$minut";
     }
 
-    public function scopeFromWhichType($query, $type)
+    public function scopeFromUserType($query, $type)
     {
         if ($type == 'user') {
             return $query->where('as_performer', 0);
         } elseif ($type == 'performer') {
             return $query->where('as_performer', 1);
+        }
+    }
+
+    public function scopeType($query, $type)
+    {
+        if ($type == 'good') {
+            return $query->where('good_bad', 1);
+        } elseif ($type == 'bad') {
+            return $query->where('good_bad', 0);
+        } elseif ($type == 'all') {
+            return $query;
         }
     }
 }
