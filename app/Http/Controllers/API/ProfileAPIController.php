@@ -495,24 +495,10 @@ class ProfileAPIController extends Controller
     public function reviews(Request $request)
     {
         $user = auth()->user();
-        $reviews = Review::query()->where(['user_id' => $user->id]);
-        if ($request->get('performer') == 1) {
-            $reviews->whereHas('task', function (Builder $q) use ($user) {
-                $q->where(['as_performer' => 1]);
-            });
-        } elseif ($request->get('performer') == 0) {
-            $reviews->whereHas('task', function (Builder $q) use ($user) {
-                $q->where(['as_performer' => 0]);
-            });
-        }
-        if ($request->get('review') == 'good') {
-            $reviews->where(['good_bad' => 1]);
-        } elseif ($request->get('review') == 'bad') {
-            $reviews->where(['good_bad' => 0]);
-        }
+        $reviews = ProfileService::userReviews($user, $request);
         return response()->json([
             'success' => true,
-            'data' => ReviewIndexResource::collection($reviews->get())
+            'data' => ReviewIndexResource::collection($reviews)
         ]);
     }
 
@@ -1559,24 +1545,10 @@ class ProfileAPIController extends Controller
      */
     public function userReviews(Request $request, User $user)
     {
-        $reviews = Review::query()->where(['user_id' => $user->id]);
-        if ($request->get('performer') == 1) {
-            $reviews->whereHas('task', function (Builder $q) use ($user) {
-                $q->where(['as_performer' => 1]);
-            });
-        } elseif ($request->get('performer') == 0) {
-            $reviews->whereHas('task', function (Builder $q) use ($user) {
-                $q->where(['as_performer' => 0]);
-            });
-        }
-        if ($request->get('review') == 'good') {
-            $reviews->where(['good_bad' => 1]);
-        } elseif ($request->get('review') == 'bad') {
-            $reviews->where(['good_bad' => 0]);
-        }
+        $reviews = ProfileService::userReviews($user, $request);
         return response()->json([
             'success' => true,
-            'data' => ReviewIndexResource::collection($reviews->get())
+            'data' => ReviewIndexResource::collection($reviews)
         ]);
     }
 

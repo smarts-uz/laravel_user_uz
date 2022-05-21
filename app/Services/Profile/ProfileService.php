@@ -5,8 +5,10 @@ namespace App\Services\Profile;
 use App\Item\ProfileCashItem;
 use App\Item\ProfileDataItem;
 use App\Models\Region;
+use App\Models\Review;
 use App\Models\Session;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Portfolio;
@@ -165,5 +167,25 @@ class ProfileService
         $item ->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->get();
         $item ->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->get();
         return $item;
+    }
+
+    public static function userReviews($user, Request $request)
+    {
+        $reviews = Review::query()->where(['user_id' => $user->id]);
+        if ($request->get('performer') == 1) {
+            $reviews->whereHas('task', function (Builder $q) use ($user) {
+                $q->where(['as_performer' => 1]);
+            });
+        } elseif ($request->get('performer') == 0) {
+            $reviews->whereHas('task', function (Builder $q) use ($user) {
+                $q->where(['as_performer' => 0]);
+            });
+        }
+        if ($request->get('review') == 'good') {
+            $reviews->where(['good_bad' => 1]);
+        } elseif ($request->get('review') == 'bad') {
+            $reviews->where(['good_bad' => 0]);
+        }
+        return $reviews->get();
     }
 }
