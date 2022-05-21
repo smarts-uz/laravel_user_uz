@@ -31,14 +31,14 @@
 
 
                             <div
-                                class="text-lg m-auto py-5 sm:text-2xl  -mt-3 font-bold font-['Radiance,sans-serif,Noto Sans']">
+                                class="text-lg py-5 sm:text-2xl  -mt-3 font-bold">
                                 {{__('Подтвердите адрес вашей почты')}}
                             </div>
-                            <p class="text-sm sm:text-xl sm:my-8 xl:my-2 text-gray-700 traking-tight">
+                            <p class="text-sm sm:text-xl sm:my-8 xl:my-2 text-gray-700 ">
                                 {{__('На ваш электронный адрес')}} <strong>{{auth()->user()->email}}</strong>
                                 {{__('было отправлено письмо со ссылкой для подтверждения вашей почты на Universal Services.')}}
                             </p>
-                            <p class="text-sm sm:text-xl my-2 sm:my-8 text-gray-700 traking-tight">
+                            <p class="text-sm sm:text-xl my-2 sm:my-8 text-gray-700 ">
                                 {{__('Пройдите по ссылке и активируйте вашу электронную почту.')}}
                             </p>
 
@@ -111,7 +111,7 @@
                                 <div class="text-right -mt-5 ">
                                     <button @click="showModal = !showModal"
                                             class="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">
-
+                                        x
                                     </button>
                                 </div>
 
@@ -120,11 +120,11 @@
                                     class="text-2xl md:w-[500px] -mt-5 font-bold font-['Radiance,sans-serif,Noto Sans']">
                                     {{__('Подтвердите номер телефона')}}
                                 </div>
-                                <p class="my-8 text-gray-700 traking-tight">
+                                <p class="my-8 text-gray-700 ">
                                     {{__('На ваш телефонный номер')}}  <strong>{{auth()->user()->phone_number}}  </strong>
                                       {{__('было отправлено письмо со кодом для подтверждения вашего аккаунта на Universal Services.')}}
                                 </p>
-                                <p class="my-8 text-gray-700 traking-tight">
+                                <p class="my-8 text-gray-700 ">
                                     {{__('Отправить новый код для подтверждения телефонный номер')}}
                                 </p>
 
@@ -208,7 +208,7 @@
                         w-full py-2 px-3 text-gray-700 mb-1 leading-tight hover:border-amber-500"
                                        autofocus>
 
-                                <p class="text-red-500">{{session('code')}}</p>
+                                <p class="text-blue-500">{{session('code')}}</p>
 
                                 @error('code')
                                 <p class="text-red-500">{{ $message }}</p>

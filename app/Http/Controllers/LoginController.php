@@ -48,6 +48,9 @@ class LoginController extends Controller
 
         $data['password'] = Hash::make($request->password);
         unset( $data['password_confirmation']);
+        if (!str_starts_with($data['phone_number'], '+998')) {
+            $data['phone_number'] = '+998' . $data['phone_number'];
+        }
         $user = User::create($data);
         $wallBal = new WalletBalance();
         $wallBal->balance = setting('admin.bonus');
