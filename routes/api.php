@@ -56,6 +56,17 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('create-task/contacts', [TaskAPIController::class, 'contacts']); //end +
     Route::post('create-task/verify', [TaskAPIController::class, 'verify']); //end +
 
+    Route::post('update-task/{task}/name', [TaskAPIController::class, 'updateName']); //end +
+    Route::post('update-task/{task}/custom', [TaskAPIController::class, 'updateCustom']); //end -
+    Route::post('update-task/{task}/remote', [TaskAPIController::class, 'updateRemote']); //end +
+    Route::post('update-task/{task}/address', [TaskAPIController::class, 'updateAddress']); //end
+    Route::post('update-task/{task}/date', [TaskAPIController::class, 'updateDate']); //end +
+    Route::post('update-task/{task}/budget', [TaskAPIController::class, 'updateBudget']); //end +
+    Route::post('update-task/{task}/note', [TaskAPIController::class, 'updateNote']); //end +
+    Route::post('update-task/{task}/images', [TaskAPIController::class, 'updateUploadImages']); //end +
+    Route::post('update-task/{task}/contacts', [TaskAPIController::class, 'updateContacts']); //end +
+    Route::post('update-task/{task}/verify', [TaskAPIController::class, 'updateVerify']); //end +
+
     Route::get('/notifications', [NotificationController::class, 'index']);
 
     Route::get('/my-tasks-count', [TaskAPIController::class, 'my_tasks_count']); //end +

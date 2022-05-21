@@ -65,7 +65,7 @@ class FilterTaskService
                 ->orWhere('budget', 'like',"%$s%");
         }
 
-        return $tasks->paginate();
+        return $tasks->orderByDesc('created_at')->paginate();
     }
 
 
