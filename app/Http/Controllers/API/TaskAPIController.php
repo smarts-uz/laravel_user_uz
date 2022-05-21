@@ -17,6 +17,7 @@ use App\Http\Resources\SameTaskResource;
 use App\Http\Resources\TaskIndexResource;
 use App\Http\Resources\TaskPaginationResource;
 use App\Http\Resources\TaskResponseResource;
+use App\Http\Resources\TaskSingleResource;
 use App\Models\Task;
 use App\Models\TaskResponse;
 use App\Models\User;
@@ -264,12 +265,11 @@ class TaskAPIController extends Controller
      *     ),
      * )
      */
-    public function filter(TaskFilterRequest $request)
+    public function filter(Request $request)
     {
-        $data = $request->validated();
-        $tasks = $this->filter_service->filter($data);
+        $tasks = $this->filter_service->filter($request->all());
 
-        return new TaskPaginationResource($tasks);
+        return TaskSingleResource::collection($tasks);
     }
 
     public function task_map(Task $task)
