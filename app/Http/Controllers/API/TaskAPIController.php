@@ -516,7 +516,7 @@ class TaskAPIController extends Controller
      */
     public function custom(TaskCustomRequest $request)
     {
-        return $this->success($this->create_task_service->custom_store($request->validated()), $request);
+        return $this->success($this->create_task_service->custom_store($request->validated(), $request));
     }
 
     /**
