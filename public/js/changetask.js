@@ -18,7 +18,7 @@ function getMapData() {
     return result;
 }
 
-function init_map(){
+function init_map() {
     data = getMapData()
     if (data.length)
         myMap = new ymaps.Map('map', {
@@ -28,9 +28,80 @@ function init_map(){
         });
 }
 
-ymaps.ready(init_map);
+let data = getMapData();
+function init_map() {
+    data = getMapData()
+    if (data.length)
+        myMap = new ymaps.Map('map', {
+            center: [ data[0].latitude, data[0].longitude],
+            zoom: 13,
+            controls: ['zoomControl'],
+        });
 
-/*myMapFunction();*/
+            var points = [];
+            for (let i = 0; i < data.length; i++) {
+                points.push([
+                    data[i].latitude, data[i].longitude
+                ])
+            }
+
+            var multiRoute = new ymaps.multiRouter.MultiRoute({
+                referencePoints: points,
+                // Routing options.
+                params: {
+                    // Limit on the maximum number of routes returned by the router.
+                    results: 2
+                }
+            }, {
+                // Automatically set the map boundaries so the entire route is visible.
+                boundsAutoApply: true
+            });
+
+            // Creating buttons for controlling the multiroute.
+            var trafficButton = new ymaps.control.Button({
+                    data: {content: "Considering traffic"},
+                    options: {selectOnClick: true}
+                }),
+                viaPointButton = new ymaps.control.Button({
+                    data: {content: "Adding a throughpoint"},
+                    options: {selectOnClick: true}
+                });
+
+            // Declaring handlers for the buttons.
+            trafficButton.events.add('select', function () {
+                /**
+                 * Setting routing parameters for the multiroute model.
+                 * @see https://api.yandex.com/maps/doc/jsapi/2.1/ref/reference/multiRouter.MultiRouteModel.xml#setParams
+                 */
+                multiRoute.model.setParams({avoidTrafficJams: true}, true);
+            });
+
+            trafficButton.events.add('deselect', function () {
+                multiRoute.model.setParams({avoidTrafficJams: false}, true);
+            });
+
+            viaPointButton.events.add('select', function () {
+                var referencePoints = multiRoute.model.getReferencePoints();
+                referencePoints.splice(1, 0, "Moscow, Solyanka Street, 7");
+                /**
+                 * Adding a throughpoint to the multiroute model.
+                 * Note that throughpoints can only be placed between two waypoints.
+                 * In other words, they can't be end points on a route.
+                 * @see https://api.yandex.com/maps/doc/jsapi/2.1/ref/reference/multiRouter.MultiRouteModel.xml#setReferencePoints
+                 */
+                multiRoute.model.setReferencePoints(referencePoints, [1]);
+            });
+
+            viaPointButton.events.add('deselect', function () {
+                var referencePoints = multiRoute.model.getReferencePoints();
+                referencePoints.splice(1, 1);
+                multiRoute.model.setReferencePoints(referencePoints, []);
+            });
+            // Adding a multiroute to the map.
+            myMap.geoObjects.add(multiRoute);
+}
+
+ymaps.ready(init_map);
 
 function init() {
 
@@ -63,7 +134,7 @@ function init() {
         }
 
 
-        for(let i=1; i<=x; i++){
+        for(let i=0; i<x; i++){
             suggestView[i] = new ymaps.SuggestView('suggest'+i);
             suggestView[i].events.add('select', function () {
                 myMapFunction();
@@ -149,10 +220,6 @@ function getLocals(xx) {
 }
 
 // Mapga joyni yuklash
-
-function myMapFunction2(lat, long) {
-
-}
 
 function myMapFunction() {
     place = document.getElementById("suggest0").value;
@@ -288,7 +355,7 @@ function myMapFunction() {
         if(place1 != ""){
             return true;
         } else{
-            return false
+            return false;
         }
     }
 

@@ -51,8 +51,8 @@
                     <p class="font-normal md:border-r-2 border-gray-400 md:px-2 px-0">{{$task->views }}  {{__('просмотров')}}</p>
                     <p class="mr-3 md:pl-2 pr-3 md:border-r-2 border-gray-400">{{$created}}</p>
                     <p class="pr-3 ">{{ $task->category->getTranslatedAttribute('name') }}</p>
-                    {{--@if($task->user_id == auth()->id() && !count($responses) && $task->status == 1 )--}}
-                            @if($task->user_id == auth()->id() && !$task->responses_count && $task->status == 1 )
+                    @if($task->user_id == auth()->id() && !count($responses) && $task->status == 1 )
+                    {{--        @if($task->user_id == auth()->id() && !$task->responses_count && $task->status == 1 )--}}
 
                         <form action="{{route("searchTask.delete_task", $task->id)}}" method="post">
                             @csrf
