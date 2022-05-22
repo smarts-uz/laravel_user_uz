@@ -322,7 +322,7 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function task(Request $request, Task $task)
+    public function task(Task $task)
     {
         if (auth()->guard('api')->check()) {
             $task->increment('views');
