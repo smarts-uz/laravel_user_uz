@@ -323,6 +323,10 @@ class TaskAPIController extends Controller
      */
     public function task(Task $task)
     {
+        if (auth()->check()) {
+            $task->views++;
+            $task->save();
+        }
         return new TaskIndexResource($task);
     }
 
