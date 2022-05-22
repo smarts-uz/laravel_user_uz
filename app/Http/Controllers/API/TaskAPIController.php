@@ -189,8 +189,10 @@ class TaskAPIController extends Controller
 
     public function selectPerformer(TaskResponse $response)
     {
-        $response = $this->response_service->selectPerformer($response);
-        return response()->json($response);
+        $this->response_service->selectPerformer($response);
+        return response()->json([
+            'success' => true
+        ]);
     }
 
     /**
