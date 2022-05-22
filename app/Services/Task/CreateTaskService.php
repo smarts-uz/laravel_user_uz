@@ -187,7 +187,7 @@ class CreateTaskService
     {
         $validator = Validator::make($request->all(), [
             'task_id' => 'required',
-            'images' => 'required'
+            'images.*' => 'required|image:jpeg,jpg,png,gif|max:10000'
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -195,21 +195,22 @@ class CreateTaskService
                 'data' => $validator->errors()
             ]);
         }
-        $user = auth()->user();
         $data = $validator->validated();
-        $data['user_id'] = $user->id;
+        $task = Task::query()->findOrFail($data['task_id']);
+        $imgData = [];
         if ($request->hasFile('images')) {
-            $image = [];
             foreach ($request->file('images') as $uploadedImage) {
-                $filename = $user->name.'/'.$data['comment'].'/'.time() . '_' . $uploadedImage->getClientOriginalName();
-                $uploadedImage->move(public_path().'/Portfolio/'.$user->name.'/'.$data['comment'].'/', $filename);
-                $image[] = $filename;
+                $fileName = time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path("storage/uploads/"), $fileName);
+                $imgData[] = $fileName;
             }
-            $data['image'] = json_encode($image);
         }
+        $task->photos = json_encode($imgData);
+        $task->save();
+
         return response()->json([
             'success' => true,
-            'data' => $data
+            'data' => $task
         ]);
     }
 
