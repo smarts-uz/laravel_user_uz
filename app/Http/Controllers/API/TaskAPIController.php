@@ -29,6 +29,7 @@ use App\Services\Task\ResponseService;
 use App\Services\Task\UpdateTaskService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CustomFieldsValue;
 
@@ -321,11 +322,10 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function task(Task $task)
+    public function task(Request $request, Task $task)
     {
-        if (auth()->check()) {
-            $task->views++;
-            $task->save();
+        if (auth()->guard('api')->check()) {
+            $task->increment('views');
         }
         return new TaskIndexResource($task);
     }
