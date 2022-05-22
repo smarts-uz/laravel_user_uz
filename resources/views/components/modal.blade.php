@@ -141,6 +141,7 @@
                                       class="@if(!($errors->has('phone_number') || session()->has('email-message') || !auth()->user()->phone_number) || session()->has('code') ) hidden @endif"
                                       method="post">
                                     @csrf
+                                    
                                     <a class='text-gray-800 hover:text-red-500 border-b sent-email border-dotted border-gray-700 cursor-pointer'
                                        id="cancel-email">{{__('Отмена')}}</a>
                                     <br>
