@@ -60,11 +60,11 @@ ymaps.ready(init_map);
 
 function init() {
 
-    /*var suggestView0 = new ymaps.SuggestView('suggest0');
+    var suggestView0 = new ymaps.SuggestView('suggest0',{boundedBy: myMap.getBounds()});
 
     suggestView0.events.add('select', function () {
         myMapFunction();
-    });*/
+    });
 
     $("#addbtn").click(function(){
         if(x < 10){
