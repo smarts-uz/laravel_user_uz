@@ -90,7 +90,7 @@ function init() {
 
 
         for(let i=0; i<x; i++){
-            suggestView[i] = new ymaps.SuggestView('suggest'+i);
+            suggestView[i] = new ymaps.SuggestView('suggest'+i,{boundedBy: myMap.getBounds()});
             suggestView[i].events.add('select', function () {
                 myMapFunction();
             });
