@@ -45,36 +45,36 @@ class FilterTaskService
         if (isset($data['budget'])) {
             $tasks->where('budget', ">=", (int) $data['budget'] )->pluck('id')->toArray();
         }
-        if (isset($data['is_remote']) && !(isset($data['lat']) && isset($data['long']) && isset($data['difference']))) {
+        if (isset($data['is_remote']) && !(isset($data['lat']) && !isset($data['long']) && !isset($data['difference']))) {
             $is_remote = $data['is_remote'];
-            if ($is_remote)
+            if ($is_remote == 1)
                 $tasks->whereDoesntHave('addresses');
         }
         if (isset($data['without_response'])) {
             $without_response = $data['without_response'];
-            if ($without_response)
+            if ($without_response == 1)
                 $tasks->whereDoesntHave('responses');
         }
 
-        if (isset($data['s']))
+        if (isset($data['search']))
         {
-            $s = $data['s'];
+            $s = $data['search'];
             $tasks->where('name','like',"%$s%")
                 ->orWhere('description', 'like',"%$s%")
                 ->orWhere('phone', 'like',"%$s%")
                 ->orWhere('budget', 'like',"%$s%");
         }
 
-        return $tasks->paginate();
+        return $tasks->orderByDesc('created_at')->paginate(10);
     }
 
 
     public function distance($lat1, $lon1, $lat2, $lon2) {
-         $radlat1 =  pi() * $lat1/180;
-         $radlat2 =  pi() * $lat2/180;
-         $theta = $lon1-$lon2;
-         $radtheta =  pi() * $theta/180;
-         $dist = sin($radlat1) * sin($radlat2) +  cos($radlat1) * cos($radlat2) * cos($radtheta);
+        $radlat1 =  pi() * $lat1/180;
+        $radlat2 =  pi() * $lat2/180;
+        $theta = $lon1-$lon2;
+        $radtheta =  pi() * $theta/180;
+        $dist = sin($radlat1) * sin($radlat2) +  cos($radlat1) * cos($radlat2) * cos($radtheta);
         $dist = acos($dist);
         $dist = $dist * 180/ pi();
         $dist = $dist * 60 * 1.1515;

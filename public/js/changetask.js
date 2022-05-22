@@ -18,23 +18,49 @@ function getMapData() {
     return result;
 }
 
-function init_map(){
-    data = getMapData()
+let data = getMapData();
+
+function init_map() {
     if (data.length)
         myMap = new ymaps.Map('map', {
             center: [ data[0].latitude, data[0].longitude],
             zoom: 13,
             controls: ['zoomControl'],
         });
+
+            var points = [];
+            for (let i = 0; i < data.length; i++) {
+                points.push([
+                    data[i].latitude, data[i].longitude
+                ])
+            }
+
+        for(let i=0; i<x; i++){
+            suggestView[i] = new ymaps.SuggestView('suggest'+i, {boundedBy: myMap.getBounds()});
+            suggestView[i].events.add('select', function () {
+            myMapFunction();
+            });
+        }
+
+            var multiRoute = new ymaps.multiRouter.MultiRoute({
+                referencePoints: points,
+                // Routing options.
+                params: {
+                    // Limit on the maximum number of routes returned by the router.
+                    results: 2
+                }
+            }, {
+                // Automatically set the map boundaries so the entire route is visible.
+                boundsAutoApply: true
+            });
+            // Adding a multiroute to the map.
+            myMap.geoObjects.add(multiRoute);
 }
-
 ymaps.ready(init_map);
-
-/*myMapFunction();*/
 
 function init() {
 
-    var suggestView0 = new ymaps.SuggestView('suggest0');
+    var suggestView0 = new ymaps.SuggestView('suggest0',{boundedBy: myMap.getBounds()});
 
     suggestView0.events.add('select', function () {
         myMapFunction();
@@ -63,8 +89,8 @@ function init() {
         }
 
 
-        for(let i=1; i<=x; i++){
-            suggestView[i] = new ymaps.SuggestView('suggest'+i);
+        for(let i=0; i<x; i++){
+            suggestView[i] = new ymaps.SuggestView('suggest'+i,{boundedBy: myMap.getBounds()});
             suggestView[i].events.add('select', function () {
                 myMapFunction();
             });
@@ -149,10 +175,6 @@ function getLocals(xx) {
 }
 
 // Mapga joyni yuklash
-
-function myMapFunction2(lat, long) {
-
-}
 
 function myMapFunction() {
     place = document.getElementById("suggest0").value;
@@ -288,7 +310,7 @@ function myMapFunction() {
         if(place1 != ""){
             return true;
         } else{
-            return false
+            return false;
         }
     }
 

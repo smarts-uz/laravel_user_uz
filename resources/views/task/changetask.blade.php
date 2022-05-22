@@ -355,7 +355,7 @@
                         '<path d="M14.704 6.72a.8.8 0 1 1 1.592.16l-.996 9.915a2.799 2.799 0 0 1-2.8 2.802h-7c-1.55 0-2.8-1.252-2.796-2.723l-1-9.994a.8.8 0 1 1 1.592-.16L4.3 16.794c0 .668.534 1.203 1.2 1.203h7c.665 0 1.2-.536 1.204-1.282l1-9.995z" fill="#666"/>' +
                         '<path d="M12.344 7.178a.75.75 0 1 0-1.494-.13l-.784 8.965a.75.75 0 0 0 1.494.13l.784-8.965zm-6.779 0a.75.75 0 0 1 1.495-.13l.784 8.965a.75.75 0 0 1-1.494.13l-.785-8.965z" fill="#666"/></svg> </button> ' +
                         '<input name="coordinates'+ x +'" type="hidden" id="coordinate'+ x +'" value="'+ajax_location[i].latitude +','+ajax_location[i].longitude+'"> </div>    ');
-                        myMapFunction2(ajax_location[i].latitude , ajax_location[i].longitude);
+
                     x++;
                     }
                 }
