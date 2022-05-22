@@ -351,15 +351,15 @@
 
                                                     <div class="flex flex-row mt-4 items-center">
                                                         <i class="fas fa-desktop mr-2 text-yellow-500"></i>
-                                                        <p class="mx-1">{{ $session->ip_address == request()->ip()? "Xozirgi " :"" }}{{ $parser->parse($session->user_agent)->os->family }},</p>
+                                                        <p class="mx-1">{{ $session->ip_address == request()->ip()? "Текущая" :"" }}{{ $parser->parse($session->user_agent)->os->family }},</p>
                                                         <h1 class="mx-1">{{ $session->last_active }}, </h1>
                                                         <span class="text-gray-500">{{__('браузер')}} {{ $parser->parse($session->user_agent)->ua->family }}</span>
                                                     </div>
                                                 @endforeach
                                                 @foreach($sessions as $session)
                                                 @if($session!=null && $loop->index==0)
-                                                    <div class="my-3">
-                                                        <a href="{{route('profile.clear_sessions')}}" type="btn" class="focus:outline-none hover:bg-red-600 btn bg-red-400 uppercase p-2 text-white text-sm rounded-xl">{{__('удалить сеансы')}}</a>
+                                                    <div class="my-5">
+                                                        <a href="{{route('profile.clear_sessions')}}" type="btn" class="focus:outline-none hover:bg-red-600 btn bg-red-400 uppercase p-2 text-white text-sm rounded-lg">{{__('удалить сеансы')}}</a>
                                                     </div>
                                                 @endif
                                                 @endforeach

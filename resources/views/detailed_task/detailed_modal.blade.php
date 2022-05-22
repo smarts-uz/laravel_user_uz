@@ -234,7 +234,7 @@
                     <img class="border-2 rounded-xl w-28 h-28 mx-auto" src="{{ session('data')['performer_avatar'] }}"
                          alt="user_avatar">
                     <h1 class="my-2 font-medium hover:text-red-500 ">{{ session('data')['performer_name'] }}</h1>
-                    <p class="mb-2">+998 {{  session('data')['performer_phone'] }}</p>
+                    <p class="mb-2"> {{  session('data')['performer_phone'] }}</p>
                     <p>{{  session('data')['performer_description'] }}</p>
                     <button onclick="toggleModal33()" type="submit" class="cursor-pointer mt-2 text-semibold text-center
                     inline-block py-3 px-4 bg-white transition duration-200 text-white bg-green-500 hover:bg-green-500 font-medium border border-transparent rounded-md">
