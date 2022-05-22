@@ -15,7 +15,7 @@ ymaps.ready(init_map);
 var x = $("#x").val();
 function init() {
 
-    var suggestView0 = new ymaps.SuggestView('suggest0');
+    var suggestView0 = new ymaps.SuggestView('suggest0',{boundedBy: myMap.getBounds()});
 
 
     suggestView0.events.add('select', function () {
