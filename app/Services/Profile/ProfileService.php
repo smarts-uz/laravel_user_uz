@@ -171,15 +171,10 @@ class ProfileService
 
     public static function userReviews($user, Request $request)
     {
-        $reviews = Review::query()->where(['user_id' => $user->id]);
-        if ($request->get('performer') == 1) {
-            $reviews->whereHas('task', function (Builder $q) use ($user) {
-                $q->where(['as_performer' => 1]);
-            });
-        } elseif ($request->get('performer') == 0) {
-            $reviews->whereHas('task', function (Builder $q) use ($user) {
-                $q->where(['as_performer' => 0]);
-            });
+        $reviews = Review::query()->whereHas('task')->where(['user_id' => $user->id]);
+        $performer = $request->get('performer');
+        if (isset($performer)) {
+            $reviews->where(['as_performer' => $performer]);
         }
         if ($request->get('review') == 'good') {
             $reviews->where(['good_bad' => 1]);
