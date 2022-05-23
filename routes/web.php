@@ -44,6 +44,7 @@ use App\Http\Controllers\admin\VoyagerUserController;
 use App\Http\Controllers\Task\CreateController;
 
 use App\Http\Controllers\ClickuzController;
+use Teamprodev\LaravelPayment\PayUz;
 
 //avocoder
 
@@ -301,16 +302,16 @@ Route::get('profile/transactions/history', [UserTransactionHisory::class, 'getTr
 
 #region payments
 Route::any('/paynet', function () {
-    (new \Teamprodev\LaravelPayment\PayUz)->driver('paynet')->handle();
+    (new PayUz)->driver('paynet')->handle();
 });
 Route::any('/payme', function () {
-    (new \Teamprodev\LaravelPayment\PayUz)->driver('payme')->handle();
+    (new PayUz)->driver('payme')->handle();
 });
 Route::any('/click', function () {
-    (new \Teamprodev\LaravelPayment\PayUz)->driver('click')->handle();
+    (new PayUz)->driver('click')->handle();
 });
 Route::any('/click/user-balance', function () {
-    return (new \Teamprodev\LaravelPayment\Http\Classes\Click\Click())->getUserBalance();
+    return (new PayUz())->click_additional();
 });
 #endregion
 
