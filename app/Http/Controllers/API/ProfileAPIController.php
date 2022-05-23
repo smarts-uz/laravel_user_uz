@@ -1555,7 +1555,18 @@ class ProfileAPIController extends Controller
     public function subscribeToCategory(Request $request)
     {
         $user = auth()->user();
-        $checkbox = implode(",", $request->get('category'));
+        $categories = $request->get('category');
+        foreach ($categories as $category) {
+            if (!is_int($category)) {
+                return response()->json([
+                    'success' => false,
+                    'data' => [
+                        'message' => 'All values should be int.'
+                    ]
+                ]);
+            }
+        }
+        $checkbox = implode(",", $categories);
         $smsNotification = 0;
         $emailNotification = 0;
         if ($request->get('sms_notification') == 1) {
