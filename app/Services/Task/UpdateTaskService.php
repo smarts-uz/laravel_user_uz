@@ -3,24 +3,17 @@
 namespace App\Services\Task;
 
 use App\Http\Controllers\LoginController;
-use App\Http\Requests\UserPhoneRequest;
-use App\Http\Requests\UserRequest;
 use App\Models\Address;
 use App\Models\Category;
 use App\Models\CustomField;
-use App\Models\CustomFieldsValue;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\NotificationService;
 use App\Services\Response;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use RealRashid\SweetAlert\Facades\Alert;
 
-class CreateTaskService
+class UpdateTaskService
 {
     use Response;
 
@@ -37,13 +30,6 @@ class CreateTaskService
     {
         $this->service = new CreateService();
         $this->custom_field_service = new CustomFieldService();
-    }
-
-    public function name_store($data)
-    {
-        $data['user_id'] = auth()->id();
-        $task = Task::query()->create($data);
-        return $this->get_custom($task);
     }
 
     public function get_custom($task)
@@ -70,36 +56,12 @@ class CreateTaskService
         return ['route' => 'custom', 'task_id' => $task->id, 'steps' => 6, 'custom_fields' => $custom_fields];
     }
 
-    public function custom_store($data, $request)
-    {
-        $task = Task::query()->findOrFail($data['task_id']);
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM, $request);
-        if ($task->category->parent->remote) {
-            return $this->get_remote($task);
-        }
-        return $this->get_address($task);
-    }
-
     public function get_remote($task)
     {
         return [
             'route' => 'remote', 'task_id' => $task->id, 'steps' => 5,
             'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_REMOTE)
         ];
-    }
-
-    public function remote_store($data)
-    {
-        $task = Task::query()->findOrFail($data['task_id']);
-        switch ($data['radio']) {
-            case CustomField::ROUTE_ADDRESS:
-                return $this->get_address($task);
-                break;
-            case CustomField::ROUTE_REMOTE:
-                return $this->get_date($task);
-            default:
-                return [''];
-        }
     }
 
     public function get_address($task)
@@ -111,9 +73,37 @@ class CreateTaskService
         return ['route' => 'address', 'address' => 1, 'steps' => 4, 'custom_fields' => $custom_fields];
     }
 
-    public function address_store($data)
+    public function updateName($task, $data)
     {
-        $task = Task::query()->findOrFail($data['task_id']);
+        $task->update($data);
+        $task->save();
+        return $this->get_custom($task);
+    }
+
+    public function updateCustom($task, $request)
+    {
+        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM, $request);
+        if ($task->category->parent->remote) {
+            return $this->get_remote($task);
+        }
+        return $this->get_address($task);
+    }
+
+    public function updateRemote($task, $data)
+    {
+        switch ($data['radio']) {
+            case CustomField::ROUTE_ADDRESS:
+                return $this->get_address($task);
+                break;
+            case CustomField::ROUTE_REMOTE:
+                return $this->get_date($task);
+            default:
+                return [''];
+        }
+    }
+
+    public function updateAddress($task, $data)
+    {
         $length = min(count($data['points']), setting('site.max_address'));
         for ($i = 0; $i < $length; $i++) {
             $address = [
@@ -144,9 +134,8 @@ class CreateTaskService
         ];
     }
 
-    public function date_store($data)
+    public function updateDate($task, $data)
     {
-        $task = Task::query()->findOrFail($data['task_id']);
         unset($data['task_id']);
         $task->update($data);
         return $this->get_budget($task);
@@ -160,9 +149,8 @@ class CreateTaskService
         ];
     }
 
-    public function budget_store($data)
+    public function updateBudget($task, $data)
     {
-        $task = Task::query()->findOrFail($data['task_id']);
         $task->budget = $data['amount'];
         $task->oplata = $data['budget_type'];
         $task->save();
@@ -175,43 +163,11 @@ class CreateTaskService
         return ['route' => 'note', 'task_id' => $task->id, 'steps' => 1, 'custom_fields' => $custom_fields];
     }
 
-    public function note_store($data)
+    public function updateNote($task, $data)
     {
-        $task = Task::query()->findOrFail($data['task_id']);
         unset($data['task_id']);
         $task->update($data);
         return $this->get_contact($task);
-    }
-
-    public function image_store($request)
-    {
-        $validator = Validator::make($request->all(), [
-            'task_id' => 'required',
-            'images.*' => 'required|image:jpeg,jpg,png,gif|max:10000'
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'data' => $validator->errors()
-            ]);
-        }
-        $data = $validator->validated();
-        $task = Task::query()->findOrFail($data['task_id']);
-        $imgData = [];
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $uploadedImage) {
-                $fileName = time() . '_' . $uploadedImage->getClientOriginalName();
-                $uploadedImage->move(public_path("storage/uploads/"), $fileName);
-                $imgData[] = $fileName;
-            }
-        }
-        $task->photos = json_encode($imgData);
-        $task->save();
-
-        return response()->json([
-            'success' => true,
-            'data' => $task
-        ]);
     }
 
     public function get_contact($task)
@@ -222,10 +178,40 @@ class CreateTaskService
         ];
     }
 
-    public function contact_store($data)
+    public function updateImage($task, $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'task_id' => 'required',
+            'images' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'data' => $validator->errors()
+            ]);
+        }
+        $user = auth()->user();
+        $data = $validator->validated();
+        if ($request->hasFile('images')) {
+            $image = [];
+            foreach ($request->file('images') as $uploadedImage) {
+                $filename = $user->name.'/'.$data['comment'].'/'.time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path().'/Portfolio/'.$user->name.'/'.$data['comment'].'/', $filename);
+                $image[] = $filename;
+            }
+            $data['image'] = json_encode($image);
+            $task->photos = json_encode($image);
+            $task->save();
+        }
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
+    }
+
+    public function updateContact($task, $data)
     {
         $user = auth()->user();
-        $task = Task::query()->findOrFail($data['task_id']);
         unset($data['task_id']);
         if (!$user->is_phone_number_verified || $user->phone_number != $data['phone_number']) {
             $data['is_phone_number_verified'] = 0;
@@ -252,9 +238,8 @@ class CreateTaskService
         return ['route' => 'verify', 'task_id' => $task->id, 'user' => $user];
     }
 
-    public function verification($data)
+    public function verification($task, $data)
     {
-        $task = Task::query()->findOrFail($data['task_id']);
         $user = User::query()->where('phone_number', $data['phone_number'])->first();
         if ($data['sms_otp'] == $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
@@ -278,114 +263,5 @@ class CreateTaskService
                 'sms_otp' => ['incorrect_message']
             ], 'Validation errors');
         }
-    }
-
-    public function images_store(Task $task, Request $request)
-    {
-
-        $imgData = json_decode($task->photos);
-
-        if ($request->hasFile('images')) {
-
-            $files = $request->file('images');
-            $name = Storage::put('public/uploads', $files);
-            $name = str_replace('public/', '', $name);
-            $imgData[] = $name;
-
-        }
-
-        $task->photos = json_encode($imgData);
-        $task->save();
-    }
-
-    public function uploadImage(Task $task, Request $request)
-    {
-        $folder_task = Task::orderBy('created_at', 'desc')->first();
-        if ($request->file()) {
-            $fileName = time() . '_' . $request->file->getClientOriginalName();
-            $filePath = $request->file('file')
-                ->move(public_path("storage/Uploads/{$folder_task->name}"), $fileName);
-
-            $fileModelname = time() . '_' . $request->file->getClientOriginalName();
-            $fileModelfile_path = '/storage/' . $filePath;
-            return response()->json([
-                "success" => true,
-                "message" => "File successfully uploaded",
-                "file" => $fileName
-            ]);
-        }
-//        $this->note_store();
-    }
-
-    public function contact_register(Task $task, UserRequest $request)
-    {
-        $data = $request->validated();
-
-        $data['password'] = Hash::make('login123');
-
-        $user = User::create($data);
-        LoginController::send_verification('phone', $user);
-
-        return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
-
-    }
-
-    public function contact_login(Task $task, UserPhoneRequest $request)
-    {
-        $request->validated();
-        $user = User::query()->where('phone_number', $request->phone_number)->first();
-        LoginController::send_verification('phone', $user);
-        return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id])->with(['not-show', 'true']);
-
-    }
-
-    public function deletetask(Task $task)
-    {
-        $task->delete();
-        CustomFieldsValue::where('task_id', $task)->delete();
-    }
-
-    public function deleteAllImages(Task $task)
-    {
-        taskGuard($task);
-        $task->photos = null;
-        $task->save();
-        Alert::success('success');
-        return back();
-    }
-
-    public function date_validator($request)
-    {
-        $request->validate(['date_type' => 'required']);
-        $rules = [];
-        switch ($request->get('date_type')) {
-            case 1:
-                $rules = [
-                    'start_date' => 'required|date',
-                    'date_type' => 'required'
-                ];
-                break;
-            case 2:
-                $rules = [
-                    'end_date' => 'required|date',
-                    'date_type' => 'required'
-                ];
-                break;
-            case 3:
-                $rules = [
-                    'start_date' => 'required|date',
-                    'end_date' => 'required|date',
-                    'date_type' => 'required'
-
-                ];
-                break;
-        }
-        $rules['task_id'] = 'required';
-        return Validator::make($request->all(), $rules, [
-            "start_date.required" => __('dateTime.start_date.required'),
-            "start_date.date" => __('dateTime.start_date.date'),
-            "end_date.required" => __('dateTime.end_date.required'),
-            "end_date.date" => __('dateTime.end_date.date'),
-        ]);
     }
 }

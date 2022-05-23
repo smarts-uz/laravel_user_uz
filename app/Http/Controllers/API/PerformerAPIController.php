@@ -376,7 +376,7 @@ class PerformerAPIController extends Controller
 
     }
 
-    
+
     /**
      * @OA\Get(
      *     path="/api/reviews",
@@ -404,7 +404,8 @@ class PerformerAPIController extends Controller
         $reviews = Review::query()
             ->whereHas('task')->whereHas('user')
             ->where('user_id',auth()->user()->id)
-            ->fromWhichType($request->get('from'))
+            ->fromUserType($request->get('from'))
+            ->type($request->get('type'))
             ->get();
 
         return response()->json([

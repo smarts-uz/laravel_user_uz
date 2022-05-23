@@ -17,15 +17,19 @@ use App\Http\Resources\SameTaskResource;
 use App\Http\Resources\TaskIndexResource;
 use App\Http\Resources\TaskPaginationResource;
 use App\Http\Resources\TaskResponseResource;
+use App\Http\Resources\TaskSingleResource;
 use App\Models\Task;
 use App\Models\TaskResponse;
+use App\Models\User;
 use App\Services\Response;
 use App\Services\Task\CreateService;
 use App\Services\Task\CreateTaskService;
 use App\Services\Task\FilterTaskService;
 use App\Services\Task\ResponseService;
+use App\Services\Task\UpdateTaskService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CustomFieldsValue;
 
@@ -37,6 +41,7 @@ class TaskAPIController extends Controller
     private $response_service;
     private $filter_service;
     private $create_task_service;
+    private $update_task_service;
 
     public function __construct()
     {
@@ -44,6 +49,7 @@ class TaskAPIController extends Controller
         $this->filter_service = new FilterTaskService();
         $this->response_service = new ResponseService();
         $this->create_task_service = new CreateTaskService();
+        $this->update_task_service = new UpdateTaskService();
     }
 
     /**
@@ -107,9 +113,19 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function responses(Task $task)
+    public function responses(Request $request, Task $task)
     {
-        return TaskResponseResource::collection($task->responses);
+        if ($request->get('filter') == 'rating') {
+            $responses = TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')
+                ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating');
+        } elseif ($request->get('filter') == 'date') {
+            $responses = $task->responses()->orderByDesc('created_at');
+        } elseif ($request->get('filter') == 'price') {
+            $responses = $task->responses()->orderBy('price');
+        } else {
+            $responses = $task->responses();
+        }
+        return TaskResponseResource::collection($responses->paginate(5));
     }
 
     /**
@@ -174,8 +190,10 @@ class TaskAPIController extends Controller
 
     public function selectPerformer(TaskResponse $response)
     {
-        $response = $this->response_service->selectPerformer($response);
-        return response()->json($response);
+        $this->response_service->selectPerformer($response);
+        return response()->json([
+            'success' => true
+        ]);
     }
 
     /**
@@ -250,12 +268,11 @@ class TaskAPIController extends Controller
      *     ),
      * )
      */
-    public function filter(TaskFilterRequest $request)
+    public function filter(Request $request)
     {
-        $data = $request->validated();
-        $tasks = $this->filter_service->filter($data);
+        $tasks = $this->filter_service->filter($request->all());
 
-        return new TaskPaginationResource($tasks);
+        return TaskSingleResource::collection($tasks);
     }
 
     public function task_map(Task $task)
@@ -307,6 +324,9 @@ class TaskAPIController extends Controller
      */
     public function task(Task $task)
     {
+        if (auth()->guard('api')->check()) {
+            $task->increment('views');
+        }
         return new TaskIndexResource($task);
     }
 
@@ -505,7 +525,7 @@ class TaskAPIController extends Controller
      */
     public function custom(TaskCustomRequest $request)
     {
-        return $this->success($this->create_task_service->custom_store($request->validated()), $request);
+        return $this->success($this->create_task_service->custom_store($request->validated(), $request));
     }
 
     /**
@@ -1122,5 +1142,55 @@ class TaskAPIController extends Controller
             'message' => 'Not Deleted'
         ], 404);
 
+    }
+
+    public function updateName(TaskNameRequest $request, Task $task)
+    {
+        return $this->success($this->update_task_service->updateName($task, $request->validated()));
+    }
+
+    public function updateCustom(Request $request, Task $task)
+    {
+        return $this->success($this->update_task_service->updateCustom($task, $request));
+    }
+
+    public function updateRemote(TaskRemoteRequest $request, Task $task)
+    {
+        return $this->success($this->update_task_service->updateRemote($task, $request->validated()));
+    }
+
+    public function updateAddress(TaskAddressRequest $request, Task $task)
+    {
+        return $this->success($this->update_task_service->updateAddress($task, $request->validated()));
+    }
+
+    public function updateDate(\App\Http\Requests\Api\TaskDateRequest $request, Task $task)
+    {
+        return $this->success($this->update_task_service->updateDate($task, $request->validated()));
+    }
+
+    public function updateBudget(TaskBudgetRequest $request, Task $task)
+    {
+        return $this->success($this->update_task_service->updateBudget($task, $request->validated()));
+    }
+
+    public function updateNote(TaskNoteRequest $request, Task $task)
+    {
+        return $this->success($this->update_task_service->updateNote($task, $request->validated()));
+    }
+
+    public function updateUploadImages(Request $request, Task $task)
+    {
+        return $this->update_task_service->updateImage($task, $request);
+    }
+
+    public function updateContacts(TaskContactsRequest $request, Task $task)
+    {
+        return $this->success($this->update_task_service->updateContact($task, $request->validated()));
+    }
+
+    public function updateVerify(TaskVerificationRequest $request, Task $task)
+    {
+        return $this->update_task_service->verification($task, $request->validated());
     }
 }

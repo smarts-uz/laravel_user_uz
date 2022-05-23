@@ -168,11 +168,14 @@
         let mytaskCoordinates = [];
         let myCoordinates = [[],[]];
         mytaskCoordinates = $.parseJSON(JSON.stringify({!! $tasks !!}));
-        /*console.log(mytaskCoordinates);*/
-
+        if (mytaskCoordinates[0].coordinates){
+            myCoordinates = mytaskCoordinates[0].coordinates
+        }
 
         ymaps.ready(init);
         function init() {
+            if (!myCoordinates[0]){
+                /*myCoordinates = mytaskCoordinates[0].coordinates*/
             let location = ymaps.geolocation;
                 location.get({
                     mapStateAutoApply: true
@@ -180,15 +183,16 @@
                     .then(
                         function (result) {
                             myCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
+                            console.log(myCoordinates)
                             /*myMap.setCenter(result.geoObjects.get(0).geometry.getCoordinates());*/
                         },
                         function (err) {
                             console.log('Ошибка: ' + err);
                         }
                     );
-
+            }
             var myMap = new ymaps.Map('map', {
-                    center: [mytaskCoordinates[0].coordinates],
+                    center: [myCoordinates[0],myCoordinates[1]],
                     zoom: 9,
                     /*behaviors: ['scrollZoom'],*/
                     controls: ['zoomControl']
@@ -211,25 +215,20 @@
 
                 getPointData = function (index) {
                 let status = mytaskCoordinates[index].status;
-                    if(status == 4){
-                    return {
-                        balloonContentBody: '<p>Название: <a class="text-blue-500" href="detailed-tasks/'+mytaskCoordinates[index].id+'">' + mytaskCoordinates[index].name +'</a></p>',
-                        clusterCaption: 'Задание <strong> №' + mytaskCoordinates[index].id + '</strong>',
-                        balloonContentFooter:'Статус задания:<strong>Закрыто</strong>'
-                        };
-                    }else if(status == 3){
-                        return {
-                            balloonContentBody: '<p>Название: <a class="text-blue-500" href="detailed-tasks/'+mytaskCoordinates[index].id+'">' + mytaskCoordinates[index].name +'</p>',
-                            clusterCaption: 'Задание <strong> №' + mytaskCoordinates[index].id + '</strong>',
-                            balloonContentFooter:'Статус задания:<strong>В Исполнении</strong>'
-                        };
-                    }else{
-                        return {
-                            balloonContentBody: '<p>Название: <a class="text-blue-500" href="detailed-tasks/'+mytaskCoordinates[index].id+'">' + mytaskCoordinates[index].name +'</p>',
-                            clusterCaption: 'Задание <strong> №' + mytaskCoordinates[index].id + '</strong>',
-                            balloonContentFooter:'Статус задания:<strong>Открыто</strong>'
-                        };
+                let status_text = '';
+
+                    if(status == 3){
+                        status_text = '{{__('В исполнение')}}'
+                    }else if(status == 4){
+                        status_text = '{{__('Закрыто')}}'
+                    }else {
+                        status_text = '{{__('Открыто')}}'
                     }
+                    return {
+                        balloonContentBody: '<p>{{__('Название')}}: <a class="text-blue-500" href="detailed-tasks/'+mytaskCoordinates[index].id+'">' + mytaskCoordinates[index].name +'</a></p>',
+                        clusterCaption: '{{__('Задание')}} № <strong>' + mytaskCoordinates[index].id + '</strong>',
+                        balloonContentFooter:'{{__('Статус задания')}}: <strong>'+status_text+'</strong>'
+                        };
                 },
 
                 getPointOptions = function () {
@@ -239,24 +238,21 @@
                 },
 
                 geoObjects = [];
-
             for(var i = 0, len = mytaskCoordinates.length; i < len; i++) {
-                geoObjects[i] = new ymaps.Placemark(mytaskCoordinates[i].coordinates, getPointData(i),
-                getPointOptions());
+                if (mytaskCoordinates[i].coordinates) {
+                    geoObjects[i] = new ymaps.Placemark(mytaskCoordinates[i].coordinates.split(','), getPointData(i), getPointOptions());
+                }
             }
 
 
-            clusterer.options.set({
+            /*clusterer.options.set({
                 gridSize: 80,
                 clusterDisableClickZoom: true
-            });
+            });*/
 
 
             clusterer.add(geoObjects);
             myMap.geoObjects.add(clusterer);
-
-
-
             myMap.setBounds(clusterer.getBounds(), {
                 boundsAutoApply: true,
                 checkZoomRange: true

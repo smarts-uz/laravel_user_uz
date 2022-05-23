@@ -298,17 +298,19 @@ Route::post('/paycom', 'App\Http\Controllers\PaycomTransactionController@paycom'
 // Show transactions history
 Route::get('profile/transactions/history', [UserTransactionHisory::class, 'getTransactions'])->name('user.transactions.history')->middleware('auth');
 
-#payments
+#region payments
 Route::any('/paynet', function () {
-    (new Goodoneuz\PayUz\PayUz)->driver('paynet')->handle();
+    (new \Teamprodev\LaravelPayment\PayUz)->driver('paynet')->handle();
 });
 Route::any('/payme', function () {
-    (new Goodoneuz\PayUz\PayUz)->driver('payme')->handle();
+    (new \Teamprodev\LaravelPayment\PayUz)->driver('payme')->handle();
 });
 Route::any('/click', function () {
-    (new Goodoneuz\PayUz\PayUz)->driver('click')->handle();
+    (new \Teamprodev\LaravelPayment\PayUz)->driver('click')->handle();
 });
-Route::post('/click/user-balance', [RefillController::class, 'getBalanceForClick']);
+Route::any('/click/user-balance', function () {
+    return (new \Teamprodev\LaravelPayment\Http\Classes\Click\Click())->getUserBalance();
+});
 #endregion
 
 

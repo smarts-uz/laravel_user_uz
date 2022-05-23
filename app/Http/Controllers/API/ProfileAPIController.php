@@ -495,25 +495,10 @@ class ProfileAPIController extends Controller
     public function reviews(Request $request)
     {
         $user = auth()->user();
-        if ($request->get('performer') == 1) {
-            $data = Review::query()->where(['user_id' => $user->id])
-                ->whereHas('task', function (Builder $q) use ($user) {
-                    $q->where(['performer_id' => $user->id]);
-                });
-        } else {
-            $data = Review::query()->where(['user_id' => $user->id])
-                ->whereHas('task', function (Builder $q) use ($user) {
-                    $q->where(['user_id' => $user->id]);
-                });
-        }
-        if ($request->get('review') == 'good') {
-            $data = $data->where(['good_bad' => 1]);
-        } elseif ($request->get('review') == 'bad') {
-            $data = $data->where(['good_bad' => 0]);
-        }
+        $reviews = ProfileService::userReviews($user, $request);
         return response()->json([
             'success' => true,
-            'data' => ReviewIndexResource::collection($data->get())
+            'data' => ReviewIndexResource::collection($reviews)
         ]);
     }
 
@@ -1560,27 +1545,28 @@ class ProfileAPIController extends Controller
      */
     public function userReviews(Request $request, User $user)
     {
-        if ($request->get('performer') == 1) {
-            $data = Review::query()->where(['user_id' => $user->id])
-                ->whereHas('task', function (Builder $q) use ($user) {
-                    $q->where(['performer_id' => $user->id]);
-                })->get();
-        } else {
-            $data = Review::query()->where(['user_id' => $user->id])
-                ->whereHas('task', function (Builder $q) use ($user) {
-                    $q->where(['user_id' => $user->id]);
-                })->get();
-        }
+        $reviews = ProfileService::userReviews($user, $request);
         return response()->json([
             'success' => true,
-            'data' => ReviewIndexResource::collection($data)
+            'data' => ReviewIndexResource::collection($reviews)
         ]);
     }
 
     public function subscribeToCategory(Request $request)
     {
         $user = auth()->user();
-        $checkbox = implode(",", $request->get('category'));
+        $categories = $request->get('category');
+        foreach ($categories as $category) {
+            if (!is_int($category)) {
+                return response()->json([
+                    'success' => false,
+                    'data' => [
+                        'message' => 'All values should be int.'
+                    ]
+                ]);
+            }
+        }
+        $checkbox = implode(",", $categories);
         $smsNotification = 0;
         $emailNotification = 0;
         if ($request->get('sms_notification') == 1) {

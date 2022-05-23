@@ -141,8 +141,8 @@ class User extends \TCG\Voyager\Models\User
         return $this->hasMany(Portfolio::class);
     }
 
-    public function ch_messages()
+    public function getBalanceAttribute()
     {
-//        return $this
+        return $this->walletBalance->balance ?? 0;
     }
 }

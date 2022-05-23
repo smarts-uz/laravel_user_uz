@@ -15,14 +15,14 @@ ymaps.ready(init_map);
 var x = $("#x").val();
 function init() {
 
-    var suggestView0 = new ymaps.SuggestView('suggest0');
+    var suggestView0 = new ymaps.SuggestView('suggest0',{boundedBy: myMap.getBounds()});
 
 
     suggestView0.events.add('select', function () {
         myMapFunction();
     });
     if(document.getElementById("suggest1")){
-        var suggestView1 = new ymaps.SuggestView('suggest1');
+        var suggestView1 = new ymaps.SuggestView('suggest1',{boundedBy: myMap.getBounds()});
     suggestView1.events.add('select', function () {
         myMapFunction();    
     });
@@ -53,7 +53,7 @@ function init() {
         var suggestView = [];
 
         for(var i=1; i<=x; i++){
-            suggestView[i] = new ymaps.SuggestView('suggest'+i);
+            suggestView[i] = new ymaps.SuggestView('suggest'+i,{boundedBy: myMap.getBounds()});
             suggestView[i].events.add('select', function () {
                 myMapFunction();
             });

@@ -57,9 +57,9 @@
                          class="w-12 h-12 border-2 rounded-lg border-gray-500">
                     <a href="{{ route('performers.performer',$badReview->reviewer_id ) }}"
                        class="text-blue-500 hover:text-red-500 text-xl">{{ $badReview->user->name }}</a>
-                    @if ($goodReview->as_performer==0)
+                    @if ($badReview->as_performer==0)
                        <p> - Заказчик</p>
-                    @elseif ($goodReview->as_performer==1)
+                    @elseif ($badReview->as_performer==1)
                        <p> - Исполнитель</p>
                     @endif  
                 </div>
