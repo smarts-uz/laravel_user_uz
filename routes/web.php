@@ -13,6 +13,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 
 //++
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Task\ResponseController;
 use App\Http\Controllers\Task\UpdateController;
 use App\Http\Controllers\UserController;
@@ -95,8 +96,13 @@ Route::group(['prefix' => 'chat'], function (){
     Route::post('/pusher/auth', [MessagesController::class, 'pusherAuth']);
 });
 
+Route::get('/report/request/{id}',[ReportController::class,'report'])->name('report');
+Route::post('/request',[ReportController::class,'request'])->name('request');
+
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
+    Route::get("report", [ReportController::class, "index"])->name("index");
+    Route::get("report/get", [ReportController::class, "report"])->name("report");
     Route::get("users/activitiy/{user}", [VoyagerUserController::class, "activity"])->name("voyagerUser.activity"); // javoxir
     Route::get('/messages/chat/{id}', [ConversationController::class, 'showChat'])->name("conversation.showChat"); // javoxir
     Route::post('/messages/chat/rate/{message}', [ConversationController::class, 'rating'])->name("conversation.rating"); // javoxir

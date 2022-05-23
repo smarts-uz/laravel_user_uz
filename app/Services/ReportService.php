@@ -9,31 +9,75 @@ use App\Models\Report;
 use App\Models\Category;
 use Illuminate\Support\Facades\DB;
 use App\Item\ReportItem;
+use Yajra\DataTables\DataTables;
 
 class ReportService
 {
+    public function report(){
+        $query = Category::query();
+        return Datatables::of($query)
+            ->addColumn('name', function($app){
+                $categories = Category::where('id',$app->id)->where('parent_id', null)->pluck('name')->toArray();
+                return $categories;
+            })
+            ->addColumn('sub_cat', function($app){
+                return '>';
+            })
+            ->addColumn('open_count', function($app){
+                $cat = Category::where('parent_id', $app->id)->pluck('id')->toarray();
+                $application = Task::where('category_id', $cat)->where('status', 1)->get();
+                return count($application);
+            })
+            ->addColumn('open_sum', function($app){
+                $cat = Category::where('parent_id', $app->id)->pluck('id')->toarray();
+                $application = Task::where('category_id', $cat)->where('status', 1)->pluck('budget')->toArray();
+                return array_sum($application);
+            })
 
-    public function report( $report){
-        $item = new ReportItem();
-        $item-> table = $report->getTable();
-        $item-> columns = DB::select( 'SHOW FULL COLUMNS FROM reports' );
-        $item-> task_parent = Category::where('parent_id', null)->get();
-        $item-> task = Task::where('category_id', $item->task_parent)->count();
-        return $item;
-    }
+            ->addColumn('process_count', function($app){
+                $cat = Category::where('parent_id', $app->id)->pluck('id')->toarray();
+                $application = Task::where('category_id', $cat)->where('status', 3)->get();
+                return count($application);
+            })
+            ->addColumn('process_sum', function($app){
+                $cat = Category::where('parent_id', $app->id)->pluck('id')->toarray();
+                $application = Task::where('category_id', $cat)->where('status', 3)->pluck('budget')->toArray();
+                return array_sum($application);
+            })
 
-    public function new_report($report) {
+            ->addColumn('finished_count', function($app){
+                $cat = Category::where('parent_id', $app->id)->pluck('id')->toarray();
+                $application = Task::where('category_id', $cat)->where('status', 4)->get();
+                return count($application);
+            })
+            ->addColumn('finished_sum', function($app){
+                $cat = Category::where('parent_id', $app->id)->pluck('id')->toarray();
+                $application = Task::where('category_id', $cat)->where('status', 4)->pluck('budget')->toArray();
+                return array_sum($application);
+            })
 
-         $item = new ReportItem();
-         
-        //  $item = $categories_array = \App\Models\Category::where('parent_id', $parent->id)->pluck('id')->toarray();
-        //  $item = $category_count = \App\Models\Task::whereIn('category_id', $categories_array)->count();
-        //  $item = $categories_array1 = \App\Models\Category::where('parent_id', $parent->id)->pluck('id')->toarray();
-        //  $item = $category_count1 = \App\Models\Task::whereIn('category_id', $categories_array1)->pluck('budget')->toArray();
-        //  $item = $budgets = str_replace(array('до', 'сум', 'от'), '', $category_count1);
-        //  $item = $all_budget = array_sum($budgets);
+            ->addColumn('open_count', function($app){
+                $cat = Category::where('parent_id', $app->id)->pluck('id')->toarray();
+                $application = Task::where('category_id', $cat)->where('status', 1)->get();
+                return count($application);
+            })
+            ->addColumn('open_sum', function($app){
+                $cat = Category::where('parent_id', $app->id)->pluck('id')->toarray();
+                $application = Task::where('category_id', $cat)->where('status', 1)->pluck('budget')->toArray();
+                return array_sum($application);
+            })
 
-         return $item;
+            ->addColumn('total_count', function($app){
+                $cat = Category::where('parent_id', $app->id)->pluck('id')->toarray();
+                $application = Task::where('category_id', $cat)->get();
+                return count($application);
+            })
+            ->addColumn('total_sum', function($app){
+                $cat = Category::where('parent_id', $app->id)->pluck('id')->toarray();
+                $application = Task::where('category_id', $cat)->pluck('budget')->toArray();
+                return array_sum($application);
+            })
+            ->make(true);
 
     }
 

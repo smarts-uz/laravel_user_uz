@@ -163,6 +163,8 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
+        Yajra\DataTables\ButtonsServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -178,6 +180,8 @@ return [
         \Chatify\ChatifyServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Kawankoding\Fcm\FcmServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
+
     ],
 
     /*
@@ -236,6 +240,7 @@ return [
         'Chatify' => Chatify\Facades\ChatifyMessenger::class,
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
         'Fcm' => Kawankoding\Fcm\FcmFacade::class,
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
     ],
 
 ];
