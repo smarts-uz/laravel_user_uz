@@ -60,11 +60,18 @@ ymaps.ready(init_map);
 
 function init() {
 
-    var suggestView0 = new ymaps.SuggestView('suggest0',{boundedBy: myMap.getBounds()});
+    /*var suggestView0 = new ymaps.SuggestView('suggest0',{boundedBy: myMap.getBounds()});
 
     suggestView0.events.add('select', function () {
         myMapFunction();
-    });
+    });*/
+
+    for(let i=0; i<x; i++){
+        suggestView[i] = new ymaps.SuggestView('suggest'+i,{boundedBy: myMap.getBounds()});
+        suggestView[i].events.add('select', function () {
+            myMapFunction();
+        });
+    }
 
     $("#addbtn").click(function(){
         if(x < 10){
@@ -87,8 +94,6 @@ function init() {
         if(x == 10){
             $("#addbtn").hide();
         }
-
-
         for(let i=0; i<x; i++){
             suggestView[i] = new ymaps.SuggestView('suggest'+i,{boundedBy: myMap.getBounds()});
             suggestView[i].events.add('select', function () {
