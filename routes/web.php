@@ -161,6 +161,7 @@ Route::view('/vacancies', 'reviews.vacancies');
 Route::get('/geotaskshint', [Controller::class, 'geotaskshint'])->name('geotaskshint'); // javoxir
 Route::get('/security', [Controller::class, 'security'])->name('security'); // javoxir
 Route::get('/badges', [Controller::class, 'badges'])->name('badges'); // javoxir
+Route::get('/news', [Controller::class, 'news'])->name('news'); // javoxir
 #endregion
 
 #region Profile
