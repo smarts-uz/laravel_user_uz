@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e5751756f6038767349773459fdafc54",
+    "content-hash": "fbe16e3e0beb041618b84064aa90631b",
     "packages": [
         {
             "name": "arrilot/laravel-widgets",
@@ -772,16 +772,16 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "2.1.1",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "331b4d5dbaeab3827976273e9356b3b453c300ce"
+                "reference": "1ca8f21980e770095a31456042471a57bc4c68fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/331b4d5dbaeab3827976273e9356b3b453c300ce",
-                "reference": "331b4d5dbaeab3827976273e9356b3b453c300ce",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/1ca8f21980e770095a31456042471a57bc4c68fb",
+                "reference": "1ca8f21980e770095a31456042471a57bc4c68fb",
                 "shasum": ""
             },
             "require": {
@@ -791,18 +791,12 @@
                 "doctrine/common": ">2.2,<2.4"
             },
             "require-dev": {
-                "alcaeus/mongo-php-adapter": "^1.1",
                 "cache/integration-tests": "dev-master",
-                "doctrine/coding-standard": "^8.0",
-                "mongodb/mongodb": "^1.1",
-                "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
-                "predis/predis": "~1.0",
+                "doctrine/coding-standard": "^9",
+                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5",
                 "psr/cache": "^1.0 || ^2.0 || ^3.0",
-                "symfony/cache": "^4.4 || ^5.2 || ^6.0@dev",
-                "symfony/var-exporter": "^4.4 || ^5.2 || ^6.0@dev"
-            },
-            "suggest": {
-                "alcaeus/mongo-php-adapter": "Required to use legacy MongoDB driver"
+                "symfony/cache": "^4.4 || ^5.4 || ^6",
+                "symfony/var-exporter": "^4.4 || ^5.4 || ^6"
             },
             "type": "library",
             "autoload": {
@@ -851,7 +845,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/cache/issues",
-                "source": "https://github.com/doctrine/cache/tree/2.1.1"
+                "source": "https://github.com/doctrine/cache/tree/2.2.0"
             },
             "funding": [
                 {
@@ -867,7 +861,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-17T14:49:29+00:00"
+            "time": "2022-05-20T20:07:39+00:00"
         },
         {
             "name": "doctrine/dbal",
@@ -2281,16 +2275,16 @@
         },
         {
             "name": "intervention/image",
-            "version": "2.7.1",
+            "version": "2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Intervention/image.git",
-                "reference": "744ebba495319501b873a4e48787759c72e3fb8c"
+                "reference": "04be355f8d6734c826045d02a1079ad658322dad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/image/zipball/744ebba495319501b873a4e48787759c72e3fb8c",
-                "reference": "744ebba495319501b873a4e48787759c72e3fb8c",
+                "url": "https://api.github.com/repos/Intervention/image/zipball/04be355f8d6734c826045d02a1079ad658322dad",
+                "reference": "04be355f8d6734c826045d02a1079ad658322dad",
                 "shasum": ""
             },
             "require": {
@@ -2333,8 +2327,8 @@
             "authors": [
                 {
                     "name": "Oliver Vogel",
-                    "email": "oliver@olivervogel.com",
-                    "homepage": "http://olivervogel.com/"
+                    "email": "oliver@intervention.io",
+                    "homepage": "https://intervention.io/"
                 }
             ],
             "description": "Image handling and manipulation library with support for Laravel integration",
@@ -2349,11 +2343,11 @@
             ],
             "support": {
                 "issues": "https://github.com/Intervention/image/issues",
-                "source": "https://github.com/Intervention/image/tree/2.7.1"
+                "source": "https://github.com/Intervention/image/tree/2.7.2"
             },
             "funding": [
                 {
-                    "url": "https://www.paypal.me/interventionphp",
+                    "url": "https://paypal.me/interventionio",
                     "type": "custom"
                 },
                 {
@@ -2361,7 +2355,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-12-16T16:49:26+00:00"
+            "time": "2022-05-21T17:30:32+00:00"
         },
         {
             "name": "jaybizzle/crawler-detect",
@@ -3002,16 +2996,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.83.12",
+            "version": "v8.83.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "2af2314989845db68dfbb65a54b8748ffaf26204"
+                "reference": "1eed68ec70c98d1a7a6f0fcedbea10cb6dd69a20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/2af2314989845db68dfbb65a54b8748ffaf26204",
-                "reference": "2af2314989845db68dfbb65a54b8748ffaf26204",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/1eed68ec70c98d1a7a6f0fcedbea10cb6dd69a20",
+                "reference": "1eed68ec70c98d1a7a6f0fcedbea10cb6dd69a20",
                 "shasum": ""
             },
             "require": {
@@ -3171,7 +3165,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-05-10T13:57:07+00:00"
+            "time": "2022-05-17T14:08:01+00:00"
         },
         {
             "name": "laravel/passport",
@@ -3317,16 +3311,16 @@
         },
         {
             "name": "laravel/serializable-closure",
-            "version": "v1.1.1",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/serializable-closure.git",
-                "reference": "9e4b005daa20b0c161f3845040046dc9ddc1d74e"
+                "reference": "09f0e9fb61829f628205b7c94906c28740ff9540"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/9e4b005daa20b0c161f3845040046dc9ddc1d74e",
-                "reference": "9e4b005daa20b0c161f3845040046dc9ddc1d74e",
+                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/09f0e9fb61829f628205b7c94906c28740ff9540",
+                "reference": "09f0e9fb61829f628205b7c94906c28740ff9540",
                 "shasum": ""
             },
             "require": {
@@ -3372,7 +3366,7 @@
                 "issues": "https://github.com/laravel/serializable-closure/issues",
                 "source": "https://github.com/laravel/serializable-closure"
             },
-            "time": "2022-02-11T19:23:53+00:00"
+            "time": "2022-05-16T17:09:47+00:00"
         },
         {
             "name": "laravel/socialite",
@@ -3781,16 +3775,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.3.0",
+            "version": "2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "32a49eb2b38fe5e5c417ab748a45d0beaab97955"
+                "reference": "cb36fee279f7fca01d5d9399ddd1b37e48e2eca1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/32a49eb2b38fe5e5c417ab748a45d0beaab97955",
-                "reference": "32a49eb2b38fe5e5c417ab748a45d0beaab97955",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/cb36fee279f7fca01d5d9399ddd1b37e48e2eca1",
+                "reference": "cb36fee279f7fca01d5d9399ddd1b37e48e2eca1",
                 "shasum": ""
             },
             "require": {
@@ -3883,7 +3877,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-07T22:37:05+00:00"
+            "time": "2022-05-14T15:37:39+00:00"
         },
         {
             "name": "league/config",
@@ -10395,76 +10389,38 @@
             "time": "2021-11-09T08:33:29+00:00"
         },
         {
-            "name": "teamprodev/laravel-payment-payme",
-            "version": "1.1.0",
+            "name": "teamprodev/laravel-payment",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/teamprodev/teamprodev-laravel_payment_payme.git",
-                "reference": "73a33ab460b953e462ee27997d02d4bfb68e5b59"
+                "url": "https://github.com/teamprodev/laravel-payment.git",
+                "reference": "87914122b160d7a266e294739113d69c01060424"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/teamprodev/teamprodev-laravel_payment_payme/zipball/73a33ab460b953e462ee27997d02d4bfb68e5b59",
-                "reference": "73a33ab460b953e462ee27997d02d4bfb68e5b59",
-                "shasum": ""
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Teamprodev\\LaravelPaymentPayme\\Providers\\PaycomPaymentProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Teamprodev\\LaravelPaymentPayme\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Asadbekinha",
-                    "email": "fayzulloevasadbek@gmail.com"
-                }
-            ],
-            "support": {
-                "issues": "https://github.com/teamprodev/teamprodev-laravel_payment_payme/issues",
-                "source": "https://github.com/teamprodev/teamprodev-laravel_payment_payme/tree/1.1.0"
-            },
-            "time": "2022-03-08T07:51:27+00:00"
-        },
-        {
-            "name": "teamprodev/laravel_payment_clickuz",
-            "version": "1.0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/teamprodev/laravel_payment_clickuz.git",
-                "reference": "264dfbed06083268c1583943848df5fc89daa3af"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/teamprodev/laravel_payment_clickuz/zipball/264dfbed06083268c1583943848df5fc89daa3af",
-                "reference": "264dfbed06083268c1583943848df5fc89daa3af",
+                "url": "https://api.github.com/repos/teamprodev/laravel-payment/zipball/87914122b160d7a266e294739113d69c01060424",
+                "reference": "87914122b160d7a266e294739113d69c01060424",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.3|^8.0"
+                "illuminate/support": "5.7.*|5.8.*|6.*|7.*|^8.0",
+                "php": "^7.1|^8.0"
             },
             "type": "library",
             "extra": {
                 "laravel": {
                     "providers": [
-                        "Teamprodev\\Laravel_Payment_Clickuz\\Providers\\ClickuzServiceProvider"
-                    ]
+                        "Teamprodev\\LaravelPayment\\PayUzServiceProvider"
+                    ],
+                    "aliases": {
+                        "PayUz": "Teamprodev\\LaravelPayment\\PayUzFacade"
+                    }
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Teamprodev\\Laravel_Payment_Clickuz\\": "src"
+                    "Teamprodev\\LaravelPayment\\": "src/",
+                    "Teamprodev\\LaravelPayment\\database\\seeds\\": "src/database/seeds"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -10473,17 +10429,17 @@
             ],
             "authors": [
                 {
-                    "name": "Abram73",
-                    "email": "abram4ik73@gmail.com",
-                    "homepage": "https://github.com/Abram73"
+                    "name": "Faxriddin077",
+                    "email": "faxriddinqodirov077@gmail.com",
+                    "role": "Developer"
                 }
             ],
-            "description": "description",
+            "description": "Payment package based on GoodOneUz payment package",
             "support": {
-                "issues": "https://github.com/teamprodev/laravel_payment_clickuz/issues",
-                "source": "https://github.com/teamprodev/laravel_payment_clickuz/tree/1.0.4"
+                "issues": "https://github.com/teamprodev/laravel-payment/issues",
+                "source": "https://github.com/teamprodev/laravel-payment/tree/1.0.1"
             },
-            "time": "2022-03-02T14:34:10+00:00"
+            "time": "2022-05-21T17:20:23+00:00"
         },
         {
             "name": "teamprodev/playmobile-sms",
@@ -11204,16 +11160,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "4.4.1",
+            "version": "4.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "86ab9cb3468a9a6989b14f57d95bb4202aa593ce"
+                "reference": "1653b53eb3973a9a6dac87ef8f2676801b14469f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/86ab9cb3468a9a6989b14f57d95bb4202aa593ce",
-                "reference": "86ab9cb3468a9a6989b14f57d95bb4202aa593ce",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/1653b53eb3973a9a6dac87ef8f2676801b14469f",
+                "reference": "1653b53eb3973a9a6dac87ef8f2676801b14469f",
                 "shasum": ""
             },
             "require": {
@@ -11275,9 +11231,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/4.4.1"
+                "source": "https://github.com/zircote/swagger-php/tree/4.4.2"
             },
-            "time": "2022-05-06T09:12:54+00:00"
+            "time": "2022-05-13T23:51:07+00:00"
         }
     ],
     "packages-dev": [
@@ -11790,16 +11746,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.248.0",
+            "version": "v0.250.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "5967583706b1b09c49d04e3c1c3c05e459b0767e"
+                "reference": "3db4c0db2a5452e623b54f06dd993c432e6d6f8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/5967583706b1b09c49d04e3c1c3c05e459b0767e",
-                "reference": "5967583706b1b09c49d04e3c1c3c05e459b0767e",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/3db4c0db2a5452e623b54f06dd993c432e6d6f8c",
+                "reference": "3db4c0db2a5452e623b54f06dd993c432e6d6f8c",
                 "shasum": ""
             },
             "require": {
@@ -11828,9 +11784,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client-services/issues",
-                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.248.0"
+                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.250.0"
             },
-            "time": "2022-05-09T01:06:12+00:00"
+            "time": "2022-05-22T01:16:11+00:00"
         },
         {
             "name": "google/auth",
@@ -11943,16 +11899,16 @@
         },
         {
             "name": "laravel/sail",
-            "version": "v1.14.4",
+            "version": "v1.14.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sail.git",
-                "reference": "0e0e51f19c758c79acbda11e3870641fbad5b7d9"
+                "reference": "f00f3a8f83e71436d473cda7700ae7b4b68d26cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sail/zipball/0e0e51f19c758c79acbda11e3870641fbad5b7d9",
-                "reference": "0e0e51f19c758c79acbda11e3870641fbad5b7d9",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/f00f3a8f83e71436d473cda7700ae7b4b68d26cc",
+                "reference": "f00f3a8f83e71436d473cda7700ae7b4b68d26cc",
                 "shasum": ""
             },
             "require": {
@@ -11999,7 +11955,7 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
-            "time": "2022-05-12T12:53:10+00:00"
+            "time": "2022-05-18T15:56:59+00:00"
         },
         {
             "name": "maximebf/debugbar",
@@ -14198,5 +14154,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }

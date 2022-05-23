@@ -110,7 +110,9 @@ class SocialAPIController extends Controller
 
                 $accessToken = auth()->user()->createToken('authToken')->accessToken;
 
-                return response()->json(['success' => true, 'user' => new PerformerIndexResource(auth()->user()), 'access_token'=>$accessToken]);
+                //return response()->json(['success' => true, 'user' => new PerformerIndexResource(auth()->user()), 'access_token'=>$accessToken]);
+                return response(['success' => false,'message' => 'User not found']);
+
             }
         }
         return response()->json(['success'  => false, 'message' => 'Not required data']);
@@ -210,7 +212,9 @@ class SocialAPIController extends Controller
 
                 $accessToken = auth()->user()->createToken('authToken')->accessToken;
 
-                return response()->json(['user' => new PerformerIndexResource(auth()->user()), 'access_token'=>$accessToken]);
+                //return response()->json(['user' => new PerformerIndexResource(auth()->user()), 'access_token'=>$accessToken]);
+                return response(['success' => false,'message' => 'User not found']);
+
 
             }
         } catch (Exception $e) {
