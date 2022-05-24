@@ -5,33 +5,22 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\ClickuzController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PaynetController;
-use App\Http\Requests\PortfolioRequest;
-use App\Http\Requests\UserPasswordRequest;
-use App\Http\Requests\UserUpdateDataRequest;
 use App\Http\Resources\PortfolioIndexResource;
-use App\Http\Resources\PortfolioResource;
 use App\Http\Resources\ReviewIndexResource;
-use App\Http\Resources\TransactionResource;
 use App\Http\Resources\UserIndexResource;
 use App\Models\All_transaction;
 use App\Models\Portfolio;
-use App\Models\Review;
-use App\Models\Service;
 use App\Models\Session;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\WalletBalance;
 use App\Services\Profile\ProfileService;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use RealRashid\SweetAlert\Facades\Alert;
 
 class ProfileAPIController extends Controller
 {
@@ -1586,6 +1575,17 @@ class ProfileAPIController extends Controller
             'data' => [
                 'message' => $message[$request->get('lang')]
             ]
+        ]);
+    }
+
+    public function changeLanguage(Request $request)
+    {
+        app()->setLocale($request->get('lang'));
+        return response()->json([
+           'success' => true,
+           'data' => [
+               'message' => 'Language changed successfully.'
+           ]
         ]);
     }
 }
