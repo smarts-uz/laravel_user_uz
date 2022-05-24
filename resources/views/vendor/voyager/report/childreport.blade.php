@@ -20,16 +20,12 @@
 </head>
 
    <div class="container">
-       
-   
     <table id="example2" class="display nowrap" style="width: 100%">
         <thead>
         <tr style="text-align: center;">
             
         </tr>
             <th></th>
-            
-            
             <th colspan="2" style="text-align: center">Открытые</th>
             <th colspan="2" style="text-align: center">В исполнении</th>
             <th colspan="2" style="text-align: center">Закрытые</th>
