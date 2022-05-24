@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Services\NotificationService;
 use App\Services\Response;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class UpdateTaskService
@@ -190,10 +191,12 @@ class UpdateTaskService
                 'data' => $validator->errors()
             ]);
         }
-        $data = $validator->validated();
-        $task = Task::query()->findOrFail($data['task_id']);
         $imgData = [];
         if ($request->hasFile('images')) {
+            $oldImages = $task->photos;
+            foreach ($oldImages as $oldImage) {
+                File::delete(public_path() . 'storage/uploads/'. $oldImage);
+            }
             foreach ($request->file('images') as $uploadedImage) {
                 $fileName = time() . '_' . $uploadedImage->getClientOriginalName();
                 $uploadedImage->move(public_path("storage/uploads/"), $fileName);
