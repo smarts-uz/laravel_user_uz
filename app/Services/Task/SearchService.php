@@ -43,7 +43,7 @@ class SearchService
         $item = new SearchServiceTaskItem();
         $item->complianceType = ComplianceType::all();
         $item->selected = $task->responses()->where('performer_id', $task->performer_id)->first();
-        $item->responses = $item->selected ? $task->responses()->where('id', '!=', $item->selected->id)->get() : $task->responses();
+        $item->responses = $item->selected ? $task->responses()->where('id', '!=', $item->selected->id) : $task->responses();
         $item->auth_response = $auth_response ? $task->responses()->where('performer_id', $userId)->with('user')->first() : null;
         $item->same_tasks = $task->category->tasks()->where('id', '!=', $task->id)->where('status', [1,2])->orderBy('created_at', 'desc')->get();
         $item->addresses = $task->addresses;
@@ -105,7 +105,7 @@ foreach ($results as $result) {
             ->when(!$filterByStartDate,function ($query) {
                 $query->latest();
             })
-           ->paginate(5);
+           ->paginate(20);
 
 
         $tasks->transform(function ($task) use($users,$adresses,$categories){
@@ -127,7 +127,7 @@ foreach ($results as $result) {
         });
         $dataForMap=$tasks->map(function ($task) {
             return collect($task)
-            ->only(['id', 'name', 'start_date', 'end_date', 'budget', 'latitude', 'longitude'])
+            ->only(['id', 'name', 'address_main', 'start_date', 'end_date', 'budget', 'latitude', 'longitude'])
             ->toArray();
           });
 

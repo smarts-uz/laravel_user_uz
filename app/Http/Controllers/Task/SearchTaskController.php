@@ -84,12 +84,11 @@ class SearchTaskController extends VoyagerBaseController
             $responses = TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')
                 ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.reviews')->get();
         } else {
-            $responses = $item->responses->get();
+            $responses = $item->responses;
         }
-//        dd($responses);
         return view('task.detailed-tasks',
         ['review_description' => $item->review_description,'task' => $task, 'created' => $created, 'end' => $end, 'start' => $start, 'review' => $review, 'complianceType' => $item->complianceType, 'same_tasks' => $item->same_tasks,
-        'auth_response' => $item->auth_response, 'selected' => $item->selected, 'responses' => $responses, 'addresses' => $item->addresses, 'top_users'=>$item->top_users, 'respons_reviews'=>$item->respons_reviews]);
+        'auth_response' => $item->auth_response, 'selected' => $item->selected, 'responses' => $responses->get(), 'addresses' => $item->addresses, 'top_users'=>$item->top_users, 'respons_reviews'=>$item->respons_reviews]);
     }
 
     public function comlianse_save(Request $request)

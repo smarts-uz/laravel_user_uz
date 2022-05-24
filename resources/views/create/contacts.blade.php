@@ -85,7 +85,7 @@
                                                             <label class="text-sm text-gray-500 mb-2"
                                                                    for="phone">{{__('Номер телефона')}}</label>
                                                             <input type="text"  autofocus="autofocus"
-                                                                   value="+998{{auth()->user()->phone_number}}"
+                                                                   value="{{auth()->user()->phone_number}}"
                                                                    placeholder="+998(00)000-00-00" id="phone"
                                                                    class="shadow appearance-none border phone  phone-1 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500"/>
                                                             <input type="hidden" name="phone_number"

@@ -7,6 +7,7 @@
     <ul class="mb-5">
         <li><a  href="/reviews" class="reviews hover:text-red-500 text-md text-blue-600 cursor-pointer">{{__('Отзывы исполнителей')}}</a></li>
         <li><a  href="/author-reviews" class="authors hover:text-red-500 text-md text-blue-600 cursor-pointer">{{__('Отзывы заказчиков')}}</a></li>
+        <li><a  href="/news" class="hover:text-red-500 text-md text-blue-600 cursor-pointer">{{__('Новости сайта')}}</a></li>
     </ul>
     <ul class="mb-5">
         <li><a  href="/press" class="press hover:text-red-500 text-md text-blue-600 cursor-pointer">{{__('СМИ о нас')}}</a></li>

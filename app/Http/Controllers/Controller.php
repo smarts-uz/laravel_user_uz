@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Session;
 use TCG\Voyager\Models\Category;
 use App\Models\Massmedia;
 use App\Services\ControllerService;
+use App\Models\BlogNew;
 
 class Controller extends BaseController
 {
@@ -94,6 +95,12 @@ class Controller extends BaseController
         return view('/staticpages/badges');
     }
 
+    public function news()
+    {
+        $news = BlogNew::all();
+        return view('/staticpages/news',compact('news'));
+    }
+
     public function routing($request)
     {
         $routeName = $request->route;
@@ -148,12 +155,6 @@ class Controller extends BaseController
         }
 
         return $data;
-
-    }
-
-
-    private function validate($route)
-    {
 
     }
 

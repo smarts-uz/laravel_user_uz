@@ -132,7 +132,7 @@ class UserIndexResource extends JsonResource
                 'rating' => $this->review_rating,
                 'last_review' => $lastReview ? [
                     'description' => $lastReview->description,
-                    'reviewer_name' => User::query()->find($lastReview->reviewer_id)->name
+                    'reviewer_name' => $lastReview->reviewer_name
                 ] : null
             ],
             'phone_number_old' => $this->phone_number_old,

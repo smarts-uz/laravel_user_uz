@@ -13,6 +13,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 
 //++
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Task\ResponseController;
 use App\Http\Controllers\Task\UpdateController;
 use App\Http\Controllers\UserController;
@@ -43,6 +44,7 @@ use App\Http\Controllers\admin\VoyagerUserController;
 use App\Http\Controllers\Task\CreateController;
 
 use App\Http\Controllers\ClickuzController;
+use Teamprodev\LaravelPayment\PayUz;
 
 //avocoder
 
@@ -95,8 +97,13 @@ Route::group(['prefix' => 'chat'], function (){
     Route::post('/pusher/auth', [MessagesController::class, 'pusherAuth']);
 });
 
+Route::get('/report/request/{id}',[ReportController::class,'report'])->name('report');
+Route::post('/request',[ReportController::class,'request'])->name('request');
+
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
+    Route::get("report", [ReportController::class, "index"])->name("index");
+    Route::get("report/get", [ReportController::class, "report"])->name("report");
     Route::get("users/activitiy/{user}", [VoyagerUserController::class, "activity"])->name("voyagerUser.activity"); // javoxir
     Route::get('/messages/chat/{id}', [ConversationController::class, 'showChat'])->name("conversation.showChat"); // javoxir
     Route::post('/messages/chat/rate/{message}', [ConversationController::class, 'rating'])->name("conversation.rating"); // javoxir
@@ -155,6 +162,7 @@ Route::view('/vacancies', 'reviews.vacancies');
 Route::get('/geotaskshint', [Controller::class, 'geotaskshint'])->name('geotaskshint'); // javoxir
 Route::get('/security', [Controller::class, 'security'])->name('security'); // javoxir
 Route::get('/badges', [Controller::class, 'badges'])->name('badges'); // javoxir
+Route::get('/news', [Controller::class, 'news'])->name('news'); // javoxir
 #endregion
 
 #region Profile
@@ -292,17 +300,19 @@ Route::post('/paycom', 'App\Http\Controllers\PaycomTransactionController@paycom'
 // Show transactions history
 Route::get('profile/transactions/history', [UserTransactionHisory::class, 'getTransactions'])->name('user.transactions.history')->middleware('auth');
 
-#payments
+#region payments
 Route::any('/paynet', function () {
-    (new Goodoneuz\PayUz\PayUz)->driver('paynet')->handle();
+    (new PayUz)->driver('paynet')->handle();
 });
 Route::any('/payme', function () {
-    (new Goodoneuz\PayUz\PayUz)->driver('payme')->handle();
+    (new PayUz)->driver('payme')->handle();
 });
 Route::any('/click', function () {
-    (new Goodoneuz\PayUz\PayUz)->driver('click')->handle();
+    (new PayUz)->driver('click')->handle();
 });
-Route::post('/click/user-balance', [RefillController::class, 'getBalanceForClick']);
+Route::any('/click/user-balance', function () {
+    return (new PayUz())->click_additional();
+});
 #endregion
 
 

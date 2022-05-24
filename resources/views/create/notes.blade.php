@@ -111,9 +111,7 @@
         debug: true,
         restrictions: {
             minFileSize: null,
-            maxFileSize: 10000000,
             maxTotalFileSize: null,
-            maxNumberOfFiles: 10,
             minNumberOfFiles: 0,
             allowedFileTypes: null,
             requiredMetaFields: [],

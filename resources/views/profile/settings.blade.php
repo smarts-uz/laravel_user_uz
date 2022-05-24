@@ -87,7 +87,7 @@
                                                             type="text" id="phone_number"
                                                             @if (!$user->phone_number) placeholder="+998(00)000-00-00"
                                                             @else
-                                                            value="+998{{$user->is_phone_number_verified?$user->phone_number:$user->phone_number_old}}"
+                                                            value="{{$user->is_phone_number_verified?$user->phone_number:$user->phone_number_old}}"
                                                             @endif >
                                                     @error('phone_number')
                                                     <p class="text-red-500">{{ $message }}</p>
@@ -133,7 +133,6 @@
                                                     <select class="border rounded-xl py-2 px-3 w-full focus:border-yellow-500 text-grey-900 outline-none"
                                                             name="location">
                                                         <option value="">{{__('Выберите город')}}</option>
-
                                                         @foreach($regions as $region)
                                                             <option
                                                                     value="{{$region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}" {{$region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') == $user->location??old('location') ? 'selected' : null}}>{{$region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}</option>
@@ -352,15 +351,15 @@
 
                                                     <div class="flex flex-row mt-4 items-center">
                                                         <i class="fas fa-desktop mr-2 text-yellow-500"></i>
-                                                        <p class="mx-1">{{ $session->ip_address == request()->ip()? "Xozirgi " :"" }}{{ $parser->parse($session->user_agent)->os->family }},</p>
+                                                        <p class="mx-1">{{ $session->ip_address == request()->ip()? "Текущая" :"" }}{{ $parser->parse($session->user_agent)->os->family }},</p>
                                                         <h1 class="mx-1">{{ $session->last_active }}, </h1>
                                                         <span class="text-gray-500">{{__('браузер')}} {{ $parser->parse($session->user_agent)->ua->family }}</span>
                                                     </div>
                                                 @endforeach
                                                 @foreach($sessions as $session)
                                                 @if($session!=null && $loop->index==0)
-                                                    <div class="my-3">
-                                                        <a href="{{route('profile.clear_sessions')}}" type="btn" class="focus:outline-none hover:bg-red-600 btn bg-red-400 uppercase p-2 text-white text-sm rounded-xl">{{__('удалить сеансы')}}</a>
+                                                    <div class="my-5">
+                                                        <a href="{{route('profile.clear_sessions')}}" type="btn" class="focus:outline-none hover:bg-red-600 btn bg-red-400 uppercase p-2 text-white text-sm rounded-lg">{{__('удалить сеансы')}}</a>
                                                     </div>
                                                 @endif
                                                 @endforeach

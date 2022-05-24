@@ -40,32 +40,5 @@ class RefillController extends Controller
                 return false;
         }
     }
-
-    public function getBalanceForClick(GetInfoClickRequest $request)
-    {
-        $data = $request->validated();
-        if ($data['action'] != 0) {
-            return response()->json([
-                'error' => -3,
-                'error_note' => "Запрашиваемое действие не найдено"
-            ]);
-        }
-
-        $user = User::query()->find($data['params']['user_id']);
-        if (!$user) {
-            return response()->json([
-                'error' => -5,
-                'error_note' => "Не найден пользователь исходя из присланных данных платежа в params"
-            ]);
-        }
-        return response()->json([
-            "error" => 0,
-            "error_note" => "Успешно",
-            "params" => [
-                'title' => "Balance",
-                'balance' => $user->walletBalance->balance ?? 0
-            ]
-        ]);
-    }
 }
 

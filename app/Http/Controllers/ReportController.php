@@ -7,26 +7,29 @@ use Illuminate\Http\Request;
 use App\Models\Report;
 use App\Models\Category;
 use App\Services\ReportService;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use App\Item\ReportItem;
 
 class ReportController extends Controller
 {
-    public function report(Report $report)
+    public function request(Request $request)
+    {
+        Cache::put('date',$request->date);
+        return redirect()->back();
+    }
+
+    public function index()
+    {
+        return view('vendor.voyager.report.report');
+    }
+    public function report()
     {
 
         $service = new ReportService();
-        $item = $service->report($report);
 
-        return view('vendor.voyager.report.report',
-        [
-            'task' => $item->task,
-            'report' => $report,
-            'table' => $item->table,
-            'columns' => $item->columns,
-            'task_parent' => $item->task_parent,
-        ]);
+        return $service->report();
     }
 
     public function new_report($report)

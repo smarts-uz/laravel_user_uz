@@ -10,6 +10,7 @@
         "beyondcode/laravel-websockets": "^1.13",
         "darkaonline/l5-swagger": "^8.3",
         "fruitcake/laravel-cors": "^2.0",
+        "glhd/aire": "^2.5",
         "goodoneuz/pay-uz": "^2.2",
         "guzzlehttp/guzzle": "^7.0.1",
         "jenssegers/agent": "^2.6",
@@ -23,12 +24,14 @@
         "munafio/chatify": "^1.3",
         "realrashid/sweet-alert": "^4.1",
         "tcg/voyager": "^1.5",
-        "teamprodev/laravel-payment-payme": "^1.1",
-        "teamprodev/laravel_payment_clickuz": "^1.0.2",
+        "teamprodev/laravel-payment": "^1.0",
         "teamprodev/playmobile-sms": "^1.0",
         "temprodev/laravel-one-auth": "dev-main",
         "ua-parser/uap-php": "^3.9",
-        "vemcogroup/laravel-translation": "^3.0"
+        "vemcogroup/laravel-translation": "^3.0",
+        "yajra/laravel-datatables": "1.5",
+        "yajra/laravel-datatables-buttons": "^4.13",
+        "yajra/laravel-datatables-oracle": "^9.20"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",

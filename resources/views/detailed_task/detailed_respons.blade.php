@@ -104,7 +104,7 @@
 
                     <div
                         class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}}
-                        +998 {{ auth()->user()->phone_number }}
+                         {{ auth()->user()->phone_number }}
                     </div>
                     @if ($task->status == 3 && auth()->user()->id == $task->performer_id)
                         <div class="w-10/12 mx-auto">
@@ -397,7 +397,7 @@
                             class="text-[17px] text-gray-500 my-5">{{$response->description}}</div>
                         @if($response->not_free === 1)
                             <div
-                                class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} +998 {{$response->performer->phone_number}}</div>
+                                class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} {{$response->performer->phone_number}}</div>
                         @endif
 
                         @auth()
