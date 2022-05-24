@@ -15,8 +15,11 @@
     <link rel="stylesheet" href="{{ asset('css/fonts/fonts.css') }}">
     <link href="https://releases.transloadit.com/uppy/v2.4.1/uppy.min.css" rel="stylesheet">
     <script defer src="https://unpkg.com/alpinejs@3.1.0/dist/cdn.min.js"></script>
-
-
+    {{--JS Panel--}}
+    <script src="https://cdn.jsdelivr.net/npm/jspanel4@4.14.1/dist/jspanel.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspanel4@4.14.1/dist/extensions/modal/jspanel.modal.js"></script>
+    {{--JS Panel CSS--}}
+    <link href="https://cdn.jsdelivr.net/npm/jspanel4@4.14.1/dist/jspanel.css" rel="stylesheet">
     @yield('style')
 
     <style>
@@ -34,6 +37,30 @@
 @include('components.preloader')
 <x-navbar/>
 @yield('content')
+<script>
+    const createChatPanel = (event) => {
+    jsPanel.create({
+        content: '<iframe src="http://youdo.cc/chat" frameborder="0" style="width: 100%; height: 100%"></iframe>',
+        theme: 'primary',
+        position: 'center',
+        resizeit: false,
+        closeOnEscape: true,
+        headerTitle: 'Интерактивный чат',
+        headerControls: {
+           size: 'md',
+        },
+        borderRadius: '1rem',
+        panelSize: {
+            width: '80vw',
+            height: '90vh'
+        },
+        contentSize: '80vw 90vh',
+    });
+    event.preventDefault();
+    }
+    const chatUI = document.querySelector('.open-chat');
+    chatUI.addEventListener('click', createChatPanel);
+</script>
 <x-footer/>
 @include('sweetalert::alert')
 

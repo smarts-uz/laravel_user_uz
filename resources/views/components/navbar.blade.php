@@ -63,15 +63,15 @@
                     </div>
 
                     {{-- icon-2   Chat  --}}
-                    <div class=" float-left">
-                        <a class="delete-task" href="/chat">
+                    <div class=" float-left open-chat" style="cursor:pointer">
+                        <a class="delete-task">
                             <i class="xl:text-2xl lg:text-xl text-gray-500 hover:text-yellow-500 far fa-comment-alt"></i>
                         </a>
                     </div>
 
                     {{-- icon 3  Payment--}}
                     <div class="max-w-lg ml-5 float-left">
-                        <a onclick="toggleModal()">
+                        <a onclick="toggleModal()" style="cursor:pointer">
                             <i class="xl:text-2xl lg:text-xl text-green-400 hover:text-yellow-500 fas fa-wallet"></i>
                         </a>
                     </div>
