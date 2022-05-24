@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Services\NotificationService;
 use App\Services\Response;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class UpdateTaskService
@@ -182,7 +183,7 @@ class UpdateTaskService
     {
         $validator = Validator::make($request->all(), [
             'task_id' => 'required',
-            'images' => 'required'
+            'images.*' => 'required|image:jpeg,jpg,png,gif|max:10000'
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -190,22 +191,24 @@ class UpdateTaskService
                 'data' => $validator->errors()
             ]);
         }
-        $user = auth()->user();
-        $data = $validator->validated();
+        $imgData = [];
         if ($request->hasFile('images')) {
-            $image = [];
-            foreach ($request->file('images') as $uploadedImage) {
-                $filename = $user->name.'/'.$data['comment'].'/'.time() . '_' . $uploadedImage->getClientOriginalName();
-                $uploadedImage->move(public_path().'/Portfolio/'.$user->name.'/'.$data['comment'].'/', $filename);
-                $image[] = $filename;
+            $oldImages = $task->photos;
+            foreach ($oldImages as $oldImage) {
+                File::delete(public_path() . 'storage/uploads/'. $oldImage);
             }
-            $data['image'] = json_encode($image);
-            $task->photos = json_encode($image);
-            $task->save();
+            foreach ($request->file('images') as $uploadedImage) {
+                $fileName = time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path("storage/uploads/"), $fileName);
+                $imgData[] = $fileName;
+            }
         }
+        $task->photos = json_encode($imgData);
+        $task->save();
+
         return response()->json([
             'success' => true,
-            'data' => $data
+            'data' => $task
         ]);
     }
 
