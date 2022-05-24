@@ -46,7 +46,7 @@
         </tr>
             <th>№</th>
             <th>Категории</th>
-            <th><a href="{{ route('show.child', '$id') }}">-></a>Подкатегории</th>
+            <th>Подкатегории</th>
             <th>Кол-во</th>
             <th>Сумма</th>
             <th>Кол-во</th>
@@ -82,7 +82,7 @@
                     {
                         "data": "",
                         render: function (data, type, row) {
-                            var details = '<a href="{{ route('show.child', '$id') }}">-></a>';
+                            var details = '<a href="{{ route('show.child', '$id')}}">-></a>';
                                 return details;
                         }
                     },
