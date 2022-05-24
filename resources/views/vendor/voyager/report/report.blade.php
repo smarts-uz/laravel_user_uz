@@ -82,7 +82,7 @@
                     {
                         "data": "",
                         render: function (data, type, row) {
-                            var details = '<button type="button" class="btn btn-primary"><a href="{{ route('show.child', '$id')}}">-></a></button>`;
+                            var details = `<button type="button" class="btn btn-primary"><a href="{{ route('show.child', '$id')}}">-></a></button>`;
                                 return details;
 
                                 
