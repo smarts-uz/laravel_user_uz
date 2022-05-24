@@ -19,7 +19,7 @@
                         {{__('Введите смс-код')}}
                     </label>
                     <input type="text" onfocus="onfocus" onkeypress='validate(event)'
-                           id="phone_number" name="code"
+                           name="code"
                            class="shadow focus:outline-none focus:border-yellow-500 appearance-none border border-slate-300 rounded w-80 py-2 px-3 text-gray-700 mb-3 leading-tight ">
                     <br>
                     @error('code')

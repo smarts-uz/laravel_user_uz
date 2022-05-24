@@ -68,8 +68,8 @@
                             <label class="block text-gray-500 text-sm mb-1" for="phone_number">
                                 <span>{{__('Телефон немер')}}</span>
                             </label>
-                            <input type="text" placeholder="+998"
-                                   value="+998{{ request()->input('phone_number', old('phone_number')) }}"
+                            <input type="text" placeholder=""
+                                   value="{{ request()->input('phone_number', old('phone_number')) }}"
                                    id="phone_number"
                                    class="shadow appearance-none border focus:outline-none focus:border-yellow-500 rounded w-80 py-2 px-3 text-gray-700 mb-3 leading-tight">
                             <br>

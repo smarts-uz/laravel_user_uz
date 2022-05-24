@@ -57,7 +57,9 @@ class UserController extends Controller
 
     public function reset_submit(Request $request)
     {
-
+        if (!str_starts_with($request['phone_number'], '+998')) {
+            $request['phone_number'] = '+998' . $request['phone_number'];
+        }
         $data = $request->validate([
             'phone_number' => 'required|integer|exists:users'
         ]);

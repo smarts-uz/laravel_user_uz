@@ -15,13 +15,13 @@
                         </span>
                     </label>
                     <input type="password" placeholder="Password"
-                           id="phone_number" name="password"
+                            name="password"
                        required
                            class="ml-6 focus:outline-none focus:border-yellow-500 shadow appearance-none border rounded w-80 py-2 px-3 text-gray-700 mb-3 leading-tight">
                            <i class="fas fa-eye-slash text-gray-500 relative -left-12" id="eye"></i>
                     <br>
                     <input type="password" placeholder="Confirm password"
-                           id="phone_number" name="password_confirmation"
+                            name="password_confirmation"
                          required  class="confirm_password ml-6 focus:outline-none focus:border-yellow-500 shadow appearance-none border rounded w-80 py-2 px-3 text-gray-700 mb-3 leading-tight">
                          <i class="fas fa-eye-slash text-gray-500 relative -left-12" id="eye1"></i>
                     <br>
