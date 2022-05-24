@@ -122,6 +122,7 @@ Route::middleware('custom.auth:api')->group(function () {
             Route::post('/phone/edit', [ProfileAPIController::class, 'phoneUpdate']); //end +
             Route::post('/password/change', [ProfileAPIController::class, 'change_password']); //end +
             Route::post('/notifications', [ProfileAPIController::class, 'userNotifications']); //end +
+            Route::post('/change-lang', [ProfileAPIController::class, 'changeLanguage']);
         });
     });
 });
