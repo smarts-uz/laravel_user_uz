@@ -82,8 +82,10 @@
                     {
                         "data": "",
                         render: function (data, type, row) {
-                            var details = '<a href="{{ route('show.child', '$id')}}">-></a>';
+                            var details = '<button type="button" class="btn btn-primary"><a href="{{ route('show.child', '$id')}}">-></a></button>`;
                                 return details;
+
+                                
                         }
                     },
                     {data: 'open_count', name: 'open_count'},
