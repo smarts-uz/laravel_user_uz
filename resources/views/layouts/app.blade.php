@@ -41,7 +41,7 @@
 <script>
     const createChatPanel = (event) => {
     jsPanel.create({
-        content: '<iframe src="http://youdo.cc/chat" frameborder="0" style="width: 100%; height: 100%"></iframe>',
+        content: '<iframe src="http://user.uz/chat" frameborder="0" style="width: 100%; height: 100%"></iframe>',
         theme: 'primary',
         position: 'center',
         resizeit: false,
