@@ -32,18 +32,15 @@ class ReportController extends Controller
         return $service->report();
     }
 
-    public function new_report($report)
-    {
-        $well = new ReportService();
-        $item = $well->new_report($report);
+        public function show_child(Request $req,$id)
+        {
+            if($req->ajax())
+            {
+            $service = new ReportService();
+            $service->child_report($id);
+            }
 
-        $item = $categories_array = \App\Models\Category::where('parent_id', $report->id)->pluck('id')->toarray();
-        $item = $category_count = \App\Models\Task::whereIn('category_id', $categories_array)->count();
-        $item = $categories_array1 = \App\Models\Category::where('parent_id', $report->id)->pluck('id')->toarray();
-        $item = $category_count1 = \App\Models\Task::whereIn('category_id', $categories_array1)->pluck('budget')->toArray();
-        $item = $budgets = str_replace(array('до', 'сум', 'от'), '', $category_count1);
-        $item = $all_budget = array_sum($budgets);
+            return view('vendor.voyager.report.childreport');
 
-        return view('vendor.voyager.report.report', $item);
-    }
+        }
 }

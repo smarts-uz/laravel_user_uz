@@ -18,25 +18,18 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.4/css/select.dataTables.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/datetime/1.1.2/css/dataTables.dateTime.min.css"/>
 </head>
-{{ Aire::open()
-  ->route('request')
-  ->enctype("multipart/form-data")
-  ->post() }}
-<div style="text-align: end;margin-right: 100px">
-    {{Aire::month('m', 'Pick a Month')
-  ->helpText('Browser-native month picker (minimal browser support)')->value(Illuminate\Support\Facades\Cache::get('date'))->name('date')}}
-    <button type="submit" class="btn btn-success">Выбрать</button>
-</div>
-{{ Aire::close() }}
-@if(Illuminate\Support\Facades\Cache::get('date') != null)
-    <table id="example" class="display nowrap" style="width: 100%">
+
+   <div class="container">
+       
+   
+    <table id="example2" class="display nowrap" style="width: 100%">
         <thead>
         <tr style="text-align: center;">
-            <td colspan=20 style="background-color: #2cb74c"><b style="margin-left: 150px">{{Illuminate\Support\Facades\Cache::get('date')}} oy</b>
+            
         </tr>
             <th></th>
-            <th></th>
-            <th></th>
+            
+            
             <th colspan="2" style="text-align: center">Открытые</th>
             <th colspan="2" style="text-align: center">В исполнении</th>
             <th colspan="2" style="text-align: center">Закрытые</th>
@@ -44,9 +37,7 @@
             <th colspan="2" style="text-align: center">Всего</th>
         </tr>
         </tr>
-            <th>№</th>
             <th>Категории</th>
-            <th><a href="{{ route('show.child', '$id') }}">-></a>Подкатегории</th>
             <th>Кол-во</th>
             <th>Сумма</th>
             <th>Кол-во</th>
@@ -70,22 +61,14 @@
     <script type="text/javascript" src="https://cdn.datatables.net/datetime/1.1.2/js/dataTables.dateTime.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#example').DataTable( {
+            $('#example2').DataTable( {
                 // dom: 'PQlfrtip',
                 dom: 'Qlfrtip',
                 ajax:
-                    "{{ route('report') }}",
+                    "{{ route('child.report'), '$id' }}",
 
                 columns: [
-                    {data: "id", name: 'id'},
                     {data: 'name', name: 'name'},
-                    {
-                        "data": "",
-                        render: function (data, type, row) {
-                            var details = '<a href="{{ route('show.child', '$id') }}">-></a>';
-                                return details;
-                        }
-                    },
                     {data: 'open_count', name: 'open_count'},
                     {data: 'open_sum', name: 'open_sum'},
                     {data: 'process_count', name: 'process_count'},
@@ -101,7 +84,8 @@
             });
         });
     </script>
-@endif
+
 <div class="pl-4 pt-4">
     <a href="/" class="btn btn-danger">{{__('Назад')}}</a>
+</div>
 </div>
