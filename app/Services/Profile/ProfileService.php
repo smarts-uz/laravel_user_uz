@@ -2,16 +2,22 @@
 
 namespace App\Services\Profile;
 
+use App\Http\Controllers\ClickuzController;
+use App\Http\Controllers\PaynetController;
 use App\Item\ProfileCashItem;
 use App\Item\ProfileDataItem;
+use App\Models\All_transaction;
 use App\Models\Region;
 use App\Models\Review;
 use App\Models\Session;
 use App\Models\User;
+use App\Models\WalletBalance;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Portfolio;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use TCG\Voyager\Models\Category;
@@ -69,9 +75,9 @@ class ProfileService
             ->limit(20)->pluck('id')->toArray();
         $sessions = Session::query()->where('user_id', $user->id)->get();
         $parser = Parser::create();
-        $review_good = User::find($user->id)->review_good;
-        $review_bad = User::find($user->id)->review_bad;
-        $review_rating = User::find($user->id)->review_rating;
+        $review_good = $user->review_good;
+        $review_bad = $user->review_bad;
+        $review_rating = $user->review_rating;
         return array(
             'user' => $user,
             'views' => $views,
@@ -182,5 +188,238 @@ class ProfileService
             $reviews->where(['good_bad' => 0]);
         }
         return $reviews->get();
+    }
+
+    public function createPortfolio($request)
+    {
+        $user = auth()->user();
+        $data = $request->safe();
+        $data['user_id'] = $user->id;
+        if ($request->hasFile('images')) {
+            $image = [];
+            foreach ($request->file('images') as $uploadedImage) {
+                $filename = $user->name.'/'.$data['comment'].'/'.time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path().'/Portfolio/'.$user->name.'/'.$data['comment'].'/', $filename);
+                $image[] = $filename;
+            }
+            $data['image'] = json_encode($image);
+        }
+        $portfolio = Portfolio::create($data);
+        return $portfolio;
+    }
+
+    public function updatePortfolio($request, $portfolio)
+    {
+        $user = auth()->user();
+        $data = $request->safe();
+        $data['user_id'] = $user->id;
+        if ($request->hasFile('images')) {
+            $portfolioImages = $portfolio->image;
+            foreach ($portfolioImages as $portfolioImage) {
+                File::delete(public_path() . 'Portfolio/'. $portfolioImage);
+            }
+            $image = [];
+            foreach ($request->file('images') as $uploadedImage) {
+                $filename = $user->name.'/'.$data['comment'].'/'.time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path().'Portfolio/'.$user->name.'/', $filename);
+                $image[] = $filename;
+            }
+            $data['image'] = json_encode($image);
+        }
+        $portfolio->update($data);
+        $portfolio->save();
+        return $portfolio;
+    }
+
+    public function videoStore($request)
+    {
+        $user = auth()->user();
+        $validated = $request->safe();
+        $link = $validated['link'];
+        if (!str_starts_with($link, 'https://www.youtube.com/')) {
+            $message = trans('trans.Link should be from YouTube.');
+            $success = false;
+        } else {
+            $user->youtube_link = str_replace('watch?v=', 'embed/', $link);
+            $user->save();
+            $message = trans('trans.Video added successfully.');
+            $success = true;
+        }
+        return [
+            'success' => $success,
+            'data' => [
+                'message' => $message
+            ]
+        ];
+    }
+
+    public function balance($request)
+    {
+        $user = auth()->user()->load('transactions');
+        if (WalletBalance::query()->where('user_id', $user->id)->first() != null)
+            $balance = WalletBalance::query()->where('user_id', $user->id)->first()->balance;
+        else
+            $balance = 0;
+        $transactions = All_transaction::query()->where(['user_id' => $user->id]);
+        $period = $request->get('period');
+        $type = $request->get('type');
+        if ($type == 'in') {
+            $transactions = $transactions->whereIn('method', ['Payme', 'Click', 'Paynet']);
+        } elseif ($type == 'out') {
+            $transactions = $transactions->where('method', '=', 'Task');
+        }
+        if ($period == 'month') {
+            $transactions = $transactions->where('created_at', '>', Carbon::now()->subMonth()->toDateTimeString());
+        }
+        return [
+            'balance' => $balance,
+            'transactions' => $transactions->paginate(15)
+        ];
+    }
+
+    public function phoneUpdate($request)
+    {
+        $phoneNumber = $request->get('phone_number');
+        $userPhone = User::query()->where(['phone_number' => $phoneNumber])->first();
+        $user = auth()->user();
+        if ($userPhone) {
+            if ($userPhone->id != $user->id) {
+                $message = trans('trans.User with entered phone number already exists.');
+                $success = false;
+            }
+        } else {
+            $user->phone_number = $phoneNumber;
+            $user->is_phone_number_verified = 0;
+            $user->save();
+            $message = trans('trans.Phone number updated successfully.');
+            $success = true;
+        }
+        return [
+            'success' => $success,
+            'data' => [
+                'message' => $message
+            ]
+        ];
+    }
+
+    public function payment($request)
+    {
+        $payment = $request->get("paymethod");
+        $request['user_id'] = auth()->user()->id;
+        switch($payment) {
+            case 'Click':
+                $payment = new ClickuzController();
+                return $payment->pay($request);
+            case 'PayMe':
+                $tr = new All_transaction();
+                $tr->user_id = Auth::id();
+                $tr->amount = $request->get("amount");
+                $tr->method = $tr::DRIVER_PAYME;
+                $tr->state = $tr::STATE_WAITING_PAY;
+                $tr->save();
+                return redirect('https://checkout.paycom.uz')->withInput([
+                    'merchant' => config('paycom.merchant_id'),
+                    'amount' => $tr->amount * 100,
+                    'order_id' => $tr->id
+                ]);
+            case 'Paynet':
+                return PaynetController::pay($request);
+        }
+    }
+
+    public function changePassword($request)
+    {
+        $data = $request->safe();
+        $user = auth()->user();
+        if (Hash::check($data['old_password'], $user->password)) {
+            $user->update(['password' => Hash::make($data['password'])]);
+
+            $message = trans('trans.Password updated successfully.');
+            $status = true;
+        } else {
+            $message = trans('trans.Incorrect old password.');
+            $status = false;
+        }
+        return response()->json([
+            'status' => $status,
+            'data' => [
+                'message' => $message
+            ]
+        ]);
+    }
+
+    public function changeAvatar($request)
+    {
+        $user = auth()->user();
+        $destination = 'storage/' . $user->avatar;
+        if (File::exists($destination)) {
+            File::delete($destination);
+        }
+        $filename = $request->file('avatar');
+        $imagename = "user-avatar/" . $filename->getClientOriginalName();
+        $filename->move(public_path() . '/storage/user-avatar/', $imagename);
+        $data['avatar'] = $imagename;
+        $user->update($data);
+    }
+
+    public function updateSettings($request)
+    {
+        $validated = $request->safe();
+        if ($validated['email'] != auth()->user()->email) {
+            $validated['is_email_verified'] = 0;
+            $validated['email_old'] = auth()->user()->email;
+        }
+        $user = auth()->user();
+        $user->update($validated);
+        $user->save();
+    }
+
+    public function notifications($request)
+    {
+        $notification = $request->get('notification');
+        $user = auth()->user();
+        if ($notification == 1) {
+            $user->system_notification = 1;
+            $user->news_notification = 1;
+            $message = trans('trans.Notifications turned on.');
+        } elseif ($notification == 0) {
+            $user->system_notification = 0;
+            $user->news_notification = 0;
+            $message = trans('trans.Notifications turned off.');
+        }
+        $user->save();
+        return $message;
+    }
+
+    public function subscribeToCategory($request)
+    {
+        $user = auth()->user();
+        $categories = $request->get('category');
+        foreach ($categories as $category) {
+            if (!is_int($category)) {
+                return [
+                    'success' => false,
+                    'data' => [
+                        'message' => trans('trans.All values should be int.')
+                    ]
+                ];
+            }
+        }
+        $checkbox = implode(",", $categories);
+        $smsNotification = 0;
+        $emailNotification = 0;
+        if ($request->get('sms_notification') == 1) {
+            $smsNotification = 1;
+        }
+        if ($request->get('email_notification') == 1) {
+            $emailNotification = 1;
+        }
+        $user->update(['category_id' => $checkbox, 'sms_notification' => $smsNotification, 'email_notification' => $emailNotification]);
+        return [
+            'success' => true,
+            'data' => [
+                'message' => trans('trans.You successfully subscribed for notifications by task categories.')
+            ]
+        ];
     }
 }
