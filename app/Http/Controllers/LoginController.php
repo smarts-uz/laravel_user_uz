@@ -202,7 +202,7 @@ class LoginController extends Controller
                 'email' => $request->email
             ]);
         } else {
-          
+
             $request->validate([
                 'phone_number' => 'required|unique:users|min:9'
             ],
@@ -213,9 +213,7 @@ class LoginController extends Controller
                     'phone_number.min' => __('login.phone_number.min'),
                 ]
             );
-            if (!str_starts_with($request['phone_number'], '+998')) {
-                $request['phone_number'] = '+998' . $request['phone_number'];
-            }
+
             $user->phone_number = $request->phone_number;
             $user->save();
             self::send_verification('phone_number', auth()->user());

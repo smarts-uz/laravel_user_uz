@@ -18,8 +18,8 @@ if (element) {
     $("#phone_number").keyup(function() {
         var text = $(this).val()
         text = text.replace(/[^0-9.]/g, "")
-        text = text.slice(3)
-        $("#phone").val(text)
+        // text = text.slice(3)
+        $("#phone").val("+" + text)
     })
 
 }

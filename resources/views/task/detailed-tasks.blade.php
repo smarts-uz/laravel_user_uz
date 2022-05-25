@@ -175,7 +175,7 @@
                                        <div class="flex flex-row gap-x-2">
                                             <i class="far fa-thumbs-down text-gray-400"></i>
                                             @if ($respons_review->as_performer==0)
-                                                <p class="text-base"> - {{class_uses_recursive('Foo\Bar\Baz')('Заказчик')}}</p>
+                                                <p class="text-base"> - {{__('Заказчик')}}</p>
                                             @elseif ($respons_review->as_performer==1)
                                                 <p class="text-base"> - {{__('Исполнитель')}}</p>
                                             @endif

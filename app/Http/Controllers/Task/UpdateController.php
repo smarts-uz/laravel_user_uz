@@ -27,11 +27,11 @@ class UpdateController extends Controller
     {
         taskGuard($task);
         if ($task->responses_count)
-            abort(403,"No Permission");
+            abort(403, "No Permission");
 
         $data = $request->validated();
         $task->addresses()->delete();
-        $data['coordinates'] = $this->service->addAdditionalAddress($task,$request);
+        $data['coordinates'] = $this->service->addAdditionalAddress($task, $request);
         unset($data['location0']);
         unset($data['coordinates0']);
         $task->update($data);
@@ -53,7 +53,8 @@ class UpdateController extends Controller
 
     }
 
-    public function completed(Task $task){
+    public function completed(Task $task)
+    {
         $data = [
             'status' => Task::STATUS_COMPLETE
         ];
@@ -106,7 +107,7 @@ class UpdateController extends Controller
                     'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
                 ]);
             } elseif ($task->performer_id == auth()->id()) {
-                Review::create([
+                Review::query()->create([
                     'description' => $request->comment,
                     'good_bad' => $request->good,
                     'task_id' => $task->id,
@@ -115,26 +116,24 @@ class UpdateController extends Controller
                     'as_performer' => 1
                 ]);
                 Notification::create([
-                    'user_id' => $task->performer_id,
-                    'performer_id' => $task->user_id,
+                    'user_id' => $task->user_id,
+                    'performer_id' => $task->performer_id,
                     'task_id' => $task->id,
                     'name_task' => $task->name,
                     'description' => 1,
                     'type' => Notification::SEND_REVIEW_PERFORMER
                 ]);
-
                 NotificationService::sendNotificationRequest([$task->user_id], [
                     'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
                 ]);
                 $task->performer_review = 1;
                 $task->save();
             }
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             DB::rollBack();
         }
         return back();
     }
-
 
 
 }
