@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\API\CategoriesAPIController; // javoxir
 use App\Http\Controllers\API\CustomFieldAPIController;
 use App\Http\Controllers\API\FaqAPIController; // javoxir
@@ -139,6 +140,8 @@ Route::post('/reset', [UserAPIController::class, 'reset_submit']); //end +
 Route::post('/reset/password', [UserAPIController::class, 'reset_password_save'])->name('user.reset_password_save'); //end +
 Route::post('/code', [UserAPIController::class, 'reset_code'])->name('user.reset_code'); //end +
 
+//News
+Route::get('/blog-news', [BlogController::class, 'index']);
 
 // FAQ
 Route::get('faq', [FaqAPIController::class, 'index']); //end +
