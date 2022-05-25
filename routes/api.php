@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\BlogController;
+use App\Http\Controllers\API\BlogController;
 use App\Http\Controllers\API\CategoriesAPIController; // javoxir
 use App\Http\Controllers\API\CustomFieldAPIController;
 use App\Http\Controllers\API\FaqAPIController; // javoxir
