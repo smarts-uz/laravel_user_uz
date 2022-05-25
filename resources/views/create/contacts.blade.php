@@ -305,12 +305,5 @@
 
     </script>
 
-
-
 @endsection
 
-@section("javasript")
-
-
-
-@endsection

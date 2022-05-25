@@ -227,16 +227,10 @@
                 </div>
             </div>
 
-                @endif
+        @endif
 
-
-                @section("javasript")
-
-
-                    @endsection
-                    @endauth
-
-                    <script src="https://unpkg.com/imask"></script>
-                    <script src="{{ asset('js/components/modal.js') }}"></script>
-
-                    @endif
+    @endauth
+      
+        <script src="https://unpkg.com/imask"></script>
+        <script src="{{ asset('js/components/modal.js') }}"></script>  
+@endif

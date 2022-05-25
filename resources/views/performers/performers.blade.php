@@ -500,7 +500,7 @@
     </script>
 @endsection
 
-@section('javasript')
+@section('javascript')
     <script src="//unpkg.com/alpinejs" defer></script>
     <script>
         $(".score").slice(0, 2).attr('about', 1);

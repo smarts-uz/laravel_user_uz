@@ -159,7 +159,7 @@
 
 @endsection
 
-@section("javasript")
+@section("javascript")
 
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
     <script src="https://api-maps.yandex.ru/2.1/?lang={{app()->getLocale()}}&apikey=f4b34baa-cbd1-432b-865b-9562afa3fcdb"

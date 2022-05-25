@@ -475,7 +475,7 @@
     </script>
 @endsection
 
-@section('javasript')
+@section('javascript')
     <script src="//unpkg.com/alpinejs" defer></script>
 
     <script>
