@@ -8,7 +8,7 @@ class ResetPasswordRequest extends BaseRequest
     public function rules()
     {
         return [
-            'phone_number' => 'required|numeric',
+            'phone_number' => 'required',
             'password' => 'required|string|confirmed',
         ];
     }
@@ -17,7 +17,6 @@ class ResetPasswordRequest extends BaseRequest
     {
         return [
             'phone_number.required' => trans('trans.Enter phone number.'),
-            'phone_number.numeric' => trans('trans.Phone number should be number.'),
             'password.required' => trans('trans.Enter password.'),
             'password.confirmed' => trans('trans.Confirm password.'),
         ];
