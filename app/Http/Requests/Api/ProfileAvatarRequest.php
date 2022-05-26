@@ -33,17 +33,7 @@ class ProfileAvatarRequest extends FormRequest
     public function messages()
     {
         return [
-            'avatar' => trans('trans.Send a photo.'),
+            'avatar.*' => trans('trans.Send a photo.'),
         ];
-    }
-
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success'   => false,
-            'data' => [
-                'message' => $validator->errors()
-            ]
-        ]));
     }
 }
