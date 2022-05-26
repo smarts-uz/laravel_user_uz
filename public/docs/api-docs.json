@@ -61,16 +61,6 @@
                                 "order",
                                 "name",
                                 "custom_route_title",
-                                "loader",
-                                "loader_weight",
-                                "passenger_transportation",
-                                "auto_want",
-                                "cargo_weight",
-                                "height",
-                                "length",
-                                "width",
-                                "services",
-                                "placeholder",
                                 "max",
                                 "min",
                                 "slug",
@@ -97,15 +87,16 @@
                         }
                     },
                     {
-                        "name": "filters[name]",
+                        "name": "filters[id]",
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "10,,20"
                         }
                     },
                     {
-                        "name": "filters[custom_route_title]",
+                        "name": "filters[name]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -122,22 +113,6 @@
                     },
                     {
                         "name": "filters[ico]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[services]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[placeholder]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -1055,7 +1030,8 @@
                                 "task_id",
                                 "as_performer",
                                 "created_at",
-                                "updated_at"
+                                "updated_at",
+                                "reviewer_name"
                             ],
                             "type": "string"
                         }
@@ -1296,7 +1272,7 @@
         "\/api\/profile\/portfolio\/{portfolio}\/delete": {
             "post": {
                 "tags": [
-                    "Profile"
+                    "Search"
                 ],
                 "summary": "Delete Portfolio",
                 "operationId": "4beaea32f869fca3ce1ebdd28bea741e",
@@ -1684,31 +1660,6 @@
                         }
                     }
                 },
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/profile\/cash": {
-            "get": {
-                "tags": [
-                    "ProfileAPI"
-                ],
-                "summary": "Your cash",
-                "operationId": "d56031e1533a8e80176a21212f83e14c",
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -3420,6 +3371,9 @@
                                     },
                                     "amount": {
                                         "type": "number"
+                                    },
+                                    "budget_type": {
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -3463,10 +3417,6 @@
                                     },
                                     "description": {
                                         "type": "string"
-                                    },
-                                    "oplata": {
-                                        "description": "true - karta, false - naqd",
-                                        "type": "boolean"
                                     },
                                     "docs": {
                                         "description": "true - taqdim etilsin, false - taqdim etilmasin",
@@ -3598,7 +3548,7 @@
                                     "task_id": {
                                         "type": "integer"
                                     },
-                                    "user_id": {
+                                    "phone_number": {
                                         "type": "integer"
                                     },
                                     "sms_otp": {
@@ -3781,6 +3731,510 @@
                         }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/update-task\/{task}\/name": {
+            "post": {
+                "tags": [
+                    "Task Update"
+                ],
+                "summary": "Task update name",
+                "operationId": "01ba07b06489fb80b56b7d4ccd021d00",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "category_id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/update-task\/{task}\/remote": {
+            "post": {
+                "tags": [
+                    "Task Update"
+                ],
+                "summary": "Task update remote",
+                "operationId": "b22dace447e9e3b5e97303692ce94035",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer"
+                                    },
+                                    "radio": {
+                                        "description": "Agar udallonna bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/update-task\/{task}\/address": {
+            "post": {
+                "tags": [
+                    "Task Update"
+                ],
+                "summary": "Task update address",
+                "operationId": "e27a0257c8a292d549b1ba74b5cee07b",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer"
+                                    },
+                                    "location": {
+                                        "type": "string"
+                                    },
+                                    "latitude": {
+                                        "type": "number"
+                                    },
+                                    "longitude": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/update-task\/{task}\/date": {
+            "post": {
+                "tags": [
+                    "Task Update"
+                ],
+                "summary": "Task update date",
+                "operationId": "72daf2dbd3ef6c374439a5abe9dbf4c3",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer"
+                                    },
+                                    "date_type": {
+                                        "description": "1 dan 3 gacha bersa bo`ladi",
+                                        "type": "integer"
+                                    },
+                                    "start_date": {
+                                        "description": "2022-06-03 12:00:0 - manashu formatda kiritiladi",
+                                        "type": "string"
+                                    },
+                                    "end_date": {
+                                        "description": "2022-06-03 12:00:0 - manashu formatda kiritiladi",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/update-task\/{task}\/budget": {
+            "post": {
+                "tags": [
+                    "Task Update"
+                ],
+                "summary": "Task update budget",
+                "operationId": "1bcbf434f63bd2bd250529afca61a8b2",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer"
+                                    },
+                                    "amount": {
+                                        "type": "number"
+                                    },
+                                    "budget_type": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/update-task\/{task}\/note": {
+            "post": {
+                "tags": [
+                    "Task Update"
+                ],
+                "summary": "Task update note",
+                "operationId": "5d1f767fcba09f5ed34253c47068ae0c",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "docs": {
+                                        "description": "true - taqdim etilsin, false - taqdim etilmasin",
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/update-task\/{task}\/images": {
+            "post": {
+                "tags": [
+                    "Task Update"
+                ],
+                "summary": "Task update images",
+                "operationId": "4247b7515333190d9d6653f7cd641c9d",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer"
+                                    },
+                                    "images": {
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/update-task\/{task}\/contacts": {
+            "post": {
+                "tags": [
+                    "Task Update"
+                ],
+                "summary": "Task update contacts",
+                "operationId": "c3114b25878e38dec562d0d2b92ac7a2",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer"
+                                    },
+                                    "phone_number": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/update-task\/{task}\/verify": {
+            "post": {
+                "tags": [
+                    "Task Update"
+                ],
+                "summary": "Task update verify",
+                "operationId": "fccd8760adf34c624bcb308f3930f830",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer"
+                                    },
+                                    "phone_number": {
+                                        "type": "integer"
+                                    },
+                                    "sms_otp": {
+                                        "description": "Telefonga kelgan SMS code",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -4445,7 +4899,6 @@
                                 "review_rating",
                                 "review_bad",
                                 "review_good",
-                                "reviews",
                                 "username",
                                 "firstname",
                                 "lastname",
@@ -4464,6 +4917,7 @@
                                 "gender",
                                 "sms_notification",
                                 "email_notification",
+                                "reviews",
                                 "user_belongsto_role_relationship",
                                 "user_belongstomany_role_relationship"
                             ],
@@ -6396,22 +6850,13 @@
                             "type": "string",
                             "nullable": true,
                             "enum": [
+                                "id",
                                 "parent_id",
                                 "name",
                                 "custom_route_title",
                                 "order",
                                 "slug",
-                                "loader",
-                                "loader_weight",
-                                "passenger_transportation",
                                 "ico",
-                                "auto_want",
-                                "cargo_weight",
-                                "height",
-                                "length",
-                                "width",
-                                "services",
-                                "placeholder",
                                 "max",
                                 "min",
                                 "double_address",
@@ -6428,22 +6873,13 @@
                             "items": {
                                 "type": "string",
                                 "enum": [
+                                    "id",
                                     "parent_id",
                                     "name",
                                     "custom_route_title",
                                     "order",
                                     "slug",
-                                    "loader",
-                                    "loader_weight",
-                                    "passenger_transportation",
                                     "ico",
-                                    "auto_want",
-                                    "cargo_weight",
-                                    "height",
-                                    "length",
-                                    "width",
-                                    "services",
-                                    "placeholder",
                                     "max",
                                     "min",
                                     "double_address",
@@ -7927,15 +8363,7 @@
                         "description": "Sort by column",
                         "required": false,
                         "schema": {
-                            "enum": [
-                                "id",
-                                "created_at",
-                                "updated_at",
-                                "name",
-                                "description",
-                                "order",
-                                "featured"
-                            ],
+                            "enum": [],
                             "type": "string"
                         }
                     },
@@ -10947,6 +11375,7 @@
                                 "docs",
                                 "views",
                                 "responses_count",
+                                "is_phone_verified",
                                 "verify_code",
                                 "verify_expiration",
                                 "task_hasmany_custom_field_relationship",
@@ -17638,608 +18067,6 @@
                 ],
                 "summary": "news-blog restore",
                 "operationId": "news-blog_restore",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/blog-new": {
-            "get": {
-                "tags": [
-                    "blog-new"
-                ],
-                "summary": "blog_new index",
-                "operationId": "blog_new_index",
-                "parameters": [
-                    {
-                        "name": "q",
-                        "in": "query",
-                        "description": "Global search",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "length",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "order_by",
-                        "in": "query",
-                        "description": "Sort by column",
-                        "required": false,
-                        "schema": {
-                            "enum": [
-                                "id",
-                                "title",
-                                "text",
-                                "img",
-                                "created_at",
-                                "updated_at"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "sort_order",
-                        "in": "query",
-                        "description": "Sort by direction",
-                        "required": false,
-                        "schema": {
-                            "enum": [
-                                "asc",
-                                "desc"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[id]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[title]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[text]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[img]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[created_at]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
-                        }
-                    },
-                    {
-                        "name": "filters[updated_at]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#\/components\/schemas\/VoyagerBlogNewBrowseResource"
-                                            }
-                                        },
-                                        "links": {
-                                            "$ref": "#\/components\/schemas\/Links"
-                                        },
-                                        "meta": {
-                                            "$ref": "#\/components\/schemas\/Meta"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            },
-            "post": {
-                "tags": [
-                    "blog-new"
-                ],
-                "summary": "blog-new store",
-                "operationId": "blog-new_store",
-                "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerBlogNewStoreRequest"
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerBlogNewReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/blog-new\/create": {
-            "get": {
-                "tags": [
-                    "blog-new"
-                ],
-                "summary": "blog_new create",
-                "operationId": "blog_new_create",
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": []
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/blog-new\/{id}": {
-            "get": {
-                "tags": [
-                    "blog-new"
-                ],
-                "summary": "blog-new show",
-                "operationId": "blog-new_show",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerBlogNewReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            },
-            "post": {
-                "tags": [
-                    "blog-new"
-                ],
-                "summary": "blog-new update",
-                "operationId": "blog-new_update",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerBlogNewUpdateRequest"
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerBlogNewReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": [
-                    "blog-new"
-                ],
-                "summary": "blog-new delete",
-                "operationId": "blog-new_delete",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/blog-new\/{id}\/single\/{field}": {
-            "post": {
-                "tags": [
-                    "blog-new"
-                ],
-                "summary": "blog-new single update",
-                "operationId": "blog-new_single_update",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "field",
-                        "in": "path",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "nullable": true,
-                            "enum": [
-                                "title",
-                                "text",
-                                "img"
-                            ]
-                        }
-                    },
-                    {
-                        "name": "fields[]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string",
-                                "enum": [
-                                    "title",
-                                    "text",
-                                    "img"
-                                ]
-                            }
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerBlogNewSingleUpdateRequest"
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerBlogNewReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/blog-new\/{id}\/edit": {
-            "get": {
-                "tags": [
-                    "blog-new"
-                ],
-                "summary": "blog-new edit",
-                "operationId": "blog-new_edit",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerBlogNewReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/blog-new\/relation": {
-            "get": {
-                "tags": [
-                    "blog-new"
-                ],
-                "summary": "blog-new relation",
-                "operationId": "blog-new_relation",
-                "parameters": [
-                    {
-                        "name": "type",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "method",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "required",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "boolean"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": []
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/blog-new\/{id}\/restore": {
-            "get": {
-                "tags": [
-                    "blog-new"
-                ],
-                "summary": "blog-new restore",
-                "operationId": "blog-new_restore",
                 "parameters": [
                     {
                         "name": "id",
@@ -38522,6 +38349,593 @@
                     }
                 ]
             }
+        },
+        "\/api\/blog-new": {
+            "get": {
+                "tags": [
+                    "blog-new"
+                ],
+                "summary": "blog_new index",
+                "operationId": "blog_new_index",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Global search",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "length",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "description": "Sort by column",
+                        "required": false,
+                        "schema": {
+                            "enum": [
+                                "id",
+                                "title",
+                                "text",
+                                "img",
+                                "created_at",
+                                "updated_at"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort_order",
+                        "in": "query",
+                        "description": "Sort by direction",
+                        "required": false,
+                        "schema": {
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[title]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[text]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[img]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[created_at]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#\/components\/schemas\/VoyagerBlogNewBrowseResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "$ref": "#\/components\/schemas\/Links"
+                                        },
+                                        "meta": {
+                                            "$ref": "#\/components\/schemas\/Meta"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "blog-new"
+                ],
+                "summary": "blog-new store",
+                "operationId": "blog-new_store",
+                "requestBody": {
+                    "$ref": "#\/components\/requestBodies\/VoyagerBlogNewStoreRequest"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#\/components\/schemas\/VoyagerBlogNewReadResource"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/blog-new\/create": {
+            "get": {
+                "tags": [
+                    "blog-new"
+                ],
+                "summary": "blog_new create",
+                "operationId": "blog_new_create",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/blog-new\/{id}": {
+            "get": {
+                "tags": [
+                    "blog-new"
+                ],
+                "summary": "blog-new show",
+                "operationId": "blog-new_show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#\/components\/schemas\/VoyagerBlogNewReadResource"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "blog-new"
+                ],
+                "summary": "blog-new update",
+                "operationId": "blog-new_update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#\/components\/requestBodies\/VoyagerBlogNewUpdateRequest"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#\/components\/schemas\/VoyagerBlogNewReadResource"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "blog-new"
+                ],
+                "summary": "blog-new delete",
+                "operationId": "blog-new_delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/blog-new\/{id}\/single\/{field}": {
+            "post": {
+                "tags": [
+                    "blog-new"
+                ],
+                "summary": "blog-new single update",
+                "operationId": "blog-new_single_update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "field",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "enum": [
+                                "title",
+                                "text",
+                                "img",
+                                "created_at"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "fields[]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "title",
+                                    "text",
+                                    "img",
+                                    "created_at"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#\/components\/requestBodies\/VoyagerBlogNewSingleUpdateRequest"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#\/components\/schemas\/VoyagerBlogNewReadResource"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/blog-new\/{id}\/edit": {
+            "get": {
+                "tags": [
+                    "blog-new"
+                ],
+                "summary": "blog-new edit",
+                "operationId": "blog-new_edit",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#\/components\/schemas\/VoyagerBlogNewReadResource"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/blog-new\/relation": {
+            "get": {
+                "tags": [
+                    "blog-new"
+                ],
+                "summary": "blog-new relation",
+                "operationId": "blog-new_relation",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "method",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "required",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": []
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/blog-new\/{id}\/restore": {
+            "get": {
+                "tags": [
+                    "blog-new"
+                ],
+                "summary": "blog-new restore",
+                "operationId": "blog-new_restore",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -38879,13 +39293,13 @@
             "VoyagerCategoriesBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID"
+                    },
                     "name": {
                         "type": "string",
                         "description": "Name"
-                    },
-                    "custom_route_title": {
-                        "type": "string",
-                        "description": "Custom Route Title"
                     },
                     "order": {
                         "type": "string",
@@ -38895,14 +39309,6 @@
                         "type": "string",
                         "description": "jpg,jpeg,png",
                         "format": "binary"
-                    },
-                    "services": {
-                        "type": "string",
-                        "description": "Services"
-                    },
-                    "placeholder": {
-                        "type": "string",
-                        "description": "Placeholder"
                     },
                     "max": {
                         "type": "string",
@@ -38921,9 +39327,16 @@
             "VoyagerCategoriesReadResource": {
                 "type": "object",
                 "properties": {
-                    "parent_id": {
+                    "id": {
                         "type": "integer",
-                        "description": "Parent"
+                        "description": "ID"
+                    },
+                    "parent_id": {
+                        "enum": [
+                            ""
+                        ],
+                        "type": "string",
+                        "description": "{\n    \"\": \"-- None --\"\n}"
                     },
                     "name": {
                         "type": "string",
@@ -38941,56 +39354,16 @@
                         "type": "string",
                         "description": "Slug"
                     },
-                    "loader": {
-                        "type": "string",
-                        "description": "Loader"
-                    },
                     "created_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
                         "description": "Created At",
                         "example": "2021-05-17 00:00"
                     },
-                    "loader_weight": {
-                        "type": "string",
-                        "description": "Loader Weight"
-                    },
-                    "passenger_transportation": {
-                        "type": "string",
-                        "description": "Passenger Transportation"
-                    },
                     "ico": {
                         "type": "string",
                         "description": "jpg,jpeg,png",
                         "format": "binary"
-                    },
-                    "auto_want": {
-                        "type": "string",
-                        "description": "Auto Want"
-                    },
-                    "cargo_weight": {
-                        "type": "string",
-                        "description": "Cargo Weight"
-                    },
-                    "height": {
-                        "type": "string",
-                        "description": "Height"
-                    },
-                    "length": {
-                        "type": "string",
-                        "description": "Length"
-                    },
-                    "width": {
-                        "type": "string",
-                        "description": "Width"
-                    },
-                    "services": {
-                        "type": "string",
-                        "description": "Services"
-                    },
-                    "placeholder": {
-                        "type": "string",
-                        "description": "Placeholder"
                     },
                     "max": {
                         "type": "string",
@@ -40296,74 +40669,6 @@
                     "img": {
                         "type": "string",
                         "description": "Img"
-                    },
-                    "created_at": {
-                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                        "type": "date-time",
-                        "description": "Created At",
-                        "example": "2021-05-17 00:00"
-                    },
-                    "updated_at": {
-                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                        "type": "date-time",
-                        "description": "Updated At",
-                        "example": "2021-05-17 00:00"
-                    }
-                }
-            },
-            "VoyagerBlogNewBrowseResource": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string",
-                        "description": "Id"
-                    },
-                    "title": {
-                        "type": "string",
-                        "description": "Title"
-                    },
-                    "text": {
-                        "type": "string",
-                        "description": "Text"
-                    },
-                    "img": {
-                        "type": "string",
-                        "description": "jpg,jpeg,png",
-                        "format": "binary"
-                    },
-                    "created_at": {
-                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                        "type": "date-time",
-                        "description": "Created At",
-                        "example": "2021-05-17 00:00"
-                    },
-                    "updated_at": {
-                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                        "type": "date-time",
-                        "description": "Updated At",
-                        "example": "2021-05-17 00:00"
-                    }
-                }
-            },
-            "VoyagerBlogNewReadResource": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string",
-                        "description": "Id"
-                    },
-                    "title": {
-                        "type": "string",
-                        "description": "Title"
-                    },
-                    "text": {
-                        "type": "string",
-                        "description": "Text"
-                    },
-                    "img": {
-                        "type": "string",
-                        "description": "jpg,jpeg,png",
-                        "format": "binary"
                     },
                     "created_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
@@ -42322,6 +42627,54 @@
                         "example": "2021-05-17 00:00"
                     }
                 }
+            },
+            "VoyagerBlogNewBrowseResource": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Title"
+                    },
+                    "text": {
+                        "type": "string",
+                        "description": "Text"
+                    },
+                    "img": {
+                        "type": "string",
+                        "description": "jpg,jpeg,png",
+                        "format": "binary"
+                    },
+                    "created_at": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Created At",
+                        "example": "2021-05-17 00:00"
+                    }
+                }
+            },
+            "VoyagerBlogNewReadResource": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Title"
+                    },
+                    "text": {
+                        "type": "string",
+                        "description": "Text"
+                    },
+                    "img": {
+                        "type": "string",
+                        "description": "jpg,jpeg,png",
+                        "format": "binary"
+                    },
+                    "created_at": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Created At",
+                        "example": "2021-05-17 00:00"
+                    }
+                }
             }
         },
         "securitySchemes": {
@@ -42838,9 +43191,16 @@
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
                                 },
-                                "parent_id": {
+                                "id": {
                                     "type": "integer",
-                                    "description": "Parent"
+                                    "description": "ID"
+                                },
+                                "parent_id": {
+                                    "enum": [
+                                        ""
+                                    ],
+                                    "type": "string",
+                                    "description": "{\n    \"\": \"-- None --\"\n}"
                                 },
                                 "name": {
                                     "type": "string",
@@ -42858,50 +43218,10 @@
                                     "type": "string",
                                     "description": "Slug"
                                 },
-                                "loader": {
-                                    "type": "string",
-                                    "description": "Loader"
-                                },
-                                "loader_weight": {
-                                    "type": "string",
-                                    "description": "Loader Weight"
-                                },
-                                "passenger_transportation": {
-                                    "type": "string",
-                                    "description": "Passenger Transportation"
-                                },
                                 "ico": {
                                     "type": "string",
                                     "description": "jpg,jpeg,png",
                                     "format": "binary"
-                                },
-                                "auto_want": {
-                                    "type": "string",
-                                    "description": "Auto Want"
-                                },
-                                "cargo_weight": {
-                                    "type": "string",
-                                    "description": "Cargo Weight"
-                                },
-                                "height": {
-                                    "type": "string",
-                                    "description": "Height"
-                                },
-                                "length": {
-                                    "type": "string",
-                                    "description": "Length"
-                                },
-                                "width": {
-                                    "type": "string",
-                                    "description": "Width"
-                                },
-                                "services": {
-                                    "type": "string",
-                                    "description": "Services"
-                                },
-                                "placeholder": {
-                                    "type": "string",
-                                    "description": "Placeholder"
                                 },
                                 "max": {
                                     "type": "string",
@@ -42935,9 +43255,16 @@
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
                                 },
-                                "parent_id": {
+                                "id": {
                                     "type": "integer",
-                                    "description": "Parent"
+                                    "description": "ID"
+                                },
+                                "parent_id": {
+                                    "enum": [
+                                        ""
+                                    ],
+                                    "type": "string",
+                                    "description": "{\n    \"\": \"-- None --\"\n}"
                                 },
                                 "name": {
                                     "type": "string",
@@ -42955,50 +43282,10 @@
                                     "type": "string",
                                     "description": "Slug"
                                 },
-                                "loader": {
-                                    "type": "string",
-                                    "description": "Loader"
-                                },
-                                "loader_weight": {
-                                    "type": "string",
-                                    "description": "Loader Weight"
-                                },
-                                "passenger_transportation": {
-                                    "type": "string",
-                                    "description": "Passenger Transportation"
-                                },
                                 "ico": {
                                     "type": "string",
                                     "description": "jpg,jpeg,png",
                                     "format": "binary"
-                                },
-                                "auto_want": {
-                                    "type": "string",
-                                    "description": "Auto Want"
-                                },
-                                "cargo_weight": {
-                                    "type": "string",
-                                    "description": "Cargo Weight"
-                                },
-                                "height": {
-                                    "type": "string",
-                                    "description": "Height"
-                                },
-                                "length": {
-                                    "type": "string",
-                                    "description": "Length"
-                                },
-                                "width": {
-                                    "type": "string",
-                                    "description": "Width"
-                                },
-                                "services": {
-                                    "type": "string",
-                                    "description": "Services"
-                                },
-                                "placeholder": {
-                                    "type": "string",
-                                    "description": "Placeholder"
                                 },
                                 "max": {
                                     "type": "string",
@@ -43032,9 +43319,16 @@
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
                                 },
-                                "parent_id": {
+                                "id": {
                                     "type": "integer",
-                                    "description": "Parent"
+                                    "description": "ID"
+                                },
+                                "parent_id": {
+                                    "enum": [
+                                        ""
+                                    ],
+                                    "type": "string",
+                                    "description": "{\n    \"\": \"-- None --\"\n}"
                                 },
                                 "name": {
                                     "type": "string",
@@ -43052,50 +43346,10 @@
                                     "type": "string",
                                     "description": "Slug"
                                 },
-                                "loader": {
-                                    "type": "string",
-                                    "description": "Loader"
-                                },
-                                "loader_weight": {
-                                    "type": "string",
-                                    "description": "Loader Weight"
-                                },
-                                "passenger_transportation": {
-                                    "type": "string",
-                                    "description": "Passenger Transportation"
-                                },
                                 "ico": {
                                     "type": "string",
                                     "description": "jpg,jpeg,png",
                                     "format": "binary"
-                                },
-                                "auto_want": {
-                                    "type": "string",
-                                    "description": "Auto Want"
-                                },
-                                "cargo_weight": {
-                                    "type": "string",
-                                    "description": "Cargo Weight"
-                                },
-                                "height": {
-                                    "type": "string",
-                                    "description": "Height"
-                                },
-                                "length": {
-                                    "type": "string",
-                                    "description": "Length"
-                                },
-                                "width": {
-                                    "type": "string",
-                                    "description": "Width"
-                                },
-                                "services": {
-                                    "type": "string",
-                                    "description": "Services"
-                                },
-                                "placeholder": {
-                                    "type": "string",
-                                    "description": "Placeholder"
                                 },
                                 "max": {
                                     "type": "string",
@@ -45456,93 +45710,6 @@
                                 "img": {
                                     "type": "string",
                                     "description": "Img"
-                                }
-                            }
-                        }
-                    }
-                },
-                "required": true
-            },
-            "VoyagerBlogNewStoreRequest": {
-                "content": {
-                    "multipart\/form-data": {
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "dry-run": {
-                                    "type": "boolean",
-                                    "description": "Use dry-run only to validate"
-                                },
-                                "title": {
-                                    "type": "string",
-                                    "description": "Title"
-                                },
-                                "text": {
-                                    "type": "string",
-                                    "description": "Text"
-                                },
-                                "img": {
-                                    "type": "string",
-                                    "description": "jpg,jpeg,png",
-                                    "format": "binary"
-                                }
-                            }
-                        }
-                    }
-                },
-                "required": true
-            },
-            "VoyagerBlogNewUpdateRequest": {
-                "content": {
-                    "multipart\/form-data": {
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "dry-run": {
-                                    "type": "boolean",
-                                    "description": "Use dry-run only to validate"
-                                },
-                                "title": {
-                                    "type": "string",
-                                    "description": "Title"
-                                },
-                                "text": {
-                                    "type": "string",
-                                    "description": "Text"
-                                },
-                                "img": {
-                                    "type": "string",
-                                    "description": "jpg,jpeg,png",
-                                    "format": "binary"
-                                }
-                            }
-                        }
-                    }
-                },
-                "required": true
-            },
-            "VoyagerBlogNewSingleUpdateRequest": {
-                "content": {
-                    "multipart\/form-data": {
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "dry-run": {
-                                    "type": "boolean",
-                                    "description": "Use dry-run only to validate"
-                                },
-                                "title": {
-                                    "type": "string",
-                                    "description": "Title"
-                                },
-                                "text": {
-                                    "type": "string",
-                                    "description": "Text"
-                                },
-                                "img": {
-                                    "type": "string",
-                                    "description": "jpg,jpeg,png",
-                                    "format": "binary"
                                 }
                             }
                         }
@@ -49287,6 +49454,105 @@
                                 "creator_id": {
                                     "type": "string",
                                     "description": "Creator Id"
+                                },
+                                "created_at": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Created At",
+                                    "example": "2021-05-17 00:00"
+                                }
+                            }
+                        }
+                    }
+                },
+                "required": true
+            },
+            "VoyagerBlogNewStoreRequest": {
+                "content": {
+                    "multipart\/form-data": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "dry-run": {
+                                    "type": "boolean",
+                                    "description": "Use dry-run only to validate"
+                                },
+                                "title": {
+                                    "type": "string",
+                                    "description": "Title"
+                                },
+                                "text": {
+                                    "type": "string",
+                                    "description": "Text"
+                                },
+                                "img": {
+                                    "type": "string",
+                                    "description": "jpg,jpeg,png",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    }
+                },
+                "required": true
+            },
+            "VoyagerBlogNewUpdateRequest": {
+                "content": {
+                    "multipart\/form-data": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "dry-run": {
+                                    "type": "boolean",
+                                    "description": "Use dry-run only to validate"
+                                },
+                                "title": {
+                                    "type": "string",
+                                    "description": "Title"
+                                },
+                                "text": {
+                                    "type": "string",
+                                    "description": "Text"
+                                },
+                                "img": {
+                                    "type": "string",
+                                    "description": "jpg,jpeg,png",
+                                    "format": "binary"
+                                },
+                                "created_at": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Created At",
+                                    "example": "2021-05-17 00:00"
+                                }
+                            }
+                        }
+                    }
+                },
+                "required": true
+            },
+            "VoyagerBlogNewSingleUpdateRequest": {
+                "content": {
+                    "multipart\/form-data": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "dry-run": {
+                                    "type": "boolean",
+                                    "description": "Use dry-run only to validate"
+                                },
+                                "title": {
+                                    "type": "string",
+                                    "description": "Title"
+                                },
+                                "text": {
+                                    "type": "string",
+                                    "description": "Text"
+                                },
+                                "img": {
+                                    "type": "string",
+                                    "description": "jpg,jpeg,png",
+                                    "format": "binary"
                                 },
                                 "created_at": {
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
