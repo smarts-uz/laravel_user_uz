@@ -7,6 +7,7 @@ use App\Http\Requests\Api\ResetPasswordRequest;
 use App\Http\Requests\PhoneNumberRequest;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
+use App\Http\Resources\UserIndexResource;
 use App\Models\User;
 use App\Models\WalletBalance;
 use Carbon\Carbon;
@@ -151,6 +152,7 @@ class UserAPIController extends Controller
         $user = User::query()->where('phone_number',$data['phone_number'])->firstOrFail();
         $user->password = Hash::make($data['password']);
         $user->save();
+        auth()->login($user);
 
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
         return response(['user' => auth()->user(), 'access_token'=>$accessToken]);
