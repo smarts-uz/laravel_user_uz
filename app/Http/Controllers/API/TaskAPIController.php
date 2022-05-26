@@ -13,7 +13,7 @@ use App\Http\Requests\Api\TaskRemoteRequest;
 use App\Http\Requests\Api\TaskVerificationRequest;
 use App\Http\Requests\Api\V1\Task\StoreRequest;
 use App\Http\Requests\Task\UpdateRequest;
-use App\Http\Requests\TaskComplaintRequest;
+use App\Http\Requests\Api\TaskComplaintRequest;
 use App\Http\Resources\SameTaskResource;
 use App\Http\Resources\TaskIndexResource;
 use App\Http\Resources\TaskPaginationResource;
