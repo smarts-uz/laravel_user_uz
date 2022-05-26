@@ -149,7 +149,7 @@
                                                             <label class="text-sm text-gray-500 mb-2"
                                                                    for="phone">{{__('Номер телефона')}}</label>
                                                             <input type="text"
-                                                                   value="+998{{old('phone_number')}}" id="phone"
+                                                                   value="{{old('phone_number')}}" id="phone"
                                                                    class="shadow appearance-none border phone focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500 "/>
                                                             <input type="hidden" value="{{ old('phone_number') }}"
                                                                    name="phone_number" class="phone-number">
@@ -204,7 +204,7 @@
                                             </span>
                                             <input type="text"
                                                    placeholder="{{__('Номер телефона')}}" id="phone2"
-                                                   value="+998{{ old('phone_number') }}"
+                                                   value="{{ old('phone_number') }}"
                                                    class="mt-2 shadow appearance-none phone border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500"/>
                                             <input type="hidden" name="phone_number" value="{{ old('phone_number') }}"
                                                    class="phone-number">
@@ -280,8 +280,7 @@
         $(".phone").keyup(function () {
             var text = $(this).val()
             text = text.replace(/[^0-9.]/g, "")
-            text = text.slice(3)
-            $(".phone-number").val(text)
+            $(".phone-number").val('+' + text)
         })
         function setSelectionRange(input, selectionStart, selectionEnd) {
             if (input.setSelectionRange) {

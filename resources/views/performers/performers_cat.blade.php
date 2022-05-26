@@ -16,7 +16,7 @@
 
             <div class="lg:col-span-1 col-span-3 px-8">
                 @if (Auth::check())
-                    <a href="/verificationInfo" class="flex flex-row shadow-lg rounded-lg mb-8">
+                    <a href="/verification" class="flex flex-row shadow-lg rounded-lg mb-8">
                         <div class="w-1/2 h-24 bg-contain bg-no-repeat bg-center"
                             style="background-image: url({{asset('images/like.png')}});">
                         </div>
