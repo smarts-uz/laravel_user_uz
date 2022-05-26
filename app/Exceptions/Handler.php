@@ -42,13 +42,23 @@ class Handler extends ExceptionHandler
             //
         });
 
-        $this->renderable(function (NotFoundHttpException $e, $request) {
+        $this->renderable(function (Throwable $e, $request) {
             if ($request->is('api/*')) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Record not found.',
-                    'query_message' => $e->getMessage()
-                ]);
+                if ($e instanceOf ValidationException) {
+                    return response()->json([
+                        'success' => false,
+                        'data' => [
+                            'message' => $e->errors()
+                        ]
+                    ]);
+                }
+                if ($e instanceof NotFoundHttpException) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Record not found.',
+                        'query_message' => $e->getMessage()
+                    ]);
+                }
             }
         });
 

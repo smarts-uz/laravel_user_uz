@@ -48,14 +48,4 @@ class ProfileSettingsRequest extends FormRequest
             'email.email' => trans('file.Email should be in format of email.'),
         ];
     }
-
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success'   => false,
-            'data' => [
-                'message' => $validator->errors()
-            ]
-        ]));
-    }
 }

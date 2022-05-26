@@ -41,14 +41,4 @@ class PortfolioRequest extends FormRequest
             'description.string' => trans('trans.Description should be in text format.'),
         ];
     }
-
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success'   => false,
-            'data' => [
-                'message' => $validator->errors()
-            ]
-        ]));
-    }
 }

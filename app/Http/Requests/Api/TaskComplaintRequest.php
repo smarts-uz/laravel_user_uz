@@ -34,18 +34,8 @@ class TaskComplaintRequest extends FormRequest
     public function messages()
     {
         return [
-            'compliance_type_id' => trans('trans.Choose the type.'),
-            'text' => trans('trans.Enter the text.')
+            'compliance_type_id.*' => trans('trans.Choose the type.'),
+            'text.*' => trans('trans.Enter the text.')
         ];
-    }
-
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'data' => [
-                'message' => $validator->errors()->messages()
-            ]
-        ]));
     }
 }
