@@ -125,11 +125,35 @@
                         </ul>
                     </div>
                 </div>
-                <div class="ml-4">
+                <div class="ml-4 open-chat-mob">
                     <a href="/chat">
                         <i class="text-xl text-gray-500 hover:text-yellow-500 far fa-comment-alt"></i>
                     </a>
                 </div>
+                {{--  JS Panel--}}
+                <script>
+                    const createChatPanelMob = (event) => {
+                        jsPanel.create({
+                            content: '<iframe src="https://user.uz/chat" frameborder="0" style="width: 100%; height: 100%"></iframe>',
+                            theme: 'primary',
+                            position: 'center',
+                            closeOnEscape: true,
+                            headerTitle: 'Интерактивный чат',
+                            headerControls: {
+                                size: 'xs',
+                            },
+                            borderRadius: '1rem',
+                            panelSize: {
+                                width: '95vw',
+                                height: '90vh'
+                            },
+                            contentSize: '80vw 90vh',
+                        }).maximize();
+                        event.preventDefault();
+                    }
+                    const openChatMob = document.querySelector('.open-chat-mob');
+                    openChatMob.addEventListener('click', createChatPanelMob);
+                </script>
             </div>
             <script src="https://unpkg.com/@themesberg/flowbite@latest/dist/flowbite.bundle.js"></script>
         @endauth

@@ -38,30 +38,6 @@
 @include('components.preloader')
 <x-navbar/>
 @yield('content')
-<script>
-    const createChatPanel = (event) => {
-    jsPanel.create({
-        content: '<iframe src="https://user.uz/chat" frameborder="0" style="width: 100%; height: 100%"></iframe>',
-        theme: 'primary',
-        position: 'center',
-        resizeit: false,
-        closeOnEscape: true,
-        headerTitle: 'Интерактивный чат',
-        headerControls: {
-           size: 'md',
-        },
-        borderRadius: '1rem',
-        panelSize: {
-            width: '80vw',
-            height: '90vh'
-        },
-        contentSize: '80vw 90vh',
-    });
-    event.preventDefault();
-    }
-    const chatUI = document.querySelector('.open-chat');
-    chatUI.addEventListener('click', createChatPanel);
-</script>
 <x-footer/>
 @include('sweetalert::alert')
 
