@@ -63,11 +63,35 @@
                     </div>
 
                     {{-- icon-2   Chat  --}}
-                    <div class=" float-left open-chat" style="cursor:pointer">
+                    <div class="float-left open-chat" style="cursor:pointer">
                         <a class="delete-task">
                             <i class="xl:text-2xl lg:text-xl text-gray-500 hover:text-yellow-500 far fa-comment-alt"></i>
                         </a>
                     </div>
+                    {{--  JS Panel--}}
+                    <script>
+                        const createChatPanel = (event) => {
+                            jsPanel.create({
+                                content: '<iframe src="https://user.uz/chat" frameborder="0" style="width: 100%; height: 100%"></iframe>',
+                                theme: 'primary',
+                                position: 'center',
+                                closeOnEscape: true,
+                                headerTitle: 'Интерактивный чат',
+                                headerControls: {
+                                    size: 'md',
+                                },
+                                borderRadius: '1rem',
+                                panelSize: {
+                                    width: '80vw',
+                                    height: '90vh'
+                                },
+                                contentSize: '80vw 90vh',
+                            });
+                            event.preventDefault();
+                        }
+                        const openChat = document.querySelector('.open-chat');
+                        openChat.addEventListener('click', createChatPanel);
+                    </script>
 
                     {{-- icon 3  Payment--}}
                     <div class="max-w-lg ml-5 float-left">

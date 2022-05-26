@@ -42,15 +42,9 @@ class LoginController extends Controller
 
     public function customRegister(UserRegisterRequest $request)
     {
-
         $data = $request->validated();
-
-
         $data['password'] = Hash::make($request->password);
         unset( $data['password_confirmation']);
-        if (!str_starts_with($data['phone_number'], '+998')) {
-            $data['phone_number'] = '+998' . $data['phone_number'];
-        }
         $user = User::create($data);
         $wallBal = new WalletBalance();
         $wallBal->balance = setting('admin.bonus');
@@ -202,9 +196,8 @@ class LoginController extends Controller
                 'email' => $request->email
             ]);
         } else {
-
             $request->validate([
-                'phone_number' => 'required|unique:users|min:9'
+                'phone_number' => 'required|unique:users|min:13'
             ],
                 [
                     'phone_number.required' => __('login.phone_number.required'),

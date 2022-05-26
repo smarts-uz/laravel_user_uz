@@ -209,7 +209,7 @@ class CreateController extends Controller
         $user = auth()->user();
 
         $data = $request->validate([
-            'phone_number' => 'required|integer|min:9|unique:users,phone_number,' . $user->id
+            'phone_number' => 'required|integer|min:13|unique:users,phone_number,' . $user->id
         ]);
         /*if (!$user->is_phone_number_verified || $user->phone_number != $data['phone_number']) {*/
         if (!$user->is_phone_number_verified && $user->phone_number == $data['phone_number']) {
@@ -259,11 +259,7 @@ class CreateController extends Controller
     public function contact_register(Task $task, UserRequest $request)
     {   
         $data = $request->validated();
-
         $data['password'] = Hash::make('login123');
-        if (!str_starts_with($data['phone_number'], '+998')) {
-            $data['phone_number'] = '+998' . $data['phone_number'];
-        }
         $user = User::create($data);
         LoginController::send_verification('phone', $user);
 

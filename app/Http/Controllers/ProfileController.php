@@ -239,9 +239,10 @@ class ProfileController extends Controller
 
     public function verificationContactStore(Request $request)
     {
+       
         $data = $request->validate([
             'email' => 'required',
-            'phone_number' => 'required|integer|min:9',
+            'phone_number' => 'required|integer|min:13',
         ]);
         $user = auth()->user();
         $user->update($data);
