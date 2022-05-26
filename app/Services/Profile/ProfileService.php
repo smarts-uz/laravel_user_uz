@@ -193,7 +193,7 @@ class ProfileService
     public function createPortfolio($request)
     {
         $user = auth()->user();
-        $data = $request->safe();
+        $data = $request->except('images');
         $data['user_id'] = $user->id;
         if ($request->hasFile('images')) {
             $image = [];
@@ -211,7 +211,7 @@ class ProfileService
     public function updatePortfolio($request, $portfolio)
     {
         $user = auth()->user();
-        $data = $request->safe();
+        $data = $request->except('images');
         $data['user_id'] = $user->id;
         if ($request->hasFile('images')) {
             $portfolioImages = $portfolio->image;
