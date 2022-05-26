@@ -290,7 +290,7 @@
                     <h1 class="text-xl font-semibold py-2">{{__('Ваши контакты')}}</h1>
                     <input id="phone_number"
                            class="text-base border border-gray-200 md:w-1/2 focus:outline-none focus:border-yellow-500 py-2 px-3 rounded-md"
-                           type="text" value="+998{{ old('phone')??$task->phone }}"
+                           type="text" value="{{ old('phone')??$task->phone }}"
                            placeholder="+998(00)000-00-00">
                     <input type="hidden" id="phone" name="phone" value="{{ old('phone')??$task->phone }}">
                     @error('phone')
@@ -376,8 +376,7 @@
         $("#phone_number").keyup(function () {
             var text = $(this).val()
             text = text.replace(/[^0-9.]/g, "")
-            text = text.slice(3)
-            $("#phone").val(text)
+            $("#phone").val('+'+text)
         })
         var uppy = new Uppy.Core({
             debug: true,
