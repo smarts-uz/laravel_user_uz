@@ -43,4 +43,6 @@ return [
     'Choose the type.' => 'Turni tanlang.',
     'Enter the text.' => 'Tekstni kiriting.',
     'Complaint is sent.' => 'Shikoyat jo\'natildi.',
+    'Enter phone number.' => 'Telefon raqamini kiriting.',
+    'Phone number should be number.' => 'Telefon raqami sonlardan iborat bo\'lishi kerak',
 ];

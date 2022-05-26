@@ -43,4 +43,6 @@ return [
     'Choose the type.' => 'Choose the type.',
     'Enter the text.' => 'Enter the text.',
     'Complaint is sent.' => 'Complaint is sent.',
+    'Enter phone number.' => 'Enter phone number.',
+    'Phone number should be number.' => 'Phone number should be number.',
 ];

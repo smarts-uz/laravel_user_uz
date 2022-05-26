@@ -37,14 +37,4 @@ class ProfileVideoRequest extends FormRequest
             'link.url' => trans('trans.Link should be type of url.'),
         ];
     }
-
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success'   => false,
-            'data' => [
-                'message' => $validator->errors()
-            ]
-        ]));
-    }
 }

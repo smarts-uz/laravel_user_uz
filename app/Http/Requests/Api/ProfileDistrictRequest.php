@@ -33,17 +33,7 @@ class ProfileDistrictRequest extends FormRequest
     public function messages()
     {
         return [
-            'district' => trans('trans.Enter your district.'),
+            'district.*' => trans('trans.Enter your district.'),
         ];
-    }
-
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success'   => false,
-            'data' => [
-                'message' => $validator->errors()
-            ]
-        ]));
     }
 }

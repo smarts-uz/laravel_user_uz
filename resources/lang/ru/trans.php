@@ -43,4 +43,6 @@ return [
     'Choose the type.' => 'Выберите тип.',
     'Enter the text.' => 'Введите текст.',
     'Complaint is sent.' => 'Жалоба отправлена.',
+    'Enter phone number.' => 'Введите номер телефона.',
+    'Phone number should be number.' => 'Номер телефона должен содержать только цифры.',
 ];
