@@ -1198,7 +1198,7 @@ class TaskAPIController extends Controller
 
     public function complain(TaskComplaintRequest $request, $id)
     {
-        $data = $request->safe();
+        $data = $request->validated();
         $data['task_id'] = $id;
         $data['user_id'] = auth()->id();
         Compliance::query()->create($data);

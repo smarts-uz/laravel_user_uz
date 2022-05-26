@@ -26,7 +26,7 @@ class TaskComplaintRequest extends FormRequest
     public function rules()
     {
         return [
-            'compliance_type_id' => 'required|number',
+            'compliance_type_id' => 'required|int',
             'text' => 'required|string'
         ];
     }

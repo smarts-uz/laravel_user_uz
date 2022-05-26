@@ -786,7 +786,7 @@ class ProfileAPIController extends Controller
      */
     public function storeDistrict(ProfileDistrictRequest $request)
     {
-        $validated = $request->safe();
+        $validated = $request->validated();
         $user = Auth::user();
         $user->district = $validated['district'];
         $user->save();
