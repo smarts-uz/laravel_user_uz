@@ -20,51 +20,21 @@ class SocialAPIController extends Controller
         return Socialite::driver('facebook')->redirect();
     }
 
-    /**
-     * @OA\Post(
-     *     path="/api/login/callback",
-     *     tags={"Social"},
-     *     summary="Facebook",
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="google_id",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="facebook_id",
-     *                    type="integer",
-     *                 ),
-     *             ),
-     *         ),
-     *     ),
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     * )
-     */
-    public function loginWithFacebook(SocialRequest $request)
+    public function login(SocialRequest $request)
     {
         try {
-            $token = $request->input('access_token');
-            $providerUser = Socialite::driver('facebook')->userFromToken($token);
-            $user = User::where('facebook_id', $providerUser->id)->first();
+            $data = $request->validated();
+            if ($data['type'] == 0) {
+                $provider = 'google';
+            } else {
+                $provider = 'facebook';
+            }
+            $providerUser = Socialite::driver($provider)->userFromToken($data['access_token']);
+            $user = User::where($provider . '_id', $providerUser->id)->first();
             // if there is no record with these data, create a new user
             if ($user == null) {
                 $user = User::create([
-                    'google_id' => $providerUser->id,
+                    $provider . '_id' => $providerUser->id,
                 ]);
             }
             // create a token for the user, so they can login
@@ -83,7 +53,6 @@ class SocialAPIController extends Controller
             ]);
         }
     }
-
 
     // login with google
     public function googleRedirect()
@@ -101,65 +70,6 @@ class SocialAPIController extends Controller
         return $picture;
     }
 
-    /**
-     * @OA\Post(
-     *     path="/api/login/google/callback",
-     *     tags={"Social"},
-     *     summary="Google",
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="id",
-     *                    type="integer",
-     *                 ),
-     *             ),
-     *         ),
-     *     ),
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     * )
-     */
-    public function loginWithGoogle(SocialRequest $request)
-    {
-        try {
-            $token = $request->input('access_token');
-            $providerUser = Socialite::driver('google')->userFromToken($token);
-            $user = User::where('google_id', $providerUser->id)->first();
-            // if there is no record with these data, create a new user
-            if ($user == null) {
-                $user = User::create([
-                    'google_id' => $providerUser->id,
-                ]);
-            }
-            // create a token for the user, so they can login
-            Auth::login($user);
-            $accessToken = $user->createToken('authToken')->accessToken;
-            // return the token for usage
-            return response()->json([
-                'user' => new PerformerIndexResource(auth()->user()),
-                'access_token' => $accessToken
-            ]);
-        } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'data' => $e->getMessage(),
-                'message' => "Record not found"
-            ]);
-        }
-    }
 
     public function handleProviderCallback(Request $request, $provider)
     {

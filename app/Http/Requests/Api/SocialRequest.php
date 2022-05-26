@@ -8,6 +8,7 @@ class SocialRequest extends BaseRequest
     public function rules()
     {
         return [
+            'type' => 'required',
             'access_token' => 'required'
         ];
     }
@@ -15,6 +16,7 @@ class SocialRequest extends BaseRequest
     public function messages()
     {
         return [
+            'type.required' => "type required",
             'access_token.required' => "access_token  required",
         ];
     }
