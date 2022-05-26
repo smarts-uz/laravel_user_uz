@@ -131,7 +131,7 @@
                 <div id="map" class="h-60 rounded-lg w-full">
                 </div>
                 <div class="w-full h-full mt-5">
-                    <button class="font-medium hover:text-red-500 rounded-lg text-sm text-center inline-flex items-center mb-1 allshow" type="button">{{__('Все категории')}}</button>
+                    <button class="font-medium hover:text-red-500 rounded-lg text-xl text-center inline-flex items-center mb-1 allshow" type="button">{{__('Все категории')}}</button>
 
                     <div class="w-full my-1">
                         @foreach ($categories as $category)
