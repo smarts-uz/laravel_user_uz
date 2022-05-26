@@ -94,9 +94,6 @@ class ProfileService
     }
 
     public function settingsUpdate($data) {
-        if (!str_starts_with($data['phone_number'], '+998')) {
-            $data['phone_number'] = '+998' . $data['phone_number'];
-        }
         if ($data['email'] != auth()->user()->email) {
             $data['is_email_verified'] = 0;
             $data['email_old'] = auth()->user()->email;

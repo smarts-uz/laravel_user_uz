@@ -202,9 +202,8 @@ class LoginController extends Controller
                 'email' => $request->email
             ]);
         } else {
-
             $request->validate([
-                'phone_number' => 'required|unique:users|min:9'
+                'phone_number' => 'required|unique:users|min:13'
             ],
                 [
                     'phone_number.required' => __('login.phone_number.required'),
