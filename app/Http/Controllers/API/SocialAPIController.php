@@ -3,18 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\FacebookLoginRequest;
-use App\Http\Requests\Api\GoogleLoginRequest;
+use App\Http\Requests\Api\SocialRequest;
 use App\Http\Resources\PerformerIndexResource;
 use App\Models\User;
 use Exception;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Laravel\Socialite\Facades\Socialite;
-use RealRashid\SweetAlert\Facades\Alert;
 
 class SocialAPIController extends Controller
 {
@@ -59,49 +55,30 @@ class SocialAPIController extends Controller
      *     ),
      * )
      */
-    public function loginWithFacebook(FacebookLoginRequest $request)
+    public function loginWithFacebook(SocialRequest $request)
     {
         try {
-            $data = $request->validated();
-            $data['email'] = $data['email'] ?? null;
-            if (isset($data['google_id']))
-                $findUser = User::where('email', $data['email'])->orWhere('google_id', $data['google_id'])->first();
-            else if (isset($data['facebook_id']))
-                $findUser = User::where('email', $data['email'])->orWhere('facebook_id', $data['facebook_id'])->first();
-
-
-            if (isset($data['google_id']) || isset($data['facebook_id'])) {
-                if ($findUser) {
-                    if (isset($data['google_id']))
-                        $findUser->google_id = $data['google_id'];
-                    else if (isset($data['facebook_id']))
-                        $findUser->facebook_id = $data['facebook_id'];
-                    $findUser->save();
-                    Auth::login($findUser);
-                    $accessToken = auth()->user()->createToken('authToken')->accessToken;
-                    return response(['success' => true, 'user' => new PerformerIndexResource(auth()->user()), 'access_token' => $accessToken]);
-
-                } else {
-                    $new_user = new User();
-                    $new_user->name = $data['name'];
-                    $new_user->email = $data['email'];
-                    if (isset($data['google_id']))
-                        $new_user->google_id = $data['google_id'];
-                    else if (isset($data['facebook_id']))
-                        $new_user->facebook_id = $data['facebook_id'];
-                    $new_user->avatar = self::get_avatar($data['avatar'], $data['id']);
-                    $new_user->password = encrypt('123456');
-                    $new_user->save();
-                    Auth::login($new_user);
-
-                    $accessToken = auth()->user()->createToken('authToken')->accessToken;
-
-                    return response()->json(['success' => true, 'user' => new PerformerIndexResource(auth()->user()), 'access_token'=>$accessToken]);
-                }
+            $token = $request->input('access_token');
+            $providerUser = Socialite::driver('facebook')->userFromToken($token);
+            $user = User::where('facebook_id', $providerUser->id)->first();
+            // if there is no record with these data, create a new user
+            if ($user == null) {
+                $user = User::create([
+                    'google_id' => $providerUser->id,
+                ]);
             }
+            // create a token for the user, so they can login
+            Auth::login($user);
+            $accessToken = $user->createToken('authToken')->accessToken;
+            // return the token for usage
+            return response()->json([
+                'user' => new PerformerIndexResource(auth()->user()),
+                'access_token' => $accessToken
+            ]);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
+                'data' => $e->getMessage(),
                 'message' => "Record not found"
             ]);
         }
@@ -155,36 +132,30 @@ class SocialAPIController extends Controller
      *     ),
      * )
      */
-    public function loginWithGoogle(GoogleLoginRequest $request)
+    public function loginWithGoogle(SocialRequest $request)
     {
         try {
-            $data = $request->validated();
-            $findUser = User::where('email', $data['email'] ?? '')->orWhere('google_id', $data['id'])->first();
-
-            if ($findUser) {
-                $findUser->google_id = $data['id'];
-                $findUser->save();
-                Auth::login($findUser);
-                $accessToken = auth()->user()->createToken('authToken')->accessToken;
-                return response(['success' => true, 'user' => new PerformerIndexResource(auth()->user()), 'access_token' => $accessToken]);
-
-            } else {
-                $new_user = new User();
-                $new_user->name = $data['name'];
-                $new_user->email = $data['email'];
-                $new_user->google_id = $data['id'];
-                $new_user->avatar = self::get_avatar($data['avatar'], $data['id']);
-                $new_user->password = encrypt('123456');
-                $new_user->save();
-                Auth::login($new_user);
-
-                $accessToken = auth()->user()->createToken('authToken')->accessToken;
-
-                return response()->json(['user' => new PerformerIndexResource(auth()->user()), 'access_token'=>$accessToken]);
+            $token = $request->input('access_token');
+            $providerUser = Socialite::driver('google')->userFromToken($token);
+            $user = User::where('google_id', $providerUser->id)->first();
+            // if there is no record with these data, create a new user
+            if ($user == null) {
+                $user = User::create([
+                    'google_id' => $providerUser->id,
+                ]);
             }
+            // create a token for the user, so they can login
+            Auth::login($user);
+            $accessToken = $user->createToken('authToken')->accessToken;
+            // return the token for usage
+            return response()->json([
+                'user' => new PerformerIndexResource(auth()->user()),
+                'access_token' => $accessToken
+            ]);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
+                'data' => $e->getMessage(),
                 'message' => "Record not found"
             ]);
         }
