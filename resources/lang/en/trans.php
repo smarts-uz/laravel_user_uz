@@ -40,4 +40,7 @@ return [
     'All values should be int.' => 'All values should be int.',
     'You successfully subscribed for notifications by task categories.' => 'You successfully subscribed for notifications by task categories.',
     'Language changed successfully.' => 'Language changed successfully.',
+    'Choose the type.' => 'Choose the type.',
+    'Enter the text.' => 'Enter the text.',
+    'Complaint is sent.' => 'Complaint is sent.',
 ];

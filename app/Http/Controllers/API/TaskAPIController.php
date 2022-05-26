@@ -13,11 +13,13 @@ use App\Http\Requests\Api\TaskRemoteRequest;
 use App\Http\Requests\Api\TaskVerificationRequest;
 use App\Http\Requests\Api\V1\Task\StoreRequest;
 use App\Http\Requests\Task\UpdateRequest;
+use App\Http\Requests\Api\TaskComplaintRequest;
 use App\Http\Resources\SameTaskResource;
 use App\Http\Resources\TaskIndexResource;
 use App\Http\Resources\TaskPaginationResource;
 use App\Http\Resources\TaskResponseResource;
 use App\Http\Resources\TaskSingleResource;
+use App\Models\Compliance;
 use App\Models\Task;
 use App\Models\TaskResponse;
 use App\Models\User;
@@ -1192,5 +1194,19 @@ class TaskAPIController extends Controller
     public function updateVerify(TaskVerificationRequest $request, Task $task)
     {
         return $this->update_task_service->verification($task, $request->validated());
+    }
+
+    public function complain(TaskComplaintRequest $request, $id)
+    {
+        $data = $request->validated();
+        $data['task_id'] = $id;
+        $data['user_id'] = auth()->id();
+        Compliance::query()->create($data);
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'message' => trans('trans.Complaint is sent.')
+            ]
+        ]);
     }
 }
