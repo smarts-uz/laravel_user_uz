@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Compliance extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'compliance_type_id',
+        'user_id',
+        'task_id',
+        'text'
+    ];
 }

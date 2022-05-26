@@ -136,7 +136,7 @@
                     <div class="w-full my-1">
                         @foreach ($categories as $category)
                             <div x-data={show:false} class="rounded-sm">
-                                <div class="my-3 text-blue-500 hover:text-red-500 cursor-pointer" id="{{ str_replace(' ', '', $category->name) }}">
+                                <div class="my-3 text-blue-500 hover:text-red-500 cursor-pointer" id="{{ preg_replace('/[ ,]+/', '', $category->name) }}">
                                     {{ $category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
                                 </div>
                                 <div id="{{$category->slug}}" class="px-8 py-1 hidden">
@@ -159,7 +159,7 @@
 
 @endsection
 
-@section("javasript")
+@section("javascript")
 
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
     <script src="https://api-maps.yandex.ru/2.1/?lang={{app()->getLocale()}}&apikey=f4b34baa-cbd1-432b-865b-9562afa3fcdb"
@@ -292,8 +292,10 @@
         </script>
     <script>
         @foreach ($categories as $category)
-        $( "#{{ str_replace(' ', '', $category->name) }}" ).click(function() {
+        $( "#{{ preg_replace('/[ ,]+/', '', $category->name) }}" ).click(function() {
+            console.log('{{$category->slug}}', 123)
             if ($("#{{$category->slug}}").hasClass("hidden")) {
+
                 $("#{{$category->slug}}").removeClass('hidden');
             }else{
                 $("#{{$category->slug}}").addClass('hidden');

@@ -16,7 +16,7 @@
 
             <div class="lg:col-span-1 col-span-3 px-8">
                 @if (Auth::check())
-                    <a href="/verificationInfo" class="flex flex-row shadow-lg rounded-lg mb-8">
+                    <a href="/verification" class="flex flex-row shadow-lg rounded-lg mb-8">
                         <div class="w-1/2 h-24 bg-contain bg-no-repeat bg-center"
                             style="background-image: url({{asset('images/like.png')}});">
                         </div>
@@ -39,7 +39,7 @@
                     <div class="max-w-md mx-left">
                         @foreach ($categories as $category)
                             <div x-data={show:false} class="rounded-sm">
-                                <div class="my-3 text-blue-500 hover:text-red-500 cursor-pointer" id="{{ str_replace(' ', '', $category->name) }}">
+                                <div class="my-3 text-blue-500 hover:text-red-500 cursor-pointer" id="{{ preg_replace('/[ ,]+/', '', $category->name) }}">
                                     {{ $category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
                                 </div>
                                 <div id="{{$category->slug}}" class="px-8 py-1 hidden">
@@ -346,7 +346,7 @@
 </script> 
     <script>
         @foreach ($categories as $category)
-        $( "#{{ str_replace(' ', '', $category->name) }}" ).click(function() {
+        $( "#{{ preg_replace('/[ ,]+/', '', $category->name) }}" ).click(function() {
             if ($("#{{$category->slug}}").hasClass("hidden")) {
                 $("#{{$category->slug}}").removeClass('hidden');
             }else{
@@ -475,7 +475,7 @@
     </script>
 @endsection
 
-@section('javasript')
+@section('javascript')
     <script src="//unpkg.com/alpinejs" defer></script>
 
     <script>

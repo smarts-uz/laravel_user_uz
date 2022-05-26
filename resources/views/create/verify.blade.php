@@ -85,9 +85,3 @@
 
 @endsection
 
-@section("javasript")
-
-
-
-
-@endsection

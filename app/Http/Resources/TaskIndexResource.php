@@ -11,11 +11,16 @@ class TaskIndexResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
     {
+        $photos = array_map(function ($val) {
+            return asset('storage/uploads/' . $val);
+        },
+            json_decode($this->photos) ?? []
+        );
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -36,8 +41,8 @@ class TaskIndexResource extends JsonResource
             'oplata' => $this->oplata,
             'docs' => $this->docs,
             'created_at' => $this->created,
-            'custom_fields' => (new CustomFieldService())->getCustomFieldsByRoute($this, ''),
-            'photos' => json_decode(asset('storage/'.$this->photos)),
-         ];
+            'custom_fields' => (new CustomFieldService())->getCustomFieldsByRoute($this, 'custom'),
+            'photos' => $photos,
+        ];
     }
 }

@@ -36,14 +36,4 @@ class ProfilePhoneRequest extends FormRequest
             'phone_number.required' => trans('trans.Enter your phone number.'),
         ];
     }
-
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success'   => false,
-            'data' => [
-                'message' => $validator->errors()
-            ]
-        ]));
-    }
 }

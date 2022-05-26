@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\BlogController;
 use App\Http\Controllers\API\CategoriesAPIController; // javoxir
 use App\Http\Controllers\API\CustomFieldAPIController;
 use App\Http\Controllers\API\FaqAPIController; // javoxir
@@ -82,6 +83,7 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post("account/change/phone", [LoginAPIController::class, 'change_phone_number']); //end +
 
     Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']); //end +
+    Route::post('/task/{task}/complain', [TaskAPIController::class, 'complain']);
     Route::post('/select-performer/{response}', [TaskAPIController::class, 'selectPerformer']); //end -
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); //end +
     Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); //end +
@@ -139,6 +141,8 @@ Route::post('/reset', [UserAPIController::class, 'reset_submit']); //end +
 Route::post('/reset/password', [UserAPIController::class, 'reset_password_save'])->name('user.reset_password_save'); //end +
 Route::post('/code', [UserAPIController::class, 'reset_code'])->name('user.reset_code'); //end +
 
+//News
+Route::get('/blog-news', [BlogController::class, 'index']);
 
 // FAQ
 Route::get('faq', [FaqAPIController::class, 'index']); //end +

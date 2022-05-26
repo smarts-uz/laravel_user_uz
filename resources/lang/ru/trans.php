@@ -40,4 +40,9 @@ return [
     'All values should be int.' => 'Все данные должны быть числами.',
     'You successfully subscribed for notifications by task categories.' => 'Вы успешно подписались на уведомления по категориям заданий.',
     'Language changed successfully.' => 'Язык изменён успешно.',
+    'Choose the type.' => 'Выберите тип.',
+    'Enter the text.' => 'Введите текст.',
+    'Complaint is sent.' => 'Жалоба отправлена.',
+    'Enter phone number.' => 'Введите номер телефона.',
+    'Phone number should be number.' => 'Номер телефона должен содержать только цифры.',
 ];

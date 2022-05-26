@@ -40,14 +40,4 @@ class ProfilePasswordRequest extends FormRequest
             'password.min' => trans('trans.Password length should be more than 6.'),
         ];
     }
-
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success'   => false,
-            'data' => [
-                'message' => $validator->errors()
-            ]
-        ]));
-    }
 }

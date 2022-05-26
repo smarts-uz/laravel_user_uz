@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class PortfolioRequest extends FormRequest
+class TaskComplaintRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,19 +26,16 @@ class PortfolioRequest extends FormRequest
     public function rules()
     {
         return [
-            'comment' => 'required|string',
-            'description' => 'required|string',
-            'images' => 'nullable'
+            'compliance_type_id' => 'required|int',
+            'text' => 'required|string'
         ];
     }
 
     public function messages()
     {
         return [
-            'comment.required' => trans('trans.Enter comment.'),
-            'comment.string' => trans('trans.Comment should be in text format.'),
-            'description.required' => trans('trans.Enter description.'),
-            'description.string' => trans('trans.Description should be in text format.'),
+            'compliance_type_id.*' => trans('trans.Choose the type.'),
+            'text.*' => trans('trans.Enter the text.')
         ];
     }
 }

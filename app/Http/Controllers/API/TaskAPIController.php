@@ -13,11 +13,13 @@ use App\Http\Requests\Api\TaskRemoteRequest;
 use App\Http\Requests\Api\TaskVerificationRequest;
 use App\Http\Requests\Api\V1\Task\StoreRequest;
 use App\Http\Requests\Task\UpdateRequest;
+use App\Http\Requests\Api\TaskComplaintRequest;
 use App\Http\Resources\SameTaskResource;
 use App\Http\Resources\TaskIndexResource;
 use App\Http\Resources\TaskPaginationResource;
 use App\Http\Resources\TaskResponseResource;
 use App\Http\Resources\TaskSingleResource;
+use App\Models\Compliance;
 use App\Models\Task;
 use App\Models\TaskResponse;
 use App\Models\User;
@@ -695,6 +697,10 @@ class TaskAPIController extends Controller
      *                    property="amount",
      *                    type="number",
      *                 ),
+     *                 @OA\Property (
+     *                    property="budget_type",
+     *                    type="integer",
+     *                 ),
      *             ),
      *         ),
      *     ),
@@ -737,11 +743,6 @@ class TaskAPIController extends Controller
      *                 @OA\Property (
      *                    property="description",
      *                    type="string",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="oplata",
-     *                    description="true - karta, false - naqd",
-     *                    type="boolean",
      *                 ),
      *                 @OA\Property (
      *                    property="docs",
@@ -874,7 +875,7 @@ class TaskAPIController extends Controller
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
-     *                    property="user_id",
+     *                    property="phone_number",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
@@ -1144,6 +1145,57 @@ class TaskAPIController extends Controller
 
     }
 
+
+    /**
+     * @OA\Post(
+     *      path="/api/update-task/{task}/name",
+     *      tags={"Task Update"},
+     *      summary="Task update name",
+     *      @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\RequestBody (
+     *          required=true,
+     *          @OA\MediaType (
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  @OA\Property (
+     *                      property="name",
+     *                      type="string",
+     *                  ),
+     *                  @OA\Property (
+     *                      property="category_id",
+     *                      type="integer",
+     *                  ),
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response (
+     *          response=200,
+     *          description="Successful operation",
+     *      ),
+     *      @OA\Response (
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response (
+     *          response=403,
+     *          description="Forbidden",
+     *      ),
+     *      security={
+     *          {"token": {}}
+     *      },
+     * 
+     * 
+     * )
+     * 
+     * 
+     */
     public function updateName(TaskNameRequest $request, Task $task)
     {
         return $this->success($this->update_task_service->updateName($task, $request->validated()));
@@ -1154,43 +1206,467 @@ class TaskAPIController extends Controller
         return $this->success($this->update_task_service->updateCustom($task, $request));
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/update-task/{task}/remote",
+     *     tags={"Task Update"},
+     *     summary="Task update remote",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="radio",
+     *                    description="Agar udallonna bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function updateRemote(TaskRemoteRequest $request, Task $task)
     {
         return $this->success($this->update_task_service->updateRemote($task, $request->validated()));
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/update-task/{task}/address",
+     *     tags={"Task Update"},
+     *     summary="Task update address",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="location",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="latitude",
+     *                    type="number",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="longitude",
+     *                    type="number",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function updateAddress(TaskAddressRequest $request, Task $task)
     {
         return $this->success($this->update_task_service->updateAddress($task, $request->validated()));
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/update-task/{task}/date",
+     *     tags={"Task Update"},
+     *     summary="Task update date",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="date_type",
+     *                    description="1 dan 3 gacha bersa bo`ladi",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="start_date",
+     *                    description="2022-06-03 12:00:0 - manashu formatda kiritiladi",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="end_date",
+     *                    description="2022-06-03 12:00:0 - manashu formatda kiritiladi",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function updateDate(\App\Http\Requests\Api\TaskDateRequest $request, Task $task)
     {
         return $this->success($this->update_task_service->updateDate($task, $request->validated()));
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/update-task/{task}/budget",
+     *     tags={"Task Update"},
+     *     summary="Task update budget",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="amount",
+     *                    type="number",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="budget_type",
+     *                    type="integer",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function updateBudget(TaskBudgetRequest $request, Task $task)
     {
         return $this->success($this->update_task_service->updateBudget($task, $request->validated()));
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/update-task/{task}/note",
+     *     tags={"Task Update"},
+     *     summary="Task update note",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="description",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="docs",
+     *                    description="true - taqdim etilsin, false - taqdim etilmasin",
+     *                    type="boolean",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function updateNote(TaskNoteRequest $request, Task $task)
     {
         return $this->success($this->update_task_service->updateNote($task, $request->validated()));
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/update-task/{task}/images",
+     *     tags={"Task Update"},
+     *     summary="Task update images",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="images",
+     *                    type="file",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function updateUploadImages(Request $request, Task $task)
     {
         return $this->update_task_service->updateImage($task, $request);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/update-task/{task}/contacts",
+     *     tags={"Task Update"},
+     *     summary="Task update contacts",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="phone_number",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function updateContacts(TaskContactsRequest $request, Task $task)
     {
         return $this->success($this->update_task_service->updateContact($task, $request->validated()));
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/update-task/{task}/verify",
+     *     tags={"Task Update"},
+     *     summary="Task update verify",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="phone_number",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="sms_otp",
+     *                    description="Telefonga kelgan SMS code",
+     *                    type="integer",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function updateVerify(TaskVerificationRequest $request, Task $task)
     {
         return $this->update_task_service->verification($task, $request->validated());
+    }
+
+    public function complain(TaskComplaintRequest $request, $id)
+    {
+        $data = $request->validated();
+        $data['task_id'] = $id;
+        $data['user_id'] = auth()->id();
+        Compliance::query()->create($data);
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'message' => trans('trans.Complaint is sent.')
+            ]
+        ]);
     }
 }

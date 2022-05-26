@@ -94,9 +94,6 @@ class ProfileService
     }
 
     public function settingsUpdate($data) {
-        if (!str_starts_with($data['phone_number'], '+998')) {
-            $data['phone_number'] = '+998' . $data['phone_number'];
-        }
         if ($data['email'] != auth()->user()->email) {
             $data['is_email_verified'] = 0;
             $data['email_old'] = auth()->user()->email;
@@ -193,7 +190,7 @@ class ProfileService
     public function createPortfolio($request)
     {
         $user = auth()->user();
-        $data = $request->safe();
+        $data = $request->except('images');
         $data['user_id'] = $user->id;
         if ($request->hasFile('images')) {
             $image = [];
@@ -211,7 +208,7 @@ class ProfileService
     public function updatePortfolio($request, $portfolio)
     {
         $user = auth()->user();
-        $data = $request->safe();
+        $data = $request->except('images');
         $data['user_id'] = $user->id;
         if ($request->hasFile('images')) {
             $portfolioImages = $portfolio->image;
@@ -234,7 +231,7 @@ class ProfileService
     public function videoStore($request)
     {
         $user = auth()->user();
-        $validated = $request->safe();
+        $validated = $request->validated();
         $link = $validated['link'];
         if (!str_starts_with($link, 'https://www.youtube.com/')) {
             $message = trans('trans.Link should be from YouTube.');
@@ -329,7 +326,7 @@ class ProfileService
 
     public function changePassword($request)
     {
-        $data = $request->safe();
+        $data = $request->validated();
         $user = auth()->user();
         if (Hash::check($data['old_password'], $user->password)) {
             $user->update(['password' => Hash::make($data['password'])]);
@@ -364,7 +361,7 @@ class ProfileService
 
     public function updateSettings($request)
     {
-        $validated = $request->safe();
+        $validated = $request->validated();
         if ($validated['email'] != auth()->user()->email) {
             $validated['is_email_verified'] = 0;
             $validated['email_old'] = auth()->user()->email;

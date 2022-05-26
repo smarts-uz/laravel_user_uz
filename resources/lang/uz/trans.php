@@ -40,4 +40,9 @@ return [
     'All values should be int.' => 'Ma\'lumotlar son bo\'lishi kerak.',
     'You successfully subscribed for notifications by task categories.' => 'Kategoriya bo\'yicha xabarnomaga muvaffaqiyatli ulandingiz.',
     'Language changed successfully.' => 'Til muvaffaqiyatli o\'zgardi.',
+    'Choose the type.' => 'Turni tanlang.',
+    'Enter the text.' => 'Tekstni kiriting.',
+    'Complaint is sent.' => 'Shikoyat jo\'natildi.',
+    'Enter phone number.' => 'Telefon raqamini kiriting.',
+    'Phone number should be number.' => 'Telefon raqami sonlardan iborat bo\'lishi kerak',
 ];
