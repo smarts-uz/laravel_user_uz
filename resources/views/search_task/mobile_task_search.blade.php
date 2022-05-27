@@ -1,4 +1,4 @@
-<form id="#search_form1" method="post" action="{{route('searchTask.ajax_tasks')}}">
+
     <div class="w-11/12 mx-auto my-5 rounded-md lg:hidden block">
         <div class="flex flex-col block w-full gap-4">
             <input id="filter1" name="filter1" type="text"

@@ -71,9 +71,6 @@
 
 <div class="w-11/12">
     <div class="no_tasks">
-        {{--
-        Show no tasks image
---}}
         <div class=" w-3/5 h-3/5 mx-auto">
             <img src="images/notlikes.png" class="w-full h-full">
             <div class="text-center w-full h-full">
