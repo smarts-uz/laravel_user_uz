@@ -15,6 +15,7 @@ use App\Services\NotificationService;
 use App\Services\Response;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -73,7 +74,7 @@ class CreateTaskService
     public function custom_store($data, $request)
     {
         $task = Task::query()->findOrFail($data['task_id']);
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM, $request);
+        $this->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM, $request);
         if ($task->category->parent->remote) {
             return $this->get_remote($task);
         }
@@ -387,5 +388,22 @@ class CreateTaskService
             "end_date.required" => __('dateTime.end_date.required'),
             "end_date.date" => __('dateTime.end_date.date'),
         ]);
+    }
+
+
+
+    /////////////////
+    /// custom values store for API
+    ///
+
+    protected function attachCustomFieldsByRoute($task, $routeName, $request){
+        foreach ($task->category->custom_fields()->where('route',$routeName)->get() as $data) {
+            $value = $task->custom_field_values()->where('custom_field_id', $data->id)->first()?? new CustomFieldsValue();
+            $value->task_id = $task->id;
+            $value->custom_field_id = $data->id;
+            $arr = $data->name !== null ? Arr::get($request->all(), $data->name):null;
+            $value->value = is_array($arr) ? json_encode($arr) : $arr;
+            $value->save();
+        }
     }
 }
