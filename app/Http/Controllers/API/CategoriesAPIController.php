@@ -45,11 +45,16 @@ class CategoriesAPIController extends Controller
         return CategoryIndexResource::collection($categories);
     }
 
-    public function popular()
+    public function popular(Request $request)
     {
+        $name = $request->get('category');
         return Task::query()->with('category:id,name,parent_id,ico')
+            ->whereHas('category', function ($q) use ($name){
+                return $q->where('name', 'like', "%$name%");
+            })
             ->select('category_id', DB::raw('count(*) as total'))
             ->groupBy('category_id')
+            ->orderByDesc('total')
             ->get();
     }
 
