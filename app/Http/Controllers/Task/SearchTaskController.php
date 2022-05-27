@@ -6,14 +6,12 @@ use App\Models\TaskResponse;
 use App\Services\Task\CreateService;
 use App\Services\Task\CustomFieldService;
 use App\Models\Task;
-use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Models\Category;
-use App\Models\Review;
 use Illuminate\Http\Request;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
 use App\Services\Task\SearchService;
 use Carbon\Carbon;
-
+use Jenssegers\Agent\Agent;
 
 class SearchTaskController extends VoyagerBaseController
 {
@@ -28,22 +26,10 @@ class SearchTaskController extends VoyagerBaseController
         $this->create_service = new CreateService();
     }
 
-    public function task_search()
-    {
-        $categories = Category::where('parent_id', null)->select('id', 'name')->get();
-        $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
-        return view('task.search', compact('categories', 'categories2'));
-    }
-
     public function search(Request $request)
     {
         $s = $request->s;
         return Task::where('name', 'LIKE', "%$s%")->orderBy('name')->paginate(10);
-    }
-
-    public function ajax_tasks()
-    {
-        return $this->service->ajaxReq();
     }
 
     public function task(Task $task, Request $request)
@@ -117,9 +103,15 @@ class SearchTaskController extends VoyagerBaseController
         return view('task.changetask', compact('task', 'addresses'));
     }
     public function search_new(){
-            $categories = Category::where('parent_id', null)->select('id', 'name')->get();
-            $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
+        $agent = new Agent();
+        $categories = Category::where('parent_id', null)->select('id', 'name')->get();
+        $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
+        if($agent->isMobile()){
+            return view('search_task.mobile_task_search', compact('categories','categories2'));
+        }
+        else{
             return view('search_task.new_search', compact('categories','categories2'));
+        }   
     }
 
 public function search_new2(Request $request){
@@ -151,7 +143,15 @@ public function search_new2(Request $request){
                         );
 
 
-    $html = view("search_task.tasks", ['tasks'=>$tasks[0]])->render();
-    return response()->json(array('dataForMap' =>$tasks[1] , 'html' => $html));
+                        
+    $agent = new Agent();                  
+    if($agent->isMobile()){
+        $html = view("search_task.mobile_task_search", ['tasks'=>$tasks[0]])->render();
+        return response()->json(array('dataForMap' =>$tasks[1] , 'html' => $html));
+    }
+    else{
+        $html = view("search_task.tasks", ['tasks'=>$tasks[0]])->render();
+        return response()->json(array('dataForMap' =>$tasks[1] , 'html' => $html));
+    } 
 }
 }
