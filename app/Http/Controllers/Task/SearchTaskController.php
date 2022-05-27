@@ -107,7 +107,7 @@ class SearchTaskController extends VoyagerBaseController
         $categories = Category::where('parent_id', null)->select('id', 'name')->get();
         $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
         if($agent->isMobile()){
-            return view('search_task.mobile_task_search');
+            return view('search_task.mobile_task_search', compact('categories','categories2'));
         }
         else{
             return view('search_task.new_search', compact('categories','categories2'));
@@ -143,7 +143,15 @@ public function search_new2(Request $request){
                         );
 
 
-    $html = view("search_task.tasks", ['tasks'=>$tasks[0]])->render();
-    return response()->json(array('dataForMap' =>$tasks[1] , 'html' => $html));
+                        
+    $agent = new Agent();                  
+    if($agent->isMobile()){
+        $html = view("search_task.mobile_task_search", ['tasks'=>$tasks[0]])->render();
+        return response()->json(array('dataForMap' =>$tasks[1] , 'html' => $html));
+    }
+    else{
+        $html = view("search_task.tasks", ['tasks'=>$tasks[0]])->render();
+        return response()->json(array('dataForMap' =>$tasks[1] , 'html' => $html));
+    } 
 }
 }
