@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\TaskResponse;
 use App\Services\Task\CustomFieldService;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -21,6 +22,10 @@ class TaskIndexResource extends JsonResource
         },
             json_decode($this->photos) ?? []
         );
+        $user_response = TaskResponse::query()
+            ->where('task_id', $this->id)
+            ->where('performer_id', \auth()->guard('api')->id())
+            ->first();
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -35,6 +40,7 @@ class TaskIndexResource extends JsonResource
             //'category_id' => $this->category_id,
             'category_name' => $this->category->name,
             'category_id' => $this->category_id,
+            'current_user_response' => (bool)$user_response,
             'user' => new UserInTaskResource($this->user),
             'views' => $this->views,
             'status' => $this->status,
