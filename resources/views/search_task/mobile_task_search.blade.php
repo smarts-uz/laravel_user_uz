@@ -1,7 +1,7 @@
 @extends("layouts.app")
 
 @section("content")
-    <div class="w-11/12 mx-auto my-5 rounded-md lg:hidden block">
+    <div class="w-11/12 mx-auto my-5 rounded-md">
         <div class="flex flex-col block w-full gap-4">
             <input id="filter1" name="filter1" type="text"
                 class=" focus:outline-none px-2 py-3 focus:border-yellow-500 text-base border-2 rounded-md bg-gray-100"
@@ -94,16 +94,7 @@
     </div>
 
 
-{{-- tasks --}}
-<div class="w-11/12 mx-auto lg:hidden block">
-    <div class="dataPlace">
-        @include('search_task.tasks')
-    </div>
-    <div class="loader" style="display: none">
-        @include('search_task.loader')
-    </div>
-</div>
-{{-- tasks --}}
+
 
 
 <script>

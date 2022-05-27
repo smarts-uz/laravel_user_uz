@@ -11,9 +11,7 @@ use Illuminate\Http\Request;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
 use App\Services\Task\SearchService;
 use Carbon\Carbon;
-use DeviceDetector\ClientHints;
-use DeviceDetector\DeviceDetector;
-use DeviceDetector\Parser\Device\AbstractDeviceParser;
+use Jenssegers\Agent\Agent;
 
 class SearchTaskController extends VoyagerBaseController
 {
@@ -105,13 +103,10 @@ class SearchTaskController extends VoyagerBaseController
         return view('task.changetask', compact('task', 'addresses'));
     }
     public function search_new(){
-        AbstractDeviceParser::setVersionTruncation(AbstractDeviceParser::VERSION_TRUNCATION_NONE);
-        $userAgent = $_SERVER['HTTP_USER_AGENT']; // change this to the useragent you want to parse
-        $clientHints = ClientHints::factory($_SERVER); // client hints are optional
-        $dd = new DeviceDetector($userAgent, $clientHints);
+        $agent = new Agent();
         $categories = Category::where('parent_id', null)->select('id', 'name')->get();
         $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
-        if($dd->isMobileApp()){
+        if($agent->isMobile()){
             return view('search_task.mobile_task_search');
         }
         else{
