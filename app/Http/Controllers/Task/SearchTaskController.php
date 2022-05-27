@@ -6,14 +6,14 @@ use App\Models\TaskResponse;
 use App\Services\Task\CreateService;
 use App\Services\Task\CustomFieldService;
 use App\Models\Task;
-use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Models\Category;
-use App\Models\Review;
 use Illuminate\Http\Request;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
 use App\Services\Task\SearchService;
 use Carbon\Carbon;
-
+use DeviceDetector\ClientHints;
+use DeviceDetector\DeviceDetector;
+use DeviceDetector\Parser\Device\AbstractDeviceParser;
 
 class SearchTaskController extends VoyagerBaseController
 {
@@ -28,22 +28,10 @@ class SearchTaskController extends VoyagerBaseController
         $this->create_service = new CreateService();
     }
 
-    public function task_search()
-    {
-        $categories = Category::where('parent_id', null)->select('id', 'name')->get();
-        $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
-        return view('task.search', compact('categories', 'categories2'));
-    }
-
     public function search(Request $request)
     {
         $s = $request->s;
         return Task::where('name', 'LIKE', "%$s%")->orderBy('name')->paginate(10);
-    }
-
-    public function ajax_tasks()
-    {
-        return $this->service->ajaxReq();
     }
 
     public function task(Task $task, Request $request)
@@ -117,9 +105,18 @@ class SearchTaskController extends VoyagerBaseController
         return view('task.changetask', compact('task', 'addresses'));
     }
     public function search_new(){
-            $categories = Category::where('parent_id', null)->select('id', 'name')->get();
-            $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
+        AbstractDeviceParser::setVersionTruncation(AbstractDeviceParser::VERSION_TRUNCATION_NONE);
+        $userAgent = $_SERVER['HTTP_USER_AGENT']; // change this to the useragent you want to parse
+        $clientHints = ClientHints::factory($_SERVER); // client hints are optional
+        $dd = new DeviceDetector($userAgent, $clientHints);
+        $categories = Category::where('parent_id', null)->select('id', 'name')->get();
+        $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
+        if($dd->isMobileApp()){
+            return view('search_task.mobile_task_search');
+        }
+        else{
             return view('search_task.new_search', compact('categories','categories2'));
+        }   
     }
 
 public function search_new2(Request $request){

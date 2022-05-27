@@ -395,56 +395,7 @@ myMap2.geoObjects.add(circle);
 }
 }
 
-// script for mobile
 
-$(document).ready(function() {
-$("#show").click(function() {
-map1_show();
-$("#hide").css('display', 'block');
-$("#show").css('display', 'none');
-$("#scrollbar").css('display', 'none');
-$("footer").css('display', 'none');
-$('#big-big').removeClass("hidden");
-});
-$("#hide").click(function() {
-$('#big-big').addClass("hidden");
-$("#hide").css('display', 'none');
-$("#show").css('display', 'block');
-$("#scrollbar").css('display', 'block');
-$("footer").css('display', 'block');
-});
-});
-
-$(document).ready(function() {
-$("#show_2").click(function() {
-$("#hide_2").css('display', 'block');
-$("#show_2").css('display', 'none');
-$("#mobile_bar").css('display', 'block');
-});
-$("#hide_2").click(function() {
-$("#hide_2").css('display', 'none');
-$("#show_2").css('display', 'block');
-$("#mobile_bar").css('display', 'none');
-});
-});
-
-$(document).ready(function() {
-$("#show").click(function() {
-map1_show();
-$("#hide").css('display', 'block');
-$("#show").css('display', 'none');
-$("#scrollbar").css('display', 'none');
-$("footer").css('display', 'none');
-$('#big-big').removeClass("hidden");
-});
-$("#hide").click(function() {
-$('#big-big').addClass("hidden");
-$("#hide").css('display', 'none');
-$("#show").css('display', 'block');
-$("#scrollbar").css('display', 'block');
-$("footer").css('display', 'block');
-});
-});
 
 $('#byDate').click(function(){
 $(this).addClass('font-bold')

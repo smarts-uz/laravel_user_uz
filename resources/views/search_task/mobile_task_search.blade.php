@@ -1,4 +1,6 @@
+@extends("layouts.app")
 
+@section("content")
     <div class="w-11/12 mx-auto my-5 rounded-md lg:hidden block">
         <div class="flex flex-col block w-full gap-4">
             <input id="filter1" name="filter1" type="text"
@@ -34,7 +36,7 @@
                     <div
                         class="bg-white address py-1 px-3 text-black-700 border-2 rounded-md focus:shadow-sm flex w-full text-black-700">
                         <input
-                            class="float-left bg-transparent border-0 w-11/12 h-full focus:outline-none focus:border-yellow-500"
+                            class="float-left bg-transparent border-0 w-full h-full focus:outline-none focus:border-yellow-500"
                             type="text" id="suggest1" name="suggest1" placeholder="Mobile">
                         <svg class="h-4 w-4 text-purple-500 mt-1" id="geobut2" width="12" height="12"
                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -102,3 +104,32 @@
     </div>
 </div>
 {{-- tasks --}}
+
+
+<script>
+    $(document).ready(function() {
+        $("#show_2").click(function() {
+            $("#hide_2").removeClass('hidden');
+            $("#show_2").addClass('hidden');
+            $("#mobile_bar").removeClass('hidden');
+        });
+        $("#hide_2").click(function() {
+            $("#hide_2").addClass('hidden');
+            $("#show_2").removeClass('hidden');
+            $("#mobile_bar").addClass('hidden');
+        });
+    });
+
+    $(document).ready(function() {
+        $("#show").click(function() {
+            $("#hide").removeClass('hidden');
+            $("#show").addClass('hidden');
+        });
+        $("#hide").click(function() {
+            $("#hide").addClass('hidden');
+            $("#show").removeClass('hidden');
+        });
+    });
+</script>
+
+@endsection
