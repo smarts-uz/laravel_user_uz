@@ -210,13 +210,19 @@ class SearchAPIController extends Controller
     public function delete_task(Task $task)
     {
         if ($task->user_id != auth()->user()->id){
-            abort(403,"No Permission");
+            return response()->json([
+                'success' => false,
+                "message" => "No Permission"
+            ], 403);
         }
         $task->responses()->delete();
         $task->reviews()->delete();
         $task->custom_field_values()->delete();
         $task->delete();
-        return response()->json('O`chirildi');
+        return response()->json([
+            'success' => true,
+            'message' => "Successfully deleted"
+        ]);
     }
 
 /**

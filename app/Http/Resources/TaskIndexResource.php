@@ -41,6 +41,7 @@ class TaskIndexResource extends JsonResource
             'category_name' => $this->category->name,
             'category_id' => $this->category_id,
             'current_user_response' => (bool)$user_response,
+            'responses_count' => $this->responses()->count(),
             'user' => new UserInTaskResource($this->user),
             'views' => $this->views,
             'status' => $this->status,
