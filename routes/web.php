@@ -209,7 +209,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 });
 Route::post('/set-session', [ProfileController::class, 'setSession'])->name('profile.set_session');
-Route::post('/uploadImage/{portfolio}', [ProfileController::class, 'UploadImage'])->name('profile.UploadImage');
+Route::post('/uploadImage', [ProfileController::class, 'UploadImage'])->name('profile.UploadImage');
 #endregion
 
 #region creat task
