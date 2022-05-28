@@ -8,7 +8,7 @@ use App\Services\PerformersService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PlayMobile\SMS\SmsService;
-use TCG\Voyager\Models\Category;
+use App\Models\Portfolio;
 use App\Models\User;
 use App\Models\Task;
 use App\Models\Notification;
@@ -153,5 +153,10 @@ class PerformersController extends Controller
     {
         Notification::where('user_id', Auth::id())->delete();
         return response()->json(['success']);
+    }
+
+    public function performers_portfolio(User $user,Portfolio $portfolio){
+        
+        return view('performers.performer_portfolio',compact('portfolio','user'));
     }
 }
