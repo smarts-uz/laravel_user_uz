@@ -81,6 +81,7 @@
 
                 <th></th>
                 <th></th>
+                <th></th>
                 <th colspan="2" style="text-align: center;" class="border border-dark">Открытые</th>
                 <th colspan="2" style="text-align: center;" class="border border-dark">В исполнении</th>
                 <th colspan="2" style="text-align: center;" class="border border-dark"">Закрытые</th>
