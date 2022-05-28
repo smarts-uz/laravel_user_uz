@@ -58,10 +58,16 @@ class ProfileController extends Controller
         return redirect()->route('profile.profileData');
     }
 
-    public function UploadImage(Request $request, Portfolio $portfolio)
+    public function UploadImage(Request $request)
     {
         $uploadImg = new ProfileService();
-        return $uploadImg->uploadImageServ($request, $portfolio);
+        return $uploadImg->uploadImageServ($request);
+    }
+
+    public function updateImage(Request $request, Portfolio $portfolio)
+    {
+        $uploadImg = new ProfileService();
+        return $uploadImg->updateImageServ($request, $portfolio);
     }
 
     public function testBase(Request $request)

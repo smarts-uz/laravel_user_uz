@@ -37,13 +37,13 @@ class ProfileService
         return $dd;
     }
 
-    public function uploadImageServ(Request $request, Portfolio $portfolio)
+    public function uploadImageServ(Request $request)
     {
         $user = auth()->user();
         $imgData = session()->has('images') ? json_decode(session('images')):[];
         foreach ($request->file('images') as $uploadedImage) {
-            $filename = $user->name . '/' . $portfolio->comment . '/' . time() . '_' . $uploadedImage->getClientOriginalName();
-            $uploadedImage->move(public_path() . '/Portfolio/' . $user->name . '/' . $portfolio->comment . '/', $filename);
+            $filename = $user->name . '/' . time() . '_' . $uploadedImage->getClientOriginalName();
+            $uploadedImage->move(public_path() . '/Portfolio/' . $user->name . '/', $filename);
             array_push($imgData, $filename);
         }
         session()->put('images', json_encode($imgData));

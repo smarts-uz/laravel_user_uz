@@ -72,7 +72,7 @@
 
             .use(Uppy.ImageEditor, {target: Uppy.Dashboard})
             .use(Uppy.XHRUpload, {
-                endpoint: '{{ route('profile.UploadImage', $portfolio->id) }}',
+                endpoint: '{{ route('profile.UploadImage') }}',
                 fieldName: 'images[]',
                 method: 'post',
                 bundle: true,
