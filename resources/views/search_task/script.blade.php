@@ -505,4 +505,34 @@ $("#suggest").prop("disabled",false).removeClass("bg-gray-200 relative z-10 curs
 }
 $("#search_form").submit();
 });
+
+        $(document).ready(function() {
+            $("#show_2").click(function() {
+                $("#hide_2").removeClass('hidden');
+                $("#show_2").addClass('hidden');
+                $("#mobile_bar").removeClass('hidden');
+            });
+            $("#hide_2").click(function() {
+                $("#hide_2").addClass('hidden');
+                $("#show_2").removeClass('hidden');
+                $("#mobile_bar").addClass('hidden');
+            });
+        });
+        $(document).ready(function() {
+            $("#show").click(function() {
+                $("#hide").removeClass('hidden');
+                $('#mobile_map').removeClass('hidden');
+                $("#show").addClass('hidden');
+            });
+            $("#hide").click(function() {
+                $("#hide").addClass('hidden');
+                $('#mobile_map').addClass('hidden')
+                $("#show").removeClass('hidden');
+            });
+        });
+        $(document).ready(function() {
+            $("#categories_block").click(function() {
+                $("#categories_hidden").toggleClass('hidden');
+            });
+        });
 </script>
