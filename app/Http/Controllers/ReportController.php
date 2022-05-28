@@ -32,7 +32,7 @@ class ReportController extends Controller
         return $service->report();
     }
 
-        public function show_child(Request $req,$id)
+        public function show_child(Request $req, $id)
         {
             if($req->ajax())
             {
