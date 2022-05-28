@@ -172,7 +172,7 @@ class CreateController extends Controller
         $imgData = session()->has('images') ? json_decode(session('images')):[];
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $uploadedImage) {
-                $filename = time() . '_' .$request->images->getClientOriginalName();
+                $filename = time() . '_' .$uploadedImage->getClientOriginalName();
                 $uploadedImage->move(public_path("storage/uploads/"), $filename);
                 $imgData[] = $filename;
             }
