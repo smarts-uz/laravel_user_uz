@@ -20,7 +20,7 @@ class VerifyCsrfToken extends Middleware
         '/get_info_click',
         '/sms/*',
         "task/create/note/*/images/store",
-        '/uploadImage',
+        '/uploadImage/*',
         '/paynet',
         '/payme',
         '/click',
