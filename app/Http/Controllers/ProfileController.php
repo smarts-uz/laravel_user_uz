@@ -58,10 +58,10 @@ class ProfileController extends Controller
         return redirect()->route('profile.profileData');
     }
 
-    public function UploadImage(Request $request)
+    public function UploadImage(Request $request, Portfolio $portfolio)
     {
         $uploadImg = new ProfileService();
-        return $uploadImg->uploadImageServ($request);
+        return $uploadImg->uploadImageServ($request, $portfolio);
     }
 
     public function testBase(Request $request)
@@ -239,7 +239,7 @@ class ProfileController extends Controller
 
     public function verificationContactStore(Request $request)
     {
-       
+
         $data = $request->validate([
             'email' => 'required',
             'phone_number' => 'required|integer|min:13',
@@ -298,6 +298,32 @@ class ProfileController extends Controller
         return redirect()->route('profile.profileData');
 
 
+    }
+
+    public function deleteImage(Request $requset, Portfolio $portfolio)
+    {
+        portfolioGuard($portfolio);
+        $image = $requset->get('image');
+        File::delete(public_path() . '/Portfolio/'. $image);
+        $images = json_decode($portfolio->image);
+        $updatedImages = array_diff($images, [$image]);
+        $portfolio->image = json_encode(array_values($updatedImages));
+        $portfolio->save();
+        return true;
+    }
+
+    public function updatePortfolio(PortfolioRequest $request, Portfolio $portfolio)
+    {
+        portfolioGuard($portfolio);
+        $data = $request->validated();
+
+        $images = session()->has('images') ? session('images') : [] + json_decode($portfolio->image);
+
+        session()->forget('images');
+        $data['image'] = $images;
+        $portfolio->update($data);
+        $portfolio->save();
+        return redirect()->route('profile.profileData');
     }
 
     public function notif_setting_ajax(Request $request)

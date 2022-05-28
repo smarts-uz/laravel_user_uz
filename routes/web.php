@@ -201,13 +201,15 @@ Route::group(['middleware' => 'auth'], function () {
         //create_port
         Route::view('/create', 'profile/create_port');
         Route::post('/portfolio/create', [ProfileController::class, 'createPortfolio'])->name('profile.createPortfolio'); // javoxir
+        Route::post('/portfolio/{portfolio}/delete-image', [ProfileController::class, 'deleteImage'])->name('profile.deleteImage');
+        Route::post('/portfolio/{portfolio}/update', [ProfileController::class, 'updatePortfolio'])->name('profile.updatePortfolio');
         Route::get('/portfolio/{portfolio}', [ProfileController::class, 'portfolio'])->name('profile.portfolio'); // javoxir
         Route::post('/delete/portfolio/{portfolio}', [ProfileController::class, 'delete'])->name('profile.delete'); // javoxir
         Route::get('/notif_setting', [ProfileController::class, 'notif_setting_ajax'])->name('profile.notif_setting_ajax');
     });
 });
 Route::post('/set-session', [ProfileController::class, 'setSession'])->name('profile.set_session');
-Route::post('/uploadImage', [ProfileController::class, 'UploadImage'])->name('profile.UploadImage');
+Route::post('/uploadImage/{portfolio}', [ProfileController::class, 'UploadImage'])->name('profile.UploadImage');
 #endregion
 
 #region creat task

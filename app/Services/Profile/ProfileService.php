@@ -37,15 +37,14 @@ class ProfileService
         return $dd;
     }
 
-    public function uploadImageServ($request){
+    public function uploadImageServ(Request $request, Portfolio $portfolio)
+    {
+        $user = auth()->user();
         $imgData = session()->has('images') ? json_decode(session('images')):[];
-        $files = $request->file('files');
-        if ($request->hasFile('files')) {
-            foreach ($files as $file) {
-                $name = Storage::put('public/uploads', $file);
-                $name = str_replace('public/', '', $name);
-                array_push($imgData,$name);
-            }
+        foreach ($request->file('images') as $uploadedImage) {
+            $filename = $user->name . '/' . $portfolio->comment . '/' . time() . '_' . $uploadedImage->getClientOriginalName();
+            $uploadedImage->move(public_path() . '/Portfolio/' . $user->name . '/' . $portfolio->comment . '/', $filename);
+            array_push($imgData, $filename);
         }
         session()->put('images', json_encode($imgData));
     }
@@ -211,14 +210,14 @@ class ProfileService
         $data = $request->except('images');
         $data['user_id'] = $user->id;
         if ($request->hasFile('images')) {
-            $portfolioImages = $portfolio->image;
+            $portfolioImages = json_decode($portfolio->image);
             foreach ($portfolioImages as $portfolioImage) {
-                File::delete(public_path() . 'Portfolio/'. $portfolioImage);
+                File::delete(public_path() . '/Portfolio/'. $portfolioImage);
             }
             $image = [];
             foreach ($request->file('images') as $uploadedImage) {
                 $filename = $user->name.'/'.$data['comment'].'/'.time() . '_' . $uploadedImage->getClientOriginalName();
-                $uploadedImage->move(public_path().'Portfolio/'.$user->name.'/', $filename);
+                $uploadedImage->move(public_path() . '/Portfolio/' . $user->name.'/' . $data['comment'] . '/', $filename);
                 $image[] = $filename;
             }
             $data['image'] = json_encode($image);
