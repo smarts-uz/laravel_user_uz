@@ -19,18 +19,15 @@
         @endforeach
     </div>
 
-    <div class="flex flex-col float-left my-14 w-full md:hidden block">
-        @foreach ($categories as $category2)
-            <a class=" flex items-center m-2 text-gray-600 hover:text-yellow-500 "
-               href="{{route('categories', ['id'=> $category2->id])}}">
-                <span class="flex w-full flex-wrap content-center items-center">
-                <img src="{{ asset('storage/'.$category2->ico) }}" alt="" class="sm:h-8 h-6 sm:w-8 h-6"></i>
-                <span class="sm:ml-4 ml-2 sm:text-xs text-base text-gray-600">
-                     {{ $category2->getTranslatedAttribute('name', Session::get('lang') , 'fallbackLocale' )}}</span>
-                </span>
-            </a>
+    <div class="flex flex-col float-left my-10 w-full md:hidden block">
+        @foreach ($categories as $category2)  
+            <span class="flex w-full flex-row items-center sm:my-2 my-1">
+                <img src="{{ asset('storage/'.$category2->ico) }}" alt="" class="h-8 w-8"></i>
+                <a href="{{route('categories', ['id'=> $category2->id])}}"
+                class="sm:ml-4 ml-2 sm:text-base text-xs text-gray-600 hover:text-yellow-500">
+                    {{ $category2->getTranslatedAttribute('name', Session::get('lang') , 'fallbackLocale' )}}
+                </a>
+            </span>
         @endforeach
-
-
     </div>
 </div>
