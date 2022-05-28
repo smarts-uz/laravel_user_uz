@@ -64,12 +64,6 @@ class ProfileController extends Controller
         return $uploadImg->uploadImageServ($request);
     }
 
-    public function updateImage(Request $request, Portfolio $portfolio)
-    {
-        $uploadImg = new ProfileService();
-        return $uploadImg->updateImageServ($request, $portfolio);
-    }
-
     public function testBase(Request $request)
     {
         $testBaseS = new ProfileService();

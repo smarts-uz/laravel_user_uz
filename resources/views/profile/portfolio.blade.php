@@ -18,11 +18,11 @@
 
                     @foreach(json_decode($portfolio->image)??[] as $key => $image)
                         <div class="relative boxItem">
-                            <a class="boxItem relative" href="{{ asset('Profile/' . $image) }}"
+                            <a class="boxItem relative" href="{{ asset('portfolio/' . $image) }}"
                                data-fancybox="img1"
-                               data-caption="<span>{{  $portfolio->created_at}}</span>">
+                               data-caption="<span>{{ $portfolio->created_at }}</span>">
                                 <div class="mediateka_photo_content">
-                                    <img src=" {{ asset('Profile/' . $image) }}" alt="">
+                                    <img src="{{ asset('portfolio/' . $image) }}" alt="">
                                 </div>
                             </a>
                             <div class="absolute right-0 top-0 absolute"><i class=' text-red-600 text-2xl fas fa-times-circle img-delete' data-action="{{ $image }}"></i></div>
