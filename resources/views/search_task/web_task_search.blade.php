@@ -1,4 +1,4 @@
-<div class="mx-auto w-11/12 xl:w-9/12 my-8 lg:block hidden">
+<div class="mx-auto w-11/12 xl:w-9/12 my-8 md:block hidden">
     <form id="search_form" method="post" action="{{route('searchTask.ajax_tasks')}}"  autocomplete="off">
         <div class="grid grid-cols-5 container mx-auto gap-x-2">
             {{-- left start --}}
@@ -88,7 +88,7 @@
                         </div>
                     </div>
 
-                    <div class="col-span-2 lg:col-span-1 lg:block hidden mx-4 lg:mt-0 mt-32">
+                    <div class="col-span-2 lg:col-span-1 md:block hidden mx-4 lg:mt-0 mt-32">
                         <div class="big-map static">
 
                         </div>

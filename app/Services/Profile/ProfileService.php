@@ -37,15 +37,14 @@ class ProfileService
         return $dd;
     }
 
-    public function uploadImageServ($request){
+    public function uploadImageServ(Request $request)
+    {
+        $user = auth()->user();
         $imgData = session()->has('images') ? json_decode(session('images')):[];
-        $files = $request->file('files');
-        if ($request->hasFile('files')) {
-            foreach ($files as $file) {
-                $name = Storage::put('public/uploads', $file);
-                $name = str_replace('public/', '', $name);
-                array_push($imgData,$name);
-            }
+        foreach ($request->file('images') as $uploadedImage) {
+            $filename = $user->name . '/' . time() . '_' . $uploadedImage->getClientOriginalName();
+            $uploadedImage->move(public_path() . '/portfolio/' . $user->name . '/', $filename);
+            $imgData[] = $filename;
         }
         session()->put('images', json_encode($imgData));
     }
@@ -195,8 +194,8 @@ class ProfileService
         if ($request->hasFile('images')) {
             $image = [];
             foreach ($request->file('images') as $uploadedImage) {
-                $filename = $user->name.'/'.$data['comment'].'/'.time() . '_' . $uploadedImage->getClientOriginalName();
-                $uploadedImage->move(public_path().'/Portfolio/'.$user->name.'/'.$data['comment'].'/', $filename);
+                $filename = $user->name.'/'.time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path().'/portfolio/'.$user->name.'/', $filename);
                 $image[] = $filename;
             }
             $data['image'] = json_encode($image);
@@ -211,14 +210,14 @@ class ProfileService
         $data = $request->except('images');
         $data['user_id'] = $user->id;
         if ($request->hasFile('images')) {
-            $portfolioImages = $portfolio->image;
+            $portfolioImages = json_decode($portfolio->image);
             foreach ($portfolioImages as $portfolioImage) {
-                File::delete(public_path() . 'Portfolio/'. $portfolioImage);
+                File::delete(public_path() . '/portfolio/'. $portfolioImage);
             }
             $image = [];
             foreach ($request->file('images') as $uploadedImage) {
-                $filename = $user->name.'/'.$data['comment'].'/'.time() . '_' . $uploadedImage->getClientOriginalName();
-                $uploadedImage->move(public_path().'Portfolio/'.$user->name.'/', $filename);
+                $filename = $user->name.'/'.time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path() . '/portfolio/' . $user->name.'/', $filename);
                 $image[] = $filename;
             }
             $data['image'] = json_encode($image);

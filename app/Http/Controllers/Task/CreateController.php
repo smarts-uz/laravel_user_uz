@@ -169,16 +169,15 @@ class CreateController extends Controller
 
     public function images_store(Task $task, Request $request)
     {
-        $imgData = json_decode($task->photos);
+        $imgData = session()->has('images') ? json_decode(session('images')):[];
         if ($request->hasFile('images')) {
-            $fileName = time() . '_' .$request->images->getClientOriginalName();
-            $filePath = $request->file('images')
-                    ->move(public_path("storage/uploads/"), $fileName);
-
-            $imgData[] = $fileName;
+            foreach ($request->file('images') as $uploadedImage) {
+                $filename = time() . '_' .$uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path("storage/uploads/"), $filename);
+                $imgData[] = $filename;
+            }
         }
-        $task->photos = json_encode($imgData);
-        $task->save();
+        session()->put('images', json_encode($imgData));
     }
     public function note_store(Task $task, Request $request)
     {
@@ -191,6 +190,9 @@ class CreateController extends Controller
         } else {
             $data['docs'] = 0;
         }
+        $data['photos'] = session()->has('images') ? session('images') : '[]';
+
+        session()->forget('images');
         $task->update($data);
         return redirect()->route("task.create.contact", $task->id);
     }
@@ -257,7 +259,7 @@ class CreateController extends Controller
     }
 
     public function contact_register(Task $task, UserRequest $request)
-    {   
+    {
         $data = $request->validated();
         $data['password'] = Hash::make('login123');
         $user = User::create($data);
@@ -268,7 +270,7 @@ class CreateController extends Controller
     }
 
     public function contact_login(Task $task, UserPhoneRequest $request)
-    {  
+    {
         $request->validated();
         $user = User::query()->where('phone_number', $request->phone_number)->first();
         LoginController::send_verification('phone', $user);

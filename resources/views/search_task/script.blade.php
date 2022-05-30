@@ -253,14 +253,14 @@ mapReset === 1
 ? $(".small-map").append(
 `<div id="map" class="h-60 my-5 rounded-lg w-full static">
     <div class="relative float-right z-10 ml-1">
-        <img src="/images/big-map.png" class="hover:cursor-pointer bg-white w-8 h-auto mt-2 mr-2 p-1 rounded-md drop-shadow-lg" title="Kartani kattalashtirish" onclick="k = 2; map_reset(k);"/>
+        <img src="/images/big-map.png" class="hover:cursor-pointer bg-white w-8 h-auto mt-2 mr-2 p-1 rounded-md drop-shadow-lg lg:block hidden" title="Kartani kattalashtirish" onclick="k = 2; map_reset(k);"/>
     </div>
 </div>`
 )
 :$(".big-map").append(
 `<div id="map" class="h-80 my-5 rounded-lg w-3/3 static align-items-center">
     <div class="relative float-right z-10 ml-1">
-        <img src="/images/small-map.png" class="hover:cursor-pointer bg-white w-8 h-auto mt-2 mr-2 p-1 rounded-md drop-shadow-lg" title="Kartani kichiklashtirish" onclick="k = 1; map_reset(k)"/>
+        <img src="/images/small-map.png" class="hover:cursor-pointer bg-white w-8 h-auto mt-2 mr-2 p-1 rounded-md drop-shadow-lg " title="Kartani kichiklashtirish" onclick="k = 1; map_reset(k)"/>
     </div>
 </div>`
 );

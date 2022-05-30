@@ -40,3 +40,4 @@ yarn-error.log
 /storage
 /public/storage
 composer.lock
+/public/portfolio/

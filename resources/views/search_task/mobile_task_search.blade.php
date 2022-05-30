@@ -1,6 +1,10 @@
 @extends("layouts.app")
 
 @section("content")
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+<script src="https://api-maps.yandex.ru/2.1/?apikey=f4b34baa-cbd1-432b-865b-9562afa3fcdb&lang={{__('ru_RU')}}"
+    type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
     <div class="w-11/12 mx-auto my-5 rounded-md">
         <form id="search_form" method="post" action="{{route('searchTask.ajax_tasks')}}"  autocomplete="off">
             <div class="flex flex-col block w-full gap-4">
@@ -38,10 +42,10 @@
                         <div class="w-full relative">
                             <label class="text-xs mb-1 text-neutral-400">{{__('Город, адрес, метро, район...')}}</label>
                             <div
-                                class="bg-white address py-1 px-3 text-black-700 border-2 rounded-md focus:shadow-sm flex w-full text-black-700">
+                                class="disalable bg-white address py-1 px-3 text-black-700 border-2 rounded-md focus:shadow-sm flex w-full text-black-700">
                                 <input
-                                    class="float-left bg-transparent border-0 w-full h-full focus:outline-none focus:border-yellow-500"
-                                    type="text" id="suggest" name="suggest" placeholder="Mobile">
+                                    class="form-input float-left bg-transparent border-0 w-full h-full focus:outline-none focus:border-yellow-500"
+                                    type="text" id="suggest" name="suggest" placeholder="{{__('Город, адрес...')}}">
                                 <svg class="h-4 w-4 text-purple-500 mt-1" id="geoBut" width="12" height="12"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                     stroke-linecap="round" stroke-linejoin="round">
@@ -157,7 +161,7 @@
                     @include('search_task.tasks')
                 </div>
                 <div id="loader" style="display: none">
-                    @include('search_task.loader')
+                    <iframe src="https://giphy.com/embed/3oEjI6SIIHBdRxXI40" class="mx-auto my-auto w-72 h-72"  frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
                 </div>
             </div>
         </form>

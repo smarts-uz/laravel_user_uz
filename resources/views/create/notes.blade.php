@@ -142,7 +142,7 @@
         .use(Uppy.XHRUpload, {
             endpoint: '{{route('task.create.images.store', $task->id)}}',
             formData: true,
-            fieldName: 'images',
+            fieldName: 'images[]',
             headers: file => ({
                 'X-CSRF-TOKEN': '{{csrf_token()}}'
             }),

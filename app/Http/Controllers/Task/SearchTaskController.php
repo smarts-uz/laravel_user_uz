@@ -144,14 +144,8 @@ public function search_new2(Request $request){
 
 
                         
-    $agent = new Agent();                  
-    if($agent->isMobile()){
-        $html = view("search_task.mobile_task_search", ['tasks'=>$tasks[0]])->render();
-        return response()->json(array('dataForMap' =>$tasks[1] , 'html' => $html));
-    }
-    else{
+    
         $html = view("search_task.tasks", ['tasks'=>$tasks[0]])->render();
         return response()->json(array('dataForMap' =>$tasks[1] , 'html' => $html));
-    } 
 }
 }
