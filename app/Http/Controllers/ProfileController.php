@@ -317,7 +317,7 @@ class ProfileController extends Controller
         portfolioGuard($portfolio);
         $data = $request->validated();
 
-        $images = json_decode(session()->has('images') ? session('images') : '[]') + json_decode($portfolio->image);
+        $images = array_merge(json_decode(session()->has('images') ? session('images') : '[]'), json_decode($portfolio->image));
 
         session()->forget('images');
         $data['image'] = json_encode($images);
