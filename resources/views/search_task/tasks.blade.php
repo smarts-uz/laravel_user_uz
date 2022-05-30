@@ -35,8 +35,8 @@
                 @endif
             </p>
             <span class="text-sm sm:mt-5 sm:mt-1 mt-0">{{__('Откликов')}} -
-                @if ($task->response_count>0)
-                {{  $task->response_count }}
+                @if ($task->task_responses()->count() > 0)
+                {{  $task->task_responses()->count() }}
                 @else
                 0
                 @endif
