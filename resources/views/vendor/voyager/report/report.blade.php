@@ -130,7 +130,7 @@
                     }
 
                 },
-                "processing": true,
+                "processing": false,
                 pageLength: 10,
                 // dom: 'PQlfrtip',
                 dom: 'Qlfrtip' + 'Bfrtip' ,
