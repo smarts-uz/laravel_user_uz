@@ -317,10 +317,10 @@ class ProfileController extends Controller
         portfolioGuard($portfolio);
         $data = $request->validated();
 
-        $images = session()->has('images') ? session('images') : [] + json_decode($portfolio->image);
+        $images = json_decode(session()->has('images') ? session('images') : '[]') + json_decode($portfolio->image);
 
         session()->forget('images');
-        $data['image'] = $images;
+        $data['image'] = json_encode($images);
         $portfolio->update($data);
         $portfolio->save();
         return redirect()->route('profile.profileData');
