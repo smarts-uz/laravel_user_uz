@@ -67,7 +67,6 @@
     <script>
         $(document).ready(function () {
             $('.img-delete').on('click', function () {
-                console.log('argsdzf');
                 var image = $(this).attr('data-action');
                 var index = $(this).closest('.boxItem').index();
                 $.ajax({
@@ -111,9 +110,11 @@
             .use(Uppy.ImageEditor, {target: Uppy.Dashboard})
             .use(Uppy.XHRUpload, {
                 endpoint: '{{ route('profile.UploadImage') }}',
+                formData: true,
                 fieldName: 'images[]',
-                method: 'post',
-                bundle: true,
+                headers: file => ({
+                    'X-CSRF-TOKEN': '{{csrf_token()}}'
+                }),
             });
 
         uppy.on('upload-success', (file, response) => {
