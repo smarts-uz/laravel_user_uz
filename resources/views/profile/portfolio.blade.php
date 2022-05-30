@@ -10,9 +10,9 @@
             <form action="{{ route('profile.updatePortfolio', $portfolio->id) }}" method="post">
                 @csrf
                 <div class="bg-yellow-50 p-8 rounded-md my-6 flex flex-wrap">
-                    Portfilio Name
+                    {{__('Название')}}*
                     <input name="comment" class="border focus:outline-none focus:border-yellow-500 mb-6 text-sm border-gray-200 rounded-md w-full px-4 py-2" type="text" value="{{$portfolio->comment}}">
-                    Portfolio Description
+                    {{__('Описание')}}
                     <input name="description" class="border focus:outline-none focus:border-yellow-500 mb-6 text-sm border-gray-200 rounded-md w-full px-4 py-2" type="text" value="{{$portfolio->description}}">
 
 
@@ -25,7 +25,7 @@
                                     <img src="{{ asset('portfolio/' . $image) }}" alt="">
                                 </div>
                             </a>
-                            <div class="absolute right-0 top-0 absolute"><i class=' text-red-600 text-2xl fas fa-times-circle img-delete' data-action="{{ $image }}"></i></div>
+                            <div class="absolute right-0 top-0 absolute"><i class=' text-red-600 text-2xl fas fa-times-circle img-delete hover:text-black cursor-pointer' data-action="{{ $image }}"></i></div>
                         </div>
                     @endforeach
                     <div id="comdes1" class="text-center h-full w-full text-base">
@@ -33,10 +33,10 @@
                     </div>
                 </div>
                 <div class="flex justify-center">
-                    <button id="update" class=" mr-5 bg-green-500 hover:bg-green-700 text-white cursor-pointer py-2 px-10 mb-4 rounded " type="submit">Изменить</button>
+                    <button id="update" class=" mr-5 bg-green-500 hover:bg-green-700 text-white cursor-pointer py-2 px-10 mb-4 rounded " type="submit">{{__('Сохранить')}}</button>
 
                     @if($isDelete)
-                        <input type="button" id="delete-btn" class=" mr-5 bg-red-500 hover:bg-red-700 text-white cursor-pointer py-2 px-10 mb-4 rounded" value="Удалить">
+                        <input type="button" id="delete-btn" class=" mr-5 bg-red-500 hover:bg-red-700 text-white cursor-pointer py-2 px-10 mb-4 rounded" value="{{__('Удалить')}}">
                     @endif
                 </div>
             </form>

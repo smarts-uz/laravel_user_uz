@@ -27,7 +27,7 @@
                               cols="30" rows="10"></textarea>
                     <div class="text-center mx-auto text-base">
                         <input id="button1" type="button"
-                               class="bg-green-500 hover:bg-green-700 text-white py-2 px-10 mb-4 rounded"
+                               class="bg-green-500 hover:bg-green-700 text-white cursor-pointer py-2 px-10 mb-4 rounded"
                                value="{{__('Далее')}}">
                         @error('comment')
                         <p>{{ $message }}</p>
@@ -47,7 +47,6 @@
             </div>
         </form>
     </div>
-
     <script src="{{ asset('js/profile/create_port.js') }}"></script>
     <script src="https://releases.transloadit.com/uppy/v2.4.1/uppy.min.js"></script>
     <script src="https://releases.transloadit.com/uppy/v2.4.1/uppy.legacy.min.js" nomodule></script>
