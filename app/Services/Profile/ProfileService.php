@@ -150,24 +150,24 @@ class ProfileService
     }
     public function profileData($user){
         $item = new ProfileDataItem();
-        $item ->views = $user->views_count;
-        $item ->task = $user->tasks_count;
-        $item ->ports = $user->portfoliocomments;
-        $item ->portfolios = $user->portfolios()->where('image', '!=', null)->get();
+        $item->views = $user->views_count;
+        $item->task = $user->tasks_count;
+        $item->ports = $user->portfoliocomments;
+        $item->portfolios = $user->portfolios()->where('image', '!=', null)->get();
         $item->top_users = User::where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(20)->pluck('id')->toArray();
-        $item ->file = "Portfolio/{$user->name}";
-        if (!file_exists($item ->file)) {
-            File::makeDirectory($item ->file);
+        $item->file = "portfolio/{$user->name}";
+        if (!file_exists($item->file)) {
+            File::makeDirectory($item->file);
         }
-        $item ->b = File::directories(public_path("Portfolio/{$user->name}"));
-        $item ->directories = array_map('basename',  $item ->b );
-        $item ->categories = Category::withTranslations(['ru', 'uz'])->get();
-        $item ->review_good = User::find($user->id)->review_good;
-        $item ->review_bad = User::find($user->id)->review_bad;
-        $item ->review_rating = User::find($user->id)->review_rating;
-        $item ->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->get();
-        $item ->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->get();
+        $item->b = File::directories(public_path("portfolio/{$user->name}"));
+        $item->directories = array_map('basename',  $item ->b );
+        $item->categories = Category::withTranslations(['ru', 'uz'])->get();
+        $item->review_good = $user->review_good;
+        $item->review_bad = $user->review_bad;
+        $item->review_rating = $user->review_rating;
+        $item->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->get();
+        $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->get();
         return $item;
     }
 

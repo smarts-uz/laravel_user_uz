@@ -304,7 +304,7 @@ class ProfileController extends Controller
     {
         portfolioGuard($portfolio);
         $image = $requset->get('image');
-        File::delete(public_path() . '/Portfolio/'. $image);
+        File::delete(public_path() . '/portfolio/'. $image);
         $images = json_decode($portfolio->image);
         $updatedImages = array_diff($images, [$image]);
         $portfolio->image = json_encode(array_values($updatedImages));
