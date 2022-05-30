@@ -1,5 +1,5 @@
 <figure class="w-full">
-    <div class="float-right text-gray-500 text-sm">
+    <div class="float-right text-gray-500 text-lg">
         <i class="far fa-eye"> {{ $user->performer_views_count }} {{__('просмотр')}}</i>
     </div>
     <div>
