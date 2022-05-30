@@ -88,7 +88,7 @@
                 <th colspan="2" style="text-align: center;" class="border border-dark" >Отмененные</th>
                 <th colspan="2" style="text-align: center;" class="border border-dark">Всего</th>
             </tr>
-            </tr>
+            <tr>
                 <th style="text-align: center;" class="border border-dark">№</th>
                 <th style="text-align: center;" class="border border-dark">Категории</th>
                 <th style="text-align: center;" class="border border-dark">Подкатегории</th>
@@ -149,7 +149,7 @@
                     {
                         "data": "",
                         render: function (data, type, row) {
-                            var details = `<button type="button" class="btn btn-primary"><a href="${row.id}">-></a></button>`;
+                            var details = `<button type="button" class="btn btn-primary"><a href="report/${row.id}">-></a></button>`;
                                 return details;
 
 

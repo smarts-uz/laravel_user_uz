@@ -36,11 +36,21 @@ class ReportController extends Controller
         {
             if($req->ajax())
             {
-            $service = new ReportService();
-            $service->child_report($id);
+                $service = new ReportService();
+                $service->child_report($id);
             }
 
             return view('vendor.voyager.report.childreport');
 
         }
+
+    public function report_sub($id)
+    {
+
+        $service = new ReportService();
+
+        return $service->child_report($id);
+    }
+
+
 }

@@ -104,7 +104,7 @@ Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
     Route::get("report", [ReportController::class, "index"])->name("index");
     Route::get("report/get", [ReportController::class, "report"])->name("report");
-    Route::get('childreport/get', [ReportController::class, "childreport"])->name("child.report");
+    Route::get('report/get/{id}', [ReportController::class, "report_sub"])->name("report_sub");
     Route::get('report/{id}', [ReportController::class, "show_child"])->name("show.child");
     Route::get("users/activitiy/{user}", [VoyagerUserController::class, "activity"])->name("voyagerUser.activity"); // javoxir
     Route::get('/messages/chat/{id}', [ConversationController::class, 'showChat'])->name("conversation.showChat"); // javoxir
