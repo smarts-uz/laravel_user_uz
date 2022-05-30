@@ -64,7 +64,7 @@
 </div>
 {{ Aire::close() }}
 @if(Illuminate\Support\Facades\Cache::get('date') != null)
-    <table id="example" class="display wrap table-bordered dt-responsive" style="border-collapse: collapse; width: 100%; padding-top: 10px">
+    <table id="example" class="display wrap table-bordered dt-responsive" style="border-collapse: collapse; width: 100%;">
         <thead class="border border-dark">
 
         <tr class="border border-dark">
