@@ -91,7 +91,7 @@ class CustomFieldService
     public static function setInputValue($task, $data_id)
     {
         $array = isset($task) && $task->custom_field_values()->where('custom_field_id', $data_id)->first() ?
-            json_decode($task->custom_field_values()->where('custom_field_id', $data->id)->first()->value, true) : null;
+            json_decode($task->custom_field_values()->where('custom_field_id', $data_id)->first()->value, true) : null;
         if (is_array($array) || is_array($array) && array_key_exists('_token', $array)) {
             $array = end($array);
         }
