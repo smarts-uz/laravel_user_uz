@@ -167,15 +167,13 @@ class CreateController extends Controller
         return view('create.notes', compact('task','custom_fields'));
     }
 
-    public function images_store(Task $task, Request $request)
+    public function images_store(Request $request)
     {
         $imgData = session()->has('images') ? json_decode(session('images')):[];
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $uploadedImage) {
-                $filename = time() . '_' .$uploadedImage->getClientOriginalName();
-                $uploadedImage->move(public_path("storage/uploads/"), $filename);
-                $imgData[] = $filename;
-            }
+        foreach ($request->file('images') as $uploadedImage) {
+            $filename = time() . '_' . $uploadedImage->getClientOriginalName();
+            $uploadedImage->move(public_path() . '/storage/uploads/', $filename);
+            $imgData[] = $filename;
         }
         session()->put('images', json_encode($imgData));
     }

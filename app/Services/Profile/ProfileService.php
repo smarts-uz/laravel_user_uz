@@ -66,7 +66,6 @@ class ProfileService
 
     public function settingsEdit() {
         $user = Auth::user();
-        $views = $user->views()->count();
         $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->select('id','name')->get();
         $categories2 = Category::where('parent_id','<>', null)->select('id','parent_id','name')->get();
         $regions = Region::withTranslations(['ru', 'uz'])->get();
@@ -79,7 +78,6 @@ class ProfileService
         $review_rating = $user->review_rating;
         return array(
             'user' => $user,
-            'views' => $views,
             'categories' => $categories,
             'categories2' => $categories2,
             'regions' => $regions,
@@ -138,7 +136,6 @@ class ProfileService
         $item = new ProfileCashItem();
         $item ->user = Auth()->user()->load('transactions');
         $item ->balance =  $item ->user->walletBalance;
-        $item ->views =  $item ->user->views()->count();
         $item ->task =  $item ->user->tasks()->count();
         $item ->transactions =  $item ->user->transactions()->paginate(15);
         $item->top_users = User::where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
@@ -150,24 +147,23 @@ class ProfileService
     }
     public function profileData($user){
         $item = new ProfileDataItem();
-        $item ->views = $user->views_count;
-        $item ->task = $user->tasks_count;
-        $item ->ports = $user->portfoliocomments;
-        $item ->portfolios = $user->portfolios()->where('image', '!=', null)->get();
+        $item->task = $user->tasks_count;
+        $item->ports = $user->portfoliocomments;
+        $item->portfolios = $user->portfolios()->where('image', '!=', null)->get();
         $item->top_users = User::where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(20)->pluck('id')->toArray();
-        $item ->file = "Portfolio/{$user->name}";
-        if (!file_exists($item ->file)) {
-            File::makeDirectory($item ->file);
+        $item->file = "portfolio/{$user->name}";
+        if (!file_exists($item->file)) {
+            File::makeDirectory($item->file);
         }
-        $item ->b = File::directories(public_path("Portfolio/{$user->name}"));
-        $item ->directories = array_map('basename',  $item ->b );
-        $item ->categories = Category::withTranslations(['ru', 'uz'])->get();
-        $item ->review_good = User::find($user->id)->review_good;
-        $item ->review_bad = User::find($user->id)->review_bad;
-        $item ->review_rating = User::find($user->id)->review_rating;
-        $item ->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->get();
-        $item ->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->get();
+        $item->b = File::directories(public_path("portfolio/{$user->name}"));
+        $item->directories = array_map('basename',  $item ->b );
+        $item->categories = Category::withTranslations(['ru', 'uz'])->get();
+        $item->review_good = $user->review_good;
+        $item->review_bad = $user->review_bad;
+        $item->review_rating = $user->review_rating;
+        $item->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->get();
+        $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->get();
         return $item;
     }
 

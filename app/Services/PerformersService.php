@@ -57,11 +57,11 @@ class PerformersService
         ->where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
         ->limit(20)->pluck('id')->toArray();
         $item->portfolios = $user->portfolios()->where('image', '!=', null)->get();
-        $item ->review_good = User::find($user->id)->review_good;
-        $item ->review_bad = User::find($user->id)->review_bad;
-        $item ->review_rating = User::find($user->id)->review_rating;
-        $item ->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->get();
-        $item ->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->get();
+        $item->review_good = $user->review_good;
+        $item->review_bad = $user->review_bad;
+        $item->review_rating = $user->review_rating;
+        $item->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->get();
+        $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->get();
         return $item;
     }
 

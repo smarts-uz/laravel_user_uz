@@ -23,13 +23,13 @@ class Category extends Model
     }
 
     public function getIcoAttribute($value)
-    {	 
+    {
         if($value==null){
             $parentCategory = Category::find($this->parent_id);
             return $parentCategory->ico;
-        }	
+        }
         return ucfirst($value);
-    }	 	 
+    }
 
 
     public function custom_fields(){

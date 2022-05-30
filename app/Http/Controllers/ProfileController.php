@@ -98,7 +98,6 @@ class ProfileController extends Controller
             'portfolios' => $item->portfolios,
             'review_good' => $item->review_good,
             'review_bad' =>$item->review_bad,
-            'views' => $item->views,
             'ports' => $item->ports,
             'task' => $item->task,
             'review_rating' => $item->review_rating,
@@ -115,7 +114,6 @@ class ProfileController extends Controller
         $item = $service->profileCash( $user);
         return view('profile.cash',
         [
-            'views' => $item->views,
             'balance' => $item->balance,
             'task' => $item->task,
             'top_users' => $item->top_users,
@@ -300,11 +298,11 @@ class ProfileController extends Controller
 
     }
 
-    public function deleteImage(Request $requset, Portfolio $portfolio)
+    public function deleteImage(Request $request, Portfolio $portfolio)
     {
         portfolioGuard($portfolio);
-        $image = $requset->get('image');
-        File::delete(public_path() . '/Portfolio/'. $image);
+        $image = $request->get('image');
+        File::delete(public_path() . '/portfolio/'. $image);
         $images = json_decode($portfolio->image);
         $updatedImages = array_diff($images, [$image]);
         $portfolio->image = json_encode(array_values($updatedImages));
@@ -317,10 +315,10 @@ class ProfileController extends Controller
         portfolioGuard($portfolio);
         $data = $request->validated();
 
-        $images = session()->has('images') ? session('images') : [] + json_decode($portfolio->image);
+        $images = array_merge(json_decode(session()->has('images') ? session('images') : '[]'), json_decode($portfolio->image));
 
         session()->forget('images');
-        $data['image'] = $images;
+        $data['image'] = json_encode($images);
         $portfolio->update($data);
         $portfolio->save();
         return redirect()->route('profile.profileData');
