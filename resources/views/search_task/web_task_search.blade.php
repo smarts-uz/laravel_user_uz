@@ -1,4 +1,4 @@
-<div class="mx-auto w-11/12 xl:w-9/12 my-8 lg:block hidden">
+<div class="mx-auto w-11/12 xl:w-9/12 my-8 md:block hidden">
     <form id="search_form" method="post" action="{{route('searchTask.ajax_tasks')}}"  autocomplete="off">
         <div class="grid grid-cols-5 container mx-auto gap-x-2">
             {{-- left start --}}
@@ -88,7 +88,7 @@
                         </div>
                     </div>
 
-                    <div class="col-span-2 lg:col-span-1 lg:block hidden mx-4 lg:mt-0 mt-32">
+                    <div class="col-span-2 lg:col-span-1 md:block hidden mx-4 lg:mt-0 mt-32">
                         <div class="big-map static">
 
                         </div>
@@ -147,16 +147,16 @@
                                 </div>
                                 <div x-show="show" class="border-b-0 px-8 py-0">
                                     @foreach ($categories2 as $category2)
-                                    @if($category2->parent_id == $category->id)
-                                    <div class="par{{$category->id}}">
-                                        <label class="inline-flex items-center mt-3 hover:cursor-pointer">
-                                            <input type="checkbox"
-                                                class="form-checkbox chi_cat mr-1 h-5 w-5 text-orange-400 hover:cursor-pointer"
-                                                name="{{$category2->id}}" id="par{{$category->id}}"><span
-                                                class="ml-2 text-gray-700">{{$category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}</span>
-                                        </label>
-                                    </div>
-                                    @endif
+                                        @if($category2->parent_id == $category->id)
+                                            <div class="par{{$category->id}}">
+                                                <label class="inline-flex items-center mt-3 hover:cursor-pointer">
+                                                    <input type="checkbox"
+                                                        class="form-checkbox chi_cat mr-1 h-5 w-5 text-orange-400 hover:cursor-pointer"
+                                                        name="{{$category2->id}}" id="par{{$category->id}}"><span
+                                                        class="ml-2 text-gray-700">{{$category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}</span>
+                                                </label>
+                                            </div>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>

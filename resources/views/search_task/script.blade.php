@@ -253,14 +253,14 @@ mapReset === 1
 ? $(".small-map").append(
 `<div id="map" class="h-60 my-5 rounded-lg w-full static">
     <div class="relative float-right z-10 ml-1">
-        <img src="/images/big-map.png" class="hover:cursor-pointer bg-white w-8 h-auto mt-2 mr-2 p-1 rounded-md drop-shadow-lg" title="Kartani kattalashtirish" onclick="k = 2; map_reset(k);"/>
+        <img src="/images/big-map.png" class="hover:cursor-pointer bg-white w-8 h-auto mt-2 mr-2 p-1 rounded-md drop-shadow-lg lg:block hidden" title="Kartani kattalashtirish" onclick="k = 2; map_reset(k);"/>
     </div>
 </div>`
 )
 :$(".big-map").append(
 `<div id="map" class="h-80 my-5 rounded-lg w-3/3 static align-items-center">
     <div class="relative float-right z-10 ml-1">
-        <img src="/images/small-map.png" class="hover:cursor-pointer bg-white w-8 h-auto mt-2 mr-2 p-1 rounded-md drop-shadow-lg" title="Kartani kichiklashtirish" onclick="k = 1; map_reset(k)"/>
+        <img src="/images/small-map.png" class="hover:cursor-pointer bg-white w-8 h-auto mt-2 mr-2 p-1 rounded-md drop-shadow-lg " title="Kartani kichiklashtirish" onclick="k = 1; map_reset(k)"/>
     </div>
 </div>`
 );
@@ -505,4 +505,34 @@ $("#suggest").prop("disabled",false).removeClass("bg-gray-200 relative z-10 curs
 }
 $("#search_form").submit();
 });
+
+        $(document).ready(function() {
+            $("#show_2").click(function() {
+                $("#hide_2").removeClass('hidden');
+                $("#show_2").addClass('hidden');
+                $("#mobile_bar").removeClass('hidden');
+            });
+            $("#hide_2").click(function() {
+                $("#hide_2").addClass('hidden');
+                $("#show_2").removeClass('hidden');
+                $("#mobile_bar").addClass('hidden');
+            });
+        });
+        $(document).ready(function() {
+            $("#show").click(function() {
+                $("#hide").removeClass('hidden');
+                $('#mobile_map').removeClass('hidden');
+                $("#show").addClass('hidden');
+            });
+            $("#hide").click(function() {
+                $("#hide").addClass('hidden');
+                $('#mobile_map').addClass('hidden')
+                $("#show").removeClass('hidden');
+            });
+        });
+        $(document).ready(function() {
+            $("#categories_block").click(function() {
+                $("#categories_hidden").toggleClass('hidden');
+            });
+        });
 </script>

@@ -147,10 +147,10 @@
     @endif
     <div class="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 w-full mx-auto">
         @foreach($portfolios as $portfolio)
-            <a href="{{ route('profile.portfolio', $portfolio->id) }}"
+            <a href="{{ route('performers.performers_portfolio', $portfolio->id) }}"
                class="border my-6 border-gray-400 mr-auto w-56 h-48 mr-6 sm:mb-0 mb-8">
                 <img
-                    src="{{  count(json_decode($portfolio->image)) == 0 ? '': asset('storage/'.json_decode($portfolio->image)[0])  }}"
+                    src="{{  count(json_decode($portfolio->image)) == 0 ? '': asset('portfolio/'.json_decode($portfolio->image)[0])  }}"
                     alt="#" class="w-56 h-48">
 
                 <div class="h-12 flex relative bottom-12 w-full bg-black opacity-75 hover:opacity-100 items-center">
