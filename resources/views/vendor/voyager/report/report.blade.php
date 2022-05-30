@@ -144,7 +144,7 @@
                     {
                         "data": "",
                         render: function (data, type, row) {
-                            var details = `<a href="/report/${row.id}"><i class="fas fa-arrow-right"></i></a>`;
+                            var details = `<a href="/admin/report/${row.id}"><i class="fas fa-arrow-right"></i></a>`;
                             // var details = `<i class="fas fa-arrow-right"></i>`;
                             return details;
 
