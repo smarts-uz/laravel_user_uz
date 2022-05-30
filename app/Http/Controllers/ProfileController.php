@@ -300,10 +300,10 @@ class ProfileController extends Controller
 
     }
 
-    public function deleteImage(Request $requset, Portfolio $portfolio)
+    public function deleteImage(Request $request, Portfolio $portfolio)
     {
         portfolioGuard($portfolio);
-        $image = $requset->get('image');
+        $image = $request->get('image');
         File::delete(public_path() . '/portfolio/'. $image);
         $images = json_decode($portfolio->image);
         $updatedImages = array_diff($images, [$image]);
