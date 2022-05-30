@@ -107,38 +107,24 @@
 <script src="https://releases.transloadit.com/uppy/locales/v2.0.5/ru_RU.min.js"></script>
 
 <script>
-    var uppy = new Uppy.Core({
-        debug: true,
-        restrictions: {
-            minFileSize: null,
-            maxTotalFileSize: null,
-            minNumberOfFiles: 0,
-            allowedFileTypes: null,
-            requiredMetaFields: [],
-        },
-        meta: {},
-        onBeforeFileAdded: (currentFile, files) => currentFile,
-        onBeforeUpload: (files) => {
-        },
-        locale: {},
-        store: new Uppy.DefaultStore(),
-        logger: Uppy.justErrorsLogger,
-        infoTimeout: 5000,
-    })
+    var uppy = new Uppy.Core()
         .use(Uppy.Dashboard, {
             trigger: '.UppyModalOpenerBtn',
             inline: true,
             target: '#photos',
             showProgressDetails: true,
+            allowedFileTypes: ['image/*'],
+            debug: true,
             note: 'Все типы файлов, до 10 МБ',
-            width: 'auto',
-            height: '400px',
+            height: 400,
             metaFields: [
                 {id: 'name', name: 'Name', placeholder: 'file name'},
                 {id: 'caption', name: 'Caption', placeholder: 'describe what the image is about'}
             ],
             browserBackButtonClose: true
         })
+
+        .use(Uppy.ImageEditor, {target: Uppy.Dashboard})
         .use(Uppy.XHRUpload, {
             endpoint: '{{route('task.create.images.store', $task->id)}}',
             formData: true,
@@ -152,7 +138,6 @@
         const httpStatus = response.status // HTTP status code
         const httpBody = response.body   // extracted response data
 
-        // do something with file and response
     });
 
 
@@ -165,7 +150,6 @@
     });
     uppy.on('complete', result => {
         console.log('successful files:', result.successful)
-        console.log('failed files:', result.failed)
     });
 </script>
 @endsection
