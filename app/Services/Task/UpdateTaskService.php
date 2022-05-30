@@ -108,6 +108,7 @@ class UpdateTaskService
     public function updateAddress($task, $data)
     {
         $length = min(count($data['points']), setting('site.max_address'));
+        $task->addresses()->delete();
         for ($i = 0; $i < $length; $i++) {
             $address = [
                 'task_id' => $data['task_id'],
