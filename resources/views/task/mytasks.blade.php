@@ -63,7 +63,8 @@
                                                     <span class="text-sm text-gray-500 hover:text-red-600 my-3" about="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</span>
                                                 @endif
                                             @endforeach
-                                            <p class="text-sm text-gray-500"> {{__("Количество откликов :")}} {{$task->responses->where('task_id',$task->id)->count()}}</p>
+                                            <p class="text-sm text-gray-500"> {{__("Количество откликов :")}} 
+                                                {{$task_responses}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -114,7 +115,7 @@
                                                         <span class="text-sm text-gray-500 hover:text-red-600 my-3" about="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</span>
                                                     @endif
                                                 @endforeach
-                                                    <p class="text-sm text-gray-500"> {{__("Количество откликов :")}} {{$task->responses->where('task_id',$task->id)->count()}}</p>
+                                                    <p class="text-sm text-gray-500"> {{__("Количество откликов :")}} {{$task_responses}}</p>
                                             </div>
                                         </div>
                                     </div>

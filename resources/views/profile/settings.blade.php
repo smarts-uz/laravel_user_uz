@@ -3,13 +3,7 @@
 @section("content")
 
     <div class="w-11/12  mx-auto text-base mt-4">
-
-        <div class="block md:hidden float-right -mr-8 text-gray-500">
-            <i class="far fa-eye"> {{$views}} {{__('просмотр')}}</i>
-        </div>
         <div class="grid lg:grid-cols-3 grid-cols-2 lg:w-5/6 w-full mx-auto">
-
-
             {{-- user ma'lumotlari --}}
             <div class="md:col-span-2 col-span-3 px-2 mx-3">
                 @include('components.profileFigure')
