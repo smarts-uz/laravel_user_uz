@@ -64,7 +64,12 @@
                                                 @endif
                                             @endforeach
                                             <p class="text-sm text-gray-500"> {{__("Количество откликов :")}} 
-                                                {{$task_responses}}</p>
+                                                @if ($task->task_responses()->count() > 0)
+                                                {{  $task->task_responses()->count() }}
+                                                @else
+                                                0
+                                                @endif
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -115,7 +120,12 @@
                                                         <span class="text-sm text-gray-500 hover:text-red-600 my-3" about="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</span>
                                                     @endif
                                                 @endforeach
-                                                    <p class="text-sm text-gray-500"> {{__("Количество откликов :")}} {{$task_responses}}</p>
+                                                    <p class="text-sm text-gray-500"> {{__("Количество откликов :")}} @if ($task->task_responses()->count() > 0)
+                                                        {{  $task->task_responses()->count() }}
+                                                        @else
+                                                        0
+                                                        @endif
+                                                    </p>
                                             </div>
                                         </div>
                                     </div>

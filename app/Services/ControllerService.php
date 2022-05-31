@@ -43,7 +43,6 @@ class ControllerService
         $item->perform_tasks = $item->user->performer_tasks()->orderBy('created_at', 'desc')->get();
         $item->categories = Category::where('parent_id', null)->select('id', 'name', 'slug')->get();
         $item->categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name','ico')->get();
-        $item->task_responses =$task->responses->where('task_id',$task->id)->count();
         return $item;
     }
 }
