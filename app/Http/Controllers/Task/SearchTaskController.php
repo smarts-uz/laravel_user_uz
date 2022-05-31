@@ -39,7 +39,7 @@ class SearchTaskController extends VoyagerBaseController
         }
         $review = null;
         if ($task->reviews_count == 2) $review = true;
-        if (auth()->check()) {
+        if (auth()->check() && auth()->id() != $task->user_id) {
             $task->views++;
             $task->save();
         }

@@ -12,5 +12,4 @@ class MyTaskItem
     public $datas;
     public $categories;
     public $categories2;
-    public $task_responses;
 }

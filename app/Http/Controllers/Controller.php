@@ -43,7 +43,6 @@ class Controller extends BaseController
             'categories2' => $item->categories2,
             'perform_tasks' => $item->perform_tasks,
             'tasks' => $item->tasks,
-            'task_responses' => $item->task_responses,
         ]);
 
     }
