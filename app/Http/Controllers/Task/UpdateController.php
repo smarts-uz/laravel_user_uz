@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\UpdateRequest;
+use App\Models\Chat\ChMessage;
 use App\Models\Notification;
 use App\Models\Task;
 use App\Models\Review;
@@ -72,10 +73,12 @@ class UpdateController extends Controller
         $data = [
             'status' => Task::STATUS_COMPLETE
         ];
+
+        ChMessage::query()->where('from_id', $task->user_id)->where('to_id', $task->performer_id)->delete();
+        ChMessage::query()->where('to_id', $task->user_id)->where('from_id', $task->performer_id)->delete();
+
         $task->update($data);
-
         Alert::success('Success');
-
         return back();
 
     }
