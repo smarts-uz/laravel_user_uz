@@ -208,25 +208,31 @@ class CreateController extends Controller
     {
         $user = auth()->user();
 
-        $data = $request->validate([
+        /*$data = $request->validate([
             'phone_number' => 'required|integer|min:13|unique:users,phone_number,' . $user->id
+        ]);*/
+        $data = $request->validate([
+            'phone_number' => 'required|integer|min:13'
         ]);
+
         /*if (!$user->is_phone_number_verified || $user->phone_number != $data['phone_number']) {*/
-        if (!$user->is_phone_number_verified && $user->phone_number == $data['phone_number']) {
+
+        /*if (!$user->is_phone_number_verified && $user->phone_number == $data['phone_number']) {
             $data['is_phone_number_verified'] = 0;
             $user->update($data);
             LoginController::send_verification('phone', $user);
             return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
-        }
+        }*/
 
-        if ($user->is_phone_number_verified && $user->phone_number != $data['phone_number']) {
+        if (!$task->is_phone_verified || $task->phone != $data['phone_number']) {
             LoginController::send_verification_for_task_phone($task, $data['phone_number']);
             return redirect()->route('task.create.verify.phone', ['task' => $task->id, 'user' => $user->id, 'data' => $data['phone_number']]);
         }
 
         $task->status = 1;
         $task->user_id = $user->id;
-        $task->phone = $user->phone_number;
+        /*$task->phone = $user->phone_number;*/
+        $task->phone = $data->phone_number;
 
         $performer_id = session()->get('performer_id_for_task');
         if ($performer_id) {
