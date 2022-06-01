@@ -332,7 +332,8 @@ console.log('Ошибка: ' + err);
 });
 
 clusterer = new ymaps.Clusterer({
-preset: 'islands#invertedGreenClusterIcons',
+/*preset: 'islands#invertedGreenClusterIcons',*/
+preset: 'islands#blueClusterIcons',
 // hasBalloon: false,
 gridSize: 80,
 groupByCoordinates: false,
@@ -369,7 +370,8 @@ clusterCaption: '{{__('Задания')}} <strong>' + dataGeo[index].id + '</str
 },
 getPointOptions = function () {
 return {
-preset: 'islands#greenIcon'
+/*preset: 'islands#blueIcon'*/
+preset: 'islands#blueCircleDotIcon'
 };
 },
 

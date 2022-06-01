@@ -178,6 +178,7 @@ class UserController extends Controller
     public function verifyProfil2(Request $request, User $user, Task $task, $data)
     {
 
+
         $task = Task::query()->find($request->get('for_ver_func'));
         $request->validate(
             ['sms_otp' => 'required'],
@@ -196,11 +197,11 @@ class UserController extends Controller
                 return redirect()->route('searchTask.task', $request->for_ver_func);
             } else {
                 auth()->logout();
-                return back()->with('expired_message', __('lang.contact_expired'));
+                return back()->with('expired_message', __('Время ожидание истекло'));
             }
         } else {
             auth()->logout();
-            return back()->with('incorrect_message', __('lang.contact_notVerify'));
+            return back()->with('incorrect_message', __('Неправильный код верификации'));
         }
 
     }

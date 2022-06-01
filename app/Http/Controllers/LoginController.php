@@ -84,8 +84,9 @@ class LoginController extends Controller
         $code = rand(100000, 999999);
         (new SmsService())->send($phone, $code);
 
+        $task->phone = $phone;
         $task->verify_code = $code;
-        $task->verify_expiration = Carbon::now()->addMinutes(5);
+        $task->verify_expiration = Carbon::now()->addMinutes(2);
         $task->update();
 
     }
