@@ -37,6 +37,7 @@ class TaskIndexResource extends JsonResource
             'description' => $this->description,
             'phone' => $this->phone,
             'performer_id' => $this->performer_id,
+            'performer' => $this->performer,
             //'category_id' => $this->category_id,
             'category_name' => $this->category->name,
             'category_id' => $this->category_id,
