@@ -98,7 +98,6 @@ class ProfileController extends Controller
             'portfolios' => $item->portfolios,
             'review_good' => $item->review_good,
             'review_bad' =>$item->review_bad,
-            'views' => $item->views,
             'ports' => $item->ports,
             'task' => $item->task,
             'review_rating' => $item->review_rating,
@@ -115,7 +114,6 @@ class ProfileController extends Controller
         $item = $service->profileCash( $user);
         return view('profile.cash',
         [
-            'views' => $item->views,
             'balance' => $item->balance,
             'task' => $item->task,
             'top_users' => $item->top_users,
@@ -239,7 +237,7 @@ class ProfileController extends Controller
 
     public function verificationContactStore(Request $request)
     {
-       
+
         $data = $request->validate([
             'email' => 'required',
             'phone_number' => 'required|integer|min:13',
@@ -298,6 +296,32 @@ class ProfileController extends Controller
         return redirect()->route('profile.profileData');
 
 
+    }
+
+    public function deleteImage(Request $request, Portfolio $portfolio)
+    {
+        portfolioGuard($portfolio);
+        $image = $request->get('image');
+        File::delete(public_path() . '/portfolio/'. $image);
+        $images = json_decode($portfolio->image);
+        $updatedImages = array_diff($images, [$image]);
+        $portfolio->image = json_encode(array_values($updatedImages));
+        $portfolio->save();
+        return true;
+    }
+
+    public function updatePortfolio(PortfolioRequest $request, Portfolio $portfolio)
+    {
+        portfolioGuard($portfolio);
+        $data = $request->validated();
+
+        $images = array_merge(json_decode(session()->has('images') ? session('images') : '[]'), json_decode($portfolio->image));
+
+        session()->forget('images');
+        $data['image'] = json_encode($images);
+        $portfolio->update($data);
+        $portfolio->save();
+        return redirect()->route('profile.profileData');
     }
 
     public function notif_setting_ajax(Request $request)

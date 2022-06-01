@@ -110,7 +110,7 @@
                                             </a>
                                         </div>
                                     </div>
-                                </div>    
+                                </div>
                                 <div class="col-span-1 mt-1">
                                     <div class="flatpickr inline-block flex items-center {{ $task->getRawOriginal('end_date')?'':"hidden" }} " id="end-date">
                                         <div class="flex">
@@ -208,28 +208,17 @@
                     <div class="ml-4 md:ml-12 flex flex-wrap mt-8">
                         <h1 class="font-bold mb-2">{{__('Рисунок')}}</h1>
                         @foreach(json_decode($task->photos)??[] as $key => $image)
-                            @if($loop->first)
-                                <div class="relative boxItem">
-                                    <a class="boxItem relative" href="{{ asset('storage/uploads/'.$image) }}"
-                                       data-fancybox="img1"
-                                       data-caption="<span>{{ $task->created_at }}</span>">
-                                        <div class="mediateka_photo_content">
-                                            <img src="{{ asset('storage/uploads/'.$image) }}" alt="">
-                                        </div>
-                                    </a>
-                                </div>
-                            @endif
-                        @endforeach
-                        @if($task->photos)
                             <div class="relative boxItem">
-                                @csrf
-                                <a href="{{ route('task.images.delete', $task->id) }}" type="submit">
-                                    <div class="mediateka_photo_content text-center">
-                                        <i class="fas fa-trash text-black-50" style="font-size: 72px"></i>
+                                <a class="boxItem relative" href="{{ asset('storage/uploads/' . $image) }}"
+                                   data-fancybox="img1"
+                                   data-caption="<span>{{ $task->created_at }}</span>">
+                                    <div class="mediateka_photo_content">
+                                        <img src="{{ asset('storage/uploads/' . $image) }}" alt="">
                                     </div>
                                 </a>
+                                <div class="absolute right-0 top-0 absolute"><i class=' text-red-600 text-2xl fas fa-times-circle img-delete' data-action="{{ $image }}"></i></div>
                             </div>
-                        @endif
+                        @endforeach
                     </div>
                     <div id="photos" class="w-full"></div>
 
@@ -373,49 +362,54 @@
         }
         var mask = new IMask(element, maskOptions);
 
+        $('.img-delete').on('click', function () {
+            var image = $(this).attr('data-action');
+            var index = $(this).closest('.boxItem').index();
+            $.ajax({
+                type: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                url: "{{ route('task.deleteImage', $task->id) }}",
+                data: {
+                    'image': image
+                },
+                success: function (response) {
+                    $('.boxItem:nth-child(' + (index + 1) + ')').remove();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        });
+
         $("#phone_number").keyup(function () {
             var text = $(this).val()
             text = text.replace(/[^0-9.]/g, "")
             $("#phone").val('+'+text)
         })
-        var uppy = new Uppy.Core({
-            debug: true,
-            restrictions: {
-                minFileSize: null,
-                maxFileSize: 10000000,
-                maxTotalFileSize: null,
-                maxNumberOfFiles: 10,
-                minNumberOfFiles: 0,
-                allowedFileTypes: null,
-                requiredMetaFields: [],
-            },
-            meta: {},
-            onBeforeFileAdded: (currentFile, files) => currentFile,
-            onBeforeUpload: (files) => {
-            },
-            locale: {},
-            store: new Uppy.DefaultStore(),
-            logger: Uppy.justErrorsLogger,
-            infoTimeout: 5000,
-        })
+        var uppy = new Uppy.Core()
             .use(Uppy.Dashboard, {
                 trigger: '.UppyModalOpenerBtn',
                 inline: true,
                 target: '#photos',
                 showProgressDetails: true,
+                allowedFileTypes: ['image/*'],
+                debug: true,
                 note: 'Все типы файлов, до 10 МБ',
-                width: 'auto',
-                height: '400px',
+                height: 400,
                 metaFields: [
                     {id: 'name', name: 'Name', placeholder: 'file name'},
                     {id: 'caption', name: 'Caption', placeholder: 'describe what the image is about'}
                 ],
                 browserBackButtonClose: true
             })
+
+            .use(Uppy.ImageEditor, {target: Uppy.Dashboard})
             .use(Uppy.XHRUpload, {
                 endpoint: '{{route('task.create.images.store', $task->id)}}',
                 formData: true,
-                fieldName: 'images',
+                fieldName: 'images[]',
                 headers: file => ({
                     'X-CSRF-TOKEN': '{{csrf_token()}}'
                 }),
@@ -425,7 +419,6 @@
             const httpStatus = response.status // HTTP status code
             const httpBody = response.body   // extracted response data
 
-            // do something with file and response
         });
 
 
@@ -438,7 +431,6 @@
         });
         uppy.on('complete', result => {
             console.log('successful files:', result.successful)
-            console.log('failed files:', result.failed)
         });
 
         flatpickr.localize(flatpickr.l10ns.uz_latn);

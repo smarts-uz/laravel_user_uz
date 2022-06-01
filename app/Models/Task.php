@@ -96,4 +96,9 @@ class Task extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function task_responses()
+    {
+        return $this->hasMany(TaskResponse::class);
+    }
 }

@@ -35,8 +35,8 @@
                 @endif
             </p>
             <span class="text-sm sm:mt-5 sm:mt-1 mt-0">{{__('Откликов')}} -
-                @if ($task->response_count>0)
-                {{  $task->response_count }}
+                @if ($task->task_responses()->count() > 0)
+                {{  $task->task_responses()->count() }}
                 @else
                 0
                 @endif
@@ -71,9 +71,6 @@
 
 <div class="w-11/12">
     <div class="no_tasks">
-        {{--
-        Show no tasks image
---}}
         <div class=" w-3/5 h-3/5 mx-auto">
             <img src="images/notlikes.png" class="w-full h-full">
             <div class="text-center w-full h-full">

@@ -108,10 +108,31 @@
                     </div>
                     @if ($task->status == 3 && auth()->user()->id == $task->performer_id)
                         <div class="w-10/12 mx-auto">
-                            <a href="{{ url('/chat/' . $task->user_id) }}"
-                            class="text-semibold text-center w-[200px] mb-2 md:w-[320px] ml-0 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
+                            <a class="auth_response cursor-pointer text-semibold text-center mb-2 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
                                 {{__('Написать в чат')}}
                             </a>
+                            <script>
+                                const Auth_response = (event) => {
+                                    jsPanel.create({
+                                        content: `<iframe src="{{ url('/chat/' . $task->user_id) }}" frameborder="0" style="width: 100%; height: 100%"></iframe>`,
+                                        theme: 'primary',
+                                        position: 'center',
+                                        closeOnEscape: true,
+                                        headerControls: {
+                                            size: 'md',
+                                        },
+                                        borderRadius: '1rem',
+                                        panelSize: {
+                                            width: '80vw',
+                                            height: '90vh'
+                                        },
+                                        contentSize: '80vw 90vh',
+                                    });
+                                    event.preventDefault();
+                                }
+                                const auth_response = document.querySelector('.auth_response');
+                                auth_response.addEventListener('click', Auth_response);
+                            </script>
                         </div>
                     @endif
                 </div>
@@ -257,11 +278,31 @@
                         @auth()
                             @if($task->status == 3 && $selected->performer_id == $task->performer_id)
                                 <div class="w-10/12 mx-auto">
-                                    <a href="{{ url('/chat/' . $selected->performer->id) }}"
-                                    class="text-semibold text-center w-[200px] mb-2 md:w-[320px] ml-0 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
+                                    <a class="selected_chat cursor-pointer text-semibold text-center w-[200px] mb-2 md:w-[320px] ml-0 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
                                         {{__('Написать в чат')}}
                                     </a>
-
+                                    <script>
+                                        const Selected_chat = (event) => {
+                                            jsPanel.create({
+                                                content: `<iframe src="{{ url('/chat/' . $selected->performer->id) }}" frameborder="0" style="width: 100%; height: 100%"></iframe>`,
+                                                theme: 'primary',
+                                                position: 'center',
+                                                closeOnEscape: true,
+                                                headerControls: {
+                                                    size: 'md',
+                                                },
+                                                borderRadius: '1rem',
+                                                panelSize: {
+                                                    width: '80vw',
+                                                    height: '90vh'
+                                                },
+                                                contentSize: '80vw 90vh',
+                                            });
+                                            event.preventDefault();
+                                        }
+                                        const selected_chat = document.querySelector('.selected_chat');
+                                        selected_chat.addEventListener('click', Selected_chat);
+                                    </script>
                                 </div>
                             @elseif($task->status <= 2 && auth()->user()->id == $task->user_id)
                                 <form
@@ -403,11 +444,31 @@
                         @auth()
                             @if($task->status == 3 && $response->performer_id == $task->performer_id)
                                 <div class="w-10/12 mx-auto">
-                                    <a href="{{ url('/chat/' . $response->performer->id) }}"
-                                       class="text-semibold text-center w-[200px] mb-2 md:w-[320px] ml-0 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
+                                    <a class="responses_chat cursor-pointer text-semibold text-center ml-0 inline-block py-3 px-4 hover:bg-gray-200 transition duration-200 bg-white text-black font-medium border border-gray-300 rounded-md">
                                         {{__('Написать в чат')}}
                                     </a>
-
+                                    <script>
+                                        const Responses_chat = (event) => {
+                                            jsPanel.create({
+                                                content: `<iframe src="{{ url('/chat/' . $response->performer->id) }}" frameborder="0" style="width: 100%; height: 100%"></iframe>`,
+                                                theme: 'primary',
+                                                position: 'center',
+                                                closeOnEscape: true,
+                                                headerControls: {
+                                                    size: 'md',
+                                                },
+                                                borderRadius: '1rem',
+                                                panelSize: {
+                                                    width: '80vw',
+                                                    height: '90vh'
+                                                },
+                                                contentSize: '80vw 90vh',
+                                            });
+                                            event.preventDefault();
+                                        }
+                                        const responses_chat = document.querySelector('.responses_chat');
+                                        responses_chat.addEventListener('click', Responses_chat);
+                                    </script>
                                 </div>
                             @elseif($task->status <= 2 && auth()->user()->id == $task->user_id)
                                 <form

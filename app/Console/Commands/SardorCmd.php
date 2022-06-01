@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\ReportController;
 use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
@@ -43,8 +44,8 @@ class SardorCmd extends Command
      */
     public function handle()
     {
-      //  $this->reviewobserver();
-      $this->testTaskSearch();
+        $new = new ReportController();
+        $new->report();
     }
 
     private function testTaskSearch() {

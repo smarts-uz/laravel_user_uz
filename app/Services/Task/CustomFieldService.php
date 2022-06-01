@@ -73,5 +73,29 @@ class CustomFieldService
     }
 
 
+    public static function showOptions($task, $data_id, $key, $option)
+    {
+        if (isset($task)) {
+            $field = $task->custom_field_values()->where('custom_field_id', $data_id)->first();
+            if (
+                $field && is_array( json_decode($field->value)) &&
+                array_key_exists($key-1, json_decode($field->value)) &&
+                json_decode($field->value, true)[$key-1] == $option
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public static function setInputValue($task, $data_id)
+    {
+        $array = isset($task) && $task->custom_field_values()->where('custom_field_id', $data_id)->first() ?
+            json_decode($task->custom_field_values()->where('custom_field_id', $data_id)->first()->value, true) : null;
+        if (is_array($array) || is_array($array) && array_key_exists('_token', $array)) {
+            $array = end($array);
+        }
+
+        return $array;
+    }
 }

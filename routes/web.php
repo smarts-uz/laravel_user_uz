@@ -72,7 +72,7 @@ Route::post('del-notif', [PerformersController::class, 'del_all_notif']); // jav
 Route::get('perf-ajax/{id}', [PerformersController::class, 'perf_ajax']); // javoxir
 Route::get('active-performers', [PerformersController::class, 'ajaxAP'])->name('performers.active_performers'); // Shuxrat78
 Route::post('give-task', [PerformersController::class, 'give_task']); // javoxir
-
+Route::get('/performers_portfolio/{portfolio}',[PerformersController::class,'performers_portfolio'])->name('performers.performers_portfolio');
 Route::group(['prefix' => 'performers'], function () {
     Route::post('/', [PerformersController::class, 'service']); // javoxir
     Route::get('/', [PerformersController::class, 'service'])->name('performers.service'); // javoxir
@@ -97,15 +97,14 @@ Route::group(['prefix' => 'chat'], function (){
     Route::post('/pusher/auth', [MessagesController::class, 'pusherAuth']);
 });
 
-Route::get('/report/request/{id}',[ReportController::class,'report'])->name('report');
 Route::post('/request',[ReportController::class,'request'])->name('request');
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
     Route::get("report", [ReportController::class, "index"])->name("index");
     Route::get("report/get", [ReportController::class, "report"])->name("report");
-    Route::get('childreport/get', [ReportController::class, "childreport"])->name("child.report");
-    Route::get('report/{id}', [ReportController::class, "show_child"])->name("show.child");
+    Route::get('report/get/child', [ReportController::class, "report_sub"])->name("report_sub");
+    Route::get('report/{id}', [ReportController::class, "index_sub"])->name("index_sub");
     Route::get("users/activitiy/{user}", [VoyagerUserController::class, "activity"])->name("voyagerUser.activity"); // javoxir
     Route::get('/messages/chat/{id}', [ConversationController::class, 'showChat'])->name("conversation.showChat"); // javoxir
     Route::post('/messages/chat/rate/{message}', [ConversationController::class, 'rating'])->name("conversation.rating"); // javoxir
@@ -128,6 +127,7 @@ Route::get('/detailed-tasks/{task}', [SearchTaskController::class, 'task'])->nam
 Route::post('/detailed-tasks', [SearchTaskController::class, 'comlianse_save'])->name("searchTask.comlianse_save");
 Route::get('/change-task/{task}', [SearchTaskController::class, 'changeTask'])->name("searchTask.changetask")->middleware('auth'); // javoxir
 Route::put('/change-task/{task}', [UpdateController::class, 'change'])->name("update.__invoke")->middleware('auth'); // javoxir
+Route::post('/change-task/{task}/delete-image', [UpdateController::class, 'deleteImage'])->name('task.deleteImage');
 Route::get('admin/reported-tasks', [VoyagerTaskController::class, 'reported_tasks'])->name('admin.tasks.reported')->middleware('auth');
 Route::get('admin/complete-task/{task}', [VoyagerTaskController::class, 'complete_task'])->name('admin.tasks.complete')->middleware('auth');
 Route::delete('admin/complete-task/{task}', [VoyagerTaskController::class, 'delete_task'])->name('admin.tasks.reported.delete')->middleware('auth');
@@ -201,6 +201,8 @@ Route::group(['middleware' => 'auth'], function () {
         //create_port
         Route::view('/create', 'profile/create_port');
         Route::post('/portfolio/create', [ProfileController::class, 'createPortfolio'])->name('profile.createPortfolio'); // javoxir
+        Route::post('/portfolio/{portfolio}/delete-image', [ProfileController::class, 'deleteImage'])->name('profile.deleteImage');
+        Route::post('/portfolio/{portfolio}/update', [ProfileController::class, 'updatePortfolio'])->name('profile.updatePortfolio');
         Route::get('/portfolio/{portfolio}', [ProfileController::class, 'portfolio'])->name('profile.portfolio'); // javoxir
         Route::post('/delete/portfolio/{portfolio}', [ProfileController::class, 'delete'])->name('profile.delete'); // javoxir
         Route::get('/notif_setting', [ProfileController::class, 'notif_setting_ajax'])->name('profile.notif_setting_ajax');

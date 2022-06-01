@@ -6,11 +6,13 @@ use App\Http\Controllers\LoginController;
 use App\Models\Address;
 use App\Models\Category;
 use App\Models\CustomField;
+use App\Models\CustomFieldsValue;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\NotificationService;
 use App\Services\Response;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
@@ -83,7 +85,7 @@ class UpdateTaskService
 
     public function updateCustom($task, $request)
     {
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM, $request);
+        $this->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM, $request);
         if ($task->category->parent->remote) {
             return $this->get_remote($task);
         }
@@ -106,6 +108,7 @@ class UpdateTaskService
     public function updateAddress($task, $data)
     {
         $length = min(count($data['points']), setting('site.max_address'));
+        $task->addresses()->delete();
         for ($i = 0; $i < $length; $i++) {
             $address = [
                 'task_id' => $data['task_id'],
@@ -265,6 +268,21 @@ class UpdateTaskService
             return $this->fail([
                 'sms_otp' => ['incorrect_message']
             ], 'Validation errors');
+        }
+    }
+
+    /////////////////
+    /// custom values store for API
+    ///
+
+    protected function attachCustomFieldsByRoute($task, $routeName, $request){
+        foreach ($task->category->custom_fields()->where('route',$routeName)->get() as $data) {
+            $value = $task->custom_field_values()->where('custom_field_id', $data->id)->first()?? new CustomFieldsValue();
+            $value->task_id = $task->id;
+            $value->custom_field_id = $data->id;
+            $arr = $data->name !== null ? Arr::get($request->all(), $data->name):null;
+            $value->value = is_array($arr) ? json_encode($arr) : $arr;
+            $value->save();
         }
     }
 }

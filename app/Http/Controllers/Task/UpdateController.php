@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\UpdateRequest;
+use App\Models\Chat\ChMessage;
 use App\Models\Notification;
 use App\Models\Task;
 use App\Models\Review;
@@ -12,6 +13,7 @@ use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use App\Services\Task\CreateService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class UpdateController extends Controller
@@ -31,6 +33,9 @@ class UpdateController extends Controller
 
         $data = $request->validated();
         $task->addresses()->delete();
+        $images = array_merge(json_decode(session()->has('images') ? session('images') : '[]'), json_decode($task->photos));
+        session()->forget('images');
+        $data['photos'] = json_encode($images);
         $data['coordinates'] = $this->service->addAdditionalAddress($task, $request);
         unset($data['location0']);
         unset($data['coordinates0']);
@@ -49,8 +54,18 @@ class UpdateController extends Controller
         Alert::success('Success');
 
         return redirect()->route('searchTask.task', $task->id);
+    }
 
-
+    public function deleteImage(Request $request, Task $task)
+    {
+        taskGuard($task);
+        $image = $request->get('image');
+        File::delete(public_path() . '/storage/uploads/' . $image);
+        $images = json_decode($task->photos);
+        $updatedImages = array_diff($images, [$image]);
+        $task->photos = json_encode(array_values($updatedImages));
+        $task->save();
+        return true;
     }
 
     public function completed(Task $task)
@@ -58,10 +73,12 @@ class UpdateController extends Controller
         $data = [
             'status' => Task::STATUS_COMPLETE
         ];
+
+        ChMessage::query()->where('from_id', $task->user_id)->where('to_id', $task->performer_id)->delete();
+        ChMessage::query()->where('to_id', $task->user_id)->where('from_id', $task->performer_id)->delete();
+
         $task->update($data);
-
         Alert::success('Success');
-
         return back();
 
     }

@@ -33,10 +33,10 @@ class Controller extends BaseController
         );
     }
 
-    public function my_tasks()
+    public function my_tasks(Task $task)
     {
         $service = new ControllerService();
-        $item = $service->my_tasks();
+        $item = $service->my_tasks($task);
         return view('task.mytasks',
         [
             'categories' => $item->categories,

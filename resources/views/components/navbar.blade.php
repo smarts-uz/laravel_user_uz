@@ -72,11 +72,10 @@
                     <script>
                         const createChatPanel = (event) => {
                             jsPanel.create({
-                                content: '<iframe src="https://user.uz/chat" frameborder="0" style="width: 100%; height: 100%"></iframe>',
+                                content: `<iframe src="{{url('/chat')}}" frameborder="0" style="width: 100%; height: 100%"></iframe>`,
                                 theme: 'primary',
                                 position: 'center',
                                 closeOnEscape: true,
-                                headerTitle: 'Интерактивный чат',
                                 headerControls: {
                                     size: 'md',
                                 },
