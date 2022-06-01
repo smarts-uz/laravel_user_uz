@@ -87,7 +87,7 @@ class LoginController extends Controller
         $task->phone = $phone;
         $task->verify_code = $code;
         $task->verify_expiration = Carbon::now()->addMinutes(2);
-        $task->update();
+        $task->save();
 
     }
 
