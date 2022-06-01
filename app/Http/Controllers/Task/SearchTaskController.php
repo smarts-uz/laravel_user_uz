@@ -46,8 +46,9 @@ class SearchTaskController extends VoyagerBaseController
 
 
         $value = Carbon::parse($task->created_at)->locale(getLocale());
+        $value->minute<10 ? $minut = '0'.$value->minute : $minut = $value->minute;
         $day = $value == now()->toDateTimeString()? "Bugun": "$value->day-$value->monthName";
-        $created = "$day  $value->noZeroHour:$value->minute";
+        $created = "$day  $value->noZeroHour:$minut";
 
         $value = Carbon::parse($task->end_date)->locale(getLocale());
         $value->minute<10 ? $minut = '0'.$value->minute : $minut = $value->minute;

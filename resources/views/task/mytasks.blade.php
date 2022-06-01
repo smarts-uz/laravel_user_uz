@@ -52,7 +52,7 @@
                                         </div>
                                         <div class="col-span-3 md:text-right categoryid">
                                             <p class="text-xl font-medium text-gray-600">
-                                                @if ( __('до') == 'gacha' )
+                                                @if ( session('lang') == 'uz' )
                                                     {{$task->budget}} {{__('сум')}}{{__('до')}}
                                                 @else
                                                     {{__('до')}} {{$task->budget}} {{__('сум')}}
@@ -109,7 +109,7 @@
                                             </div>
                                             <div class="col-span-3 md:text-right categoryid">
                                                 <p class="text-xl font-medium text-gray-600">
-                                                    @if ( __('до') == 'gacha' )
+                                                    @if ( session('lang') == 'uz')
                                                         {{$task->budget}} {{__('сум')}}{{__('до')}}
                                                     @else
                                                         {{__('до')}} {{$task->budget}} {{__('сум')}}

@@ -28,7 +28,7 @@
         </div>
         <div class="sm:col-span-2 col-span-5 sm:text-right text-left sm:ml-0 ml-16">
             <p class="sm:text-lg text-sm font-semibold text-gray-700">
-                @if ( __('до') == 'gacha' )
+                @if ( session('lang') == 'uz' )
                 {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
                 @else
                 {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
