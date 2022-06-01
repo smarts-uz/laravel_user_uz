@@ -26,7 +26,7 @@
 {{-- -------------------- Sender card (owner) -------------------- --}}
 @if($viewType == 'sender')
     <div class="message-card mc-sender" data-id="{{ $id }}">
-        <p>{!! ($message == null && $attachment != null && @$attachment[2] != 'file') ? $attachment[1] : nl2br($message) !!}
+        <div class="flex flex-col"><span>{!! ($message == null && $attachment != null && @$attachment[2] != 'file') ? $attachment[1] : nl2br($message) !!}</span>
             <sub title="{{ $fullTime }}" class="message-time">
                 <span class="fas fa-{{ $seen > 0 ? 'check-double' : 'check' }} seen"></span> {{ $time }}</sub>
                 {{-- If attachment is a file --}}
@@ -34,7 +34,7 @@
             <a href="{{ route(config('chatify.attachments.download_route_name'),['fileName'=>$attachment[0]]) }}" class="file-download">
                 <span class="fas fa-file"></span> {{$attachment[1]}}</a>
             @endif
-        </p>
+        </div>
     </div>
     {{-- If attachment is an image --}}
     @if(@$attachment[2] == 'image')

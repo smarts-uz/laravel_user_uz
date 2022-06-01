@@ -103,10 +103,10 @@
                                                 <div class="w-full block w-full mb-6 mt-2 flex gap-x-5">
                                                     <div class="flex items-center gap-x-2">
                                                         <input type="radio" name="gender" id="male" value="1" class="h-4 w-4"  {{$user->gender==1 ? 'checked' : ''}}>
-                                                        <label for="male" class="text-gray-800 text-lg cursor-pointer" {{$user->gender==0 ? 'checked' : ''}}>{{__('Мужской')}}</label>
+                                                        <label for="male" class="text-gray-800 text-lg cursor-pointer">{{__('Мужской')}}</label>
                                                     </div>
                                                     <div class="flex items-center gap-x-2">
-                                                        <input type="radio" name="gender" id="fermale" value="0" class="h-4 w-4">
+                                                        <input type="radio" name="gender" id="fermale" value="0" class="h-4 w-4" {{$user->gender==0 ? 'checked' : ''}}>
                                                         <label for="fermale" class="text-gray-800 text-lg cursor-pointer">{{__('Женской')}}</label>
                                                     </div>
                                                 </div>
