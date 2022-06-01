@@ -118,6 +118,7 @@
                                         theme: 'primary',
                                         position: 'center',
                                         closeOnEscape: true,
+                                        headerTitle: 'Universal Services',
                                         headerControls: {
                                             size: 'md',
                                         },
@@ -288,6 +289,7 @@
                                                 theme: 'primary',
                                                 position: 'center',
                                                 closeOnEscape: true,
+                                                headerTitle: 'Universal Services',
                                                 headerControls: {
                                                     size: 'md',
                                                 },
@@ -454,6 +456,7 @@
                                                 theme: 'primary',
                                                 position: 'center',
                                                 closeOnEscape: true,
+                                                headerTitle: 'Universal Services',
                                                 headerControls: {
                                                     size: 'md',
                                                 },

@@ -138,6 +138,7 @@
                             theme: 'primary',
                             position: 'center',
                             closeOnEscape: true,
+                            headerTitle: 'Universal Services',
                             headerControls: {
                                 size: 'xs',
                             },
