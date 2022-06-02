@@ -90,10 +90,12 @@ class UserIndexResource extends JsonResource
         $performed_tasks = $tasks->groupBy('category_id');
         $performed_tasks_count = [];
         foreach ($performed_tasks as $id => $task) {
-            $performed_tasks_count[] = [
-                'name' => Category::query()->find($id)->name,
-                'count' => __('Выполнено ').$task->count().__(' заданий')
-            ];
+            if (Category::query()->find($id) !== null) {
+                $performed_tasks_count[] = [
+                    'name' => Category::query()->find($id)->name,
+                    'count' => __('Выполнено ') . $task->count() . __(' заданий')
+                ];
+            }
         }
         $lastReview = Review::query()->where(['user_id' => $this->id, 'good_bad' => 1])->get()->last();
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
