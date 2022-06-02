@@ -128,7 +128,7 @@ Route::middleware('custom.auth:api')->group(function () {
         });
     });
 });
-Route::get('/profile/{id}', [ProfileAPIController::class, 'userProfile']); //end +
+Route::get('/profile/{user}', [ProfileAPIController::class, 'userProfile']); //end +
 Route::get('/profile/{user}/portfolios', [ProfileAPIController::class, 'userPortfolios']); //end +
 Route::get('/profile/{user}/reviews', [ProfileAPIController::class, 'userReviews']); //end +
 
