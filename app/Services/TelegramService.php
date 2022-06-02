@@ -23,12 +23,7 @@ class TelegramService
         $complaint = $data['complaint'];
         $userName = $data['user_name'];
         $taskName = $data['task_name'];
-        $text = "```\n
-            #{$id}\n\n
-            User: {$userName}\n
-            Task: {$taskName}\n\n
-            {$complaint}\n
-        ```";
+        $text = "```\n#{$id}\n\nUser: {$userName}\nTask: {$taskName}\n\n{$complaint}\n```";
         return Http::post($this->sendMessageApi, [
             'chat_id' => $this->group,
             'text' => $text,
