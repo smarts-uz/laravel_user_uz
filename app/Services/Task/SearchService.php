@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\User;
 use App\Models\Compliance;
 use App\Models\Review;
+use App\Services\TelegramService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -37,6 +38,12 @@ class SearchService
         $comp->user_id = $request->input('userId');
         $comp->task_id = $request->input('taskId');
         $comp->save();
+        $telegramService = new TelegramService();
+        $data['id'] = $comp->id;
+        $data['complaint'] = $comp->text;
+        $data['user_name'] = User::query()->find($comp->user_id)->name;
+        $data['task_name'] = Task::query()->find($comp->task_id)->name;
+        $telegramService->sendMessage($data);
     }
 
     public function task_service($auth_response, $userId, $task): SearchServiceTaskItem
