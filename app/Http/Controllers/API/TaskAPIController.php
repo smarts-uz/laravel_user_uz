@@ -193,7 +193,7 @@ class TaskAPIController extends Controller
     public function selectPerformer(TaskResponse $response)
     {
         if (!$response->task) {
-            response()->json([
+            return response()->json([
                 'success' => false,
                 'message' => "Task not found"
             ]);
