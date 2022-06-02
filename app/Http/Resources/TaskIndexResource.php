@@ -26,6 +26,10 @@ class TaskIndexResource extends JsonResource
             ->where('task_id', $this->id)
             ->where('performer_id', \auth()->guard('api')->id())
             ->first();
+        $performer_response = TaskResponse::query()
+            ->where('task_id', $this->id)
+            ->where('performer_id', $this->performer_id)
+            ->first();
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -37,8 +41,7 @@ class TaskIndexResource extends JsonResource
             'description' => $this->description,
             'phone' => $this->phone,
             'performer_id' => $this->performer_id,
-            'performer' => new UserInTaskResource($this->performer),
-            //'category_id' => $this->category_id,
+            'performer' => new PerformerResponseResource($performer_response),
             'category_name' => $this->category->name,
             'category_id' => $this->category_id,
             'current_user_response' => (bool)$user_response,
