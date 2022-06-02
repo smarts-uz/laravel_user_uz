@@ -16,7 +16,7 @@
                 <h1 class="text-3xl font-bold mb-2">{{$task->name}}</h1>
                 <div class="md:flex flex-row">
                         <span class="text-black rounded-lg bg-yellow-400 p-2">
-                            @if ( __('до') == 'gacha' )
+                            @if ( session('lang') == 'uz' )
                                 {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
                             @else
                                 {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
@@ -211,10 +211,10 @@
                                                     class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">{{ $item->name }}</a>
                                                     <p class="text-sm">{{ count($item->addresses)? $item->addresses[0]->location:'Можно выполнить удаленно' }}</p>
                                                     @if($item->date_type == 1 || $item->date_type == 3)
-                                                        <p class="text-sm my-0.5">{{__('Начать')}} {{ $item->start_date }}</p>
+                                                        <p class="text-sm my-0.5">{{__('Начать')}} {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $item->start_date)->translatedFormat('d-M  H:i') }}  </p>
                                                     @endif
                                                     @if($item->date_type == 2 || $item->date_type == 3)
-                                                        <p class="text-sm my-0.5">{{__('Закончить')}} {{ $item->end_date }}</p>
+                                                        <p class="text-sm my-0.5">{{__('Закончить')}}{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $item->end_date)->translatedFormat('d-M  H:i') }}  </p>
                                                     @endif
                                                     @if($item->oplata == 1)
                                                         <p class="text-sm">{{__(' Оплата наличными')}}</p>
@@ -225,7 +225,7 @@
                                             </div>
                                             <div class="sm:col-span-2 col-span-5 sm:text-right text-left sm:ml-0 ml-16">
                                                 <p class="sm:text-lg text-sm font-semibold text-gray-700">
-                                                    @if ( __('до') == 'gacha' )
+                                                    @if ( session('lang') == 'uz' )
                                                         {{ number_format($item->budget) }} {{__('сум')}}{{__('до')}}
                                                     @else
                                                         {{__('до')}} {{ number_format($item->budget) }} {{__('сум')}}

@@ -28,7 +28,7 @@
                     <div class="ml-4 md:ml-12 flex flex-row mt-8">
                         <h1 class="font-bold h-auto w-48">{{__('Бюджет')}}</h1>
                         <p class=" h-auto w-96">
-                            @if ( __('до') == 'gacha' )
+                            @if (session('lang') == 'uz')
                                 {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
                             @else
                                 {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}

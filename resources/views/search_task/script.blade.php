@@ -343,13 +343,13 @@ geoObjectHideIconOnBalloonOpen: false
 });
 getPointData = function (index) {
     let app_lcl = $('html').attr('lang');
-    if(dataGeo[index].start_date) {
-        sd = '{{__('Начать')}} ' + dataGeo[index].start_date;
+    if(dataGeo[index].sd_parse) {
+        sd = '{{__('Начать')}} ' + dataGeo[index].sd_parse;
     }else{
         sd = '';
     }
-    if(dataGeo[index].end_date) {
-        ed = '{{__('Закончить')}} ' + dataGeo[index].end_date;
+    if(dataGeo[index].ed_parse) {
+        ed = '{{__('Закончить')}} ' + dataGeo[index].ed_parse;
     }else{
         ed = '';
     }

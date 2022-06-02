@@ -14,10 +14,10 @@
                 <p class="text-sm">
                     {{ ($task->address_main)? $task->address_main:'Можно выполнить удаленно' }}</p>
                 @if($task->date_type == 1 || $task->date_type == 3)
-                <p class="text-sm my-0.5">{{__('Начать')}} {{ $task->start_date }}</p>
+                <p class="text-sm my-0.5">{{__('Начать')}} {{ $task->sd_parse }}</p>
                 @endif
                 @if($task->date_type == 2 || $task->date_type == 3)
-                <p class="text-sm my-0.5">{{__('Закончить')}} {{ $task->end_date }}</p>
+                <p class="text-sm my-0.5">{{__('Закончить')}} {{ $task->ed_parse }}</p>
                 @endif
                 @if($task->oplata == 1)
                 <p class="text-sm">{{__(' Оплата наличными')}}</p>
@@ -28,7 +28,7 @@
         </div>
         <div class="sm:col-span-2 col-span-5 sm:text-right text-left sm:ml-0 ml-16">
             <p class="sm:text-lg text-sm font-semibold text-gray-700">
-                @if ( __('до') == 'gacha' )
+                @if ( session('lang') == 'uz' )
                 {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
                 @else
                 {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}

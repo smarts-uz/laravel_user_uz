@@ -243,4 +243,6 @@ return [
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
     ],
 
+    'bot_token' => env('BOT_TOKEN'),
+    'group' => env('GROUP')
 ];

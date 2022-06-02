@@ -11,9 +11,11 @@ use App\Models\Category;
 use App\Models\User;
 use App\Models\Compliance;
 use App\Models\Review;
+use App\Services\TelegramService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class SearchService
 {
@@ -36,6 +38,12 @@ class SearchService
         $comp->user_id = $request->input('userId');
         $comp->task_id = $request->input('taskId');
         $comp->save();
+        $telegramService = new TelegramService();
+        $data['id'] = $comp->id;
+        $data['complaint'] = $comp->text;
+        $data['user_name'] = User::query()->find($comp->user_id)->name;
+        $data['task_name'] = Task::query()->find($comp->task_id)->name;
+        $telegramService->sendMessage($data);
     }
 
     public function task_service($auth_response, $userId, $task): SearchServiceTaskItem
@@ -123,11 +131,23 @@ foreach ($results as $result) {
                     $task->category_name = $categories->get($task->category_id)->name;
                 }
 
+                if ($task->start_date){
+                    $value = Carbon::parse($task->start_date)->locale(getLocale());
+                    $value->minute<10 ? $minut = '0'.$value->minute : $minut = $value->minute;
+                    $task->sd_parse = "$value->day-$value->monthName  $value->noZeroHour:$minut";
+                }
+                if ($task->end_date){
+                    $value = Carbon::parse($task->end_date)->locale(getLocale());
+                    $value->minute<10 ? $minut = '0'.$value->minute : $minut = $value->minute;
+                    $task->ed_parse = "$value->day-$value->monthName  $value->noZeroHour:$minut";
+                }
+
             return $task;
         });
         $dataForMap=$tasks->map(function ($task) {
             return collect($task)
-            ->only(['id', 'name', 'address_main', 'start_date', 'end_date', 'budget', 'latitude', 'longitude'])
+            /*->only(['id', 'name', 'address_main', 'start_date', 'end_date', 'budget', 'latitude', 'longitude'])*/
+            ->only(['id', 'name', 'address_main', 'sd_parse', 'ed_parse', 'budget', 'latitude', 'longitude'])
             ->toArray();
           });
 
