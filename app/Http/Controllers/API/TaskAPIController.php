@@ -192,6 +192,12 @@ class TaskAPIController extends Controller
 
     public function selectPerformer(TaskResponse $response)
     {
+        if (!$response->task) {
+            response()->json([
+                'success' => false,
+                'message' => "Task not found"
+            ]);
+        }
         $this->response_service->selectPerformer($response);
         return response()->json([
             'success' => true
@@ -1190,11 +1196,11 @@ class TaskAPIController extends Controller
      *      security={
      *          {"token": {}}
      *      },
-     * 
-     * 
+     *
+     *
      * )
-     * 
-     * 
+     *
+     *
      */
     public function updateName(TaskNameRequest $request, Task $task)
     {
