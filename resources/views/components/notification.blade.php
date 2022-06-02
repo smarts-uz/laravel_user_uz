@@ -3,7 +3,8 @@
     $count = $notifications->count();
 @endphp
 @if($count > 0)
-    <div id="content_count" class="w-4 h-4 absolute rounded-full bg-red-500 ml-3 text-white text-xs text-center">{{$count}}</div>
+    <div id="content_count"
+         class="w-4 h-4 absolute rounded-full bg-red-500 ml-3 text-white text-xs text-center">{{$count}}</div>
 @endif
 <button class="focus:outline-none" type="button" data-dropdown-toggle="dropdown">
     <i class="text-2xl lg:mr-6 mr-0 text-gray-500 hover:text-yellow-500 far fa-bell"></i>
@@ -31,8 +32,9 @@
                     @elseif($notification->type == 2 || $notification->type == 3)
                         <div class="w-full flex flex-row gap-x-4">
                             <i class="fas fa-bookmark text-xl text-yellow-500"></i>
-                            <button onclick="toggleModal121('modal-id121', '{{$notification->name_task}}', '{{$notification->description}}', {{$notification->id}})"
-                                    class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">
+                            <button
+                                onclick="toggleModal121('modal-id121', '{{$notification->name_task}}', '{{$notification->description}}', {{$notification->id}})"
+                                class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">
                                 {{$notification->name_task}}
                             </button>
                         </div>
@@ -106,12 +108,16 @@
 </div>
 {{-- modal notification --}}
 
-<div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="modal-id121"
-     style="background-color:rgba(0,0,0,0.5)">
+<div
+    class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
+    id="modal-id121"
+    style="background-color:rgba(0,0,0,0.5)">
     <div class="relative w-auto my-6 mx-auto max-w-3xl" id="modal-id121">
-        <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+        <div
+            class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
             <div class=" text-center p-12  rounded-t">
-                <button type="submit" onclick="toggleModal121('modal-id121', 'Title', 'Description', 0)" class="rounded-md w-100 h-16 absolute top-1 right-4">
+                <button type="submit" onclick="toggleModal121('modal-id121', 'Title', 'Description', 0)"
+                        class="rounded-md w-100 h-16 absolute top-1 right-4">
                     <i class="fas fa-times  text-slate-400 hover:text-slate-600 text-xl w-full"></i>
                 </button>
                 <h3 class="font-medium text-4xl block mt-4" id="title_notification">Title</h3>
@@ -160,20 +166,22 @@
         });
 
         function toggleModal121(modalID121, title, description, not_id) {
-            $.ajax({
-                url: '/read-notification/' + not_id,
-                method: "GET",
-                // data: { _token: access_token, id, type },
-                dataType: "JSON",
-                success: (data) => {
+            if (not_id !== 0) {
+                $.ajax({
+                    url: '/read-notification/' + not_id,
+                    method: "GET",
+                    // data: { _token: access_token, id, type },
+                    dataType: "JSON",
+                    success: (data) => {
 
-                },
-                error: () => {
-                    console.error("Error, check server response!");
-                },
-            });
-            $('#title_notification').val(title)
-            $('#description_notification').val(description)
+                    },
+                    error: () => {
+                        console.error("Error, check server response!");
+                    },
+                });
+            }
+            $('#title_notification').text(title)
+            $('#description_notification').text(description)
             document.getElementById(modalID121).classList.toggle("hidden");
             document.getElementById(modalID121 + "-backdrop").classList.toggle("hidden");
             document.getElementById(modalID121).classList.toggle("flex");
