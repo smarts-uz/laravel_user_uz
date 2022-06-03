@@ -52,7 +52,7 @@ class ProfileService
     public function testBaseServ($request){
         $user = Auth::user();
         $comment = $user->portfolios()->orderBy('created_at', 'desc')->first();
-        $image = File::allFiles("Portfolio/{$user->name}/{$comment->comment}");
+        $image = File::allFiles("portfolio/{$user->name}");
         $json = implode(',', $image);
         $data['image'] = $json;
         $id = $comment->id;
