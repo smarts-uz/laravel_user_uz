@@ -143,7 +143,7 @@
                                                 <hr>
                                             </form>
 
-                                            <a href="{{ route('profile.destroy', $user->id) }}" onclick="ConfirmDelete()"
+                                            <a href="{{ route('profile.destroy') }}" onclick="ConfirmDelete()"
                                                class="block xl:w-3/5 lg:w-3/4 sm:w-3/5 w-full text-center bg-red-400 hover:bg-red-600 text-white mt-5 uppercase p-4 rounded-xl cursor-pointer">{{__('Удалить профиль')}}</a>
                                         </div>
                                     </div>
@@ -212,9 +212,9 @@
                                                </div>
                                                 <div class="items-center">
                                                     <input type="checkbox" id="email_notif" name="email_notification" value="1" {{$user->email_notification==1 ? 'checked' : ''}} class="w-5 h-5"/>
-                                                    <label class="cursor-pointer mx-1 text-xl" for="email_notif"> 
+                                                    <label class="cursor-pointer mx-1 text-xl" for="email_notif">
                                                     <i class="fas fa-envelope text-yellow-600 text-2xl mx-1"></i>{{__('EMAIL')}}</label>
-                                                </div>  
+                                                </div>
                                             </div>
                                             <button
                                                     class="block  md:w-1/2 w-full mt-10 bg-green-400 hover:bg-green-600 text-white uppercase p-4 rounded-xl"

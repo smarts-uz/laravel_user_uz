@@ -109,7 +109,7 @@ class Task extends Model
 
         self::deleting(function (Task $task) {
 
-            foreach ($task->responses as $response)
+            foreach ($task->responses() as $response)
             {
                 $response->delete();
             }
