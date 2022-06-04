@@ -78,7 +78,7 @@
                                                            for="phone_number">{{__('Телефон')}}</label>
                                                     <input
                                                             class="focus:outline-none focus:border-yellow-500 rounded-xl border py-2 px-3 w-full text-grey-900"
-                                                            type="text" id="phone_number"
+                                                            type="text" id="phone_number" name="phone_number"
                                                             @if (!$user->phone_number) placeholder="+998(00)000-00-00"
                                                             @else
                                                             value="{{$user->is_phone_number_verified?$user->phone_number:$user->phone_number_old}}"
@@ -86,8 +86,6 @@
                                                     @error('phone_number')
                                                     <p class="text-red-500">{{ $message }}</p>
                                                     @enderror
-                                                    <input type="hidden" name="phone_number"
-                                                           value="{{$user->is_phone_number_verified?$user->phone_number:$user->phone_number_old}}" id="phone">
                                                 </div>
                                                 <div class="w-full block w-full mb-4">
                                                     <label class="mb-2 text-md md:block text-gray-400"

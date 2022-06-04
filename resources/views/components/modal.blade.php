@@ -146,12 +146,11 @@
                                        id="cancel-email">{{__('Отмена')}}</a>
                                     <br>
                                     <div class="my-2">
-                                        <input type="text" placeholder="{{__('Номер телефона')}}" id="phone_number"
+                                        <input name="phone_number" type="text" placeholder="{{__('Номер телефона')}}" id="phone_number"
                                                value="{{  old('email').session()->has('email') ? session('email'):null  }}"
                                                class="shadow focus:outline-none  focus:border-yellow-500 appearance-none border border-slate-300 rounded
                         w-full py-2 px-3 text-gray-700 mb-1 leading-tight hover:border-amber-500"
                                                autofocus>
-                                        <input type="hidden" name="phone_number" id="phone">
                                         @if(session()->has('email-message'))
                                             <p class="text-red-500"> {{ session('email-message') }}</p>
                                         @endif

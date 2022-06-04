@@ -68,18 +68,14 @@
                             <label class="block text-gray-500 text-sm mb-1" for="phone_number">
                                 <span>{{__('Телефон немер')}}</span>
                             </label>
-                            <input type="text" placeholder=""
+                            <input type="text" placeholder="" name="phone_number"
                                    value="{{ request()->input('phone_number', old('phone_number')) }}"
                                    id="phone_number"
                                    class="shadow appearance-none border focus:outline-none focus:border-yellow-500 rounded w-80 py-2 px-3 text-gray-700 mb-3 leading-tight">
                             <br>
-
-
                             @if(session()->has('message'))
                                 <p class="text-red-500">{{session('message')}}</p>
                             @endif
-
-                            <input type="hidden" name="phone_number" value="{{ old('phone_number') }}" id="phone">
                             @error('phone_number')
                             <span class="text-danger" style="color: red">{{ $message  }}</span>
                             @enderror
@@ -123,5 +119,13 @@
         //tab content script end
     </script>
     <script src='https://unpkg.com/imask'></script>
-    <script src="{{ asset('js/auth/reset.js') }}"></script>
+    <script>
+        //phone number js
+        var element = document.getElementById('phone_number');
+        var maskOptions = {
+            mask: '+998(00)000-00-00',
+            lazy: false
+        }
+        var mask = new IMask(element, maskOptions);
+    </script>
 @endsection

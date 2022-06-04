@@ -35,12 +35,6 @@ var maskOptions = {
 }
 var mask = new IMask(element, maskOptions);
 
-$("#phone_number").keyup(function () {
-    var text = $(this).val()
-    text = text.replace(/[^0-9.]/g, "")
-    $("#phone").val("+" + text)
-})
-
 if ($('#tab-contents').children(".error").length) {
     $('#tab-contents').children('.tab-pane').addClass('hidden')
     $('.error').removeClass('hidden')

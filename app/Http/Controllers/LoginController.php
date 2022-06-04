@@ -41,7 +41,7 @@ class LoginController extends Controller
 
 
     public function customRegister(UserRegisterRequest $request)
-    {
+    {  
         $data = $request->validated();
         $data['password'] = Hash::make($request->password);
         unset( $data['password_confirmation']);
@@ -188,7 +188,7 @@ class LoginController extends Controller
 
     public function change_phone_number(Request $request)
     {
-
+        $request->phone_number= str_replace(['(',')','-'], '', $request->phone_number);
         $user = auth()->user();
 
         if ($request->phone_number == $user->phone_number) {

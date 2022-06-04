@@ -57,8 +57,10 @@ class UserController extends Controller
 
     public function reset_submit(Request $request)
     {
+        $request->phone_number= str_replace(['(',')','-'], '', $request->phone_number);
+       
         $data = $request->validate([
-            'phone_number' => 'required|integer|exists:users'
+            'phone_number' => 'required|integer|exists:users|min:13'
         ]);
         $user = User::query()->where('phone_number', $data['phone_number'])->first();
         if (!$user) {
