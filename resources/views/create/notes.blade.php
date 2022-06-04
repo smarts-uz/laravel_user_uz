@@ -112,6 +112,7 @@
     <script>
         var uppy = new Uppy.Core()
             .use(Uppy.Dashboard, {
+                doneButtonHandler: null,
                 trigger: '.UppyModalOpenerBtn',
                 inline: true,
                 target: '#photos',

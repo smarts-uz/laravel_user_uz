@@ -160,14 +160,6 @@ class CreateController extends Controller
         return redirect()->route('task.create.note', $task->id);
 
     }
-
-    public function note(Task $task)
-    {
-        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_NOTE);
-
-        return view('create.notes', compact('task','custom_fields'));
-    }
-
     public function images_store(Request $request)
     {
         $imgData = session()->has('images') ? json_decode(session('images')):[];
@@ -177,6 +169,12 @@ class CreateController extends Controller
             $imgData[] = $filename;
         }
         session()->put('images', json_encode($imgData));
+    }
+    public function note(Task $task)
+    {
+        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_NOTE);
+
+        return view('create.notes', compact('task','custom_fields'));
     }
     public function note_store(Task $task, Request $request)
     {
@@ -190,9 +188,8 @@ class CreateController extends Controller
             $data['docs'] = 0;
         }
         $data['photos'] = session()->has('images') ? session('images') : '[]';
-
-        session()->forget('images');
         $task->update($data);
+        session()->forget('images');
         return redirect()->route("task.create.contact", $task->id);
     }
 
