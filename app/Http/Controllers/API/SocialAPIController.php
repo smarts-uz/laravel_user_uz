@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\SocialRequest;
 use App\Http\Resources\PerformerIndexResource;
 use App\Models\User;
+use App\Models\WalletBalance;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,6 +37,10 @@ class SocialAPIController extends Controller
                 $user = User::create([
                     $provider . '_id' => $providerUser->id,
                 ]);
+                $wallBal = new WalletBalance();
+                $wallBal->balance = setting('admin.bonus');
+                $wallBal->user_id = $user->id;
+                $wallBal->save();
             }
             // create a token for the user, so they can login
             Auth::login($user);
