@@ -78,7 +78,7 @@
                                                            for="phone_number">{{__('Телефон')}}</label>
                                                     <input
                                                             class="focus:outline-none focus:border-yellow-500 rounded-xl border py-2 px-3 w-full text-grey-900"
-                                                            type="text" id="phone_number"
+                                                            type="text" id="phone_number" name="phone_number"
                                                             @if (!$user->phone_number) placeholder="+998(00)000-00-00"
                                                             @else
                                                             value="{{$user->is_phone_number_verified?$user->phone_number:$user->phone_number_old}}"
@@ -86,8 +86,6 @@
                                                     @error('phone_number')
                                                     <p class="text-red-500">{{ $message }}</p>
                                                     @enderror
-                                                    <input type="hidden" name="phone_number"
-                                                           value="{{$user->is_phone_number_verified?$user->phone_number:$user->phone_number_old}}" id="phone">
                                                 </div>
                                                 <div class="w-full block w-full mb-4">
                                                     <label class="mb-2 text-md md:block text-gray-400"
@@ -145,7 +143,7 @@
                                                 <hr>
                                             </form>
 
-                                            <a href="{{ route('profile.destroy', $user->id) }}" onclick="ConfirmDelete()"
+                                            <a href="{{ route('profile.destroy') }}" onclick="ConfirmDelete()"
                                                class="block xl:w-3/5 lg:w-3/4 sm:w-3/5 w-full text-center bg-red-400 hover:bg-red-600 text-white mt-5 uppercase p-4 rounded-xl cursor-pointer">{{__('Удалить профиль')}}</a>
                                         </div>
                                     </div>
@@ -214,9 +212,9 @@
                                                </div>
                                                 <div class="items-center">
                                                     <input type="checkbox" id="email_notif" name="email_notification" value="1" {{$user->email_notification==1 ? 'checked' : ''}} class="w-5 h-5"/>
-                                                    <label class="cursor-pointer mx-1 text-xl" for="email_notif"> 
+                                                    <label class="cursor-pointer mx-1 text-xl" for="email_notif">
                                                     <i class="fas fa-envelope text-yellow-600 text-2xl mx-1"></i>{{__('EMAIL')}}</label>
-                                                </div>  
+                                                </div>
                                             </div>
                                             <button
                                                     class="block  md:w-1/2 w-full mt-10 bg-green-400 hover:bg-green-600 text-white uppercase p-4 rounded-xl"

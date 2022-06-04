@@ -57,8 +57,10 @@ class UserController extends Controller
 
     public function reset_submit(Request $request)
     {
+        $request->phone_number= str_replace(['(',')','-'], '', $request->phone_number);
+       
         $data = $request->validate([
-            'phone_number' => 'required|integer|exists:users'
+            'phone_number' => 'required|integer|exists:users|min:13'
         ]);
         $user = User::query()->where('phone_number', $data['phone_number'])->first();
         if (!$user) {
@@ -171,35 +173,6 @@ class UserController extends Controller
         } else {
             auth()->logout();
             return back()->with('incorrect_message', __('lang.contact_notVerify'));
-        }
-
-    }
-
-    public function verifyProfil2(Request $request, User $user, Task $task, $data) {
-
-        $task = Task::query()->find($request->get('for_ver_func'));
-        $request->validate(
-            ['sms_otp' => 'required'],
-            ['sms_otp.required' => 'Требуется заполнение!']
-        );
-
-        if ($request->sms_otp == $task->verify_code && strtotime($task->verify_expiration) >= strtotime(Carbon::now())) {
-                /*$task->update(['is_phone_number_verified' => 1]);*/
-                Task::findOrFail($request->for_ver_func)->update(['status' => 1, 'user_id' => $user->id, 'phone' => $data]);
-                auth()->login($user);
-                // send notification
-                NotificationService::sendTaskNotification($task, $user->id);
-
-                return redirect()->route('searchTask.task', $request->for_ver_func);
-            }
-
-        if (strtotime($task->verify_expiration) < strtotime(Carbon::now())) {
-                auth()->logout();
-                return back()->with('expired_message', __('Время ожидание истекло'));
-            }
-        if ($request->sms_otp == $task->verify_code) {
-            auth()->logout();
-            return back()->with('incorrect_message', __('Неправильный код верификации'));
         }
 
     }

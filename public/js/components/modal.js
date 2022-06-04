@@ -15,10 +15,4 @@ var maskOptions = {
 }
 if (element) {
     var mask = new IMask(element, maskOptions);
-    $("#phone_number").keyup(function() {
-        var text = $(this).val()
-        text = text.replace(/[^0-9.]/g, "")
-        $("#phone").val("+" + text)
-    })
-
 }

@@ -45,9 +45,8 @@
                     </div>
 
                     <div class="my-3">
-                        <input type="text" id="phone_number" class=" focus:outline-none focus:border-yellow-500 shadow appearance-none border border-slate-300 rounded sm:w-80 w-64 py-2 px-3 text-gray-700 leading-tight hover:border-amber-500">
+                        <input type="text" name="phone_number" id="phone_number" class=" focus:outline-none focus:border-yellow-500 shadow appearance-none border border-slate-300 rounded sm:w-80 w-64 py-2 px-3 text-gray-700 leading-tight hover:border-amber-500">
                         <br>
-                        <input type="hidden" name="phone_number" id="phone">
                         @error('phone_number')
                         <p class="text-red-500">{{ $message }}</p>
                         @enderror

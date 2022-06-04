@@ -144,7 +144,7 @@ class ProfileController extends Controller
         return redirect()->route('profile.editData');
     }
 
-    public function destroy($id)
+    public function destroy()
     {
         auth()->user()->delete();
         return redirect('/');
@@ -237,7 +237,8 @@ class ProfileController extends Controller
 
     public function verificationContactStore(Request $request)
     {
-
+        $request->phone_number= str_replace(['(',')','-'], '', $request->phone_number);
+        dd( $request->phone_number);
         $data = $request->validate([
             'email' => 'required',
             'phone_number' => 'required|integer|min:13',

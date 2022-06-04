@@ -102,4 +102,17 @@ class Task extends Model
     {
         return $this->hasMany(TaskResponse::class);
     }
+
+    public static function boot ()
+    {
+        parent::boot();
+
+        self::deleting(function (Task $task) {
+
+            foreach ($task->responses() as $response)
+            {
+                $response->delete();
+            }
+        });
+    }
 }

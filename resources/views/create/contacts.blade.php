@@ -84,13 +84,10 @@
 
                                                             <label class="text-sm text-gray-500 mb-2"
                                                                    for="phone">{{__('Номер телефона')}}</label>
-                                                            <input type="text"  autofocus="autofocus"
+                                                            <input type="text"  autofocus="autofocus" name="phone_number"
                                                                    value="{{auth()->user()->phone_number}}"
                                                                    placeholder="+998(00)000-00-00" id="phone"
                                                                    class="shadow appearance-none border phone  phone-1 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500"/>
-                                                            <input type="hidden" name="phone_number"
-                                                                   value="{{auth()->user()->phone_number}}"
-                                                                   class="phone-number">
                                                             @error('phone_number')
                                                             <p>{{$message}}</p>
                                                             @enderror
@@ -148,11 +145,9 @@
                                                             @enderror
                                                             <label class="text-sm text-gray-500 mb-2"
                                                                    for="phone">{{__('Номер телефона')}}</label>
-                                                            <input type="text"
+                                                            <input type="text"  name="phone_number"
                                                                    value="{{old('phone_number')}}" id="phone"
                                                                    class="shadow appearance-none border phone focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500 "/>
-                                                            <input type="hidden" value="{{ old('phone_number') }}"
-                                                                   name="phone_number" class="phone-number">
 
                                                             @error('phone_number')
                                                             <p class="text-red-500">{{$message}}</p>
@@ -202,12 +197,10 @@
                                             <span class="text-gray-500 text-sm">
                                                 {{__('Телефонный номер')}}
                                             </span>
-                                            <input type="text"
+                                            <input type="text"  name="phone_number"
                                                    placeholder="{{__('Номер телефона')}}" id="phone2"
                                                    value="{{ old('phone_number') }}"
                                                    class="mt-2 shadow appearance-none phone border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500"/>
-                                            <input type="hidden" name="phone_number" value="{{ old('phone_number') }}"
-                                                   class="phone-number">
                                         </label>
                                         @error('phone_number')
                                         <p class="text-red-500">{{ $message }}</p>
@@ -269,19 +262,12 @@
             lazy: false
         }
         var mask = new IMask(element, maskOptions);
-        // console.log(mask);
-        //
 
         if (element2)
         {
             console.log(element2);
             var mask2 = new IMask(element2, maskOptions);
         }
-        $(".phone").keyup(function () {
-            var text = $(this).val()
-            text = text.replace(/[^0-9.]/g, "")
-            $(".phone-number").val('+' + text)
-        })
         function setSelectionRange(input, selectionStart, selectionEnd) {
             if (input.setSelectionRange) {
                 input.focus();

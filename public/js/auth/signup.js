@@ -6,12 +6,7 @@ var maskOptions = {
 }
 var mask = new IMask(element, maskOptions);
 
-$("#phone_number").keyup(function() {
-        var text = $(this).val()
-        text = text.replace(/[^0-9.]/g, "")
-        $("#phone").val('+' + text)
-    })
-    //   input eye
+//   input eye
 $(function() {
 
     $('#eye').click(function() {

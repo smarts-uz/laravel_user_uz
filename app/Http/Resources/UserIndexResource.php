@@ -29,11 +29,11 @@ class UserIndexResource extends JsonResource
      */
     public function toArray($request)
     {
-        $file = "Portfolio/{$this->name}";
+        $file = "portfolio/{$this->name}";
         if (!file_exists($file)) {
             File::makeDirectory($file);
         }
-        $b = File::directories(public_path("Portfolio/{$this->name}"));
+        $b = File::directories(public_path("portfolio/{$this->name}"));
         $directories = array_map('basename', $b);
         if (WalletBalance::query()->where('user_id', $this->id)->first() != null)
             $balance = WalletBalance::query()->where('user_id', $this->id)->first()->balance;

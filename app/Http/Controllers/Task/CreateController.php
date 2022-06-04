@@ -206,6 +206,7 @@ class CreateController extends Controller
 
     public function contact_store(Task $task, Request $request)
     {
+        $request->phone_number= str_replace(['(',')','-'], '', $request->phone_number);
         $user = auth()->user();
 
         $data = $request->validate([
@@ -222,64 +223,6 @@ class CreateController extends Controller
         $task->status = 1;
         $task->user_id = $user->id;
         $task->phone = $user->phone_number;
-
-        $performer_id = session()->get('performer_id_for_task');
-        if ($performer_id) {
-            $performer = User::query()->find($performer_id);
-            $text_url = route("searchTask.task", $task->id);
-            $text = "Заказчик предложил вам новую задания $text_url. Имя заказчика: " . $user->name;
-            (new SmsService())->send($performer->phone_number, $text);
-            Notification::query()->create([
-                'user_id' => $task->user_id,
-                'performer_id' => $performer_id,
-                'task_id' => $task->id,
-                'name_task' => $task->name,
-                'description' => '123',
-                'type' => 4,
-            ]);
-
-            NotificationService::sendNotificationRequest([$performer_id], [
-                'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
-            ]);
-
-            session()->forget('performer_id_for_task');
-        } else {
-            NotificationService::sendTaskNotification($task, $user->id);
-        }
-
-        $task->save();
-        return redirect()->route('searchTask.task', $task->id);
-    }
-
-    public function contact_store2(Task $task, Request $request)
-    {
-        $user = auth()->user();
-
-        /*$data = $request->validate([
-            'phone_number' => 'required|integer|min:13|unique:users,phone_number,' . $user->id
-        ]);*/
-        $data = $request->validate([
-            'phone_number' => 'required|integer|min:13'
-        ]);
-
-        /*if (!$user->is_phone_number_verified || $user->phone_number != $data['phone_number']) {*/
-
-        /*if (!$user->is_phone_number_verified && $user->phone_number == $data['phone_number']) {
-            $data['is_phone_number_verified'] = 0;
-            $user->update($data);
-            LoginController::send_verification('phone', $user);
-            return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
-        }*/
-
-        if (!$task->is_phone_verified || $task->phone != $data['phone_number']) {
-            LoginController::send_verification_for_task_phone($task, $data['phone_number']);
-            return redirect()->route('task.create.verify.phone', ['task' => $task->id, 'user' => $user->id, 'data' => $data['phone_number']]);
-        }
-
-        $task->status = 1;
-        $task->user_id = $user->id;
-        /*$task->phone = $user->phone_number;*/
-        $task->phone = $data->phone_number;
 
         $performer_id = session()->get('performer_id_for_task');
         if ($performer_id) {
@@ -332,11 +275,6 @@ class CreateController extends Controller
     public function verify(Task $task, User $user)
     {
         return view('create.verify', compact('task', 'user'));
-    }
-
-    public function verify2(Task $task, User $user, $data)
-    {
-        return view('create.verify2', compact('task', 'user', 'data'));
     }
 
     public function deletetask(Task $task)

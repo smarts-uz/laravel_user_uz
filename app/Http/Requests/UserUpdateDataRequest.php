@@ -27,7 +27,7 @@ class UserUpdateDataRequest extends FormRequest
             'email' => 'required|email|unique:users',
             'age' => 'nullable|int',
             'gender' => 'nullable|int',
-            'phone_number' => 'required|numeric|min:9|unique:users',
+            'phone_number' => 'required|numeric|unique:users|min:13',
             'description' => 'nullable',
             'location' => 'nullable',
         ];
@@ -35,7 +35,7 @@ class UserUpdateDataRequest extends FormRequest
             $validation['email'] = "required|email";
         }
         if (auth()->user()->phone_number == $this->request->get('phone_number')) {
-            $validation['phone_number'] = "required|min:9";
+            $validation['phone_number'] = "required|min:13";
         }
 
         return $validation;
@@ -55,5 +55,19 @@ class UserUpdateDataRequest extends FormRequest
             'role_id.required' => __('login.name.required'),
 
         ];
+    }
+    public function getValidatorInstance()
+    {
+        $this->cleanPhoneNumber();
+        return parent::getValidatorInstance();
+    }
+
+    protected function cleanPhoneNumber()
+    {
+        if($this->request->has('phone_number')){
+            $this->merge([
+                'phone_number' => str_replace(['-','(',')'], '', $this->request->get('phone_number'))
+            ]);
+        }
     }
 }

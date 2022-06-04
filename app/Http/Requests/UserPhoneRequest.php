@@ -40,4 +40,18 @@ class UserPhoneRequest extends FormRequest
         ];
 
     }
+    public function getValidatorInstance()
+    {
+        $this->cleanPhoneNumber();
+        return parent::getValidatorInstance();
+    }
+
+    protected function cleanPhoneNumber()
+    {
+        if($this->request->has('phone_number')){
+            $this->merge([
+                'phone_number' => str_replace(['-','(',')'], '', $this->request->get('phone_number'))
+            ]);
+        }
+    }
 }
