@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\LoginController;
+use App\Http\Requests\CreateContactRequest;
 use App\Http\Requests\TaskDateRequest;
 use App\Http\Requests\UserPhoneRequest;
 use App\Http\Requests\UserRequest;
@@ -204,14 +205,12 @@ class CreateController extends Controller
     }
 
 
-    public function contact_store(Task $task, Request $request)
+    public function contact_store(Task $task, CreateContactRequest $request)
     {
-        $request->phone_number= str_replace(['(',')','-'], '', $request->phone_number);
+        dd($request);
         $user = auth()->user();
 
-        $data = $request->validate([
-            'phone_number' => 'required|integer|min:13|unique:users,phone_number,' . $user->id
-        ]);
+        $data = $request->validated( $user->id);
 
         if (!$user->is_phone_number_verified || $user->phone_number != $data['phone_number']) {
             $data['is_phone_number_verified'] = 0;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ResetRequest;
 use App\Mail\MessageEmail;
 use App\Models\User;
 use App\Models\Task;
@@ -55,13 +56,9 @@ class UserController extends Controller
     }
 
 
-    public function reset_submit(Request $request)
-    {
-        $request->phone_number= str_replace(['(',')','-'], '', $request->phone_number);
-       
-        $data = $request->validate([
-            'phone_number' => 'required|integer|exists:users|min:13'
-        ]);
+    public function reset_submit(ResetRequest $request)
+    {  
+        $data = $request->validated();
         $user = User::query()->where('phone_number', $data['phone_number'])->first();
         if (!$user) {
             return back()->with([

@@ -31,9 +31,8 @@ class UpdateRequest extends FormRequest
             'budget' => 'required',
             'description' => 'required',
             'category_id' => 'required|numeric',
-            //'phone' => 'required|regex:/^\+998(9[012345789])[0-9]{7}$/'
             'photos' => 'nullable|array',
-            'phone' => 'required|numeric|min:9'
+            'phone' => 'required|numeric|min:13'
         ];
         $rule = $this->dateRule($rule);
         return $rule;
@@ -71,5 +70,19 @@ class UpdateRequest extends FormRequest
             'budget.required' => 'Required',
             'category_id.required' => 'Required',
         ];
+    }
+    public function getValidatorInstance()
+    {
+        $this->cleanPhoneNumber();
+        return parent::getValidatorInstance();
+    }
+
+    protected function cleanPhoneNumber()
+    {
+        if($this->request->has('phone')){
+            $this->merge([
+                'phone' => str_replace(['-','(',')'], '', $this->request->get('phone'))
+            ]);
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ModalNumberRequest;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
 use App\Mail\MessageEmail;
@@ -172,9 +173,8 @@ class LoginController extends Controller
         }
     }
 
-    public function change_phone_number(Request $request)
+    public function change_phone_number(ModalNumberRequest $request)
     {
-        $request->phone_number= str_replace(['(',')','-'], '', $request->phone_number);
         $user = auth()->user();
 
         if ($request->phone_number == $user->phone_number) {
@@ -183,16 +183,7 @@ class LoginController extends Controller
                 'email' => $request->email
             ]);
         } else {
-            $request->validate([
-                'phone_number' => 'required|unique:users|min:13'
-            ],
-                [
-                    'phone_number.required' => __('login.phone_number.required'),
-                    'phone_number.regex' => __('login.phone_number.regex'),
-                    'phone_number.unique' => __('login.phone_number.unique'),
-                    'phone_number.min' => __('login.phone_number.min'),
-                ]
-            );
+            $request->validated();
 
             $user->phone_number = $request->phone_number;
             $user->save();
