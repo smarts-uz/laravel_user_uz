@@ -144,7 +144,7 @@ class ProfileController extends Controller
         return redirect()->route('profile.editData');
     }
 
-    public function destroy($id)
+    public function destroy()
     {
         auth()->user()->delete();
         return redirect('/');

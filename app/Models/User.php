@@ -153,22 +153,22 @@ class User extends \TCG\Voyager\Models\User
 
         self::deleting(function (User $user) {
 
-            foreach ($user->tasks as $task)
+            foreach ($user->tasks() as $task)
             {
                 $task->delete();
             }
 
-            foreach ($user->reviews as $review)
+            foreach ($user->reviews() as $review)
             {
                 $review->delete();
             }
 
-            foreach ($user->portfolios as $portfolio)
+            foreach ($user->portfolios() as $portfolio)
             {
                 $portfolio->delete();
             }
 
-            $user->walletBalance->delete();
+            $user->walletBalance()->delete();
         });
     }
 }

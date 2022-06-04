@@ -183,7 +183,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/clear-sessions', [ProfileController::class, 'clear_sessions'])->name('profile.clear_sessions');
 
         // Profile delete
-        Route::get('/delete/{id}', [ProfileController::class, 'destroy'])->name('profile.destroy'); // javoxir
+        Route::get('/delete', [ProfileController::class, 'destroy'])->name('profile.destroy'); // javoxir
 
 
         //added category id
