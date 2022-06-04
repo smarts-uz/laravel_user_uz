@@ -54,9 +54,7 @@ class LoginController extends Controller
 
         self::send_verification('email', auth()->user());
 
-
         return redirect()->route('profile.profileData');
-
 
     }
 
@@ -76,18 +74,6 @@ class LoginController extends Controller
         $user->verify_code = $code;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
-
-    }
-
-    public static function send_verification_for_task_phone($task, $phone)
-    {
-        $code = rand(100000, 999999);
-        (new SmsService())->send($phone, $code);
-
-        $task->phone = $phone;
-        $task->verify_code = $code;
-        $task->verify_expiration = Carbon::now()->addMinutes(2);
-        $task->save();
 
     }
 
