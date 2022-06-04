@@ -207,7 +207,6 @@ class CreateController extends Controller
 
     public function contact_store(Task $task, CreateContactRequest $request)
     {
-        dd($request);
         $user = auth()->user();
 
         $data = $request->validated();
