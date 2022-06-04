@@ -27,7 +27,7 @@ class UserRequest extends FormRequest
         return [
             'name' => 'required|string',
             'email' => ['required','email','unique:users'],
-            'phone_number' => 'required|unique:users|min:9',
+            'phone_number' => 'required|unique:users|min:13',
         ];
     }
 
@@ -46,5 +46,19 @@ class UserRequest extends FormRequest
                 'password.min' => __('login.password.min'),
                 'password.confirmed' => __('login.password.confirmed'),
             ];
+    }
+    public function getValidatorInstance()
+    {
+        $this->cleanPhoneNumber();
+        return parent::getValidatorInstance();
+    }
+
+    protected function cleanPhoneNumber()
+    {
+        if($this->request->has('phone_number')){
+            $this->merge([
+                'phone_number' => str_replace(['-','(',')'], '', $this->request->get('phone_number'))
+            ]);
+        }
     }
 }

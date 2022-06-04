@@ -206,6 +206,7 @@ class CreateController extends Controller
 
     public function contact_store(Task $task, Request $request)
     {
+        $request->phone_number= str_replace(['(',')','-'], '', $request->phone_number);
         $user = auth()->user();
 
         $data = $request->validate([
