@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\LoginController;
+use App\Http\Requests\CreateContactRequest;
 use App\Http\Requests\TaskDateRequest;
 use App\Http\Requests\UserPhoneRequest;
 use App\Http\Requests\UserRequest;
@@ -159,14 +160,6 @@ class CreateController extends Controller
         return redirect()->route('task.create.note', $task->id);
 
     }
-
-    public function note(Task $task)
-    {
-        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_NOTE);
-
-        return view('create.notes', compact('task','custom_fields'));
-    }
-
     public function images_store(Request $request)
     {
         $imgData = session()->has('images') ? json_decode(session('images')):[];
@@ -176,6 +169,12 @@ class CreateController extends Controller
             $imgData[] = $filename;
         }
         session()->put('images', json_encode($imgData));
+    }
+    public function note(Task $task)
+    {
+        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_NOTE);
+
+        return view('create.notes', compact('task','custom_fields'));
     }
     public function note_store(Task $task, Request $request)
     {
@@ -189,9 +188,8 @@ class CreateController extends Controller
             $data['docs'] = 0;
         }
         $data['photos'] = session()->has('images') ? session('images') : '[]';
-
-        session()->forget('images');
         $task->update($data);
+        session()->forget('images');
         return redirect()->route("task.create.contact", $task->id);
     }
 
@@ -204,19 +202,19 @@ class CreateController extends Controller
     }
 
 
-    public function contact_store(Task $task, Request $request)
+    public function contact_store(Task $task, CreateContactRequest $request)
     {
-        $request->phone_number= str_replace(['(',')','-'], '', $request->phone_number);
         $user = auth()->user();
 
-        $data = $request->validate([
-            'phone_number' => 'required|integer|min:13|unique:users,phone_number,' . $user->id
-        ]);
+        $data = $request->validated();
 
-        if (!$user->is_phone_number_verified || $user->phone_number != $data['phone_number']) {
+        if (!$user->is_phone_number_verified && $user->phone_number != $data['phone_number']) {
             $data['is_phone_number_verified'] = 0;
             $user->update($data);
             LoginController::send_verification('phone', $user);
+            return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
+        }elseif ($user->phone_number != $data['phone_number']) {
+            LoginController::send_verification_for_task_phone($task, $data['phone_number']);
             return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
         }
 
