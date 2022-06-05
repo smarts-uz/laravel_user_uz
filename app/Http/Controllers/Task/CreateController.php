@@ -190,10 +190,7 @@ class CreateController extends Controller
         } else {
             $data['docs'] = 0;
         }
-        $data['photos'] = session()->has('images') ? session('images') : '[]';
-        dd($data['photos'],session()->get('hello123'));
         $task->update($data);
-        session()->forget('images');
         return redirect()->route("task.create.contact", $task->id);
     }
 
