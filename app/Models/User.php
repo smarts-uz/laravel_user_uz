@@ -174,6 +174,9 @@ class User extends \TCG\Voyager\Models\User
             }
 
             $user->walletBalance()->delete();
+            $user->email = '_' . $user->email;
+            $user->phone_number = '_' . $user->phone_number;
+            $user->save();
         });
     }
 }
