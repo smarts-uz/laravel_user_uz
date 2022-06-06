@@ -40,12 +40,7 @@ class CreateController extends Controller
 
     public function name(Request $request)
     {
-
-        $current_category = Category::findOrFail($request->category_id);
-
-        return view("create.name", compact('current_category'));
-
-
+        $this->service->name($request);
     }
 
     public function name_store(Request $request)
@@ -160,15 +155,18 @@ class CreateController extends Controller
         return redirect()->route('task.create.note', $task->id);
 
     }
-    public function images_store(Request $request)
+    public function images_store(Request $request,Task $task)
     {
-        $imgData = session()->has('images') ? json_decode(session('images')):[];
-        foreach ($request->file('images') as $uploadedImage) {
-            $filename = time() . '_' . $uploadedImage->getClientOriginalName();
-            $uploadedImage->move(public_path() . '/storage/uploads/', $filename);
-            $imgData[] = $filename;
-        }
-        session()->put('images', json_encode($imgData));
+            $imgData = json_decode($task->photos);
+            foreach ($request->file('images') as $uploadedImage)
+            {
+                $filename = time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path() . '/storage/uploads/', $filename);
+                $imgData[] = $filename;
+                $task->photos = $imgData;
+                $task->save();
+            }
+
     }
     public function note(Task $task)
     {
@@ -187,9 +185,7 @@ class CreateController extends Controller
         } else {
             $data['docs'] = 0;
         }
-        $data['photos'] = session()->has('images') ? session('images') : '[]';
         $task->update($data);
-        session()->forget('images');
         return redirect()->route("task.create.contact", $task->id);
     }
 
