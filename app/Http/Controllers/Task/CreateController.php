@@ -40,12 +40,7 @@ class CreateController extends Controller
 
     public function name(Request $request)
     {
-
-        $current_category = Category::findOrFail($request->category_id);
-
-        return view("create.name", compact('current_category'));
-
-
+        $this->service->name($request);
     }
 
     public function name_store(Request $request)
