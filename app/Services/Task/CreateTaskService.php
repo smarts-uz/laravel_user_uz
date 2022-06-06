@@ -231,7 +231,7 @@ class CreateTaskService
         if (!$user->is_phone_number_verified || $user->phone_number != $data['phone_number']) {
             $data['is_phone_number_verified'] = 0;
             $user->update($data);
-            LoginController::send_verification('phone', $user);
+            LoginController::send_verification('phone', $user, $user->phone_number);
             return $this->get_verify($task, $user);
         }
 
@@ -325,7 +325,7 @@ class CreateTaskService
         $data['password'] = Hash::make('login123');
 
         $user = User::create($data);
-        LoginController::send_verification('phone', $user);
+        LoginController::send_verification('phone', $user, $user->phone_number);
 
         return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
 
@@ -335,7 +335,7 @@ class CreateTaskService
     {
         $request->validated();
         $user = User::query()->where('phone_number', $request->phone_number)->first();
-        LoginController::send_verification('phone', $user);
+        LoginController::send_verification('phone', $user, $user->phone_number);
         return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id])->with(['not-show', 'true']);
 
     }

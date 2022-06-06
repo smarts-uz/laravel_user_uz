@@ -41,7 +41,7 @@ class LoginController extends Controller
 
 
     public function customRegister(UserRegisterRequest $request)
-    {  
+    {
         $data = $request->validated();
         $data['password'] = Hash::make($request->password);
         unset( $data['password_confirmation']);
@@ -58,7 +58,7 @@ class LoginController extends Controller
 
     }
 
-    public static function send_verification($needle,$user)
+    public static function send_verification($needle, $user, $phone=null)
     {
         if ($needle == 'email') {
             $code = sha1(time());
@@ -69,7 +69,7 @@ class LoginController extends Controller
             Mail::to($user->email)->send(new VerifyEmail($data));
         } else {
             $code = rand(100000, 999999);
-            (new SmsService())->send($user->phone_number, $code);
+            (new SmsService())->send($phone, $code);
         }
         $user->verify_code = $code;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
@@ -86,7 +86,8 @@ class LoginController extends Controller
 
     public function send_phone_verification()
     {
-        self::send_verification('phone', auth()->user());
+        $user = auth()->user();
+        self::send_verification('phone', $user, $user->phone_number);
         return redirect()->back()->with([
             'code' => __('Код отправлен!')
         ]);
@@ -105,7 +106,7 @@ class LoginController extends Controller
                 $user->save();
                 $result = true;
                 if ($needle != 'is_phone_number_verified' && !$user->is_phone_number_verified)
-                    self::send_verification('phone',$user);
+                    self::send_verification('phone', $user, $user->phone_number);
             } else {
                 $result = false;
             }
@@ -196,7 +197,7 @@ class LoginController extends Controller
 
             $user->phone_number = $request->phone_number;
             $user->save();
-            self::send_verification('phone_number', auth()->user());
+            self::send_verification('phone', $user, $user->phone_number);
 
             return redirect()->back()->with([
                 'code' => __('Код отправлен!')
