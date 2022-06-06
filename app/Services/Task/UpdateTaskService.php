@@ -222,7 +222,7 @@ class UpdateTaskService
         if (!$user->is_phone_number_verified || $user->phone_number != $data['phone_number']) {
             $data['is_phone_number_verified'] = 0;
             $user->update($data);
-            LoginController::send_verification('phone', $user);
+            LoginController::send_verification('phone', $user, $user->phone_number);
             return $this->get_verify($task, $user);
         }
 
