@@ -80,8 +80,8 @@ class ReportService
             public function child_report($id) {
                 $query = Category::where('parent_id',$id)->get();
                 return Datatables::of($query)
-                    ->addColumn('open_count', function($id){
-                        $cat = Category::where('parent_id', $id)->pluck('id')->toarray();
+                    ->addColumn('open_count', function($app){
+                        $cat = Category::where('parent_id', $app->id)->pluck('id')->toarray();
                         $application = Task::where('category_id', $cat)->where('status', 1)->get();
                         return count($application);
                     })

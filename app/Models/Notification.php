@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use TCG\Voyager\Traits\Translatable;
 
 
 class Notification extends Model
 {
     use HasFactory;
-    use Translatable;
+    use Translatable, SoftDeletes;
 
     protected $translatable = ['description'];
     protected $fillable = ['user_id', 'performer_id', 'service_id', 'task_id', 'cat_id', 'description', 'name_task', 'type', 'is_read'];
