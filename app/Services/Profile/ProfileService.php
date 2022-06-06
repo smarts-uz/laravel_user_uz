@@ -140,9 +140,9 @@ class ProfileService
         $item ->transactions =  $item ->user->transactions()->paginate(15);
         $item->top_users = User::where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
         ->limit(20)->pluck('id')->toArray();
-        $item ->review_rating = User::find($user->id)->review_rating;
-        $item ->review_good = User::find($user->id)->review_good;
-        $item ->review_bad = User::find($user->id)->review_bad;
+        $item ->review_rating = $user->review_rating;
+        $item ->review_good = $user->review_good;
+        $item ->review_bad = $user->review_bad;
         return $item;
     }
     public function profileData($user){
@@ -254,18 +254,24 @@ class ProfileService
             $balance = 0;
         $transactions = All_transaction::query()->where(['user_id' => $user->id]);
         $period = $request->get('period');
+        $from = $request->get('from');
+        $to = $request->get('to');
         $type = $request->get('type');
         if ($type == 'in') {
             $transactions = $transactions->whereIn('method', ['Payme', 'Click', 'Paynet']);
         } elseif ($type == 'out') {
             $transactions = $transactions->where('method', '=', 'Task');
         }
-        if ($period == 'month') {
-            $transactions = $transactions->where('created_at', '>', Carbon::now()->subMonth()->toDateTimeString());
-        } elseif ($period == 'week') {
-            $transactions = $transactions->where('created_at', '>', Carbon::now()->subWeek()->toDateTimeString());
-        } elseif ($period == 'year') {
-            $transactions = $transactions->where('created_at', '>', Carbon::now()->subYear()->toDateTimeString());
+        $now = Carbon::now();
+        if ($period) {
+            $transactions = match ($period) {
+                'month' => $transactions->where('created_at', '>', $now->subMonth()),
+                'week' => $transactions->where('created_at', '>', $now->subWeek()),
+                'year' => $transactions->where('created_at', '>', $now->subYear()),
+            };
+        } elseif ($from && $to) {
+            $transactions = $transactions->where('created_at', '>', $from)
+                ->where('created_at', '<', $to);
         }
         return [
             'balance' => $balance,
