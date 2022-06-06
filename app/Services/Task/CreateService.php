@@ -3,12 +3,19 @@
 namespace App\Services\Task;
 
 use App\Models\Address;
+use App\Models\Category;
 use App\Models\CustomFieldsValue;
 use Illuminate\Support\Arr;
 
 class CreateService
 {
 
+    public function name($request)
+    {
+        $current_category = Category::findOrFail($request->category_id);
+
+        return view("create.name", compact('current_category'));
+    }
     public function syncCustomFields($task){
         $task->custom_field_values()->delete();
         $this->attachCustomFields($task);

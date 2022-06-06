@@ -36,6 +36,8 @@ class SocialAPIController extends Controller
             if ($user == null) {
                 $user = User::create([
                     $provider . '_id' => $providerUser->id,
+                    'name' => $providerUser->name,
+                    'email' => $providerUser->email
                 ]);
                 $wallBal = new WalletBalance();
                 $wallBal->balance = setting('admin.bonus');

@@ -31,6 +31,7 @@ class CreateController extends Controller
     protected $service;
     protected $custom_field_service;
 
+    
     public function __construct()
     {
         $this->service = new CreateService();
@@ -40,12 +41,7 @@ class CreateController extends Controller
 
     public function name(Request $request)
     {
-
-        $current_category = Category::findOrFail($request->category_id);
-
-        return view("create.name", compact('current_category'));
-
-
+        return $this->service->name($request);
     }
 
     public function name_store(Request $request)
@@ -209,19 +205,16 @@ class CreateController extends Controller
 
         $data = $request->validated();
 
-        if (!$user->is_phone_number_verified && $user->phone_number != $data['phone_number']) {
-            $data['is_phone_number_verified'] = 0;
-            $user->update($data);
-            LoginController::send_verification('phone', $user);
-            return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
-        }elseif ($user->phone_number != $data['phone_number']) {
-            LoginController::send_verification_for_task_phone($task, $data['phone_number']);
+        if (!($user->is_phone_number_verified && $user->phone_number == $data['phone_number'])) {
+            LoginController::send_verification('phone', $user, $data['phone_number']);
+            $task->phone = $data['phone_number'];
+            $task->save();
             return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
         }
 
         $task->status = 1;
         $task->user_id = $user->id;
-        $task->phone = $user->phone_number;
+        $task->phone = $data['phone_number'];
 
         $performer_id = session()->get('performer_id_for_task');
         if ($performer_id) {
@@ -256,7 +249,7 @@ class CreateController extends Controller
         $data = $request->validated();
         $data['password'] = Hash::make('login123');
         $user = User::create($data);
-        LoginController::send_verification('phone', $user);
+        LoginController::send_verification('phone', $user, $user->phone_number);
 
         return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
 
@@ -266,7 +259,7 @@ class CreateController extends Controller
     {
         $request->validated();
         $user = User::query()->where('phone_number', $request->phone_number)->first();
-        LoginController::send_verification('phone', $user);
+        LoginController::send_verification('phone', $user, $user->phone_number);
         return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id])->with(['not-show', 'true']);
 
     }
