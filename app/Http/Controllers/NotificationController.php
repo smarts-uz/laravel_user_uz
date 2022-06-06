@@ -34,6 +34,13 @@ class NotificationController extends VoyagerBaseController
         return redirect('/detailed-tasks/' . $notification->task_id);
     }
 
+    public function setToken(Request $request)
+    {
+        $request->validate(['token' => 'required']);
+        auth()->user()->update(['firebase_token' => $request->token]);
+        return $this->success();
+    }
+
     public function store(Request $request)
     {
         $slug = $this->getSlug($request);

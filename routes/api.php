@@ -115,7 +115,7 @@ Route::middleware('custom.auth:api')->group(function () {
         Route::post('/description/edit', [ProfileAPIController::class, 'editDesctiption']); //end +
         Route::post('/payment', [ProfileAPIController::class, 'payment']);
         Route::post('/categories-subscribe', [ProfileAPIController::class, 'subscribeToCategory']);
-
+        Route::post('/firebase-token', [NotificationController::class, 'setToken']);
         Route::prefix('/settings')->group(function () {
             Route::get('/', [ProfileAPIController::class, 'editData']); //end +
             Route::post('/update', [ProfileAPIController::class, 'updateData']); //end +
