@@ -262,6 +262,10 @@ class ProfileService
         }
         if ($period == 'month') {
             $transactions = $transactions->where('created_at', '>', Carbon::now()->subMonth()->toDateTimeString());
+        } elseif ($period == 'week') {
+            $transactions = $transactions->where('created_at', '>', Carbon::now()->subWeek()->toDateTimeString());
+        } elseif ($period == 'year') {
+            $transactions = $transactions->where('created_at', '>', Carbon::now()->subYear()->toDateTimeString());
         }
         return [
             'balance' => $balance,
