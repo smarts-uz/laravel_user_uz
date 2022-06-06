@@ -31,6 +31,7 @@ class CreateController extends Controller
     protected $service;
     protected $custom_field_service;
 
+    
     public function __construct()
     {
         $this->service = new CreateService();
@@ -45,21 +46,41 @@ class CreateController extends Controller
 
     public function name_store(Request $request)
     {
-        return $this->service->name_store($request);
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'category_id' => 'required'
+        ]);
+        $task = Task::create($data);
+        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_NAME, $request);
+
+        return redirect()->route("task.create.custom.get", $task->id);
     }
 
 
     public function custom_get(Task $task)
     {
 
-        return $this->service->custom_get($task);
+        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM);
+        if (!$task->category->customFieldsInCustom->count()) {
+            if ($task->category->parent->remote){
+                return redirect()->route("task.create.remote", $task->id);
+            }
+            return redirect()->route('task.create.address', $task->id);
+        }
+
+        return view('create.custom', compact('task','custom_fields'));
 
     }
 
     public function custom_store(Request $request, Task $task)
     {
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM, $request);
-        return $this->service->custom_store($task, $request);
+
+        if ($task->category->parent->remote){
+            return redirect()->route("task.create.remote", $task->id);
+        }
+
+        return redirect()->route('task.create.address', $task->id);
     }
 
     public function remote_get(Task $task){
@@ -68,7 +89,21 @@ class CreateController extends Controller
 
     public function remote_store(Request $request,Task $task)
     {
-        return $this->service->remote_store($task, $request);
+        $data = $request->validate(['radio' => 'required']);
+
+        if ($data['radio'] === 'address')
+        {
+            return redirect()->route("task.create.address", $task->id);
+        }
+
+        if ($data['radio'] === 'remote')
+        {
+            $task->remote = 1;
+            $task->save();
+            return redirect()->route("task.create.date", $task->id);
+        }
+
+        return back();
     }
 
     public function address(Task $task)
@@ -172,7 +207,6 @@ class CreateController extends Controller
 
         if (!($user->is_phone_number_verified && $user->phone_number == $data['phone_number'])) {
             LoginController::send_verification('phone', $user, $data['phone_number']);
-            return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
         }
 
         $task->status = 1;
