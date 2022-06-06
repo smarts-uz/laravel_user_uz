@@ -206,6 +206,7 @@ class CreateController extends Controller
 
         if (!($user->is_phone_number_verified && $user->phone_number == $data['phone_number'])) {
             LoginController::send_verification('phone', $user, $data['phone_number']);
+            return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
         }
 
         $task->status = 1;
