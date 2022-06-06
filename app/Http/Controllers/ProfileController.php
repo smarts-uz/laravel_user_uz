@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PersonalInfoRequest;
 use App\Http\Requests\PortfolioRequest;
 use App\Http\Requests\User\PerformerCreateRequest;
 use App\Http\Requests\UserPasswordRequest;
@@ -235,14 +236,9 @@ class ProfileController extends Controller
         return view('personalinfo.contact');
     }
 
-    public function verificationContactStore(Request $request)
+    public function verificationContactStore(PersonalInfoRequest $request)
     {
-        $request->phone_number= str_replace(['(',')','-'], '', $request->phone_number);
-        dd( $request->phone_number);
-        $data = $request->validate([
-            'email' => 'required',
-            'phone_number' => 'required|integer|min:13',
-        ]);
+        $data = $request->validated();
         $user = auth()->user();
         $user->update($data);
 

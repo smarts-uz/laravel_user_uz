@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\LoginController;
+use App\Http\Requests\CreateContactRequest;
 use App\Http\Requests\TaskDateRequest;
 use App\Http\Requests\UserPhoneRequest;
 use App\Http\Requests\UserRequest;
@@ -39,12 +40,7 @@ class CreateController extends Controller
 
     public function name(Request $request)
     {
-
-        $current_category = Category::findOrFail($request->category_id);
-
-        return view("create.name", compact('current_category'));
-
-
+        $this->service->name($request);
     }
 
     public function name_store(Request $request)
@@ -159,23 +155,24 @@ class CreateController extends Controller
         return redirect()->route('task.create.note', $task->id);
 
     }
+    public function images_store(Request $request,Task $task)
+    {
+            $imgData = json_decode($task->photos);
+            foreach ($request->file('images') as $uploadedImage)
+            {
+                $filename = time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path() . '/storage/uploads/', $filename);
+                $imgData[] = $filename;
+                $task->photos = $imgData;
+                $task->save();
+            }
 
+    }
     public function note(Task $task)
     {
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_NOTE);
 
         return view('create.notes', compact('task','custom_fields'));
-    }
-
-    public function images_store(Request $request)
-    {
-        $imgData = session()->has('images') ? json_decode(session('images')):[];
-        foreach ($request->file('images') as $uploadedImage) {
-            $filename = time() . '_' . $uploadedImage->getClientOriginalName();
-            $uploadedImage->move(public_path() . '/storage/uploads/', $filename);
-            $imgData[] = $filename;
-        }
-        session()->put('images', json_encode($imgData));
     }
     public function note_store(Task $task, Request $request)
     {
@@ -188,9 +185,6 @@ class CreateController extends Controller
         } else {
             $data['docs'] = 0;
         }
-        $data['photos'] = session()->has('images') ? session('images') : '[]';
-
-        session()->forget('images');
         $task->update($data);
         return redirect()->route("task.create.contact", $task->id);
     }
@@ -204,18 +198,14 @@ class CreateController extends Controller
     }
 
 
-    public function contact_store(Task $task, Request $request)
+    public function contact_store(Task $task, CreateContactRequest $request)
     {
-        $request->phone_number= str_replace(['(',')','-'], '', $request->phone_number);
         $user = auth()->user();
 
-        $data = $request->validate([
-            'phone_number' => 'required|integer|min:13|unique:users,phone_number,' . $user->id
-        ]);
+        $data = $request->validated();
 
         if (!($user->is_phone_number_verified && $user->phone_number == $data['phone_number'])) {
             LoginController::send_verification('phone', $user, $data['phone_number']);
-            return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
         }
 
         $task->status = 1;
