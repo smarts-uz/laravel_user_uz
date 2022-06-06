@@ -40,7 +40,7 @@ class CreateController extends Controller
 
     public function name(Request $request)
     {
-        $this->service->name($request);
+        return $this->service->name($request);
     }
 
     public function name_store(Request $request)
