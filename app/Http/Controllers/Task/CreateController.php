@@ -45,41 +45,21 @@ class CreateController extends Controller
 
     public function name_store(Request $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'category_id' => 'required'
-        ]);
-        $task = Task::create($data);
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_NAME, $request);
-
-        return redirect()->route("task.create.custom.get", $task->id);
+        return $this->service->name_store($request);
     }
 
 
     public function custom_get(Task $task)
     {
 
-        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM);
-        if (!$task->category->customFieldsInCustom->count()) {
-            if ($task->category->parent->remote){
-                return redirect()->route("task.create.remote", $task->id);
-            }
-            return redirect()->route('task.create.address', $task->id);
-        }
-
-        return view('create.custom', compact('task','custom_fields'));
+        return $this->service->custom_get($task);
 
     }
 
     public function custom_store(Request $request, Task $task)
     {
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM, $request);
-
-        if ($task->category->parent->remote){
-            return redirect()->route("task.create.remote", $task->id);
-        }
-
-        return redirect()->route('task.create.address', $task->id);
+        return $this->service->custom_store($task, $request);
     }
 
     public function remote_get(Task $task){
@@ -88,21 +68,7 @@ class CreateController extends Controller
 
     public function remote_store(Request $request,Task $task)
     {
-        $data = $request->validate(['radio' => 'required']);
-
-        if ($data['radio'] === 'address')
-        {
-            return redirect()->route("task.create.address", $task->id);
-        }
-
-        if ($data['radio'] === 'remote')
-        {
-            $task->remote = 1;
-            $task->save();
-            return redirect()->route("task.create.date", $task->id);
-        }
-
-        return back();
+        return $this->service->remote_store($task, $request);
     }
 
     public function address(Task $task)

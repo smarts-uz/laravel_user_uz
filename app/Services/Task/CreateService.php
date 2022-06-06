@@ -22,6 +22,20 @@ class CreateService
 
     }
 
+    public function name_store($request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'category_id' => 'required'
+        ]);
+        $task = Task::create($data);
+        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_NAME, $request);
+
+        return redirect()->route("task.create.custom.get", $task->id);
+    }
+
+
+
 
     public function attachCustomFields($task){
         foreach ($task->category->custom_fields as $data) {
