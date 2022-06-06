@@ -168,6 +168,11 @@ class User extends \TCG\Voyager\Models\User
                 $portfolio->delete();
             }
 
+            foreach ($user->notifications() as $notification)
+            {
+                $notification->delete();
+            }
+
             $user->walletBalance()->delete();
         });
     }
