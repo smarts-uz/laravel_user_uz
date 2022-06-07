@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -68,15 +67,21 @@
 {{ Aire::open()
   ->route('request')
   ->enctype("multipart/form-data")
-  ->post() }}
-<div style="text-align: center; display: flex; justify-content: end; align-items: center; column-gap: 10px; margin-right: 20px;">
-    <div>    {{Aire::month('m', 'Месяц')->value(Illuminate\Support\Facades\Cache::get('date'))->name('date')}}
-    </div>
+  ->post()
+  ->class('aire-picker')
+  ->id('aire-picker')
+   }}
+<div style="text-align: center; display: flex; justify-content: end; align-items: baseline; column-gap: 10px; margin-right: 20px;">
+    <div class="align-content-center"><strong>За период с</strong></div>
+    {{Aire::month('m', '')->value(Illuminate\Support\Facades\Cache::get('date'))->name('date')}}
+    <div class="align-content-center"><strong>до</strong></div>
+    {{Aire::month('m', '')->value(Illuminate\Support\Facades\Cache::get('date_1'))->name('date_1')}}
 
     <button type="submit" class="btn btn-success flex" >Выбрать</button>
 </div>
 {{ Aire::close() }}
-@if(Illuminate\Support\Facades\Cache::get('date') != null)
+@if((Illuminate\Support\Facades\Cache::get('date') && Illuminate\Support\Facades\Cache::get('date_1')) != null)
+
     <table id="example" class="stripe wrap hover order-column cell-border" style="width: 100%; border-collapse: collapse !important;">
         <thead class="border border-dark">
         <tr>
