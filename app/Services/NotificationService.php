@@ -5,6 +5,7 @@ namespace App\Services;
 
 
 use App\Events\MyEvent;
+use App\Events\SendNotificationEvent;
 use App\Mail\MessageEmail;
 use App\Models\Notification;
 use App\Models\User;
@@ -72,10 +73,8 @@ class NotificationService
             }
         }
 
-        Http::post('ws.smarts.uz/api/send-notification', [
-            'user_ids' => $performer_ids,
-            'project' => 'user',
-            'data' => ['url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently']
+        self::sendNotificationRequest($performer_ids, [
+            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
         ]);
     }
 
@@ -99,20 +98,40 @@ class NotificationService
             ]);
         }
 
-        Http::post('ws.smarts.uz/api/send-notification', [
-            'user_ids' => $user_ids,
-            'project' => 'user',
-            'data' => ['url' => $slug . '/' . $not->id, 'name' => $not->title, 'time' => 'recently']
+        self::sendNotificationRequest($user_ids, [
+            'url' => $slug . '/' . $not->id, 'name' => $not->title, 'time' => 'recently'
+        ]);
+        Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => 'key=' . env('FCM_SERVER_KEY')
+        ])->post('https://fcm.googleapis.com/fcm/send', [
+            [
+                "to" => "",
+                "collapse_key" => "type_a",
+                "notification" => [
+                    "title" => "Test uchun title",
+                    "body" => "Notification user uz BOdy"
+                ],
+                "data" => [
+                    "title" => "Создана новая задача",
+                    "type" => 2,
+                    "task_id" => 2721,
+                    "task_name" => "firebase task",
+                    "user_id" => 123,
+                    "user_name" => "Fireman",
+                    "created_at" => "06.06.2022"
+                ]
+            ]
         ]);
     }
 
     public static function sendNotificationRequest($user_ids, $data)
     {
-        return Http::post('ws.smarts.uz/api/send-notification', [
-            'user_ids' => $user_ids,
-            'project' => 'user',
-            'data' => $data
-        ]);
+        foreach ($user_ids as $user_id) {
+            broadcast(
+                new SendNotificationEvent(json_encode($data, $assoc = true), $user_id)
+            )->toOthers();
+        }
     }
 
     public static function sendTaskSelectedNotification($task)
@@ -128,11 +147,10 @@ class NotificationService
             "type" => Notification::TASK_SELECTED
         ]);
 
-        return Http::post('ws.smarts.uz/api/send-notification', [
-            'user_ids' => [$user_id],
-            'project' => 'user',
-            'data' => ['url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently']
+        self::sendNotificationRequest([$user_id], [
+            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
         ]);
+        return true;
     }
 
     public function selectPerformer()
