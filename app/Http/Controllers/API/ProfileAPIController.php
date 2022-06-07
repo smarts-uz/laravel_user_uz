@@ -286,6 +286,29 @@ class ProfileAPIController extends Controller
         return response()->json($response);
     }
 
+
+    /**
+     * @OA\DELETE(
+     *     path="/api/video/delete",
+     *     tags={"Profile"},
+     *     summary="Profile video delete",
+     *     @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function videoDelete(){
         $user = auth()->user();
         $user->youtube_link = null;
@@ -470,6 +493,42 @@ class ProfileAPIController extends Controller
 
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/payment",
+     *     tags={"Profile"},
+     *     summary="Payment method",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="paymethod",
+     *                    description="Click, PayMe, Paynet - bittasini yozing",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function payment(Request $request)
     {
         return $this->profileService->payment($request);
@@ -538,7 +597,7 @@ class ProfileAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
-     *                    property="image",
+     *                    property="avatar",
      *                    type="file",
      *                 ),
      *             ),
@@ -585,7 +644,17 @@ class ProfileAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
-     *                    property="email",
+     *                    property="name",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="gender",
+     *                    description="1 yoki 0",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="born_date",
+     *                    description="2022-06-03 12:00:0 - manashu formatda kiritiladi",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
@@ -593,15 +662,13 @@ class ProfileAPIController extends Controller
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
-     *                    property="phone_number",
+     *                    property="email",
      *                    type="string",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="description",
-     *                    type="string",
+     *                    format="email",
      *                 ),
      *                 @OA\Property (
      *                    property="location",
+     *                    description="Bo`sh qoldirsa boladi",
      *                    type="string",
      *                 ),
      *             ),
@@ -995,12 +1062,83 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/categories-subscribe",
+     *     tags={"Profile"},
+     *     summary="Category subscribe",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="category",
+     *                    type="integer",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function subscribeToCategory(Request $request)
     {
         $response = $this->profileService->subscribeToCategory($request);
         return response()->json($response);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/settings/change-lang",
+     *     tags={"Profile Settings"},
+     *     summary="Change lang",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="lang",
+     *                    description="ru yoki uz",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function changeLanguage(Request $request)
     {
         app()->setLocale($request->get('lang'));

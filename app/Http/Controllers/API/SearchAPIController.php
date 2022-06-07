@@ -78,10 +78,10 @@ class SearchAPIController extends Controller
         return TaskIndexResource::collection($data);
     }
 
-    public function my_tasks(){
+    /* public function my_tasks(){
         $tasks = Task::where('user_id', auth()->id());
         return response()->json($tasks);
-    }
+    } */
 
     /* public function search(Request $request){
         $s = $request->s;
