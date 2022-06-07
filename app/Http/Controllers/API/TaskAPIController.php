@@ -6,6 +6,7 @@ use App\Http\Requests\Api\TaskAddressRequest;
 use App\Http\Requests\Api\TaskBudgetRequest;
 use App\Http\Requests\Api\TaskContactsRequest;
 use App\Http\Requests\Api\TaskCustomRequest;
+use App\Http\Requests\Api\TaskDateRequest;
 use App\Http\Requests\Api\TaskFilterRequest;
 use App\Http\Requests\Api\TaskNameRequest;
 use App\Http\Requests\Api\TaskNoteRequest;
@@ -678,7 +679,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function date(\App\Http\Requests\Api\TaskDateRequest $request)
+    public function date(TaskDateRequest $request)
     {
         return $this->success($this->create_task_service->date_store($request->validated()));
     }
@@ -1412,7 +1413,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateDate(\App\Http\Requests\Api\TaskDateRequest $request, Task $task)
+    public function updateDate(TaskDateRequest $request, Task $task)
     {
         return $this->success($this->update_task_service->updateDate($task, $request->validated()));
     }
