@@ -582,8 +582,7 @@ class ProfileAPIController extends Controller
      */
     public function change_password(ProfilePasswordRequest $request)
     {
-        $response = $this->profileService->changePassword($request);
-        return response()->json($response);
+        return $this->profileService->changePassword($request->validated());
     }
 
     /**

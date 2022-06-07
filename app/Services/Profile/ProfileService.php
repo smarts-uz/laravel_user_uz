@@ -329,9 +329,8 @@ class ProfileService
         }
     }
 
-    public function changePassword($request)
+    public function changePassword($data)
     {
-        $data = $request->validated();
         $user = auth()->user();
         if (Hash::check($data['old_password'], $user->password)) {
             $user->update(['password' => Hash::make($data['password'])]);
