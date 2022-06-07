@@ -343,9 +343,8 @@ class ProfileService
         }
         return response()->json([
             'status' => $status,
-            'data' => [
-                'message' => $message
-            ]
+            'message' => $message,
+            'data' => []
         ]);
     }
 
