@@ -156,6 +156,16 @@ class TaskAPIController extends Controller
      *                    property="price",
      *                    type="integer",
      *                 ),
+     *                 @OA\Property (
+     *                    property="notificate",
+     *                    description="0 - xabar kelmasin, 1 - xabar kelsin",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="not_free",
+     *                    description="0 - bepul, 1 - pullik",
+     *                    type="integer",
+     *                 ),
      *             ),
      *         ),
      *     ),
@@ -499,18 +509,6 @@ class TaskAPIController extends Controller
      *                    property="task_id",
      *                    type="integer",
      *                 ),
-     *                 @OA\Property (
-     *                    property="weight",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="length",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="date_t",
-     *                    type="integer",
-     *                 ),
      *             ),
      *         ),
      *     ),
@@ -752,8 +750,8 @@ class TaskAPIController extends Controller
      *                 ),
      *                 @OA\Property (
      *                    property="docs",
-     *                    description="true - taqdim etilsin, false - taqdim etilmasin",
-     *                    type="boolean",
+     *                    description="true - 1, false - 0",
+     *                    type="integer",
      *                 ),
      *             ),
      *         ),
@@ -1003,6 +1001,37 @@ class TaskAPIController extends Controller
         ]);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/change-task/{task}",
+     *     tags={"Change Task"},
+     *     summary="Get Task",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function getTask(Task $task)
     {
         return $task;
@@ -1473,7 +1502,7 @@ class TaskAPIController extends Controller
      *                 ),
      *                 @OA\Property (
      *                    property="docs",
-     *                    description="true - taqdim etilsin, false - taqdim etilmasin",
+     *                    description="true - 1, false - 0",
      *                    type="boolean",
      *                 ),
      *             ),
@@ -1662,6 +1691,53 @@ class TaskAPIController extends Controller
         return $this->update_task_service->verification($task, $request->validated());
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/task/{task}/complain",
+     *     tags={"Complain"},
+     *     summary="Task complain",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="compliance_type_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="text",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function complain(TaskComplaintRequest $request, $id)
     {
         $data = $request->validated();

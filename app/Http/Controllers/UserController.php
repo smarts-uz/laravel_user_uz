@@ -152,12 +152,25 @@ class UserController extends Controller
             ['sms_otp' => 'required'],
             ['sms_otp.required' => 'Требуется заполнение!']
         );
-
+       
         if ($request->sms_otp == $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-                $user->update(['is_phone_number_verified' => 1]);
-                Task::findOrFail($request->for_ver_func)->update(['status' => 1, 'user_id' => $user->id, 'phone' => $user->phone_number]);
-                auth()->login($user);
+               if($task->phone==null && $user->phone_number != $task->phone && $user->is_phone_number_verified==0){
+                    $user->update(['is_phone_number_verified' => 0]);
+               }
+               else{
+                    $user->update(['is_phone_number_verified' => 1]);
+               }
+               if($task->phone==null){
+                    Task::findOrFail($request->for_ver_func)->update(['status' => 1, 'user_id' => $user->id,'phone'=>$user->phone_number]);
+                    auth()->login($user);
+               }
+               else{    
+                    Task::findOrFail($request->for_ver_func)->update(['status' => 1, 'user_id' => $user->id,]);
+                    auth()->login($user);
+
+               }
+               
 
                 // send notification
                 NotificationService::sendTaskNotification($task, $user->id);
