@@ -16,6 +16,26 @@
         }
     ],
     "paths": {
+        "\/api\/blog-news": {
+            "get": {
+                "tags": [
+                    "Blog News"
+                ],
+                "summary": "Blogs",
+                "operationId": "3b7ff65ea7f758f5cd712df2a0e2ed2f",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
         "\/api\/categories": {
             "get": {
                 "tags": [
@@ -1031,7 +1051,8 @@
                                 "as_performer",
                                 "created_at",
                                 "updated_at",
-                                "reviewer_name"
+                                "reviewer_name",
+                                "deleted_at"
                             ],
                             "type": "string"
                         }
@@ -1047,6 +1068,14 @@
                                 "desc"
                             ],
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "showSoftDeleted",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
                         }
                     },
                     {
@@ -1397,6 +1426,31 @@
                 ]
             }
         },
+        "\/api\/video\/delete": {
+            "delete": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Profile video delete",
+                "operationId": "8fa2ad0b628f81d0a4f380ca2c372b98",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "\/api\/profile\/reviews": {
             "get": {
                 "tags": [
@@ -1537,6 +1591,47 @@
                 ]
             }
         },
+        "\/api\/payment": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Payment method",
+                "operationId": "881c23e04859e2e118f8b505c9b4656b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "paymethod": {
+                                        "description": "Click, PayMe, Paynet - bittasini yozing",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "\/api\/profile\/settings\/password\/change": {
             "post": {
                 "tags": [
@@ -1599,7 +1694,7 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "image": {
+                                    "avatar": {
                                         "type": "file"
                                     }
                                 },
@@ -1639,19 +1734,26 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "email": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "gender": {
+                                        "description": "1 yoki 0",
+                                        "type": "integer"
+                                    },
+                                    "born_date": {
+                                        "description": "2022-06-03 12:00:0 - manashu formatda kiritiladi",
                                         "type": "string"
                                     },
                                     "age": {
                                         "type": "integer"
                                     },
-                                    "phone_number": {
-                                        "type": "string"
-                                    },
-                                    "description": {
-                                        "type": "string"
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
                                     },
                                     "location": {
+                                        "description": "Bo`sh qoldirsa boladi",
                                         "type": "string"
                                     }
                                 },
@@ -1961,6 +2063,87 @@
                         "description": "Forbidden"
                     }
                 }
+            }
+        },
+        "\/api\/categories-subscribe": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Category subscribe",
+                "operationId": "833b91843673bf7b69937dcfcd7b9b42",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "category": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/settings\/change-lang": {
+            "post": {
+                "tags": [
+                    "Profile Settings"
+                ],
+                "summary": "Change lang",
+                "operationId": "191e78550fc415c74b5e6074f70b6c35",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "lang": {
+                                        "description": "ru yoki uz",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
             }
         },
         "\/api\/ref": {
@@ -2748,59 +2931,25 @@
                 ]
             }
         },
-        "\/api\/login\/callback": {
+        "\/api\/social-login": {
             "post": {
                 "tags": [
-                    "Social"
+                    "Socials"
                 ],
-                "summary": "Facebook",
-                "operationId": "7a36dab6b375c9ecdfa12d3d58d9bd75",
+                "summary": "Socials Google and Facebook",
+                "operationId": "35999b01d9fe87e696c04c8f0c0ab6be",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "google_id": {
+                                    "type": {
+                                        "description": "0 - bu Google",
                                         "type": "integer"
                                     },
-                                    "facebook_id": {
-                                        "type": "integer"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                }
-            }
-        },
-        "\/api\/login\/google\/callback": {
-            "post": {
-                "tags": [
-                    "Social"
-                ],
-                "summary": "Google",
-                "operationId": "f1b24043f6c0dff2c930a82b5494d8ab",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart\/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "id": {
-                                        "type": "integer"
+                                    "access_token": {
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -2908,6 +3057,14 @@
                                         "type": "string"
                                     },
                                     "price": {
+                                        "type": "integer"
+                                    },
+                                    "notificate": {
+                                        "description": "0 - xabar kelmasin, 1 - xabar kelsin",
+                                        "type": "integer"
+                                    },
+                                    "not_free": {
+                                        "description": "0 - bepul, 1 - pullik",
                                         "type": "integer"
                                     }
                                 },
@@ -3174,15 +3331,6 @@
                                 "properties": {
                                     "task_id": {
                                         "type": "integer"
-                                    },
-                                    "weight": {
-                                        "type": "integer"
-                                    },
-                                    "length": {
-                                        "type": "integer"
-                                    },
-                                    "date_t": {
-                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -3419,8 +3567,8 @@
                                         "type": "string"
                                     },
                                     "docs": {
-                                        "description": "true - taqdim etilsin, false - taqdim etilmasin",
-                                        "type": "boolean"
+                                        "description": "true - 1, false - 0",
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -3696,6 +3844,39 @@
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Change Task"
+                ],
+                "summary": "Get Task",
+                "operationId": "b2146c0c45344ee16d99f90154f3c6e1",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -4063,7 +4244,7 @@
                                         "type": "string"
                                     },
                                     "docs": {
-                                        "description": "true - taqdim etilsin, false - taqdim etilmasin",
+                                        "description": "true - 1, false - 0",
                                         "type": "boolean"
                                     }
                                 },
@@ -4228,6 +4409,59 @@
                                     "sms_otp": {
                                         "description": "Telefonga kelgan SMS code",
                                         "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/task\/{task}\/complain": {
+            "post": {
+                "tags": [
+                    "Complain"
+                ],
+                "summary": "Task complain",
+                "operationId": "e7c08bf1f346280ffd69969a4a72f3a1",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "compliance_type_id": {
+                                        "type": "integer"
+                                    },
+                                    "text": {
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -4492,6 +4726,248 @@
                 ],
                 "summary": "User logout",
                 "operationId": "755cf3bc351a4bb58a6c9bce9f16e4fb",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/notifications": {
+            "get": {
+                "tags": [
+                    "notifications"
+                ],
+                "summary": "notifications index",
+                "operationId": "notifications_index",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Global search",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "length",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "description": "Sort by column",
+                        "required": false,
+                        "schema": {
+                            "enum": [
+                                "id",
+                                "created_at",
+                                "updated_at",
+                                "description",
+                                "user_id",
+                                "service_id",
+                                "task_id",
+                                "cat_id",
+                                "name_task",
+                                "type",
+                                "is_read",
+                                "performer_id",
+                                "deleted_at",
+                                "notification_belongsto_user_relationship",
+                                "notification_hasmany_service_relationship"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort_order",
+                        "in": "query",
+                        "description": "Sort by direction",
+                        "required": false,
+                        "schema": {
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "showSoftDeleted",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "filters[created_at]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
+                        }
+                    },
+                    {
+                        "name": "filters[description]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[user_id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[service_id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[id][]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#\/components\/schemas\/VoyagerNotificationsBrowseResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "$ref": "#\/components\/schemas\/Links"
+                                        },
+                                        "meta": {
+                                            "$ref": "#\/components\/schemas\/Meta"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "notifications"
+                ],
+                "summary": "notifications store",
+                "operationId": "notifications_store",
+                "requestBody": {
+                    "$ref": "#\/components\/requestBodies\/VoyagerNotificationsStoreRequest"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#\/components\/schemas\/VoyagerNotificationsReadResource"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/firebase-token": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Firebase token",
+                "operationId": "c221d40772a6cf70fa55b76c08d8a03f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "token": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -4918,8 +5394,9 @@
                                 "sms_notification",
                                 "email_notification",
                                 "reviews",
-                                "user_belongsto_role_relationship",
-                                "user_belongstomany_role_relationship"
+                                "deleted_at",
+                                "firebase_token",
+                                "user_belongsto_role_relationship"
                             ],
                             "type": "string"
                         }
@@ -4935,6 +5412,15 @@
                                 "desc"
                             ],
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "10,,20"
                         }
                     },
                     {
@@ -4954,7 +5440,7 @@
                         }
                     },
                     {
-                        "name": "filters[is_active]",
+                        "name": "filters[youtube_link]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -4971,15 +5457,6 @@
                         }
                     },
                     {
-                        "name": "filters[email_verified_at]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
-                        }
-                    },
-                    {
                         "name": "filters[avatar]",
                         "in": "query",
                         "required": false,
@@ -4988,41 +5465,11 @@
                         }
                     },
                     {
-                        "name": "filters[two_factor_secret]",
+                        "name": "filters[role_id]",
                         "in": "query",
                         "required": false,
                         "schema": {
                             "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[role_id][]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
-                            }
-                        }
-                    },
-                    {
-                        "name": "filters[two_factor_recovery_codes]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[user_belongstomany_role_relationship][]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
-                            }
                         }
                     },
                     {
@@ -5043,47 +5490,6 @@
                         }
                     },
                     {
-                        "name": "filters[phone_verified_at]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
-                        }
-                    },
-                    {
-                        "name": "filters[api_token]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[device_token]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[notification_type]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[socails]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "name": "filters[location]",
                         "in": "query",
                         "required": false,
@@ -5092,7 +5498,7 @@
                         }
                     },
                     {
-                        "name": "filters[views]",
+                        "name": "filters[last_name]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -5100,7 +5506,7 @@
                         }
                     },
                     {
-                        "name": "filters[google_id]",
+                        "name": "filters[description]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -5108,7 +5514,7 @@
                         }
                     },
                     {
-                        "name": "filters[facebook_id]",
+                        "name": "filters[is_email_verified]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -5116,7 +5522,16 @@
                         }
                     },
                     {
-                        "name": "filters[messenger_color]",
+                        "name": "filters[verify_expiration]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
+                        }
+                    },
+                    {
+                        "name": "filters[is_phone_number_verified]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -5124,7 +5539,7 @@
                         }
                     },
                     {
-                        "name": "filters[dark_mode]",
+                        "name": "filters[born_date]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -5132,11 +5547,36 @@
                         }
                     },
                     {
-                        "name": "filters[active_status]",
+                        "name": "filters[review_rating]",
                         "in": "query",
                         "required": false,
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[review_bad]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[review_good]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[last_seen]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
                         }
                     }
                 ],
@@ -5416,31 +5856,46 @@
                             "type": "string",
                             "nullable": true,
                             "enum": [
+                                "id",
                                 "name",
                                 "email",
                                 "password",
-                                "is_active",
-                                "email_verified_at",
+                                "youtube_link",
                                 "avatar",
-                                "two_factor_secret",
                                 "role_id",
-                                "user_belongsto_role_relationship",
-                                "two_factor_recovery_codes",
-                                "user_belongstomany_role_relationship",
                                 "age",
                                 "phone_number",
-                                "phone_verified_at",
                                 "api_token",
-                                "device_token",
-                                "notification_type",
-                                "socails",
                                 "location",
-                                "views",
-                                "google_id",
-                                "facebook_id",
-                                "messenger_color",
-                                "dark_mode",
-                                "active_status"
+                                "last_name",
+                                "active_status",
+                                "description",
+                                "is_email_verified",
+                                "verify_code",
+                                "verify_expiration",
+                                "is_phone_number_verified",
+                                "born_date",
+                                "review_rating",
+                                "review_bad",
+                                "review_good",
+                                "firstname",
+                                "lastname",
+                                "midname",
+                                "pinfl",
+                                "inn",
+                                "passport",
+                                "passport_expire_date",
+                                "phone",
+                                "address",
+                                "email_old",
+                                "phone_number_old",
+                                "system_notification",
+                                "news_notification",
+                                "last_seen",
+                                "gender",
+                                "sms_notification",
+                                "email_notification",
+                                "reviews"
                             ]
                         }
                     },
@@ -5453,31 +5908,46 @@
                             "items": {
                                 "type": "string",
                                 "enum": [
+                                    "id",
                                     "name",
                                     "email",
                                     "password",
-                                    "is_active",
-                                    "email_verified_at",
+                                    "youtube_link",
                                     "avatar",
-                                    "two_factor_secret",
                                     "role_id",
-                                    "user_belongsto_role_relationship",
-                                    "two_factor_recovery_codes",
-                                    "user_belongstomany_role_relationship",
                                     "age",
                                     "phone_number",
-                                    "phone_verified_at",
                                     "api_token",
-                                    "device_token",
-                                    "notification_type",
-                                    "socails",
                                     "location",
-                                    "views",
-                                    "google_id",
-                                    "facebook_id",
-                                    "messenger_color",
-                                    "dark_mode",
-                                    "active_status"
+                                    "last_name",
+                                    "active_status",
+                                    "description",
+                                    "is_email_verified",
+                                    "verify_code",
+                                    "verify_expiration",
+                                    "is_phone_number_verified",
+                                    "born_date",
+                                    "review_rating",
+                                    "review_bad",
+                                    "review_good",
+                                    "firstname",
+                                    "lastname",
+                                    "midname",
+                                    "pinfl",
+                                    "inn",
+                                    "passport",
+                                    "passport_expire_date",
+                                    "phone",
+                                    "address",
+                                    "email_old",
+                                    "phone_number_old",
+                                    "system_notification",
+                                    "news_notification",
+                                    "last_seen",
+                                    "gender",
+                                    "sms_notification",
+                                    "email_notification",
+                                    "reviews"
                                 ]
                             }
                         }
@@ -11378,6 +11848,7 @@
                                 "is_phone_verified",
                                 "verify_code",
                                 "verify_expiration",
+                                "deleted_at",
                                 "task_hasmany_custom_field_relationship",
                                 "task_belongsto_service_relationship",
                                 "task_belongsto_category_relationship"
@@ -11399,6 +11870,25 @@
                         }
                     },
                     {
+                        "name": "showSoftDeleted",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "filters[id][]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    {
                         "name": "filters[created_at]",
                         "in": "query",
                         "required": false,
@@ -11416,23 +11906,7 @@
                         }
                     },
                     {
-                        "name": "filters[address]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[address_add]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[return_to_b]",
+                        "name": "filters[remote]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -11475,14 +11949,6 @@
                         }
                     },
                     {
-                        "name": "filters[services]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "name": "filters[description]",
                         "in": "query",
                         "required": false,
@@ -11491,23 +11957,7 @@
                         }
                     },
                     {
-                        "name": "filters[description_private]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "name": "filters[photos]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[show_only_to_performers]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -11542,7 +11992,7 @@
                         }
                     },
                     {
-                        "name": "filters[performer_id]",
+                        "name": "filters[performer_review]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -11550,14 +12000,11 @@
                         }
                     },
                     {
-                        "name": "filters[id][]",
+                        "name": "filters[performer_id]",
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
-                            }
+                            "type": "string"
                         }
                     },
                     {
@@ -11577,7 +12024,7 @@
                         }
                     },
                     {
-                        "name": "filters[coordinates]",
+                        "name": "filters[docs]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -11585,7 +12032,31 @@
                         }
                     },
                     {
-                        "name": "filters[docs]",
+                        "name": "filters[views]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[responses_count]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[is_phone_verified]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[verify_code]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -11870,29 +12341,28 @@
                             "nullable": true,
                             "enum": [
                                 "name",
-                                "address",
-                                "address_add",
-                                "return_to_b",
+                                "remote",
                                 "date_type",
                                 "start_date",
                                 "end_date",
                                 "budget",
-                                "services",
                                 "description",
-                                "description_private",
                                 "photos",
-                                "show_only_to_performers",
                                 "status",
                                 "phone",
                                 "category_id",
+                                "performer_review",
                                 "performer_id",
                                 "task_hasmany_custom_field_relationship",
                                 "oplata",
-                                "task_belongsto_service_relationship",
                                 "user_id",
                                 "task_belongsto_category_relationship",
-                                "coordinates",
-                                "docs"
+                                "docs",
+                                "views",
+                                "responses_count",
+                                "is_phone_verified",
+                                "verify_code",
+                                "verify_expiration"
                             ]
                         }
                     },
@@ -11906,29 +12376,28 @@
                                 "type": "string",
                                 "enum": [
                                     "name",
-                                    "address",
-                                    "address_add",
-                                    "return_to_b",
+                                    "remote",
                                     "date_type",
                                     "start_date",
                                     "end_date",
                                     "budget",
-                                    "services",
                                     "description",
-                                    "description_private",
                                     "photos",
-                                    "show_only_to_performers",
                                     "status",
                                     "phone",
                                     "category_id",
+                                    "performer_review",
                                     "performer_id",
                                     "task_hasmany_custom_field_relationship",
                                     "oplata",
-                                    "task_belongsto_service_relationship",
                                     "user_id",
                                     "task_belongsto_category_relationship",
-                                    "coordinates",
-                                    "docs"
+                                    "docs",
+                                    "views",
+                                    "responses_count",
+                                    "is_phone_verified",
+                                    "verify_code",
+                                    "verify_expiration"
                                 ]
                             }
                         }
@@ -12103,199 +12572,6 @@
                                     "properties": {
                                         "message": {
                                             "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/notifications": {
-            "get": {
-                "tags": [
-                    "notifications"
-                ],
-                "summary": "notifications index",
-                "operationId": "notifications_index",
-                "parameters": [
-                    {
-                        "name": "q",
-                        "in": "query",
-                        "description": "Global search",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "length",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "order_by",
-                        "in": "query",
-                        "description": "Sort by column",
-                        "required": false,
-                        "schema": {
-                            "enum": [
-                                "id",
-                                "created_at",
-                                "updated_at",
-                                "description",
-                                "user_id",
-                                "service_id",
-                                "task_id",
-                                "cat_id",
-                                "name_task",
-                                "type",
-                                "is_read",
-                                "performer_id",
-                                "notification_belongsto_user_relationship",
-                                "notification_hasmany_service_relationship"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "sort_order",
-                        "in": "query",
-                        "description": "Sort by direction",
-                        "required": false,
-                        "schema": {
-                            "enum": [
-                                "asc",
-                                "desc"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[created_at]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
-                        }
-                    },
-                    {
-                        "name": "filters[description]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[user_id]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[service_id]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[id][]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
-                            }
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#\/components\/schemas\/VoyagerNotificationsBrowseResource"
-                                            }
-                                        },
-                                        "links": {
-                                            "$ref": "#\/components\/schemas\/Links"
-                                        },
-                                        "meta": {
-                                            "$ref": "#\/components\/schemas\/Meta"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            },
-            "post": {
-                "tags": [
-                    "notifications"
-                ],
-                "summary": "notifications store",
-                "operationId": "notifications_store",
-                "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerNotificationsStoreRequest"
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerNotificationsReadResource"
                                         }
                                     }
                                 }
@@ -18152,6 +18428,7 @@
                                 "user_id",
                                 "created_at",
                                 "updated_at",
+                                "deleted_at",
                                 "wallet_balance_belongsto_user_relationship"
                             ],
                             "type": "string"
@@ -18168,6 +18445,14 @@
                                 "desc"
                             ],
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "showSoftDeleted",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
                         }
                     },
                     {
@@ -24071,6 +24356,7 @@
                                 "image",
                                 "created_at",
                                 "updated_at",
+                                "deleted_at",
                                 "portfolio_belongsto_portfoliocomment_relationship"
                             ],
                             "type": "string"
@@ -26423,6 +26709,14 @@
                                 "desc"
                             ],
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "showSoftDeleted",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
                         }
                     }
                 ],
@@ -31613,6 +31907,14 @@
                                 "desc"
                             ],
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "showSoftDeleted",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
                         }
                     },
                     {
@@ -37778,7 +38080,8 @@
                                 "performer_id",
                                 "created_at",
                                 "updated_at",
-                                "not_free"
+                                "not_free",
+                                "deleted_at"
                             ],
                             "type": "string"
                         }
@@ -37793,6 +38096,22 @@
                                 "asc",
                                 "desc"
                             ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "showSoftDeleted",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
                             "type": "string"
                         }
                     },
@@ -37821,14 +38140,6 @@
                         }
                     },
                     {
-                        "name": "filters[notificate]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "name": "filters[price]",
                         "in": "query",
                         "required": false,
@@ -37837,7 +38148,7 @@
                         }
                     },
                     {
-                        "name": "filters[creator_id]",
+                        "name": "filters[performer_id]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -37851,6 +38162,14 @@
                         "schema": {
                             "type": "string",
                             "example": "2020-01-01 00:00,,2021-06-01 00:00"
+                        }
+                    },
+                    {
+                        "name": "filters[not_free]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 ],
@@ -38130,13 +38449,14 @@
                             "type": "string",
                             "nullable": true,
                             "enum": [
+                                "id",
                                 "description",
                                 "user_id",
                                 "task_id",
-                                "notificate",
                                 "price",
-                                "creator_id",
-                                "created_at"
+                                "performer_id",
+                                "created_at",
+                                "not_free"
                             ]
                         }
                     },
@@ -38149,13 +38469,14 @@
                             "items": {
                                 "type": "string",
                                 "enum": [
+                                    "id",
                                     "description",
                                     "user_id",
                                     "task_id",
-                                    "notificate",
                                     "price",
-                                    "creator_id",
-                                    "created_at"
+                                    "performer_id",
+                                    "created_at",
+                                    "not_free"
                                 ]
                             }
                         }
@@ -39025,6 +39346,10 @@
             "VoyagerUsersBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID"
+                    },
                     "name": {
                         "type": "string",
                         "description": "Name"
@@ -39033,9 +39358,9 @@
                         "type": "string",
                         "description": "Email"
                     },
-                    "is_active": {
+                    "youtube_link": {
                         "type": "string",
-                        "description": "Is Active"
+                        "description": "Youtube Link"
                     },
                     "created_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
@@ -39043,36 +39368,14 @@
                         "description": "Created At",
                         "example": "2021-05-17 00:00"
                     },
-                    "email_verified_at": {
-                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                        "type": "date-time",
-                        "description": "Email Verified At",
-                        "example": "2021-05-17 00:00"
-                    },
                     "avatar": {
                         "type": "string",
                         "description": "jpg,jpeg,png",
                         "format": "binary"
                     },
-                    "two_factor_secret": {
-                        "type": "string",
-                        "description": "Two Factor Secret"
-                    },
                     "role_id": {
                         "type": "string",
                         "description": "Role"
-                    },
-                    "user_belongsto_role_relationship": {
-                        "type": "integer",
-                        "description": "Role"
-                    },
-                    "two_factor_recovery_codes": {
-                        "type": "string",
-                        "description": "Two Factor Recovery Codes"
-                    },
-                    "user_belongstomany_role_relationship": {
-                        "type": "integer",
-                        "description": "voyager::seeders.data_rows.roles"
                     },
                     "age": {
                         "type": "integer",
@@ -39082,61 +39385,63 @@
                         "type": "string",
                         "description": "Phone Number"
                     },
-                    "phone_verified_at": {
-                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                        "type": "date-time",
-                        "description": "Phone Verified At",
-                        "example": "2021-05-17 00:00"
-                    },
-                    "api_token": {
-                        "type": "string",
-                        "description": "Api Token"
-                    },
-                    "device_token": {
-                        "type": "string",
-                        "description": "Device Token"
-                    },
-                    "notification_type": {
-                        "type": "string",
-                        "description": "Notification Type"
-                    },
-                    "socails": {
-                        "type": "string",
-                        "description": "Socails"
-                    },
                     "location": {
                         "type": "string",
                         "description": "Location"
                     },
-                    "views": {
+                    "last_name": {
                         "type": "string",
-                        "description": "Views"
+                        "description": "Last Name"
                     },
-                    "google_id": {
+                    "description": {
                         "type": "string",
-                        "description": "Google Id"
+                        "description": "Description"
                     },
-                    "facebook_id": {
+                    "is_email_verified": {
                         "type": "string",
-                        "description": "Facebook Id"
+                        "description": "Is Email Verified"
                     },
-                    "messenger_color": {
-                        "type": "string",
-                        "description": "Messenger Color"
+                    "verify_expiration": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Verify Expiration",
+                        "example": "2021-05-17 00:00"
                     },
-                    "dark_mode": {
+                    "is_phone_number_verified": {
                         "type": "string",
-                        "description": "Dark Mode"
+                        "description": "Is Phone Number Verified"
                     },
-                    "active_status": {
+                    "born_date": {
                         "type": "string",
-                        "description": "Active Status"
+                        "description": "Born Date"
+                    },
+                    "review_rating": {
+                        "type": "string",
+                        "description": "Review Rating"
+                    },
+                    "review_bad": {
+                        "type": "string",
+                        "description": "Review Bad"
+                    },
+                    "review_good": {
+                        "type": "string",
+                        "description": "Review Good"
+                    },
+                    "last_seen": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Last Seen",
+                        "example": "2021-05-17 00:00"
                     }
                 }
             },
             "VoyagerUsersReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID"
+                    },
                     "name": {
                         "type": "string",
                         "description": "Name"
@@ -39145,9 +39450,9 @@
                         "type": "string",
                         "description": "Email"
                     },
-                    "is_active": {
+                    "youtube_link": {
                         "type": "string",
-                        "description": "Is Active"
+                        "description": "Youtube Link"
                     },
                     "created_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
@@ -39155,36 +39460,14 @@
                         "description": "Created At",
                         "example": "2021-05-17 00:00"
                     },
-                    "email_verified_at": {
-                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                        "type": "date-time",
-                        "description": "Email Verified At",
-                        "example": "2021-05-17 00:00"
-                    },
                     "avatar": {
                         "type": "string",
                         "description": "jpg,jpeg,png",
                         "format": "binary"
                     },
-                    "two_factor_secret": {
-                        "type": "string",
-                        "description": "Two Factor Secret"
-                    },
                     "role_id": {
                         "type": "string",
                         "description": "Role"
-                    },
-                    "user_belongsto_role_relationship": {
-                        "type": "integer",
-                        "description": "Role"
-                    },
-                    "two_factor_recovery_codes": {
-                        "type": "string",
-                        "description": "Two Factor Recovery Codes"
-                    },
-                    "user_belongstomany_role_relationship": {
-                        "type": "integer",
-                        "description": "voyager::seeders.data_rows.roles"
                     },
                     "age": {
                         "type": "integer",
@@ -39194,55 +39477,131 @@
                         "type": "string",
                         "description": "Phone Number"
                     },
-                    "phone_verified_at": {
-                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                        "type": "date-time",
-                        "description": "Phone Verified At",
-                        "example": "2021-05-17 00:00"
-                    },
                     "api_token": {
                         "type": "string",
                         "description": "Api Token"
-                    },
-                    "device_token": {
-                        "type": "string",
-                        "description": "Device Token"
-                    },
-                    "notification_type": {
-                        "type": "string",
-                        "description": "Notification Type"
-                    },
-                    "socails": {
-                        "type": "string",
-                        "description": "Socails"
                     },
                     "location": {
                         "type": "string",
                         "description": "Location"
                     },
-                    "views": {
+                    "last_name": {
                         "type": "string",
-                        "description": "Views"
+                        "description": "Last Name"
                     },
-                    "google_id": {
+                    "description": {
                         "type": "string",
-                        "description": "Google Id"
+                        "description": "Description"
                     },
-                    "facebook_id": {
+                    "is_email_verified": {
                         "type": "string",
-                        "description": "Facebook Id"
+                        "description": "Is Email Verified"
                     },
-                    "messenger_color": {
+                    "verify_code": {
                         "type": "string",
-                        "description": "Messenger Color"
+                        "description": "Verify Code"
                     },
-                    "dark_mode": {
-                        "type": "string",
-                        "description": "Dark Mode"
+                    "verify_expiration": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Verify Expiration",
+                        "example": "2021-05-17 00:00"
                     },
-                    "active_status": {
+                    "is_phone_number_verified": {
                         "type": "string",
-                        "description": "Active Status"
+                        "description": "Is Phone Number Verified"
+                    },
+                    "born_date": {
+                        "type": "string",
+                        "description": "Born Date"
+                    },
+                    "review_rating": {
+                        "type": "string",
+                        "description": "Review Rating"
+                    },
+                    "review_bad": {
+                        "type": "string",
+                        "description": "Review Bad"
+                    },
+                    "review_good": {
+                        "type": "string",
+                        "description": "Review Good"
+                    },
+                    "firstname": {
+                        "type": "string",
+                        "description": "Firstname"
+                    },
+                    "lastname": {
+                        "type": "string",
+                        "description": "Lastname"
+                    },
+                    "midname": {
+                        "type": "string",
+                        "description": "Midname"
+                    },
+                    "pinfl": {
+                        "type": "string",
+                        "description": "Pinfl"
+                    },
+                    "inn": {
+                        "type": "string",
+                        "description": "Inn"
+                    },
+                    "passport": {
+                        "type": "string",
+                        "description": "Passport"
+                    },
+                    "passport_expire_date": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Passport Expire Date",
+                        "example": "2021-05-17 00:00"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "description": "Phone"
+                    },
+                    "address": {
+                        "type": "string",
+                        "description": "Address"
+                    },
+                    "email_old": {
+                        "type": "string",
+                        "description": "Email Old"
+                    },
+                    "phone_number_old": {
+                        "type": "string",
+                        "description": "Phone Number Old"
+                    },
+                    "system_notification": {
+                        "type": "string",
+                        "description": "System Notification"
+                    },
+                    "news_notification": {
+                        "type": "string",
+                        "description": "News Notification"
+                    },
+                    "last_seen": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Last Seen",
+                        "example": "2021-05-17 00:00"
+                    },
+                    "gender": {
+                        "type": "string",
+                        "description": "Gender"
+                    },
+                    "sms_notification": {
+                        "type": "string",
+                        "description": "Sms Notification"
+                    },
+                    "email_notification": {
+                        "type": "string",
+                        "description": "Email Notification"
+                    },
+                    "reviews": {
+                        "type": "string",
+                        "description": "Reviews"
                     }
                 }
             },
@@ -39893,6 +40252,10 @@
             "VoyagerTasksBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "created_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
@@ -39903,17 +40266,9 @@
                         "type": "string",
                         "description": "\u0418\u043c\u044f"
                     },
-                    "address": {
+                    "remote": {
                         "type": "string",
-                        "description": "\u0410\u0434\u0440\u0435\u0441"
-                    },
-                    "address_add": {
-                        "type": "string",
-                        "description": "\u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0430\u0434\u0440\u0435\u0441"
-                    },
-                    "return_to_b": {
-                        "type": "string",
-                        "description": "\u0412\u0435\u0440\u043d\u0443\u0442\u044c\u0441\u044f \u043a B"
+                        "description": "Remote"
                     },
                     "date_type": {
                         "type": "string",
@@ -39935,25 +40290,13 @@
                         "type": "integer",
                         "description": "\u0411\u044e\u0434\u0436\u0435\u0442"
                     },
-                    "services": {
-                        "type": "string",
-                        "description": "\u0423\u0441\u043b\u0443\u0433\u0438"
-                    },
                     "description": {
                         "type": "string",
                         "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
                     },
-                    "description_private": {
-                        "type": "string",
-                        "description": "\u043b\u0438\u0447\u043d\u043e\u0435 \u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
-                    },
                     "photos": {
                         "type": "string",
                         "description": "\u0424\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0438\u0438"
-                    },
-                    "show_only_to_performers": {
-                        "type": "string",
-                        "description": "\u041f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0442\u044c \u0442\u043e\u043b\u044c\u043a\u043e \u0438\u0441\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044f\u043c"
                     },
                     "status": {
                         "type": "string",
@@ -39967,6 +40310,10 @@
                         "type": "string",
                         "description": "Category Id"
                     },
+                    "performer_review": {
+                        "type": "string",
+                        "description": "Performer Review"
+                    },
                     "performer_id": {
                         "type": "string",
                         "description": "Performer Id"
@@ -39979,10 +40326,6 @@
                         "type": "string",
                         "description": "Oplata"
                     },
-                    "task_belongsto_service_relationship": {
-                        "type": "integer",
-                        "description": "services"
-                    },
                     "user_id": {
                         "type": "string",
                         "description": "User Id"
@@ -39991,13 +40334,25 @@
                         "type": "integer",
                         "description": "categories"
                     },
-                    "coordinates": {
-                        "type": "string",
-                        "description": "Coordinates"
-                    },
                     "docs": {
                         "type": "string",
                         "description": "Docs"
+                    },
+                    "views": {
+                        "type": "string",
+                        "description": "Views"
+                    },
+                    "responses_count": {
+                        "type": "string",
+                        "description": "Responses Count"
+                    },
+                    "is_phone_verified": {
+                        "type": "string",
+                        "description": "Is Phone Verified"
+                    },
+                    "verify_code": {
+                        "type": "string",
+                        "description": "Verify Code"
                     }
                 }
             },
@@ -40014,17 +40369,9 @@
                         "type": "string",
                         "description": "\u0418\u043c\u044f"
                     },
-                    "address": {
+                    "remote": {
                         "type": "string",
-                        "description": "\u0410\u0434\u0440\u0435\u0441"
-                    },
-                    "address_add": {
-                        "type": "string",
-                        "description": "\u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0430\u0434\u0440\u0435\u0441"
-                    },
-                    "return_to_b": {
-                        "type": "string",
-                        "description": "\u0412\u0435\u0440\u043d\u0443\u0442\u044c\u0441\u044f \u043a B"
+                        "description": "Remote"
                     },
                     "date_type": {
                         "type": "string",
@@ -40046,25 +40393,13 @@
                         "type": "integer",
                         "description": "\u0411\u044e\u0434\u0436\u0435\u0442"
                     },
-                    "services": {
-                        "type": "string",
-                        "description": "\u0423\u0441\u043b\u0443\u0433\u0438"
-                    },
                     "description": {
                         "type": "string",
                         "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
                     },
-                    "description_private": {
-                        "type": "string",
-                        "description": "\u043b\u0438\u0447\u043d\u043e\u0435 \u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
-                    },
                     "photos": {
                         "type": "string",
                         "description": "\u0424\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0438\u0438"
-                    },
-                    "show_only_to_performers": {
-                        "type": "string",
-                        "description": "\u041f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0442\u044c \u0442\u043e\u043b\u044c\u043a\u043e \u0438\u0441\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044f\u043c"
                     },
                     "status": {
                         "type": "string",
@@ -40078,6 +40413,10 @@
                         "type": "string",
                         "description": "Category Id"
                     },
+                    "performer_review": {
+                        "type": "string",
+                        "description": "Performer Review"
+                    },
                     "performer_id": {
                         "type": "string",
                         "description": "Performer Id"
@@ -40090,10 +40429,6 @@
                         "type": "string",
                         "description": "Oplata"
                     },
-                    "task_belongsto_service_relationship": {
-                        "type": "integer",
-                        "description": "services"
-                    },
                     "user_id": {
                         "type": "string",
                         "description": "User Id"
@@ -40102,13 +40437,31 @@
                         "type": "integer",
                         "description": "categories"
                     },
-                    "coordinates": {
-                        "type": "string",
-                        "description": "Coordinates"
-                    },
                     "docs": {
                         "type": "string",
                         "description": "Docs"
+                    },
+                    "views": {
+                        "type": "string",
+                        "description": "Views"
+                    },
+                    "responses_count": {
+                        "type": "string",
+                        "description": "Responses Count"
+                    },
+                    "is_phone_verified": {
+                        "type": "string",
+                        "description": "Is Phone Verified"
+                    },
+                    "verify_code": {
+                        "type": "string",
+                        "description": "Verify Code"
+                    },
+                    "verify_expiration": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Verify Expiration",
+                        "example": "2021-05-17 00:00"
                     }
                 }
             },
@@ -42561,6 +42914,10 @@
             "VoyagerTaskResponsesBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "description": {
                         "type": "string",
                         "description": "Description"
@@ -42573,29 +42930,33 @@
                         "type": "string",
                         "description": "Task Id"
                     },
-                    "notificate": {
-                        "type": "string",
-                        "description": "Notificate"
-                    },
                     "price": {
                         "type": "string",
                         "description": "Price"
                     },
-                    "creator_id": {
+                    "performer_id": {
                         "type": "string",
-                        "description": "Creator Id"
+                        "description": "Performer Id"
                     },
                     "created_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
                         "description": "Created At",
                         "example": "2021-05-17 00:00"
+                    },
+                    "not_free": {
+                        "type": "string",
+                        "description": "Not Free"
                     }
                 }
             },
             "VoyagerTaskResponsesReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "description": {
                         "type": "string",
                         "description": "Description"
@@ -42608,23 +42969,23 @@
                         "type": "string",
                         "description": "Task Id"
                     },
-                    "notificate": {
-                        "type": "string",
-                        "description": "Notificate"
-                    },
                     "price": {
                         "type": "string",
                         "description": "Price"
                     },
-                    "creator_id": {
+                    "performer_id": {
                         "type": "string",
-                        "description": "Creator Id"
+                        "description": "Performer Id"
                     },
                     "created_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
                         "description": "Created At",
                         "example": "2021-05-17 00:00"
+                    },
+                    "not_free": {
+                        "type": "string",
+                        "description": "Not Free"
                     }
                 }
             },
@@ -42696,6 +43057,10 @@
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
                                 },
+                                "id": {
+                                    "type": "integer",
+                                    "description": "ID"
+                                },
                                 "name": {
                                     "type": "string",
                                     "description": "Name"
@@ -42708,40 +43073,18 @@
                                     "type": "password",
                                     "description": "Password"
                                 },
-                                "is_active": {
+                                "youtube_link": {
                                     "type": "string",
-                                    "description": "Is Active"
-                                },
-                                "email_verified_at": {
-                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                                    "type": "date-time",
-                                    "description": "Email Verified At",
-                                    "example": "2021-05-17 00:00"
+                                    "description": "Youtube Link"
                                 },
                                 "avatar": {
                                     "type": "string",
                                     "description": "jpg,jpeg,png",
                                     "format": "binary"
                                 },
-                                "two_factor_secret": {
-                                    "type": "string",
-                                    "description": "Two Factor Secret"
-                                },
                                 "role_id": {
                                     "type": "string",
                                     "description": "Role"
-                                },
-                                "user_belongsto_role_relationship": {
-                                    "type": "integer",
-                                    "description": "Role"
-                                },
-                                "two_factor_recovery_codes": {
-                                    "type": "string",
-                                    "description": "Two Factor Recovery Codes"
-                                },
-                                "user_belongstomany_role_relationship": {
-                                    "type": "integer",
-                                    "description": "voyager::seeders.data_rows.roles"
                                 },
                                 "age": {
                                     "type": "integer",
@@ -42751,55 +43094,135 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
-                                "phone_verified_at": {
-                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                                    "type": "date-time",
-                                    "description": "Phone Verified At",
-                                    "example": "2021-05-17 00:00"
-                                },
                                 "api_token": {
                                     "type": "string",
                                     "description": "Api Token"
-                                },
-                                "device_token": {
-                                    "type": "string",
-                                    "description": "Device Token"
-                                },
-                                "notification_type": {
-                                    "type": "string",
-                                    "description": "Notification Type"
-                                },
-                                "socails": {
-                                    "type": "string",
-                                    "description": "Socails"
                                 },
                                 "location": {
                                     "type": "string",
                                     "description": "Location"
                                 },
-                                "views": {
+                                "last_name": {
                                     "type": "string",
-                                    "description": "Views"
-                                },
-                                "google_id": {
-                                    "type": "string",
-                                    "description": "Google Id"
-                                },
-                                "facebook_id": {
-                                    "type": "string",
-                                    "description": "Facebook Id"
-                                },
-                                "messenger_color": {
-                                    "type": "string",
-                                    "description": "Messenger Color"
-                                },
-                                "dark_mode": {
-                                    "type": "string",
-                                    "description": "Dark Mode"
+                                    "description": "Last Name"
                                 },
                                 "active_status": {
                                     "type": "string",
                                     "description": "Active Status"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Description"
+                                },
+                                "is_email_verified": {
+                                    "type": "string",
+                                    "description": "Is Email Verified"
+                                },
+                                "verify_code": {
+                                    "type": "string",
+                                    "description": "Verify Code"
+                                },
+                                "verify_expiration": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Verify Expiration",
+                                    "example": "2021-05-17 00:00"
+                                },
+                                "is_phone_number_verified": {
+                                    "type": "string",
+                                    "description": "Is Phone Number Verified"
+                                },
+                                "born_date": {
+                                    "type": "string",
+                                    "description": "Born Date"
+                                },
+                                "review_rating": {
+                                    "type": "string",
+                                    "description": "Review Rating"
+                                },
+                                "review_bad": {
+                                    "type": "string",
+                                    "description": "Review Bad"
+                                },
+                                "review_good": {
+                                    "type": "string",
+                                    "description": "Review Good"
+                                },
+                                "firstname": {
+                                    "type": "string",
+                                    "description": "Firstname"
+                                },
+                                "lastname": {
+                                    "type": "string",
+                                    "description": "Lastname"
+                                },
+                                "midname": {
+                                    "type": "string",
+                                    "description": "Midname"
+                                },
+                                "pinfl": {
+                                    "type": "string",
+                                    "description": "Pinfl"
+                                },
+                                "inn": {
+                                    "type": "string",
+                                    "description": "Inn"
+                                },
+                                "passport": {
+                                    "type": "string",
+                                    "description": "Passport"
+                                },
+                                "passport_expire_date": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Passport Expire Date",
+                                    "example": "2021-05-17 00:00"
+                                },
+                                "phone": {
+                                    "type": "string",
+                                    "description": "Phone"
+                                },
+                                "address": {
+                                    "type": "string",
+                                    "description": "Address"
+                                },
+                                "email_old": {
+                                    "type": "string",
+                                    "description": "Email Old"
+                                },
+                                "phone_number_old": {
+                                    "type": "string",
+                                    "description": "Phone Number Old"
+                                },
+                                "system_notification": {
+                                    "type": "string",
+                                    "description": "System Notification"
+                                },
+                                "news_notification": {
+                                    "type": "string",
+                                    "description": "News Notification"
+                                },
+                                "last_seen": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Last Seen",
+                                    "example": "2021-05-17 00:00"
+                                },
+                                "gender": {
+                                    "type": "string",
+                                    "description": "Gender"
+                                },
+                                "sms_notification": {
+                                    "type": "string",
+                                    "description": "Sms Notification"
+                                },
+                                "email_notification": {
+                                    "type": "string",
+                                    "description": "Email Notification"
+                                },
+                                "reviews": {
+                                    "type": "string",
+                                    "description": "Reviews"
                                 }
                             }
                         }
@@ -42817,6 +43240,10 @@
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
                                 },
+                                "id": {
+                                    "type": "integer",
+                                    "description": "ID"
+                                },
                                 "name": {
                                     "type": "string",
                                     "description": "Name"
@@ -42829,40 +43256,18 @@
                                     "type": "password",
                                     "description": "Password"
                                 },
-                                "is_active": {
+                                "youtube_link": {
                                     "type": "string",
-                                    "description": "Is Active"
-                                },
-                                "email_verified_at": {
-                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                                    "type": "date-time",
-                                    "description": "Email Verified At",
-                                    "example": "2021-05-17 00:00"
+                                    "description": "Youtube Link"
                                 },
                                 "avatar": {
                                     "type": "string",
                                     "description": "jpg,jpeg,png",
                                     "format": "binary"
                                 },
-                                "two_factor_secret": {
-                                    "type": "string",
-                                    "description": "Two Factor Secret"
-                                },
                                 "role_id": {
                                     "type": "string",
                                     "description": "Role"
-                                },
-                                "user_belongsto_role_relationship": {
-                                    "type": "integer",
-                                    "description": "Role"
-                                },
-                                "two_factor_recovery_codes": {
-                                    "type": "string",
-                                    "description": "Two Factor Recovery Codes"
-                                },
-                                "user_belongstomany_role_relationship": {
-                                    "type": "integer",
-                                    "description": "voyager::seeders.data_rows.roles"
                                 },
                                 "age": {
                                     "type": "integer",
@@ -42872,55 +43277,135 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
-                                "phone_verified_at": {
-                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                                    "type": "date-time",
-                                    "description": "Phone Verified At",
-                                    "example": "2021-05-17 00:00"
-                                },
                                 "api_token": {
                                     "type": "string",
                                     "description": "Api Token"
-                                },
-                                "device_token": {
-                                    "type": "string",
-                                    "description": "Device Token"
-                                },
-                                "notification_type": {
-                                    "type": "string",
-                                    "description": "Notification Type"
-                                },
-                                "socails": {
-                                    "type": "string",
-                                    "description": "Socails"
                                 },
                                 "location": {
                                     "type": "string",
                                     "description": "Location"
                                 },
-                                "views": {
+                                "last_name": {
                                     "type": "string",
-                                    "description": "Views"
-                                },
-                                "google_id": {
-                                    "type": "string",
-                                    "description": "Google Id"
-                                },
-                                "facebook_id": {
-                                    "type": "string",
-                                    "description": "Facebook Id"
-                                },
-                                "messenger_color": {
-                                    "type": "string",
-                                    "description": "Messenger Color"
-                                },
-                                "dark_mode": {
-                                    "type": "string",
-                                    "description": "Dark Mode"
+                                    "description": "Last Name"
                                 },
                                 "active_status": {
                                     "type": "string",
                                     "description": "Active Status"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Description"
+                                },
+                                "is_email_verified": {
+                                    "type": "string",
+                                    "description": "Is Email Verified"
+                                },
+                                "verify_code": {
+                                    "type": "string",
+                                    "description": "Verify Code"
+                                },
+                                "verify_expiration": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Verify Expiration",
+                                    "example": "2021-05-17 00:00"
+                                },
+                                "is_phone_number_verified": {
+                                    "type": "string",
+                                    "description": "Is Phone Number Verified"
+                                },
+                                "born_date": {
+                                    "type": "string",
+                                    "description": "Born Date"
+                                },
+                                "review_rating": {
+                                    "type": "string",
+                                    "description": "Review Rating"
+                                },
+                                "review_bad": {
+                                    "type": "string",
+                                    "description": "Review Bad"
+                                },
+                                "review_good": {
+                                    "type": "string",
+                                    "description": "Review Good"
+                                },
+                                "firstname": {
+                                    "type": "string",
+                                    "description": "Firstname"
+                                },
+                                "lastname": {
+                                    "type": "string",
+                                    "description": "Lastname"
+                                },
+                                "midname": {
+                                    "type": "string",
+                                    "description": "Midname"
+                                },
+                                "pinfl": {
+                                    "type": "string",
+                                    "description": "Pinfl"
+                                },
+                                "inn": {
+                                    "type": "string",
+                                    "description": "Inn"
+                                },
+                                "passport": {
+                                    "type": "string",
+                                    "description": "Passport"
+                                },
+                                "passport_expire_date": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Passport Expire Date",
+                                    "example": "2021-05-17 00:00"
+                                },
+                                "phone": {
+                                    "type": "string",
+                                    "description": "Phone"
+                                },
+                                "address": {
+                                    "type": "string",
+                                    "description": "Address"
+                                },
+                                "email_old": {
+                                    "type": "string",
+                                    "description": "Email Old"
+                                },
+                                "phone_number_old": {
+                                    "type": "string",
+                                    "description": "Phone Number Old"
+                                },
+                                "system_notification": {
+                                    "type": "string",
+                                    "description": "System Notification"
+                                },
+                                "news_notification": {
+                                    "type": "string",
+                                    "description": "News Notification"
+                                },
+                                "last_seen": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Last Seen",
+                                    "example": "2021-05-17 00:00"
+                                },
+                                "gender": {
+                                    "type": "string",
+                                    "description": "Gender"
+                                },
+                                "sms_notification": {
+                                    "type": "string",
+                                    "description": "Sms Notification"
+                                },
+                                "email_notification": {
+                                    "type": "string",
+                                    "description": "Email Notification"
+                                },
+                                "reviews": {
+                                    "type": "string",
+                                    "description": "Reviews"
                                 }
                             }
                         }
@@ -42938,6 +43423,10 @@
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
                                 },
+                                "id": {
+                                    "type": "integer",
+                                    "description": "ID"
+                                },
                                 "name": {
                                     "type": "string",
                                     "description": "Name"
@@ -42950,40 +43439,18 @@
                                     "type": "password",
                                     "description": "Password"
                                 },
-                                "is_active": {
+                                "youtube_link": {
                                     "type": "string",
-                                    "description": "Is Active"
-                                },
-                                "email_verified_at": {
-                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                                    "type": "date-time",
-                                    "description": "Email Verified At",
-                                    "example": "2021-05-17 00:00"
+                                    "description": "Youtube Link"
                                 },
                                 "avatar": {
                                     "type": "string",
                                     "description": "jpg,jpeg,png",
                                     "format": "binary"
                                 },
-                                "two_factor_secret": {
-                                    "type": "string",
-                                    "description": "Two Factor Secret"
-                                },
                                 "role_id": {
                                     "type": "string",
                                     "description": "Role"
-                                },
-                                "user_belongsto_role_relationship": {
-                                    "type": "integer",
-                                    "description": "Role"
-                                },
-                                "two_factor_recovery_codes": {
-                                    "type": "string",
-                                    "description": "Two Factor Recovery Codes"
-                                },
-                                "user_belongstomany_role_relationship": {
-                                    "type": "integer",
-                                    "description": "voyager::seeders.data_rows.roles"
                                 },
                                 "age": {
                                     "type": "integer",
@@ -42993,55 +43460,135 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
-                                "phone_verified_at": {
-                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                                    "type": "date-time",
-                                    "description": "Phone Verified At",
-                                    "example": "2021-05-17 00:00"
-                                },
                                 "api_token": {
                                     "type": "string",
                                     "description": "Api Token"
-                                },
-                                "device_token": {
-                                    "type": "string",
-                                    "description": "Device Token"
-                                },
-                                "notification_type": {
-                                    "type": "string",
-                                    "description": "Notification Type"
-                                },
-                                "socails": {
-                                    "type": "string",
-                                    "description": "Socails"
                                 },
                                 "location": {
                                     "type": "string",
                                     "description": "Location"
                                 },
-                                "views": {
+                                "last_name": {
                                     "type": "string",
-                                    "description": "Views"
-                                },
-                                "google_id": {
-                                    "type": "string",
-                                    "description": "Google Id"
-                                },
-                                "facebook_id": {
-                                    "type": "string",
-                                    "description": "Facebook Id"
-                                },
-                                "messenger_color": {
-                                    "type": "string",
-                                    "description": "Messenger Color"
-                                },
-                                "dark_mode": {
-                                    "type": "string",
-                                    "description": "Dark Mode"
+                                    "description": "Last Name"
                                 },
                                 "active_status": {
                                     "type": "string",
                                     "description": "Active Status"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Description"
+                                },
+                                "is_email_verified": {
+                                    "type": "string",
+                                    "description": "Is Email Verified"
+                                },
+                                "verify_code": {
+                                    "type": "string",
+                                    "description": "Verify Code"
+                                },
+                                "verify_expiration": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Verify Expiration",
+                                    "example": "2021-05-17 00:00"
+                                },
+                                "is_phone_number_verified": {
+                                    "type": "string",
+                                    "description": "Is Phone Number Verified"
+                                },
+                                "born_date": {
+                                    "type": "string",
+                                    "description": "Born Date"
+                                },
+                                "review_rating": {
+                                    "type": "string",
+                                    "description": "Review Rating"
+                                },
+                                "review_bad": {
+                                    "type": "string",
+                                    "description": "Review Bad"
+                                },
+                                "review_good": {
+                                    "type": "string",
+                                    "description": "Review Good"
+                                },
+                                "firstname": {
+                                    "type": "string",
+                                    "description": "Firstname"
+                                },
+                                "lastname": {
+                                    "type": "string",
+                                    "description": "Lastname"
+                                },
+                                "midname": {
+                                    "type": "string",
+                                    "description": "Midname"
+                                },
+                                "pinfl": {
+                                    "type": "string",
+                                    "description": "Pinfl"
+                                },
+                                "inn": {
+                                    "type": "string",
+                                    "description": "Inn"
+                                },
+                                "passport": {
+                                    "type": "string",
+                                    "description": "Passport"
+                                },
+                                "passport_expire_date": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Passport Expire Date",
+                                    "example": "2021-05-17 00:00"
+                                },
+                                "phone": {
+                                    "type": "string",
+                                    "description": "Phone"
+                                },
+                                "address": {
+                                    "type": "string",
+                                    "description": "Address"
+                                },
+                                "email_old": {
+                                    "type": "string",
+                                    "description": "Email Old"
+                                },
+                                "phone_number_old": {
+                                    "type": "string",
+                                    "description": "Phone Number Old"
+                                },
+                                "system_notification": {
+                                    "type": "string",
+                                    "description": "System Notification"
+                                },
+                                "news_notification": {
+                                    "type": "string",
+                                    "description": "News Notification"
+                                },
+                                "last_seen": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Last Seen",
+                                    "example": "2021-05-17 00:00"
+                                },
+                                "gender": {
+                                    "type": "string",
+                                    "description": "Gender"
+                                },
+                                "sms_notification": {
+                                    "type": "string",
+                                    "description": "Sms Notification"
+                                },
+                                "email_notification": {
+                                    "type": "string",
+                                    "description": "Email Notification"
+                                },
+                                "reviews": {
+                                    "type": "string",
+                                    "description": "Reviews"
                                 }
                             }
                         }
@@ -44387,17 +44934,9 @@
                                     "type": "string",
                                     "description": "\u0418\u043c\u044f"
                                 },
-                                "address": {
+                                "remote": {
                                     "type": "string",
-                                    "description": "\u0410\u0434\u0440\u0435\u0441"
-                                },
-                                "address_add": {
-                                    "type": "string",
-                                    "description": "\u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0430\u0434\u0440\u0435\u0441"
-                                },
-                                "return_to_b": {
-                                    "type": "string",
-                                    "description": "\u0412\u0435\u0440\u043d\u0443\u0442\u044c\u0441\u044f \u043a B"
+                                    "description": "Remote"
                                 },
                                 "date_type": {
                                     "type": "string",
@@ -44419,25 +44958,13 @@
                                     "type": "integer",
                                     "description": "\u0411\u044e\u0434\u0436\u0435\u0442"
                                 },
-                                "services": {
-                                    "type": "string",
-                                    "description": "\u0423\u0441\u043b\u0443\u0433\u0438"
-                                },
                                 "description": {
                                     "type": "string",
                                     "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
                                 },
-                                "description_private": {
-                                    "type": "string",
-                                    "description": "\u043b\u0438\u0447\u043d\u043e\u0435 \u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
-                                },
                                 "photos": {
                                     "type": "string",
                                     "description": "\u0424\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0438\u0438"
-                                },
-                                "show_only_to_performers": {
-                                    "type": "string",
-                                    "description": "\u041f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0442\u044c \u0442\u043e\u043b\u044c\u043a\u043e \u0438\u0441\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044f\u043c"
                                 },
                                 "status": {
                                     "type": "string",
@@ -44451,6 +44978,10 @@
                                     "type": "string",
                                     "description": "Category Id"
                                 },
+                                "performer_review": {
+                                    "type": "string",
+                                    "description": "Performer Review"
+                                },
                                 "performer_id": {
                                     "type": "string",
                                     "description": "Performer Id"
@@ -44463,10 +44994,6 @@
                                     "type": "string",
                                     "description": "Oplata"
                                 },
-                                "task_belongsto_service_relationship": {
-                                    "type": "integer",
-                                    "description": "services"
-                                },
                                 "user_id": {
                                     "type": "string",
                                     "description": "User Id"
@@ -44475,13 +45002,31 @@
                                     "type": "integer",
                                     "description": "categories"
                                 },
-                                "coordinates": {
-                                    "type": "string",
-                                    "description": "Coordinates"
-                                },
                                 "docs": {
                                     "type": "string",
                                     "description": "Docs"
+                                },
+                                "views": {
+                                    "type": "string",
+                                    "description": "Views"
+                                },
+                                "responses_count": {
+                                    "type": "string",
+                                    "description": "Responses Count"
+                                },
+                                "is_phone_verified": {
+                                    "type": "string",
+                                    "description": "Is Phone Verified"
+                                },
+                                "verify_code": {
+                                    "type": "string",
+                                    "description": "Verify Code"
+                                },
+                                "verify_expiration": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Verify Expiration",
+                                    "example": "2021-05-17 00:00"
                                 }
                             }
                         }
@@ -44503,17 +45048,9 @@
                                     "type": "string",
                                     "description": "\u0418\u043c\u044f"
                                 },
-                                "address": {
+                                "remote": {
                                     "type": "string",
-                                    "description": "\u0410\u0434\u0440\u0435\u0441"
-                                },
-                                "address_add": {
-                                    "type": "string",
-                                    "description": "\u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0430\u0434\u0440\u0435\u0441"
-                                },
-                                "return_to_b": {
-                                    "type": "string",
-                                    "description": "\u0412\u0435\u0440\u043d\u0443\u0442\u044c\u0441\u044f \u043a B"
+                                    "description": "Remote"
                                 },
                                 "date_type": {
                                     "type": "string",
@@ -44535,25 +45072,13 @@
                                     "type": "integer",
                                     "description": "\u0411\u044e\u0434\u0436\u0435\u0442"
                                 },
-                                "services": {
-                                    "type": "string",
-                                    "description": "\u0423\u0441\u043b\u0443\u0433\u0438"
-                                },
                                 "description": {
                                     "type": "string",
                                     "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
                                 },
-                                "description_private": {
-                                    "type": "string",
-                                    "description": "\u043b\u0438\u0447\u043d\u043e\u0435 \u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
-                                },
                                 "photos": {
                                     "type": "string",
                                     "description": "\u0424\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0438\u0438"
-                                },
-                                "show_only_to_performers": {
-                                    "type": "string",
-                                    "description": "\u041f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0442\u044c \u0442\u043e\u043b\u044c\u043a\u043e \u0438\u0441\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044f\u043c"
                                 },
                                 "status": {
                                     "type": "string",
@@ -44567,6 +45092,10 @@
                                     "type": "string",
                                     "description": "Category Id"
                                 },
+                                "performer_review": {
+                                    "type": "string",
+                                    "description": "Performer Review"
+                                },
                                 "performer_id": {
                                     "type": "string",
                                     "description": "Performer Id"
@@ -44579,10 +45108,6 @@
                                     "type": "string",
                                     "description": "Oplata"
                                 },
-                                "task_belongsto_service_relationship": {
-                                    "type": "integer",
-                                    "description": "services"
-                                },
                                 "user_id": {
                                     "type": "string",
                                     "description": "User Id"
@@ -44591,13 +45116,31 @@
                                     "type": "integer",
                                     "description": "categories"
                                 },
-                                "coordinates": {
-                                    "type": "string",
-                                    "description": "Coordinates"
-                                },
                                 "docs": {
                                     "type": "string",
                                     "description": "Docs"
+                                },
+                                "views": {
+                                    "type": "string",
+                                    "description": "Views"
+                                },
+                                "responses_count": {
+                                    "type": "string",
+                                    "description": "Responses Count"
+                                },
+                                "is_phone_verified": {
+                                    "type": "string",
+                                    "description": "Is Phone Verified"
+                                },
+                                "verify_code": {
+                                    "type": "string",
+                                    "description": "Verify Code"
+                                },
+                                "verify_expiration": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Verify Expiration",
+                                    "example": "2021-05-17 00:00"
                                 }
                             }
                         }
@@ -44619,17 +45162,9 @@
                                     "type": "string",
                                     "description": "\u0418\u043c\u044f"
                                 },
-                                "address": {
+                                "remote": {
                                     "type": "string",
-                                    "description": "\u0410\u0434\u0440\u0435\u0441"
-                                },
-                                "address_add": {
-                                    "type": "string",
-                                    "description": "\u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0430\u0434\u0440\u0435\u0441"
-                                },
-                                "return_to_b": {
-                                    "type": "string",
-                                    "description": "\u0412\u0435\u0440\u043d\u0443\u0442\u044c\u0441\u044f \u043a B"
+                                    "description": "Remote"
                                 },
                                 "date_type": {
                                     "type": "string",
@@ -44651,25 +45186,13 @@
                                     "type": "integer",
                                     "description": "\u0411\u044e\u0434\u0436\u0435\u0442"
                                 },
-                                "services": {
-                                    "type": "string",
-                                    "description": "\u0423\u0441\u043b\u0443\u0433\u0438"
-                                },
                                 "description": {
                                     "type": "string",
                                     "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
                                 },
-                                "description_private": {
-                                    "type": "string",
-                                    "description": "\u043b\u0438\u0447\u043d\u043e\u0435 \u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435"
-                                },
                                 "photos": {
                                     "type": "string",
                                     "description": "\u0424\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0438\u0438"
-                                },
-                                "show_only_to_performers": {
-                                    "type": "string",
-                                    "description": "\u041f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0442\u044c \u0442\u043e\u043b\u044c\u043a\u043e \u0438\u0441\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044f\u043c"
                                 },
                                 "status": {
                                     "type": "string",
@@ -44683,6 +45206,10 @@
                                     "type": "string",
                                     "description": "Category Id"
                                 },
+                                "performer_review": {
+                                    "type": "string",
+                                    "description": "Performer Review"
+                                },
                                 "performer_id": {
                                     "type": "string",
                                     "description": "Performer Id"
@@ -44695,10 +45222,6 @@
                                     "type": "string",
                                     "description": "Oplata"
                                 },
-                                "task_belongsto_service_relationship": {
-                                    "type": "integer",
-                                    "description": "services"
-                                },
                                 "user_id": {
                                     "type": "string",
                                     "description": "User Id"
@@ -44707,13 +45230,31 @@
                                     "type": "integer",
                                     "description": "categories"
                                 },
-                                "coordinates": {
-                                    "type": "string",
-                                    "description": "Coordinates"
-                                },
                                 "docs": {
                                     "type": "string",
                                     "description": "Docs"
+                                },
+                                "views": {
+                                    "type": "string",
+                                    "description": "Views"
+                                },
+                                "responses_count": {
+                                    "type": "string",
+                                    "description": "Responses Count"
+                                },
+                                "is_phone_verified": {
+                                    "type": "string",
+                                    "description": "Is Phone Verified"
+                                },
+                                "verify_code": {
+                                    "type": "string",
+                                    "description": "Verify Code"
+                                },
+                                "verify_expiration": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Verify Expiration",
+                                    "example": "2021-05-17 00:00"
                                 }
                             }
                         }
@@ -49345,6 +49886,10 @@
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
                                 },
+                                "id": {
+                                    "type": "string",
+                                    "description": "Id"
+                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
@@ -49357,17 +49902,17 @@
                                     "type": "string",
                                     "description": "Task Id"
                                 },
-                                "notificate": {
-                                    "type": "string",
-                                    "description": "Notificate"
-                                },
                                 "price": {
                                     "type": "string",
                                     "description": "Price"
                                 },
-                                "creator_id": {
+                                "performer_id": {
                                     "type": "string",
-                                    "description": "Creator Id"
+                                    "description": "Performer Id"
+                                },
+                                "not_free": {
+                                    "type": "string",
+                                    "description": "Not Free"
                                 }
                             }
                         }
@@ -49385,6 +49930,10 @@
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
                                 },
+                                "id": {
+                                    "type": "string",
+                                    "description": "Id"
+                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
@@ -49397,23 +49946,23 @@
                                     "type": "string",
                                     "description": "Task Id"
                                 },
-                                "notificate": {
-                                    "type": "string",
-                                    "description": "Notificate"
-                                },
                                 "price": {
                                     "type": "string",
                                     "description": "Price"
                                 },
-                                "creator_id": {
+                                "performer_id": {
                                     "type": "string",
-                                    "description": "Creator Id"
+                                    "description": "Performer Id"
                                 },
                                 "created_at": {
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                                     "type": "date-time",
                                     "description": "Created At",
                                     "example": "2021-05-17 00:00"
+                                },
+                                "not_free": {
+                                    "type": "string",
+                                    "description": "Not Free"
                                 }
                             }
                         }
@@ -49431,6 +49980,10 @@
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
                                 },
+                                "id": {
+                                    "type": "string",
+                                    "description": "Id"
+                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
@@ -49443,23 +49996,23 @@
                                     "type": "string",
                                     "description": "Task Id"
                                 },
-                                "notificate": {
-                                    "type": "string",
-                                    "description": "Notificate"
-                                },
                                 "price": {
                                     "type": "string",
                                     "description": "Price"
                                 },
-                                "creator_id": {
+                                "performer_id": {
                                     "type": "string",
-                                    "description": "Creator Id"
+                                    "description": "Performer Id"
                                 },
                                 "created_at": {
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                                     "type": "date-time",
                                     "description": "Created At",
                                     "example": "2021-05-17 00:00"
+                                },
+                                "not_free": {
+                                    "type": "string",
+                                    "description": "Not Free"
                                 }
                             }
                         }

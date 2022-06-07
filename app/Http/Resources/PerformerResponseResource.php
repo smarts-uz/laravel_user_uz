@@ -30,7 +30,8 @@ class PerformerResponseResource extends JsonResource
             'stars' => round($goods * 5 / (($goods+$bads==0) ? 1 : ($goods + $bads))),
             'last_seen' => $performer->last_seen_at,
             'price' => $this->price,
-            'description' => $this->description
+            'description' => $this->description,
+            'created_at' => $this->created
         ];
     }
 }
