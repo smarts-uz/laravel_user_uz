@@ -17,6 +17,7 @@ class ReportController extends Controller
     public function request(Request $request)
     {
         Cache::put('date',$request->date);
+        Cache::put('date_1',$request->date_1);
         return redirect()->back();
     }
 

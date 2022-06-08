@@ -4,44 +4,29 @@ namespace App\Http\Requests\Api;
 
 class TaskDateRequest extends BaseRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
-        switch($this->request->get('date_type')) {
+        switch ($this->request->get('date_type')) {
             case 1:
                 return [
-                    'start_date'=>'required|date|after:now',
+                    'task_id' => 'required',
+                    'start_date' => 'required|date|after:now',
                     'date_type' => 'required'
                 ];
-                break;
             case 2:
                 return [
-                    'end_date'=>'required|date|after:now',
+                    'task_id' => 'required',
+                    'end_date' => 'required|date|after:now',
                     'date_type' => 'required'
                 ];
-                break;
             case 3:
                 return [
-                    'start_date'=>'required|date|after:now',
-                    'end_date'=>'required|date|after:start_date',
+                    'task_id' => 'required',
+                    'start_date' => 'required|date|after:now',
+                    'end_date' => 'required|date|after:start_date',
                     'date_type' => 'required'
-
                 ];
-
         }
     }
 

@@ -20,6 +20,7 @@ use App\Models\Portfolio;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use TCG\Voyager\Models\Category;
 use UAParser\Parser;
 
@@ -184,15 +185,20 @@ class ProfileService
 
     public function createPortfolio($request)
     {
+        $request->validate([
+            'images' => 'required|mimes:csv,txt,xlx,xls,pdf,jpg,png,svg'
+        ]);
         $user = auth()->user();
         $data = $request->except('images');
         $data['user_id'] = $user->id;
         if ($request->hasFile('images')) {
             $image = [];
             foreach ($request->file('images') as $uploadedImage) {
-                $filename = $user->name.'/'.time() . '_' . $uploadedImage->getClientOriginalName();
-                $uploadedImage->move(public_path().'/portfolio/'.$user->name.'/', $filename);
-                $image[] = $filename;
+                if(Str::contains($uploadedImage->getClientOriginalName(),'jpg')||Str::contains($filename,'png')||Str::contains($filename,'jpeg')||Str::contains($filename,'gif')||Str::contains($filename,'jfif')) {
+                    $filename = $user->name . '/' . time() . '_' . $uploadedImage->getClientOriginalName();
+                    $uploadedImage->move(public_path() . '/portfolio/' . $user->name . '/', $filename);
+                    $image[] = $filename;
+                }
             }
             $data['image'] = json_encode($image);
         }
@@ -329,9 +335,8 @@ class ProfileService
         }
     }
 
-    public function changePassword($request)
+    public function changePassword($data)
     {
-        $data = $request->validated();
         $user = auth()->user();
         if (Hash::check($data['old_password'], $user->password)) {
             $user->update(['password' => Hash::make($data['password'])]);
@@ -344,9 +349,8 @@ class ProfileService
         }
         return response()->json([
             'status' => $status,
-            'data' => [
-                'message' => $message
-            ]
+            'message' => $message,
+            'data' => []
         ]);
     }
 

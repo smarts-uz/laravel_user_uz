@@ -8,6 +8,7 @@ use App\Http\Requests\BecomePerformerRequest;
 use App\Http\Requests\GiveTaskRequest;
 use App\Http\Requests\PerformerRegisterRequest;
 use App\Http\Requests\UserLoginRequest;
+use App\Http\Resources\NotificationResource;
 use App\Http\Resources\PerformerIndexResource;
 use App\Http\Resources\PerformerPaginateResource;
 use App\Http\Resources\ReviewIndexResource;
@@ -141,11 +142,11 @@ class PerformerAPIController extends Controller
     {
         $data = $request->validated();
         $task = Task::where('id', $data['task_id'])->first();
-        $performer = User::query()->find($data['performer_id']);
+        $performer = User::query()->findOrFail($data['performer_id']);
         $text_url = route("searchTask.task",$data['task_id']);
         $text = "Заказчик предложил вам новую задания $text_url. Имя заказчика: " . $task->user->name;
         (new SmsService())->send($performer->phone_number, $text);
-        Notification::create([
+        $notification = Notification::create([
             'user_id' => $task->user_id,
             'performer_id' => $data['performer_id'],
             'task_id' => $data['task_id'],
@@ -157,6 +158,9 @@ class PerformerAPIController extends Controller
         NotificationService::sendNotificationRequest([$data['performer_id']], [
             'url' => 'detailed-tasks' . '/' . $data['task_id'], 'name' => $task->name, 'time' => 'recently'
         ]);
+        NotificationService::pushNotification($performer->firebase_token, [
+            'title' => 'Task selected', 'body' => 'See details'
+        ], 'notification', new NotificationResource($notification));
 
         return response()->json(['success' => true, 'message' => 'Success']);
     }

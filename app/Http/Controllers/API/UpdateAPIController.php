@@ -4,11 +4,15 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\UpdateRequest;
+use App\Http\Resources\NotificationResource;
 use App\Http\Resources\TaskIndexResource;
+use App\Models\Chat\ChMessage;
 use App\Models\CustomFieldsValue;
 use App\Models\Notification;
 use App\Models\Task;
 use App\Models\Review;
+use App\Models\User;
+use App\Services\NotificationService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Services\Task\CreateService;
@@ -34,7 +38,7 @@ class UpdateAPIController extends Controller
         $this->service->syncCustomFields($task);
         Alert::success('Success');
 
-        return response()->json(['message'=> 'Success']); //redirect()->route('searchTask.task', $task->id);
+        return response()->json(['message' => 'Success']); //redirect()->route('searchTask.task', $task->id);
 
 
     }
@@ -70,15 +74,17 @@ class UpdateAPIController extends Controller
      *     },
      * )
      */
-    public function completed(Task $task){
+    public function completed(Task $task)
+    {
         taskGuard($task);
         $data = [
             'status' => Task::STATUS_COMPLETE
         ];
+        ChMessage::query()->where('from_id', $task->user_id)->where('to_id', $task->performer_id)->delete();
+        ChMessage::query()->where('to_id', $task->user_id)->where('from_id', $task->performer_id)->delete();
+
         $task->update($data);
-
-        return response()->json(['message'=> 'Success', 'success' => true, 'task' => new TaskIndexResource($task)]);
-
+        return response()->json(['message' => 'Success', 'success' => true, 'task' => new TaskIndexResource($task)]);
     }
 
 
@@ -112,7 +118,7 @@ class UpdateAPIController extends Controller
      *                    property="status",
      *                    type="boolean",
      *                 ),
-     *             ), 
+     *             ),
      *         ),
      *     ),
      *     @OA\Response (
@@ -132,7 +138,8 @@ class UpdateAPIController extends Controller
      *     },
      * )
      */
-    public function sendReview(Task $task, Request $request){
+    public function sendReview(Task $task, Request $request)
+    {
         $request->validate([
             'comment' => 'required',
             'good' => 'required',
@@ -142,33 +149,36 @@ class UpdateAPIController extends Controller
         DB::beginTransaction();
 
         try {
-            $task->status  =  $request->status ? Task::STATUS_COMPLETE: Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
+            $task->status = $request->status ? Task::STATUS_COMPLETE : Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
             $task->save();
 
-        Review::create([
-            'description' => $request->comment,
-            'good_bad' => $request->good,
-            'task_id' => $task->id,
-            'reviewer_id' => auth()->id(),
-            'user_id' => $task->performer_id,
-        ]);
-
-            Notification::create([
+            Review::create([
+                'description' => $request->comment,
+                'good_bad' => $request->good,
+                'task_id' => $task->id,
+                'reviewer_id' => auth()->id(),
+                'user_id' => $task->performer_id,
+            ]);
+            $notification = Notification::create([
                 'user_id' => $task->user_id,
                 'task_id' => $task->id,
                 'name_task' => $task->name,
                 'description' => 1,
                 'type' => Notification::SEND_REVIEW
             ]);
-
-        }catch (\Exception $exception){
+            NotificationService::sendNotificationRequest([$task->user_id], [
+                'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+            ]);
+            NotificationService::pushNotification($task->user->firebase_token, [
+                'title' => 'New review', 'body' => 'See details'
+            ], 'notification', new NotificationResource($notification));
+        } catch (\Exception $exception) {
             DB::rollBack();
-            return response()->json(['success' => false, 'message' =>"fail"]);  //back();
+            return response()->json(['success' => false, 'message' => "fail"]);  //back();
         }
         DB::commit();
-        return response()->json(['success' => true, 'message' =>" success"]);  //back();
+        return response()->json(['success' => true, 'message' => " success"]);  //back();
     }
-
 
 
 }

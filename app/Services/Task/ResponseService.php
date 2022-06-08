@@ -4,6 +4,7 @@
 namespace App\Services\Task;
 
 
+use App\Http\Resources\NotificationResource;
 use App\Models\All_transaction;
 use App\Models\Notification;
 use App\Models\Task;
@@ -107,8 +108,7 @@ class ResponseService
             'performer_description' => $performer->description,
             'performer_avatar' => asset('storage/' . $performer->avatar),
         ];
-
-        Notification::query()->create([
+        $notification = Notification::query()->create([
             'user_id' => $response_user->id,
             'performer_id' => $performer->id,
             'task_id' => $response->task_id,
@@ -119,6 +119,9 @@ class ResponseService
         NotificationService::sendNotificationRequest([$performer->id], [
             'url' => 'detailed-tasks' . '/' . $response->task_id, 'name' => $task->name, 'time' => 'recently'
         ]);
+        NotificationService::pushNotification($performer->firebase_token, [
+            'title' => 'You are selected for task', 'body' => 'See details'
+        ], 'notification', new NotificationResource($notification));
         $taskResponse = TaskResponse::query()->where(['task_id' => $task->id])->where(['performer_id' => $performer->id])->first();
         if ($taskResponse->not_free == 0) {
             $balance = WalletBalance::where('user_id', $performer->id)->first();

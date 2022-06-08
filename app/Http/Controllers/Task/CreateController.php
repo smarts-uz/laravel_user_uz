@@ -21,6 +21,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use PlayMobile\SMS\SmsService;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Notification;
@@ -31,7 +32,7 @@ class CreateController extends Controller
     protected $service;
     protected $custom_field_service;
 
-    
+
     public function __construct()
     {
         $this->service = new CreateService();
@@ -158,15 +159,18 @@ class CreateController extends Controller
     }
     public function images_store(Request $request,Task $task)
     {
-            $imgData = json_decode($task->photos);
-            foreach ($request->file('images') as $uploadedImage)
+        foreach ($request->file('images') as $uploadedImage)
+        {
+            $filename = time() . '_' . $uploadedImage->getClientOriginalName();
+            if(Str::contains($filename,'jpg')||Str::contains($filename,'png')||Str::contains($filename,'jpeg')||Str::contains($filename,'gif')||Str::contains($filename,'jfif'))
             {
-                $filename = time() . '_' . $uploadedImage->getClientOriginalName();
+                $imgData = json_decode($task->photos);
                 $uploadedImage->move(public_path() . '/storage/uploads/', $filename);
                 $imgData[] = $filename;
                 $task->photos = $imgData;
                 $task->save();
             }
+        }
 
     }
     public function note(Task $task)
@@ -208,6 +212,9 @@ class CreateController extends Controller
         if (!($user->is_phone_number_verified && $user->phone_number == $data['phone_number'])) {
             LoginController::send_verification('phone', $user, $data['phone_number']);
             $task->phone = $data['phone_number'];
+            if($user->phone_number==null){
+                $user->phone_number == $task->phone;
+            }
             $task->save();
             return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
         }
@@ -250,7 +257,6 @@ class CreateController extends Controller
         $data['password'] = Hash::make('login123');
         $user = User::create($data);
         LoginController::send_verification('phone', $user, $user->phone_number);
-
         return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
 
     }

@@ -21,6 +21,43 @@ class SocialAPIController extends Controller
         return Socialite::driver('facebook')->redirect();
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/social-login",
+     *     tags={"Socials"},
+     *     summary="Socials Google and Facebook",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="type",
+     *                    description="0 - bu Google",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="access_token",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     * )
+     */
     public function login(SocialRequest $request)
     {
         try {
