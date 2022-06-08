@@ -43,7 +43,6 @@ class UserLoginRequest extends BaseRequest
         auth()->login($user);
         if (!$user->is_email_verified)
             LoginController::send_verification('email', auth()->user());
-
     }
 
 

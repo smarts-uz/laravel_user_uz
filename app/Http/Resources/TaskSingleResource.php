@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Cache;
 
 class TaskSingleResource extends JsonResource
 {
@@ -23,7 +24,10 @@ class TaskSingleResource extends JsonResource
             'budget' => $this->budget,
             'oplata' => $this->oplata,
             'category_icon' => asset('storage/'.$this->category->ico),
-
+            'viewed' => in_array(
+                $this->id,
+                Cache::get('user_viewed_tasks' . auth()->guard('api')->id()) ?? []
+                ) ?? false
         ];
     }
 }
