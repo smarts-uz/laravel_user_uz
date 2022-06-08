@@ -3,7 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Http\Controllers\LoginController;
+use App\Http\Requests\Api\BaseRequest;
 use App\Models\User;
+use Faker\Provider\Base;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -11,17 +13,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 
-class UserLoginRequest extends FormRequest
+class UserLoginRequest extends BaseRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -49,12 +43,7 @@ class UserLoginRequest extends FormRequest
         if (!$user->is_email_verified)
             LoginController::send_verification('email', auth()->user());
 
-
-
     }
-
-
-
 
 
     public function messages()
