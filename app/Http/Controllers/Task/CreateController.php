@@ -21,6 +21,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use PlayMobile\SMS\SmsService;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Notification;
@@ -31,7 +32,7 @@ class CreateController extends Controller
     protected $service;
     protected $custom_field_service;
 
-    
+
     public function __construct()
     {
         $this->service = new CreateService();
@@ -158,14 +159,17 @@ class CreateController extends Controller
     }
     public function images_store(Request $request,Task $task)
     {
+        foreach ($request->file('images') as $uploadedImage)
+        {
             $imgData = json_decode($task->photos);
-            foreach ($request->file('images') as $uploadedImage)
-            {
-                $filename = time() . '_' . $uploadedImage->getClientOriginalName();
-                $uploadedImage->move(public_path() . '/storage/uploads/', $filename);
-                $imgData[] = $filename;
-                $task->photos = $imgData;
-                $task->save();
+            $filename = time() . '_' . $uploadedImage->getClientOriginalName();
+                if(Str::contains($filename,'jpg')||Str::contains($filename,'png')||Str::contains($filename,'jpeg')||Str::contains($filename,'gif')||Str::contains($filename,'jfif'))
+                {
+                    $uploadedImage->move(public_path() . '/storage/uploads/', $filename);
+                    $imgData[] = $filename;
+                    $task->photos = $imgData;
+                    $task->save();
+                }
             }
 
     }

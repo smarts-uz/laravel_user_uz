@@ -117,8 +117,10 @@
                 inline: true,
                 target: '#photos',
                 showProgressDetails: true,
-                allowedFileTypes: ['image/*'],
                 debug: true,
+                restrictions: {
+                    allowedFileTypes: null
+                },
                 note: 'Все типы файлов, до 10 МБ',
                 height: 400,
                 metaFields: [
