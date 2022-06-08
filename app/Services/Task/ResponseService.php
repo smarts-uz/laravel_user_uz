@@ -121,7 +121,7 @@ class ResponseService
         ]);
         NotificationService::pushNotification($performer->firebase_token, [
             'title' => 'You are selected for task', 'body' => 'See details'
-        ], 'notification', NotificationResource::collection($notification));
+        ], 'notification', new NotificationResource($notification));
         $taskResponse = TaskResponse::query()->where(['task_id' => $task->id])->where(['performer_id' => $performer->id])->first();
         if ($taskResponse->not_free == 0) {
             $balance = WalletBalance::where('user_id', $performer->id)->first();

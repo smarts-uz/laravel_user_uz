@@ -68,7 +68,7 @@ class NotificationService
                 self::pushNotification($performer->firebase_token, [
                     'title' => 'New task',
                     'body' => "\"$task->name\": with budget for $task->budget sum"
-                ], 'notification', NotificationResource::collection($notification));
+                ], 'notification', new NotificationResource($notification));
 
                 if ($performer->sms_notification) {
                     (new SmsService())->send($performer->phone_number, 'Novoe zadaniye dlya vas, uspeyte otliknutsya.');
@@ -106,7 +106,7 @@ class NotificationService
             self::pushNotification($token, [
                 'title' => 'Task selected',
                 'body' => 'See details'
-            ], 'notification', NotificationResource::collection($notification));
+            ], 'notification', new NotificationResource($notification));
         }
 
         self::sendNotificationRequest($user_ids, [
@@ -143,7 +143,7 @@ class NotificationService
         self::pushNotification($user->firebase_token, [
             'title' => 'Task selected',
             'body' => 'See details'
-        ], 'notification', NotificationResource::collection($notification));
+        ], 'notification', new NotificationResource($notification));
         return true;
     }
 

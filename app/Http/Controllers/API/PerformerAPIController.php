@@ -160,7 +160,7 @@ class PerformerAPIController extends Controller
         ]);
         NotificationService::pushNotification($performer->firebase_token, [
             'title' => 'Task selected', 'body' => 'See details'
-        ], 'notification', NotificationResource::collection($notification));
+        ], 'notification', new NotificationResource($notification));
 
         return response()->json(['success' => true, 'message' => 'Success']);
     }

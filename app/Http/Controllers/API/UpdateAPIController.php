@@ -171,7 +171,7 @@ class UpdateAPIController extends Controller
             ]);
             NotificationService::pushNotification($task->user->firebase_token, [
                 'title' => 'New review', 'body' => 'See details'
-            ], 'notification', NotificationResource::collection($notification));
+            ], 'notification', new NotificationResource($notification));
         } catch (\Exception $exception) {
             DB::rollBack();
             return response()->json(['success' => false, 'message' => "fail"]);  //back();
