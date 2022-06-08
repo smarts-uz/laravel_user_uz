@@ -161,16 +161,16 @@ class CreateController extends Controller
     {
         foreach ($request->file('images') as $uploadedImage)
         {
-            $imgData = json_decode($task->photos);
             $filename = time() . '_' . $uploadedImage->getClientOriginalName();
-                if(Str::contains($filename,'jpg')||Str::contains($filename,'png')||Str::contains($filename,'jpeg')||Str::contains($filename,'gif')||Str::contains($filename,'jfif'))
-                {
-                    $uploadedImage->move(public_path() . '/storage/uploads/', $filename);
-                    $imgData[] = $filename;
-                    $task->photos = $imgData;
-                    $task->save();
-                }
+            if(Str::contains($filename,'jpg')||Str::contains($filename,'png')||Str::contains($filename,'jpeg')||Str::contains($filename,'gif')||Str::contains($filename,'jfif'))
+            {
+                $imgData = json_decode($task->photos);
+                $uploadedImage->move(public_path() . '/storage/uploads/', $filename);
+                $imgData[] = $filename;
+                $task->photos = $imgData;
+                $task->save();
             }
+        }
 
     }
     public function note(Task $task)
