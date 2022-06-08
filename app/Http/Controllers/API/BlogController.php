@@ -9,6 +9,26 @@ use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
+
+    /**
+     * @OA\Get(
+     *     path="/api/blog-news",
+     *     tags={"Blog News"},
+     *     summary="Blogs",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     * )
+     */
     public function index()
     {
         return response()->json([

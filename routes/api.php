@@ -49,7 +49,7 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('create-task/name', [TaskAPIController::class, 'name']); //end +
     Route::post('create-task/custom', [TaskAPIController::class, 'custom']); //end -
     Route::post('create-task/remote', [TaskAPIController::class, 'remote']); //end +
-    Route::post('create-task/address', [TaskAPIController::class, 'address']); //end
+    Route::post('create-task/address', [TaskAPIController::class, 'address']); //end -
     Route::post('create-task/date', [TaskAPIController::class, 'date']); //end +
     Route::post('create-task/budget', [TaskAPIController::class, 'budget']); //end +
     Route::post('create-task/note', [TaskAPIController::class, 'note']); //end +
@@ -68,7 +68,7 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('update-task/{task}/contacts', [TaskAPIController::class, 'updateContacts']); //end +
     Route::post('update-task/{task}/verify', [TaskAPIController::class, 'updateVerify']); //end +
 
-    Route::get('/notifications', [NotificationController::class, 'getNotifications']);
+    Route::get('/notifications', [NotificationController::class, 'getNotifications']); //end
 
     Route::get('/my-tasks-count', [TaskAPIController::class, 'my_tasks_count']); //end +
     Route::get('/my-tasks', [TaskAPIController::class, 'my_tasks_all']); //end +
@@ -84,10 +84,10 @@ Route::middleware('custom.auth:api')->group(function () {
 
     Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']); //end +
     Route::post('/task/{task}/complain', [TaskAPIController::class, 'complain']);
-    Route::post('/select-performer/{response}', [TaskAPIController::class, 'selectPerformer']); //end -
+    Route::post('/select-performer/{response}', [TaskAPIController::class, 'selectPerformer']); //end ---
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); //end +
     Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); //end +
-    Route::get('/change-task/{task}', [TaskAPIController::class, 'getTask']);
+    Route::get('/change-task/{task}', [TaskAPIController::class, 'getTask']); //end
     Route::put('/change-task/{task}', [TaskAPIController::class, 'changeTask']); //end -
     Route::post('give-task', [PerformerAPIController::class, 'give_task']); // end +
     Route::post('/become-performer', [PerformerAPIController::class, 'becomePerformerData']); //end +
@@ -108,14 +108,14 @@ Route::middleware('custom.auth:api')->group(function () {
         Route::post('/portfolio/{portfolio}/update', [ProfileAPIController::class, 'portfolioUpdate']);
         Route::post('/portfolio/{portfolio}/delete', [ProfileAPIController::class, 'portfolioDelete']); //end +
         Route::get('/reviews', [ProfileAPIController::class, 'reviews']); //end  +
-        Route::post('/video', [ProfileAPIController::class, 'videoStore']);
-        Route::delete('/video/delete', [ProfileAPIController::class, 'videoDelete']);
+        Route::post('/video', [ProfileAPIController::class, 'videoStore']); //end
+        Route::delete('/video/delete', [ProfileAPIController::class, 'videoDelete']); //end
         Route::get('/balance', [ProfileAPIController::class, 'balance']); //end +
         Route::get('/description', [ProfileAPIController::class, 'description']); //end +
         Route::post('/description/edit', [ProfileAPIController::class, 'editDesctiption']); //end +
-        Route::post('/payment', [ProfileAPIController::class, 'payment']);
-        Route::post('/categories-subscribe', [ProfileAPIController::class, 'subscribeToCategory']);
-        Route::post('/firebase-token', [NotificationController::class, 'setToken']);
+        Route::post('/payment', [ProfileAPIController::class, 'payment']); //end
+        Route::post('/categories-subscribe', [ProfileAPIController::class, 'subscribeToCategory']); //end
+        Route::post('/firebase-token', [NotificationController::class, 'setToken']); //end
         Route::prefix('/settings')->group(function () {
             Route::get('/', [ProfileAPIController::class, 'editData']); //end +
             Route::post('/update', [ProfileAPIController::class, 'updateData']); //end +
@@ -124,7 +124,7 @@ Route::middleware('custom.auth:api')->group(function () {
             Route::post('/phone/edit', [ProfileAPIController::class, 'phoneUpdate']); //end +
             Route::post('/password/change', [ProfileAPIController::class, 'change_password']); //end +
             Route::post('/notifications', [ProfileAPIController::class, 'userNotifications']); //end +
-            Route::post('/change-lang', [ProfileAPIController::class, 'changeLanguage']);
+            Route::post('/change-lang', [ProfileAPIController::class, 'changeLanguage']); //end
         });
     });
 });
@@ -142,7 +142,7 @@ Route::post('/reset/password', [UserAPIController::class, 'reset_password_save']
 Route::post('/code', [UserAPIController::class, 'reset_code'])->name('user.reset_code'); //end +
 
 //News
-Route::get('/blog-news', [BlogController::class, 'index']);
+Route::get('/blog-news', [BlogController::class, 'index']); //end
 
 // FAQ
 Route::get('faq', [FaqAPIController::class, 'index']); //end +
@@ -196,5 +196,5 @@ Route::post('/complete', [RefillAPIController::class, 'complete']); //end
 Route::post('/paynet-transaction', [PaynetTransactionAPIController::class, 'create'])->name('paynet-transaction');
 
 #Social
-Route::post('/social-login', [SocialAPIController::class, 'login']);
+Route::post('/social-login', [SocialAPIController::class, 'login']); //end
 

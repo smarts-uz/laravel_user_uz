@@ -11,6 +11,7 @@ use App\Http\Resources\UserIndexResource;
 use App\Models\User;
 use App\Models\WalletBalance;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -41,6 +42,12 @@ class UserAPIController extends Controller
             $userBalance = $balance->balance;
         else
             $userBalance = null;
+
+        $expiresAt = now()->addMinutes(2); /* keep online for 2 min */
+        Cache::put('user-is-online-' . Auth::user()->id, true, $expiresAt);
+        /* last seen */
+        User::where('id', $user->id)->update(['last_seen' => now()]);
+
         return response()->json([
             'user' => [
                 'id' => $user->id,

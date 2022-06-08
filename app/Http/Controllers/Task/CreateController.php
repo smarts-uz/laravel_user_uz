@@ -211,7 +211,12 @@ class CreateController extends Controller
 
         if (!($user->is_phone_number_verified && $user->phone_number == $data['phone_number'])) {
             LoginController::send_verification('phone', $user, $data['phone_number']);
-             return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
+            $task->phone = $data['phone_number'];
+            if($user->phone_number==null){
+                $user->phone_number == $task->phone;
+            }
+            $task->save();
+            return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
         }
 
         $task->status = 1;
@@ -252,7 +257,6 @@ class CreateController extends Controller
         $data['password'] = Hash::make('login123');
         $user = User::create($data);
         LoginController::send_verification('phone', $user, $user->phone_number);
-
         return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
 
     }

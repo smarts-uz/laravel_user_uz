@@ -37,7 +37,7 @@ class TaskResponse extends Model
         $value = Carbon::parse($this->created_at)->locale(getLocale());
         $value->minute < 10 ? $minut = '0' . $value->minute : $minut = $value->minute;
         $day = $value == now()->toDateTimeString() ? "Bugun" : "$value->day-$value->monthName";
-        return "$day  $value->noZeroHour:$minut";
+        return "$day $value->noZeroHour:$minut";
     }
 
 

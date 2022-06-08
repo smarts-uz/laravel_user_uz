@@ -120,7 +120,7 @@ class UserIndexResource extends JsonResource
             'district' => $this->district,
             'age' => $this->age,
             'description' => $this->description,
-            'category_id' => $this->category_id,
+            'categories' => explode(',', $this->category_id),
             'email_verified' => boolval($this->is_email_verified),
             'phone_verified' => boolval($this->is_phone_number_verified),
             'google_id' => $this->google_id,
