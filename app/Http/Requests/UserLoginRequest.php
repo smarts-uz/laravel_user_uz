@@ -31,22 +31,6 @@ class UserLoginRequest extends FormRequest
             'password'=> 'required'
         ];
     }
-    public function authenticate(){
-
-        $user = User::where('email',$this->email)
-            ->orWhere('phone_number', $this->email)
-            ->first();
-
-         if (!$user || !Hash::check($this->password, $user->password)){
-             throw ValidationException::withMessages([
-                 'email' => __('login.emailError') // Tarjima qilish kerak
-             ]);
-         }
-        auth()->login($user);
-        if (!$user->is_email_verified)
-            LoginController::send_verification('email', auth()->user());
-
-    }
 
 
     public function messages()
