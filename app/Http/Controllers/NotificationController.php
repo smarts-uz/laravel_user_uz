@@ -16,6 +16,29 @@ class NotificationController extends VoyagerBaseController
 {
     use Response;
 
+
+    /**
+     * @OA\Get(
+     *     path="/api/notifications",
+     *     tags={"Notifications"},
+     *     summary="Get notifications",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function getNotifications()
     {
         return $this->success(
@@ -25,7 +48,7 @@ class NotificationController extends VoyagerBaseController
     public function read_notification(Notification $notification)
     {
         $notification->update(['is_read' => 1]);
-        return $notification->is_read;
+        return $this->success($notification);
     }
 
     public function show_notification(Notification $notification)
@@ -34,6 +57,41 @@ class NotificationController extends VoyagerBaseController
         return redirect('/detailed-tasks/' . $notification->task_id);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/firebase-token",
+     *     tags={"Profile"},
+     *     summary="Firebase token",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="token",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function setToken(Request $request)
     {
         $request->validate(['token' => 'required']);

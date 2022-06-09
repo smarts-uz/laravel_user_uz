@@ -20,6 +20,8 @@ use App\Models\Portfolio;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+use PlayMobile\SMS\SmsService;
 use TCG\Voyager\Models\Category;
 use UAParser\Parser;
 
@@ -140,9 +142,9 @@ class ProfileService
         $item ->transactions =  $item ->user->transactions()->paginate(15);
         $item->top_users = User::where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
         ->limit(20)->pluck('id')->toArray();
-        $item ->review_rating = User::find($user->id)->review_rating;
-        $item ->review_good = User::find($user->id)->review_good;
-        $item ->review_bad = User::find($user->id)->review_bad;
+        $item ->review_rating = $user->review_rating;
+        $item ->review_good = $user->review_good;
+        $item ->review_bad = $user->review_bad;
         return $item;
     }
     public function profileData($user){
@@ -190,8 +192,8 @@ class ProfileService
         if ($request->hasFile('images')) {
             $image = [];
             foreach ($request->file('images') as $uploadedImage) {
-                $filename = $user->name.'/'.time() . '_' . $uploadedImage->getClientOriginalName();
-                $uploadedImage->move(public_path().'/portfolio/'.$user->name.'/', $filename);
+                $filename = $user->name . '/' . time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path() . '/portfolio/' . $user->name . '/', $filename);
                 $image[] = $filename;
             }
             $data['image'] = json_encode($image);
@@ -254,18 +256,24 @@ class ProfileService
             $balance = 0;
         $transactions = All_transaction::query()->where(['user_id' => $user->id]);
         $period = $request->get('period');
+        $from = $request->get('from');
+        $to = $request->get('to');
         $type = $request->get('type');
         if ($type == 'in') {
             $transactions = $transactions->whereIn('method', ['Payme', 'Click', 'Paynet']);
         } elseif ($type == 'out') {
             $transactions = $transactions->where('method', '=', 'Task');
         }
-        if ($period == 'month') {
-            $transactions = $transactions->where('created_at', '>', Carbon::now()->subMonth()->toDateTimeString());
-        } elseif ($period == 'week') {
-            $transactions = $transactions->where('created_at', '>', Carbon::now()->subWeek()->toDateTimeString());
-        } elseif ($period == 'year') {
-            $transactions = $transactions->where('created_at', '>', Carbon::now()->subYear()->toDateTimeString());
+        $now = Carbon::now();
+        if ($period) {
+            $transactions = match ($period) {
+                'month' => $transactions->where('created_at', '>', $now->subMonth()),
+                'week' => $transactions->where('created_at', '>', $now->subWeek()),
+                'year' => $transactions->where('created_at', '>', $now->subYear()),
+            };
+        } elseif ($from && $to) {
+            $transactions = $transactions->where('created_at', '>', $from)
+                ->where('created_at', '<', $to);
         }
         return [
             'balance' => $balance,
@@ -284,8 +292,12 @@ class ProfileService
                 $success = false;
             }
         } else {
+            $user->phone_number_old = $user->phone_number;
             $user->phone_number = $phoneNumber;
             $user->is_phone_number_verified = 0;
+            $code = rand(100000, 999999);
+            (new SmsService())->send($user->phone_number, $code);
+            $user->verify_code = $code;
             $user->save();
             $message = trans('trans.Phone number updated successfully.');
             $success = true;
@@ -323,9 +335,8 @@ class ProfileService
         }
     }
 
-    public function changePassword($request)
+    public function changePassword($data)
     {
-        $data = $request->validated();
         $user = auth()->user();
         if (Hash::check($data['old_password'], $user->password)) {
             $user->update(['password' => Hash::make($data['password'])]);
@@ -338,9 +349,8 @@ class ProfileService
         }
         return response()->json([
             'status' => $status,
-            'data' => [
-                'message' => $message
-            ]
+            'message' => $message,
+            'data' => []
         ]);
     }
 

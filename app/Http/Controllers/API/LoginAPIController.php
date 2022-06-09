@@ -3,28 +3,16 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserLoginRequest;
-use App\Http\Requests\UserRegisterRequest;
-use App\Mail\MessageEmail;
 use App\Mail\VerifyEmail;
 use App\Models\User;
-use App\Models\WalletBalance;
-use App\Providers\RouteServiceProvider;
 use Carbon\Carbon;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use PlayMobile\SMS\SmsService;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class LoginAPIController extends Controller
 {
-
-
-
-
     public static function send_verification($needle,$user)
     {
         if ($needle == 'email') {

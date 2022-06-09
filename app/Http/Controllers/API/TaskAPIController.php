@@ -6,6 +6,7 @@ use App\Http\Requests\Api\TaskAddressRequest;
 use App\Http\Requests\Api\TaskBudgetRequest;
 use App\Http\Requests\Api\TaskContactsRequest;
 use App\Http\Requests\Api\TaskCustomRequest;
+use App\Http\Requests\Api\TaskDateRequest;
 use App\Http\Requests\Api\TaskFilterRequest;
 use App\Http\Requests\Api\TaskNameRequest;
 use App\Http\Requests\Api\TaskNoteRequest;
@@ -29,9 +30,11 @@ use App\Services\Task\CreateTaskService;
 use App\Services\Task\FilterTaskService;
 use App\Services\Task\ResponseService;
 use App\Services\Task\UpdateTaskService;
+use App\Services\TelegramService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CustomFieldsValue;
 
@@ -154,6 +157,16 @@ class TaskAPIController extends Controller
      *                 ),
      *                 @OA\Property (
      *                    property="price",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="notificate",
+     *                    description="0 - xabar kelmasin, 1 - xabar kelsin",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="not_free",
+     *                    description="0 - bepul, 1 - pullik",
      *                    type="integer",
      *                 ),
      *             ),
@@ -333,6 +346,12 @@ class TaskAPIController extends Controller
     public function task(Task $task)
     {
         if (auth()->guard('api')->check()) {
+            $user_id = auth()->guard('api')->id();
+            $viewed_tasks = Cache::get('user_viewed_tasks'. $user_id) ?? [];
+            if (!in_array($task->id, $viewed_tasks)) {
+                $viewed_tasks[] = $task->id;
+            }
+            Cache::put('user_viewed_tasks'. $user_id, $viewed_tasks);
             $task->increment('views');
         }
         return new TaskIndexResource($task);
@@ -497,18 +516,6 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="weight",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="length",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="date_t",
      *                    type="integer",
      *                 ),
      *             ),
@@ -680,7 +687,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function date(\App\Http\Requests\Api\TaskDateRequest $request)
+    public function date(TaskDateRequest $request)
     {
         return $this->success($this->create_task_service->date_store($request->validated()));
     }
@@ -752,8 +759,8 @@ class TaskAPIController extends Controller
      *                 ),
      *                 @OA\Property (
      *                    property="docs",
-     *                    description="true - taqdim etilsin, false - taqdim etilmasin",
-     *                    type="boolean",
+     *                    description="true - 1, false - 0",
+     *                    type="integer",
      *                 ),
      *             ),
      *         ),
@@ -1003,6 +1010,37 @@ class TaskAPIController extends Controller
         ]);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/change-task/{task}",
+     *     tags={"Change Task"},
+     *     summary="Get Task",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function getTask(Task $task)
     {
         return $task;
@@ -1383,7 +1421,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateDate(\App\Http\Requests\Api\TaskDateRequest $request, Task $task)
+    public function updateDate(TaskDateRequest $request, Task $task)
     {
         return $this->success($this->update_task_service->updateDate($task, $request->validated()));
     }
@@ -1473,7 +1511,7 @@ class TaskAPIController extends Controller
      *                 ),
      *                 @OA\Property (
      *                    property="docs",
-     *                    description="true - taqdim etilsin, false - taqdim etilmasin",
+     *                    description="true - 1, false - 0",
      *                    type="boolean",
      *                 ),
      *             ),
@@ -1662,12 +1700,64 @@ class TaskAPIController extends Controller
         return $this->update_task_service->verification($task, $request->validated());
     }
 
-    public function complain(TaskComplaintRequest $request, $id)
+
+    /**
+     * @OA\Post(
+     *     path="/api/task/{task}/complain",
+     *     tags={"Complain"},
+     *     summary="Task complain",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="compliance_type_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="text",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function complain(TaskComplaintRequest $request, Task $task)
     {
         $data = $request->validated();
-        $data['task_id'] = $id;
+        $data['task_id'] = $task->id;
         $data['user_id'] = auth()->id();
-        Compliance::query()->create($data);
+        $compliant = Compliance::query()->create($data);
+        $data['id'] = $compliant->id;
+        $data['complaint'] = $compliant->text;
+        $data['user_name'] = auth()->user()->name;
+        $data['task_name'] = $task->name;
+        (new TelegramService())->sendMessage($data);
         return response()->json([
             'success' => true,
             'data' => [

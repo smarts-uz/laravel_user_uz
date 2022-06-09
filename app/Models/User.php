@@ -147,6 +147,14 @@ class User extends \TCG\Voyager\Models\User
         return $this->walletBalance->balance ?? 0;
     }
 
+    public function isActive()
+    {
+        if ($this->is_active == 1) {
+            return true;
+        }
+        return false;
+    }
+
     public static function boot ()
     {
         parent::boot();
@@ -168,14 +176,11 @@ class User extends \TCG\Voyager\Models\User
                 $portfolio->delete();
             }
 
-            foreach ($user->notifications() as $notification)
-            {
-                $notification->delete();
-            }
+            Notification::query()->where('user_id', $user->id)->orWhere('performer_id', $user->id)->delete();
 
             $user->walletBalance()->delete();
-            $user->email = '_' . $user->email;
-            $user->phone_number = '_' . $user->phone_number;
+            $user->email = '_' . $user->email . '_' . Carbon::now();
+            $user->phone_number = '_' . $user->phone_number . '_' . Carbon::now();
             $user->save();
         });
     }

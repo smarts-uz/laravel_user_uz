@@ -6,12 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BecomePerformerEmailPhone;
 use App\Http\Requests\BecomePerformerRequest;
 use App\Http\Requests\GiveTaskRequest;
-use App\Http\Requests\PerformerRegisterRequest;
-use App\Http\Requests\UserLoginRequest;
+use App\Http\Resources\NotificationResource;
 use App\Http\Resources\PerformerIndexResource;
 use App\Http\Resources\PerformerPaginateResource;
 use App\Http\Resources\ReviewIndexResource;
-use App\Http\Resources\ReviewPaginationResource;
 use App\Models\Notification;
 use App\Models\Review;
 use App\Models\Task;
@@ -21,7 +19,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use PlayMobile\SMS\SmsService;
-use function Symfony\Component\String\s;
 
 class PerformerAPIController extends Controller
 {
@@ -47,7 +44,7 @@ class PerformerAPIController extends Controller
      */
     public function service(Request $request)
     {
-        $performers = User::where('role_id', 2);
+        $performers = User::query()->where('role_id', 2);
         if (isset($request->online))
         {
             $date = Carbon::now()->subMinutes(2)->toDateTimeString();
@@ -141,11 +138,11 @@ class PerformerAPIController extends Controller
     {
         $data = $request->validated();
         $task = Task::where('id', $data['task_id'])->first();
-        $performer = User::query()->find($data['performer_id']);
+        $performer = User::query()->findOrFail($data['performer_id']);
         $text_url = route("searchTask.task",$data['task_id']);
         $text = "Заказчик предложил вам новую задания $text_url. Имя заказчика: " . $task->user->name;
         (new SmsService())->send($performer->phone_number, $text);
-        Notification::create([
+        $notification = Notification::create([
             'user_id' => $task->user_id,
             'performer_id' => $data['performer_id'],
             'task_id' => $data['task_id'],
@@ -157,6 +154,9 @@ class PerformerAPIController extends Controller
         NotificationService::sendNotificationRequest([$data['performer_id']], [
             'url' => 'detailed-tasks' . '/' . $data['task_id'], 'name' => $task->name, 'time' => 'recently'
         ]);
+        NotificationService::pushNotification($performer->firebase_token, [
+            'title' => 'Task selected', 'body' => 'See details'
+        ], 'notification', new NotificationResource($notification));
 
         return response()->json(['success' => true, 'message' => 'Success']);
     }

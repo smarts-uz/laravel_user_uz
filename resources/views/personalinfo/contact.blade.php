@@ -22,6 +22,9 @@
                     <input type="text" id="phone_number" value="{{auth()->user()->phone_number}}"
                     placeholder="+998(00)000-00-00" name="phone_number"
                       class="block px-2 w-full border  border-grey-300 py-2 rounded-lg shadow-sm focus:outline-none focus:border-yellow-500" />
+                    @error('phone_number')
+                        <p class="text-red-500"> {{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="flex w-full gap-x-4 mt-4">
                 <a onclick="myFunction()" class="w-1/3  border border-black-700 hover:border-black transition-colors rounded-lg py-2 text-center flex justify-center items-center gap-2">
