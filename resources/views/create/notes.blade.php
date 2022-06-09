@@ -112,15 +112,12 @@
     <script>
         var uppy = new Uppy.Core()
             .use(Uppy.Dashboard, {
-                doneButtonHandler: null,
                 trigger: '.UppyModalOpenerBtn',
                 inline: true,
                 target: '#photos',
                 showProgressDetails: true,
+                allowedFileTypes: ['image/*'],
                 debug: true,
-                restrictions: {
-                    allowedFileTypes: null
-                },
                 note: 'Все типы файлов, до 10 МБ',
                 height: 400,
                 metaFields: [
@@ -133,11 +130,9 @@
             .use(Uppy.ImageEditor, {target: Uppy.Dashboard})
             .use(Uppy.XHRUpload, {
                 endpoint: '{{route('task.create.images.store', $task->id)}}',
-                formData: true,
                 fieldName: 'images[]',
-                headers: file => ({
-                    'X-CSRF-TOKEN': '{{csrf_token()}}'
-                }),
+                method: 'post',
+                bundle: true,
             });
 
         uppy.on('upload-success', (file, response) => {

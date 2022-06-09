@@ -44,6 +44,7 @@ Route::middleware('custom.auth:api')->group(function () {
         Route::get('/getContacts', [MessagesController::class, 'getContacts']);
         Route::get('/search', [MessagesController::class, 'search']);
         Route::post('/fetchMessages', [MessagesController::class, 'fetch']);
+        Route::post('/makeSeen', [MessagesController::class, 'seen']);
     });
     Route::post('task/create', [TaskAPIController::class, 'create']);
     Route::post('create-task/name', [TaskAPIController::class, 'name']); //end +
@@ -69,6 +70,7 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('update-task/{task}/verify', [TaskAPIController::class, 'updateVerify']); //end +
 
     Route::get('/notifications', [NotificationController::class, 'getNotifications']); //end
+    Route::post('/read-notification/{notification}', [NotificationController::class, 'read_notification']); //end
 
     Route::get('/my-tasks-count', [TaskAPIController::class, 'my_tasks_count']); //end +
     Route::get('/my-tasks', [TaskAPIController::class, 'my_tasks_all']); //end +
@@ -122,6 +124,7 @@ Route::middleware('custom.auth:api')->group(function () {
             Route::post('/change-avatar', [ProfileAPIController::class, 'avatar']); //end -
             Route::get('/phone', [ProfileAPIController::class, 'phoneEdit']); //end +
             Route::post('/phone/edit', [ProfileAPIController::class, 'phoneUpdate']); //end +
+            Route::post('/phone/verify', [ProfileAPIController::class, 'phoneVerify']);
             Route::post('/password/change', [ProfileAPIController::class, 'change_password']); //end +
             Route::post('/notifications', [ProfileAPIController::class, 'userNotifications']); //end +
             Route::post('/change-lang', [ProfileAPIController::class, 'changeLanguage']); //end

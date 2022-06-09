@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ResetPasswordRequest;
 use App\Http\Requests\PhoneNumberRequest;
-use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\Api\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
 use App\Http\Resources\UserIndexResource;
 use App\Models\User;

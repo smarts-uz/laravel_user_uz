@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use PlayMobile\SMS\SmsService;
 use TCG\Voyager\Models\Category;
 use UAParser\Parser;
 
@@ -185,20 +186,15 @@ class ProfileService
 
     public function createPortfolio($request)
     {
-        $request->validate([
-            'images' => 'required|mimes:csv,txt,xlx,xls,pdf,jpg,png,svg'
-        ]);
         $user = auth()->user();
         $data = $request->except('images');
         $data['user_id'] = $user->id;
         if ($request->hasFile('images')) {
             $image = [];
             foreach ($request->file('images') as $uploadedImage) {
-                if(Str::contains($uploadedImage->getClientOriginalName(),'jpg')||Str::contains($filename,'png')||Str::contains($filename,'jpeg')||Str::contains($filename,'gif')||Str::contains($filename,'jfif')) {
-                    $filename = $user->name . '/' . time() . '_' . $uploadedImage->getClientOriginalName();
-                    $uploadedImage->move(public_path() . '/portfolio/' . $user->name . '/', $filename);
-                    $image[] = $filename;
-                }
+                $filename = $user->name . '/' . time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path() . '/portfolio/' . $user->name . '/', $filename);
+                $image[] = $filename;
             }
             $data['image'] = json_encode($image);
         }
@@ -296,8 +292,12 @@ class ProfileService
                 $success = false;
             }
         } else {
+            $user->phone_number_old = $user->phone_number;
             $user->phone_number = $phoneNumber;
             $user->is_phone_number_verified = 0;
+            $code = rand(100000, 999999);
+            (new SmsService())->send($user->phone_number, $code);
+            $user->verify_code = $code;
             $user->save();
             $message = trans('trans.Phone number updated successfully.');
             $success = true;

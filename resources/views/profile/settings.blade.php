@@ -342,7 +342,7 @@
                                                 @foreach($sessions as $session)
 
                                                     <div class="flex sm:flex-row flex-col mt-4 items-center">
-                                                        <div class="flex flex-row">
+                                                        <div class="flex flex-row items-center">
                                                             <i class="fas fa-desktop mr-2 text-yellow-500"></i>
                                                             <p class="mx-1">{{ $session->ip_address == request()->ip()? "Текущая" :"" }}{{ $parser->parse($session->user_agent)->os->family }},</p>
                                                         </div>

@@ -330,7 +330,7 @@ class CreateTaskService
             $fileModelfile_path = '/storage/' . $filePath;
             return response()->json([
                 "success" => true,
-                "message" => "File successfully uploaded",
+                "message" => ("__('Файл успешно загружен')"),
                 "file" => $fileName
             ]);
         }
@@ -370,7 +370,7 @@ class CreateTaskService
         taskGuard($task);
         $task->photos = null;
         $task->save();
-        Alert::success('success');
+        Alert::success(__('Успешно'));
         return back();
     }
 

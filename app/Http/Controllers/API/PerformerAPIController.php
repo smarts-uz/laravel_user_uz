@@ -6,13 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BecomePerformerEmailPhone;
 use App\Http\Requests\BecomePerformerRequest;
 use App\Http\Requests\GiveTaskRequest;
-use App\Http\Requests\PerformerRegisterRequest;
-use App\Http\Requests\UserLoginRequest;
 use App\Http\Resources\NotificationResource;
 use App\Http\Resources\PerformerIndexResource;
 use App\Http\Resources\PerformerPaginateResource;
 use App\Http\Resources\ReviewIndexResource;
-use App\Http\Resources\ReviewPaginationResource;
 use App\Models\Notification;
 use App\Models\Review;
 use App\Models\Task;
@@ -22,7 +19,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use PlayMobile\SMS\SmsService;
-use function Symfony\Component\String\s;
 
 class PerformerAPIController extends Controller
 {
@@ -48,7 +44,7 @@ class PerformerAPIController extends Controller
      */
     public function service(Request $request)
     {
-        $performers = User::where('role_id', 2);
+        $performers = User::query()->where('role_id', 2);
         if (isset($request->online))
         {
             $date = Carbon::now()->subMinutes(2)->toDateTimeString();

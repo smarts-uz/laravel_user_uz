@@ -30,9 +30,11 @@ use App\Services\Task\CreateTaskService;
 use App\Services\Task\FilterTaskService;
 use App\Services\Task\ResponseService;
 use App\Services\Task\UpdateTaskService;
+use App\Services\TelegramService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CustomFieldsValue;
 
@@ -344,6 +346,12 @@ class TaskAPIController extends Controller
     public function task(Task $task)
     {
         if (auth()->guard('api')->check()) {
+            $user_id = auth()->guard('api')->id();
+            $viewed_tasks = Cache::get('user_viewed_tasks'. $user_id) ?? [];
+            if (!in_array($task->id, $viewed_tasks)) {
+                $viewed_tasks[] = $task->id;
+            }
+            Cache::put('user_viewed_tasks'. $user_id, $viewed_tasks);
             $task->increment('views');
         }
         return new TaskIndexResource($task);
@@ -1739,12 +1747,17 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function complain(TaskComplaintRequest $request, $id)
+    public function complain(TaskComplaintRequest $request, Task $task)
     {
         $data = $request->validated();
-        $data['task_id'] = $id;
+        $data['task_id'] = $task->id;
         $data['user_id'] = auth()->id();
-        Compliance::query()->create($data);
+        $compliant = Compliance::query()->create($data);
+        $data['id'] = $compliant->id;
+        $data['complaint'] = $compliant->text;
+        $data['user_name'] = auth()->user()->name;
+        $data['task_name'] = $task->name;
+        (new TelegramService())->sendMessage($data);
         return response()->json([
             'success' => true,
             'data' => [
