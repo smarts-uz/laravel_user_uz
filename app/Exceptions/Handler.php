@@ -45,11 +45,13 @@ class Handler extends ExceptionHandler
         $this->renderable(function (Throwable $e, $request) {
             if ($request->is('api/*')) {
                 if ($e instanceOf ValidationException) {
+                    $messages = [];
+                    foreach ($e->errors() as $key => $message) {
+                        $messages[] = $message[0];
+                    }
                     return response()->json([
                         'success' => false,
-                        'data' => [
-                            'message' => $e->errors()
-                        ]
+                        'messages' => implode(' ', $messages)
                     ]);
                 }
                 if ($e instanceof NotFoundHttpException) {
