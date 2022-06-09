@@ -129,6 +129,16 @@ class MessagesController extends Controller
         ]);
     }
 
+    public function seen(Request $request)
+    {
+        // make as seen
+        $seen = Chatify::makeSeen($request['id']);
+        // send the response
+        return Response::json([
+            'success' => true,
+            'message' => 'Success',
+        ], 200);
+    }
 
     public function getContacts()
     {
