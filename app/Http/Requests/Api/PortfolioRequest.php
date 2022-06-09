@@ -28,7 +28,7 @@ class PortfolioRequest extends FormRequest
         return [
             'comment' => 'required|string',
             'description' => 'required|string',
-            'images' => 'nullable'
+            'images.*' => 'nullable|mimes:csv,txt,xlx,xls,pdf,jpg,png,svg,jpeg,bmp'
         ];
     }
 
