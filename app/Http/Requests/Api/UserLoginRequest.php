@@ -34,12 +34,18 @@ class UserLoginRequest extends BaseRequest
             ->orWhere('phone_number', $this->email)
             ->first();
 
-         if (!$user || !Hash::check($this->password, $user->password)){
-             throw new HttpResponseException(response()->json([
-                 'success' => false,
-                 'message' => 'Email or password incorrect',
-             ]));
-         }
+        if (!$user || !Hash::check($this->password, $user->password)){
+            throw new HttpResponseException(response()->json([
+             'success' => false,
+             'message' => 'Email or password incorrect',
+            ]));
+        }
+        if (!$user->isActive()) {
+            throw new HttpResponseException(response()->json([
+                'success' => false,
+                'message' => 'User is not active',
+            ]));
+        }
         auth()->login($user);
         if (!$user->is_email_verified)
             LoginController::send_verification('email', auth()->user());

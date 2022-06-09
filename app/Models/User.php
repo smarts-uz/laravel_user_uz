@@ -147,6 +147,14 @@ class User extends \TCG\Voyager\Models\User
         return $this->walletBalance->balance ?? 0;
     }
 
+    public function isActive()
+    {
+        if ($this->is_active == 1) {
+            return true;
+        }
+        return false;
+    }
+
     public static function boot ()
     {
         parent::boot();
