@@ -176,14 +176,11 @@ class User extends \TCG\Voyager\Models\User
                 $portfolio->delete();
             }
 
-            foreach ($user->notifications() as $notification)
-            {
-                $notification->delete();
-            }
+            Notification::query()->where('user_id', $user->id)->orWhere('performer_id', $user->id)->delete();
 
             $user->walletBalance()->delete();
-            $user->email = '_' . $user->email;
-            $user->phone_number = '_' . $user->phone_number;
+            $user->email = '_' . $user->email . '_' . Carbon::now();
+            $user->phone_number = '_' . $user->phone_number . '_' . Carbon::now();
             $user->save();
         });
     }
