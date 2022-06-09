@@ -48,7 +48,7 @@ class NotificationController extends VoyagerBaseController
     public function read_notification(Notification $notification)
     {
         $notification->update(['is_read' => 1]);
-        return $notification->is_read;
+        return $this->success($notification);
     }
 
     public function show_notification(Notification $notification)
