@@ -124,6 +124,7 @@ Route::middleware('custom.auth:api')->group(function () {
             Route::post('/change-avatar', [ProfileAPIController::class, 'avatar']); //end -
             Route::get('/phone', [ProfileAPIController::class, 'phoneEdit']); //end +
             Route::post('/phone/edit', [ProfileAPIController::class, 'phoneUpdate']); //end +
+            Route::post('/phone/verify', [ProfileAPIController::class, 'phoneVerify']);
             Route::post('/password/change', [ProfileAPIController::class, 'change_password']); //end +
             Route::post('/notifications', [ProfileAPIController::class, 'userNotifications']); //end +
             Route::post('/change-lang', [ProfileAPIController::class, 'changeLanguage']); //end

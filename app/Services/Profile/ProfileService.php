@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use PlayMobile\SMS\SmsService;
 use TCG\Voyager\Models\Category;
 use UAParser\Parser;
 
@@ -291,8 +292,12 @@ class ProfileService
                 $success = false;
             }
         } else {
+            $user->phone_number_old = $user->phone_number;
             $user->phone_number = $phoneNumber;
             $user->is_phone_number_verified = 0;
+            $code = rand(100000, 999999);
+            (new SmsService())->send($user->phone_number, $code);
+            $user->verify_code = $code;
             $user->save();
             $message = trans('trans.Phone number updated successfully.');
             $success = true;
