@@ -16,11 +16,6 @@ class UserIndexResource extends JsonResource
 {
     protected $locale;
 
-    public function locale($value){
-        $this->locale = $value . '_' . strtoupper($value);
-        return $this;
-    }
-
     /**
      * Transform the resource into an array.
      *
@@ -29,6 +24,7 @@ class UserIndexResource extends JsonResource
      */
     public function toArray($request)
     {
+        $this->locale = app()->getLocale();
         $file = "portfolio/{$this->name}";
         if (!file_exists($file)) {
             File::makeDirectory($file);
