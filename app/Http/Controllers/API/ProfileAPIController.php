@@ -502,16 +502,12 @@ class ProfileAPIController extends Controller
             $user->save();
             return response()->json([
                 'success' => true,
-                'data' => [
-                    'message' => trans('trans.Phone number verified.')
-                ]
+                'message' => trans('trans.Phone number verified.')
             ]);
         }
         return response()->json([
             'success' => false,
-            'data' => [
-                'message' => trans('trans.Incorrect code.')
-            ]
+            'message' => trans('trans.Incorrect code.')
         ]);
     }
 
