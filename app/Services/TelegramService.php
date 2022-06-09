@@ -12,9 +12,9 @@ class TelegramService
 
     public function __construct()
     {
-        $this->token = config('app.bot_token');
+        $this->token = setting('site.bot_token');
         $this->sendMessageApi = 'https://api.telegram.org/bot' . $this->token . '/sendMessage';
-        $this->group = config('app.group');
+        $this->group = setting('site.channel_username');
     }
 
     public function sendMessage($data)
