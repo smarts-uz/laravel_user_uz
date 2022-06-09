@@ -44,7 +44,7 @@ class PerformerAPIController extends Controller
      */
     public function service(Request $request)
     {
-        $performers = User::where('role_id', 2);
+        $performers = User::query()->where('role_id', 2);
         if (isset($request->online))
         {
             $date = Carbon::now()->subMinutes(2)->toDateTimeString();

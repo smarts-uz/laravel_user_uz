@@ -63,7 +63,7 @@ class ProfileAPIController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return (new UserIndexResource($user))->locale($_GET['lang']);
+        return new UserIndexResource($user);
     }
 
 

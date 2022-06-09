@@ -15,8 +15,17 @@ class PerformerIndexResource extends JsonResource
      */
     public function toArray($request)
     {
+        $locale = app()->getLocale();
         $goods = $this->goodReviews()->count();
         $bads =  $this->badReviews()->count();
+        $date = Carbon::now()->subMinutes(2)->toDateTimeString();
+        if ($this->last_seen >= $date) {
+            $lastSeen = 'online';
+        } else {
+            $seenDate = Carbon::parse($this->last_seen);
+            $seenDate->locale($locale);
+            $lastSeen = $seenDate->diffForHumans();
+        }
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -24,7 +33,7 @@ class PerformerIndexResource extends JsonResource
             'avatar' => $this->avatar?asset('storage/'.$this->avatar):null,
             'phone_number' => $this->phone_number,
             'location' => $this->location,
-            'last_seen' => Carbon::parse( $this->last_seen)->diffForHumans(),
+            'last_seen' => $lastSeen,
             'likes' => $goods,
             'dislikes' => $bads,
             'description' => $this->description,

@@ -185,20 +185,15 @@ class ProfileService
 
     public function createPortfolio($request)
     {
-        $request->validate([
-            'images' => 'required|mimes:csv,txt,xlx,xls,pdf,jpg,png,svg'
-        ]);
         $user = auth()->user();
         $data = $request->except('images');
         $data['user_id'] = $user->id;
         if ($request->hasFile('images')) {
             $image = [];
             foreach ($request->file('images') as $uploadedImage) {
-                if(Str::contains($uploadedImage->getClientOriginalName(),'jpg')||Str::contains($filename,'png')||Str::contains($filename,'jpeg')||Str::contains($filename,'gif')||Str::contains($filename,'jfif')) {
-                    $filename = $user->name . '/' . time() . '_' . $uploadedImage->getClientOriginalName();
-                    $uploadedImage->move(public_path() . '/portfolio/' . $user->name . '/', $filename);
-                    $image[] = $filename;
-                }
+                $filename = $user->name . '/' . time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path() . '/portfolio/' . $user->name . '/', $filename);
+                $image[] = $filename;
             }
             $data['image'] = json_encode($image);
         }
