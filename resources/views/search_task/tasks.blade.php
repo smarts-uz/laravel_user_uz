@@ -10,8 +10,8 @@
             </div>
             <div class="w-5/6">
             @if( in_array($this->id,
-                Cache::get('user_viewed_tasks' . auth()->id()) ?? []
-                ) ?? false)
+                Illuminate\Support\Facades\Cache::get('user_viewed_tasks' . auth()->id()) ?? []
+                ))
                     <a href="/detailed-tasks/{{$task->id}}"
                        class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">{{ $task->name }}</a>
             @else
