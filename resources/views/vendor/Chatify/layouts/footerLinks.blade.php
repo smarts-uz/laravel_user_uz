@@ -10,7 +10,7 @@
         wssPort: {{config('chatify.pusher.options.port', 6001)}},
         forceTLS: true,
         disableStats: false,
-        authEndpoint: 'http://' + '{{config('chatify.pusher.options.host')}}' +'/chat/pusher/auth',
+        authEndpoint: 'https://' + '{{config('chatify.pusher.options.host')}}' +'/chat/pusher/auth',
         auth: {
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
