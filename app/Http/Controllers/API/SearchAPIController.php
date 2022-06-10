@@ -218,8 +218,7 @@ class SearchAPIController extends Controller
         $task->responses()->delete();
         $task->reviews()->delete();
         $task->custom_field_values()->delete();
-        $task->status = Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
-        $task->save();
+        $task->delete();
         return response()->json([
             'success' => true,
             'message' => "Successfully deleted"
