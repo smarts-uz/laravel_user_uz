@@ -151,7 +151,8 @@ class UpdateAPIController extends Controller
         try {
             $task->status = $request->status ? Task::STATUS_COMPLETE : Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
             $task->save();
-
+            ChMessage::query()->where('from_id', $task->user_id)->where('to_id', $task->performer_id)->delete();
+            ChMessage::query()->where('to_id', $task->user_id)->where('from_id', $task->performer_id)->delete();
             Review::create([
                 'description' => $request->comment,
                 'good_bad' => $request->good,

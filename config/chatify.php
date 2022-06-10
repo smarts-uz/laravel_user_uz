@@ -37,9 +37,9 @@ return [
         'app_id' => env('PUSHER_APP_ID'),
         'options' => [
             'cluster' => env('PUSHER_APP_CLUSTER'),
-            'encrypted' => false,
-            'host' => (string) env('WEBSOCKET_SERVER_HOST'),
-            'port' => env('WEBSOCKET_SERVER_PORT'),
+            'encrypted' => true,
+            'host' => (string) env('WEBSOCKET_SERVER_HOST', '127.0.0.1'),
+            'port' => env('WEBSOCKET_SERVER_PORT', 6001),
             'scheme' => 'https',
             'forceTLS' => true,
             'disableStats' => true,
