@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\ValidationException;
 use PlayMobile\SMS\SmsService;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -30,11 +31,25 @@ class LoginController extends Controller
 
     public function loginPost(UserLoginRequest $request)
     {
+        $data = $request->validated();
+        $user = User::where('email', $data['email'])
+            ->orWhere('phone_number', $data['email'])
+            ->first();
 
-        $request->authenticate();
+        if (!$user || !Hash::check($data['password'], $user->password)){
+            Alert::error('Incorrect password');
+            return back();
+        }
+        if (!$user->isActive()) {
+            Alert::error('User is not active');
+            return back();
+        }
+
+        auth()->login($user);
+        if (!$user->is_email_verified)
+            LoginController::send_verification('email', auth()->user());
 
         $request->session()->regenerate();
-
 
         return redirect()->route('profile.profileData');
 

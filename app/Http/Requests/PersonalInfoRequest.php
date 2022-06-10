@@ -25,7 +25,17 @@ class PersonalInfoRequest extends FormRequest
     {
         return [
             'email' => 'required',
-            'phone_number' => 'required|integer|min:13',
+            'phone_number' => 'required|integer|unique:users|min:13',
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'email.required' => __('email.required'),
+            'phone_number.required' => __('phone_number.required'),
+            'phone_number.integer' => __('phone_number.integer'),
+            'phone_number.unique' => __('phone_number.unique'),
+            'phone_number.min' => __('phone_number.min'),
         ];
     }
     public function getValidatorInstance()

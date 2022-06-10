@@ -493,6 +493,24 @@ class ProfileAPIController extends Controller
 
     }
 
+    public function phoneVerify(Request $request)
+    {
+        $user = auth()->user();
+        $code = $request->get('code');
+        if ($user->verify_code === $code) {
+            $user->is_phone_number_verified = 1;
+            $user->save();
+            return response()->json([
+                'success' => true,
+                'message' => trans('trans.Phone number verified.')
+            ]);
+        }
+        return response()->json([
+            'success' => false,
+            'message' => trans('trans.Incorrect code.')
+        ]);
+    }
+
 
     /**
      * @OA\Post(
