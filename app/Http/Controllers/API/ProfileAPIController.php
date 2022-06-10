@@ -1173,6 +1173,7 @@ class ProfileAPIController extends Controller
         $data = $request->validated();
         $user = auth()->user();
         $user->password = Hash::make($data['password']);
+        $user->save();
         return response()->json([
             'success' => true,
             'message' => trans('trans.Password updated successfully.')
