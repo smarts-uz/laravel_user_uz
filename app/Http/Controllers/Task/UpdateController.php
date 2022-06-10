@@ -98,6 +98,10 @@ class UpdateController extends Controller
             if ($task->user_id == auth()->id()) {
                 $task->status = Task::STATUS_COMPLETE;
                 $task->save();
+
+                ChMessage::query()->where('from_id', $task->user_id)->where('to_id', $task->performer_id)->delete();
+                ChMessage::query()->where('to_id', $task->user_id)->where('from_id', $task->performer_id)->delete();
+
                 $performer = User::find($task->performer_id);
                 if ($request->good == 1) {
                     $performer->increment('review_good');
