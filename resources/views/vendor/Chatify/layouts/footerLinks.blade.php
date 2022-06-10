@@ -7,8 +7,9 @@
         cluster: '{{config("chatify.pusher.options.cluster")}}',
         wsHost: '{{config('chatify.pusher.options.host')}}',
         wsPort: {{config('chatify.pusher.options.port', 6001)}},
-        forceTLS: false,
-        disableStats: true,
+        wssPort: {{config('chatify.pusher.options.port', 6001)}},
+        forceTLS: true,
+        disableStats: false,
         authEndpoint: 'http://' + '{{config('chatify.pusher.options.host')}}' +'/chat/pusher/auth',
         auth: {
             headers: {
