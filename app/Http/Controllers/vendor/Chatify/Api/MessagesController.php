@@ -7,6 +7,7 @@ use App\Models\Chat\ChatifyMessenger;
 use App\Models\Chat\ChMessage;
 use App\Services\Chat\ContactService;
 use App\Services\Chat\MessageService;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
@@ -47,6 +48,7 @@ class MessagesController extends Controller
         $attachment = null;
         $attachment_title = null;
 
+        $auth_user = Auth::user();
         // if there is attachment [file]
         if ($request->hasFile('file')) {
             // allowed extensions
@@ -79,7 +81,7 @@ class MessagesController extends Controller
             Chatify::newMessage([
                 'id' => $messageID,
                 'type' => 'user', //$request['type'],
-                'from_id' => Auth::id(),
+                'from_id' => $auth_user->id,
                 'to_id' => $request['id'],
                 'body' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
                 'attachment' => ($attachment) ? json_encode((object)[
@@ -93,10 +95,14 @@ class MessagesController extends Controller
 
             // send to user using pusher
             Chatify::push('private-chatify', 'messaging', [
-                'from_id' => Auth::user()->id,
+                'from_id' => $auth_user->id,
                 'to_id' => $request['id'],
                 'message' => Chatify::messageCard($messageData, 'default')
             ]);
+            NotificationService::pushNotification($auth_user->firebase_token, [
+                'title' => 'New message', 'body' => 'See details'
+            ], 'chat', $messageData ?? []);
+
             return Response::json([
                 'success' => true,
                 'data' => $messageData ?? [],
@@ -119,9 +125,10 @@ class MessagesController extends Controller
      */
     public function fetch(Request $request)
     {
-        $query = Chatify::fetchMessagesQuery($request['id'])->latest();
-        $messages = MessageResource::collection($query->get());
+        $query = Chatify::fetchMessagesQuery($request['id']);
+        $query->where('seen',0)->update(['seen' => 1]);
 
+        $messages = MessageResource::collection($query->latest()->get());
         return Response::json([
             'success' => true,
             'data' => $messages,
