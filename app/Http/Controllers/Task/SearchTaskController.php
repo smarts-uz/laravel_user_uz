@@ -6,6 +6,7 @@ use App\Models\TaskResponse;
 use App\Services\Task\CreateService;
 use App\Services\Task\CustomFieldService;
 use App\Models\Task;
+use Illuminate\Support\Facades\Cache;
 use TCG\Voyager\Models\Category;
 use Illuminate\Http\Request;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
@@ -39,7 +40,15 @@ class SearchTaskController extends VoyagerBaseController
         }
         $review = null;
         if ($task->reviews_count == 2) $review = true;
-        if (auth()->check() && auth()->id() != $task->user_id) {
+
+        $user_id = auth()->id();
+        if (auth()->check() && $user_id != $task->user_id) {
+            $viewed_tasks = Cache::get('user_viewed_tasks'. $user_id) ?? [];
+            if (!in_array($task->id, $viewed_tasks)) {
+                $viewed_tasks[] = $task->id;
+            }
+            Cache::put('user_viewed_tasks'. $user_id, $viewed_tasks);
+
             $task->views++;
             $task->save();
         }
@@ -112,7 +121,7 @@ class SearchTaskController extends VoyagerBaseController
         }
         else{
             return view('search_task.new_search', compact('categories','categories2'));
-        }   
+        }
     }
 
 public function search_new2(Request $request){
@@ -144,8 +153,8 @@ public function search_new2(Request $request){
                         );
 
 
-                        
-    
+
+
         $html = view("search_task.tasks", ['tasks'=>$tasks[0]])->render();
         return response()->json(array('dataForMap' =>$tasks[1] , 'html' => $html));
 }
