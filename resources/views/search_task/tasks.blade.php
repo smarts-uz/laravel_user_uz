@@ -9,15 +9,15 @@
                     class="text-2xl float-left text-blue-400 sm:mr-4 mr-3 h-14 w-14 bg-blue-200 p-2 rounded-xl" />
             </div>
             <div class="w-5/6">
-            @if( in_array($this->id,
-                Illuminate\Support\Facades\Cache::get('user_viewed_tasks' . auth()->id()) ?? []
-                ))
-                    <a href="/detailed-tasks/{{$task->id}}"
-                       class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">{{ $task->name }}</a>
-            @else
-                    <a href="/detailed-tasks/{{$task->id}}"
-                       class="sm:text-lg text-base font-semibold text-blue-200 hover:text-red-600">{{ $task->name }}</a>
-            @endif
+                @if( in_array($task->id,
+                    Illuminate\Support\Facades\Cache::get('user_viewed_tasks' . auth()->id()) ?? []
+                    ))
+                        <a href="/detailed-tasks/{{$task->id}}"
+                           class="sm:text-lg text-base font-semibold text-blue-300 hover:text-red-600">{{ $task->name }}</a>
+                @else
+                        <a href="/detailed-tasks/{{$task->id}}"
+                           class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">{{ $task->name }}</a>
+                @endif
                 <p class="text-sm">
                     {{ ($task->address_main)? $task->address_main:'Можно выполнить удаленно' }}</p>
                 @if($task->date_type == 1 || $task->date_type == 3)
