@@ -10,6 +10,7 @@ use App\Http\Requests\Api\ProfileAvatarRequest;
 use App\Http\Requests\Api\ProfileDistrictRequest;
 use App\Http\Requests\Api\ProfilePasswordRequest;
 use App\Http\Requests\Api\ProfilePhoneRequest;
+use App\Http\Requests\Api\ProfileSetPasswordRequest;
 use App\Http\Requests\Api\ProfileSettingsRequest;
 use App\Http\Requests\Api\ProfileVideoRequest;
 use App\Http\Resources\PortfolioIndexResource;
@@ -1164,6 +1165,18 @@ class ProfileAPIController extends Controller
            'data' => [
                'message' => trans('trans.Language changed successfully.')
            ]
+        ]);
+    }
+
+    public function setPassword(ProfileSetPasswordRequest $request)
+    {
+        $data = $request->validated();
+        $user = auth()->user();
+        $user->password = Hash::make($data['password']);
+        $user->save();
+        return response()->json([
+            'success' => true,
+            'message' => trans('trans.Password updated successfully.')
         ]);
     }
 }

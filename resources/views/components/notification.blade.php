@@ -143,12 +143,13 @@
 
         let pusher = new Pusher('{{env("MIX_PUSHER_APP_KEY")}}', {
             cluster: '{{env("PUSHER_APP_CLUSTER")}}',
-            // encrypted: true,
+            encrypted: true,
 
             wsHost: '{{env('WEBSOCKET_SERVER_HOST')}}',
             wsPort: {{env('WEBSOCKET_SERVER_PORT', 6001)}},
-            forceTLS: false,
-            disableStats: true,
+            wssPort: {{env('WEBSOCKET_SERVER_PORT', 6001)}},
+            forceTLS: true,
+            disableStats: false,
         });
         let channel = pusher.subscribe('user-notification-send-' + {{auth()->id()}});
         channel.bind('server-user', function (data) {
