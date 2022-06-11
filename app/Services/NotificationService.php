@@ -71,10 +71,10 @@ class NotificationService
                 ], 'notification', new NotificationResource($notification));
 
                 if ($performer->sms_notification) {
-                    (new SmsService())->send($performer->phone_number, 'Novoe zadaniye dlya vas, uspeyte otliknutsya.');
+                    (new SmsService())->send($performer->phone_number, (__('Новое задание для вас, успейте откликнуться.'));
                 }
                 if ($performer->email_notification) {
-                    Mail::to($performer->email)->send(new MessageEmail('Novoe zadaniye dlya vas, uspeyte otliknutsya.'));
+                    Mail::to($performer->email)->send(new MessageEmail(__('Новое задание для вас, успейте откликнуться.')));
                 }
             }
         }
@@ -141,7 +141,7 @@ class NotificationService
         ]);
 
         self::pushNotification($user->firebase_token, [
-            'title' => 'Task selected',
+            'title' => (__('Выбрана задача')),
             'body' => 'See details'
         ], 'notification', new NotificationResource($notification));
         return true;

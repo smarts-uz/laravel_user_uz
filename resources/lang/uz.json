@@ -36,8 +36,8 @@
     "dateTime.start_date.required": "DateTime.Ttart_Date.required",
     "lang.contact_expired": "Lang.Contact_Exped",
     "lang.contact_notVerify": "Lang.Contact_nververy",
-    "lang.contact_phone": "Lang.Contact_hone",
-    "lang.new_password": "Lang.new_password",
+    "lang.contact_phone": "номер",
+    "lang.new_password": "Yangi parol",
     "lang.setting_alert": "Sozlamalar muvaffaqiyatli saqlandi",
     "login.email.email": "Emailingizni kiriting",
     "login.email.required": "To'ldirish talab qilinadi!",
@@ -660,5 +660,7 @@
     "Код отправлен!": "Kod jo'natildi",
     "Your Email have successfully verified": "Sizning elektron pochtangiz muvaffaqiyatli tekshirildi",
     "phone_number": "telefon raqami",
-    "Congrats": "Tabriklamoq"
+    "Congrats": "Tabriklamoq",
+    "Новое задание для вас, успейте откликнуться.":"Siz uchun yangi vazifa, javob berishga vaqtingiz bor.",
+    "Выбрана задача":"Vazifa tanlandi"
 }
