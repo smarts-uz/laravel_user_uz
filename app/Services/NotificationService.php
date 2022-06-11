@@ -71,7 +71,7 @@ class NotificationService
                 ], 'notification', new NotificationResource($notification));
 
                 if ($performer->sms_notification) {
-                    (new SmsService())->send($performer->phone_number, (__('Новое задание для вас, успейте откликнуться.'));
+                    (new SmsService())->send($performer->phone_number, (__('Новое задание для вас, успейте откликнуться.')));
                 }
                 if ($performer->email_notification) {
                     Mail::to($performer->email)->send(new MessageEmail(__('Новое задание для вас, успейте откликнуться.')));
