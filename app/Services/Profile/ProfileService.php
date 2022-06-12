@@ -338,14 +338,21 @@ class ProfileService
     public function changePassword($data)
     {
         $user = auth()->user();
-        if (Hash::check($data['old_password'], $user->password)) {
+        if (isset($user->password)) {
+            if (Hash::check($data['old_password'], $user->password)) {
+                $user->update(['password' => Hash::make($data['password'])]);
+
+                $message = trans('trans.Password updated successfully.');
+                $status = true;
+            } else {
+                $message = trans('trans.Incorrect old password.');
+                $status = false;
+            }
+        } else {
             $user->update(['password' => Hash::make($data['password'])]);
 
             $message = trans('trans.Password updated successfully.');
             $status = true;
-        } else {
-            $message = trans('trans.Incorrect old password.');
-            $status = false;
         }
         return response()->json([
             'status' => $status,
