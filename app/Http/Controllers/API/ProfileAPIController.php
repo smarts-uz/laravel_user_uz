@@ -1167,16 +1167,4 @@ class ProfileAPIController extends Controller
            ]
         ]);
     }
-
-    public function setPassword(ProfileSetPasswordRequest $request)
-    {
-        $data = $request->validated();
-        $user = auth()->user();
-        $user->password = Hash::make($data['password']);
-        $user->save();
-        return response()->json([
-            'success' => true,
-            'message' => trans('trans.Password updated successfully.')
-        ]);
-    }
 }
