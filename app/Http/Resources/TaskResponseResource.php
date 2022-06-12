@@ -22,6 +22,7 @@ class TaskResponseResource extends JsonResource
             'budget' => $this->price,
             'description' =>$this->description,
             'created_at' =>$this->created,
+            'not_free' => $this->not_free
         ];
     }
 }
