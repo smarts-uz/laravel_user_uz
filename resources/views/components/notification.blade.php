@@ -12,7 +12,11 @@
 <!-- Dropdown menu -->
 <div class="hidden bg-white text-base z-50 list-none divide-y divide-gray-100 rounded shadow my-4 w-96" id="dropdown">
     <div class="px-4 py-3">
-        <span class="block text-base font-bold">{{__('Уведомления')}}</span>
+        @if($count == 0)
+            <span class="block text-base font-bold text-center">{{__('У вас на данный момент нет никаких уведомлений')}}</span>
+        @else
+            <span class="block text-base font-bold">{{__('Уведомления')}}</span>
+        @endif
     </div>
     <ul class="py-1 overflow-y-auto max-h-96" id="notifs" aria-labelledby="dropdown">
         @foreach($notifications as $notification)
