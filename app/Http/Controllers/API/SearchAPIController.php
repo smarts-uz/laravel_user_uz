@@ -215,6 +215,8 @@ class SearchAPIController extends Controller
                 "message" => "No Permission"
             ], 403);
         }
+        $task->status = Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
+        $task->save();
         $task->responses()->delete();
         $task->reviews()->delete();
         $task->custom_field_values()->delete();

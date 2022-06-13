@@ -31,9 +31,11 @@
                     </button>
                     <!-- Dropdown menu -->
                     <div class="hidden bg-white text-base z-50 list-none divide-y divide-gray-100 rounded shadow my-4 sm:w-96 w-72" id="notification">
-                        <div class="px-4 py-3">
+                        @if($count == 0)
+                            <span class="block text-base font-bold text-center">{{__('У вас на данный момент нет никаких уведомлений')}}</span>
+                        @else
                             <span class="block text-base font-bold">{{__('Уведомления')}}</span>
-                        </div>
+                        @endif
                         <ul class="py-1 overflow-y-auto max-h-96" id="notifs" aria-labelledby="dropdown">
                             @foreach($notifications as $notification)
                                 <li class="border-b-2 border-gray-500 flex gap-x-2 p-3 text-gray-800">
@@ -120,7 +122,7 @@
                                         @endif
                                     </div>
                                 </li>
-                    
+
                             @endforeach
                         </ul>
                     </div>

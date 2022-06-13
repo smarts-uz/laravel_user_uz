@@ -63,13 +63,13 @@ class CreateController extends Controller
 
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM);
         if (!$task->category->customFieldsInCustom->count()) {
-            if ($task->category->parent->remote){
+            if ($task->category->parent->remote) {
                 return redirect()->route("task.create.remote", $task->id);
             }
             return redirect()->route('task.create.address', $task->id);
         }
 
-        return view('create.custom', compact('task','custom_fields'));
+        return view('create.custom', compact('task', 'custom_fields'));
 
     }
 
@@ -77,28 +77,27 @@ class CreateController extends Controller
     {
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM, $request);
 
-        if ($task->category->parent->remote){
+        if ($task->category->parent->remote) {
             return redirect()->route("task.create.remote", $task->id);
         }
 
         return redirect()->route('task.create.address', $task->id);
     }
 
-    public function remote_get(Task $task){
+    public function remote_get(Task $task)
+    {
         return view('create.remote', compact('task'));
     }
 
-    public function remote_store(Request $request,Task $task)
+    public function remote_store(Request $request, Task $task)
     {
         $data = $request->validate(['radio' => 'required']);
 
-        if ($data['radio'] === 'address')
-        {
+        if ($data['radio'] === 'address') {
             return redirect()->route("task.create.address", $task->id);
         }
 
-        if ($data['radio'] === 'remote')
-        {
+        if ($data['radio'] === 'remote') {
             $task->remote = 1;
             $task->save();
             return redirect()->route("task.create.date", $task->id);
@@ -110,14 +109,21 @@ class CreateController extends Controller
     public function address(Task $task)
     {
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS);
-        return view('create.location', compact('task','custom_fields'));
+        return view('create.location', compact('task', 'custom_fields'));
 
     }
 
     public function address_store(Request $request, Task $task)
     {
 
-        $task->update(['coordinates' => $this->service->addAdditionalAddress($task, $request)]);
+
+        $requestAll = $request->all();
+
+
+        $task->update([
+            'coordinates' => $this->service->addAdditionalAddress($task, $requestAll)
+        ]);
+
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS, $request);
         return redirect()->route("task.create.date", $task->id);
 
@@ -126,7 +132,7 @@ class CreateController extends Controller
     public function date(Task $task)
     {
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_DATE);
-        return view('create.date', compact('task','custom_fields'));
+        return view('create.date', compact('task', 'custom_fields'));
 
     }
 
@@ -144,7 +150,7 @@ class CreateController extends Controller
         $category = Category::findOrFail($task->category_id);
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET);
 
-        return view('create.budget', compact('task', 'category','custom_fields'));
+        return view('create.budget', compact('task', 'category', 'custom_fields'));
     }
 
     public function budget_store(Task $task, Request $request)
@@ -157,11 +163,11 @@ class CreateController extends Controller
         return redirect()->route('task.create.note', $task->id);
 
     }
-    public function images_store(Request $request,Task $task)
+
+    public function images_store(Request $request, Task $task)
     {
-        $imgData = json_decode($task->photos)??[];
-        foreach ($request->file('images') as $uploadedImage)
-        {
+        $imgData = json_decode($task->photos) ?? [];
+        foreach ($request->file('images') as $uploadedImage) {
             $filename = time() . '_' . $uploadedImage->getClientOriginalName();
             $uploadedImage->move(public_path() . '/storage/uploads/', $filename);
             $imgData[] = $filename;
@@ -169,12 +175,14 @@ class CreateController extends Controller
         $task->photos = $imgData;
         $task->save();
     }
+
     public function note(Task $task)
     {
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_NOTE);
 
-        return view('create.notes', compact('task','custom_fields'));
+        return view('create.notes', compact('task', 'custom_fields'));
     }
+
     public function note_store(Task $task, Request $request)
     {
         $data = $request->validate([
@@ -195,7 +203,7 @@ class CreateController extends Controller
     {
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CONTACTS);
 
-        return view('create.contacts', compact('task','custom_fields'));
+        return view('create.contacts', compact('task', 'custom_fields'));
     }
 
 
@@ -208,7 +216,7 @@ class CreateController extends Controller
         if (!($user->is_phone_number_verified && $user->phone_number == $data['phone_number'])) {
             LoginController::send_verification('phone', $user, $data['phone_number']);
             $task->phone = $data['phone_number'];
-            if($user->phone_number==null){
+            if ($user->phone_number == null) {
                 $user->phone_number == $task->phone;
             }
             $task->save();

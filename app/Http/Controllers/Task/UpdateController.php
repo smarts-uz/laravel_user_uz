@@ -28,15 +28,16 @@ class UpdateController extends Controller
     public function change(UpdateRequest $request, Task $task)
     {
         taskGuard($task);
-        if ($task->responses_count)
-            abort(403, "No Permission");
+     /*   if ($task->responses_count)
+            abort(403, "No Permission");*/
 
         $data = $request->validated();
         $task->addresses()->delete();
         $images = array_merge(json_decode(session()->has('images') ? session('images') : '[]'), json_decode($task->photos));
         session()->forget('images');
         $data['photos'] = json_encode($images);
-        $data['coordinates'] = $this->service->addAdditionalAddress($task, $request);
+        $requestAll = $request->all();
+        $data['coordinates'] = $this->service->addAdditionalAddress($task, $requestAll);
         unset($data['location0']);
         unset($data['coordinates0']);
         $task->update($data);

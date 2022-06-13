@@ -10,10 +10,17 @@ class ProfilePasswordRequest extends BaseRequest
 {
     public function rules()
     {
-        return [
-            'old_password' => 'required',
-            'password' => 'required|confirmed|min:6',
-        ];
+        if (isset(auth()->user()->password)) {
+            $rules = [
+                'old_password' => 'required',
+                'password' => 'required|confirmed|min:6',
+            ];
+        } else {
+            $rules = [
+                'password' => 'required|confirmed|min:6',
+            ];
+        }
+        return $rules;
     }
 
     public function messages()
