@@ -14,11 +14,10 @@ class Session extends Model
 
     public $timestamps = false;
 
-
     public function getLastActiveAttribute()
     {
-        $value = Carbon::parse($this->last_activity)->locale(getLocale());
-        $value->minute<10 ? $minut = '0'.$value->minute : $minut = $value->minute;
+        $value = Carbon::parse($this->last_activity)->tz('Asia/Tashkent')->locale(getLocale());
+        $value->minute < 10 ? $minut = '0' . $value->minute : $minut = $value->minute;
         return "$value->day-$value->monthName  $value->noZeroHour:$minut";
     }
 

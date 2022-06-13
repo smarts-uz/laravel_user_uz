@@ -9,6 +9,7 @@ use App\Models\Session;
 use App\Services\NotificationService;
 use App\Services\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use TCG\Voyager\Events\BreadDataAdded;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
@@ -100,10 +101,12 @@ class NotificationController extends VoyagerBaseController
         $data = $request->validated();
         $user = auth()->user();
         $user->update(['firebase_token' => $data['token']]);
-        Session::query()->updateOrCreate(
+        $session = Session::query()->updateOrCreate(
             ['device_id' => $data['device_id']],
             [
-                'id' => \Illuminate\Support\Facades\Session::getId(),
+                'id' => Str::random(40),
+                'user_id' => $user->id,
+                'ip_address' => $request->ip(),
                 'payload' => $data['token'],
                 'last_activity' => now()->timestamp,
                 'device_name' => $data['device_name'],
@@ -112,7 +115,7 @@ class NotificationController extends VoyagerBaseController
             ]
         );
 
-        return $this->success();
+        return $this->success($session);
     }
 
     public function store(Request $request)

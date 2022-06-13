@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CustomField;
+use App\Services\Response;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -18,7 +19,7 @@ use App\Models\BlogNew;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-
+    use Response;
 
     public function home(Category $id)
     {

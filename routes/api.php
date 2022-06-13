@@ -8,6 +8,7 @@ use App\Http\Controllers\API\LoginAPIController;
 use App\Http\Controllers\API\PerformerAPIController; // javoxir
 use App\Http\Controllers\API\ProfileAPIController; // javoxir +
 use App\Http\Controllers\API\ResponseAPIController;
+use App\Http\Controllers\API\SessionController;
 use App\Http\Controllers\API\SocialAPIController;
 use App\Http\Controllers\API\TaskAPIController; // javoxir
 use App\Http\Controllers\API\UpdateAPIController;
@@ -119,6 +120,7 @@ Route::middleware('custom.auth:api')->group(function () {
         Route::post('/payment', [ProfileAPIController::class, 'payment']); //end
         Route::post('/categories-subscribe', [ProfileAPIController::class, 'subscribeToCategory']); //end
         Route::post('/firebase-token', [NotificationController::class, 'setToken']); //end
+        Route::get('/sessions', [SessionController::class, 'index']);
         Route::prefix('/settings')->group(function () {
             Route::get('/', [ProfileAPIController::class, 'editData']); //end +
             Route::post('/update', [ProfileAPIController::class, 'updateData']); //end +

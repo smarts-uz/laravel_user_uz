@@ -8,6 +8,7 @@ use App\Http\Requests\PhoneNumberRequest;
 use App\Http\Requests\Api\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
 use App\Http\Resources\UserIndexResource;
+use App\Models\Session;
 use App\Models\User;
 use App\Models\WalletBalance;
 use Carbon\Carbon;
@@ -53,14 +54,14 @@ class UserAPIController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'avatar' => asset('storage/'.$user->avatar),
+                'avatar' => asset('storage/' . $user->avatar),
                 'balance' => $userBalance,
                 'phone_number' => $user->phone_number,
                 'email_verified' => boolval($user->is_email_verified),
                 'phone_verified' => boolval($user->is_phone_number_verified),
                 'role_id' => $user->role_id,
             ],
-            'access_token'=>$accessToken]);
+            'access_token' => $accessToken]);
 
     }
 
@@ -156,13 +157,13 @@ class UserAPIController extends Controller
     public function reset_password_save(ResetPasswordRequest $request)
     {
         $data = $request->validated();
-        $user = User::query()->where('phone_number',$data['phone_number'])->firstOrFail();
+        $user = User::query()->where('phone_number', $data['phone_number'])->firstOrFail();
         $user->password = Hash::make($data['password']);
         $user->save();
         auth()->login($user);
 
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
-        return response(['user' => auth()->user(), 'access_token'=>$accessToken]);
+        return response(['user' => auth()->user(), 'access_token' => $accessToken]);
 
     }
 
@@ -213,12 +214,12 @@ class UserAPIController extends Controller
 
         if ($data['code'] == $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-                return response()->json(['success'=> true, 'message' => 'Enter a new password']);
+                return response()->json(['success' => true, 'message' => 'Enter a new password']);
             } else {
                 abort(419);
             }
-        }else{
-            return response()->json(['success'=> false, 'message' => 'Error Code']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Error Code']);
         }
     }
 
@@ -240,7 +241,7 @@ class UserAPIController extends Controller
             Auth::login($user);
             $accessToken = auth()->user()->createToken('authToken')->accessToken;
 
-            return response()->json(['user' => auth()->user(), 'access_token'=>$accessToken]);
+            return response()->json(['user' => auth()->user(), 'access_token' => $accessToken]);
         } catch (ValidationException $e) {
             return response()->json(array_values($e->errors()));
         }
@@ -315,10 +316,21 @@ class UserAPIController extends Controller
      *     },
      * )
      */
-    function logout()
+    public function logout(Request $request)
     {
-        auth()->user()->tokens->each(function ($token, $key) {
+        $user = auth()->user();
+        $user->tokens->each(function ($token, $key) {
             $token->delete();
         });
+        if ($request->get('device_id')) {
+            Session::query()
+                ->where('user_id', $user->id)
+                ->where('device_id', $request->get('device_id'))
+                ->delete();
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully logged out'
+        ]);
     }
 }

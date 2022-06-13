@@ -358,23 +358,38 @@
                                                     {{__('Активные сессии')}}</h1>
 
                                                 @foreach($sessions as $session)
-
                                                     <div class="flex sm:flex-row flex-col mt-4 items-center">
-                                                        <div class="flex flex-row items-center">
-                                                            <i class="fas fa-desktop mr-2 text-yellow-500"></i>
-                                                            <p class="mx-1">{{ $session->ip_address == request()->ip()? "Текущая " :"" }}{{ $parser->parse($session->user_agent)->os->family }}
-                                                                ,</p>
-                                                        </div>
-                                                        <h1 class="mx-1">{{ $session->last_active }}, </h1>
-                                                        <span
-                                                            class="text-gray-500">{{__('браузер')}} {{ $parser->parse($session->user_agent)->ua->family }}</span>
+                                                        @if(!$session->is_mobile)
+                                                            <div class="flex flex-row items-center">
+                                                                <i class="fas fa-desktop mr-2 text-yellow-500"></i>
+                                                                <p class="mx-1">
+                                                                    {{ $session->ip_address == request()->ip()? "Текущая " :"" }}
+                                                                    {{ $parser->parse($session->user_agent)->os->family }},
+                                                                </p>
+                                                            </div>
+                                                            <h1 class="mx-1">{{ $session->last_active }}, </h1>
+                                                            <span class="text-gray-500">
+                                                                {{ __('браузер')}}: {{ $parser->parse($session->user_agent)->ua->family }}
+                                                            </span>
+                                                        @else
+                                                            <div class="flex flex-row items-center">
+                                                                <i class="fas fa-mobile mr-2 text-yellow-500"></i>
+                                                                <p class="mx-1">{{ $session->platform }}, </p>
+                                                            </div>
+                                                            <h1 class="mx-1">{{ $session->last_active }}, </h1>
+                                                            <span
+                                                                class="text-gray-500"> {{__('устройство')}}: {{$session->device_name }}
+                                                            </span>
+                                                        @endif
                                                     </div>
                                                 @endforeach
                                                 @foreach($sessions as $session)
                                                     @if($session!=null && $loop->index==0)
                                                         <div class="my-5">
                                                             <a href="{{route('profile.clear_sessions')}}" type="btn"
-                                                               class="focus:outline-none hover:bg-red-600 btn bg-red-400 uppercase p-2 text-white text-sm rounded-lg">{{__('удалить сеансы')}}</a>
+                                                               class="focus:outline-none hover:bg-red-600 btn bg-red-400 uppercase p-2 text-white text-sm rounded-lg">
+                                                                {{__('удалить сеансы')}}
+                                                            </a>
                                                         </div>
                                                     @endif
                                                 @endforeach
