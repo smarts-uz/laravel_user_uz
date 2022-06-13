@@ -116,7 +116,10 @@ class UserIndexResource extends JsonResource
             'district' => $this->district,
             'age' => $this->age,
             'description' => $this->description,
-            'categories' => explode(',', $this->category_id),
+            'categories' => CategoryIndexResource::collection(Category::query()
+                ->select('id', 'parent_id', 'name', 'ico')
+                ->whereIn('id', explode(',', $this->category_id))
+                ->get()),
             'email_verified' => boolval($this->is_email_verified),
             'phone_verified' => boolval($this->is_phone_number_verified),
             'google_id' => $this->google_id,

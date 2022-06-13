@@ -10,6 +10,7 @@ use App\Http\Requests\Api\ProfileAvatarRequest;
 use App\Http\Requests\Api\ProfileDistrictRequest;
 use App\Http\Requests\Api\ProfilePasswordRequest;
 use App\Http\Requests\Api\ProfilePhoneRequest;
+use App\Http\Requests\Api\ProfileSetPasswordRequest;
 use App\Http\Requests\Api\ProfileSettingsRequest;
 use App\Http\Requests\Api\ProfileVideoRequest;
 use App\Http\Resources\PortfolioIndexResource;

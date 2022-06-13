@@ -87,7 +87,8 @@ class SocialAPIController extends Controller
             // return the token for usage
             return response()->json([
                 'user' => new PerformerIndexResource(auth()->user()),
-                'access_token' => $accessToken
+                'access_token' => $accessToken,
+                'socialpas' => isset($user->password)
             ]);
         } catch (Exception $e) {
             return response()->json([

@@ -54,7 +54,7 @@ class TaskDateRequest extends FormRequest
             "start_date.date" => __('dateTime.start_date.date'),
             "end_date.required" => __('dateTime.end_date.required'),
             "end_date.date" => __('dateTime.end_date.date'),
-            "start_date.after" => __('dateTime.start_date.after'),
+            "start_date.after" => __('Время начала должно быть позже времени создания'),
             "end_date.after" => __('dateTime.end_date.after'),
         ];
     }

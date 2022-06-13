@@ -120,17 +120,22 @@ class TaskAPIController extends Controller
      */
     public function responses(Request $request, Task $task)
     {
-        if ($request->get('filter') == 'rating') {
-            $responses = TaskResponse::query()->select('task_responses.*')->join('users', 'task_responses.performer_id', '=', 'users.id')
-                ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating');
-        } elseif ($request->get('filter') == 'date') {
-            $responses = $task->responses()->orderByDesc('created_at');
-        } elseif ($request->get('filter') == 'price') {
-            $responses = $task->responses()->orderBy('price');
+        if ($task->user_id == auth()->id()) {
+            if ($request->get('filter') == 'rating') {
+                $responses = TaskResponse::query()->select('task_responses.*')->join('users', 'task_responses.performer_id', '=', 'users.id')
+                    ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating');
+            } elseif ($request->get('filter') == 'date') {
+                $responses = $task->responses()->orderByDesc('created_at');
+            } elseif ($request->get('filter') == 'price') {
+                $responses = $task->responses()->orderBy('price');
+            } else {
+                $responses = $task->responses();
+            }
+            return TaskResponseResource::collection($responses->paginate(5));
         } else {
             $responses = $task->responses();
+            return new TaskResponseResource($responses->where('performer_id', auth()->id())->first());
         }
-        return TaskResponseResource::collection($responses->paginate(5));
     }
 
     /**
@@ -397,7 +402,7 @@ class TaskAPIController extends Controller
         $open_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_OPEN)->count(), 'status' => Task::STATUS_OPEN];
         $in_process_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_IN_PROGRESS)->count(), 'status' => Task::STATUS_IN_PROGRESS];
         $complete_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_COMPLETE)->count(), 'status' => Task::STATUS_COMPLETE];
-        $cancelled_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->count(), 'status' => Task::STATUS_COMPLETE_WITHOUT_REVIEWS];
+        $cancelled_tasks = ['count' => Task::withTrashed()->where($column, $user->id)->where('status', Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->count(), 'status' => Task::STATUS_COMPLETE_WITHOUT_REVIEWS];
         $all = ['count' => $open_tasks['count'] + $in_process_tasks['count'] + $complete_tasks['count'] + $cancelled_tasks['count'], 'status' => 0];
 
 

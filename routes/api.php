@@ -85,6 +85,7 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post("account/change/phone", [LoginAPIController::class, 'change_phone_number']); //end +
 
     Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']); //end +
+    Route::get('/responses/{task}', [TaskAPIController::class, 'responses']); //end +
     Route::post('/task/{task}/complain', [TaskAPIController::class, 'complain']);
     Route::post('/select-performer/{response}', [TaskAPIController::class, 'selectPerformer']); //end ---
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); //end +
@@ -154,7 +155,6 @@ Route::get('faq/{id}', [FaqAPIController::class, 'questions']); //end +
 //Tasks
 Route::get('task/{task}', [TaskAPIController::class, 'task']); //end +
 Route::get('tasks-filter', [TaskAPIController::class, 'filter']); //end +
-Route::get('responses/{task}', [TaskAPIController::class, 'responses']); //end +
 Route::get('same-tasks/{task}', [TaskAPIController::class, 'same_tasks']); //end +
 Route::get('tasks-search', [SearchAPIController::class, 'ajax_tasks']); //end
 Route::get('search-task', [SearchAPIController::class, 'task_search']); //end

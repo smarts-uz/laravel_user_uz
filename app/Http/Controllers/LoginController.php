@@ -37,7 +37,7 @@ class LoginController extends Controller
             ->first();
 
         if (!$user || !Hash::check($data['password'], $user->password)){
-            Alert::error('Incorrect password');
+            Alert::error(__('lang.sign_in'));
             return back();
         }
         if (!$user->isActive()) {

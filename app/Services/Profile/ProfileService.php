@@ -71,7 +71,7 @@ class ProfileService
         $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->select('id','name')->get();
         $categories2 = Category::where('parent_id','<>', null)->select('id','parent_id','name')->get();
         $regions = Region::withTranslations(['ru', 'uz'])->get();
-        $top_users = User::where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
+        $top_users = User::where('role_id', 2)->where('review_rating','!=',0)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(20)->pluck('id')->toArray();
         $sessions = Session::query()->where('user_id', $user->id)->get();
         $parser = Parser::create();
@@ -140,7 +140,7 @@ class ProfileService
         $item ->balance =  $item ->user->walletBalance;
         $item ->task =  $item ->user->tasks()->count();
         $item ->transactions =  $item ->user->transactions()->paginate(15);
-        $item->top_users = User::where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
+        $item->top_users = User::where('role_id', 2)->where('review_rating','!=',0)->orderbyRaw('(review_good - review_bad) DESC')
         ->limit(20)->pluck('id')->toArray();
         $item ->review_rating = $user->review_rating;
         $item ->review_good = $user->review_good;
@@ -152,7 +152,7 @@ class ProfileService
         $item->task = $user->tasks_count;
         $item->ports = $user->portfoliocomments;
         $item->portfolios = $user->portfolios()->where('image', '!=', null)->get();
-        $item->top_users = User::where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
+        $item->top_users = User::where('role_id', 2)->where('review_rating','!=',0)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(20)->pluck('id')->toArray();
         $item->file = "portfolio/{$user->name}";
         if (!file_exists($item->file)) {
@@ -338,14 +338,21 @@ class ProfileService
     public function changePassword($data)
     {
         $user = auth()->user();
-        if (Hash::check($data['old_password'], $user->password)) {
+        if (isset($user->password)) {
+            if (Hash::check($data['old_password'], $user->password)) {
+                $user->update(['password' => Hash::make($data['password'])]);
+
+                $message = trans('trans.Password updated successfully.');
+                $status = true;
+            } else {
+                $message = trans('trans.Incorrect old password.');
+                $status = false;
+            }
+        } else {
             $user->update(['password' => Hash::make($data['password'])]);
 
             $message = trans('trans.Password updated successfully.');
             $status = true;
-        } else {
-            $message = trans('trans.Incorrect old password.');
-            $status = false;
         }
         return response()->json([
             'status' => $status,

@@ -15,7 +15,7 @@ class NotificationResource extends JsonResource
             case 2:
                 return 'Новости о сайте';
             case 4:
-                return 'Назначение заказчика';
+                return 'Заказчик предложил вам новую заданию';
             case 5:
                 return 'Отклик задания';
             case 6:
