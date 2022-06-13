@@ -150,16 +150,9 @@ class ProfileService
     public function profileData($user){
         $item = new ProfileDataItem();
         $item->task = $user->tasks_count;
-        $item->ports = $user->portfoliocomments;
         $item->portfolios = $user->portfolios()->where('image', '!=', null)->get();
         $item->top_users = User::where('role_id', 2)->where('review_rating','!=',0)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(20)->pluck('id')->toArray();
-        $item->file = "portfolio/{$user->name}";
-        if (!file_exists($item->file)) {
-            File::makeDirectory($item->file);
-        }
-        $item->b = File::directories(public_path("portfolio/{$user->name}"));
-        $item->directories = array_map('basename',  $item ->b );
         $item->categories = Category::withTranslations(['ru', 'uz'])->get();
         $item->review_good = $user->review_good;
         $item->review_bad = $user->review_bad;
