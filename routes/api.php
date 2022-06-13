@@ -86,7 +86,7 @@ Route::middleware('custom.auth:api')->group(function () {
 
     Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']); //end +
     Route::get('/responses/{task}', [TaskAPIController::class, 'responses']); //end +
-    Route::post('/task/{task}/complain', [TaskAPIController::class, 'complain']);
+    Route::post('/task/{task}/complain', [TaskAPIController::class, 'complain']); //end
     Route::post('/select-performer/{response}', [TaskAPIController::class, 'selectPerformer']); //end ---
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); //end +
     Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); //end +
@@ -125,7 +125,7 @@ Route::middleware('custom.auth:api')->group(function () {
             Route::post('/change-avatar', [ProfileAPIController::class, 'avatar']); //end -
             Route::get('/phone', [ProfileAPIController::class, 'phoneEdit']); //end +
             Route::post('/phone/edit', [ProfileAPIController::class, 'phoneUpdate']); //end +
-            Route::post('/phone/verify', [ProfileAPIController::class, 'phoneVerify']);
+            Route::post('/phone/verify', [ProfileAPIController::class, 'phoneVerify']); //end
             Route::post('/password/change', [ProfileAPIController::class, 'change_password']); //end +
             Route::post('/notifications', [ProfileAPIController::class, 'userNotifications']); //end +
             Route::post('/change-lang', [ProfileAPIController::class, 'changeLanguage']); //end
