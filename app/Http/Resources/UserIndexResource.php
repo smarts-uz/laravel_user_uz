@@ -24,6 +24,13 @@ class UserIndexResource extends JsonResource
      */
     public function toArray($request)
     {
+        if($this->password==null) {
+            $socialPassword=false;
+        }
+        else{
+            $socialPassword=true;
+        }
+
         $this->locale = app()->getLocale();
         $file = "portfolio/{$this->name}";
         if (!file_exists($file)) {
@@ -105,6 +112,7 @@ class UserIndexResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'social_password'=>$socialPassword,
             'last_name' => $this->last_name,
             'email' => $this->email,
             'avatar' => asset('storage/'.$this->avatar),
