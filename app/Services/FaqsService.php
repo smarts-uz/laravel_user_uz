@@ -10,7 +10,13 @@ use App\Models\Faqs;
 
 class FaqsService
 {
-
+    /**
+     *
+     * Function  child_report
+     * Mazkur metod faqni kategoriyalar bo'yicha chiqarib beradi
+     * @param $id  Object
+     *
+     */
     public function questions($id){
         $item = new FaqsItem();
 

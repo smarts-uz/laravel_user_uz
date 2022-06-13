@@ -23,19 +23,20 @@
         </div>
 
         <div class="sm:w-2/3 w-full text-base text-gray-500 sm:ml-4 ml-0">
-            @isset($user->age)
-                <p class="inline-block mr-2">
-                    {{$user->age}}
-                    @if($user->age>20 && $user->age%10==1)
-                        {{__('года')}}
-                    @elseif ($user->age>20 && ($user->age%10==2 || $user->age%10==3 || $user->age%10==1))
-                        {{__('года')}}
-                    @else
-                        {{__('лет')}}
-                    @endif
-                </p>
-            @endisset
-
+            @if($user->age>0)
+                @isset($user->age)
+                    <p class="inline-block mr-2">
+                        {{$user->age}}
+                        @if($user->age>20 && $user->age%10==1)
+                            {{__('года')}}
+                        @elseif ($user->age>20 && ($user->age%10==2 || $user->age%10==3 || $user->age%10==1))
+                            {{__('года')}}
+                        @else
+                            {{__('лет')}}
+                        @endif
+                    </p>
+                @endisset
+            @endif
             <span class="inline-block">
                                 <p class="inline-block text-m">
                                     @isset($user->location)

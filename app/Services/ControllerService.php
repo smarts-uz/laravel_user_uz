@@ -28,6 +28,7 @@ class ControllerService
         return $item;
 
     }
+
     public function category($id){
         $item = new SearchServiceTaskItem();
         $item -> categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->get();

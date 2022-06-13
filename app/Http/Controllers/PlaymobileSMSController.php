@@ -6,7 +6,6 @@ use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use PlayMobile\SMS\SmsService;
 use PlayMobile\SMS\Models\SmsLog;
-use PlayMobile\SMS\Http\Classes\CommonFunctions;
 
 class PlaymobileSMSController extends Controller
 {

@@ -494,6 +494,41 @@ class ProfileAPIController extends Controller
 
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/settings/phone/verify",
+     *     tags={"Profile Settings"},
+     *     summary="Phone verify",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="code",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function phoneVerify(Request $request)
     {
         $user = auth()->user();

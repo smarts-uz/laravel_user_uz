@@ -11,13 +11,25 @@ use Illuminate\Support\Arr;
 class CreateService
 {
 
-
+    /**
+     *
+     * Function  attachCustomFields
+     * Mazkur metod Task yaratishda  nom kiritadigan joyni ochib beradi
+     * @param Request $request Task Object
+     *
+     */
     public function name($request)
     {
         $current_category = Category::findOrFail($request->category_id);
         return view("create.name", compact('current_category'));
     }
-
+    /**
+     *
+     * Function  syncCustomFields
+     * Mazkur metod Task obyektiga unga tegishli bo'lgan custom fieldslarni o'chirib beradi
+     * @param Task $task Task Object
+     *
+     */
     public function syncCustomFields(Task $task)
     {
         $task->custom_field_values()->delete();
@@ -45,7 +57,13 @@ class CreateService
             $value->save();
         }
     }
-
+    /**
+     *
+     * Function  delete
+     * Mazkur metod Taskni o'chirib tashlaydi
+     * @param  $task Object
+     *
+     */
     public function delete($task)
     {
         $task->responses()->delete();
@@ -54,7 +72,13 @@ class CreateService
         $task->addresses()->delete();
         $task->delete();
     }
-
+    /**
+     *
+     * Function  attachCustomFieldsByRoute
+     * Mazkur metod Task obyektiga address qo'shish
+     * @param  $routeName Object
+     *
+     */
     public function attachCustomFieldsByRoute($task, $routeName, $request)
     {
         foreach ($task->category->custom_fields()->where('route', $routeName)->get() as $data) {
@@ -67,7 +91,13 @@ class CreateService
         }
     }
 
-
+    /**
+     *
+     * Function  addAdditionalAddress
+     * Mazkur metod Task obyektiga address qo'shish
+     * @param $requestAll Task Object
+     *
+     */
     public function addAdditionalAddress($task, $requestAll)
     {
         $data_inner = [];

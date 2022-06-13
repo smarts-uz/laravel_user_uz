@@ -76,6 +76,18 @@ class NotificationController extends VoyagerBaseController
      *                    property="token",
      *                    type="string",
      *                 ),
+     *                 @OA\Property (
+     *                    property="device_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="device_name",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="platform",
+     *                    type="string",
+     *                 ),
      *             ),
      *         ),
      *     ),

@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use PlayMobile\SMS\SmsService;
 use RealRashid\SweetAlert\Facades\Alert;
+use mrmuminov\eskizuz\Eskiz;
 
 class LoginController extends Controller
 {
@@ -76,6 +77,7 @@ class LoginController extends Controller
 
     public static function send_verification($needle, $user, $phone=null)
     {
+        $eskiz = new Eskiz("sodikov42@gmail.com", "2806507997");
         if ($needle == 'email') {
             $code = sha1(time());
             $data = [
@@ -85,7 +87,11 @@ class LoginController extends Controller
             Mail::to($user->email)->send(new VerifyEmail($data));
         } else {
             $code = rand(100000, 999999);
-            (new SmsService())->send($phone, $code);
+//            (new SmsService())->send($phone, $code);
+            $eskiz->requestSmsSend(
+                '<122222>',
+                '<+998945480514>'
+            );
         }
         $user->verify_code = $code;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
