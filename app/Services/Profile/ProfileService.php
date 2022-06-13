@@ -13,14 +13,12 @@ use App\Models\Session;
 use App\Models\User;
 use App\Models\WalletBalance;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Portfolio;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 use PlayMobile\SMS\SmsService;
 use TCG\Voyager\Models\Category;
 use UAParser\Parser;
@@ -28,6 +26,12 @@ use UAParser\Parser;
 
 class ProfileService
 {
+    /**
+     *
+     * Function  commentServ
+     * Mazkur metod user portfolioda qoldirilgan commentni saqlaydi
+     * @param $request Object
+     */
     public function commentServ($request){
         $user = Auth::user();
         $comment = $request->input('comment');
@@ -39,6 +43,12 @@ class ProfileService
         return $dd;
     }
 
+    /**
+     *
+     * Function  uploadImageServ
+     * Mazkur metod user portfolioda rasmlarni saqlaydi
+     * @param Request $request Object
+     */
     public function uploadImageServ(Request $request)
     {
         $user = auth()->user();
@@ -51,6 +61,12 @@ class ProfileService
         session()->put('images', json_encode($imgData));
     }
 
+    /**
+     *
+     * Function  testBaseServ
+     * Mazkur metod user portfolioni tahrirlaydi
+     * @param $request Object
+     */
     public function testBaseServ($request){
         $user = Auth::user();
         $comment = $user->portfolios()->orderBy('created_at', 'desc')->first();
@@ -65,7 +81,12 @@ class ProfileService
             return dd(false);
         }
     }
-
+    /**
+     *
+     * Function  settingsEdit
+     * Mazkur metod sozlamalar bo'limida ma'lumotlarni chiqarib beradi
+     * @param setting Object
+     */
     public function settingsEdit() {
         $user = Auth::user();
         $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->select('id','name')->get();
@@ -91,7 +112,12 @@ class ProfileService
             'review_rating' => $review_rating,
         );
     }
-
+    /**
+     *
+     * Function  settingsUpdate
+     * Mazkur metod sozlamalar bo'limida ma'lumotlarni tahrirlaydi
+     * @param $data Object
+     */
     public function settingsUpdate($data) {
         if ($data['email'] != auth()->user()->email) {
             $data['is_email_verified'] = 0;
@@ -103,7 +129,12 @@ class ProfileService
         }
         return $data;
     }
-
+    /**
+     *
+     * Function  storeProfilePhoto
+     * Mazkur metod user profilidagi rasmni tahrirlaydi
+     * @param Request $request Object
+     */
     public function storeProfilePhoto(Request $request)
     {
         if ($request->hasFile('image')) {
@@ -118,7 +149,12 @@ class ProfileService
         }
         return null;
     }
-
+    /**
+     *
+     * Function  editDescription
+     * Mazkur metod user qoldirgan tavsifni tahrirlayi
+     * @param Request $request Object
+     */
     public function editDescription(Request $request)
     {
         $user = Auth::user();
@@ -126,6 +162,12 @@ class ProfileService
         $user->save();
     }
 
+    /**
+     *
+     * Function  userNotifications
+     * Mazkur metod setting bo'limidagi system va news notification
+     * @param Request $request Object
+     */
     public function userNotifications(Request $request)
     {
         $user = auth()->user();
@@ -133,7 +175,12 @@ class ProfileService
         $user->news_notification = $request->notif22;
         $user->save();
     }
-
+    /**
+     *
+     * Function  profileCash
+     * Mazkur metod profile cash bo'limini ochib beradi
+     * @param $user Object
+     */
     public function profileCash($user){
         $item = new ProfileCashItem();
         $item ->user = Auth()->user()->load('transactions');
@@ -147,6 +194,12 @@ class ProfileService
         $item ->review_bad = $user->review_bad;
         return $item;
     }
+    /**
+     *
+     * Function  profileData
+     * Mazkur metod profile  bo'limini ochib beradi
+     * @param $user Object
+     */
     public function profileData($user){
         $item = new ProfileDataItem();
         $item->task = $user->tasks_count;
@@ -161,7 +214,12 @@ class ProfileService
         $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->get();
         return $item;
     }
-
+    /**
+     *
+     * Function  userReviews
+     * Mazkur metod userga qoldirilgan reviewlar chiqarib beradi
+     * @param Request $request Object
+     */
     public static function userReviews($user, Request $request)
     {
         $reviews = Review::query()->whereHas('task')->where(['user_id' => $user->id]);
@@ -176,7 +234,12 @@ class ProfileService
         }
         return $reviews->get();
     }
-
+    /**
+     *
+     * Function  createPortfolio
+     * Mazkur metod portfolio tablega rasmlarni saqlash
+     * @param Request $request Object
+     */
     public function createPortfolio($request)
     {
         $user = auth()->user();
@@ -194,7 +257,12 @@ class ProfileService
         $portfolio = Portfolio::create($data);
         return $portfolio;
     }
-
+    /**
+     *
+     * Function  updatePortfolio
+     * Mazkur metod portfolio rasmlarni tahrirlash
+     * @param $portfolio Object
+     */
     public function updatePortfolio($request, $portfolio)
     {
         $user = auth()->user();
@@ -218,6 +286,12 @@ class ProfileService
         return $portfolio;
     }
 
+    /**
+     *
+     * Function  videoStore
+     * Mazkur metod profilga video saqlash
+     * @param $request Object
+     */
     public function videoStore($request)
     {
         $user = auth()->user();
@@ -239,7 +313,12 @@ class ProfileService
             ]
         ];
     }
-
+    /**
+     *
+     * Function  balance
+     * Mazkur metod cash bladega balansni chiqaradi
+     * @param $request Object
+     */
     public function balance($request)
     {
         $user = auth()->user()->load('transactions');
@@ -273,7 +352,12 @@ class ProfileService
             'transactions' => $transactions->paginate(15)
         ];
     }
-
+    /**
+     *
+     * Function  phoneUpdate
+     * Mazkur metod telefon raqamni tahrirlaydi
+     * @param $request Object
+     */
     public function phoneUpdate($request)
     {
         $phoneNumber = $request->get('phone_number');
@@ -302,7 +386,12 @@ class ProfileService
             ]
         ];
     }
-
+    /**
+     *
+     * Function  payment
+     * Mazkur metod cash bladega transacsiyalarni chiqaradi
+     * @param $request Object
+     */
     public function payment($request)
     {
         $payment = $request->get("paymethod");
@@ -327,7 +416,12 @@ class ProfileService
                 return PaynetController::pay($request);
         }
     }
-
+    /**
+     *
+     * Function  changePassword
+     * Mazkur metod passwordni tahrirlash
+     * @param $data Object
+     */
     public function changePassword($data)
     {
         $user = auth()->user();
@@ -353,7 +447,12 @@ class ProfileService
             'data' => []
         ]);
     }
-
+    /**
+     *
+     * Function  changeAvatar
+     * Mazkur metod profilda rasm tahrirlash
+     * @param $request Object
+     */
     public function changeAvatar($request)
     {
         $user = auth()->user();
@@ -367,7 +466,12 @@ class ProfileService
         $data['avatar'] = $imagename;
         $user->update($data);
     }
-
+    /**
+     *
+     * Function  updateSettings
+     * Mazkur metod settingni tahrirlash
+     * @param $request Object
+     */
     public function updateSettings($request)
     {
         $validated = $request->validated();
@@ -379,7 +483,12 @@ class ProfileService
         $user->update($validated);
         $user->save();
     }
-
+    /**
+     *
+     * Function  notifications
+     * Mazkur metod setting notification api
+     * @param $request Object
+     */
     public function notifications($request)
     {
         $notification = $request->get('notification');
@@ -396,7 +505,12 @@ class ProfileService
         $user->save();
         return $message;
     }
-
+    /**
+     *
+     * Function  subscribeToCategory
+     * Mazkur metod setting categorylarni tahrirlash
+     * @param $request Object
+     */
     public function subscribeToCategory($request)
     {
         $user = auth()->user();

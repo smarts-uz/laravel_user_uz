@@ -14,6 +14,12 @@ use Yajra\DataTables\DataTables;
 
 class ReportService
 {
+    /**
+     *
+     * Function  perf_ajax
+     * Mazkur metod padcategoriyalar bo'yicha reportlar
+     *
+     */
     public function report()
     {
         $query = Category::query()->where('parent_id',null);
@@ -148,7 +154,13 @@ class ReportService
             })->make(true);
 
     }
-
+        /**
+         *
+         * Function  child_report
+         * Mazkur metod childcategoriyalar bo'yicha reportlar
+         * @param $id  Object
+         *
+         */
             public function child_report($id) {
                 $query = Category::where('parent_id',$id)->get();
                 return Datatables::of($query)

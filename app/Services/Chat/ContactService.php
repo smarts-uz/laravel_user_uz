@@ -2,7 +2,6 @@
 
 namespace App\Services\Chat;
 
-use App\Models\Chat\ChatifyMessenger;
 use App\Models\Chat\ChMessage;
 use App\Models\User;
 

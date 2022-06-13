@@ -64,7 +64,13 @@ class PerformersService
         $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->get();
         return $item;
     }
-
+    /**
+     *
+     * Function  perf_ajax
+     * Mazkur metod categoriya bo'yicha performerlarni chiqarib beradi
+     * @param $cf_id  Object
+     *
+     */
     public function perf_ajax($cf_id){
         $item = new PerformerPrefItem();
         $item->categories = Category::where('parent_id', null)->select('id', 'name', 'slug')->get();
