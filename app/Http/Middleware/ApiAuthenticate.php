@@ -19,7 +19,7 @@ class ApiAuthenticate extends Middleware
             throw new HttpResponseException(response()->json([
                 'success'   => false,
                 'message'   => 'auth.error',
-            ]));
+            ], 401));
         }
     }
 }

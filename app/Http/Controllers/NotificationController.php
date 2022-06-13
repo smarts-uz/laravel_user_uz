@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Api\FirebaseTokenRequest;
 use App\Http\Resources\NotificationResource;
 use App\Models\Notification;
+use App\Models\Session;
 use App\Services\NotificationService;
 use App\Services\Response;
 use Illuminate\Http\Request;
@@ -45,6 +47,7 @@ class NotificationController extends VoyagerBaseController
             NotificationResource::collection(NotificationService::getNotifications(auth()->user()))
         );
     }
+
     public function read_notification(Notification $notification)
     {
         $notification->update(['is_read' => 1]);
@@ -92,10 +95,23 @@ class NotificationController extends VoyagerBaseController
      *     },
      * )
      */
-    public function setToken(Request $request)
+    public function setToken(FirebaseTokenRequest $request)
     {
-        $request->validate(['token' => 'required']);
-        auth()->user()->update(['firebase_token' => $request->token]);
+        $data = $request->validated();
+        $user = auth()->user();
+        $user->update(['firebase_token' => $data['token']]);
+        Session::query()->updateOrCreate(
+            ['device_id' => $data['device_id']],
+            [
+                'id' => \Illuminate\Support\Facades\Session::getId(),
+                'payload' => $data['token'],
+                'last_activity' => now()->timestamp,
+                'device_name' => $data['device_name'],
+                'platform' => $data['platform'],
+                'is_mobile' => 1
+            ]
+        );
+
         return $this->success();
     }
 
@@ -123,7 +139,7 @@ class NotificationController extends VoyagerBaseController
             NotificationService::sendNotification($data, $slug);
 
             return $redirect->with([
-                'message'    => __('voyager::generic.successfully_added_new')." {$dataType->getTranslatedAttribute('display_name_singular')}",
+                'message' => __('voyager::generic.successfully_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
                 'alert-type' => 'success',
             ]);
         } else {

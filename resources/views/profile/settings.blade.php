@@ -18,11 +18,13 @@
                                                                class="text-lg text-gray-600 md:mx-0 mx-3">{{__('Счет')}}</a>
                             </li>
                             <li class="inline md:mr-5 mr-1 md:hidden block"><a href="/profile/settings"
-                                                                               class="text-lg border-b-4 border-green-500 pb-3 text-gray-700" id="settingsText">{{__('Настройки')}}</a>
+                                                                               class="text-lg border-b-4 border-green-500 pb-3 text-gray-700"
+                                                                               id="settingsText">{{__('Настройки')}}</a>
                             </li>
 
                         </ul>
-                        <div class="md:col-span-1 md:block hidden ml-4" id="settingsIcon"><a href="/profile/settings"><i class="fas fa-cog text-2xl border-b-4 border-green-500 pb-3"></i></a></div>
+                        <div class="md:col-span-1 md:block hidden ml-4" id="settingsIcon"><a href="/profile/settings"><i
+                                    class="fas fa-cog text-2xl border-b-4 border-green-500 pb-3"></i></a></div>
                     </div>
 
                     <hr class="md:mt-0 mt-3">
@@ -38,11 +40,11 @@
                                     <a id="default-tab"
                                        href="#first">{{__('Общие настройки')}}</a></li>
                                 <li class="xl:px-4 md:px-2 py-2  tab-name md:ring-0 w-full md:w-inherit font-semibold text-gray-800 opacity-50">
-                                    <a href="#second" >{{__('Уведомления')}}</a></li>
+                                    <a href="#second">{{__('Уведомления')}}</a></li>
                                 <li class="xl:px-2 md:px-2 py-2 tab-name md:ring-0 w-full md:w-inherit font-semibold text-gray-800 opacity-50">
                                     <a href="#third">{{__('Подписка на задания')}}</a></li>
                                 <li class="xl:px-4 md:px-2 tab-name py-2  @if($errors->has('password')) error  @endif  md:ring-0 w-full md:w-inherit font-semibold text-gray-800 opacity-50">
-                                    <a href="#fourth" >{{__('Безопасность')}}</a></li>
+                                    <a href="#fourth">{{__('Безопасность')}}</a></li>
                             </ul>
 
                             <!-- Tab Contents -->
@@ -58,7 +60,8 @@
                                                 <div class="w-full mb-4">
                                                     <label class="mb-2 text-md md:block text-gray-400"
                                                            for="name">{{__('Имя')}}</label>
-                                                    <div class="focus:outline-none w-full focus:border-yellow-500 rounded-xl border py-2 px-3 w-full text-grey-900">
+                                                    <div
+                                                        class="focus:outline-none w-full focus:border-yellow-500 rounded-xl border py-2 px-3 w-full text-grey-900">
                                                         <p>{{$user->name}}</p>
                                                     </div>
                                                 </div>
@@ -66,9 +69,9 @@
                                                     <label class="mb-2 text-md md:block text-gray-400"
                                                            for="email">Email</label>
                                                     <input
-                                                            class="focus:outline-none focus:border-yellow-500  rounded-xl border py-2 px-3 w-full text-grey-900"
-                                                            type="email" name="email" id="email"
-                                                            value="{{ $user->is_email_verified?$user->email??old('email'):$user->email_old}}">
+                                                        class="focus:outline-none focus:border-yellow-500  rounded-xl border py-2 px-3 w-full text-grey-900"
+                                                        type="email" name="email" id="email"
+                                                        value="{{ $user->is_email_verified?$user->email??old('email'):$user->email_old}}">
                                                     @error('email')
                                                     <p class="text-red-500">{{ $message }}</p>
                                                     @enderror
@@ -77,12 +80,12 @@
                                                     <label class="mb-2 text-md md:block text-gray-400"
                                                            for="phone_number">{{__('Телефон')}}</label>
                                                     <input
-                                                            class="focus:outline-none focus:border-yellow-500 rounded-xl border py-2 px-3 w-full text-grey-900"
-                                                            type="text" id="phone_number" name="phone_number"
-                                                            @if (!$user->phone_number) placeholder="+998(00)000-00-00"
-                                                            @else
+                                                        class="focus:outline-none focus:border-yellow-500 rounded-xl border py-2 px-3 w-full text-grey-900"
+                                                        type="text" id="phone_number" name="phone_number"
+                                                        @if (!$user->phone_number) placeholder="+998(00)000-00-00"
+                                                        @else
                                                             value="{{$user->is_phone_number_verified?$user->phone_number:$user->phone_number_old}}"
-                                                            @endif >
+                                                        @endif >
                                                     @error('phone_number')
                                                     <p class="text-red-500">{{ $message }}</p>
                                                     @enderror
@@ -91,29 +94,34 @@
                                                     <label class="mb-2 text-md md:block text-gray-400"
                                                            for="age">{{__('Возраст')}}</label>
                                                     <input
-                                                            class="focus:outline-none focus:border-yellow-500 rounded-xl border py-2 px-3 w-full text-grey-900"
-                                                            min="18" type="number" name="age" id="age"
-                                                            value="{{$user->age}}">
+                                                        class="focus:outline-none focus:border-yellow-500 rounded-xl border py-2 px-3 w-full text-grey-900"
+                                                        min="18" type="number" name="age" id="age"
+                                                        value="{{$user->age}}">
                                                     @error('age')
                                                     <p class="text-red-500">{{ $message }}</p>
                                                     @enderror
                                                 </div>
                                                 <div class="w-full block w-full mb-6 mt-2 flex gap-x-5">
                                                     <div class="flex items-center gap-x-2">
-                                                        <input type="radio" name="gender" id="male" value="1" class="h-4 w-4"  {{$user->gender==1 ? 'checked' : ''}}>
-                                                        <label for="male" class="text-gray-800 text-lg cursor-pointer">{{__('Мужской')}}</label>
+                                                        <input type="radio" name="gender" id="male" value="1"
+                                                               class="h-4 w-4" {{$user->gender==1 ? 'checked' : ''}}>
+                                                        <label for="male"
+                                                               class="text-gray-800 text-lg cursor-pointer">{{__('Мужской')}}</label>
                                                     </div>
                                                     <div class="flex items-center gap-x-2">
-                                                        <input type="radio" name="gender" id="fermale" value="0" class="h-4 w-4" {{$user->gender==0 ? 'checked' : ''}}>
-                                                        <label for="fermale" class="text-gray-800 text-lg cursor-pointer">{{__('Женской')}}</label>
+                                                        <input type="radio" name="gender" id="fermale" value="0"
+                                                               class="h-4 w-4" {{$user->gender==0 ? 'checked' : ''}}>
+                                                        <label for="fermale"
+                                                               class="text-gray-800 text-lg cursor-pointer">{{__('Женской')}}</label>
                                                     </div>
                                                 </div>
                                                 <div class="w-full block w-full mb-4">
                                                     <label class="mb-2 text-md md:block text-gray-400"
                                                            for="textarea">{{__('Другие сведения')}}</label>
-                                                    <textarea class="border rounded-xl py-2 px-3 w-full  text-grey-900 focus:outline-none focus:border-yellow-500"
-                                                              name="description"
-                                                              id="textarea">{{old('description')??$user->description}}</textarea>
+                                                    <textarea
+                                                        class="border rounded-xl py-2 px-3 w-full  text-grey-900 focus:outline-none focus:border-yellow-500"
+                                                        name="description"
+                                                        id="textarea">{{old('description')??$user->description}}</textarea>
                                                     @error('description')
                                                     <p class="text-red-500">{{ $message }}</p>
                                                     @enderror
@@ -122,12 +130,13 @@
                                                 <div class="w-full block w-full mb-4">
                                                     <label class="mb-2 text-md md:block text-gray-400"
                                                            for="location">{{__('Город')}}</label>
-                                                    <select class="border rounded-xl py-2 px-3 w-full focus:border-yellow-500 text-grey-900 outline-none"
-                                                            name="location">
+                                                    <select
+                                                        class="border rounded-xl py-2 px-3 w-full focus:border-yellow-500 text-grey-900 outline-none"
+                                                        name="location">
                                                         <option value="">{{__('Выберите город')}}</option>
                                                         @foreach($regions as $region)
                                                             <option
-                                                                    value="{{$region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}" {{$region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') == $user->location??old('location') ? 'selected' : null}}>{{$region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}</option>
+                                                                value="{{$region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}" {{$region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') == $user->location??old('location') ? 'selected' : null}}>{{$region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}</option>
                                                         @endforeach
 
                                                     </select>
@@ -153,17 +162,19 @@
                                     {{-- settings/ second tab -> enable notification start --}}
                                     <div class="md:w-4/5 w-full mt-5">
                                         <h3 class="font-bold text-3xl">{{__('Получать уведомления:')}}</h3>
-                                            <div class="grid grid-cols-10 mt-5">
-                                                <input type="checkbox" id="notif_checkbox1" {{$user->system_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
-                                                <span class="col-span-9 ml-2">{{__('Системные уведомления')}}</span>
-                                            </div>
-                                            <div class="grid grid-cols-10 mt-5">
-                                                <input type="checkbox" id="notif_checkbox2" {{$user->news_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
-                                                <span class="col-span-9 ml-2">{{__('Я хочу получать новости сайта')}}</span>
-                                            </div>
-                                            <button onclick="ajax_func()"
-                                                    class="block  md:w-1/2 w-full mt-10 bg-green-400 hover:bg-green-600 text-white uppercase p-4 rounded-xl"
-                                                    type="submit">{{__('Сохранить')}}</button>
+                                        <div class="grid grid-cols-10 mt-5">
+                                            <input type="checkbox" id="notif_checkbox1"
+                                                   {{$user->system_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
+                                            <span class="col-span-9 ml-2">{{__('Системные уведомления')}}</span>
+                                        </div>
+                                        <div class="grid grid-cols-10 mt-5">
+                                            <input type="checkbox" id="notif_checkbox2"
+                                                   {{$user->news_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
+                                            <span class="col-span-9 ml-2">{{__('Я хочу получать новости сайта')}}</span>
+                                        </div>
+                                        <button onclick="ajax_func()"
+                                                class="block  md:w-1/2 w-full mt-10 bg-green-400 hover:bg-green-600 text-white uppercase p-4 rounded-xl"
+                                                type="submit">{{__('Сохранить')}}</button>
                                     </div>
                                     {{-- settings/ second tab -> enable notification end --}}
                                 </div>
@@ -177,25 +188,27 @@
                                             <div class="acordion mt-16">
                                                 @foreach ($categories as $category )
 
-                                                    <div class="mb-4 rounded-md border shadow-md py-2 pl-3 bg-yellow-100">
+                                                    <div
+                                                        class="mb-4 rounded-md border shadow-md py-2 pl-3 bg-yellow-100">
                                                         <div
-                                                                class="accordion text-gray-700 cursor-pointer w-full text-left text-lg">
+                                                            class="accordion text-gray-700 cursor-pointer w-full text-left text-lg">
                                                             {{ $category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
                                                         </div>
                                                         <div
-                                                                class="panel overflow-hidden hidden px-[18px] bg-white p-2 bg-yellow-100">
+                                                            class="panel overflow-hidden hidden px-[18px] bg-white p-2 bg-yellow-100">
                                                             @foreach ($categories2 as $category2)
                                                                 @if($category2->parent_id == $category->id)
-                                                                    <label class="block my-1 text-base flex items-center">
+                                                                    <label
+                                                                        class="block my-1 text-base flex items-center">
                                                                         @php
-                                                                          $cat_arr = explode(",",$user->category_id);
-                                                                            $res_c_arr = array_search($category2->id,$cat_arr);
+                                                                            $cat_arr = explode(",",$user->category_id);
+                                                                              $res_c_arr = array_search($category2->id,$cat_arr);
                                                                         @endphp
-                                                                            <input type="checkbox"
-                                                                            @if($res_c_arr !== false) checked
-                                                                            @endif name="category[]"
-                                                                            value="{{$category2->id}}"
-                                                                            class="mr-2 required:border-yellow-500 h-4 w-4">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
+                                                                        <input type="checkbox"
+                                                                               @if($res_c_arr !== false) checked
+                                                                               @endif name="category[]"
+                                                                               value="{{$category2->id}}"
+                                                                               class="mr-2 required:border-yellow-500 h-4 w-4">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
                                                                     </label>
                                                                 @endif
                                                             @endforeach
@@ -206,19 +219,24 @@
                                             <p class="font-bold text-xl mb-7"> {{__('Дополнительные типы уведомлений:')}}</p>
                                             <div class="flex sm:flex-row flex-col itens-center">
                                                 <div class="items-center mr-8">
-                                                    <input type="checkbox" id="sms" name="sms_notification" value="1" {{$user->sms_notification==1 ? 'checked' : ''}} class="w-5 h-5"/>
+                                                    <input type="checkbox" id="sms" name="sms_notification" value="1"
+                                                           {{$user->sms_notification==1 ? 'checked' : ''}} class="w-5 h-5"/>
                                                     <label class="cursor-pointer text-2xl" for="sms">
-                                                    <i class="fas fa-mobile text-yellow-600 text-2xl mx-1"></i>{{__('SMS')}}</label>
-                                               </div>
+                                                        <i class="fas fa-mobile text-yellow-600 text-2xl mx-1"></i>{{__('SMS')}}
+                                                    </label>
+                                                </div>
                                                 <div class="items-center">
-                                                    <input type="checkbox" id="email_notif" name="email_notification" value="1" {{$user->email_notification==1 ? 'checked' : ''}} class="w-5 h-5"/>
+                                                    <input type="checkbox" id="email_notif" name="email_notification"
+                                                           value="1"
+                                                           {{$user->email_notification==1 ? 'checked' : ''}} class="w-5 h-5"/>
                                                     <label class="cursor-pointer mx-1 text-xl" for="email_notif">
-                                                    <i class="fas fa-envelope text-yellow-600 text-2xl mx-1"></i>{{__('EMAIL')}}</label>
+                                                        <i class="fas fa-envelope text-yellow-600 text-2xl mx-1"></i>{{__('EMAIL')}}
+                                                    </label>
                                                 </div>
                                             </div>
                                             <button
-                                                    class="block  md:w-1/2 w-full mt-10 bg-green-400 hover:bg-green-600 text-white uppercase p-4 rounded-xl"
-                                                    type="submit">{{__('Сохранить')}}</button>
+                                                class="block  md:w-1/2 w-full mt-10 bg-green-400 hover:bg-green-600 text-white uppercase p-4 rounded-xl"
+                                                type="submit">{{__('Сохранить')}}</button>
                                         </form>
                                         <script>
                                             var acc = document.getElementsByClassName("accordion");
@@ -267,7 +285,7 @@
                                                                 <div class="mx-auto max-w-lg">
                                                                     <div class="py-2" x-data="{ show: true }">
                                                                         <span
-                                                                                class="px-1 text-sm text-gray-600">{{__('Новый пароль')}}</span>
+                                                                            class="px-1 text-sm text-gray-600">{{__('Новый пароль')}}</span>
                                                                         <div class="relative">
                                                                             <input placeholder="" name="password"
                                                                                    :type="show ? 'password' : 'text'"
@@ -278,7 +296,7 @@
                                                                                 focus:border-yellow-400
                                                                                 focus:outline-none">
                                                                             <div
-                                                                                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                                                                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
 
                                                                                 <svg class="h-4 text-gray-700"
                                                                                      fill="none" @click="show = !show"
@@ -305,7 +323,7 @@
                                                                     </div>
                                                                     <div class="py-2" x-data="{ show: true }">
                                                                         <span
-                                                                                class="px-1 text-sm text-gray-600">{{__('Повторите пароль')}}</span>
+                                                                            class="px-1 text-sm text-gray-600">{{__('Повторите пароль')}}</span>
                                                                         <div class="relative">
                                                                             <input placeholder=""
                                                                                    name="password_confirmation"
@@ -344,18 +362,21 @@
                                                     <div class="flex sm:flex-row flex-col mt-4 items-center">
                                                         <div class="flex flex-row items-center">
                                                             <i class="fas fa-desktop mr-2 text-yellow-500"></i>
-                                                            <p class="mx-1">{{ $session->ip_address == request()->ip()? "Текущая" :"" }}{{ $parser->parse($session->user_agent)->os->family }},</p>
+                                                            <p class="mx-1">{{ $session->ip_address == request()->ip()? "Текущая " :"" }}{{ $parser->parse($session->user_agent)->os->family }}
+                                                                ,</p>
                                                         </div>
                                                         <h1 class="mx-1">{{ $session->last_active }}, </h1>
-                                                        <span class="text-gray-500">{{__('браузер')}} {{ $parser->parse($session->user_agent)->ua->family }}</span>
+                                                        <span
+                                                            class="text-gray-500">{{__('браузер')}} {{ $parser->parse($session->user_agent)->ua->family }}</span>
                                                     </div>
                                                 @endforeach
                                                 @foreach($sessions as $session)
-                                                @if($session!=null && $loop->index==0)
-                                                    <div class="my-5">
-                                                        <a href="{{route('profile.clear_sessions')}}" type="btn" class="focus:outline-none hover:bg-red-600 btn bg-red-400 uppercase p-2 text-white text-sm rounded-lg">{{__('удалить сеансы')}}</a>
-                                                    </div>
-                                                @endif
+                                                    @if($session!=null && $loop->index==0)
+                                                        <div class="my-5">
+                                                            <a href="{{route('profile.clear_sessions')}}" type="btn"
+                                                               class="focus:outline-none hover:bg-red-600 btn bg-red-400 uppercase p-2 text-white text-sm rounded-lg">{{__('удалить сеансы')}}</a>
+                                                        </div>
+                                                    @endif
                                                 @endforeach
                                             </div>
                                         </div>
@@ -375,32 +396,32 @@
         </div>
     </div>
     <script>
-        let notif_11,notif_22;
-        function ajax_func(){
-            if($('#notif_checkbox1').is(":checked")){
-                notif_11=1;
+        let notif_11, notif_22;
+
+        function ajax_func() {
+            if ($('#notif_checkbox1').is(":checked")) {
+                notif_11 = 1;
+            } else {
+                notif_11 = 0;
             }
-            else{
-                notif_11=0;
-            }
-            if($('#notif_checkbox2').is(":checked")){
-                notif_22=1;
-            }
-            else{
-                notif_22=0;
+            if ($('#notif_checkbox2').is(":checked")) {
+                notif_22 = 1;
+            } else {
+                notif_22 = 0;
             }
             console.log(notif_11)
             console.log(notif_22)
-{{--            @php $id=auth()->user()->id  @endphp--}}
-{{--            let id={{$id}}--}}
-                let id={{auth()->user()->id}}
+            {{--            @php $id=auth()->user()->id  @endphp--}}
+            {{--            let id={{$id}}--}}
+            let id = {{auth()->user()->id}}
             console.log(id);
             $.ajax({
                 url: "{{route('profile.notif_setting_ajax')}}",
                 type: 'GET',
-                data: {id: id,
-                       notif11: notif_11,
-                       notif22: notif_22
+                data: {
+                    id: id,
+                    notif11: notif_11,
+                    notif22: notif_22
                 },
                 success: function (data) {
                     console.log(data)
@@ -413,11 +434,10 @@
                     })
                 },
                 error: function (error) {
-                    console.error("Ajax orqali yuklashda xatolik..." , error);
+                    console.error("Ajax orqali yuklashda xatolik...", error);
                 }
             });
         }
-
 
 
     </script>

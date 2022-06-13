@@ -13,6 +13,7 @@ use App\Models\Task;
 use App\Models\Review;
 use App\Models\User;
 use App\Services\NotificationService;
+use App\Services\Task\ReviewService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Services\Task\CreateService;
@@ -149,30 +150,21 @@ class UpdateAPIController extends Controller
         DB::beginTransaction();
 
         try {
-            $task->status = $request->status ? Task::STATUS_COMPLETE : Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
-            $task->save();
-            ChMessage::query()->where('from_id', $task->user_id)->where('to_id', $task->performer_id)->delete();
-            ChMessage::query()->where('to_id', $task->user_id)->where('from_id', $task->performer_id)->delete();
-            Review::create([
-                'description' => $request->comment,
-                'good_bad' => $request->good,
-                'task_id' => $task->id,
-                'reviewer_id' => auth()->id(),
-                'user_id' => $task->performer_id,
-            ]);
-            $notification = Notification::create([
-                'user_id' => $task->user_id,
-                'task_id' => $task->id,
-                'name_task' => $task->name,
-                'description' => 1,
-                'type' => Notification::SEND_REVIEW
-            ]);
-            NotificationService::sendNotificationRequest([$task->user_id], [
-                'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
-            ]);
-            NotificationService::pushNotification($task->user->firebase_token, [
-                'title' => 'New review', 'body' => 'See details'
-            ], 'notification', new NotificationResource($notification));
+            if ($task->user_id == auth()->id()) {
+
+                $notification = ReviewService::userReview($task, $request);
+                NotificationService::pushNotification($task->user->firebase_token, [
+                    'title' => 'New review', 'body' => 'See details'
+                ], 'notification', new NotificationResource($notification));
+
+            } elseif ($task->performer_id == auth()->id()) {
+
+                $notification = ReviewService::performerReview($task, $request);
+                NotificationService::pushNotification($task->user->firebase_token, [
+                    'title' => 'New review', 'body' => 'See details'
+                ], 'notification', new NotificationResource($notification));
+
+            }
         } catch (\Exception $exception) {
             DB::rollBack();
             return response()->json(['success' => false, 'message' => "fail"]);  //back();
