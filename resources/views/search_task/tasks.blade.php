@@ -6,7 +6,7 @@
         <div class="sm:col-span-3 col-span-5 flex flex-row">
             <div class="sm:mr-6 mr-3 w-1/6">
                 <img src="{{ asset('storage/'.$task->category_icon) }}"
-                    class="text-2xl float-left text-blue-400 sm:mr-4 mr-3 h-14 w-14 bg-blue-200 p-2 rounded-xl" />
+                    class="text-2xl float-left text-blue-400 sm:mr-14 mr-3 h-14 w-14 bg-blue-200 p-2 rounded-xl" />
             </div>
             <div class="w-5/6">
                 @if( in_array($task->id,
