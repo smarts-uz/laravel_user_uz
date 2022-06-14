@@ -495,4 +495,8 @@ class MessagesController extends Controller
             'status' => $update,
         ], 200);
     }
+
+    public static function unseenCount() {
+        return ChMessage::where('to_id', Auth::id())->where('seen', 0)->count();
+    }
 }

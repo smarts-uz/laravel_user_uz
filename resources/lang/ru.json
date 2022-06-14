@@ -33,7 +33,7 @@
     "dateTime.end_date.date": "dateTime.end_date.date",
     "dateTime.end_date.required": "dateTime.end_date.required",
     "dateTime.start_date.date": "dateTime.start_date.date",
-    "dateTime.start_date.required": "dateTime.start_date.required",
+    "dateTime.start_date.required": "Вы выбрали прошедшую дату",
     "lang.contact_expired": "lang.contact_expired",
     "lang.contact_notVerify": "lang.contact_notVerify",
     "lang.contact_phone": "lang.contact_phone",
