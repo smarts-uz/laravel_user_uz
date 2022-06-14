@@ -156,7 +156,7 @@ class PerformersController extends Controller
     }
 
     public function performers_portfolio(User $user,Portfolio $portfolio){
-        
+
         return view('performers.performer_portfolio',compact('portfolio','user'));
     }
 }

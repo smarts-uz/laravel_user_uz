@@ -5,21 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ModalNumberRequest;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
-use App\Mail\MessageEmail;
 use App\Mail\VerifyEmail;
 use App\Models\User;
 use App\Models\WalletBalance;
-use App\Providers\RouteServiceProvider;
+use App\Services\SmsMobileService;
 use Carbon\Carbon;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Validation\ValidationException;
-use PlayMobile\SMS\SmsService;
 use RealRashid\SweetAlert\Facades\Alert;
-use mrmuminov\eskizuz\Eskiz;
 
 class LoginController extends Controller
 {
@@ -75,9 +70,8 @@ class LoginController extends Controller
 
     }
 
-    public static function send_verification($needle, $user, $phone=null)
+    public static function send_verification($needle, $user, $phone_number=null)
     {
-        $eskiz = new Eskiz("sodikov42@gmail.com", "2806507997");
         if ($needle == 'email') {
             $code = sha1(time());
             $data = [
@@ -87,11 +81,8 @@ class LoginController extends Controller
             Mail::to($user->email)->send(new VerifyEmail($data));
         } else {
             $code = rand(100000, 999999);
-//            (new SmsService())->send($phone, $code);
-            $eskiz->requestSmsSend(
-                '<122222>',
-                '<+998945480514>'
-            );
+            $sms_service = new SmsMobileService();
+            $sms_service->sms_packages($phone_number, $code);
         }
         $user->verify_code = $code;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
@@ -99,12 +90,13 @@ class LoginController extends Controller
 
     }
 
-    public static function send_verification_for_task_phone($task, $phone)
+    public static function send_verification_for_task_phone($task, $phone_number)
     {
         $code = rand(100000, 999999);
-        (new SmsService())->send($phone, $code);
+        $sms_service = new SmsMobileService();
+        $sms_service->sms_packages($phone_number, $code);
 
-        $task->phone = $phone;
+        $task->phone = $phone_number;
         $task->verify_code = $code;
         $task->verify_expiration = Carbon::now()->addMinutes(2);
         $task->save();
@@ -128,7 +120,7 @@ class LoginController extends Controller
     }
 
 
-    public static function verifyColum($request, $needle, $user, $hash)
+    public static function verifyColum($needle, $user, $hash)
     {
         $needle = 'is_' . $needle . "_verified";
 
