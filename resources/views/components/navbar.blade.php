@@ -64,6 +64,14 @@
 
                     {{-- icon-2   Chat  --}}
                     <div class="float-left open-chat" style="cursor:pointer">
+                        @php
+                            $messages = App\Http\Controllers\vendor\Chatify\MessagesController::unseenCount();
+                        @endphp
+                        @if($messages > 0)
+                            <div id="content_count"
+                                 class="w-4 h-4 absolute rounded-full bg-red-500 ml-3 text-white text-xs text-center">
+                                {{$messages}}</div>
+                        @endif
                         <a class="delete-task">
                             <i class="xl:text-2xl lg:text-xl text-gray-500 hover:text-yellow-500 far fa-comment-alt"></i>
                         </a>

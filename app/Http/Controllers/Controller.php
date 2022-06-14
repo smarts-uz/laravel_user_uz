@@ -25,6 +25,7 @@ class Controller extends BaseController
     {
         $service = new ControllerService();
         $item = $service->home($id);
+        //dd($item);
         return view('home',
             [
                 'categories' => $item->categories,
