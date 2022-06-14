@@ -45,7 +45,7 @@ class NotificationController extends VoyagerBaseController
     public function getNotifications()
     {
         return $this->success(
-            NotificationResource::collection(NotificationService::getNotifications(auth()->user()))
+            NotificationResource::collection(NotificationService::getNotifications(auth()->user(), [0,1]))
         );
     }
 

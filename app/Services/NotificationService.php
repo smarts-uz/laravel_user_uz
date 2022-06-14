@@ -16,10 +16,10 @@ use PlayMobile\SMS\SmsService;
 
 class NotificationService
 {
-    public static function getNotifications($user)
+    public static function getNotifications($user, $is_read = [0])
     {
         return Notification::with('user:id,name')
-            //->where('is_read', 0)
+            ->whereIn('is_read', $is_read)
             ->where(function ($query) use ($user) {
                 $query->where(function ($query) use ($user) {
                     $query->where('performer_id', '=', $user->id)
@@ -42,7 +42,7 @@ class NotificationService
                     });
             })
             ->orderByDesc('created_at')
-            ->limit(10)->get();
+            ->get();
     }
 
     public static function sendTaskNotification($task, $user_id)
