@@ -792,8 +792,9 @@ class ProfileAPIController extends Controller
             'phone' => $user->phone_number,
             'gender' => $user->gender,
         ];
+        dd($data);
         return response()->json([
-            'data' => $data
+            'data' => $data.'my'
         ]);
     }
 
