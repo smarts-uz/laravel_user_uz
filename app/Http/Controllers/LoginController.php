@@ -145,7 +145,7 @@ class LoginController extends Controller
 
     public function verifyAccount(User $user, $hash, Request $request)
     {
-        self::verifyColum($request, 'email', $user, $hash);
+        self::verifyColum( 'email', $user, $hash);
         auth()->login($user);
         Alert::success(__('Поздравляю'), __('Ваш адрес электронной почты успешно подтвержден'));
         return redirect()->route('profile.profileData');
@@ -157,7 +157,7 @@ class LoginController extends Controller
         $request->validate([
             'code' => 'required'
         ]);
-        if (self::verifyColum($request, 'phone_number', auth()->user(), $request->code)) {
+        if (self::verifyColum('phone_number', auth()->user(), $request->code)) {
             Alert::success(__('Поздравляю'), __('Ваш телефон успешно подтвержден'));
             return redirect()->route('profile.profileData');
         } else {
