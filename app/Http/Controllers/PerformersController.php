@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\WalletBalance;
 use App\Services\NotificationService;
 use App\Services\PerformersService;
+use App\Services\SmsTextService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use PlayMobile\SMS\SmsService;
 use App\Models\Portfolio;
 use App\Models\User;
 use App\Models\Task;
@@ -94,7 +94,9 @@ class PerformersController extends Controller
             $performer = User::query()->find($users_id);
             $tesk_url = route("searchTask.task",$task_id);
             $text = "Заказчик предложил вам новую задания $tesk_url. Имя заказчика: " . $task_name->user->name;
-            (new SmsService())->send($performer->phone_number, $text);
+            $phone_number=$performer->phone_number;;
+            $sms_service = new SmsTextService();
+            $sms_service->sms_packages($phone_number, $text);
             Notification::create([
                 'user_id' => $task_name->user_id,
                 'performer_id' => $users_id,

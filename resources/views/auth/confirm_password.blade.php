@@ -10,18 +10,14 @@
             @csrf
             <div>
                 <div class="mb-4">
-                    <label id="phone" class="block text-gray-500 text-sm" for="phone_number">
-                        {{__('Телефон немер')}}
-                        </span>
-                    </label>
                     <input type="password" placeholder="Password"
-                            name="password"
+                            name="password" id="password"
                        required
                            class="ml-6 focus:outline-none focus:border-yellow-500 shadow appearance-none border rounded w-80 py-2 px-3 text-gray-700 mb-3 leading-tight">
                            <i class="fas fa-eye-slash text-gray-500 relative -left-12" id="eye"></i>
                     <br>
                     <input type="password" placeholder="Confirm password"
-                            name="password_confirmation"
+                            name="password_confirmation" id="password"
                          required  class="confirm_password ml-6 focus:outline-none focus:border-yellow-500 shadow appearance-none border rounded w-80 py-2 px-3 text-gray-700 mb-3 leading-tight">
                          <i class="fas fa-eye-slash text-gray-500 relative -left-12" id="eye1"></i>
                     <br>
@@ -35,21 +31,6 @@
                 {{__('Отправить')}}
             </button>
         </form>
-
-            <script>
-            import intlTelInput from 'intl-tel-input';
-
-            const input = document.querySelector("#phone");
-            intlTelInput(input, {
-                // any initialisation options go here
-            });
-            </script>
     </div>
-@endsection
-
-
-
-@section("javasript")
-
 <script src="{{ asset('js/auth/confirm_password.js') }}"></script>
 @endsection

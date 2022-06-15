@@ -10,6 +10,7 @@
         <li><a  href="/news" class="hover:text-red-500 text-md text-blue-600 cursor-pointer">{{__('Новости сайта')}}</a></li>
     </ul>
     <ul class="mb-5">
+        <li><a  href="/paynet_oplata" class="paynet hover:text-red-500 text-md text-blue-600 cursor-pointer">{{__('Оплата через пайнет')}}</a></li>
         <li><a  href="/press" class="press hover:text-red-500 text-md text-blue-600 cursor-pointer">{{__('СМИ о нас')}}</a></li>
         <li><a  href="/vacancies" class="job hover:text-red-500 text-md text-blue-600 cursor-pointer">{{__('Вакансии')}}</a></li>
     </ul>
@@ -44,5 +45,9 @@
     else if(link[3] == 'vacancies'){
         $(".job").removeClass("text-blue-600");
         $(".job").addClass("text-red-400");
+    }
+    else if(link[3] == 'paynet_oplata'){
+        $(".paynet").removeClass("text-blue-600");
+        $(".paynet").addClass("text-red-400");
     }
 </script>

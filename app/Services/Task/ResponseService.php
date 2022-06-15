@@ -12,6 +12,7 @@ use App\Models\TaskResponse;
 use App\Models\UserExpense;
 use App\Models\WalletBalance;
 use App\Services\NotificationService;
+use App\Services\SmsTextService;
 use Illuminate\Http\Request;
 use PlayMobile\SMS\SmsService;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -100,7 +101,9 @@ class ResponseService
             $phone = $response_user->phone_number;
             $tesk_url = route("searchTask.task",$response->task_id);
             $text = "Vi ispolnitel v zadanii $tesk_url. Kontakt zakazchika: $name. $phone";
-            (new SmsService())->send($performer->phone_number, $text);
+            $phone_number=$performer->phone_number;
+            $sms_service = new SmsTextService();
+            $sms_service->sms_packages($phone_number, $text);
         }
         $data = [
             'performer_name' => $performer->name,
