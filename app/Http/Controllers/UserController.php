@@ -7,6 +7,7 @@ use App\Mail\MessageEmail;
 use App\Models\User;
 use App\Models\Task;
 use App\Services\NotificationService;
+use App\Services\SmsMobileService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
@@ -65,11 +66,14 @@ class UserController extends Controller
                 'message' => "This phone number does not have an account!"
             ]);
         }
-        $sms_otp = rand(100000, 999999);
-        $user->verify_code = $sms_otp;
+        $code = rand(100000, 999999);
+        $user->verify_code = $code;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
-        (new SmsService())->send(preg_replace('/[^0-9]/', '', $user->phone_number), $sms_otp);
+        $phone_number=$user->phone_number;
+        $sms_service = new SmsMobileService();
+        $sms_service->sms_packages($phone_number, $code);
+
         session()->put('verifications', ['key' => 'phone_number', 'value' => $data['phone_number']]);
 
         return redirect()->route('user.reset_code_view');

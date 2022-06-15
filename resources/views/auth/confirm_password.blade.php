@@ -10,10 +10,6 @@
             @csrf
             <div>
                 <div class="mb-4">
-                    <label id="phone" class="block text-gray-500 text-sm" for="phone_number">
-                        {{__('Телефон немер')}}
-                        </span>
-                    </label>
                     <input type="password" placeholder="Password"
                             name="password"
                        required
@@ -36,14 +32,7 @@
             </button>
         </form>
 
-            <script>
-            import intlTelInput from 'intl-tel-input';
-
-            const input = document.querySelector("#phone");
-            intlTelInput(input, {
-                // any initialisation options go here
-            });
-            </script>
+          z
     </div>
 @endsection
 
