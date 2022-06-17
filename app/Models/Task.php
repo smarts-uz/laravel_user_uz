@@ -121,6 +121,8 @@ class Task extends Model
             {
                 $response->delete();
             }
+
+            Notification::query()->where('task_id', $task->id)->delete();
         });
     }
 }
