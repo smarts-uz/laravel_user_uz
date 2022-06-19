@@ -255,6 +255,9 @@ Route::get('/', [Controller::class, 'home'])->name('home'); // javoxir
 Route::get('/terms', function () {
     return view('auth.terms');
 });
+Route::get('/paynet_oplata', function () {
+    return view('staticpages.paynet');
+});
 Route::get('/file-download', [Controller::class, 'download'])->name('file_download.download');
 Route::get('/show-notification/{notification}', [NotificationController::class, 'show_notification'])->name('show_notification');
 Route::get('/read-notification/{notification}', [NotificationController::class, 'read_notification'])->name('read_notification');

@@ -58,7 +58,7 @@
                             <!-- content #3 -->
                             <div
                                 class="absolute top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg transition-all duration-300 opacity-0 peer-checked:opacity-100 peer-checked:z-10 z-0">
-                                <img class="rounded-t-lg" style="height: 400px; width: 400px;" src="/storage/{!!str_replace("\\","/",setting('site.carusel_img3'))!!}" alt="" />
+                                <img class="rounded-full" style="height: 400px; width: 400px;" src="/storage/{!!str_replace("\\","/",setting('site.carusel_img3'))!!}" alt="" />
                                 <!-- controls -->
                                 <div class="absolute top-1/2 w-full flex justify-between z-20">
                                     <label for="carousel-2" class="inline-block text-yellow-600 cursor-pointer -translate-x-5 bg-white rounded-full shadow-md active:translate-y-0.5">

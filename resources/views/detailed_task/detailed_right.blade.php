@@ -23,7 +23,7 @@
     <div class="flex flex-col mt-4">
         <div class="mb-4">
             <img class="border-2 border-radius-500 border-gray-400 w-32 h-32 rounded-lg" alt="#"
-                 src="@if ($task->user->avatar == ''){{ asset("storage/images/default.png") }}
+                 src="@if ($task->user->avatar == ''){{ asset("storage/images/default.jpg") }}
                  @else{{asset("storage/{$task->user->avatar}") }}" @endif
             >
         </div>

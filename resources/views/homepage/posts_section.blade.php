@@ -17,7 +17,7 @@
                             <p class="sm:text-lg text-xs mt-2 overflow-hidden text-gray-400">
                                 @if(strlen($task->description) >= 25)
                                     {{ Str::limit($task->description, 25) }}
-                                @else 
+                                @else
                                     {{ $task->description}}
                                 @endif
                             </p>
@@ -43,14 +43,12 @@
                     </div>
                 </div>
             </a>
-            <a href="{{route('security')}}">
-                <div class="w-96 h-48 rounded-xl my-8" style="background: url({{asset('images/security.png')}});">
-                    <div class="w-full text-center">
-                        <p class="text-2xl font-bold text-yellow-400 pt-12">
-                         {!!__('Безопасность и <br/> гарантии')!!}</p>
-                    </div>
+            <div class="w-96 h-48 rounded-xl my-8" style="background: url({{asset('images/security.png')}});">
+                <div class="w-full text-center">
+                    <p class="text-2xl font-bold text-yellow-400 pt-12">
+                        {!!__('Безопасность и <br/> гарантии')!!}</p>
                 </div>
-            </a>
+            </div>
             <a href="{{route('performers.service')}}">
                 <div class="w-96 h-48 rounded-xl" style="background: url({{asset('images/perform.png')}});">
                     <div class="w-full text-center">

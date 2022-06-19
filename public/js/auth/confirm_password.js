@@ -5,11 +5,11 @@ $(function () {
         if ($(this).hasClass('fa-eye-slash')) {
             $(this).removeClass('fa-eye-slash');
             $(this).addClass('fa-eye');
-            $('#phone_number').attr('type', 'text');
+            $('#password').attr('type', 'text');
         } else {
             $(this).removeClass('fa-eye');
             $(this).addClass('fa-eye-slash');
-            $('#phone_number').attr('type', 'password');
+            $('#password').attr('type', 'password');
         }
     });
 
