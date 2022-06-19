@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
@@ -15,6 +16,9 @@ class All_transaction extends Model
 {
     use HasFactory;
     const DRIVER_PAYME = 'Payme';
+    const DRIVER_CLICK = 'Click';
+    const DRIVER_PAYNET = 'Paynet';
+
     /** Pay in progress, order must not be changed. */
     const STATE_WAITING_PAY  = 1;
     /** Transaction completed and not available for sell. */
@@ -40,4 +44,12 @@ class All_transaction extends Model
         'amount',
         'method'
     ];
+
+    /**
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

@@ -19,7 +19,7 @@ use App\Http\Controllers\Task\UpdateController;
 use App\Http\Controllers\UserController;
 
 //avocoder
-use App\Http\Controllers\UserTransactionHisory;
+use App\Http\Controllers\UserTransactionHistory;
 use App\Http\Controllers\vendor\Chatify\MessagesController;
 use App\Http\Controllers\VoyagerTaskController;
 use Illuminate\Support\Facades\Route;
@@ -303,7 +303,7 @@ Route::post('/prepare', "App\Http\Controllers\RefillController@prepare")->name('
 Route::post('/complete', "App\Http\Controllers\RefillController@complete")->name('complete'); // javoxir
 Route::post('/paycom', 'App\Http\Controllers\PaycomTransactionController@paycom')->name('paycom'); // javoxir
 // Show transactions history
-Route::get('profile/transactions/history', [UserTransactionHisory::class, 'getTransactions'])->name('user.transactions.history')->middleware('auth');
+Route::get('profile/transactions/history', [UserTransactionHistory::class, 'getTransactions'])->name('user.transactions.history')->middleware('auth');
 
 #region payments
 Route::any('/paynet', function () {

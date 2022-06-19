@@ -33,38 +33,35 @@ class RefillAPIController extends Controller
     public function ref(Request $request){
 
         $payment = $request->get("paymethod");
+        $amount = $request->get("amount");
         switch($payment){
-            case 'Click':
-                $new_article = All_transaction::create([
+            case All_transaction::DRIVER_CLICK:
+                $transaction = All_transaction::create([
                     'user_id' => Auth::id(),
-                    'amount'  => $request->get("amount"),
-                    'method'  => "Click",
+                    'amount'  => $amount,
+                    'method'  => All_transaction::DRIVER_CLICK,
+                    'state' => All_transaction::STATE_WAITING_PAY
                 ]);
 
-                $amount = $request->get("amount");
-                $article_id = $new_article->id;
-
+                $article_id = $transaction->id;
                 return redirect()->to("https://my.click.uz/services/pay?service_id=19839&merchant_id=14364&amount=$amount.00&transaction_param=$article_id&return_url=https://user.uz/profile");
-                break;
-            case 'PayMe':
-                $tr = new All_transaction();
-                $tr->user_id = Auth::id();
-                $tr->amount  = $request->get("amount");
-                $tr->method  = $tr::DRIVER_PAYME;
-                $tr->state   = $tr::STATE_WAITING_PAY;
-                $tr->save();
-                
-                return response()->json(['transaction' => $tr]);
-                break;
-            case 'Paynet':
-                dd('Paynet testing');
+
+            case All_transaction::DRIVER_PAYME:
+                $transaction = All_transaction::create([
+                    'user_id' => Auth::id(),
+                    'amount' => $amount,
+                    'method' => All_transaction::DRIVER_PAYME,
+                    'state' => All_transaction::STATE_WAITING_PAY
+                ]);
+
+                return response()->json(['transaction' => $transaction]);
+            case All_transaction::DRIVER_PAYNET:
                 break;
         }
-
     }
 
     /**
-     * 
+     *
      * @OA\Post (
      *     path="/api/prepare",
      *     tags={"Refill"},
@@ -201,7 +198,7 @@ class RefillAPIController extends Controller
 
 
     /**
-     * 
+     *
      * @OA\Post (
      *     path="/api/complete",
      *     tags={"Refill"},

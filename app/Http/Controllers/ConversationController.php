@@ -17,9 +17,8 @@ class ConversationController extends Controller
     public function __construct()
     {
         $this->middleware('admin.user');
-
-        // return back();
     }
+
     public function index(){
         if(Auth::user()->hasRole('admin')){
             return view('voyager::index');
