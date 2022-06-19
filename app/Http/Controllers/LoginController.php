@@ -37,7 +37,7 @@ class LoginController extends Controller
             return back();
         }
         if (!$user->isActive()) {
-            Alert::error('User is not active');
+            Alert::error(__('Аккаунт отключен'));
             return back();
         }
 
