@@ -55,7 +55,7 @@
                     @endisset
                     <div class="my-3 w-3/5 mx-auto">
                         <div class="custom-control custom-radio mb-4 text-3xl flex flex-row items-center">
-                            <input id="credit" onclick="doBlock()" name="paymethod" checked type="radio" value="PayMe" class="custom-control-input w-5 h-5 ">
+                            <input id="credit" onclick="doBlock()" name="paymethod" checked type="radio" value="Payme" class="custom-control-input w-5 h-5 ">
                             <button type="button" class=" w-52 focus:border-2 focus:border-dashed focus:border-green-500 mx-8" name="button"><label for="credit"><img
                                         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBUPBIFq--0RLaG-j2I9jtnOewkrM5v70tPi5NnWBLwrdL0v2gyIyFBdqXCKW__A8MTA&usqp=CAU" class="h-12" alt=""></label></button>
                         </div>
