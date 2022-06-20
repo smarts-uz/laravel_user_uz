@@ -26,20 +26,20 @@
             <p class="font-bold mt-16">{{__('Станьте исполнителем и выполняйте интересные задания от заказчиков  в удобное для вас время.')}}</p>
             <div class="grid md:grid-cols-4 grid-cols-1 gap-4 pt-16 container mx-auto font-bold text-xl">
                 <div>
-                    <img class="mx-auto" src="https://assets.youdo.com/_next/static/media/money.bd687ef7e0abebf2c7822c7c9e527522.png" alt="#">
-                    <p>{{__('Достойный заработок')}}</p>
+                    <img class="mx-auto h-36" src="https://assets.youdo.com/_next/static/media/money.bd687ef7e0abebf2c7822c7c9e527522.png" alt="#">
+                    <p class="text-xl">{{__('Достойный заработок')}}</p>
                 </div>
                 <div>
-                    <img class="mx-auto" src="{{asset('images/User_watch.png')}}" alt="#">
-                    <p>{{__('Свободный график')}}</p>
+                    <img class="mx-auto h-36" src="{{asset('images/User_watch.png')}}" alt="#">
+                    <p class="text-xl">{{__('Свободный график')}}</p>
                 </div>
                 <div>
-                    <img class="mx-auto" src="{{asset('images/User_security.png')}}" alt="#">
-                    <p>{{__('Безопасный сервис')}}</p>
+                    <img class="mx-auto h-36" src="{{asset('images/User_security.png')}}" alt="#">
+                    <p class="text-xl">{{__('Безопасный сервис')}}</p>
                 </div>
                 <div>
-                    <img class="mx-auto" src="{{asset('images/User_cash.png')}}" alt="#">
-                    <p>{{__('Экономия на рекламе')}}</p>
+                    <img class="mx-auto h-36" src="{{asset('images/User_cash.png')}}" alt="#">
+                    <p class="text-xl">{{__('Экономия на рекламе')}}</p>
                 </div>
             </div>
         </div>
@@ -92,7 +92,7 @@
         {{-- 1 --}}
         <div class="flex lg:flex-row flex-col container mx-auto">
             <div class="lg:w-3/5 w-full">
-                <img class="lg:mx-0 mx-auto" src="{{asset('images/performer1.jpg')}}" alt="#">
+                <img class="lg:mx-0 mx-auto h-9/12 w-full" src="{{asset('images/performer1.jpg')}}" alt="#">
             </div>
             <div class="lg:w-2/5 w-full lg:text-left text-center lg:mt-0 mt-4 lg:ml-8">
                 <h1 class="font-bold text-3xl">{{__('Достойный заработок')}}</h1>
@@ -133,11 +133,11 @@
                 </div>
             </div>
             <div class="lg:w-3/5 w-full lg:block hidden">
-                <img class="ml-4 xl:float-right float-none" src="{{asset('images/performer2.jpg')}}" alt="#">
+                <img class="ml-4 xl:float-right float-none h-9/12 w-full" src="{{asset('images/performer2.jpg')}}" alt="#">
             </div>
 
             <div class=" lg:hidden block ">
-                <img class="lg:mx-0 mx-auto" src="{{asset('images/performer2.jpg')}}" alt="#">
+                <img class="lg:mx-0 mx-auto h-9/12 w-full" src="{{asset('images/performer2.jpg')}}" alt="#">
             </div>
             <div class="lg:hidden block lg:text-left text-center lg:mt-0 mt-4">
                 <h1 class="font-bold text-3xl">{{__('Свободный график')}}</h1>
@@ -161,7 +161,7 @@
         {{-- 3 --}}
         <div class="flex lg:flex-row flex-col container mx-auto">
             <div class="lg:w-3/5 w-full">
-                <img class="lg:mx-0 mx-auto" src="{{asset('images/performer3.jpg')}}" alt="#">
+                <img class="lg:mx-0 mx-auto h-9/12 w-full" src="{{asset('images/performer3.jpg')}}" alt="#">
             </div>
             <div class="lg:w-2/5 w-full lg:text-left text-center lg:mt-0 mt-4 lg:ml-8">
                 <h1 class="font-bold text-3xl">{{__('Безопасность сервиса')}}</h1>
@@ -202,11 +202,11 @@
                 </div>
             </div>
             <div class="lg:w-3/5 w-full lg:block hidden">
-                <img class="ml-4 xl:float-right float-none" src="{{asset('images/performer4.jpg')}}" alt="#">
+                <img class="ml-4 xl:float-right float-none h-9/12 w-full" src="{{asset('images/performer4.jpg')}}" alt="#">
             </div>
 
             <div class="lg:hidden block">
-                <img class="lg:mx-0 mx-auto" src="{{asset('images/performer4.jpg')}}" alt="#">
+                <img class="lg:mx-0 mx-auto h-9/12 w-full" src="{{asset('images/performer4.jpg')}}" alt="#">
             </div>
             <div class="lg:hidden block lg:text-left text-center lg:mt-0 mt-4">
                 <h1 class="font-bold text-3xl">{{__('Экономия на рекламе')}}</h1>
@@ -270,10 +270,10 @@
         </div>
 
         <div class="flex lg:flex-row flex-col container mx-auto">
-            <div class="lg:w-2/3 w-full">
+            <div class="lg:w-1/2 w-full h-96">
                 <iframe class="rounded-lg h-full w-5/6 lg:mx-0 mx-auto" width="644" height="362" src="https://www.youtube.com/embed/2J7xlDH4QkA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
-            <div class="lg:w-1/3 w-full lg:mt-0 mt-8 lg:text-left text-center">
+            <div class="lg:w-1/2 w-full lg:mt-0 mt-8 lg:text-left text-center">
                 <p class=" text-lg">{{__('Universal Services помогает мне оставаться свободным. Несмотря на то, что график плотный, я решаю сам, не кто-то мне говорит, когда мне встать, куда приехать, что сделать.')}}</p>
                 <h1 class="font-bold text-6xl mt-4">65 000</h1>
                 <p class="text-lg font-medium mt-4">{!!__('Средний месячный доход <br> в категории «Курьерские услуги»')!!}</p>
@@ -308,7 +308,7 @@
         </div>
 
         <div class="flex lg:flex-row flex-col container mx-auto my-16">
-            <div class="lg:w-2/5 w-full lg:block hidden lg:text-left text-center xl:ml-0 ml-4">
+            <div class="lg:w-1/2 w-full lg:block hidden lg:text-left text-center xl:ml-0 ml-4">
                 <p class=" text-lg">{{__('Сейчас уже дорос уровень до того, что я снимаю и клиентов клиентов. Одни клиенты рекомендуют меня своим друзьям, знакомым. И много, конечно, заказов идет с Universal Services.')}}</p>
                 <h1 class="font-bold text-6xl mt-4">70 000</h1>
                 <p class="text-lg font-medium mt-4">{!!__('Средний месячный доход <br> в категории «Фото и видеоуслуги»')!!}</p>
@@ -324,11 +324,11 @@
                                 </a>
                 </div>
             </div>
-            <div class="lg:w-3/5 w-full lg:block hidden ml-8">
+            <div class="lg:w-1/2 w-full h-96 lg:block hidden ml-8">
                 <iframe class="rounded-lg h-full ml-4 xl:float-right float-none" width="644" height="362" src="https://www.youtube.com/embed/2J7xlDH4QkA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
 
-            <div class="lg:hidden block mx-auto">
+            <div class="lg:hidden block mx-auto w-full h-96">
                 <iframe class="rounded-lg h-full sm:h-[300px] w-full sm:w-[600px] lg:mx-0 mx-auto" src="https://www.youtube.com/embed/2J7xlDH4QkA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
             <div class="lg:col-span-1 lg:mt-0 mt-8 lg:hidden block lg:text-left text-center mb-12">

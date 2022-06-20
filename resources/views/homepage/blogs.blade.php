@@ -1,7 +1,7 @@
 <div class="grid grid-cols-2 gap-4 my-20 w-4/5 mx-auto">
     <div class="lg:col-span-1 col-span-2 flex sm:flex-row flex-col m-3">
         <div class="w-1/3 sm:block hidden">
-            <img src="{{asset('images/Rectangle1.png')}}" alt="#">
+            <img class="w-full h-36 rounded-l-lg" src="{{asset('images/Rectangle1.png')}}" alt="#">
         </div>
         <div class="sm:rounded-r-2xl rounded-r-2xl-none sm:rounded-none rounded-2xl sm:w-2/3 w-full p-3 shadow-md">
             <h1 class="text-lg text-gray-700 font-bold">{{__('Удобная и безопасная оплата')}}</h1>
@@ -10,7 +10,7 @@
     </div>
     <div class="lg:col-span-1 col-span-2 flex sm:flex-row flex-col m-3">
         <div class="w-1/3 sm:block hidden">
-            <img src="{{asset('images/Rectangle2.png')}}" alt="#">
+            <img  class="w-full h-36 rounded-l-lg" src="{{asset('images/Rectangle2.png')}}" alt="#">
         </div>
         <div class="sm:rounded-r-2xl rounded-r-2xl-none sm:rounded-none rounded-2xl sm:w-2/3 w-full p-3 shadow-md">
             <h1 class="text-lg text-gray-700 font-bold">{{__('Надежные исполнители')}}</h1>
@@ -19,7 +19,7 @@
     </div>
     <div class="lg:col-span-1 col-span-2 flex sm:flex-row flex-col m-3">
         <div class="w-1/3 sm:block hidden">
-            <img src="{{asset('images/Rectangle3.png')}}" alt="#">
+            <img class="w-full h-36 rounded-l-lg" src="{{asset('images/Rectangle3.png')}}" alt="#">
         </div>
         <div class="sm:rounded-r-2xl rounded-r-2xl-none sm:rounded-none rounded-2xl sm:w-2/3 w-full p-3 shadow-md">
             <h1 class="text-lg text-gray-700 font-bold">{{__('Достоверные отзывы')}}</h1>
@@ -28,7 +28,7 @@
     </div>
     <div class="lg:col-span-1 col-span-2 flex sm:flex-row flex-col m-3">
         <div class="w-1/3 sm:block hidden">
-            <img src="{{asset('images/Rectangle4.png')}}" alt="#">
+            <img class="w-full h-36 rounded-l-lg" src="{{asset('images/Rectangle4.png')}}" alt="#">
         </div>
         <div class="sm:rounded-r-2xl rounded-r-2xl-none sm:rounded-none rounded-2xl sm:w-2/3 w-full p-3 shadow-md">
             <h1 class="text-lg text-gray-700 font-bold">{{__('Universal Services для бизнеса')}}</h1>
