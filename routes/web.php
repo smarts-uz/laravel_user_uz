@@ -1,52 +1,28 @@
 <?php
 
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\TaskAPIController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FaqsController;
-
-// javoxir
 use App\Http\Controllers\LoginController;
-
-//avacoder
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
-
-//++
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Task\ResponseController;
 use App\Http\Controllers\Task\UpdateController;
 use App\Http\Controllers\UserController;
-
-//avocoder
 use App\Http\Controllers\UserTransactionHistory;
 use App\Http\Controllers\vendor\Chatify\MessagesController;
 use App\Http\Controllers\VoyagerTaskController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConversationController;
-
-// javoxir
 use App\Http\Controllers\SocialController;
-
-// avocoder
 use App\Http\Controllers\PerformersController;
-
-// javoxir
 use App\Http\Controllers\RefillController;
-
-// javoxir
 use App\Http\Controllers\Task\SearchTaskController;
-
-// javoxir
 use App\Http\Controllers\admin\VoyagerUserController;
-
-// javoxir
 use App\Http\Controllers\Task\CreateController;
-
-use App\Http\Controllers\ClickuzController;
 use Teamprodev\LaravelPayment\PayUz;
-
-//avocoder
 
 /*
 |--------------------------------------------------------------------------
@@ -58,8 +34,6 @@ use Teamprodev\LaravelPayment\PayUz;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
 
 
 #region performers
@@ -295,13 +269,8 @@ Route::post('/account/password/change', [ProfileController::class, 'change_passw
 #endregion
 
 #region payments
-Route::post('/get_info_click', [ClickuzController::class, 'get_info']);
-Route::get('/test_gic', [ClickuzController::class, 'test']);
-Route::get('send', [RefillController::class, 'ref'])->name('paycom.send'); // javoxir
-Route::get('/ref', 'App\Http\Controllers\RefillController@ref'); // javoxir
-Route::post('/prepare', "App\Http\Controllers\RefillController@prepare")->name('prepare'); // javoxir
-Route::post('/complete', "App\Http\Controllers\RefillController@complete")->name('complete'); // javoxir
-Route::post('/paycom', 'App\Http\Controllers\PaycomTransactionController@paycom')->name('paycom'); // javoxir
+Route::get('/send', [RefillController::class, 'ref'])->name('paycom.send'); // javoxir
+Route::get('/ref', [RefillController::class, 'ref']); // javoxir
 // Show transactions history
 Route::get('profile/transactions/history', [UserTransactionHistory::class, 'getTransactions'])->name('user.transactions.history')->middleware('auth');
 

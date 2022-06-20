@@ -2,8 +2,6 @@
 
 namespace App\Services\Profile;
 
-use App\Http\Controllers\ClickuzController;
-use App\Http\Controllers\PaynetController;
 use App\Item\ProfileCashItem;
 use App\Item\ProfileDataItem;
 use App\Models\All_transaction;
@@ -12,6 +10,7 @@ use App\Models\Review;
 use App\Models\Session;
 use App\Models\User;
 use App\Models\WalletBalance;
+use App\Services\PaymentService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -395,25 +394,27 @@ class ProfileService
     public function payment($request)
     {
         $payment = $request->get("paymethod");
-        $request['user_id'] = auth()->user()->id;
+        $amount = $request->get("amount");
+        $request['user_id'] = auth()->id();
         switch($payment) {
-            case 'Click':
-                $payment = new ClickuzController();
-                return $payment->pay($request);
-            case 'PayMe':
-                $tr = new All_transaction();
-                $tr->user_id = Auth::id();
-                $tr->amount = $request->get("amount");
-                $tr->method = $tr::DRIVER_PAYME;
-                $tr->state = $tr::STATE_WAITING_PAY;
-                $tr->save();
+            case All_transaction::DRIVER_CLICK:
+                $url = PaymentService::clickTransaction($amount);
+                return redirect()->to($url);
+
+
+            case All_transaction::DRIVER_PAYME:
+                $tr = PaymentService::paymeTransaction($amount);
                 return redirect('https://checkout.paycom.uz')->withInput([
-                    'merchant' => config('paycom.merchant_id'),
+                    'merchant' => config('payments.payme.merchant_id'),
                     'amount' => $tr->amount * 100,
                     'order_id' => $tr->id
                 ]);
-            case 'Paynet':
-                return PaynetController::pay($request);
+
+            default:
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Bad request'
+                ]);
         }
     }
     /**

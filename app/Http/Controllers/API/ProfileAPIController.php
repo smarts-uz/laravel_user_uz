@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\ClickuzController;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\PaynetController;
 use App\Http\Requests\Api\PortfolioRequest;
 use App\Http\Requests\Api\ProfileAvatarRequest;
 use App\Http\Requests\Api\ProfileDistrictRequest;
 use App\Http\Requests\Api\ProfilePasswordRequest;
 use App\Http\Requests\Api\ProfilePhoneRequest;
-use App\Http\Requests\Api\ProfileSetPasswordRequest;
 use App\Http\Requests\Api\ProfileSettingsRequest;
 use App\Http\Requests\Api\ProfileVideoRequest;
 use App\Http\Resources\PortfolioIndexResource;

@@ -12,19 +12,10 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        '/handle/*',
-        '/paynet',
-        '/paycom/pay',
-        '/clprepare',
-        '/clcomplete',
-        '/get_info_click',
-        '/sms/*',
-        "task/create/note/*/images/store",
         '/uploadImage',
         '/paynet',
         '/payme',
         '/click',
         '/click/user-balance'
-//        '/send-review/*'
     ];
 }

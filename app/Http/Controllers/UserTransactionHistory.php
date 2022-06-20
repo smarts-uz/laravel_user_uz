@@ -16,7 +16,7 @@ class UserTransactionHistory extends Controller
     public function getTransactions (): JsonResponse
     {
         $user = auth()->user();
-        if(in_array($_GET['method'], [All_transaction::DRIVER_CLICK, All_transaction::DRIVER_PAYME, All_transaction::DRIVER_PAYNET])) {
+        if(in_array($_GET['method'], All_transaction::METHODS)) {
             $transactionMethod = UserExpense::query()->where('method', $_GET['method'])->where(['user_id' => $user->id]);
         } else {
             Alert::error('Undefined payment method');

@@ -179,7 +179,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         \Chatify\ChatifyServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
-        Kawankoding\Fcm\FcmServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
 
     ],
@@ -239,7 +238,6 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Chatify' => Chatify\Facades\ChatifyMessenger::class,
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
-        'Fcm' => Kawankoding\Fcm\FcmFacade::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
     ],
 

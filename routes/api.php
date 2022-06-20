@@ -1,5 +1,7 @@
 <?php
 
+
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\BlogController;
 use App\Http\Controllers\API\CategoriesAPIController; // javoxir
 use App\Http\Controllers\API\CustomFieldAPIController;
@@ -7,7 +9,6 @@ use App\Http\Controllers\API\FaqAPIController; // javoxir
 use App\Http\Controllers\API\LoginAPIController;
 use App\Http\Controllers\API\PerformerAPIController; // javoxir
 use App\Http\Controllers\API\ProfileAPIController; // javoxir +
-use App\Http\Controllers\API\ResponseAPIController;
 use App\Http\Controllers\API\SessionController;
 use App\Http\Controllers\API\SocialAPIController;
 use App\Http\Controllers\API\TaskAPIController; // javoxir
@@ -19,11 +20,9 @@ use App\Http\Controllers\API\ConversationAPIController;
 use App\Http\Controllers\API\VoyagerUserAPIController; // javoxir -
 use App\Http\Controllers\API\RefillAPIController; // javoxir
 use App\Http\Controllers\API\ReportAPIController; // javoxir
-use App\Http\Controllers\API\PaynetTransactionAPIController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PortfolioAPIController;
 use App\Http\Controllers\vendor\Chatify\Api\MessagesController;
-use Illuminate\Support\Facades\Route;
 
 
 /*
@@ -196,9 +195,6 @@ Route::group(['prefix' => 'admin'], function () {
 
 //Refill
 Route::get('/ref', [RefillAPIController::class, 'ref']); //end
-Route::post('/prepare', [RefillAPIController::class, 'prepare']); //end
-Route::post('/complete', [RefillAPIController::class, 'complete']); //end
-Route::post('/paynet-transaction', [PaynetTransactionAPIController::class, 'create'])->name('paynet-transaction');
 
 #Social
 Route::post('/social-login', [SocialAPIController::class, 'login']); //end

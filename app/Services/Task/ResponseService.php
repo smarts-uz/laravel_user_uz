@@ -65,8 +65,8 @@ class ResponseService
                         'user_id' => $data['performer_id'],
                         'method' => All_transaction::METHODS['Task'],
                         'amount' => setting('admin.pullik_otklik'),
-                        'status' => 0,
-                        'state' => 1
+                        'status' => All_transaction::STATUS_SUCCESS,
+                        'state' => All_transaction::STATE_PAY_ACCEPTED
                     ]);
                 }
 
