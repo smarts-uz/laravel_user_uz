@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Models\Session;
 use App\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
@@ -75,7 +76,13 @@ class VoyagerUserController extends BaseVoyagerUserController
                 'alert-type' => 'error',
             ]);
         }
-        $user->is_active = $user->is_active?0:1;
+        if ($user->is_active) {
+            Session::query()->where('user_id', $user->id)->delete();
+            $user->tokens->each(function ($token, $key) {
+                $token->delete();
+            });
+        }
+        $user->is_active = $user->is_active ? 0 : 1;
         $user->save();
         return back()->with([
             'message' => "Muvafaqiyatli o'zgartirildi!"

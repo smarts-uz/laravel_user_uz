@@ -39,7 +39,11 @@ class ProfileController extends Controller
 
     public function clear_sessions()
     {
-        Session::query()->where('user_id', auth()->user()->id)->delete();
+        $user = auth()->user();
+        Session::query()->where('user_id', $user->id)->delete();
+        $user->tokens->each(function ($token, $key) {
+            $token->delete();
+        });
         return back();
     }
 
