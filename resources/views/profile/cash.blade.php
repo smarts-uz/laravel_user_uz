@@ -90,7 +90,7 @@
                                         class="inline-block relative py-1 w-full payment-type">{{__('Пополнения')}} Paynet</a>
                                 </div>
                                 <div class="w-full text-center">
-                                    <a href="#fourth" data-method="Expense" data-number="4"
+                                    <a href="#fourth" data-method="Task" data-number="4"
                                         class="inline-block relative py-1 w-full payment-type">{{__('Списания со счета')}}</a>
                                 </div>
                             </ul>
