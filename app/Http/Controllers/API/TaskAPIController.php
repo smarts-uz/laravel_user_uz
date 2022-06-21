@@ -455,7 +455,7 @@ class TaskAPIController extends Controller
         $status = in_array($status, [Task::STATUS_OPEN, Task::STATUS_COMPLETE_WITHOUT_REVIEWS, Task::STATUS_COMPLETE, Task::STATUS_IN_PROGRESS]) ? $status : 0;
 
         $column = $is_performer ? 'performer_id' : 'user_id';
-        $tasks = Task::query()->where($column, $user->id);
+        $tasks = Task::withTrashed()->where($column, $user->id);
 
         if ($status)
             $tasks = $tasks->where('status', $status);
