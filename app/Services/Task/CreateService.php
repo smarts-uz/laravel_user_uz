@@ -5,8 +5,13 @@ namespace App\Services\Task;
 use App\Models\Address;
 use App\Models\Category;
 use App\Models\CustomFieldsValue;
+use App\Models\Notification;
 use App\Models\Task;
+use App\Models\User;
+use App\Services\NotificationService;
+use App\Services\SmsTextService;
 use Illuminate\Support\Arr;
+use PlayMobile\SMS\SmsService;
 
 class CreateService
 {
@@ -120,8 +125,36 @@ class CreateService
             }
         }
         return $dataMain;
-
     }
 
+
+    public function perform_notif($task,$user){
+        $performer_id = session()->get('performer_id_for_task');
+        if ($performer_id) {
+            $performer = User::query()->find($performer_id);
+            $text_url = route("searchTask.task", $task->id);
+            $text = "Заказчик предложил вам новую задания $text_url. Имя заказчика: " . $user->name;
+            $phone_number=$performer->phone_number;;
+            $sms_service = new SmsTextService();
+            $sms_service->sms_packages($phone_number, $text);
+            Notification::query()->create([
+                'user_id' => $task->user_id,
+                'performer_id' => $performer_id,
+                'task_id' => $task->id,
+                'name_task' => $task->name,
+                'description' => '123',
+                'type' => 4,
+            ]);
+
+            NotificationService::sendNotificationRequest([$performer_id], [
+                'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+            ]);
+
+            session()->forget('performer_id_for_task');
+        }
+        else {
+            NotificationService::sendTaskNotification($task, $user->id);
+        }
+    }
 
 }
