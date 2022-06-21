@@ -399,11 +399,10 @@ class TaskAPIController extends Controller
 
         $column = $is_performer ? 'performer_id' : 'user_id';
 
-        $tasks = Task::withTrashed()->where($column, $user->id);
-        $open_tasks = ['count' => $tasks->where('status', Task::STATUS_OPEN)->count(), 'status' => Task::STATUS_OPEN];
-        $in_process_tasks = ['count' => $tasks->where('status', Task::STATUS_IN_PROGRESS)->count(), 'status' => Task::STATUS_IN_PROGRESS];
-        $complete_tasks = ['count' => $tasks->where('status', Task::STATUS_COMPLETE)->count(), 'status' => Task::STATUS_COMPLETE];
-        $cancelled_tasks = ['count' => $tasks->where('status', Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->count(), 'status' => Task::STATUS_COMPLETE_WITHOUT_REVIEWS];
+        $open_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_OPEN)->count(), 'status' => Task::STATUS_OPEN];
+        $in_process_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_IN_PROGRESS)->count(), 'status' => Task::STATUS_IN_PROGRESS];
+        $complete_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_COMPLETE)->count(), 'status' => Task::STATUS_COMPLETE];
+        $cancelled_tasks = ['count' => Task::withTrashed()->where($column, $user->id)->where('status', Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->count(), 'status' => Task::STATUS_COMPLETE_WITHOUT_REVIEWS];
         $all = ['count' => $open_tasks['count'] + $in_process_tasks['count'] + $complete_tasks['count'] + $cancelled_tasks['count'], 'status' => 0];
 
 
@@ -464,7 +463,7 @@ class TaskAPIController extends Controller
         else
             $tasks = $tasks->where('status', '!=', 0);
 
-        return TaskPaginationResource::collection($tasks->paginate(5));
+        return new TaskPaginationResource($tasks->paginate());
     }
 
     /**
