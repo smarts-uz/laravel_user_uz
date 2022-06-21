@@ -47,7 +47,7 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('profile.profileData');
+        return redirect()->intended('/profile');
 
     }
 
