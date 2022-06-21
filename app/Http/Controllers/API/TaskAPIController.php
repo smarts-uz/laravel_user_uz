@@ -21,6 +21,7 @@ use App\Http\Resources\TaskPaginationResource;
 use App\Http\Resources\TaskResponseResource;
 use App\Http\Resources\TaskSingleResource;
 use App\Models\Compliance;
+use App\Models\ComplianceType;
 use App\Models\Task;
 use App\Models\TaskResponse;
 use App\Models\User;
@@ -1766,6 +1767,14 @@ class TaskAPIController extends Controller
         return response()->json([
             'success' => true,
             'message' => trans('trans.Complaint is sent.')
+        ]);
+    }
+
+    public function complainTypes()
+    {
+        return response()->json([
+            'success' => true,
+            'data' => ComplianceType::all()
         ]);
     }
 }
