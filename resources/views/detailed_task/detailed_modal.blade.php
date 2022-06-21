@@ -56,22 +56,22 @@
                 </h1>
                 <p class="my-3">{{__('Расскажите об этом заказе в социальных сетях — оно заслуживает того, чтобы его увидели.')}}</p>
             </div>
-            <div class="text-center mb-8 flex flex-wrap md:w-4/5 w-full mx-auto">
-             <span class="telegram"><i
-                     class="fab fa-telegram px-4 py-3 bg-blue-500 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
-                <span class="instagram"><i
+            <div class="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-4 mb-8">
+                <span class="telegram mx-auto"><i
+                        class="fab fa-telegram px-4 py-3 bg-blue-500 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
+                <span class="instagram mx-auto"><i
                         class="fab fa-instagram px-4 py-3 bg-red-700 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
-                <span class="whatsapp"><i
+                <span class="whatsapp mx-auto"><i
                         class="fab fa-whatsapp px-4 py-3 bg-green-700 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
-                <span class="facebook"><i
+                <span class="facebook mx-auto"><i
                         class="fab fa-facebook px-4 py-3 bg-blue-700 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
-                <span class="email"><i
+                <span class="email mx-auto"><i
                         class="fas fa-at px-4 py-3 bg-yellow-600 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
-                <span class="twitter"><i
+                <span class="twitter mx-auto"><i
                         class="fab fa-twitter px-3 py-2.5 text-blue-500 text-white rounded-lg m-4 text-4xl cursor-pointer border-2 border-blue-500"></i></span>
-                <span class="linkedin"><i
+                <span class="linkedin mx-auto"><i
                         class="fab fa-linkedin px-4 py-3 bg-blue-400 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
-                <span class="google"><i
+                <span class="google mx-auto"><i
                         class="fab fa-google px-4 py-3 bg-red-700 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
             </div>
         </div>
@@ -140,63 +140,95 @@
      class="btn-preloader hidden overflow-x-hidden overflow-y-auto fixed h-modal md:h-full top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center">
     <div
         class="relative w-full max-w-md px-4 h-full md:h-auto">
-        <!-- Modal content -->
-        <div
-            class="bg-white rounded-lg shadow relative dark:bg-gray-700">
-            <div class="flex justify-end p-2">
-                <button type="button"
-                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-                        data-modal-toggle="authentication-modal">
-                    <svg class="w-5 h-5" fill="currentColor"
-                         viewBox="0 0 20 20"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                              clip-rule="evenodd"></path>
-                    </svg>
-                </button>
-            </div>
-            <form
-                class="space-y-6 px-6 lg:px-8 pb-4 sm:pb-6 xl:pb-8"
-                action="{{route("task.response.store", $task->id)}}"
-                method="post">
-                @csrf
-                <header>
-                    <h2 class="font-semibold text-3xl mb-4 text-center">{{__('Откликнуться')}}</h2>
-                </header>
-                <main>
-                    <span class="text-base">{{__('Описание отклика')}}</span>
-                    <textarea required
-                              class="resize-none rounded-md w-full focus:outline-none  focus:border-yellow-500 border border-gray-300 p-4  transition duration-200 mb-4"
-                              type="text" id="form8" rows="4"
-                              name="description"></textarea>
-                    <p class="text-base">{{__('Сколько вы предлагаете')}}</p>
-                    <label>
-                        <input type="text" required
-                               onkeypress='validate(event)'
-                               checked name="price"
-                               class="border border-gray-300 rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 mb-2">UZS
-                        <input type="text" name="pay"
-                               class="pays border rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 my-2 hidden"
-                               value="0">
-                        <input type="text"
-                               name="task_user_id"
-                               class="pays border rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 my-2 hidden"
-                               value="{{$task->user_id}}">
-                    </label>
-                    <hr>
-                </main>
-                <input type="text" class="hidden" id="not_free" name="not_free">
-                <footer
-                    class="flex justify-center bg-transparent">
-                    <button type="submit"
-                            class=" bg-yellow-500 font-semibold text-white py-3 w-full rounded-md my-4 hover:bg-orange-500 focus:outline-none shadow-lg hover:shadow-none transition-all duration-300">
-                        {{__('Далее')}}
+        @if(auth()->user()->phone_number == null)
+            <div
+                class="bg-white rounded-lg shadow relative dark:bg-gray-700">
+                <div class="flex justify-end p-2">
+                    <button type="button"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                            data-modal-toggle="authentication-modal">
+                        <svg class="w-5 h-5" fill="currentColor"
+                             viewBox="0 0 20 20"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                  clip-rule="evenodd"></path>
+                        </svg>
                     </button>
-                </footer>
+                </div>
+                    <header>
+                        <h2 class="font-semibold text-3xl mb-4 text-center">{{__('Номер телефона не введен')}}</h2>
+                    </header>
+                    <main>
+                       <h1 class="text-xl font-semibold text-center my-6">{{__('Пожалуйста введите ваш номер телефона')}}</h1>
+                    </main>
+                    <footer
+                        class="flex justify-center bg-transparent">
+                        <a href="{{route('profile.editData')}}"
+                                class=" bg-yellow-500 font-semibold text-white p-4 rounded-md my-8 focus:outline-none shadow-lg hover:shadow-none transition-all duration-300">
+                            {{__('Введите номер телефона')}}
+                        </a>
+                    </footer>
+            </div>
+        @else
+            <!-- Modal content -->
+            <div
+                class="bg-white rounded-lg shadow relative dark:bg-gray-700">
+                <div class="flex justify-end p-2">
+                    <button type="button"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                            data-modal-toggle="authentication-modal">
+                        <svg class="w-5 h-5" fill="currentColor"
+                             viewBox="0 0 20 20"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                  clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+                <form
+                    class="space-y-6 px-6 lg:px-8 pb-4 sm:pb-6 xl:pb-8"
+                    action="{{route("task.response.store", $task->id)}}"
+                    method="post">
+                    @csrf
+                    <header>
+                        <h2 class="font-semibold text-3xl mb-4 text-center">{{__('Откликнуться')}}</h2>
+                    </header>
+                    <main>
+                        <span class="text-base">{{__('Описание отклика')}}</span>
+                        <textarea required
+                                  class="resize-none rounded-md w-full focus:outline-none  focus:border-yellow-500 border border-gray-300 p-4  transition duration-200 mb-4"
+                                  type="text" id="form8" rows="4"
+                                  name="description"></textarea>
+                        <p class="text-base">{{__('Сколько вы предлагаете')}}</p>
+                        <label>
+                            <input type="text" required
+                                   onkeypress='validate(event)'
+                                   checked name="price"
+                                   class="border border-gray-300 rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 mb-2">UZS
+                            <input type="text" name="pay"
+                                   class="pays border rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 my-2 hidden"
+                                   value="0">
+                            <input type="text"
+                                   name="task_user_id"
+                                   class="pays border rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 my-2 hidden"
+                                   value="{{$task->user_id}}">
+                        </label>
+                        <hr>
+                    </main>
+                    <input type="text" class="hidden" id="not_free" name="not_free">
+                    <footer
+                        class="flex justify-center bg-transparent">
+                        <button type="submit"
+                                class=" bg-yellow-500 font-semibold text-white py-3 w-full rounded-md my-4 hover:bg-orange-500 focus:outline-none shadow-lg hover:shadow-none transition-all duration-300">
+                            {{__('Далее')}}
+                        </button>
+                    </footer>
 
-            </form>
-        </div>
+                </form>
+            </div>
+        @endif
     </div>
 </div>
 {{-- otklik modal  --}}
