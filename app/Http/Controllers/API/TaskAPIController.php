@@ -131,11 +131,10 @@ class TaskAPIController extends Controller
             } else {
                 $responses = $task->responses();
             }
-            return TaskResponseResource::collection($responses->paginate(5));
         } else {
-            $responses = $task->responses();
-            return new TaskResponseResource($responses->where('performer_id', auth()->id())->first());
+            $responses = $task->responses()->where('performer_id', auth()->id());
         }
+        return TaskResponseResource::collection($responses->paginate(5));
     }
 
     /**
@@ -456,7 +455,7 @@ class TaskAPIController extends Controller
         $status = in_array($status, [Task::STATUS_OPEN, Task::STATUS_COMPLETE_WITHOUT_REVIEWS, Task::STATUS_COMPLETE, Task::STATUS_IN_PROGRESS]) ? $status : 0;
 
         $column = $is_performer ? 'performer_id' : 'user_id';
-        $tasks = Task::query()->where($column, $user->id);
+        $tasks = Task::withTrashed()->where($column, $user->id);
 
         if ($status)
             $tasks = $tasks->where('status', $status);
@@ -1765,9 +1764,7 @@ class TaskAPIController extends Controller
         (new TelegramService())->sendMessage($data);
         return response()->json([
             'success' => true,
-            'data' => [
-                'message' => trans('trans.Complaint is sent.')
-            ]
+            'message' => trans('trans.Complaint is sent.')
         ]);
     }
 }
