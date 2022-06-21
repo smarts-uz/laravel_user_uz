@@ -138,3 +138,14 @@ function generate_url()
 {
     return "http://ws.smarts.uz/api/send-notification";
 }
+
+function getContentText($page, $key)
+{
+    $text = app()->getLocale() == 'ru' ? 'text_ru' : 'text_uz';
+    return \App\Models\Content::query()->where('page', $page)->where('key', $key)->first()?->$text;
+}
+
+function getContentImage($page, $key)
+{
+    return \App\Models\Content::query()->where('page', $page)->where('key', $key)->first()?->image;
+}

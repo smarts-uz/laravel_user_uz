@@ -78,12 +78,7 @@
                 </div>
             </div>
             <div class="lg:col-span-1 col-span-2 pt-32 relative z-10">
-                <h1 class="font-bold text-4xl">
-                    <span class="block">{{__('Освободим вас от забот')}}</span>
-                </h1>
-                <p class="mt-3 text-sm md:text-base sm:mt-5 sm:mx-auto md:mt-3 md:md:mt-2 mb-3">
-                    {{__('Поможем найти надежного исполнителя для любых задач')}}
-                </p>
+                {!! getContentText('home', 'main_text') !!}
                 <div class="mx-auto">
                     <div class="w-full flex-1 mt-8">
                         <input name="TypeList" list="TypeList" type="text" id="header_input" maxlength="40" placeholder="{{__('Чем вам помочь...')}}"
