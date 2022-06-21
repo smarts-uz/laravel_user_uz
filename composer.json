@@ -15,7 +15,7 @@
         "jenssegers/agent": "^2.6",
         "joy/voyager-api": "^1.2",
         "laravel/framework": "^8.78",
-        "laravel/passport": "^10.3",
+        "laravel/passport": "^10.4",
         "laravel/sanctum": "^2.11",
         "laravel/socialite": "^5.2",
         "laravel/tinker": "^2.5",
