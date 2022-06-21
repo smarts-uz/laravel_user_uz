@@ -47,6 +47,11 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
+        if (session()->has('redirectTo')) {
+            $url = session()->get('redirectTo');
+            session()->forget('redirectTo');
+            return redirect($url);
+        }
         return redirect()->intended('/profile');
 
     }
