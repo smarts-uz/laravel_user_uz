@@ -215,7 +215,7 @@ class ProfileController extends Controller
 
     //personal info Ijrochi uchun
 
-    public function verificationIndex()
+    public function verificationIndex(Request $request)
     {
         return view('verification.verification');
     }

@@ -1,6 +1,6 @@
 <div class="w-4/5 mx-auto my-16">
     <div class="w-full">
-        <h1 class="text-2xl font-bold">{{__('Что заказывают на «Универсал Сервис» прямо сейчас')}}</h1>
+        <h1 class="text-2xl font-bold">{{__('Что заказывают на «Universal Services» прямо сейчас')}}</h1>
     </div>
     <div class="grid md:grid-cols-3 grid-cols-2 mx-auto mb-56">
         <div  class="lg:col-span-2 col-span-3 md:w-10/12 w-full h-screen blog1 mt-8">

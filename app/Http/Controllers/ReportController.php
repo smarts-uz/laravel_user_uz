@@ -33,17 +33,6 @@ class ReportController extends Controller
         return $service->report();
     }
 
-//        public function show_child(Request $req, $id)
-//        {
-//            if($req->ajax())
-//            {
-//                $service = new ReportService();
-//                $service->child_report($id);
-//            }
-//
-//            return view('vendor.voyager.report.childreport');
-//
-//        }
 public function index_sub($id)
 {
     Cache::put('child',$id);

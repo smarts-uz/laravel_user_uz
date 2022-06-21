@@ -53,9 +53,8 @@ Route::group(['prefix' => 'performers'], function () {
     Route::get('/{user}', [PerformersController::class, 'performer'])->name('performers.performer'); // javoxir
     Route::get('/chat/{id}', [PerformersController::class, 'performer_chat'])->name('performers.performer_chat'); // javoxir
 });
-
 #endregion
-Route::get('task/{task}/map', [TaskAPIController::class, 'task_map'])->name('task.map'); //end
+
 
 #region chat
 Route::group(['prefix' => 'chat'], function (){
@@ -70,9 +69,7 @@ Route::group(['prefix' => 'chat'], function (){
     Route::post('/updateContacts', [MessagesController::class, 'updateContactItem'])->name('contacts.update');
     Route::post('/pusher/auth', [MessagesController::class, 'pusherAuth']);
 });
-
 Route::post('/request',[ReportController::class,'request'])->name('request');
-
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
     Route::get("report", [ReportController::class, "index"])->name("index");
@@ -105,10 +102,10 @@ Route::post('/change-task/{task}/delete-image', [UpdateController::class, 'delet
 Route::get('admin/reported-tasks', [VoyagerTaskController::class, 'reported_tasks'])->name('admin.tasks.reported')->middleware('auth');
 Route::get('admin/complete-task/{task}', [VoyagerTaskController::class, 'complete_task'])->name('admin.tasks.complete')->middleware('auth');
 Route::delete('admin/complete-task/{task}', [VoyagerTaskController::class, 'delete_task'])->name('admin.tasks.reported.delete')->middleware('auth');
+Route::get('task/{task}/map', [TaskAPIController::class, 'task_map'])->name('task.map'); //end
 #endregion
 
 #region verificationInfo
-Route::view('/offer-tasks', 'task.offertasks');
 Route::group(['middleware' => 'auth', 'prefix' => 'verification'], function () {
     Route::get('/', [ProfileController::class, 'verificationIndex'])->name('verification'); // javoxir
 
@@ -226,12 +223,8 @@ Route::post('send-review-user/{task}', [UpdateController::class, 'sendReview'])-
 Route::get('/categories/{id}', [Controller::class, 'category'])->name("categories"); // javoxir
 Route::get('/lang/{lang}', [Controller::class, 'lang'])->name('lang'); // javoxir
 Route::get('/', [Controller::class, 'home'])->name('home'); // javoxir
-Route::get('/terms', function () {
-    return view('auth.terms');
-});
-Route::get('/paynet_oplata', function () {
-    return view('staticpages.paynet');
-});
+Route::get('/terms',[Controller::class,'terms']);
+Route::get('/paynet_oplata',[Controller::class,'paynet_oplata']);
 Route::get('/file-download', [Controller::class, 'download'])->name('file_download.download');
 Route::get('/show-notification/{notification}', [NotificationController::class, 'show_notification'])->name('show_notification');
 Route::get('/read-notification/{notification}', [NotificationController::class, 'read_notification'])->name('read_notification');
@@ -288,8 +281,4 @@ Route::any('/click/user-balance', function () {
     return (new PayUz())->click_additional();
 });
 #endregion
-
-
-
-// payments
 

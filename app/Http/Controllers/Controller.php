@@ -25,7 +25,6 @@ class Controller extends BaseController
     {
         $service = new ControllerService();
         $item = $service->home($id);
-        //dd($item);
         return view('home',
             [
                 'categories' => $item->categories,
@@ -101,6 +100,14 @@ class Controller extends BaseController
     {
         $news = BlogNew::all();
         return view('/staticpages/news',compact('news'));
+    }
+
+    public function terms(){
+        return view('auth.terms');
+    }
+
+    public function paynet_oplata(){
+        return view('staticpages.paynet');
     }
 
     public function routing($request)

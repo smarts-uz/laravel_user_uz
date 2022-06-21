@@ -77,7 +77,7 @@
                     </div>
                 </div>
             </div>
-            <div class="lg:col-span-1 col-span-2 pt-32">
+            <div class="lg:col-span-1 col-span-2 pt-32 relative z-10">
                 <h1 class="font-bold text-4xl">
                     <span class="block">{{__('Освободим вас от забот')}}</span>
                 </h1>
@@ -87,7 +87,7 @@
                 <div class="mx-auto">
                     <div class="w-full flex-1 mt-8">
                         <input name="TypeList" list="TypeList" type="text" id="header_input" maxlength="40" placeholder="{{__('Чем вам помочь...')}}"
-                               class="input_text w-full md:px-4 px-2 py-2.5 md:py-3 rounded-xl relative z-10 focus:placeholder-transparent focus:outline-none focus:border-yellow-500 flex-1 text-lg border-0">
+                               class="input_text w-full md:px-4 px-2 py-2.5 md:py-3 rounded-xl focus:placeholder-transparent focus:outline-none focus:border-yellow-500 flex-1 text-lg border-0">
                         <datalist id="TypeList">
                             @foreach($child_categories as $category)
                                 <option
@@ -102,7 +102,7 @@
                            class="float-right sm:hidden block text-lg border bg-blue-900 z-10 border-transparent rounded-xl md:px-3.5 px-2 pt-2 pb-1.5 md:py-2 mr-1 md:mt-2 mt-2.5 -ml-24 -top-14 relative text-white focus:outline-none">
                            {{__(' Заказать')}}
                         </a>
-                        <div class="mt-8 float-left relative z-10">
+                        <div class="mt-8 float-left">
                             <a href="{{ setting('site.instagram_url') }}">
                                 <i class="fab fa-instagram text-yellow-500 hover:text-yellow-600 mx-2"></i>
                             </a>
