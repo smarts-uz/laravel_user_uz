@@ -55,7 +55,8 @@ class TaskIndexResource extends JsonResource
             'custom_fields' => (new CustomFieldService())->getCustomFieldsByRoute($this, 'custom'),
             'photos' => $photos,
             'performer_review' => $this->performer_review,
-            'response_price' => setting('admin.pullik_otklik')
+            'response_price' => setting('admin.pullik_otklik'),
+            'free_response' => setting('admin.bepul_otklik')
         ];
     }
 }
