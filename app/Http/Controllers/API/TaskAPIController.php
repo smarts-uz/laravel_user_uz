@@ -131,11 +131,10 @@ class TaskAPIController extends Controller
             } else {
                 $responses = $task->responses();
             }
-            return TaskResponseResource::collection($responses->paginate(5));
         } else {
-            $responses = $task->responses();
-            return new TaskResponseResource($responses->where('performer_id', auth()->id())->first());
+            $responses = $task->responses()->where('performer_id', auth()->id());
         }
+        return TaskResponseResource::collection($responses->paginate(5));
     }
 
     /**
