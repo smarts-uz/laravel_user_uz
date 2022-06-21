@@ -28,8 +28,8 @@ class UpdateController extends Controller
     public function change(UpdateRequest $request, Task $task)
     {
         taskGuard($task);
-     /*   if ($task->responses_count)
-            abort(403, "No Permission");*/
+        if ($task->responses_count)
+            abort(403, "No Permission");
 
         $data = $request->validated();
         $task->addresses()->delete();

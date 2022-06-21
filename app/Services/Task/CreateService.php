@@ -11,7 +11,6 @@ use App\Models\User;
 use App\Services\NotificationService;
 use App\Services\SmsTextService;
 use Illuminate\Support\Arr;
-use PlayMobile\SMS\SmsService;
 
 class CreateService
 {
@@ -127,7 +126,13 @@ class CreateService
         return $dataMain;
     }
 
-
+    /**
+     *
+     * Function  perform_notif
+     * Mazkur metod Task yaratganda notification va sms yuborish
+     * @param $task $user
+     *
+     */
     public function perform_notif($task,$user){
         $performer_id = session()->get('performer_id_for_task');
         if ($performer_id) {
