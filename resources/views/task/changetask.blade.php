@@ -408,11 +408,9 @@
             .use(Uppy.ImageEditor, {target: Uppy.Dashboard})
             .use(Uppy.XHRUpload, {
                 endpoint: '{{route('task.create.images.store', $task->id)}}',
-                formData: true,
                 fieldName: 'images[]',
-                headers: file => ({
-                    'X-CSRF-TOKEN': '{{csrf_token()}}'
-                }),
+                method: 'post',
+                bundle: true,
             });
 
         uppy.on('upload-success', (file, response) => {
