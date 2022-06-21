@@ -2,7 +2,7 @@
     <div class="w-full text-center">
         @auth
             @if(getAuthUserBalance() >= setting('admin.pullik_otklik'))
-                @if($task->user_id != auth()->id() && $task->status < 3 && !$auth_response)
+                @if($task->user_id != auth()->id() && $task->status < 3 && !$auth_response && auth()->user()->phone_number!=null)
                     <button
                         class="sm:w-4/5 w-full font-sans text-lg pay font-semibold bg-green-500 text-white hover:bg-green-600 px-8 pt-1 pb-2 mt-6 rounded-lg transition-all duration-300"
                         id="btn1"
@@ -25,7 +25,7 @@
                     </button>
                 @endif
             @elseif(getAuthUserBalance() < setting('admin.pullik_otklik') )
-                @if($task->user_id != auth()->id() && $task->status < 3 && !$auth_response)
+                @if($task->user_id != auth()->id() && $task->status < 3 && !$auth_response && auth()->user()->phone_number!=null)
                     <a class="open-modal"
                        data-modal="#modal1">
                         <button
