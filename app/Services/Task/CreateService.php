@@ -70,11 +70,8 @@ class CreateService
      */
     public function delete($task)
     {
-        $task->responses()->delete();
-        $task->reviews()->delete();
-        $task->custom_field_values()->delete();
-        $task->addresses()->delete();
-        $task->delete();
+        $task->status = Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
+        $task->save();
     }
     /**
      *
