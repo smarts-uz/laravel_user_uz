@@ -1761,7 +1761,8 @@ class TaskAPIController extends Controller
         $data['complaint'] = $compliant->text;
         $data['user_name'] = auth()->user()->name;
         $data['task_name'] = $task->name;
-        (new TelegramService())->sendMessage($data);
+        if (setting('site.bot_token') && setting('site.channel_username'))
+            (new TelegramService())->sendMessage($data);
         return response()->json([
             'success' => true,
             'message' => trans('trans.Complaint is sent.')
