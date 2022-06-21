@@ -402,7 +402,7 @@ class TaskAPIController extends Controller
         $open_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_OPEN)->count(), 'status' => Task::STATUS_OPEN];
         $in_process_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_IN_PROGRESS)->count(), 'status' => Task::STATUS_IN_PROGRESS];
         $complete_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_COMPLETE)->count(), 'status' => Task::STATUS_COMPLETE];
-        $cancelled_tasks = ['count' => Task::withTrashed()->where($column, $user->id)->where('status', Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->count(), 'status' => Task::STATUS_COMPLETE_WITHOUT_REVIEWS];
+        $cancelled_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->count(), 'status' => Task::STATUS_COMPLETE_WITHOUT_REVIEWS];
         $all = ['count' => $open_tasks['count'] + $in_process_tasks['count'] + $complete_tasks['count'] + $cancelled_tasks['count'], 'status' => 0];
 
 
@@ -456,7 +456,7 @@ class TaskAPIController extends Controller
         $status = in_array($status, [Task::STATUS_OPEN, Task::STATUS_COMPLETE_WITHOUT_REVIEWS, Task::STATUS_COMPLETE, Task::STATUS_IN_PROGRESS]) ? $status : 0;
 
         $column = $is_performer ? 'performer_id' : 'user_id';
-        $tasks = Task::withTrashed()->where($column, $user->id);
+        $tasks = Task::query()->where($column, $user->id);
 
         if ($status)
             $tasks = $tasks->where('status', $status);
@@ -1178,8 +1178,8 @@ class TaskAPIController extends Controller
      */
     public function deletetask(Task $task)
     {
-        $task->delete();
-        CustomFieldsValue::where('task_id', $task)->delete();
+        $task->status = Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
+        $task->save();
 
         if ($task) {
             return response()->json([
