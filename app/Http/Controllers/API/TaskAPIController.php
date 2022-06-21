@@ -1764,9 +1764,7 @@ class TaskAPIController extends Controller
         (new TelegramService())->sendMessage($data);
         return response()->json([
             'success' => true,
-            'data' => [
-                'message' => trans('trans.Complaint is sent.')
-            ]
+            'message' => trans('trans.Complaint is sent.')
         ]);
     }
 }
