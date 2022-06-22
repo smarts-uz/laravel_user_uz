@@ -24,7 +24,7 @@
                 {{__('Начнём')}}
             </button>
             <div class="flex justify-center mt-4">
-                <img src="{{asset('images/personalinfo.png')}}" alt="">
+                <img src="{{ getContentImage('verificationInfo', 'verificationInfo') }}" alt="">
             </div>
         </div>
         <div class="grid-rows-12 px-5 pb-5  showshad hidden">
