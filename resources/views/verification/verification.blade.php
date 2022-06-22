@@ -96,30 +96,14 @@
                 <img class="lg:mx-0 mx-auto h-9/12 w-full" src="{{asset('images/performer3.jpg')}}" alt="#">
             </div>
             <div class="lg:w-2/5 w-full lg:text-left text-center lg:mt-0 mt-4 lg:ml-8">
-                <h1 class="font-bold text-3xl">{{__('Безопасность сервиса')}}</h1>
-                <p class="mt-6 text-lg">{{__('итайте отзывы о заказчиках и выполняйте задания со Сделкой без риска: при успешном завершении работы вы гарантированно получите оплату на карту.')}}</p>
-                <hr class="mt-8 mb-8">
-                <p class="mb-12">{{__('Со Сделкой без риска не переживаешь, что оплата не поступит. Если что, задание закрывается автоматически')}}</p>
-                <a href="{{ route('profile.verificationInfo') }}">
-                    <button  class="px-10 py-4 font-sans  text-lg mt-8 font-semibold bg-yellow-500 hover:bg-yellow-600 text-white rounded-md text-xl">
-                        {{__('Получить статус исполнителя')}}
-                    </button>
-                </a>
+                {!! getContentText('verification', 'third_performer') !!}
             </div>
         </div>
 
         {{-- fourth performer --}}
         <div class="flex lg:flex-row flex-col container mx-auto my-16">
             <div class="lg:w-2/5 w-full lg:block hidden lg:text-left text-center">
-                <h1 class="font-bold text-3xl">{{__('Экономия на рекламе')}}</h1>
-                <p class="mt-6 text-lg">{{__('Больше не нужно тратить деньги на собственный сайт и рекламу — выбирайте задания и отправляйте отклики заказчикам, которым услуга нужна прямо сейчас.')}}</p>
-                <hr class="mt-12 mb-8">
-                <p class="mb-12">{{__('Сервис мне очень помог в наработке клиентской базы, что всегда очень сложно сделать в салоне. У меня уже есть заказчики, которые приходят на стрижку или окрашивание в третий, четвертый раз, то есть становятся постоянными клиентами.')}}</p>
-                <a href="{{ route('profile.verificationInfo') }}">
-                    <button  class="px-10 py-4 font-sans  text-lg mt-8 font-semibold bg-yellow-500 hover:bg-yellow-600 text-white rounded-md text-xl">
-                        {{__('СТАТЬ ИСПОЛНИТЕЛЕМ')}}
-                    </button>
-                </a>
+                {!! getContentText('verification', 'fourth_performer') !!}
             </div>
             <div class="lg:w-3/5 w-full lg:block hidden">
                 <img class="ml-4 xl:float-right float-none h-9/12 w-full" src="{{asset('images/performer4.jpg')}}" alt="#">
@@ -129,85 +113,61 @@
                 <img class="lg:mx-0 mx-auto h-9/12 w-full" src="{{asset('images/performer4.jpg')}}" alt="#">
             </div>
             <div class="lg:hidden block lg:text-left text-center lg:mt-0 mt-4">
-                <h1 class="font-bold text-3xl">{{__('Экономия на рекламе')}}</h1>
-                <p class="mt-6 text-lg">{{__('Больше не нужно тратить деньги на собственный сайт и рекламу — выбирайте задания и отправляйте отклики заказчикам, которым услуга нужна прямо сейчас.')}}</p>
-                <hr class="mt-8 mb-8">
-                <p class="mb-12">{{__('Сервис мне очень помог в наработке клиентской базы, что всегда очень сложно сделать в салоне. У меня уже есть заказчики, которые приходят на стрижку или окрашивание в третий, четвертый раз, то есть становятся постоянными клиентами.')}}</p>
-                <a href="{{ route('profile.verificationInfo') }}">
-                    <button  class="px-10 py-4 font-sans  text-lg mt-8 font-semibold bg-yellow-500 hover:bg-yellow-600 text-white rounded-md text-xl">
-                        {{__('СТАТЬ ИСПОЛНИТЕЛЕМ')}}
-                    </button>
-                </a>
+                {!! getContentText('verification', 'fourth_performer') !!}
             </div>
         </div>
 
 
             {{--     video section  first  --}}
         <div class="text-center my-16">
-            <h1 class="font-bold text-4xl">{!!__('Зарабатывайте и добивайтесь <br> своих целей с Universal Services')!!}</h1>
-            <p class="text-xl mt-8 font-medium">{{__('Наши исполнители делают это каждый день.')}}</p>
+            {!! getContentText('verification', 'video_section_title') !!}
         </div>
 
         <div class="flex lg:flex-row flex-col container mx-auto">
             <div class="lg:w-1/2 w-full h-96">
-                <iframe class="rounded-lg h-full w-5/6 lg:mx-0 mx-auto" width="644" height="362" src="https://www.youtube.com/embed/2J7xlDH4QkA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                {!! getContentText('verification', 'youtobe_video_1') !!}
             </div>
             <div class="lg:w-1/2 w-full lg:mt-0 mt-8 lg:text-left text-center">
-                <p class=" text-lg">{{__('Universal Services помогает мне оставаться свободным. Несмотря на то, что график плотный, я решаю сам, не кто-то мне говорит, когда мне встать, куда приехать, что сделать.')}}</p>
-                <h1 class="font-bold text-6xl mt-4">65 000</h1>
-                <p class="text-lg font-medium mt-4">{!!__('Средний месячный доход <br> в категории «Курьерские услуги»')!!}</p>
-                <a href="{{ route('profile.verificationInfo') }}">
-                    <button  class="px-10 py-4 font-sans mt-16 text-lg mt-8 font-semibold bg-yellow-500 hover:bg-yellow-600 text-white rounded-md text-xl">
-                        {{__('СТАТЬ ИСПОЛНИТЕЛЕМ')}}
-                    </button>
-                </a>
+                {!! getContentText('verification', 'video_section_text1') !!}
             </div>
         </div>
 
-            {{--  modal content --}}
+            {{--  modal section --}}
         <div class="grid md:grid-cols-3 grid-cols-1 container mx-auto  md:my-32 my-16">
             <div class="grid-cols-1 shadow-2xl p-8 rounded-lg m-4 ">
-                <p class="text-base">{{__('Открыла для себя такую штуку, как сервис Universal Services. Выполняешь задания — платят. Отличная замена обычной «работе на работе» ради денег')}}. ...</p>
+                <p class="text-base">
+                    {{substr( getContentText('verification', 'modal_section_1'),0,100)}}
+                </p>
                 <button onclick="toggleModal8('modal-id8')" class="text-base text-gray-500 hover:text-yellow-400 hover:border-yellow-400 border-solid border-b-2">{{__('Читать дальше')}}</button>
             </div>
             <div class="grid-cols-1 shadow-2xl p-8 rounded-lg m-4">
-                <p class="text-base">{{__('Очень крутой сервис, напоминает Uber. Удобно пользоваться, особенно со стороны заказчика — быстро и дешево решаются любые сложные')}}</p>
+                <p class="text-base">
+                    {{substr( getContentText('verification', 'modal_section_2'),0,100)}}
+                </p>
                 <button onclick="toggleModal9('modal-id9')" class="text-base text-gray-500 hover:text-yellow-400 hover:border-yellow-400 border-solid border-b-2">{{__('Читать дальше')}}</button>
             </div>
             <div class="grid-cols-1 shadow-2xl p-8 rounded-lg m-4">
-                <p class="text-base">{{__('Начала потихоньку зарабатывать на поездку. Я остановилась на сайте Universal Services. Там есть много интересных предложений и сама система')}}</p>
+                <p class="text-base">
+                    {{substr( getContentText('verification', 'modal_section_3'),0,100)}}
+                </p>
                 <button onclick="toggleModal10('modal-id10')" class="text-base text-gray-500 hover:text-yellow-400 hover:border-yellow-400 border-solid border-b-2">{{__('Читать дальше')}}</button>
             </div>
         </div>
 
-        {{--     video section  first    --}}
+        {{--     video section  second    --}}
         <div class="flex lg:flex-row flex-col container mx-auto my-16">
             <div class="lg:w-1/2 w-full lg:block hidden lg:text-left text-center xl:ml-0 ml-4">
-                <p class=" text-lg">{{__('Сейчас уже дорос уровень до того, что я снимаю и клиентов клиентов. Одни клиенты рекомендуют меня своим друзьям, знакомым. И много, конечно, заказов идет с Universal Services.')}}</p>
-                <h1 class="font-bold text-6xl mt-4">70 000</h1>
-                <p class="text-lg font-medium mt-4">{!!__('Средний месячный доход <br> в категории «Фото и видеоуслуги»')!!}</p>
-                <a href="{{ route('profile.verificationInfo') }}">
-                    <button  class="px-10 py-4 font-sans mt-16 text-lg mt-8 font-semibold bg-yellow-500 hover:bg-yellow-600 text-white rounded-md text-xl">
-                        {{__('СТАТЬ ИСПОЛНИТЕЛЕМ')}}
-                    </button>
-                </a>
+                {!! getContentText('verification', 'video_section_text2') !!}
             </div>
             <div class="lg:w-1/2 w-full h-96 lg:block hidden ml-8">
-                <iframe class="rounded-lg h-full ml-4 xl:float-right float-none" width="644" height="362" src="https://www.youtube.com/embed/2J7xlDH4QkA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                {!! getContentText('verification', 'youtobe_video_2') !!}
             </div>
 
             <div class="lg:hidden block mx-auto w-full h-96">
-                <iframe class="rounded-lg h-full sm:h-[300px] w-full sm:w-[600px] lg:mx-0 mx-auto" src="https://www.youtube.com/embed/2J7xlDH4QkA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                {!! getContentText('verification', 'youtobe_video_2') !!}
             </div>
             <div class="lg:col-span-1 lg:mt-0 mt-8 lg:hidden block lg:text-left text-center mb-12">
-                <p class="mt-6 text-lg">{{__('Сейчас уже дорос уровень до того, что я снимаю и клиентов клиентов. Одни клиенты рекомендуют меня своим друзьям, знакомым. И много, конечно, заказов идет с Universal Services.')}}</p>
-                <h1 class="font-bold text-6xl mt-4">70 000</h1>
-                <p class="text-lg font-medium mt-4">{!!__('Средний месячный доход <br> в категории «Фото и видеоуслуги»')!!}</p>
-                <a href="{{ route('profile.verificationInfo') }}">
-                    <button  class="px-10 py-4 font-sans mt-16 text-lg mt-8 font-semibold bg-yellow-500 hover:bg-yellow-600 text-white rounded-md text-xl">
-                        {{__('СТАТЬ ИСПОЛНИТЕЛЕМ')}}
-                    </button>
-                </a>
+                {!! getContentText('verification', 'video_section_text2') !!}
             </div>
         </div>
     </div>
@@ -217,7 +177,7 @@
         <div class="relative my-6 mx-auto w-4/5 max-w-3xl" id="modal-id8">
             <div class="border-0 rounded-lg shadow-2xl px-10 py-10 relative flex mx-auto flex-col w-full bg-white outline-none focus:outline-none">
                 <div class="text-center h-full w-full text-base">
-                    <h1 class="mb-8">{{__('Открыла для себя такую штуку, как сервис Universal Services. Выполняешь задания — платят. Отличная замена обычной «работе на работе» ради денег.(Щас похоже было на рекламу : Задания разные, найдутся даже для тех, кто ничего не умеет. Достаточно уметь говорить, ну или совсем на крайняк — ходить ')}}</h1>
+                    <h1 class="mb-8">{!! getContentText('verification', 'modal_section_1') !!}</h1>
                     <button onclick="toggleModal8('modal-id8')" class="font-sans  text-xl  font-medium bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">{{__('Отмена')}}</button>
                 </div>
             </div>
@@ -231,7 +191,7 @@
         <div class="relative my-6 mx-auto w-4/5 max-w-3xl" id="modal-id9">
             <div class="border-0 rounded-lg shadow-2xl px-10 py-10 relative flex mx-auto flex-col w-full bg-white outline-none focus:outline-none">
                 <div class="text-center h-full w-full text-base">
-                    <h1 class="mb-8">{{__('Очень крутой сервис, напоминает Uber. Удобно пользоваться, особенно со стороны заказчика — быстро и дешево решаются любые сложныеи не очень проблемы. Как исполнитель, работающий по безлимитным пакетам, могу сказать, что стоимость полностью отбил, остался в плюсе, думаю насчет продления. Было бы круто, чтобы сервис работал по всему Узбекистану, например, в Ташкенте. Прилетел отдыхать на месяц, по 3 часа в день работаешь — остался на 2 месяца. Процветания и успехов вам! Очень рад сотрудничеству!')}}</h1>
+                    <h1 class="mb-8">{!! getContentText('verification', 'modal_section_2') !!}</h1>
                     <button onclick="toggleModal9('modal-id9')" class="font-sans  text-xl  font-medium bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">{{__('Отмена')}}</button>
                 </div>
             </div>
@@ -245,7 +205,7 @@
         <div class="relative my-6 mx-auto w-4/5 max-w-3xl" id="modal-id10">
             <div class="border-0 rounded-lg shadow-2xl px-10 py-10 relative flex mx-auto flex-col w-full bg-white outline-none focus:outline-none">
                 <div class="text-center h-full w-full text-base">
-                    <h1 class="mb-8">{{__('Начала потихоньку зарабатывать на поездку. Я остановилась на сайте Universal Services. Там есть много интересных предложений и сама система сайта мне очень импонирует.Так что медленно, но верно я иду к своей цели!')}}</h1>
+                    <h1 class="mb-8">{!! getContentText('verification', 'modal_section_3') !!}</h1>
                     <button onclick="toggleModal10('modal-id10')" class="font-sans  text-xl  font-medium bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">{{__('Отмена')}}</button>
                 </div>
             </div>

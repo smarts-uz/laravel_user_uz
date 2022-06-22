@@ -14,15 +14,7 @@
     </div>
     <div class="shadow-2xl px-10 rounded-md w-full sm:w-7/12 mx-auto grid grid-flow-col gap-4 my-5 flex-wrap md:flex-wrap-reverse">
         <div class="text-center grid-rows-12 p-5 hidShad">
-            <p class="text-2xl font-semibold mt-5">
-                {{__('Расскажите о себе')}}
-            </p>
-            <p class="text-base mt-5 mb-5 px-5">
-                {{__('Укажите свои контактные данные и выберите категории заданий, в которых вы хотите работать. На всё уйдёт примерно 3 минуты.')}}
-            </p>
-            <button href="#" id="btnclck" class="text-base my-3 px-7 rounded-md py-3 bg-green-700 text-white mb-2">
-                {{__('Начнём')}}
-            </button>
+            {!! getContentText('verificationInfo', 'verificationInfo') !!}
             <div class="flex justify-center mt-4">
                 <img src="{{asset('images/personalinfo.png')}}" alt="">
             </div>

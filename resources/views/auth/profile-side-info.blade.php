@@ -40,7 +40,7 @@
             </div>
         </div>
     </div>
-        
+
     <div class="contacts">
         @if($user->google_id)
 
@@ -69,7 +69,7 @@
         @endif
     </div>
     <p class="mx-5 my-4">
-        {{__('Повысьте доверие пользователей к себе — привяжите ваши аккаунты социальных сетей к профилю Servicebox. Мы обязуемся не раскрывать ваши контакты.')}}
+        {!! getContentText('profile', 'profile_text') !!}
     </p>
     @if(!$user->google_id)
 
