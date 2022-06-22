@@ -147,5 +147,5 @@ function getContentText($page, $key)
 
 function getContentImage($page, $key)
 {
-    return asset('storage' . \App\Models\Content::query()->where('page', $page)->where('key', $key)->first()?->image);
+    return asset('storage/' . \App\Models\Content::query()->where('page', $page)->where('key', $key)->first()?->image);
 }
