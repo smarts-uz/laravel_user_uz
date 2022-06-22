@@ -4,19 +4,27 @@
 namespace App\Services;
 
 
-use App\Events\MyEvent;
 use App\Events\SendNotificationEvent;
 use App\Http\Resources\NotificationResource;
 use App\Mail\MessageEmail;
 use App\Models\Notification;
 use App\Models\User;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use PlayMobile\SMS\SmsService;
 
 class NotificationService
 {
-    public static function getNotifications($user, $is_read = [0])
+
+    /**
+     * Send new task notification by websocket, sms and firebase
+     *
+     * @param $user // User model object
+     * @param array $is_read
+     * @return Collection
+     */
+    public static function getNotifications($user, array $is_read = [0]): Collection
     {
         return Notification::with('user:id,name')
             ->whereIn('is_read', $is_read)
@@ -45,13 +53,20 @@ class NotificationService
             ->get();
     }
 
-    public static function sendTaskNotification($task, $user_id)
+    /**
+     * Send new task notification by websocket, sms and firebase
+     *
+     * @param $task // Task model object
+     * @param  $user_id
+     * @return void
+     */
+    public static function sendTaskNotification($task, $user_id): void
     {
         $performers = User::query()->where('role_id', 2)->pluck('category_id', 'id')->toArray();
         $performer_ids = [];
         foreach ($performers as $performer_id => $category_id) {
             $user_cat_ids = explode(",", $category_id);
-            $check_for_true = array_search($task->category_id, $user_cat_ids);
+            $check_for_true = in_array($task->category_id, $user_cat_ids);
             if ($check_for_true !== false) {
                 $performer_ids[] = $performer_id;
 
@@ -64,6 +79,7 @@ class NotificationService
                     "name_task" => $task->name,
                     "type" => Notification::TASK_CREATED
                 ]);
+                /** @var User $performer */
                 $performer = User::query()->find($performer_id);
                 self::pushNotification($performer->firebase_token, [
                     'title' => 'New task',
@@ -84,7 +100,15 @@ class NotificationService
         ]);
     }
 
-    public static function sendNotification($not, $slug)
+
+    /**
+     * Send news, system notifications by websocket and firebase
+     *
+     * @param $not // Notification model object
+     * @param  $slug
+     * @return void
+     */
+    public static function sendNotification($not, $slug): void
     {
         if ($slug == 'news-notifications') {
             $type = Notification::NEWS_NOTIFICATION;
@@ -96,7 +120,7 @@ class NotificationService
 
         $user_ids = User::query()->where($column, 1)->pluck('firebase_token',   'id')->toArray();
         foreach ($user_ids as $user_id => $token) {
-            $notification = Notification::create([
+            $notification = Notification::query()->create([
                 'user_id' => $user_id,
                 'description' => $not->message ?? 'description',
                 "name_task" => $not->title,
@@ -115,7 +139,14 @@ class NotificationService
 
     }
 
-    public static function sendNotificationRequest($user_ids, $data)
+    /**
+     * Send news, system notifications by websocket and firebase
+     *
+     * @param $user_ids // User ids array
+     * @param  $data
+     * @return void
+     */
+    public static function sendNotificationRequest($user_ids, $data): void
     {
         foreach ($user_ids as $user_id) {
             broadcast(
@@ -124,8 +155,15 @@ class NotificationService
         }
     }
 
-    public static function sendTaskSelectedNotification($task)
+    /**
+     * Send notification when performer response to task by websocket and firebase
+     *
+     * @param $task // Task model object
+     * @return bool
+     */
+    public static function sendTaskSelectedNotification($task): bool
     {
+        /** @var User $user */
         $user = auth()->user();
         $notification = Notification::query()->create([
             'user_id' => $user->id,
@@ -147,7 +185,16 @@ class NotificationService
         return true;
     }
 
-    public static function pushNotification($user_token, $notification, $type, $model)
+    /**
+     * Function for use send push(firebase) notifications
+     *
+     * @param $user_token // User firebase token
+     * @param $notification // Notification title and body
+     * @param $type // for notification or chat. Values - e.g. "chat", "notification"
+     * @param $model // data for handling in mobile
+     * @return string
+     */
+    public static function pushNotification($user_token, $notification, $type, $model): string
     {
         return Http::withHeaders([
             'Content-Type' => 'application/json',

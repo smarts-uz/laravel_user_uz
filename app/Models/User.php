@@ -19,6 +19,10 @@ use Laravel\Passport\HasApiTokens;
  * @property $photos
  * @property $user_id
  * @property $phone
+ * @property $firebase_token
+ * @property $sms_notification
+ * @property $email_notification
+ * @property $email
  * @return array //Value Returned
  */
 class User extends \TCG\Voyager\Models\User
