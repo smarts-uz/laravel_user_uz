@@ -16,19 +16,19 @@
             {!! getContentText('verification', 'Advantages_title') !!}
             <div class="grid md:grid-cols-4 grid-cols-1 gap-4 pt-16 container mx-auto font-bold text-xl">
                 <div>
-                    <img class="mx-auto h-36" src="https://assets.youdo.com/_next/static/media/money.bd687ef7e0abebf2c7822c7c9e527522.png" alt="#">
+                    <img class="mx-auto h-36" src="{{ getContentImage('verification', 'Advantages_img_1') }}" alt="#">
                     <p class="text-xl">{!! getContentText('verification', 'Advantages_img_1') !!}</p>
                 </div>
                 <div>
-                    <img class="mx-auto h-36" src="{{asset('images/User_watch.png')}}" alt="#">
+                    <img class="mx-auto h-36" src="{{ getContentImage('verification', 'Advantages_img_2') }}" alt="#">
                     <p class="text-xl">{!! getContentText('verification', 'Advantages_img_2') !!}</p>
                 </div>
                 <div>
-                    <img class="mx-auto h-36" src="{{asset('images/User_security.png')}}" alt="#">
+                    <img class="mx-auto h-36" src="{{ getContentImage('verification', 'Advantages_img_3') }}" alt="#">
                     <p class="text-xl">{!! getContentText('verification', 'Advantages_img_3') !!}</p>
                 </div>
                 <div>
-                    <img class="mx-auto h-36" src="{{asset('images/User_cash.png')}}" alt="#">
+                    <img class="mx-auto h-36" src="{{ getContentImage('verification', 'Advantages_img_4') }}" alt="#">
                     <p class="text-xl">{!! getContentText('verification', 'Advantages_img_4') !!}</p>
                 </div>
             </div>
@@ -66,7 +66,7 @@
         {{-- first performer --}}
         <div class="flex lg:flex-row flex-col container mx-auto">
             <div class="lg:w-3/5 w-full">
-                <img class="lg:mx-0 mx-auto h-9/12 w-full" src="{{asset('images/performer1.jpg')}}" alt="#">
+                <img class="lg:mx-0 mx-auto h-9/12 w-full" src="{{ getContentImage('verification', 'first_performer') }}" alt="#">
             </div>
             <div class="lg:w-2/5 w-full lg:text-left text-center lg:mt-0 mt-4 lg:ml-8">
                 {!! getContentText('verification', 'first_performer') !!}
@@ -79,11 +79,11 @@
                 {!! getContentText('verification', 'second_performer') !!}
             </div>
             <div class="lg:w-3/5 w-full lg:block hidden">
-                <img class="ml-4 xl:float-right float-none h-9/12 w-full" src="{{asset('images/performer2.jpg')}}" alt="#">
+                <img class="ml-4 xl:float-right float-none h-9/12 w-full" src="{{getContentImage('verification', 'second_performer')}}" alt="#">
             </div>
 
             <div class=" lg:hidden block ">
-                <img class="lg:mx-0 mx-auto h-9/12 w-full" src="{{asset('images/performer2.jpg')}}" alt="#">
+                <img class="lg:mx-0 mx-auto h-9/12 w-full" src="{{getContentImage('verification', 'second_performer')}}" alt="#">
             </div>
             <div class="lg:hidden block lg:text-left text-center lg:mt-0 mt-4">
                 {!! getContentText('verification', 'second_performer') !!}
@@ -93,7 +93,7 @@
         {{-- third performer --}}
         <div class="flex lg:flex-row flex-col container mx-auto">
             <div class="lg:w-3/5 w-full">
-                <img class="lg:mx-0 mx-auto h-9/12 w-full" src="{{asset('images/performer3.jpg')}}" alt="#">
+                <img class="lg:mx-0 mx-auto h-9/12 w-full" src="{{getContentImage('verification', 'third_performer')}}" alt="#">
             </div>
             <div class="lg:w-2/5 w-full lg:text-left text-center lg:mt-0 mt-4 lg:ml-8">
                 {!! getContentText('verification', 'third_performer') !!}
@@ -106,11 +106,11 @@
                 {!! getContentText('verification', 'fourth_performer') !!}
             </div>
             <div class="lg:w-3/5 w-full lg:block hidden">
-                <img class="ml-4 xl:float-right float-none h-9/12 w-full" src="{{asset('images/performer4.jpg')}}" alt="#">
+                <img class="ml-4 xl:float-right float-none h-9/12 w-full" src="{{getContentImage('verification', 'fourth_performer')}}" alt="#">
             </div>
 
             <div class="lg:hidden block">
-                <img class="lg:mx-0 mx-auto h-9/12 w-full" src="{{asset('images/performer4.jpg')}}" alt="#">
+                <img class="lg:mx-0 mx-auto h-9/12 w-full" src="{{getContentImage('verification', 'fourth_performer')}}" alt="#">
             </div>
             <div class="lg:hidden block lg:text-left text-center lg:mt-0 mt-4">
                 {!! getContentText('verification', 'fourth_performer') !!}
