@@ -18,12 +18,12 @@ class LoginAPIController extends Controller
     public function verifyCredentials(VerifyCredentialsRequest $request)
     {
         $data = $request->validated();
-
+        $column = $data['type'];
         if (!User::query()->where($data['type'], $data['data'])->exists()) {
             $code = self::sendVerification($data['type'], $data['data']);
             /** @var User $user */
             $user = auth()->user();
-            $user->$data['type'] = $data['data'];
+            $user->$column = $data['data'];
             $user->verify_code = $code;
             $user->verify_expiration = Carbon::now()->addMinutes(5);
             $user->save();
