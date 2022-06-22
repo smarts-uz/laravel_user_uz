@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\VerifyCredentialsRequest;
 use App\Mail\VerifyEmail;
 use App\Models\User;
 use Carbon\Carbon;
@@ -13,7 +14,47 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class LoginAPIController extends Controller
 {
-    public static function send_verification($needle,$user)
+
+    public function verifyCredentials(VerifyCredentialsRequest $request)
+    {
+        $data = $request->validated();
+
+        if (!User::query()->where($data['type'], $data['data'])->exists()) {
+            $code = self::sendVerification($data['type'], $data['data']);
+            /** @var User $user */
+            $user = auth()->user();
+            $user->verify_code = $code;
+            $user->verify_expiration = Carbon::now()->addMinutes(5);
+            $user->save();
+            return response()->json([
+                'success' => true,
+                'message' => 'Success'
+            ]);
+        }
+        return response()->json([
+            'success' => false,
+            'message' => 'Already exist'
+        ]);
+    }
+
+    public static function sendVerification($type, $value)
+    {
+        if ($type == 'phone_number') {
+
+            $code = rand(100000, 999999);
+            (new SmsService())->send($value, $code);
+        } else {
+            $code = sha1(time());
+            $data = [
+                'code' => $code,
+                'user' => auth()->user()->id
+            ];
+            Mail::to($value)->send(new VerifyEmail($data));
+        }
+        return $code;
+    }
+
+    public static function send_verification($needle, $user)
     {
         if ($needle == 'email') {
             $code = sha1(time());
@@ -29,8 +70,6 @@ class LoginAPIController extends Controller
         $user->verify_code = $code;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
-
-        return redirect()->route('profile.profileData');
     }
 
     /**
@@ -57,8 +96,8 @@ class LoginAPIController extends Controller
      */
     public function send_email_verification()
     {
-        self::send_verification('email',auth()->user());
-        return response()->json(['success' => true,'message'=>'success']);
+        self::send_verification('email', auth()->user());
+        return response()->json(['success' => true, 'message' => 'success']);
     }
 
     /**
@@ -85,8 +124,8 @@ class LoginAPIController extends Controller
      */
     public function send_phone_verification()
     {
-        self::send_verification('phone',auth()->user());
-        return response()->json(['message'=>'success']);
+        self::send_verification('phone', auth()->user());
+        return response()->json(['message' => 'success']);
     }
 
 
@@ -102,7 +141,7 @@ class LoginAPIController extends Controller
                 $user->save();
                 $result = true;
                 if ($needle != 'is_phone_number_verified')
-                    self::send_verification('phone',auth()->user());
+                    self::send_verification('phone', auth()->user());
             } else {
                 $result = false;
             }
@@ -163,7 +202,7 @@ class LoginAPIController extends Controller
             'code' => 'required'
         ]);
         if (self::verifyColum($request, __('phone_number'), auth()->user(), $request->code)) {
-            return response()->json(['message'=>__('success')]);
+            return response()->json(['message' => __('success')]);
         } else {
             return response()->json([
                 'message' => 'Code Error!',
@@ -215,9 +254,9 @@ class LoginAPIController extends Controller
 
         if ($request->email == $user->email) {
             return response()->json([
-                'email-message' => __('Error, Your email is given'),
-                'email' => $request->email,
-                'succes' => false
+                'success' => false,
+                'message' => __('Error, Your email is given'),
+                'data' => $request->email,
             ]);
         } else {
             $request->validate([
@@ -231,11 +270,10 @@ class LoginAPIController extends Controller
             );
             $user->email = $request->email;
             $user->save();
-            self::send_verification('email',$user);
+            self::send_verification('email', $user);
 
 
-
-            return response()->json(['message'=> 'Verification link is send to your email', 'success'=> true]);
+            return response()->json(['message' => 'Verification link is send to your email', 'success' => true]);
         }
     }
 
@@ -279,7 +317,7 @@ class LoginAPIController extends Controller
 
         $user = auth()->user();
 
-        if ($request->phone_number == $user->phone_number) {
+        if ($request->get('phone_number') == $user->phone_number) {
             return response()->json([
                 'email-message' => 'Error, Your phone',
                 'email' => $request->email

@@ -23,6 +23,8 @@ use Laravel\Passport\HasApiTokens;
  * @property $sms_notification
  * @property $email_notification
  * @property $email
+ * @property $name
+ * @property $dark_mode
  * @return array //Value Returned
  */
 class User extends \TCG\Voyager\Models\User

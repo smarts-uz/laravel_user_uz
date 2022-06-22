@@ -78,6 +78,7 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::delete('/delete-task/{task}', [SearchAPIController::class, 'delete_task']); //end +
     Route::delete('/delete', [UserAPIController::class, 'destroy']); //end +
 
+    Route::get('account/verify', [LoginAPIController::class, 'verifyCredentials']); //end +
     Route::get('account/verification/email', [LoginAPIController::class, 'send_email_verification']); //end +
     Route::get('account/verification/phone', [LoginAPIController::class, 'send_phone_verification']); //end +
     Route::post('account/verification/phone', [LoginAPIController::class, 'verify_phone']); //end +

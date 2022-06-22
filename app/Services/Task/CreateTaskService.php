@@ -158,7 +158,7 @@ class CreateTaskService
      * @param $data // Validated request data from mobile
      * @return array //Value Returned
      */
-    #[ArrayShape(['route' => "string", 'task_id' => "", 'steps' => "int", 'custom_fields' => "array"])]
+    #[ArrayShape([])]
     public function address_store($data): array
     {
         $task = Task::query()->findOrFail($data['task_id']);

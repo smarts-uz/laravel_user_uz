@@ -6,15 +6,13 @@ namespace App\Http\Controllers\vendor\Chatify;
 use App\Models\Chat\ChMessage;
 use App\Models\Chat\ChFavorite;
 use App\Services\Chat\ContactService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Response;
 use App\Models\Chat\ChatifyMessenger as Chatify;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Str;
 
@@ -36,35 +34,34 @@ class MessagesController extends Controller
      * Authinticate the connection for pusher
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse|\Illuminate\Http\Response
      */
 
     public function pusherAuth(Request $request)
     {
         // Auth data
+        /** @var User $user */
+        $user =  Auth::user();
         $authData = json_encode([
-            'user_id' => \auth()->id(),
+            'user_id' => $user->id,
             'user_info' => [
-                'name' => \auth()->user()->name
+                'name' =>$user->name
             ]
         ]);
         // check if user authorized
         if (Auth::check()) {
             $auth =  $this->chatify->pusherAuth($request['channel_name'], $request['socket_id'], $authData);
             return \response($auth, 200);
-//            return Http::post('http://' . env('WEBSOCKET_SERVER_HOST') . '/api/pusher/auth', [
-//                'channel_name' => $request['channel_name'],
-//                'socket_id' => $request['socket_id'],
-//                'authData' => $authData
-//            ])->json();
         }
         // if not authorized
-        return response()->json(['message' => 'Unauthorized'], 401);
+        return Response::json(['message' => 'Unauthorized'], 401);
     }
 
 
     public function index($id = null)
     {
+        /** @var User $user */
+        $user =  Auth::user();
         $routeName = FacadesRequest::route()->getName();
         $type = in_array($routeName, ['user', 'group'])
             ? $routeName
@@ -73,8 +70,8 @@ class MessagesController extends Controller
         return view('Chatify::pages.app', [
             'id' => $id ?? 0,
             'type' => $type ?? 'user',
-            'messengerColor' => Auth::user()->messenger_color ?? $this->messengerFallbackColor,
-            'dark_mode' => Auth::user()->dark_mode < 1 ? 'light' : 'dark',
+            'messengerColor' => $user->messenger_color ?? $this->messengerFallbackColor,
+            'dark_mode' => $user->dark_mode < 1 ? 'light' : 'dark',
         ]);
     }
 
@@ -83,9 +80,9 @@ class MessagesController extends Controller
      * Fetch data by id for (user/group)
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function idFetchData(Request $request)
+    public function idFetchData(Request $request): JsonResponse
     {
         // Favorite
         $favorite = $this->chatify->inFavorite($request['id']);
@@ -121,9 +118,9 @@ class MessagesController extends Controller
      * Send a message to database
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse response
+     * @return JsonResponse response
      */
-    public function send(Request $request)
+    public function send(Request $request): JsonResponse
     {
         // default variables
         $error = (object)[
@@ -269,10 +266,8 @@ class MessagesController extends Controller
         }
 
         return Response::json([
-            'contacts' => $contacts,
-//            'total' => $users->total() ?? 0,
-//            'last_page' => $users->lastPage() ?? 1,
-        ], 200);
+            'contacts' => $contacts
+        ]);
     }
 
     /**
