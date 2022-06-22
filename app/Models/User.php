@@ -10,8 +10,6 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
 /**
- * Retrieve next step with additional fields
- *
  * @property $is_phone_number_verified
  * @property $verify_expiration
  * @property $verify_code
