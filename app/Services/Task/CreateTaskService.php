@@ -14,11 +14,14 @@ use App\Models\User;
 use App\Services\NotificationService;
 use App\Services\Response;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+use JetBrains\PhpStorm\ArrayShape;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class CreateTaskService
@@ -28,11 +31,11 @@ class CreateTaskService
     /**
      * @var CreateService
      */
-    private $service;
+    private CreateService $service;
     /**
      * @var CustomFieldService
      */
-    private $custom_field_service;
+    private CustomFieldService $custom_field_service;
 
     public function __construct()
     {
@@ -40,14 +43,26 @@ class CreateTaskService
         $this->custom_field_service = new CustomFieldService();
     }
 
-    public function name_store($data)
+    /**
+     * Create and save the task name
+     *
+     * @param array $data // Validated request data from mobile
+     * @return array $result //Value Returned (use void if doesn't return)
+     */
+    public function name_store(array $data): array
     {
         $data['user_id'] = auth()->id();
         $task = Task::query()->create($data);
         return $this->get_custom($task);
     }
 
-    public function get_custom($task)
+    /**
+     * Retrieve next step with additional fields - e.g - remote, address or custom
+     *
+     * @param object $task // Task model object
+     * @return array //Value Returned
+     */
+    public function get_custom(object $task): array
     {
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM);
         if (!$task->category->customFieldsInCustom->count()) {
@@ -71,17 +86,33 @@ class CreateTaskService
         return ['route' => 'custom', 'task_id' => $task->id, 'steps' => 6, 'custom_fields' => $custom_fields];
     }
 
-    public function custom_store($data, $request)
+    /**
+     * Save custom field values by request
+     *
+     * @param $data // Validated request data from mobile
+     * @param $request // All request params
+     * @return array //Value Returned
+     */
+    public function custom_store($data, $request): array
     {
+        /** @var Task $task */
         $task = Task::query()->findOrFail($data['task_id']);
         $this->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM, $request);
-        if ($task->category->parent->remote) {
+        $category = $task->category;
+        if ($category->parent->remote) {
             return $this->get_remote($task);
         }
         return $this->get_address($task);
     }
 
-    public function get_remote($task)
+    /**
+     * Retrieve next step with additional fields
+     *
+     * @param object $task // Task model object
+     * @return array //Value Returned
+     */
+    #[ArrayShape(['route' => "string", 'task_id' => "int", 'steps' => "int", 'custom_fields' => "array"])]
+    public function get_remote(object $task): array
     {
         return [
             'route' => 'remote', 'task_id' => $task->id, 'steps' => 5,
@@ -89,21 +120,30 @@ class CreateTaskService
         ];
     }
 
-    public function remote_store($data)
+    /**
+     * Save remote s values by request
+     *
+     * @param $data // Validated request data from mobile
+     * @return array //Value Returned
+     */
+    public function remote_store($data): array
     {
         $task = Task::query()->findOrFail($data['task_id']);
-        switch ($data['radio']) {
-            case CustomField::ROUTE_ADDRESS:
-                return $this->get_address($task);
-                break;
-            case CustomField::ROUTE_REMOTE:
-                return $this->get_date($task);
-            default:
-                return [''];
-        }
+        return match ($data['radio']) {
+            CustomField::ROUTE_ADDRESS => $this->get_address($task),
+            CustomField::ROUTE_REMOTE => $this->get_date($task),
+            default => [''],
+        };
     }
 
-    public function get_address($task)
+    /**
+     * Retrieve next step with additional fields
+     *
+     * @param object $task // Task model object
+     * @return array //Value Returned
+     */
+    #[ArrayShape(['route' => "string", 'address' => "int", 'steps' => "int", 'custom_fields' => "array"])]
+    public function get_address(object $task): array
     {
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS);
         if ($task->category->parent->double_address) {
@@ -112,7 +152,14 @@ class CreateTaskService
         return ['route' => 'address', 'address' => 1, 'steps' => 4, 'custom_fields' => $custom_fields];
     }
 
-    public function address_store($data)
+    /**
+     * Save remote s values by request
+     *
+     * @param $data // Validated request data from mobile
+     * @return array //Value Returned
+     */
+    #[ArrayShape(['route' => "string", 'task_id' => "", 'steps' => "int", 'custom_fields' => "array"])]
+    public function address_store($data): array
     {
         $task = Task::query()->findOrFail($data['task_id']);
         $length = min(count($data['points']), setting('site.max_address'));
@@ -130,14 +177,20 @@ class CreateTaskService
         }
 
         $task->update([
-            //'address' => $data['points'][0]['location'],
             'coordinates' => $data['points'][0]['latitude'] . ',' . $data['points'][0]['longitude']
         ]);
         return $this->get_date($task);
 
     }
 
-    public function get_date($task)
+    /**
+     * Retrieve next step with additional fields
+     *
+     * @param $task // Task model object
+     * @return array //Value Returned
+     */
+    #[ArrayShape(['route' => "string", 'task_id' => "", 'steps' => "int", 'custom_fields' => "array"])]
+    public function get_date($task): array
     {
         return [
             'route' => 'date', 'task_id' => $task->id, 'steps' => 3,
@@ -145,7 +198,14 @@ class CreateTaskService
         ];
     }
 
-    public function date_store($data)
+    /**
+     * Save remote s values by request
+     *
+     * @param $data // Validated request data from mobile
+     * @return array //Value Returned
+     */
+    #[ArrayShape([])]
+    public function date_store($data): array
     {
         $task = Task::query()->findOrFail($data['task_id']);
         unset($data['task_id']);
@@ -153,16 +213,31 @@ class CreateTaskService
         return $this->get_budget($task);
     }
 
-    public function get_budget($task)
+    /**
+     * Retrieve next step with additional fields
+     *
+     * @param $task // Task model object
+     * @return array //Value Returned
+     */
+    #[ArrayShape([])]
+    public function get_budget($task): array
     {
         return [
-            'route' => 'budget', 'task_id' => $task->id, 'steps' => 2, 'price' => Category::findOrFail($task->category_id)->max,
+            'route' => 'budget', 'task_id' => $task->id, 'steps' => 2, 'price' => Category::query()->findOrFail($task->category_id)->max,
             'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET)
         ];
     }
 
-    public function budget_store($data)
+    /**
+     * Save remote s values by request
+     *
+     * @param $data // Validated request data from mobile
+     * @return array //Value Returned
+     */
+    #[ArrayShape([])]
+    public function budget_store($data): array
     {
+        /** @var Task $task */
         $task = Task::query()->findOrFail($data['task_id']);
         $task->budget = $data['amount'];
         $task->oplata = $data['budget_type'];
@@ -170,13 +245,27 @@ class CreateTaskService
         return $this->get_note($task);
     }
 
-    public function get_note($task)
+    /**
+     * Retrieve next step with additional fields
+     *
+     * @param $task // Task model object
+     * @return array //Value Returned
+     */
+    #[ArrayShape([])]
+    public function get_note($task): array
     {
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_NOTE);
         return ['route' => 'note', 'task_id' => $task->id, 'steps' => 1, 'custom_fields' => $custom_fields];
     }
 
-    public function note_store($data)
+    /**
+     * Save remote s values by request
+     *
+     * @param $data // Validated request data from mobile
+     * @return array //Value Returned
+     */
+    #[ArrayShape([])]
+    public function note_store($data): array
     {
         $task = Task::query()->findOrFail($data['task_id']);
         unset($data['task_id']);
@@ -184,7 +273,15 @@ class CreateTaskService
         return $this->get_contact($task);
     }
 
-    public function image_store($request)
+    /**
+     * Save remote s values by request
+     *
+     * @param $request
+     * @return JsonResponse //Value Returned
+     * @throws ValidationException
+     */
+    #[ArrayShape([])]
+    public function image_store($request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'task_id' => 'required',
@@ -197,6 +294,7 @@ class CreateTaskService
             ]);
         }
         $data = $validator->validated();
+        /** @var Task $task */
         $task = Task::query()->findOrFail($data['task_id']);
         $imgData = [];
         if ($request->hasFile('images')) {
@@ -215,7 +313,14 @@ class CreateTaskService
         ]);
     }
 
-    public function get_contact($task)
+    /**
+     * Retrieve next step with additional fields
+     *
+     * @param $task // Task model object
+     * @return array //Value Returned
+     */
+    #[ArrayShape([])]
+    public function get_contact($task): array
     {
         return [
             'route' => 'contact', 'task_id' => $task->id, 'steps' => 0,
@@ -223,9 +328,18 @@ class CreateTaskService
         ];
     }
 
-    public function contact_store($data)
+    /**
+     * Save remote s values by request
+     *
+     * @param $data // Validated request data from mobile
+     * @return array //Value Returned
+     */
+    #[ArrayShape([])]
+    public function contact_store($data): array
     {
+        /** @var User $user */
         $user = auth()->user();
+        /** @var Task $task */
         $task = Task::query()->findOrFail($data['task_id']);
         unset($data['task_id']);
         if (!$user->is_phone_number_verified && $user->phone_number != $data['phone_number']) {
@@ -251,14 +365,17 @@ class CreateTaskService
         ];
     }
 
-    public function get_verify($task, $user)
+    #[ArrayShape(['route' => "string", 'task_id' => "", 'user' => ""])]
+    public function get_verify($task, $user): array
     {
         return ['route' => 'verify', 'task_id' => $task->id, 'user' => $user];
     }
 
-    public function verification($data)
+    public function verification($data): JsonResponse
     {
+        /** @var Task $task */
         $task = Task::query()->findOrFail($data['task_id']);
+        /** @var User $user */
         $user = User::query()->where('phone_number', $data['phone_number'])->first();
         if ($data['sms_otp'] == $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
@@ -300,124 +417,15 @@ class CreateTaskService
         }
     }
 
-    public function images_store(Task $task, Request $request)
-    {
-
-        $imgData = json_decode($task->photos);
-
-        if ($request->hasFile('images')) {
-
-            $files = $request->file('images');
-            $name = Storage::put('public/uploads', $files);
-            $name = str_replace('public/', '', $name);
-            $imgData[] = $name;
-
-        }
-
-        $task->photos = json_encode($imgData);
-        $task->save();
-    }
-
-    public function uploadImage(Task $task, Request $request)
-    {
-        $folder_task = Task::orderBy('created_at', 'desc')->first();
-        if ($request->file()) {
-            $fileName = time() . '_' . $request->file->getClientOriginalName();
-            $filePath = $request->file('file')
-                ->move(public_path("storage/Uploads/{$folder_task->name}"), $fileName);
-
-            $fileModelname = time() . '_' . $request->file->getClientOriginalName();
-            $fileModelfile_path = '/storage/' . $filePath;
-            return response()->json([
-                "success" => true,
-                "message" => ("__('Файл успешно загружен')"),
-                "file" => $fileName
-            ]);
-        }
-//        $this->note_store();
-    }
-
-    public function contact_register(Task $task, UserRequest $request)
-    {
-        $data = $request->validated();
-
-        $data['password'] = Hash::make('login123');
-
-        $user = User::create($data);
-        LoginController::send_verification('phone', $user, $user->phone_number);
-
-        return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
-
-    }
-
-    public function contact_login(Task $task, UserPhoneRequest $request)
-    {
-        $request->validated();
-        $user = User::query()->where('phone_number', $request->phone_number)->first();
-        LoginController::send_verification('phone', $user, $user->phone_number);
-        return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id])->with(['not-show', 'true']);
-
-    }
-
-    public function deletetask(Task $task)
-    {
-        $task->delete();
-        CustomFieldsValue::where('task_id', $task)->delete();
-    }
-
-    public function deleteAllImages(Task $task)
-    {
-        taskGuard($task);
-        $task->photos = null;
-        $task->save();
-        Alert::success(__('Успешно'));
-        return back();
-    }
-
-    public function date_validator($request)
-    {
-        $request->validate(['date_type' => 'required']);
-        $rules = [];
-        switch ($request->get('date_type')) {
-            case 1:
-                $rules = [
-                    'start_date' => 'required|date',
-                    'date_type' => 'required'
-                ];
-                break;
-            case 2:
-                $rules = [
-                    'end_date' => 'required|date',
-                    'date_type' => 'required'
-                ];
-                break;
-            case 3:
-                $rules = [
-                    'start_date' => 'required|date',
-                    'end_date' => 'required|date',
-                    'date_type' => 'required'
-
-                ];
-                break;
-        }
-        $rules['task_id'] = 'required';
-        return Validator::make($request->all(), $rules, [
-            "start_date.required" => __('dateTime.start_date.required'),
-            "start_date.date" => __('dateTime.start_date.date'),
-            "end_date.required" => __('dateTime.end_date.required'),
-            "end_date.date" => __('dateTime.end_date.date'),
-        ]);
-    }
 
 
-
-    /////////////////
+    ///
     /// custom values store for API
     ///
 
     protected function attachCustomFieldsByRoute($task, $routeName, $request){
         foreach ($task->category->custom_fields()->where('route',$routeName)->get() as $data) {
-            $value = $task->custom_field_values()->where('custom_field_id', $data->id)->first()?? new CustomFieldsValue();
+            $value = $task->custom_field_values()->where('custom_field_id', $data->id)->first() ?? new CustomFieldsValue();
             $value->task_id = $task->id;
             $value->custom_field_id = $data->id;
             $arr = $data->name !== null ? Arr::get($request->all(), $data->name):null;
