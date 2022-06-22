@@ -12,8 +12,6 @@ $(function() {
         }
     });
 });
-
-
 // Grabs all the Elements by their IDs which we had given them (Open-modal)
 let modal = document.getElementById("my-modal");
 
@@ -24,18 +22,6 @@ window.onclick = function (event) {
         modal.style.display = "none";
     }
 }
-//Ads swiper
-var swiper = new Swiper('.mySwiper', {
-    autoplay: {
-    delay:5000,
-    disableOnInteraction:false,
-    },
-    navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-
-    },
-});
 
 //open Model
 function toggleModal2() {
