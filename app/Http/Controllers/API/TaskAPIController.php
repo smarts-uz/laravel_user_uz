@@ -132,6 +132,7 @@ class TaskAPIController extends Controller
             } else {
                 $responses = $task->responses();
             }
+            $responses->where('performer_id', '!=', $task->performer_id);
         } else {
             $responses = $task->responses()->where('performer_id', auth()->id());
         }
