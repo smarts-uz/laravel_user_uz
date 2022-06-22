@@ -5,11 +5,28 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use TCG\Voyager\Traits\Translatable;
 
+/**
+ * Retrieve next step with additional fields
+ *
+ * @property object $category
+ * @property $id
+ * @property $status
+ * @property $budget
+ * @property $oplata
+ * @property $photos
+ * @property $user_id
+ * @property $phone
+ * @property $verify_code
+ * @property $verify_expiration
+ * @return array //Value Returned
+ */
 class Task extends Model
 {
+
     use HasFactory, SoftDeletes;
     //use Translatable;
 
@@ -29,7 +46,7 @@ class Task extends Model
         return $this->hasMany(CustomFieldsValue::class);
     }
 
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
@@ -58,36 +75,6 @@ class Task extends Model
     {
         return preg_replace('/[^0-9.]+/', '', $this->budget);
     }
-
-    // Bu erda kerak emas
-
-    /* public function getCreatedAtAttribute($value)
-    {
-        $value = Carbon::parse($value)->locale(getLocale());
-        return $value->diffForHumans();
-    }
-    public function getCreatedAttribute()
-    {
-        $value = $this->getRawOriginal('created_at');
-        $value = Carbon::parse($value)->locale(getLocale());
-        $day = $value == now()->toDateTimeString()? "Bugun": "$value->day-$value->monthName";
-        return "$day  $value->noZeroHour:$value->minute";
-    }
-
-    public function getEndDateAttribute($value)
-    {
-        $value = Carbon::parse($value)->locale(getLocale());
-        $value->minute<10 ? $minut = '0'.$value->minute : $minut = $value->minute;
-        return "$value->day-$value->monthName  $value->noZeroHour:$minut";
-    }
-
-    public function getStartDateAttribute($value)
-    {
-        $value = Carbon::parse($value)->locale(getLocale());
-        $value->minute<10 ? $minut = '0'.$value->minute : $minut = $value->minute;
-        $day = $value == now()->toDateTimeString()? "Bugun": "$value->day-$value->monthName";
-        return "$day  $value->noZeroHour:$minut";
-    } */
 
     public function getCreatedAttribute()
     {

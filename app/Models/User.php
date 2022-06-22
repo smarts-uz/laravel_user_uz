@@ -2,43 +2,37 @@
 
 namespace App\Models;
 
-use App\Models\Portfolio;
-use App\Models\Portfoliocomment;
-use App\Models\Message;
+
 use Carbon\Carbon;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
-//use App\Models\Message;
 use Laravel\Passport\HasApiTokens;
-use App\Models\All_transaction;
-use Illuminate\Support\Facades\Storage;
 
+/**
+ * Retrieve next step with additional fields
+ *
+ * @property $is_phone_number_verified
+ * @property $verify_expiration
+ * @property $verify_code
+ * @property $phone_number
+ * @property $id
+ * @property $oplata
+ * @property $photos
+ * @property $user_id
+ * @property $phone
+ * @return array //Value Returned
+ */
 class User extends \TCG\Voyager\Models\User
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     protected $table = 'users';
 
-    /*
-    * The attributes that are mass assignable.
-    *
-    * @var array<int, string>
-         */
     protected $guarded = [];
-
 
     protected $withCount = ['views', 'tasks', 'performer_views', 'performer_tasks'];
 
-
-    /*
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
@@ -122,11 +116,6 @@ class User extends \TCG\Voyager\Models\User
     public function walletBalance()
     {
         return $this->hasOne(WalletBalance::class);
-    }
-
-    public function portfoliocomments()
-    {
-        return $this->hasMany(Portfoliocomment::class);
     }
 
     public function getLastSeenAtAttribute()
