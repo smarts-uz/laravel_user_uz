@@ -19,23 +19,18 @@ class LoginAPIController extends Controller
     {
         $data = $request->validated();
         $column = $data['type'];
-        if (!User::query()->where($data['type'], $data['data'])->exists()) {
-            $code = self::sendVerification($data['type'], $data['data']);
-            /** @var User $user */
-            $user = auth()->user();
-            $user->$column = $data['data'];
-            $user->verify_code = $code;
-            $user->verify_expiration = Carbon::now()->addMinutes(5);
-            $user->save();
-            return response()->json([
-                'success' => true,
-                'message' => 'Success'
-            ]);
-        }
+        $code = self::sendVerification($data['type'], $data['data']);
+        /** @var User $user */
+        $user = auth()->user();
+        $user->$column = $data['data'];
+        $user->verify_code = $code;
+        $user->verify_expiration = Carbon::now()->addMinutes(5);
+        $user->save();
         return response()->json([
-            'success' => false,
-            'message' => 'Already exist'
+            'success' => true,
+            'message' => 'Success'
         ]);
+
     }
 
     public static function sendVerification($type, $value)
