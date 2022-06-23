@@ -147,5 +147,7 @@ function getContentText($page, $key)
 
 function getContentImage($page, $key)
 {
-    return asset('storage/' . \App\Models\Content::query()->where('page', $page)->where('key', $key)->first()?->image);
+    $path = \App\Models\Content::query()->where('page', $page)->where('key', $key)->first()?->image;
+    $path = str_replace('\\', '/', $path);
+    return asset('storage/' . $path);
 }
