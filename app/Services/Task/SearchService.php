@@ -3,7 +3,6 @@
 namespace App\Services\Task;
 
 use App\Item\SearchServiceTaskItem;
-use App\Item\SearchNewItem;
 use App\Models\Address;
 use App\Models\ComplianceType;
 use App\Models\Task;
@@ -12,24 +11,19 @@ use App\Models\User;
 use App\Models\Compliance;
 use App\Models\Review;
 use App\Services\TelegramService;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class SearchService
 {
-    public function ajaxReq()
-    {
-        $tasks = Task::whereIn('status', [1, 2])
-            ->orderBy('id', 'desc')
-            ->join('users', 'tasks.user_id', '=', 'users.id')
-            ->join('categories', 'tasks.category_id', '=', 'categories.id')
-            ->select('tasks.id', 'tasks.name', 'tasks.address', 'tasks.date_type', 'tasks.start_date', 'tasks.end_date', 'tasks.budget', 'tasks.category_id', 'tasks.status', 'tasks.oplata', 'tasks.coordinates', 'users.name as user_name', 'users.id as userid', 'categories.name as category_name', 'categories.ico as icon')
-            ->get()->load(['responses', 'addresses']);
-        return $tasks->all();
-    }
-
+    /**
+     *
+     * Function  comlianse_saveS
+     * Mazkur metod taskka qoldirilgan shikoyatlarni tablega yozib beradi va telegramga yuboradi
+     * @param   Object
+     * @return  TelegramService
+     */
     public function comlianse_saveS($request)
     {
         $comp = new Compliance();
@@ -45,7 +39,13 @@ class SearchService
         $data['task_name'] = Task::query()->find($comp->task_id)->name;
         $telegramService->sendMessage($data);
     }
-
+    /**
+     *
+     * Function  task_service
+     * Mazkur metod yaratilgan barcha tasklarni korsatib berad va kerakli ma'lumotlarni yuboradi
+     * @param  $auth_response, $userId, $task Object
+     * @return  SearchServiceTaskItem
+     */
     public function task_service($auth_response, $userId, $task): SearchServiceTaskItem
     {
         $item = new SearchServiceTaskItem();
@@ -62,7 +62,12 @@ class SearchService
         $item->respons_reviews = Review::all();
         return $item;
     }
-
+    /**
+     *
+     * Function  search_new_service
+     * Mazkur metod search task bladega ma'lumotlarni chiqarib beradi
+     * @param  $arr_check, $filter, $suggest, $price, $remjob, $noresp, $radius,$lat,$lon,$filterByStartDate Object
+     */
     public function search_new_service($arr_check, $filter, $suggest, $price, $remjob, $noresp, $radius,$lat,$lon,$filterByStartDate)
     {
 
@@ -78,14 +83,14 @@ class SearchService
 		        * sin(radians(`latitude`))) as distance FROM `addresses` where `default` = 1 ) addresses WHERE distance <=$radius";
                 $results=[];
 
-if(!$remjob && $lat && $lon && $radius){
-$results=DB::select(DB::raw($adressesQuery));
-}
+        if(!$remjob && $lat && $lon && $radius){
+        $results=DB::select(DB::raw($adressesQuery));
+        }
 
-$relatedAdress=[];
-foreach ($results as $result) {
-    $relatedAdress[]=$result->task_id;
-}
+        $relatedAdress=[];
+        foreach ($results as $result) {
+            $relatedAdress[]=$result->task_id;
+        }
 
         $tasks = Task::query()
             ->whereIn('status', [1,2])

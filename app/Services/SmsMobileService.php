@@ -6,8 +6,16 @@ namespace App\Services;
 use Napa\R19\Sms;
 use PlayMobile\SMS\SmsService;
 
+
 class SmsMobileService
 {
+    /**
+     *
+     * Function  sms_packages
+     * Mazkur metod ikkita sms paketdan biri orqali 6ta raqamli sms code boradi boradi
+     * @param   Object
+     * @return
+     */
     public function sms_packages($phone_number, $code){
 
         $phone_numberr=preg_replace('/[+]+/', '', $phone_number);

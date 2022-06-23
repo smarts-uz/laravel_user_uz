@@ -13,9 +13,6 @@ use App\Models\UserExpense;
 use App\Models\WalletBalance;
 use App\Services\NotificationService;
 use App\Services\SmsTextService;
-use Illuminate\Http\Request;
-use PlayMobile\SMS\SmsService;
-use RealRashid\SweetAlert\Facades\Alert;
 
 class ResponseService
 {

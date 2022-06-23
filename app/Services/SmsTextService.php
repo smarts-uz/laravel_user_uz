@@ -8,6 +8,13 @@ use PlayMobile\SMS\SmsService;
 
 class SmsTextService
 {
+    /**
+     *
+     * Function  sms_packages
+     * Mazkur metod ikkita sms paketdan biri orqali sms boradi boradi
+     * @param   Object
+     * @return
+     */
     public function sms_packages($phone_number, $text){
 
         $phone_numberr=preg_replace('/[+]+/', '', $phone_number);

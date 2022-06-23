@@ -90,7 +90,6 @@ Route::group(['middleware' => 'auth'], function () {
 });
 Route::get('task-search', [SearchTaskController::class, 'search_new'])->name('searchTask.task_search'); // javoxir
 Route::post('tasks-search', [SearchTaskController::class, 'search_new2'])->name('searchTask.ajax_tasks');
-Route::get('search', [SearchTaskController::class, 'search'])->name('search'); // javoxir
 Route::post('ajax-request', [SearchTaskController::class, 'task_response']); // javoxir
 Route::delete('delete-task/{task}', [SearchTaskController::class, 'delete_task'])->name('searchTask.delete_task'); // javoxir
 Route::get('delete-task/{task}', [SearchTaskController::class, 'delete_task'])->name('searchTask.delete_task.get'); // javoxir

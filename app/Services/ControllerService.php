@@ -28,7 +28,13 @@ class ControllerService
         return $item;
 
     }
-
+    /**
+     *
+     * Function  category
+     * Mazkur metod barcha kategoriyalarni chiqarib beradi
+     * @param $id  Object
+     * @return  SearchServiceTaskItem
+     */
     public function category($id){
         $item = new SearchServiceTaskItem();
         $item -> categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->get();
@@ -37,7 +43,14 @@ class ControllerService
         $item -> idR = $id;
         return $item;
     }
-    public function my_tasks($task){
+    /**
+     *
+     * Function  my_tasks
+     * Mazkur metod my_task sahifasini ochib beradi
+     * @param   Object
+     * @return  MyTaskItem
+     */
+    public function my_tasks(){
         $item = new MyTaskItem();
         $item->user = auth()->user();
         $item->tasks = $item->user->tasks()->whereIn('status', [1, 2, 3, 4, 5])->orderBy('created_at', 'desc')->get();

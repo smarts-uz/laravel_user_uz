@@ -27,12 +27,6 @@ class SearchTaskController extends VoyagerBaseController
         $this->create_service = new CreateService();
     }
 
-    public function search(Request $request)
-    {
-        $s = $request->s;
-        return Task::where('name', 'LIKE', "%$s%")->orderBy('name')->paginate(10);
-    }
-
     public function task(Task $task, Request $request)
     {
         if (!$task->user_id) {
@@ -124,38 +118,27 @@ class SearchTaskController extends VoyagerBaseController
         }
     }
 
-public function search_new2(Request $request){
+    public function search_new2(Request $request){
 
-    $data =collect($request->data)->keyBy('name');
-    $filter = $data['filter']['value']??null;
-    $suggest = $data['suggest']['value']??null;
+        $data =collect($request->data)->keyBy('name');
+        $filter = $data['filter']['value']??null;
+        $suggest = $data['suggest']['value']??null;
 
-    $lat = $data['user_lat']['value']??null;
-    $lon =$data['user_long']['value']??null;
+        $lat = $data['user_lat']['value']??null;
+        $lon =$data['user_long']['value']??null;
 
+        $radius = $data["radius"]['value']??null;
+        $price = $data["price"]['value']??null;
 
-    $radius = $data["radius"]['value']??null;
-    $price = $data["price"]['value']??null;
+        $filterByStartDate=$data["sortBySearch"]['value']??false;
+        $arr_check = $data->except(['filter', 'suggest', 'user_lat','user_long',"radius","price",'remjob','noresp'])->pluck('name');
+        $remjob = $data['remjob']['value']??false;
+        $noresp = $data['noresp']['value']??false;
 
-
-    $filterByStartDate=$data["sortBySearch"]['value']??false;
-    $arr_check = $data->except(['filter', 'suggest', 'user_lat','user_long',"radius","price",'remjob','noresp'])->pluck('name');
-    $remjob = $data['remjob']['value']??false;
-    $noresp = $data['noresp']['value']??false;
-
-
-
-    $tasks = $this->service->search_new_service(
-                        $arr_check, $filter,
-                         $suggest, $price, $remjob,
-                          $noresp, $radius,$lat,$lon,
-                          $filterByStartDate
-                        );
-
-
-
+        $tasks = $this->service->search_new_service( $arr_check, $filter, $suggest, $price, $remjob, $noresp, $radius,$lat,$lon, $filterByStartDate);
 
         $html = view("search_task.tasks", ['tasks'=>$tasks[0]])->render();
         return response()->json(array('dataForMap' =>$tasks[1] , 'html' => $html));
-}
+
+    }
 }
