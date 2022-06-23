@@ -337,42 +337,24 @@
             document.getElementById('modal_content').style.display = "none";
         };
     </script>
-@endsection
-
-@section('javascript')
-    <script src="//unpkg.com/alpinejs" defer></script>
-
     <script>
-        $('.send-request').click(function (){
-            $.ajax({
-                url : '/performers-by-category', //PHP file to execute
-                type : 'GET', //method used POST or GET
-                data : {'category_id' : $(this).data('id')}, // Parameters passed to the PHP file
-                success : function(result){ // Has to be there !
-                },
-
-                error : function(result, statut, error){ // Handle errors
-
-                }
-
-            });
-        })
         @foreach($users as $user)
-            var star = $('#review{{$user->id}}').text();
-            if (star > 0) {
-                for (let i = 0; i < star; i++) {
-                    $(".stars{{$user->id}}").append('<i class="fas fa-star text-yellow-500"></i>');
-                }
-                for (let u = star; u < 5; u++) {
-                    $(".stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
-                }
+        var star = $('#review{{$user->id}}').text();
+        if (star > 0) {
+            for (let i = 0; i < star; i++) {
+                $(".stars{{$user->id}}").append('<i class="fas fa-star text-yellow-500"></i>');
             }
-            else {
-                for (let e = 0; e < 5; e++) {
-                    $(".stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
-                }
+            for (let u = star; u < 5; u++) {
+                $(".stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
             }
+        }
+        else {
+            for (let e = 0; e < 5; e++) {
+                $(".stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
+            }
+        }
         @endforeach
     </script>
 @endsection
+
 

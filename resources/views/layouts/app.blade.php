@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-{{--<html lang="{{session('lang')}}" dir="ltr">--}}
 <html lang="{{Lang::locale()}}">
 <head>
     <meta charset="utf-8">

@@ -5,8 +5,7 @@
 @section('content')
     <link rel="stylesheet" href="{{asset('css/budget_library.css')}}">
     <link rel="stylesheet" href="{{asset('css/budjet.css')}}">
-    <!-- Information section -->
-    {{--    <form action="{{route('task.create.construction')}}" method="post">--}}
+
     <form class="" action="{{route('task.create.budget.store', $task->id)}}" method="post">
         @csrf
         <div class="mx-auto sm:w-9/12 w-11/12 my-16">

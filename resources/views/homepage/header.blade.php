@@ -6,7 +6,7 @@
     <div class="w-xl">
         <main class="w-4/5 mx-auto grid grid-cols-2 gap-2">
             <div class="col-span-1 lg:block hidden">
-                <div class="relative z-10 top-8 xl:left-60 left-36" style=" height: 450px;width 450px">
+                <div class="relative z-10 top-8 xl:left-60 left-36" style=" height: 450px;width: 450px">
                     <div>
                         <!-- first -->
                         <div class="">

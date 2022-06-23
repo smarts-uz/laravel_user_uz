@@ -23,7 +23,7 @@
                     {{$user->name}}
                 </a>
             @else
-                <a class="user mr-2" href="performers/{{$user->id}}">
+                <a class="user mr-2" href="/performers/{{$user->id}}">
                     <p class="lg:text-3xl text-2xl underline text-blue-500 performer-page{{$user->id}} hover:text-red-500"
                        id="{{$user->id}}"> {{$user->name}} </p>
                 </a>

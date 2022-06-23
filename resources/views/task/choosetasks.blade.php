@@ -1,15 +1,12 @@
 @extends("layouts.app")
 
 @section("content")
-    <link rel="stylesheet" href="{{ asset ('/css/carousel.min.css')}}">
-    <script src="{{ asset ('/js/carousel.min.js') }}"></script>
-
     <div class="container w-10/12 mx-auto sm:my-12 my-4 text-base">
         <div class="text-center">
             <h1 class="text-3xl pt-5 md:text-5xl font-semibold">{{__('Выберите категорию задания')}}</h1>
             <h3 class="text-lg my-5 font-medium text-grey-400  mb-8">{{__('Мы готовы помочь вам в решении самых разнообразных задач')}}</h3>
             <div class="max-w-full container mx-auto lg:hidden">
-                @foreach ($categories as $category2)  
+                @foreach ($categories as $category2)
                     <span class="flex w-full flex-row items-center sm:my-2 my-1">
                         <img src="{{ asset('storage/'.$category2->ico) }}" alt="" class="h-8 w-8"></i>
                         @if ($category2->id == $idR)
