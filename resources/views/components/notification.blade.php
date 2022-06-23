@@ -23,7 +23,7 @@
             <li class="border-b-2 border-gray-500 flex gap-x-2 p-3 text-gray-800">
                 <div class="flex flex-col w-full">
                     <p class="text-right text-sm">{{$notification->created_at->format('d M')}}</p>
-                    @if($notification->type == 1)
+                    @if($notification->type == \App\Models\Notification::TASK_CREATED)
                         <div class="w-full flex flex-row gap-x-4">
                             <i class="fas fa-bell text-yellow-500 text-xl"></i>
                             <div>
@@ -33,7 +33,7 @@
                                 </a>
                             </div>
                         </div>
-                    @elseif($notification->type == 2 || $notification->type == 3)
+                    @elseif($notification->type == \App\Models\Notification::NEWS_NOTIFICATION || $notification->type == \App\Models\Notification::SYSTEM_NOTIFICATION)
                         <div class="w-full flex flex-row gap-x-4">
                             <i class="fas fa-bookmark text-xl text-yellow-500"></i>
                             <button
@@ -42,7 +42,7 @@
                                 {{$notification->name_task}}
                             </button>
                         </div>
-                    @elseif($notification->type == 4)
+                    @elseif($notification->type == \App\Models\Notification::GIVE_TASK)
                         <div class="w-full flex flex-row gap-x-4">
                             <i class="fas fa-comment text-xl text-yellow-500"></i>
                             <div>
@@ -55,7 +55,7 @@
                                 </a>
                             </div>
                         </div>
-                    @elseif($notification->type == 5)
+                    @elseif($notification->type == \App\Models\Notification::TASK_SELECTED)
                         <div class="w-full flex flex-row gap-x-4">
                             <i class="fas fa-check-circle text-yellow-500 text-xl"></i>
                             <div>
@@ -66,7 +66,7 @@
                                 {{__('отправлен')}}
                             </div>
                         </div>
-                    @elseif($notification->type == 6)
+                    @elseif($notification->type == \App\Models\Notification::SEND_REVIEW)
                         <div class="w-full flex flex-row gap-x-4">
                             <i class="fas fa-star text-xl text-yellow-500"></i>
                             <div>
@@ -77,7 +77,7 @@
                                 {{__(' и оставил вам отзыв')}}
                             </div>
                         </div>
-                    @elseif($notification->type == 7)
+                    @elseif($notification->type == \App\Models\Notification::SELECT_PERFORMER)
                         <div class="w-full flex flex-row gap-x-4">
                             <i class="fas fa-user text-xl text-yellow-500"></i>
                             <div>
@@ -90,8 +90,7 @@
                                 </a>
                             </div>
                         </div>
-                    @endif
-                    @if ($notification->type == 8)
+                    @elseif ($notification->type == \App\Models\Notification::SEND_REVIEW_PERFORMER)
                         <div class="w-full flex flex-row gap-x-4">
                             <i class="fas fa-star text-xl text-yellow-500"></i>
                             <div>
