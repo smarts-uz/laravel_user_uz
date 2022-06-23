@@ -15,7 +15,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserTransactionHistory;
 use App\Http\Controllers\vendor\Chatify\MessagesController;
 use App\Http\Controllers\VoyagerTaskController;
-use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\PerformersController;
 use App\Http\Controllers\RefillController;
@@ -76,11 +75,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get("report/get", [ReportController::class, "report"])->name("report");
     Route::get('report/get/child', [ReportController::class, "report_sub"])->name("report_sub");
     Route::get('report/{id}', [ReportController::class, "index_sub"])->name("index_sub");
-    Route::get("users/activitiy/{user}", [VoyagerUserController::class, "activity"])->name("voyagerUser.activity"); // javoxir
-    Route::get('/messages/chat/{id}', [ConversationController::class, 'showChat'])->name("conversation.showChat"); // javoxir
-    Route::post('/messages/chat/rate/{message}', [ConversationController::class, 'rating'])->name("conversation.rating"); // javoxir
-    Route::post('/messages/chat/close/{message}', [ConversationController::class, 'close'])->name("conversation.close"); // javoxir
-    Route::post('/messages/chat/{id}', [ConversationController::class, 'send'])->name("conversation.send"); // javoxir
+    Route::get("users/activitiy/{user}", [VoyagerUserController::class, "activity"])->name("voyagerUser.activity");
 });
 #endregion
 

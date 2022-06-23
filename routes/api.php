@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\BlogController;
 use App\Http\Controllers\API\CategoriesAPIController; // javoxir
 use App\Http\Controllers\API\CustomFieldAPIController;
-use App\Http\Controllers\API\FaqAPIController; // javoxir
 use App\Http\Controllers\API\LoginAPIController;
 use App\Http\Controllers\API\PerformerAPIController; // javoxir
 use App\Http\Controllers\API\ProfileAPIController; // javoxir +
@@ -15,11 +14,7 @@ use App\Http\Controllers\API\TaskAPIController; // javoxir
 use App\Http\Controllers\API\UpdateAPIController;
 use App\Http\Controllers\API\UserAPIController; // javoxir
 use App\Http\Controllers\API\SearchAPIController; // javoxir -
-use App\Http\Controllers\API\MassmediaAPIController; // javoxir
-use App\Http\Controllers\API\ConversationAPIController;
-use App\Http\Controllers\API\VoyagerUserAPIController; // javoxir -
 use App\Http\Controllers\API\RefillAPIController; // javoxir
-use App\Http\Controllers\API\ReportAPIController; // javoxir
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PortfolioAPIController;
 use App\Http\Controllers\vendor\Chatify\Api\MessagesController;
@@ -151,10 +146,6 @@ Route::post('/code', [UserAPIController::class, 'reset_code'])->name('user.reset
 //News
 Route::get('/blog-news', [BlogController::class, 'index']); //end
 
-// FAQ
-Route::get('faq', [FaqAPIController::class, 'index']); //end +
-Route::get('faq/{id}', [FaqAPIController::class, 'questions']); //end +
-
 //Tasks
 Route::get('task/{task}', [TaskAPIController::class, 'task']); //end +
 Route::get('tasks-filter', [TaskAPIController::class, 'filter']); //end +
@@ -179,21 +170,6 @@ Route::get('/performers/{performer}', [PerformerAPIController::class, 'performer
 //Portfolio
 Route::get('/portfolio_albums/{performer}', [PortfolioAPIController::class, 'index']); //end +
 Route::get('/portfolio_album/{portfolio}', [PortfolioAPIController::class, 'show']); //end +
-
-
-//MassMedia
-Route::get('/press', [MassmediaAPIController::class, 'index']); //end +
-
-//Conversation
-Route::group(['prefix' => 'admin'], function () {
-    // Admin Kerakmas, Kompda kirishadi
-    Route::get('/messages/chat/{id}', [ConversationAPIController::class, 'showChat']);
-    Route::post('/messages/chat/rate/{message}', [ConversationAPIController::class, 'rating']);
-    Route::post('/messages/chat/close/{message}', [ConversationAPIController::class, 'close']);
-    Route::post('/messages/chat/{id}', [ConversationAPIController::class, 'send']);
-    Route::get("users/activitiy/{user}", [VoyagerUserAPIController::class, "activity"]);
-    Route::get('/reports', [ReportAPIController::class, 'index']); //end
-});
 
 //Refill
 Route::get('/ref', [RefillAPIController::class, 'ref']); //end
