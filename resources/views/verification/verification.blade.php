@@ -3,7 +3,7 @@
 
 @section('content')
         {{--  Header  --}}
-    <div style="background-image: url('https://images.pexels.com/photos/5588400/pexels-photo-5588400.jpeg?auto=compress&amp;cs=tinysrgb&amp;fit=crop&amp;h=768&amp;w=1688')"
+    <div style="background-image: url({{ getContentImage('verification', 'verification_header') }})"
          class="h-screen bg-no-repeat bg-cover mb-32">
         <div class="text-center my-auto pt-48">
             {!! getContentText('verification', 'verification_header') !!}
