@@ -16,7 +16,13 @@ use App\Services\SmsTextService;
 
 class ResponseService
 {
-
+    /**
+     *
+     * Function  store
+     * Mazkur metod taskka otklik tashlaganda ishlaydi
+     * @param $task  Object
+     *
+     */
     public function store($request, $task)
     {
         if ($task->user_id == auth()->user()->id)
@@ -79,7 +85,13 @@ class ResponseService
 
     }
 
-
+    /**
+     *
+     * Function  selectPerformer
+     * Mazkur metod taskka tashlangan otkliklar orasidan ispolnitelni tanlashda ishlatiladi
+     * @param $response  Object
+     *
+     */
     public function selectPerformer($response)
     {
         $task = $response->task;

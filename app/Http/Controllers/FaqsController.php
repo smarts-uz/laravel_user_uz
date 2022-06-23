@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\FaqCategories;
-use App\Models\Faqs;
 use App\Services\FaqsService;
 use Illuminate\Routing\Controller;
 

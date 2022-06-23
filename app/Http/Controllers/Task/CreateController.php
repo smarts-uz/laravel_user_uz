@@ -13,14 +13,11 @@ use App\Models\CustomField;
 use App\Models\CustomFieldsValue;
 use App\Models\Task;
 use App\Models\User;
-use App\Services\NotificationService;
 use App\Services\Task\CreateService;
 use App\Services\Task\CustomFieldService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use PlayMobile\SMS\SmsService;
 use RealRashid\SweetAlert\Facades\Alert;
-use App\Models\Notification;
 
 class CreateController extends Controller
 {

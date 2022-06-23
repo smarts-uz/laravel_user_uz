@@ -3,8 +3,6 @@
 namespace App\Services\Task;
 
 use App\Http\Controllers\LoginController;
-use App\Http\Requests\UserPhoneRequest;
-use App\Http\Requests\UserRequest;
 use App\Models\Address;
 use App\Models\Category;
 use App\Models\CustomField;
@@ -15,14 +13,10 @@ use App\Services\NotificationService;
 use App\Services\Response;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use JetBrains\PhpStorm\ArrayShape;
-use RealRashid\SweetAlert\Facades\Alert;
 
 class CreateTaskService
 {

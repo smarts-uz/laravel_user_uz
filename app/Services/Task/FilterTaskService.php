@@ -3,8 +3,6 @@
 
 namespace App\Services\Task;
 
-
-use App\Models\Address;
 use App\Models\Category;
 use App\Models\Task;
 
@@ -79,6 +77,6 @@ class FilterTaskService
         $dist = $dist * 180/ pi();
         $dist = $dist * 60 * 1.1515;
         return $dist = $dist * 1.609344;
-}
+    }
 
 }

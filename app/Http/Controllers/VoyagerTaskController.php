@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Services\Task\CreateService;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
 
@@ -23,7 +22,6 @@ class VoyagerTaskController extends Controller
         $tasks = Task::query()->where('status',Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->with(['reviews','user','performer'])
             ->whereHas('user')
             ->whereHas('performer')
-//            ->whereHas('reviews')
             ->paginate(60);
         return view('task.reported-tasks',compact('tasks'));
     }

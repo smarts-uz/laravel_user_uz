@@ -13,7 +13,6 @@ use Illuminate\Support\Str;
 use TCG\Voyager\Events\BreadDataAdded;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
-use function Symfony\Component\Translation\t;
 
 class NotificationController extends VoyagerBaseController
 {
