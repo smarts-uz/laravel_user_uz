@@ -86,7 +86,7 @@ class UpdateController extends Controller
 
     public function not_completed(Task $task)
     {
-        $task->update(['status' => Task::STATUS_COMPLETE_WITHOUT_REVIEWS]);
+        $task->update(['status' => Task::STATUS_NOT_COMPLETE]);
         Alert::success('Success');
         return back();
     }
