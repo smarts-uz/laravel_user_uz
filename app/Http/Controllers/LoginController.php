@@ -167,7 +167,7 @@ class LoginController extends Controller
             return redirect()->route('profile.profileData');
         } else {
             return back()->with([
-                'code' => 'Code Error!'
+                'code' => __('Неправильный код!')
             ]);
 
         }

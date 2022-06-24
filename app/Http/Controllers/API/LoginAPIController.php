@@ -155,16 +155,6 @@ class LoginAPIController extends Controller
     }
 
 
-    public function verifyAccount(User $user, $hash, Request $request)
-    {
-        self::verifyColum($request, 'email', $user, $hash);
-        auth()->login($user);
-        Alert::success(__('Congrats'), __('Your Email have successfully verified'));
-        return redirect()->route('profile.profileData');
-
-    }
-
-
     /**
      * @OA\Post(
      *     path="/api/account/verification/phone",
@@ -205,11 +195,14 @@ class LoginAPIController extends Controller
             'code' => 'required'
         ]);
         if (self::verifyColum($request, __('phone_number'), auth()->user(), $request->code)) {
-            return response()->json(['message' => __('success')]);
+            return response()->json([
+                'success' => true,
+                'message' => __('Ваш телефон успешно подтвержден')
+            ]);
         } else {
             return response()->json([
-                'message' => 'Code Error!',
-                'success' => false
+                'success' => false,
+                'message' => __('Неправильный код!')
             ]);
 
         }
