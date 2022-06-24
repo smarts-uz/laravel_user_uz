@@ -151,7 +151,8 @@ class UserIndexResource extends JsonResource
             'views' => $this->views,
             'directories' => $directories,
             'wallet_balance' => $balance,
-            'last_seen' => $lastSeen
+            'last_seen' => $lastSeen,
+            'created_at' => $this->created_at
         ];
     }
 }
