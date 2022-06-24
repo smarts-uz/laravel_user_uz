@@ -19,22 +19,24 @@ class LoginAPIController extends Controller
     {
         $data = $request->validated();
         $column = $data['type'];
-        if (!User::query()->where($column, $data['data'])->where('is_' . $column . '_verified', 1)->exists()) {
+        $verified = 'is_' . $column . '_verified';
+        if (!User::query()->where($column, $data['data'])->where($verified, 1)->exists()) {
             $code = self::sendVerification($data['type'], $data['data']);
             /** @var User $user */
             $user = auth()->user();
             $user->$column = $data['data'];
+            $user->$verified = 0;
             $user->verify_code = $code;
             $user->verify_expiration = Carbon::now()->addMinutes(5);
             $user->save();
             return response()->json([
                 'success' => true,
-                'message' => 'Success'
+                'message' => $data['type'] == 'email' ? __('Ваша ссылка для подтверждения успешно отправлена.') : __('Код отправлен!')
             ]);
         }
         return response()->json([
             'success' => false,
-            'message' => 'Verified credential already exist'
+            'message' => $data['type'] == 'email' ? __('Пользователь с такой почтой уже существует!'): __('Пользователь с таким номером уже существует!')
         ]);
     }
 

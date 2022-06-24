@@ -661,7 +661,10 @@
     "устройство": "qurilma",
     "успешно": "muvaffaqiyatli",
     "Какие параметры посылки?": "Jo'natmaning parametrlari qanday?",
-    "Код отправлен!": "Kod jo'natildi",
+    "Код отправлен!": "Kod jo'natildi!",
+    "Ваша ссылка для подтверждения успешно отправлена!": "Tasdiqlash havolasi muvaffaqiyatli yuborildi!",
+    "Пользователь с такой почтой уже существует!": "Bunday emailga ega foydalanuvchi allaqachon mavjud!",
+
     "Your Email have successfully verified": "Sizning elektron pochtangiz muvaffaqiyatli tekshirildi",
     "phone_number": "telefon raqami",
     "Congrats": "Tabriklamoq",
