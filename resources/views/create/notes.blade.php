@@ -105,54 +105,7 @@
         </div>
 
     </form>
-    <script src="https://releases.transloadit.com/uppy/v2.4.1/uppy.min.js"></script>
-    <script src="https://releases.transloadit.com/uppy/v2.4.1/uppy.legacy.min.js" nomodule></script>
-    <script src="https://releases.transloadit.com/uppy/locales/v2.0.5/ru_RU.min.js"></script>
-
-    <script>
-        var uppy = new Uppy.Core()
-            .use(Uppy.Dashboard, {
-                trigger: '.UppyModalOpenerBtn',
-                inline: true,
-                target: '#photos',
-                showProgressDetails: true,
-                allowedFileTypes: ['image/*'],
-                debug: true,
-                note: 'Все типы файлов, до 10 МБ',
-                height: 400,
-                metaFields: [
-                    {id: 'name', name: 'Name', placeholder: 'file name'},
-                    {id: 'caption', name: 'Caption', placeholder: 'describe what the image is about'}
-                ],
-                browserBackButtonClose: true
-            })
-
-            .use(Uppy.ImageEditor, {target: Uppy.Dashboard})
-            .use(Uppy.XHRUpload, {
-                endpoint: '{{route('task.create.images.store', $task->id)}}',
-                fieldName: 'images[]',
-                method: 'post',
-                bundle: true,
-            });
-
-        uppy.on('upload-success', (file, response) => {
-            const httpStatus = response.status // HTTP status code
-            const httpBody = response.body   // extracted response data
-
-        });
-
-
-        uppy.on('file-added', (file) => {
-            uppy.setFileMeta(file.id, {
-                size: file.size,
-
-            })
-            console.log(file.name);
-        });
-        uppy.on('complete', result => {
-            console.log('successful files:', result.successful)
-        });
-    </script>
+    <x-image_upload_uppy/>
 @endsection
 
 @section("javascript")
