@@ -7,26 +7,30 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @property $balance
+ * @property $user_id
+ *
+ */
 class WalletBalance extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['user_id','balance'];
+    protected $fillable = ['user_id', 'balance'];
 
 
-
-
-    public static function walletBalanceUpdateOrCreate($user_id, $amount){
+    public static function walletBalanceUpdateOrCreate($user_id, $amount)
+    {
         $record = self::where(['user_id' => $user_id,])->latest()->first();
 
         if (!is_null($record)) {
             return tap($record)->update([
-                'balance' => 1*$record->balance + 1*$amount
+                'balance' => 1 * $record->balance + 1 * $amount
             ]);
         } else {
             return self::create([
                 'user_id' => $user_id,
-                'balance' => 1*$amount
+                'balance' => 1 * $amount
             ]);
         }
     }

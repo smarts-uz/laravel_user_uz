@@ -11,8 +11,10 @@ use TCG\Voyager\Traits\Translatable;
 
 /**
  * Retrieve next step with additional fields
- *
+ * objects, relations
+ * @property $user
  * @property object $category
+ *
  * @property $id
  * @property $status
  * @property $budget
@@ -22,6 +24,7 @@ use TCG\Voyager\Traits\Translatable;
  * @property $phone
  * @property $verify_code
  * @property $verify_expiration
+ * @property $performer_id
  * @return array //Value Returned
  */
 class Task extends Model

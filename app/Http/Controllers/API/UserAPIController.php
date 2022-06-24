@@ -7,47 +7,41 @@ use App\Http\Requests\Api\ResetPasswordRequest;
 use App\Http\Requests\PhoneNumberRequest;
 use App\Http\Requests\Api\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
-use App\Http\Resources\UserIndexResource;
 use App\Models\Session;
 use App\Models\User;
 use App\Models\WalletBalance;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Exception;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use PlayMobile\SMS\SmsService;
 
 class UserAPIController extends Controller
 {
 
-    public function index()
+    public function index(): JsonResponse
     {
         $users = User::all();
         return response()->json($users);
     }
 
 
-    function login(UserLoginRequest $request)
+    function login(UserLoginRequest $request): JsonResponse
     {
         $request->authenticate();
+        /** @var User $user */
         $user = auth()->user();
         $accessToken = $user->createToken('authToken')->accessToken;
 
-        $balance = WalletBalance::query()->where(['user_id' => $user->id])->firstOrFail();
-        if (isset($balance))
-            $userBalance = $balance->balance;
-        else
-            $userBalance = null;
-
         $expiresAt = now()->addMinutes(2); /* keep online for 2 min */
-        Cache::put('user-is-online-' . Auth::user()->id, true, $expiresAt);
+        Cache::put('user-is-online-' . $user->id, true, $expiresAt);
+
         /* last seen */
-        User::where('id', $user->id)->update(['last_seen' => now()]);
+        User::query()->where('id', $user->id)->update(['last_seen' => now()]);
 
         return response()->json([
             'user' => [
@@ -55,14 +49,13 @@ class UserAPIController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'avatar' => asset('storage/' . $user->avatar),
-                'balance' => $userBalance,
+                'balance' => WalletBalance::query()->where(['user_id' => $user->id])->first()?->balance,
                 'phone_number' => $user->phone_number,
                 'email_verified' => boolval($user->is_email_verified),
                 'phone_verified' => boolval($user->is_phone_number_verified),
                 'role_id' => $user->role_id,
             ],
             'access_token' => $accessToken]);
-
     }
 
 
@@ -97,10 +90,11 @@ class UserAPIController extends Controller
      *     ),
      * )
      */
-    public function reset_submit(PhoneNumberRequest $request)
+    public function reset_submit(PhoneNumberRequest $request): JsonResponse
     {
 
         $data = $request->validated();
+        /** @var User $user */
         $user = User::query()->where('phone_number', $data['phone_number'])->firstOrFail();
         $sms_otp = rand(100000, 999999);
         $user->verify_code = $sms_otp;
@@ -157,6 +151,7 @@ class UserAPIController extends Controller
     public function reset_password_save(ResetPasswordRequest $request)
     {
         $data = $request->validated();
+        /** @var User $user */
         $user = User::query()->where('phone_number', $data['phone_number'])->firstOrFail();
         $user->password = Hash::make($data['password']);
         $user->save();
@@ -209,7 +204,7 @@ class UserAPIController extends Controller
             'code' => 'required|numeric|min:6',
             'phone_number' => 'required|numeric|exists:users'
         ]);
-
+        /** @var User $user */
         $user = User::query()->where('phone_number', $data['phone_number'])->firstOrFail();
 
         if ($data['code'] == $user->verify_code) {
@@ -223,13 +218,14 @@ class UserAPIController extends Controller
         }
     }
 
-    public function register(UserRegisterRequest $request)
+    public function register(UserRegisterRequest $request): JsonResponse
     {
         try {
             $data = $request->validated();
             $data['password'] = Hash::make($data['password']);
             unset($data['password_confirmation']);
-            $user = User::create($data);
+            /** @var User $user */
+            $user = User::query()->create($data);
             $wallBal = new WalletBalance();
             $wallBal->balance = setting('admin.bonus');
             $wallBal->user_id = $user->id;

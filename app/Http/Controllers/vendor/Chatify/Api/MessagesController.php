@@ -4,10 +4,9 @@ namespace App\Http\Controllers\vendor\Chatify\Api;
 
 use App\Http\Resources\MessageResource;
 use App\Models\Chat\ChatifyMessenger;
-use App\Models\Chat\ChMessage;
 use App\Services\Chat\ContactService;
-use App\Services\Chat\MessageService;
 use App\Services\NotificationService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
@@ -38,7 +37,7 @@ class MessagesController extends Controller
     }
 
 
-    public function send(Request $request)
+    public function send(Request $request): JsonResponse
     {
         // default variables
         $error = (object)[
@@ -121,9 +120,9 @@ class MessagesController extends Controller
      * fetch [user/group] messages from database
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse response
+     * @return JsonResponse response
      */
-    public function fetch(Request $request)
+    public function fetch(Request $request): JsonResponse
     {
         $query = Chatify::fetchMessagesQuery($request['id']);
         $query->where('seen',0)->update(['seen' => 1]);
@@ -147,7 +146,7 @@ class MessagesController extends Controller
         ], 200);
     }
 
-    public function getContacts()
+    public function getContacts(): JsonResponse
     {
         $userIdsList = ContactService::contactsList(Auth::user());
 
@@ -169,12 +168,12 @@ class MessagesController extends Controller
     }
 
 
-    public function search(Request $request)
+    public function search(Request $request): JsonResponse
     {
         $input = trim(filter_var($request['name'], FILTER_SANITIZE_STRING));
         $records = User::query()
             ->select('id', 'name', 'active_status', 'avatar', 'last_seen')
-            ->where('id','!=',Auth::user()->id)
+            ->where('id','!=',Auth::id())
             ->where('name', 'LIKE', "%{$input}%")
             ->get();
         return Response::json([

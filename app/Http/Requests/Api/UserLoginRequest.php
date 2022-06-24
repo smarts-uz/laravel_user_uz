@@ -37,13 +37,13 @@ class UserLoginRequest extends BaseRequest
         if (!$user || !Hash::check($this->password, $user->password)){
             throw new HttpResponseException(response()->json([
              'success' => false,
-             'message' => 'Email or password incorrect',
+             'message' => __('Электронная почта или пароль неверны. Попробуй снова'),
             ]));
         }
         if (!$user->isActive()) {
             throw new HttpResponseException(response()->json([
                 'success' => false,
-                'message' => 'User is not active',
+                'message' => __('Аккаунт отключен'),
             ]));
         }
         auth()->login($user);

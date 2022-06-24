@@ -32,6 +32,7 @@ use App\Services\Task\FilterTaskService;
 use App\Services\Task\ResponseService;
 use App\Services\Task\UpdateTaskService;
 use App\Services\TelegramService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -209,7 +210,7 @@ class TaskAPIController extends Controller
         return response()->json($response);
     }
 
-    public function selectPerformer(TaskResponse $response)
+    public function selectPerformer(TaskResponse $response): JsonResponse
     {
         if (!$response->task) {
             return response()->json([

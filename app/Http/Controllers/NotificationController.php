@@ -6,8 +6,10 @@ use App\Http\Requests\Api\FirebaseTokenRequest;
 use App\Http\Resources\NotificationResource;
 use App\Models\Notification;
 use App\Models\Session;
+use App\Models\User;
 use App\Services\NotificationService;
 use App\Services\Response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use TCG\Voyager\Events\BreadDataAdded;
@@ -48,7 +50,7 @@ class NotificationController extends VoyagerBaseController
         );
     }
 
-    public function read_notification(Notification $notification)
+    public function read_notification(Notification $notification): JsonResponse
     {
         $notification->update(['is_read' => 1]);
         return $this->success($notification);
@@ -107,9 +109,10 @@ class NotificationController extends VoyagerBaseController
      *     },
      * )
      */
-    public function setToken(FirebaseTokenRequest $request)
+    public function setToken(FirebaseTokenRequest $request): JsonResponse
     {
         $data = $request->validated();
+        /** @var User $user */
         $user = auth()->user();
         $user->update(['firebase_token' => $data['token']]);
         $session = Session::query()->updateOrCreate(

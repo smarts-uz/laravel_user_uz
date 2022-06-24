@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use TCG\Voyager\Traits\Translatable;
 
-
+/**
+ * @property $user_id
+ * @property $task_id
+ *
+ */
 class Notification extends Model
 {
     use HasFactory;

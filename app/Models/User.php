@@ -11,6 +11,7 @@ use Laravel\Passport\HasApiTokens;
 
 /**
  * @property $is_phone_number_verified
+ * @property $is_email_verified
  * @property $verify_expiration
  * @property $verify_code
  * @property $phone_number
@@ -25,6 +26,11 @@ use Laravel\Passport\HasApiTokens;
  * @property $email
  * @property $name
  * @property $dark_mode
+ * @property $password
+ * @property $avatar
+ * @property $role_id
+ * @property $api_token
+ * @property $remember_token
  * @return array //Value Returned
  */
 class User extends \TCG\Voyager\Models\User

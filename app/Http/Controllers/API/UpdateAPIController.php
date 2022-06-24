@@ -7,30 +7,26 @@ use App\Http\Requests\Task\UpdateRequest;
 use App\Http\Resources\NotificationResource;
 use App\Http\Resources\TaskIndexResource;
 use App\Models\Chat\ChMessage;
-use App\Models\CustomFieldsValue;
-use App\Models\Notification;
 use App\Models\Task;
-use App\Models\Review;
-use App\Models\User;
 use App\Services\NotificationService;
 use App\Services\Task\ReviewService;
-use Illuminate\Database\Eloquent\Model;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Services\Task\CreateService;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class UpdateAPIController extends Controller
 {
-    protected $service;
+    protected CreateService $service;
 
     public function __construct()
     {
         $this->service = new CreateService();
     }
 
-    public function __invoke(UpdateRequest $request, Task $task)
+    public function __invoke(UpdateRequest $request, Task $task): JsonResponse
     {
         taskGuard($task);
         $data = $request->validated();
@@ -75,7 +71,7 @@ class UpdateAPIController extends Controller
      *     },
      * )
      */
-    public function completed(Task $task)
+    public function completed(Task $task): JsonResponse
     {
         taskGuard($task);
         $data = [
@@ -139,7 +135,7 @@ class UpdateAPIController extends Controller
      *     },
      * )
      */
-    public function sendReview(Task $task, Request $request)
+    public function sendReview(Task $task, Request $request): JsonResponse
     {
         $request->validate([
             'comment' => 'required',
@@ -165,7 +161,7 @@ class UpdateAPIController extends Controller
                 ], 'notification', new NotificationResource($notification));
 
             }
-        } catch (\Exception $exception) {
+        } catch (Exception) {
             DB::rollBack();
             return response()->json(['success' => false, 'message' => "fail"]);  //back();
         }

@@ -9,19 +9,14 @@ use App\Models\Task;
 use App\Services\NotificationService;
 use App\Services\SmsMobileService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
-use Hash;
 
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
     public function code()
     {
@@ -140,6 +135,7 @@ class UserController extends Controller
             'password' => 'required|min:8|confirmed',
             'password_confirmation' => 'required|min:8'
         ]);
+        /** @var User $user */
         $user = User::query()->where($request->session()->get('verifications')['key'], $request->session()->get('verifications')['value'])->first();
         $user->password = Hash::make($data['password']);
         $user->save();
