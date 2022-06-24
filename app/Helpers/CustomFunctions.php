@@ -145,7 +145,7 @@ function getContentText($page, $key)
     return \App\Models\Content::query()->where('page', $page)->where('key', $key)->first()->$text;
 }
 
-function getContentImage($page, $key)
+function getContentImage($page, $key): string
 {
     $path = \App\Models\Content::query()->where('page', $page)->where('key', $key)->first()->image;
     $path = str_replace('\\', '/', $path);

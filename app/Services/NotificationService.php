@@ -36,10 +36,11 @@ class NotificationService
                     ->orWhere(function ($query) use ($user) {
                         $query->where('user_id', '=', $user->id)->whereIn('type', [5, 8]);
                     });
-                if ($user->role_id == 2)
-                    $query->orWhere(function ($query) use ($user) {
-                        $query->where('performer_id', '=', $user->id)->where('type', '=', 1);
-                    });
+                // appda new task notificationlar listda korinmasligi kerak
+//                if ($user->role_id == 2)
+//                    $query->orWhere(function ($query) use ($user) {
+//                        $query->where('performer_id', '=', $user->id)->where('type', '=', 1);
+//                    });
                 if ($user->system_notification)
                     $query->orWhere(function ($query) use ($user) {
                         $query->where('user_id', '=', $user->id)->where('type', '=', 2);
@@ -81,9 +82,11 @@ class NotificationService
                 ]);
                 /** @var User $performer */
                 $performer = User::query()->find($performer_id);
+                $price = number_format($task->budget, 0, '.', ' ');
                 self::pushNotification($performer->firebase_token, [
                     'title' => __('Новая задания'),
-                    'body' => "\"$task->name\"  №$task->id"
+                    'body' => __('task_name  №task_id с бюджетом до task_budget', [
+                        'task_name' => $task->name, 'task_id' => $task->id, 'budget' => $price])
                 ], 'notification', new NotificationResource($notification));
 
                 if ($performer->sms_notification) {
@@ -179,8 +182,8 @@ class NotificationService
         ]);
 
         self::pushNotification($user->firebase_token, [
-            'title' => __('Выбрана задача'),
-            'body' => __('Смотрите подробности')
+            'title' => __('Отклик к заданию'),
+            'body' => __('Отклик к заданию task_name №task_id отправлен', ['task_name' => $task->name, 'task_id' => $task->id])
         ], 'notification', new NotificationResource($notification));
         return true;
     }
