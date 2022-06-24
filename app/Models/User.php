@@ -148,26 +148,21 @@ class User extends \TCG\Voyager\Models\User
         return false;
     }
 
+    public function compliances()
+    {
+        return $this->hasMany(Compliance::class);
+    }
+
     public static function boot ()
     {
         parent::boot();
 
         self::deleting(function (User $user) {
 
-            foreach ($user->tasks() as $task)
-            {
-                $task->delete();
-            }
-
-            foreach ($user->reviews() as $review)
-            {
-                $review->delete();
-            }
-
-            foreach ($user->portfolios() as $portfolio)
-            {
-                $portfolio->delete();
-            }
+            $user->tasks()->delete();
+            $user->reviews()->delete();
+            $user->portfolios()->delete();
+            $user->compliances()->delete();
 
             Notification::query()->where('user_id', $user->id)->orWhere('performer_id', $user->id)->delete();
 

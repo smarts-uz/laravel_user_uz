@@ -99,16 +99,22 @@ class Task extends Model
         return $this->hasMany(TaskResponse::class);
     }
 
+    public function compliances()
+    {
+        return $this->hasMany(Compliance::class);
+    }
+
     public static function boot ()
     {
         parent::boot();
 
         self::deleting(function (Task $task) {
 
-            foreach ($task->responses() as $response)
-            {
-                $response->delete();
-            }
+            $task->responses()->delete();
+            $task->custom_field_values()->delete();
+            $task->addresses()->delete();
+            $task->reviews()->delete();
+            $task->compliances()->delete();
 
             Notification::query()->where('task_id', $task->id)->delete();
         });
