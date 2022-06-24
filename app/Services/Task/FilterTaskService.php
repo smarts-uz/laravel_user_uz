@@ -9,7 +9,20 @@ use App\Models\Task;
 class FilterTaskService
 {
 
-
+    /**
+     * Filter tasks with the parameters shown below
+     * - latitude, longitude, difference // filter with location
+     * - categories // filter with task categories
+     * - child_categories // filter with task child categories
+     * - budget // filter with budget amount
+     * - is_remote // filter with task can be work remotely
+     * - without_response // filter with task does not have responses
+     * - search // filter task by name, description, phone, budget by LIKE operator
+     *
+     *
+     * @param $data
+     * @return string
+     */
     public function filter($data)
     {
         $tasks = Task::query()->where('status', '=',Task::STATUS_OPEN);
@@ -54,9 +67,9 @@ class FilterTaskService
                 $tasks->whereDoesntHave('responses');
         }
 
-        if (isset($data['search']))
+        if (isset($data['s']))
         {
-            $s = $data['search'];
+            $s = $data['s'];
             $tasks->where('name','like',"%$s%")
                 ->orWhere('description', 'like',"%$s%")
                 ->orWhere('phone', 'like',"%$s%")

@@ -10,6 +10,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Services\NotificationService;
 use App\Services\SmsTextService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 
 class CreateService
@@ -19,12 +20,12 @@ class CreateService
      *
      * Function  attachCustomFields
      * Mazkur metod Task yaratishda  nom kiritadigan joyni ochib beradi
-     * @param Request $request Task Object
-     *
+     * @param $request
+     * @return View
      */
-    public function name($request)
+    public function name($request): View
     {
-        $current_category = Category::findOrFail($request->category_id);
+        $current_category = Category::query()->findOrFail($request->category_id);
         return view("create.name", compact('current_category'));
     }
     /**
@@ -34,7 +35,7 @@ class CreateService
      * @param Task $task Task Object
      *
      */
-    public function syncCustomFields(Task $task)
+    public function syncCustomFields(Task $task): void
     {
         $task->custom_field_values()->delete();
         $this->attachCustomFields($task);
@@ -50,7 +51,7 @@ class CreateService
      *
      */
 
-    public function attachCustomFields(Task $task)
+    public function attachCustomFields(Task $task): void
     {
         foreach ($task->category->custom_fields as $data) {
             $value = new CustomFieldsValue();
@@ -65,22 +66,24 @@ class CreateService
      *
      * Function  delete
      * Mazkur metod Taskni o'chirib tashlaydi
-     * @param  $task Object
+     * @param  $task
      *
      */
-    public function delete($task)
+    public function delete($task): void
     {
         $task->status = Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
         $task->save();
     }
+
     /**
      *
      * Function  attachCustomFieldsByRoute
      * Mazkur metod Task obyektiga address qo'shish
-     * @param  $routeName Object
-     *
+     * @param $task
+     * @param  $routeName
+     * @param $request
      */
-    public function attachCustomFieldsByRoute($task, $routeName, $request)
+    public function attachCustomFieldsByRoute($task, $routeName, $request): void
     {
         foreach ($task->category->custom_fields()->where('route', $routeName)->get() as $data) {
             $value = $task->custom_field_values()->where('custom_field_id', $data->id)->first() ?? new CustomFieldsValue();
@@ -96,10 +99,11 @@ class CreateService
      *
      * Function  addAdditionalAddress
      * Mazkur metod Task obyektiga address qo'shish
-     * @param $requestAll Task Object
-     *
+     * @param $task
+     * @param $requestAll
+     * @return mixed
      */
-    public function addAdditionalAddress($task, $requestAll)
+    public function addAdditionalAddress($task, $requestAll): mixed
     {
         $data_inner = [];
         $dataMain = Arr::get($requestAll, 'coordinates0', '');
@@ -117,7 +121,7 @@ class CreateService
                 $data_inner['longitude'] = explode(',', $coordinates)[1];
                 $data_inner['latitude'] = explode(',', $coordinates)[0];
                 $data_inner['task_id'] = $task->id;
-                Address::create($data_inner);
+                Address::query()->create($data_inner);
             }
         }
         return $dataMain;
@@ -128,12 +132,13 @@ class CreateService
      * Function  perform_notif
      * Mazkur metod Task yaratganda notification va sms yuborish
      * @param $task $user
-     *
+     * @param $user
      */
     public function perform_notif($task,$user){
         $performer_id = session()->get('performer_id_for_task');
         if ($performer_id) {
-            $performer = User::query()->find($performer_id);
+            /** @var User $performer */
+            $performer = User::query()->findOrFail($performer_id);
             $text_url = route("searchTask.task", $task->id);
             $text = "Заказчик предложил вам новую задания $text_url. Имя заказчика: " . $user->name;
             $phone_number=$performer->phone_number;;

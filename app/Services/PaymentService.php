@@ -6,6 +6,12 @@ use App\Models\All_transaction;
 
 class PaymentService
 {
+    /**
+     * Save click transaction to database and return click pay page url with params
+     *
+     * @param $amount
+     * @return string
+     */
     public static function clickTransaction($amount)
     {
         All_transaction::create([
@@ -22,6 +28,12 @@ class PaymentService
         return "https://my.click.uz/services/pay?service_id=$service_id&merchant_id=$merchant_id&amount=$amount.00&transaction_param=$transaction_param&return_url=$return_url";
     }
 
+    /**
+     * Save payme transaction to database and return transaction object
+     *
+     * @param $amount
+     * @return mixed
+     */
     public static function paymeTransaction($amount)
     {
         return All_transaction::create([
