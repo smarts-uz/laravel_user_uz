@@ -5,6 +5,7 @@ namespace App\Services\Task;
 
 use App\Models\Category;
 use App\Models\Task;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class FilterTaskService
 {
@@ -21,9 +22,9 @@ class FilterTaskService
      *
      *
      * @param $data
-     * @return string
+     * @return LengthAwarePaginator
      */
-    public function filter($data)
+    public function filter($data): LengthAwarePaginator
     {
         $tasks = Task::query()->where('status', '=',Task::STATUS_OPEN);
 

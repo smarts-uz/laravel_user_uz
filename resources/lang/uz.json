@@ -180,7 +180,7 @@
     "Вы находитесь в разделе исполнителей U-Ser.": "Siz U-SER SERICTERS bo'limidasiz.",
     "Вы предложили задание исполнителю": "Siz vazifani bajaruvchiga taklif qildingiz",
     "Вы сможете выбрать подходящего исполнителя, по разным критериям:": "Turli mezonlar bo'yicha siz to'g'ri rassomni tanlashingiz mumkin:",
-    "Вы успешно связали свой аккаунт Feecbook": "Siz sizning feecbook hisobingizni muvaffaqiyatli bog'ladingiz",
+    "Вы успешно связали свой аккаунт Facebook": "Siz sizning facecbook hisobingizni muvaffaqiyatli bog'ladingiz",
     "Вы успешно связали свой аккаунт Google": "Siz Google hisobingizni muvaffaqiyatli bog'ladingiz",
     "Выберите бюджет": "Byudjetni tanlang",
     "Выберите город": "Shaharni tanlang",
@@ -664,6 +664,7 @@
     "Код отправлен!": "Kod jo'natildi!",
     "Ваша ссылка для подтверждения успешно отправлена!": "Tasdiqlash havolasi muvaffaqiyatli yuborildi!",
     "Пользователь с такой почтой уже существует!": "Bunday emailga ega foydalanuvchi allaqachon mavjud!",
+    "Неправильный код!": "Noto'g'ri kod!",
 
     "Your Email have successfully verified": "Sizning elektron pochtangiz muvaffaqiyatli tekshirildi",
     "phone_number": "telefon raqami",
