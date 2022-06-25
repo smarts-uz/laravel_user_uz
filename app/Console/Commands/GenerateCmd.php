@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace Joy\VoyagerApi\Console\Commands;
 
 use TCG\Voyager\Models\DataRow;
 use cebe\openapi\spec\OpenApi;
@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class GenerateCmd extends Command
+class GenerateDocsCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -1271,22 +1271,32 @@ class GenerateCmd extends Command
 
         $apiDocsData        = json_decode($apiDocs, true);
         $voyagerApiDocsData = json_decode($voyagerApiDocs, true);
+        $pustoy = json_decode($apiDocs, true);
 
-        $apiDocsData['paths'] = array_merge(
-            $apiDocsData['paths'],$voyagerApiDocsData['paths']
+
+
+        $pustoy['paths'] = array_merge(
+            $voyagerApiDocsData['paths']
         );
 
-        $apiDocsData['components']['schemas'] = array_merge(
+        foreach ($apiDocsData['paths'] as $key => $item) {
+            $pustoy['paths'][] = $item;
+        }
+
+
+
+        $pustoy['components']['schemas'] = array_merge(
+            $voyagerApiDocsData['components']['schemas'] ?? [],
             $apiDocsData['components']['schemas'] ?? [],
-            $voyagerApiDocsData['components']['schemas'] ?? []
         );
 
-        $apiDocsData['components']['requestBodies'] = array_merge(
+
+
+        $pustoy['components']['requestBodies'] = array_merge(
+            $voyagerApiDocsData['components']['requestBodies'] ?? [],
             $apiDocsData['components']['requestBodies'] ?? [],
-            $voyagerApiDocsData['components']['requestBodies'] ?? []
         );
 
-
-        file_put_contents($apiDocsPath, json_encode($apiDocsData, JSON_PRETTY_PRINT));
+        file_put_contents($apiDocsPath, json_encode($pustoy, JSON_PRETTY_PRINT));
     }
 }
