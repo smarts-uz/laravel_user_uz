@@ -1271,8 +1271,8 @@ class GenerateDocsCommand extends Command
 
         $apiDocsData        = json_decode($apiDocs, true);
         $voyagerApiDocsData = json_decode($voyagerApiDocs, true);
+        //intern
         $pustoy = json_decode($apiDocs, true);
-
 
 
         $pustoy['paths'] = array_merge(
