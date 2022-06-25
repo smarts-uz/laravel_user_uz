@@ -163,4 +163,15 @@ class NotificationController extends VoyagerBaseController
             return response()->json(['success' => true, 'data' => $data]);
         }
     }
+
+    public function count()
+    {
+        $count = NotificationService::getNotifications(auth()->user())->count();
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'count' => $count
+            ]
+        ]);
+    }
 }

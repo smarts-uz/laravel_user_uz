@@ -65,6 +65,7 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('update-task/{task}/verify', [TaskAPIController::class, 'updateVerify']); // used
 
     Route::get('/notifications', [NotificationController::class, 'getNotifications']); //used
+    Route::get('/count/notifications', [NotificationController::class, 'count']);
     Route::post('/read-notification/{notification}', [NotificationController::class, 'read_notification']); //used
 
     Route::get('/my-tasks-count', [TaskAPIController::class, 'my_tasks_count']); // used
