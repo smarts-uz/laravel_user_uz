@@ -73,7 +73,6 @@ class FilterTaskService
             $s = $data['s'];
             $tasks->where('name','like',"%$s%")
                 ->orWhere('description', 'like',"%$s%")
-                ->orWhere('phone', 'like',"%$s%")
                 ->orWhere('budget', 'like',"%$s%");
         }
 
