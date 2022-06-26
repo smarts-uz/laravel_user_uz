@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class image_upload_uppy extends Component
+class laravelUppy extends Component
 {
     /**
      * Create a new component instance.
@@ -24,6 +24,6 @@ class image_upload_uppy extends Component
      */
     public function render()
     {
-        return view('components.image_upload_uppy');
+        return view('components.laravelUppy');
     }
 }

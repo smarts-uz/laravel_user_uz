@@ -50,6 +50,6 @@
 
     <script src="{{ asset('js/profile/create_port.js') }}"></script>
 
-    <x-image_upload_uppy route="{{route('profile.UploadImage')}}"/>
+    <x-laravelUppy route="{{route('profile.UploadImage')}}"/>
 
 @endsection
