@@ -105,7 +105,7 @@
         </div>
 
     </form>
-    <x-image_upload_uppy/>
+    <x-image_upload_uppy route="{{route('task.create.images.store', $task->id)}}"/>
 @endsection
 
 @section("javascript")

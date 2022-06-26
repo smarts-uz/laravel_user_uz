@@ -11,9 +11,10 @@ class image_upload_uppy extends Component
      *
      * @return void
      */
-    public function __construct()
+    public $route;
+    public function __construct($route)
     {
-        //
+        $this->route = $route;
     }
 
     /**

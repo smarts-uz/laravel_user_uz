@@ -1,3 +1,6 @@
+<script src="https://releases.transloadit.com/uppy/v2.4.1/uppy.min.js"></script>
+<script src="https://releases.transloadit.com/uppy/v2.4.1/uppy.legacy.min.js" nomodule></script>
+<script src="https://releases.transloadit.com/uppy/locales/v2.0.5/ru_RU.min.js"></script>
 <script>
     var uppy = new Uppy.Core()
         .use(Uppy.Dashboard, {
@@ -18,7 +21,7 @@
 
         .use(Uppy.ImageEditor, {target: Uppy.Dashboard})
         .use(Uppy.XHRUpload, {
-            endpoint: '{{route('task.create.images.store', $task->id)}}',
+            endpoint: '{{$route}}',
             fieldName: 'images[]',
             method: 'post',
             bundle: true,
@@ -42,6 +45,4 @@
         console.log('successful files:', result.successful)
     });
 </script>
-<script src="https://releases.transloadit.com/uppy/v2.4.1/uppy.min.js"></script>
-<script src="https://releases.transloadit.com/uppy/v2.4.1/uppy.legacy.min.js" nomodule></script>
-<script src="https://releases.transloadit.com/uppy/locales/v2.0.5/ru_RU.min.js"></script>
+

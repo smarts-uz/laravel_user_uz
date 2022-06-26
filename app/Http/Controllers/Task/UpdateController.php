@@ -52,7 +52,7 @@ class UpdateController extends Controller
         }
         $task->update($note);
         $this->service->syncCustomFields($task);
-        Alert::success('Success');
+        Alert::success(__('Изменения сохранены'));
 
         return redirect()->route('searchTask.task', $task->id);
     }
@@ -79,7 +79,7 @@ class UpdateController extends Controller
         ChMessage::query()->where('to_id', $task->user_id)->where('from_id', $task->performer_id)->delete();
 
         $task->update($data);
-        Alert::success('Success');
+        Alert::success(__('Успешно сохранено'));
         return back();
 
     }
@@ -87,7 +87,7 @@ class UpdateController extends Controller
     public function not_completed(Task $task)
     {
         $task->update(['status' => Task::STATUS_NOT_COMPLETE]);
-        Alert::success('Success');
+        Alert::success(__('Успешно сохранено'));
         return back();
     }
 
