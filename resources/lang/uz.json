@@ -400,7 +400,7 @@
     "Отзывы появятся после того, как вы создадите или выполните задание": "Sharhlar siz vazifani yaratganingizdan yoki tugatgandan so'ng paydo bo'ladi",
     "Отзывы:": "Sharhlar:",
     "Отклик к заданию": "Vazifaga javob",
-    "Отклик к заданию task_name №task_id отправлен": "\":task_name\" №:task_id vazifaga javob jo'natildi",
+    "task_name №task_id отправлен": "\":task_name\" №:task_id vazifaga javob jo'natildi",
     "Откликнуться": "Javob bermoq",
     "Откликнуться за": "Respond after",
     "Откликнуться за ": " Vazifani olish",
@@ -671,7 +671,7 @@
     "phone_number": "telefon raqami",
     "Congrats": "Tabriklamoq",
     "Новое задание для вас, успейте откликнуться.": "Siz uchun yangi vazifa, javob berishga vaqtingiz bor.",
-    "task_name  №task_id с бюджетом до task_budget": "\":task_name\"  №:task_id :budget gacha bo'lgan byudjet bilan",
+    "task_name  №task_id с бюджетом до task_budget": "\":task_name\"  №:task_id :budget so'mgacha bo'lgan byudjet bilan",
     "Выбрана задача": "Vazifa tanlandi",
     "Аккаунт отключен": "Foydalanuvchi o'chirilgan"
 }
