@@ -11,7 +11,7 @@
             "description": "Primary API Server"
         },
         {
-            "url": "http:\/\/servboxvoyager",
+            "url": "https:\/\/my-default-host.com",
             "description": "Another API Server"
         }
     ],
@@ -39,126 +39,15 @@
         "\/api\/categories": {
             "get": {
                 "tags": [
-                    "Core | categories"
+                    "CategoryAPI"
                 ],
-                "summary": "categories index",
-                "operationId": "categories_index",
+                "summary": "Get list of Category",
+                "operationId": "f923daf680ac66deb18bd56437ca2a23",
                 "parameters": [
                     {
-                        "name": "q",
+                        "name": "lang",
                         "in": "query",
-                        "description": "Global search",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "length",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "order_by",
-                        "in": "query",
-                        "description": "Sort by column",
-                        "required": false,
-                        "schema": {
-                            "enum": [
-                                "id",
-                                "parent_id",
-                                "order",
-                                "name",
-                                "custom_route_title",
-                                "max",
-                                "min",
-                                "slug",
-                                "created_at",
-                                "updated_at",
-                                "ico",
-                                "double_address",
-                                "remote"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "sort_order",
-                        "in": "query",
-                        "description": "Sort by direction",
-                        "required": false,
-                        "schema": {
-                            "enum": [
-                                "asc",
-                                "desc"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[id]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "example": "10,,20"
-                        }
-                    },
-                    {
-                        "name": "filters[name]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[order]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[ico]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[max]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[double_address]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[remote]",
-                        "in": "query",
-                        "required": false,
+                        "required": true,
                         "schema": {
                             "type": "string"
                         }
@@ -166,28 +55,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#\/components\/schemas\/VoyagerCategoriesBrowseResource"
-                                            }
-                                        },
-                                        "links": {
-                                            "$ref": "#\/components\/schemas\/Links"
-                                        },
-                                        "meta": {
-                                            "$ref": "#\/components\/schemas\/Meta"
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        "description": "Successful operation"
                     },
                     "401": {
                         "description": "Unauthenticated"
@@ -195,50 +63,7 @@
                     "403": {
                         "description": "Forbidden"
                     }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            },
-            "post": {
-                "tags": [
-                    "Core | categories"
-                ],
-                "summary": "categories store",
-                "operationId": "categories_store",
-                "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerCategoriesStoreRequest"
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerCategoriesReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
+                }
             }
         },
         "\/api\/category\/search": {
@@ -294,35 +119,23 @@
         "\/api\/categories\/{id}": {
             "get": {
                 "tags": [
-                    "Core | categories"
+                    "CategoryAPI"
                 ],
-                "summary": "categories show",
-                "operationId": "categories_show",
+                "summary": "Get category by show ID",
+                "operationId": "87e7cd6fb3ae11d4904e035f70299857",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerCategoriesReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        "description": "Successful operation"
                     },
                     "401": {
                         "description": "Unauthenticated"
@@ -330,105 +143,7 @@
                     "403": {
                         "description": "Forbidden"
                     }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            },
-            "post": {
-                "tags": [
-                    "Core | categories"
-                ],
-                "summary": "categories update",
-                "operationId": "categories_update",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerCategoriesUpdateRequest"
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerCategoriesReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": [
-                    "Core | categories"
-                ],
-                "summary": "categories delete",
-                "operationId": "categories_delete",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
+                }
             }
         },
         "\/api\/custom-field-by-category\/{category}": {
@@ -935,191 +650,13 @@
         "\/api\/reviews": {
             "get": {
                 "tags": [
-                    "Core | reviews"
+                    "Performers"
                 ],
-                "summary": "reviews index",
-                "operationId": "reviews_index",
-                "parameters": [
-                    {
-                        "name": "q",
-                        "in": "query",
-                        "description": "Global search",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "length",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "order_by",
-                        "in": "query",
-                        "description": "Sort by column",
-                        "required": false,
-                        "schema": {
-                            "enum": [
-                                "id",
-                                "user_id",
-                                "description",
-                                "good_bad",
-                                "reviewer_id",
-                                "task_id",
-                                "as_performer",
-                                "created_at",
-                                "updated_at",
-                                "reviewer_name",
-                                "deleted_at"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "sort_order",
-                        "in": "query",
-                        "description": "Sort by direction",
-                        "required": false,
-                        "schema": {
-                            "enum": [
-                                "asc",
-                                "desc"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "showSoftDeleted",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "boolean"
-                        }
-                    },
-                    {
-                        "name": "filters[user_id]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[description]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[good_bad]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[created_at]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
-                        }
-                    },
-                    {
-                        "name": "filters[reviewer_id]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[task_id]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Performer reviews",
+                "operationId": "39fe6b6c9cc58a3d62c2fcc1afb079a5",
                 "responses": {
                     "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#\/components\/schemas\/VoyagerReviewsBrowseResource"
-                                            }
-                                        },
-                                        "links": {
-                                            "$ref": "#\/components\/schemas\/Links"
-                                        },
-                                        "meta": {
-                                            "$ref": "#\/components\/schemas\/Meta"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            },
-            "post": {
-                "tags": [
-                    "Core | reviews"
-                ],
-                "summary": "reviews store",
-                "operationId": "reviews_store",
-                "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerReviewsStoreRequest"
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerReviewsReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        "description": "Successful operation"
                     },
                     "401": {
                         "description": "Unauthenticated"
@@ -4232,181 +3769,13 @@
         "\/api\/notifications": {
             "get": {
                 "tags": [
-                    "Core | notifications"
+                    "Notifications"
                 ],
-                "summary": "notifications index",
-                "operationId": "notifications_index",
-                "parameters": [
-                    {
-                        "name": "q",
-                        "in": "query",
-                        "description": "Global search",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "length",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "order_by",
-                        "in": "query",
-                        "description": "Sort by column",
-                        "required": false,
-                        "schema": {
-                            "enum": [
-                                "id",
-                                "created_at",
-                                "updated_at",
-                                "description",
-                                "user_id",
-                                "service_id",
-                                "task_id",
-                                "cat_id",
-                                "name_task",
-                                "type",
-                                "is_read",
-                                "performer_id",
-                                "notification_belongsto_user_relationship",
-                                "notification_hasmany_service_relationship"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "sort_order",
-                        "in": "query",
-                        "description": "Sort by direction",
-                        "required": false,
-                        "schema": {
-                            "enum": [
-                                "asc",
-                                "desc"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[created_at]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
-                        }
-                    },
-                    {
-                        "name": "filters[description]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[user_id]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[service_id]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[id][]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
-                            }
-                        }
-                    }
-                ],
+                "summary": "Get notifications",
+                "operationId": "955f0fc2425cb971c9b3bdd768fc2a04",
                 "responses": {
                     "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#\/components\/schemas\/VoyagerNotificationsBrowseResource"
-                                            }
-                                        },
-                                        "links": {
-                                            "$ref": "#\/components\/schemas\/Links"
-                                        },
-                                        "meta": {
-                                            "$ref": "#\/components\/schemas\/Meta"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            },
-            "post": {
-                "tags": [
-                    "Core | notifications"
-                ],
-                "summary": "notifications store",
-                "operationId": "notifications_store",
-                "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerNotificationsStoreRequest"
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerNotificationsReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        "description": "Successful operation"
                     },
                     "401": {
                         "description": "Unauthenticated"
