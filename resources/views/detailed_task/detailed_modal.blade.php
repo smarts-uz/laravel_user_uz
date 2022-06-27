@@ -140,7 +140,7 @@
      class="btn-preloader hidden overflow-x-hidden overflow-y-auto fixed h-modal md:h-full top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center">
     <div
         class="relative w-full max-w-md px-4 h-full md:h-auto">
-        @if(auth()->user()->phone_number == null)
+        @if(Auth::check() && auth()->user()->phone_number == null)
             <div
                 class="bg-white rounded-lg shadow relative dark:bg-gray-700">
                 <div class="flex justify-end p-2">

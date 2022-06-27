@@ -13,7 +13,7 @@
                     Illuminate\Support\Facades\Cache::get('user_viewed_tasks' . auth()->id()) ?? []
                     ))
                         <a href="/detailed-tasks/{{$task->id}}"
-                           class="sm:text-lg text-base font-semibold text-blue-300 hover:text-red-600">{{ $task->name }}</a>
+                           class="sm:text-lg text-base font-semibold text-gray-400 hover:text-red-600">{{ $task->name }}</a>
                 @else
                         <a href="/detailed-tasks/{{$task->id}}"
                            class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">{{ $task->name }}</a>

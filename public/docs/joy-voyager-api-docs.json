@@ -7,7 +7,7 @@
     },
     "servers": [
         {
-            "url": "http:\/\/myyoudo.test",
+            "url": "https:\/\/user.uz",
             "description": "Primary API Server"
         }
     ],

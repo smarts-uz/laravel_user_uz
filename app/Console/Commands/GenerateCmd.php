@@ -1271,32 +1271,28 @@ class GenerateDocsCommand extends Command
 
         $apiDocsData        = json_decode($apiDocs, true);
         $voyagerApiDocsData = json_decode($voyagerApiDocs, true);
-        //intern
-        $pustoy = json_decode($apiDocs, true);
+        $newApiDocsData = json_decode($apiDocs, true);
 
+        $newApiDocsData['components']['requestBodies'] = array_merge(
+            $apiDocsData['components']['requestBodies'] ?? [],
+            $voyagerApiDocsData['components']['requestBodies'] ?? []
+        );
 
-        $pustoy['paths'] = array_merge(
+        $newApiDocsData['components']['schemas'] = array_merge(
+            $apiDocsData['components']['schemas'] ?? [],
+            $voyagerApiDocsData['components']['schemas'] ?? []
+
+        );
+
+        $newApiDocsData['paths'] = array_merge(
+            $apiDocsData['paths'],
             $voyagerApiDocsData['paths']
         );
 
         foreach ($apiDocsData['paths'] as $key => $item) {
-            $pustoy['paths'][] = $item;
+            $newApiDocsData['paths'][$key] = $item;
         }
 
-
-
-        $pustoy['components']['schemas'] = array_merge(
-            $voyagerApiDocsData['components']['schemas'] ?? [],
-            $apiDocsData['components']['schemas'] ?? [],
-        );
-
-
-
-        $pustoy['components']['requestBodies'] = array_merge(
-            $voyagerApiDocsData['components']['requestBodies'] ?? [],
-            $apiDocsData['components']['requestBodies'] ?? [],
-        );
-
-        file_put_contents($apiDocsPath, json_encode($pustoy, JSON_PRETTY_PRINT));
+        file_put_contents($apiDocsPath, json_encode($newApiDocsData, JSON_PRETTY_PRINT));
     }
 }

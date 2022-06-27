@@ -279,11 +279,10 @@
                     <h1 class="text-xl font-semibold py-2">{{__('Ваши контакты')}}</h1>
                     <input id="phone_number"
                            class="text-base border border-gray-200 md:w-1/2 focus:outline-none focus:border-yellow-500 py-2 px-3 rounded-md"
-                           type="text" value="{{ old('phone')??$task->phone }}"
+                           type="text" value="{{ old('phone')??$task->phone }}" name="phone"
                            placeholder="+998(00)000-00-00">
-                    <input type="hidden" id="phone" name="phone" value="{{ old('phone')??$task->phone }}">
                     @error('phone')
-                    <p class="text-red-500">{{ $message }}</p>
+                        <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="text-base my-5 mt-8">
@@ -302,30 +301,20 @@
 
     </form>
 
-
+    <x-laravelUppy route="{{route('task.create.images.store', $task->id)}}"/>
     <script src='https://unpkg.com/imask'></script>
     <script id="map_api"
             src="https://api-maps.yandex.ru/2.1/?apikey=f4b34baa-cbd1-432b-865b-9562afa3fcdb&lang={{__('ru_RU')}}"
             type="text/javascript">
     </script>
-    <script src="https://releases.transloadit.com/uppy/v2.4.1/uppy.min.js"></script>
-    <script src="https://releases.transloadit.com/uppy/v2.4.1/uppy.legacy.min.js" nomodule></script>
-    <script src="https://releases.transloadit.com/uppy/locales/v2.0.5/ru_RU.min.js"></script>
-
     <script src="{{ asset('js/changetask.js') }}"></script>
-
     <script>
-
-
-
         function ch_task(){
-            {{--@php $host = request()->getHost();@endphp--}}
             var settings = {
                 "url": "{{ route('task.map', $task->id) }}",
                 "method": "GET",
                 "timeout": 0,
             };
-
             $.ajax(settings).done(function (response){
                 ajax_location = response;
                 // console.log(ajax_location);
@@ -382,55 +371,6 @@
                 }
             })
         });
-
-        $("#phone_number").keyup(function () {
-            var text = $(this).val()
-            text = text.replace(/[^0-9.]/g, "")
-            $("#phone").val('+'+text)
-        })
-        var uppy = new Uppy.Core()
-            .use(Uppy.Dashboard, {
-                trigger: '.UppyModalOpenerBtn',
-                inline: true,
-                target: '#photos',
-                showProgressDetails: true,
-                allowedFileTypes: ['image/*'],
-                debug: true,
-                note: 'Все типы файлов, до 10 МБ',
-                height: 400,
-                metaFields: [
-                    {id: 'name', name: 'Name', placeholder: 'file name'},
-                    {id: 'caption', name: 'Caption', placeholder: 'describe what the image is about'}
-                ],
-                browserBackButtonClose: true
-            })
-
-            .use(Uppy.ImageEditor, {target: Uppy.Dashboard})
-            .use(Uppy.XHRUpload, {
-                endpoint: '{{route('task.create.images.store', $task->id)}}',
-                fieldName: 'images[]',
-                method: 'post',
-                bundle: true,
-            });
-
-        uppy.on('upload-success', (file, response) => {
-            const httpStatus = response.status // HTTP status code
-            const httpBody = response.body   // extracted response data
-
-        });
-
-
-        uppy.on('file-added', (file) => {
-            uppy.setFileMeta(file.id, {
-                size: file.size,
-
-            })
-            console.log(file.name);
-        });
-        uppy.on('complete', result => {
-            console.log('successful files:', result.successful)
-        });
-
         flatpickr.localize(flatpickr.l10ns.uz_latn);
         flatpickr.localize(flatpickr.l10ns.ru);
         flatpickr(".flatpickr",
