@@ -174,7 +174,7 @@ class NotificationService
             'task_id' => $task->id,
             "cat_id" => $task->category_id,
             "name_task" => $task->name,
-            "type" => Notification::TASK_SELECTED
+            "type" => Notification::RESPONSE_TO_TASK
         ]);
 
         self::sendNotificationRequest([$user->id], [
