@@ -84,20 +84,56 @@
                             @endif
                         @endforeach
                     </div>
-                    @if($task->custom_field_values != '[]')
-                        <div class="ml-4 md:ml-12 flex flex-row mt-8">
-                            <h1 class="font-bold h-auto w-48">{{__('Какие параметры посылки?')}}</h1>
-                            <div class="flex flex-wrap gap-x-2">
-                                @foreach($task->custom_field_values as $value)
-                                    @if($value->value &&  $value->custom_field)
-                                        <h1 class="ml-4">
-                                            {{ $value->custom_field->getTranslatedAttribute('label')  }}: {{ json_decode($value->value)[0]  }}
-                                        </h1>
-                                    @endif
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
+
+                        @foreach($task->custom_field_values as $value)
+                            @if($value->value &&  $value->custom_field)
+                                @switch($value->custom_field->type)
+                                    @case('input')
+                                        <div class="ml-4 md:ml-12 flex flex-row mt-8">
+                                            <h1 class="font-bold h-auto w-48">{{__('Параметры')}}</h1>
+                                            <div class="flex flex-wrap gap-x-2 h-auto w-full">
+                                                <h1 class="ml-4">
+                                                    {{ $value->custom_field->getTranslatedAttribute('label')  }}: {{ json_decode($value->value)[0]  }}
+                                                </h1>
+                                            </div>
+                                        </div>
+                                        @break
+                                    @case('checkbox')
+                                        <div class="ml-4 md:ml-12 flex flex-row mt-8">
+                                            <h1 class="font-bold h-auto w-48">{{ $value->custom_field->label }}</h1>
+                                            <div class=" h-auto w-full">
+                                                <p class="text-gray-800">
+                                                    {{ json_decode($value->value)[0]  }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        @break
+
+                                    @case('select')
+                                        <div class="ml-4 md:ml-12 flex flex-row mt-8">
+                                            <h1 class="font-bold h-auto w-48">{{ $value->custom_field->label}}</h1>
+                                            <div class=" h-auto w-full">
+                                                <p class="text-gray-800">
+                                                    {{ json_decode($value->value)[0] }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        @break
+
+                                    @case('radio')
+                                        <div class="ml-4 md:ml-12 flex flex-row mt-8">
+                                            <h1 class="font-bold h-auto w-48">{{ $value->custom_field->label }}</h1>
+                                            <div class=" h-auto w-full">
+                                                <p class="text-gray-800">
+                                                    {{ json_decode($value->value)[0] }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        @break
+                                @endswitch
+                            @endif
+                        @endforeach
+
                     @if($task->docs == 1)
                         <div class="ml-4 md:ml-12 flex flex-row mt-8">
                             <h1 class="font-bold h-auto w-48">{{__('Предоставил(а) документы')}}</h1>
@@ -107,4 +143,4 @@
                             <h1 class="font-bold h-auto w-48">{{__('Не предоставил(а) документы')}}</h1>
                         </div>
                     @endif
-                    
+

@@ -102,12 +102,14 @@
                     <div>
                         <div name="glassSht" class="mb-3 xl:w-full">
                             @foreach($data->options['options'] as $key => $option)
-                                <input type="radio">
-                                @if(App\Services\Task\CustomFieldService::showOptions($task, $data->id, $key, $option))
-                                    checked
-                                @endif
-                                id="radio_{{$key}}" name="{{$data->name}}[]"
-                                value="{{$option}}">
+                                <input type="radio"
+                                       @if(App\Services\Task\CustomFieldService::showOptions($task, $data->id, $key, $option))
+                                           checked
+                                       @endif
+                                       id="radio_{{$key}}" name="{{$data->name}}[]"
+                                       value="{{$option}}">
+
+
                                 <label for="radio_{{$key}}">{{$option}}</label>
                                 <br>
                                 <br>
