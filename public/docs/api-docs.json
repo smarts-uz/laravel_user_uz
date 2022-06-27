@@ -7,11 +7,11 @@
     },
     "servers": [
         {
-            "url": "http:\/\/myyoudo.test",
+            "url": "https:\/\/user.uz",
             "description": "Primary API Server"
         },
         {
-            "url": "http:\/\/my-default-host.com",
+            "url": "http:\/\/servboxvoyager",
             "description": "Another API Server"
         }
     ],
