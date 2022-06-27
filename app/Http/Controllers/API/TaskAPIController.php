@@ -465,7 +465,7 @@ class TaskAPIController extends Controller
         else
             $tasks = $tasks->where('status', '!=', 0);
 
-        return new TaskPaginationResource($tasks->paginate());
+        return new TaskPaginationResource($tasks->orderByDesc('created_at')->paginate());
     }
 
     /**
