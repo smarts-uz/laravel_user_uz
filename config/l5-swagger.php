@@ -39,7 +39,7 @@ return [
                  * Absolute paths to directory containing the swagger annotations are stored.
                 */
                 'annotations' => [
-                    base_path('app/Http/Controllers'),
+                    base_path('app'),
                     base_path('vendor/joy/*api*/src'),
                 ],
 
@@ -137,7 +137,7 @@ return [
              * @note This option overwrites `paths.excludes`
              * @see \OpenApi\scan
             */
-            'exclude' => ['vendor', 'storage'],
+            'exclude' => [],
         ],
 
         /*
@@ -247,8 +247,8 @@ return [
          * Uncomment to add constants which can be used in annotations
          */
         'constants' => [
-            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'https://my-default-host.com'),
-            'L5_SWAGGER_CONST_HOST2' => env('L5_SWAGGER_CONST_HOST2', 'https://my-default-host.com'),
+            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://my-default-host.com'),
+            'L5_SWAGGER_CONST_HOST2' => env('L5_SWAGGER_CONST_HOST2', 'http://my-default-host.com'),
             'APP_NAME' => env('APP_NAME', 'Joy Voyager Api'),
         ],
     ],

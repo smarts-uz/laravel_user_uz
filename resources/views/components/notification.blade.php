@@ -55,7 +55,7 @@
                                 </a>
                             </div>
                         </div>
-                    @elseif($notification->type == \App\Models\Notification::TASK_SELECTED)
+                    @elseif($notification->type == \App\Models\Notification::RESPONSE_TO_TASK)
                         <div class="w-full flex flex-row gap-x-4">
                             <i class="fas fa-check-circle text-yellow-500 text-xl"></i>
                             <div>

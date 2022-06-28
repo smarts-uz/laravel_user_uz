@@ -143,7 +143,7 @@ class NotificationService
     }
 
     /**
-     * Send news, system notifications by websocket and firebase
+     * Function for use send websocket notification by user ids
      *
      * @param $user_ids // User ids array
      * @param  $data
@@ -164,17 +164,17 @@ class NotificationService
      * @param $task // Task model object
      * @return bool
      */
-    public static function sendTaskSelectedNotification($task): bool
+    public static function sendResponseToTaskNotification($task): bool
     {
         /** @var User $user */
         $user = auth()->user();
         $notification = Notification::query()->create([
             'user_id' => $user->id,
-            'description' => $task->desciption ?? 'description',
+            'description' => $task->desciption ?? 'task description',
             'task_id' => $task->id,
             "cat_id" => $task->category_id,
             "name_task" => $task->name,
-            "type" => Notification::TASK_SELECTED
+            "type" => Notification::RESPONSE_TO_TASK
         ]);
 
         self::sendNotificationRequest([$user->id], [
@@ -183,7 +183,7 @@ class NotificationService
 
         self::pushNotification($user->firebase_token, [
             'title' => __('Отклик к заданию'),
-            'body' => __('Отклик к заданию task_name №task_id отправлен', ['task_name' => $task->name, 'task_id' => $task->id])
+            'body' => __('task_name №task_id отправлен', ['task_name' => $task->name, 'task_id' => $task->id])
         ], 'notification', new NotificationResource($notification));
         return true;
     }

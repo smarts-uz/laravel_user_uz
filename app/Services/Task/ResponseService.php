@@ -74,7 +74,7 @@ class ResponseService
                 }
 
 
-                NotificationService::sendTaskSelectedNotification($task);
+                NotificationService::sendResponseToTaskNotification($task);
             }
         } else {
             $success = false;
