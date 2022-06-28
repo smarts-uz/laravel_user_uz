@@ -360,6 +360,8 @@
     "Нет отзывов": "Ko'rib chiqishlar yo'q",
     "Нет оценок": "Hech qanday baholashlar yo'q",
     "Новая задания": "Yangi vazifa",
+    "Новый отзыв": "Yangi sharh",
+    "Новый отклик": "Новый отклик",
     "Смотрите подробности": "Tafsilotlarni ko'rish",
     "Новый пароль": "Новый пароль",
     "Номер телефона": "Telefon raqami",
@@ -367,6 +369,7 @@
     "Номер телефона и Е-mail пользователя подтверждены": "Foydalanuvchi telefon raqami va elektron pochta tasdiqlanadi",
     "Нужно": "Ehtiyoj",
     "Нужно присутствие по адресу": "Manzilda sizga mavjud bo'lish kerak",
+    "О вас оставлен новый отзыв": "Siz haqingizda yangi sharh qoldirildi",
     "Обо мне": "Men haqimda",
     "Обращайте внимание на проверенных исполнителей.": "Ishonchli ijrochilarga e'tibor bering.",
     "Общие вопросы": "Umumiy muammolar",
@@ -672,6 +675,7 @@
     "Congrats": "Tabriklamoq",
     "Новое задание для вас, успейте откликнуться.": "Siz uchun yangi vazifa, javob berishga vaqtingiz bor.",
     "task_name  №task_id с бюджетом до task_budget": "\":task_name\"  №:task_id :budget so'mgacha bo'lgan byudjet bilan",
+    "performer откликнулся на задания task_name": "\":task_name\" vazifaga \":performer\" javob qildi",
     "Выбрана задача": "Vazifa tanlandi",
     "Аккаунт отключен": "Foydalanuvchi o'chirilgan"
 }

@@ -28,11 +28,12 @@ class ReviewService
             'description' => $request->comment,
             'good_bad' => $request->good,
             'task_id' => $task->id,
-            'reviewer_id' => auth()->id(),
+            'reviewer_id' => $task->user_id,
             'user_id' => $task->performer_id,
         ]);
         $notification = Notification::create([
             'user_id' => $task->user_id,
+            'performer_id' => $task->performer_id,
             'task_id' => $task->id,
             'name_task' => $task->name,
             'description' => 1,

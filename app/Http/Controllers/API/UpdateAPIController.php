@@ -150,14 +150,14 @@ class UpdateAPIController extends Controller
 
                 $notification = ReviewService::userReview($task, $request);
                 NotificationService::pushNotification($task->user->firebase_token, [
-                    'title' => 'New review', 'body' => 'See details'
+                    'title' => __('Новый отзыв'), 'body' => __('О вас оставлен новый отзыв')
                 ], 'notification', new NotificationResource($notification));
 
             } elseif ($task->performer_id == auth()->id()) {
 
                 $notification = ReviewService::performerReview($task, $request);
                 NotificationService::pushNotification($task->user->firebase_token, [
-                    'title' => 'New review', 'body' => 'See details'
+                    'title' => __('Новый отзыв'), 'body' => __('О вас оставлен новый отзыв')
                 ], 'notification', new NotificationResource($notification));
 
             }

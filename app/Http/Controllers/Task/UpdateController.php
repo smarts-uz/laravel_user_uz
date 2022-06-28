@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\UpdateRequest;
+use App\Http\Resources\NotificationResource;
 use App\Models\Chat\ChMessage;
 use App\Models\Notification;
 use App\Models\Task;
 use App\Models\Review;
 use App\Models\User;
 use App\Services\NotificationService;
+use App\Services\Task\ReviewService;
 use Illuminate\Http\Request;
 use App\Services\Task\CreateService;
 use Illuminate\Support\Facades\DB;
@@ -94,64 +96,25 @@ class UpdateController extends Controller
     public function sendReview(Task $task, Request $request)
     {
         taskGuard($task);
-// performer review to user
+
         try {
             if ($task->user_id == auth()->id()) {
-                $task->status = Task::STATUS_COMPLETE;
-                $task->save();
+                // user review to performer
+                $request['status'] = 1;
+                $notification = ReviewService::userReview($task, $request);
+                NotificationService::pushNotification($task->user->firebase_token, [
+                    'title' => __('Новый отзыв'), 'body' => __('О вас оставлен новый отзыв')
+                ], 'notification', new NotificationResource($notification));
 
-                ChMessage::query()->where('from_id', $task->user_id)->where('to_id', $task->performer_id)->delete();
-                ChMessage::query()->where('to_id', $task->user_id)->where('from_id', $task->performer_id)->delete();
-
-                $performer = User::find($task->performer_id);
-                if ($request->good == 1) {
-                    $performer->increment('review_good');
-                } else {
-                    $performer->increment('review_bad');
-                }
-                $performer->increment('reviews');
-                Review::create([
-                    'description' => $request->comment,
-                    'good_bad' => $request->good,
-                    'task_id' => $task->id,
-                    'reviewer_id' => $task->user_id,
-                    'user_id' => $task->performer_id,
-                ]);
-                Notification::create([
-                    'user_id' => $task->user_id,
-                    'performer_id' => $task->performer_id,
-                    'task_id' => $task->id,
-                    'name_task' => $task->name,
-                    'description' => 1,
-                    'type' => Notification::SEND_REVIEW
-                ]);
-                NotificationService::sendNotificationRequest([$task->performer_id], [
-                    'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
-                ]);
             } elseif ($task->performer_id == auth()->id()) {
-                Review::query()->create([
-                    'description' => $request->comment,
-                    'good_bad' => $request->good,
-                    'task_id' => $task->id,
-                    'reviewer_id' => $task->performer_id,
-                    'user_id' => $task->user_id,
-                    'as_performer' => 1
-                ]);
-                Notification::create([
-                    'user_id' => $task->user_id,
-                    'performer_id' => $task->performer_id,
-                    'task_id' => $task->id,
-                    'name_task' => $task->name,
-                    'description' => 1,
-                    'type' => Notification::SEND_REVIEW_PERFORMER
-                ]);
-                NotificationService::sendNotificationRequest([$task->user_id], [
-                    'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
-                ]);
-                $task->performer_review = 1;
-                $task->save();
+                // performer review to user
+                $notification = ReviewService::performerReview($task, $request);
+                NotificationService::pushNotification($task->user->firebase_token, [
+                    'title' => __('Новый отзыв'), 'body' => __('О вас оставлен новый отзыв')
+                ], 'notification', new NotificationResource($notification));
+
             }
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             DB::rollBack();
         }
         return back();

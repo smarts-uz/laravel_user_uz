@@ -36,7 +36,7 @@ class NotificationService
                     ->orWhere(function ($query) use ($user) {
                         $query->where('user_id', '=', $user->id)->whereIn('type', [5, 8]);
                     });
-                // appda new task notificationlar listda korinmasligi kerak
+//                 appda new task notificationlar listda korinmasligi kerak
 //                if ($user->role_id == 2)
 //                    $query->orWhere(function ($query) use ($user) {
 //                        $query->where('performer_id', '=', $user->id)->where('type', '=', 1);
@@ -185,6 +185,26 @@ class NotificationService
             'title' => __('Отклик к заданию'),
             'body' => __('task_name №task_id отправлен', ['task_name' => $task->name, 'task_id' => $task->id])
         ], 'notification', new NotificationResource($notification));
+
+        $notification = Notification::query()->create([
+            'user_id' => $task->user_id,
+            'performer_id' => $user->id,
+            'description' => $task->desciption ?? 'task description',
+            'task_id' => $task->id,
+            "cat_id" => $task->category_id,
+            "name_task" => $task->name,
+            "type" => Notification::RESPONSE_TO_TASK_FOR_USER
+        ]);
+
+        self::sendNotificationRequest([$task->user_id], [
+            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+        ]);
+
+        self::pushNotification($task->user->firebase_token, [
+            'title' => __('Отклик к заданию'),
+            'body' => __('task_name №task_id отправлен', ['task_name' => $task->name, 'task_id' => $task->id])
+        ], 'notification', new NotificationResource($notification));
+
         return true;
     }
 
