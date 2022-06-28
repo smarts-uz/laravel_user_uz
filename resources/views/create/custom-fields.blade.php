@@ -20,12 +20,12 @@
                             class="shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
                             required
                     >
-                        @foreach($data->options['options'] as $key => $option)
+                        @foreach($data->options_ru['options'] as $key => $option)
                             <option
                                 @if(App\Services\Task\CustomFieldService::showOptions($task, $data->id, $key, $option))
                                     selected
                                 @endif
-                                value="{{ __($option) }}"
+                                value="{{ $option }}"
                             >
                                 {{ __($option) }}
                             </option>
@@ -64,7 +64,7 @@
                                                 checked
                                             @endif
                                             class="mr-2  h-4 w-4" type="checkbox"
-                                            value="{{ $option }}" name="custom_fields[]">
+                                            value="{{ $option }}" name="{{$data->name}}[]">
                                         <span class="text-slate-900">
                                             {{ __($option) }}
                                         </span>
@@ -101,7 +101,7 @@
                 <div id="formulario" class="flex flex-col gap-y-4">
                     <div>
                         <div name="glassSht" class="mb-3 xl:w-full">
-                            @foreach($data->options['options'] as $key => $option)
+                            @foreach($data->options_ru['options'] as $key => $option)
                                 <input type="radio"
                                        @if(App\Services\Task\CustomFieldService::showOptions($task, $data->id, $key, $option))
                                            checked
@@ -110,7 +110,7 @@
                                        value="{{$option}}">
 
 
-                                <label for="radio_{{$key}}">{{$option}}</label>
+                                <label for="radio_{{$key}}">{{ __($option) }}</label>
                                 <br>
                                 <br>
                             @endforeach
