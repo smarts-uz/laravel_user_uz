@@ -20,14 +20,14 @@
                             class="shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
                             required
                     >
-                        @foreach($data->options['options'] as $key => $option)
+                        @foreach($data->options_ru['options'] as $key => $option)
                             <option
                                 @if(App\Services\Task\CustomFieldService::showOptions($task, $data->id, $key, $option))
                                     selected
                                 @endif
-                                value="{{$option}}"
+                                value="{{ $option }}"
                             >
-                                {{$option}}
+                                {{ __($option) }}
                             </option>
                         @endforeach
                     </select>
@@ -57,16 +57,16 @@
                     <div>
                         <div class="mb-3 xl:w-full">
                             @if(array_key_exists('options', $data->options))
-                                @foreach($data->options['options'] as $key => $option)
+                                @foreach($data->options_ru['options'] as $key => $option)
                                     <label class="md:w-2/3 block mt-6">
                                         <input
                                             @if(App\Services\Task\CustomFieldService::showOptions($task, $data->id, $key, $option))
                                                 checked
                                             @endif
                                             class="mr-2  h-4 w-4" type="checkbox"
-                                            value="{{$option}}" name="{{$data->name}}[]">
-                                        <span class="text-slate-900">67
-                                            {{$option}}
+                                            value="{{ $option }}" name="{{$data->name}}[]">
+                                        <span class="text-slate-900">
+                                            {{ __($option) }}
                                         </span>
                                     </label>
                                 @endforeach
@@ -101,7 +101,7 @@
                 <div id="formulario" class="flex flex-col gap-y-4">
                     <div>
                         <div name="glassSht" class="mb-3 xl:w-full">
-                            @foreach($data->options['options'] as $key => $option)
+                            @foreach($data->options_ru['options'] as $key => $option)
                                 <input type="radio"
                                        @if(App\Services\Task\CustomFieldService::showOptions($task, $data->id, $key, $option))
                                            checked
@@ -110,7 +110,7 @@
                                        value="{{$option}}">
 
 
-                                <label for="radio_{{$key}}">{{$option}}</label>
+                                <label for="radio_{{$key}}">{{ __($option) }}</label>
                                 <br>
                                 <br>
                             @endforeach
