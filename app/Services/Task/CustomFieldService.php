@@ -77,13 +77,9 @@ class CustomFieldService
     {
         if (isset($task)) {
             $field = $task->custom_field_values()->where('custom_field_id', $data_id)->first();
-            if (
-                $field && is_array( json_decode($field->value)) &&
-                array_key_exists($key-1, json_decode($field->value)) &&
-                json_decode($field->value, true)[$key-1] == $option
-            ) {
+            if ($field && is_array( json_decode($field->value)) && in_array($option, json_decode($field->value))) {
                 return true;
-            }
+            };
         }
         return false;
     }

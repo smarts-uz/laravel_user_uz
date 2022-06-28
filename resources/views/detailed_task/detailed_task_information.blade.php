@@ -100,10 +100,10 @@
                                         @break
                                     @case('checkbox')
                                         <div class="ml-4 md:ml-12 flex flex-row mt-8">
-                                            <h1 class="font-bold h-auto w-48">{{ $value->custom_field->label }}</h1>
+                                            <h1 class="font-bold h-auto w-48">{{ $value->custom_field->getTranslatedAttribute('title') }}</h1>
                                             <div class=" h-auto w-full">
                                                 <p class="text-gray-800">
-                                                    {{ json_decode($value->value)[0]  }}
+                                                    {{ implode(', ', json_decode($value->value)) }}
                                                 </p>
                                             </div>
                                         </div>
