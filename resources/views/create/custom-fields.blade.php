@@ -25,9 +25,9 @@
                                 @if(App\Services\Task\CustomFieldService::showOptions($task, $data->id, $key, $option))
                                     selected
                                 @endif
-                                value="{{$option}}"
+                                value="{{ __($option) }}"
                             >
-                                {{$option}}
+                                {{ __($option) }}
                             </option>
                         @endforeach
                     </select>
@@ -57,16 +57,16 @@
                     <div>
                         <div class="mb-3 xl:w-full">
                             @if(array_key_exists('options', $data->options))
-                                @foreach($data->options['options'] as $key => $option)
+                                @foreach($data->options_ru['options'] as $key => $option)
                                     <label class="md:w-2/3 block mt-6">
                                         <input
                                             @if(App\Services\Task\CustomFieldService::showOptions($task, $data->id, $key, $option))
                                                 checked
                                             @endif
                                             class="mr-2  h-4 w-4" type="checkbox"
-                                            value="{{$option}}" name="{{$data->name}}[]">
-                                        <span class="text-slate-900">67
-                                            {{$option}}
+                                            value="{{ $option }}" name="custom_fields[]">
+                                        <span class="text-slate-900">
+                                            {{ __($option) }}
                                         </span>
                                     </label>
                                 @endforeach
