@@ -71,7 +71,7 @@ class CreateService
      */
     public function delete($task): void
     {
-        $task->status = Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
+        $task->status = Task::STATUS_CANCELLED;
         $task->save();
     }
 

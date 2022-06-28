@@ -39,7 +39,7 @@ class Task extends Model
     const STATUS_IN_PROGRESS = 3;
     const STATUS_COMPLETE = 4;
     const STATUS_COMPLETE_WITHOUT_REVIEWS = 5;
-    const STATUS_NOT_COMPLETE = 6;
+    const STATUS_CANCELLED = 6;
 
     protected $guarded = [];
 
