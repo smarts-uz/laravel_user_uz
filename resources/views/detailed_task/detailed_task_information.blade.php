@@ -126,7 +126,7 @@
             @endswitch
         @endif
     @endforeach
-@if($input_values)
+@if(isset($input_values))
     <div class="ml-4 md:ml-12 flex flex-row mt-8">
         <h1 class="font-bold h-auto w-48">{{ __('Параметры')  }}</h1>
         <div class="flex flex-wrap gap-x-2 h-auto w-full">
