@@ -33,7 +33,7 @@ class UpdateController extends Controller
 
         $data = $request->validated();
         $task->addresses()->delete();
-        $images = array_merge(json_decode(session()->has('images') ? session('images') : '[]'), json_decode($task->photos));
+        $images = array_merge(json_decode(session()->has('images') ? session('images') : '[]'), json_decode($task->photos)??[]);
         session()->forget('images');
         $data['photos'] = json_encode($images);
         $requestAll = $request->all();
