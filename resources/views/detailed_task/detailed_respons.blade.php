@@ -147,12 +147,12 @@
     <div class="text-4xl font-semibold my-6">
         @if ($task->response_count <= 4)
             @if ($task->responses_count == 1)
-                {{__('У задания')}} {{$task->responses_count}} {{__('отклик')}}
+                {{__('У задания')}} {{$task->responses()->count()}} {{__('отклик')}}
             @else
-                {{__('У задания')}} {{$task->responses_count}} {{__('откликa')}}
+                {{__('У задания')}} {{$task->responses()->count()}} {{__('откликa')}}
             @endif
         @else
-            {{__('У задания')}} {{$task->responses_count}} {{__('откликов')}}
+            {{__('У задания')}} {{$task->responses()->count()}} {{__('откликов')}}
         @endif
     </div>
 
