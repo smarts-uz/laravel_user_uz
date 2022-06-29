@@ -30,7 +30,10 @@
                             <div>
                                 <p>{{__('Новая задания')}}</p>
                                 <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
-                                    "{{$notification->name_task}}" №{{$notification->task_id}}
+                                    {{ __('task_name  №task_id с бюджетом до task_budget', [
+                                        'task_name' => $notification->name_task, 'task_id' => $notification->task_id,
+                                        'budget' => number_format($notification->task?->budget, 0, '.', ' ')])
+                                    }}
                                 </a>
                             </div>
                         </div>

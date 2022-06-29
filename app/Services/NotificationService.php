@@ -18,17 +18,18 @@ class NotificationService
 {
 
     /**
-     * Send new task notification by websocket, sms and firebase
+     * Get notifications for web and api.
+     * If that function used for api, Notification::TASK_CREATED type should be invisible
      *
      * @param $user // User model object
-     * @param array $is_read
+     * @param bool $web
      * @return Collection
      */
-    public static function getNotifications($user, array $is_read = [0]): Collection
+    public static function getNotifications($user, bool $web = true): Collection
     {
         return Notification::with('user:id,name')
-            ->whereIn('is_read', $is_read)
-            ->where(function ($query) use ($user) {
+            ->whereIn('is_read', $web ? [0] : [0, 1])
+            ->where(function ($query) use ($user, $web) {
                 $query->where(function ($query) use ($user) {
                     $query->where('performer_id', '=', $user->id)
                         ->whereIn('type', [4, 6, 7]);
@@ -36,11 +37,10 @@ class NotificationService
                     ->orWhere(function ($query) use ($user) {
                         $query->where('user_id', '=', $user->id)->whereIn('type', [5, 8]);
                     });
-//                 appda new task notificationlar listda korinmasligi kerak
-//                if ($user->role_id == 2)
-//                    $query->orWhere(function ($query) use ($user) {
-//                        $query->where('performer_id', '=', $user->id)->where('type', '=', 1);
-//                    });
+                if ($user->role_id == 2 && $web)
+                    $query->orWhere(function ($query) use ($user) {
+                        $query->where('performer_id', '=', $user->id)->where('type', '=', 1);
+                    });
                 if ($user->system_notification)
                     $query->orWhere(function ($query) use ($user) {
                         $query->where('user_id', '=', $user->id)->where('type', '=', 2);

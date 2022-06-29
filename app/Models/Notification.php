@@ -38,6 +38,11 @@ class Notification extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function task()
+    {
+        return $this->belongsTo(Task::class);
+    }
+
     public function scopeNewTask($query, $user)
     {
         if ($user->role_id == 2) {
