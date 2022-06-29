@@ -298,19 +298,19 @@ switch(r) {
         zoomVar = 6.5;
         break;
     case '75':
-        zoomVar = 7.5;
+        zoomVar = 7;
         break;
     case '50':
         zoomVar = 7.5;
         break;
     case '30':
-        zoomVar = 8.5;
+        zoomVar = 8;
         break;
     case '20':
         zoomVar = 9;
         break;
     case '15':
-        zoomVar = 10;
+        zoomVar = 9;
         break;
     case '10':
         zoomVar = 10;
