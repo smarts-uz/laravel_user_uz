@@ -10,6 +10,8 @@ use TCG\Voyager\Traits\Translatable;
 /**
  * @property $user_id
  * @property $task_id
+ * @property $name_task
+ * @property $user
  *
  */
 class Notification extends Model

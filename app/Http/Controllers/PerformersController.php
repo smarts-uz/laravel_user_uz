@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\NotificationResource;
 use App\Models\WalletBalance;
 use App\Services\NotificationService;
 use App\Services\PerformersService;
@@ -92,12 +93,12 @@ class PerformersController extends Controller
             $task_name = Task::where('id', $task_id)->first();
             $users_id = $request->session()->pull('given_id');
             $performer = User::query()->find($users_id);
-            $tesk_url = route("searchTask.task",$task_id);
-            $text = "Заказчик предложил вам новую задания $tesk_url. Имя заказчика: " . $task_name->user->name;
+            $text_url = route("searchTask.task",$task_id);
+            $text = "Заказчик предложил вам новую задания $text_url. Имя заказчика: " . $task_name->user->name;
             $phone_number=$performer->phone_number;;
             $sms_service = new SmsTextService();
             $sms_service->sms_packages($phone_number, $text);
-            Notification::create([
+            $notification = Notification::create([
                 'user_id' => $task_name->user_id,
                 'performer_id' => $users_id,
                 'task_id' => $task_id,
@@ -109,6 +110,9 @@ class PerformersController extends Controller
             NotificationService::sendNotificationRequest([$users_id], [
                 'url' => 'detailed-tasks' . '/' . $task_id, 'name' => $task_name->name, 'time' => 'recently'
             ]);
+            NotificationService::pushNotification($performer->firebase_token, [
+                'title' => __('Предложение'), 'body' => __('Вам предложили новое задание от заказчика task_user', ['task_user' => $notification->user?->name])
+            ], 'notification', new NotificationResource($notification));
 
             return response()->json(['success' => $users_id]);
         }

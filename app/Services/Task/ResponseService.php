@@ -9,10 +9,12 @@ use App\Models\All_transaction;
 use App\Models\Notification;
 use App\Models\Task;
 use App\Models\TaskResponse;
+use App\Models\User;
 use App\Models\UserExpense;
 use App\Models\WalletBalance;
 use App\Services\NotificationService;
 use App\Services\SmsTextService;
+use JetBrains\PhpStorm\ArrayShape;
 
 class ResponseService
 {
@@ -20,12 +22,15 @@ class ResponseService
      *
      * Function  store
      * Mazkur metod taskka otklik tashlaganda ishlaydi
-     * @param $task  Object
-     *
+     * @param $request
+     * @param $task
+     * @return array
      */
-    public function store($request, $task)
+    public function store($request, $task): array
     {
-        if ($task->user_id == auth()->user()->id)
+        /** @var User $auth_user */
+        $auth_user = auth()->user();
+        if ($task->user_id == $auth_user->id)
             abort(403,"Bu o'zingizning taskingiz");
         $data = $request->validate([
             'description' => 'required|string',
@@ -36,8 +41,9 @@ class ResponseService
         $data['notificate'] = $request->notificate ? 1 : 0;
         $data['task_id'] = $task->id;
         $data['user_id'] = $task->user_id;
-        $data['performer_id'] = auth()->user()->id;
-        $balance = WalletBalance::where('user_id', auth()->user()->id)->first();
+        $data['performer_id'] = $auth_user->id;
+        /** @var WalletBalance $balance */
+        $balance = WalletBalance::query()->where('user_id', $auth_user->id)->first();
         if ($balance) {
             $freeResponsesCount = TaskResponse::query()->where(['performer_id' => $data['performer_id'], 'not_free' => 0])->get()->count();
             if ($request->get('not_free') == 1) {
@@ -48,13 +54,13 @@ class ResponseService
             if ($balanceSufficient) {
                 $success = false;
                 $message = __('not_enough_balance');
-            }else if($task->responses()->where('performer_id', auth()->user()->id)->first()){
+            }else if($task->responses()->where('performer_id', $auth_user->id)->first()){
                 $success = false;
                 $message = __('already_had');
             } else {
                 $success = true;
                 $message = __('success');
-                TaskResponse::create($data);
+                TaskResponse::query()->create($data);
                 if ($request->get('not_free') == 1) {
                     $balance->balance = $balance->balance - setting('admin.pullik_otklik');
                     $balance->save();
@@ -89,13 +95,14 @@ class ResponseService
      *
      * Function  selectPerformer
      * Mazkur metod taskka tashlangan otkliklar orasidan ispolnitelni tanlashda ishlatiladi
-     * @param $response  Object
-     *
+     * @param $response
+     * @return array
      */
-    public function selectPerformer($response)
+    #[ArrayShape(['success' => "bool", 'message' => "mixed", 'data' => "array"])]
+    public function selectPerformer($response): array
     {
         $task = $response->task;
-        if ($task->status >= 3 || auth()->user()->id == $response->performer_id ) {
+        if ($task->status >= 3 || auth()->id() == $response->performer_id ) {
             abort(403, 'No Permission');
         }
         $data = [
@@ -108,8 +115,8 @@ class ResponseService
         if ($performer->phone_number) {
             $name = $response_user->name;
             $phone = $response_user->phone_number;
-            $tesk_url = route("searchTask.task",$response->task_id);
-            $text = "Vi ispolnitel v zadanii $tesk_url. Kontakt zakazchika: $name. $phone";
+            $text_url = route("searchTask.task",$response->task_id);
+            $text = "Vi ispolnitel v zadanii $text_url. Kontakt zakazchika: $name. $phone";
             $phone_number=$performer->phone_number;
             $sms_service = new SmsTextService();
             $sms_service->sms_packages($phone_number, $text);
@@ -120,6 +127,7 @@ class ResponseService
             'performer_description' => $performer->description,
             'performer_avatar' => asset('storage/' . $performer->avatar),
         ];
+        /** @var Notification $notification */
         $notification = Notification::query()->create([
             'user_id' => $response_user->id,
             'performer_id' => $performer->id,
@@ -132,11 +140,13 @@ class ResponseService
             'url' => 'detailed-tasks' . '/' . $response->task_id, 'name' => $task->name, 'time' => 'recently'
         ]);
         NotificationService::pushNotification($performer->firebase_token, [
-            'title' => 'You are selected for task', 'body' => 'See details'
+            'title' => __('Вас выбрали исполнителем'), 'body' => __('Вас выбрали исполнителем  в задании task_name №task_id task_user', [
+                'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name])
         ], 'notification', new NotificationResource($notification));
         $taskResponse = TaskResponse::query()->where(['task_id' => $task->id])->where(['performer_id' => $performer->id])->first();
         if ($taskResponse->not_free == 0) {
-            $balance = WalletBalance::where('user_id', $performer->id)->first();
+            /** @var WalletBalance $balance */
+            $balance = WalletBalance::query()->where('user_id', $performer->id)->first();
             $balance->balance = $balance->balance - setting('admin.bepul_otklik');
             $balance->save();
             UserExpense::query()->create([

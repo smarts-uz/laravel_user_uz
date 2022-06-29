@@ -13,7 +13,8 @@
 <div class="hidden bg-white text-base z-50 list-none divide-y divide-gray-100 rounded shadow my-4 w-96" id="dropdown">
     <div class="px-4 py-3">
         @if($count == 0)
-            <span class="block text-base font-bold text-center">{{__('У вас на данный момент нет никаких уведомлений')}}</span>
+            <span
+                class="block text-base font-bold text-center">{{__('У вас на данный момент нет никаких уведомлений')}}</span>
         @else
             <span class="block text-base font-bold">{{__('Уведомления')}}</span>
         @endif
@@ -81,7 +82,8 @@
                         <div class="w-full flex flex-row gap-x-4">
                             <i class="fas fa-user text-xl text-yellow-500"></i>
                             <div>
-                                <p>{{__('Вас выбрали исполнителем  в задании')}}</p>
+                                <p>{{__('Вас выбрали исполнителем  в задании task_name №task_id task_user', [
+    'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name])}}</p>
                                 <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
                                     “{{$notification->name_task}}" №{{$notification->task_id}}
                                 </a>

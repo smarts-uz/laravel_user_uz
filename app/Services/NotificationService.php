@@ -131,8 +131,8 @@ class NotificationService
             ]);
 
             self::pushNotification($token, [
-                'title' => $not->title,
-                'body' =>  $not->message ?? __('Смотрите подробности')
+                'title' => __('Новости'),
+                'body' =>  __('Важные новости и объявления для вас')
             ], 'notification', new NotificationResource($notification));
         }
 
