@@ -170,6 +170,7 @@ class User extends \TCG\Voyager\Models\User
             $user->portfolios()->delete();
             $user->compliances()->delete();
 
+            TaskResponse::query()->where('user_id', $user->id)->orWhere('performer_id', $user->id)->delete();
             Notification::query()->where('user_id', $user->id)->orWhere('performer_id', $user->id)->delete();
 
             $user->walletBalance()->delete();
