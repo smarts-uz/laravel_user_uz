@@ -66,7 +66,7 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                        @elseif($notification->type == 4)
+                                        @elseif($notification->type == \App\Models\Notification::GIVE_TASK)
                                             <div class="w-full flex flex-row gap-x-4">
                                                 <i class="fas fa-comment text-xl text-yellow-500"></i>
                                                 <div>
@@ -79,7 +79,7 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                        @elseif($notification->type == 5)
+                                        @elseif($notification->type == \App\Models\Notification::RESPONSE_TO_TASK)
                                             <div class="w-full flex flex-row gap-x-4">
                                                 <i class="fas fa-check-circle text-yellow-500 text-xl"></i>
                                                 <div>
@@ -90,7 +90,7 @@
                                                     {{__('отправлен')}}
                                                 </div>
                                             </div>
-                                        @elseif($notification->type == 6)
+                                        @elseif($notification->type == \App\Models\Notification::SEND_REVIEW)
                                             <div class="w-full flex flex-row gap-x-4">
                                                 <i class="fas fa-star text-xl text-yellow-500"></i>
                                                 <div>
@@ -101,7 +101,7 @@
                                                     {{__(' и оставил вам отзыв')}}
                                                 </div>
                                             </div>
-                                        @elseif($notification->type == 7)
+                                        @elseif($notification->type == \App\Models\Notification::SELECT_PERFORMER)
                                             <div class="w-full flex flex-row gap-x-4">
                                                 <i class="fas fa-user text-xl text-yellow-500"></i>
                                                 <div>
@@ -115,8 +115,7 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                        @endif
-                                        @if ($notification->type == 8)
+                                        @elseif ($notification->type == \App\Models\Notification::SEND_REVIEW_PERFORMER)
                                             <div class="w-full flex flex-row gap-x-4">
                                                 <i class="fas fa-star text-xl text-yellow-500"></i>
                                                 <div>
@@ -127,6 +126,9 @@
                                                     {{__(' и оставил вам отзыв')}}
                                                 </div>
                                             </div>
+                                        @elseif ($notification->type == \App\Models\Notification::RESPONSE_TO_TASK_FOR_USER)
+                                        @elseif ($notification->type == \App\Models\Notification::CANCELLED_TASK)
+
                                         @endif
                                     </div>
                                 </li>

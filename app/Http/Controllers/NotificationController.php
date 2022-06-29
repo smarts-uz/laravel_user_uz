@@ -63,6 +63,13 @@ class NotificationController extends VoyagerBaseController
     }
 
 
+    public function show_notification_user(Notification $notification)
+    {
+        $notification->update(['is_read' => 1]);
+        return redirect('/performers/' . $notification->user_id);
+    }
+
+
     /**
      * @OA\Post(
      *     path="/api/firebase-token",

@@ -201,8 +201,10 @@ class NotificationService
         ]);
 
         self::pushNotification($task->user->firebase_token, [
-            'title' => __('Отклик к заданию'),
-            'body' => __('task_name №task_id отправлен', ['task_name' => $task->name, 'task_id' => $task->id])
+            'title' => __('Новый отклик'),
+            'body' => __('performer откликнулся на задания task_name', [
+                'performer' => $user->name, 'task_name' => $task->name
+            ])
         ], 'notification', new NotificationResource($notification));
 
         return true;

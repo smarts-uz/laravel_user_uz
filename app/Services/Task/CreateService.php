@@ -2,6 +2,7 @@
 
 namespace App\Services\Task;
 
+use App\Http\Resources\NotificationResource;
 use App\Models\Address;
 use App\Models\Category;
 use App\Models\CustomFieldsValue;
@@ -73,6 +74,26 @@ class CreateService
     {
         $task->status = Task::STATUS_CANCELLED;
         $task->save();
+
+        $notification = Notification::query()->create([
+            'user_id' => $task->user_id,
+            'description' => $task->desciption ?? 'task description',
+            'task_id' => $task->id,
+            "cat_id" => $task->category_id,
+            "name_task" => $task->name,
+            "type" => Notification::CANCELLED_TASK
+        ]);
+
+        NotificationService::sendNotificationRequest([$task->user_id], [
+            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+        ]);
+
+        NotificationService::pushNotification($task->user->firebase_token, [
+            'title' => __('3адания отменен'),
+            'body' => __('Ваша задания task_name №task_id было отменена', [
+                'task_name' => $task->name, 'task_id' => $task->id,
+            ])
+        ], 'notification', new NotificationResource($notification));
     }
 
     /**
