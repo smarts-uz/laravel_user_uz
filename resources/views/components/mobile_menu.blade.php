@@ -41,23 +41,30 @@
                                 <li class="border-b-2 border-gray-500 flex gap-x-2 p-3 text-gray-800">
                                     <div class="flex flex-col w-full">
                                         <p class="text-right text-sm">{{$notification->created_at->format('d M')}}</p>
-                                        @if($notification->type == 1)
+                                        @if($notification->type == \App\Models\Notification::TASK_CREATED)
                                             <div class="w-full flex flex-row gap-x-4">
                                                 <i class="fas fa-bell text-yellow-500 text-xl"></i>
                                                 <div>
                                                     <p>{{__('Новая задания')}}</p>
                                                     <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
-                                                        "{{$notification->name_task}}" №{{$notification->task_id}}
+                                                        {{ __('task_name  №task_id с бюджетом до task_budget', [
+                                                            'task_name' => $notification->name_task, 'task_id' => $notification->task_id,
+                                                            'budget' => number_format($notification->task?->budget, 0, '.', ' ')])
+                                                        }}
                                                     </a>
                                                 </div>
                                             </div>
-                                        @elseif($notification->type == 2 || $notification->type == 3)
+                                        @elseif($notification->type == \App\Models\Notification::NEWS_NOTIFICATION || $notification->type == \App\Models\Notification::SYSTEM_NOTIFICATION)
                                             <div class="w-full flex flex-row gap-x-4">
                                                 <i class="fas fa-bookmark text-xl text-yellow-500"></i>
-                                                <button onclick="toggleModal121('modal-id121', '{{$notification->name_task}}', '{{$notification->description}}', {{$notification->id}})"
-                                                        class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">
-                                                    {{$notification->name_task}}
-                                                </button>
+                                                <div>
+                                                    <p>{{__('Новости')}}</p>
+                                                    <button
+                                                        onclick="toggleModal121('modal-id121', '{{$notification->name_task}}', '{{$notification->description}}', {{$notification->id}})"
+                                                        class="font-bold hover:bg-gray-100 text-gray-700 text-left">
+                                                        {{__('Важные новости и объявления для вас')}}
+                                                    </button>
+                                                </div>
                                             </div>
                                         @elseif($notification->type == 4)
                                             <div class="w-full flex flex-row gap-x-4">

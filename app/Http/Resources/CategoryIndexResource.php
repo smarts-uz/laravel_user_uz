@@ -9,8 +9,8 @@ class CategoryIndexResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @param $request
+     * @return array
      */
     public function toArray($request)
     {
@@ -18,6 +18,7 @@ class CategoryIndexResource extends JsonResource
             'id' => $this->id,
             'parent_id' => $this->parent_id,
             'name' => $this->name,
+            'child_count' => $this->childs()->count(),
             'ico' => asset('storage/' . $this->ico),
         ];
     }

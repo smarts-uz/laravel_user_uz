@@ -40,11 +40,14 @@
                     @elseif($notification->type == \App\Models\Notification::NEWS_NOTIFICATION || $notification->type == \App\Models\Notification::SYSTEM_NOTIFICATION)
                         <div class="w-full flex flex-row gap-x-4">
                             <i class="fas fa-bookmark text-xl text-yellow-500"></i>
-                            <button
-                                onclick="toggleModal121('modal-id121', '{{$notification->name_task}}', '{{$notification->description}}', {{$notification->id}})"
-                                class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">
-                                {{$notification->name_task}}
-                            </button>
+                            <div>
+                                <p>{{__('Новости')}}</p>
+                                <button
+                                    onclick="toggleModal121('modal-id121', '{{$notification->name_task}}', '{{$notification->description}}', {{$notification->id}})"
+                                    class="font-bold hover:bg-gray-100 text-gray-700 text-left">
+                                    {{__('Важные новости и объявления для вас')}}
+                                </button>
+                            </div>
                         </div>
                     @elseif($notification->type == \App\Models\Notification::GIVE_TASK)
                         <div class="w-full flex flex-row gap-x-4">

@@ -27,7 +27,7 @@ class NotificationService
      */
     public static function getNotifications($user, bool $web = true): Collection
     {
-        return Notification::with('user:id,name')
+        return Notification::with('user:id,name', 'task:id,budget')
             ->whereIn('is_read', $web ? [0] : [0, 1])
             ->where(function ($query) use ($user, $web) {
                 $query->where(function ($query) use ($user) {
