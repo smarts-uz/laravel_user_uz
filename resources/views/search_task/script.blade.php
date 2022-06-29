@@ -1,5 +1,5 @@
 <script>
-let k=1, m=1, r=0;
+let k=1, m=1, r=10, zoomVar=9.25;
 let dataGeo = [], userCoordinates = [[],[]];
 $('.all_cat').click();
 $(".for_check input:checkbox").each(function() {
@@ -55,7 +55,8 @@ $('#geobut2').show();
 
 $("#selectGeo").change(function() {
 r = $('#selectGeo').val();
-map_reset(k);
+console.log(r)
+/*map_reset(k);*/
 });
 
 $("#prcClose").click(function() {
@@ -289,10 +290,47 @@ console.log('Ошибка: ' + err);
 );
 }
 
+switch(r) {
+    case '200':
+        zoomVar = 6;
+        break;
+    case '100':
+        zoomVar = 6.5;
+        break;
+    case '75':
+        zoomVar = 7;
+        break;
+    case '50':
+        zoomVar = 7.5;
+        break;
+    case '30':
+        zoomVar = 8;
+        break;
+    case '20':
+        zoomVar = 9;
+        break;
+    case '15':
+        zoomVar = 9;
+        break;
+    case '10':
+        zoomVar = 10;
+        break;
+    case '5':
+        zoomVar = 11;
+        break;
+    case '3':
+        zoomVar = 12;
+        break;
+    case '1.5':
+        zoomVar = 13;
+        break;
+    }
+
 let myMap2 = new ymaps.Map('map', {
 center: [userCoordinates[0], userCoordinates[1]],
-zoom: 13,
+zoom: zoomVar,
 controls: [],
+boundsAutoApply: true
 // controls: ['zoomControl','geolocationControl'],
 // behaviors: ['default', 'scrollZoom']
 }, {
@@ -387,13 +425,19 @@ geoObjects[i] = new ymaps.Placemark([dataGeo[i].latitude,dataGeo[i].longitude], 
 
 clusterer.add(geoObjects);
 myMap2.geoObjects.add(clusterer);
-myMap2.setBounds(clusterer.getBounds(), {
+/*myMap2.setBounds(clusterer.getBounds(), {
 boundsAutoApply: true,
 checkZoomRange: true
-});
+});*/
 
 circle = new ymaps.Circle([userCoordinates, r*1000], null, { draggable: false, fill: false, outline: true, strokeColor: '#32CD32', strokeWidth: 3});
 myMap2.geoObjects.add(circle);
+
+/*
+    myMap2.zoomRange.get(userCoordinates).then(function (range) {
+        myMap2.setCenter(userCoordinates, range[1]);
+        /!*myMap2.setCenter(userCoordinates, circle);*!/
+    });*/
 }
 }
 
@@ -446,7 +490,7 @@ $("#loadData").remove();
 success: function (data) {
 $("#dataPlace").append(data.html);
 dataGeo.push.apply(dataGeo, data.dataForMap);
-console.log(dataGeo)
+/*console.log(dataGeo)*/
 map_reset(k);
 },
 complete: function () {

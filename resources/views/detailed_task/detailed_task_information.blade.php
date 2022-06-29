@@ -94,7 +94,7 @@
                 @case('checkbox')
                     <div class="ml-4 md:ml-12 flex flex-row mt-8">
                         <h1 class="font-bold h-auto w-48">{{ $value->custom_field->getTranslatedAttribute('title') }}</h1>
-                        <div class=" h-auto w-full">
+                        <div class="h-auto w-full ml-10">
                             <p class="text-gray-800">
                                 {{ implode(', ', json_decode($value->value)) }}
                             </p>
@@ -105,7 +105,7 @@
                 @case('select')
                     <div class="ml-4 md:ml-12 flex flex-row mt-8">
                         <h1 class="font-bold h-auto w-48">{{ $value->custom_field->label}}</h1>
-                        <div class=" h-auto w-full">
+                        <div class="h-auto w-full ml-10">
                             <p class="text-gray-800">
                                 {{ json_decode($value->value)[0] }}
                             </p>
@@ -116,7 +116,7 @@
                 @case('radio')
                     <div class="ml-4 md:ml-12 flex flex-row mt-8">
                         <h1 class="font-bold h-auto w-48">{{ $value->custom_field->label }}</h1>
-                        <div class=" h-auto w-full">
+                        <div class="h-auto w-full ml-10">
                             <p class="text-gray-800">
                                 {{ json_decode($value->value)[0] }}
                             </p>
@@ -129,7 +129,7 @@
 @if(isset($input_values))
     <div class="ml-4 md:ml-12 flex flex-row mt-8">
         <h1 class="font-bold h-auto w-48">{{ __('Параметры')  }}</h1>
-        <div class="flex flex-wrap gap-x-2 h-auto w-full">
+        <div class="flex flex-wrap gap-x-2 h-auto w-full ml-6">
             <h1 class="ml-4">
                 {{ implode(', ', $input_values)  }}
             </h1>
