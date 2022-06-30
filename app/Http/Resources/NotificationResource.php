@@ -30,14 +30,16 @@ class NotificationResource extends JsonResource
                 'task_name' => $this->name_task, 'task_id' => $this->task_id,
                 'budget' => number_format($this->task?->budget, 0, '.', ' ')]),
             Notification::NEWS_NOTIFICATION, Notification::SYSTEM_NOTIFICATION => __('Важные новости и объявления для вас'),
-            Notification::GIVE_TASK => __('Вам предложили новое задание от заказчика task_user', ['task_user' => $this->user?->name]),
+            Notification::GIVE_TASK => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
+                'task_name' => $this->name_task, 'task_id' => $this->task_id, 'task_user' => $this->user?->name
+            ]),
             Notification::RESPONSE_TO_TASK => __('task_name №task_id отправлен', ['task_name' => $this->name_task, 'task_id' => $this->task_id]),
             Notification::SEND_REVIEW => __('Заказчик сказал, что вы выполнили эго задачу task_name №task_id и оставил вам отзыв', [
                 'task_name' => $this->name_task, 'task_id' => $this->task_id,
             ]),
             Notification::SELECT_PERFORMER => __('Вас выбрали исполнителем  в задании task_name №task_id task_user', [
                 'task_name' => $this->name_task, 'task_id' => $this->task_id, 'task_user' => $this->user?->name]),
-            Notification::SEND_REVIEW_PERFORMER => __('О вас оставлен новый отзыв'),
+            Notification::SEND_REVIEW_PERFORMER => __('О вас оставлен новый отзыв') . " \"$this->name_task\" №$this->task_id",
             Notification::RESPONSE_TO_TASK_FOR_USER => __('performer откликнулся на задания task_name', [
                 'performer' => $this->performer?->name, 'task_name' => $this->name_task
             ]),

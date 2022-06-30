@@ -32,10 +32,10 @@ class FilterTaskService
         if (isset($data['lat']) && isset($data['long']) && isset($data['difference']))
         {
             foreach ($tasks->get() as $task) {
-                foreach ($task->addresses as $address) {
-                    $k = $this->distance($data['lat'], $data['long'],$address->latitude, $address->longitude);
-                    if ($k < $data['difference'])
-                    {
+                $address = $task->addresses->first();
+                if (isset($address->latitude) && isset($address->longitude)) {
+                    $k = $this->distance($data['lat'], $data['long'], $address->latitude, $address->longitude);
+                    if ($k < $data['difference']) {
                         $tasks_items[] = $task->id;
                     }
                 }

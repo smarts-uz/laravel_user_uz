@@ -103,14 +103,14 @@ class UpdateController extends Controller
                 $request['status'] = 1;
                 $notification = ReviewService::userReview($task, $request);
                 NotificationService::pushNotification($task->user->firebase_token, [
-                    'title' => __('Новый отзыв'), 'body' => __('О вас оставлен новый отзыв')
+                    'title' => __('Новый отзыв'), 'body' => __('О вас оставлен новый отзыв') . " \"$task->name\" №$task->id"
                 ], 'notification', new NotificationResource($notification));
 
             } elseif ($task->performer_id == auth()->id()) {
                 // performer review to user
                 $notification = ReviewService::performerReview($task, $request);
                 NotificationService::pushNotification($task->user->firebase_token, [
-                    'title' => __('Новый отзыв'), 'body' => __('О вас оставлен новый отзыв')
+                    'title' => __('Новый отзыв'), 'body' => __('О вас оставлен новый отзыв') . " \"$task->name\" №$task->id"
                 ], 'notification', new NotificationResource($notification));
 
             }

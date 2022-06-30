@@ -479,7 +479,7 @@
     "Предложить задание": "Vazifani taklif qiling",
     "Предложить работу": "Ish taklif qilish",
     "Предложение": "Tasklif",
-    "Вам предложили новое задание от заказчика task_user": "Sizga \":task_user\" mijozdan yangi vazifa taklif qilindi",
+    "Вам предложили новое задание task_name №task_id от заказчика task_user": "Sizga \":task_user\" mijozdan yangi vazifa \":task_name\" №:task_id taklif qilindi",
     "Предоставил(а) документы": "Berilgan hujjatlar",
     "Предоставить документы": "Hujjatlarni taqdim eting",
     "Преимущества": "Afzalliklari",

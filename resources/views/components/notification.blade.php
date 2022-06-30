@@ -54,8 +54,11 @@
                             <i class="fas fa-comment text-xl text-yellow-500"></i>
                             <div>
                                 <p>{{__('Предложение')}}</p>
-                                <a class="hover:text-blue-500" href="{{route('show_notification_user', [$notification])}}">
-                                    {{__('Вам предложили новое задание от заказчика task_user', ['task_user' => $notification->user?->name])}}
+                                <a class="hover:text-blue-500"
+                                   href="{{route('show_notification_user', [$notification])}}">
+                                    {{__('Вам предложили новое задание task_name №task_id от заказчика task_user', [
+                                        'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name
+                                    ])}}
                                 </a>
                             </div>
                         </div>
@@ -102,13 +105,36 @@
                             <div>
                                 <p>{{__('Новый отзыв')}}</p>
                                 <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
-                                    “{{$notification->name_task}}" №{{$notification->task_id}}
+                                    {{ __('О вас оставлен новый отзыв') . " \"$notification->name_task\" №$notification->task_id"}}
                                 </a>
-                                {{__(' и оставил вам отзыв')}}
                             </div>
                         </div>
                     @elseif ($notification->type == \App\Models\Notification::RESPONSE_TO_TASK_FOR_USER)
+                        <div class="w-full flex flex-row gap-x-4">
+                            <i class="fas fa-star text-xl text-yellow-500"></i>
+                            <div>
+                                <p>{{__('Новый отклик')}}</p>
+                                <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
+                                    {{ __('performer откликнулся на задания task_name', [
+                                            'performer' => $notification->performer?->name, 'task_name' => $notification->name_task
+                                        ])
+                                    }}
+                                </a>
+                            </div>
+                        </div>
                     @elseif ($notification->type == \App\Models\Notification::CANCELLED_TASK)
+                        <div class="w-full flex flex-row gap-x-4">
+                            <i class="fas fa-star text-xl text-yellow-500"></i>
+                            <div>
+                                <p>{{__('3адания отменен')}}</p>
+                                <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
+                                    {{ __('Ваша задания task_name №task_id было отменена', [
+                                            'task_name' => $notification->name_task, 'task_id' => $notification->task_id,
+                                        ])
+                                    }}
+                                </a>
+                            </div>
+                        </div>
                     @endif
                 </div>
             </li>
