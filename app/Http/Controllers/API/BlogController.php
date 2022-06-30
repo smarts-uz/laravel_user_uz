@@ -33,7 +33,7 @@ class BlogController extends Controller
     {
         return response()->json([
             'success' => true,
-            'data' => BlogNewsResource::collection(BlogNew::all())
+            'data' => BlogNewsResource::collection(BlogNew::query()->latest()->get())
         ]);
     }
 }
