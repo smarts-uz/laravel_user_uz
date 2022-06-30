@@ -230,8 +230,10 @@ class NotificationService
                 "notification" => $notification,
                 "data" => [
                     "type" => $type,
-                    "data" => $model
-                ]
+                    "data" => $model,
+                    "click_action" => "FLUTTER_NOTIFICATION_CLICK"
+                ],
+                "click_action" => "FLUTTER_NOTIFICATION_CLICK"
             ]
         )->body();
     }
