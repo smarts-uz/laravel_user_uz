@@ -51,7 +51,7 @@ class UserUpdateDataRequest extends FormRequest
             'phone_number.int' => __('login.phone_number.int'),
             'phone_number.min' => __('login.phone_number.min'),
             'phone_number.required' => __('login.phone_number.required'),
-            'phone_number.unique' => __('login.phone_number.unique'),
+            'phone_number.unique' => __('Этот номер зарегистрирован'),
             'role_id.required' => __('login.name.required'),
 
         ];

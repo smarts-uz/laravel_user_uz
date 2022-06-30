@@ -1,6 +1,6 @@
 <figure class="w-full">
     <div class="hidden md:block float-right mr-8 text-gray-500 text-lg">
-        <i class="far fa-eye"> {{$user->performer_views_count}}  {{__('просмотр')}}</i>
+        <i class="far fa-eye"> {{$user->performer_views()->count()}}  {{__('просмотр')}}</i>
     </div>
     <br>
     <h2 class="font-bold text-2xl text-gray-800 mb-2">{{__('Здравствуйте')}}, {{$user->name}}!</h2>

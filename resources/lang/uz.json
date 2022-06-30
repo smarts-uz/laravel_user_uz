@@ -52,7 +52,7 @@
     "login.phone_number.min": "Kirish.fhe_Number.min",
     "login.phone_number.regex": "Kirish.phone_Number.Regex",
     "login.phone_number.required": "To'ldirish talab qilinadi!",
-    "login.phone_number.unique": "Bu raqam ro'yxatdan o'tgan",
+    "Этот номер зарегистрирован": "Bu raqam ro'yxatdan o'tgan",
     "not_enough_balance": "Balansda mablag 'yetarli emas",
     "ru": "ru",
     "ru_RU": "ru_ru",

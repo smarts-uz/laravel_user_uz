@@ -59,7 +59,7 @@ class UserLoginRequest extends BaseRequest
                 'name.unique' => __('login.name.unique'),
                 'phone_number.required' => __('login.phone_number.required'),
                 'phone_number.regex' => __('login.phone_number.regex'),
-                'phone_number.unique' => __('login.phone_number.unique'),
+                'phone_number.unique' => __('Этот номер зарегистрирован'),
                 'email.required' => __('login.email.required'),
                 'email.email' => __('login.email.email'),
                 'email.unique' => __('login.email.unique'),
