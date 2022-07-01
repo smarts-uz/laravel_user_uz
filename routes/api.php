@@ -32,7 +32,7 @@ use App\Http\Controllers\vendor\Chatify\Api\MessagesController;
 */
 
 Route::middleware('custom.auth:api')->group(function () {
-    Route::post('logout', [UserAPIController::class, 'logout']); //end +
+    Route::post('logout', [UserAPIController::class, 'logout']); // need use
 
     Route::group(['prefix' => 'chat'], function (){
         Route::post('/sendMessage', [MessagesController::class, 'send']); // used
@@ -88,8 +88,6 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('/select-performer/{response}', [TaskAPIController::class, 'selectPerformer']); // used
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); //end +
     Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); //end +
-    Route::get('/change-task/{task}', [TaskAPIController::class, 'getTask']); //end
-    Route::put('/change-task/{task}', [TaskAPIController::class, 'changeTask']); //end -
     Route::post('give-task', [PerformerAPIController::class, 'give_task']); // used
     Route::post('/become-performer', [PerformerAPIController::class, 'becomePerformerData']); // used
     Route::post('/become-performer-phone', [PerformerAPIController::class, 'becomePerformerEmailPhone']); // used
@@ -97,8 +95,6 @@ Route::middleware('custom.auth:api')->group(function () {
     Route::post('/become-performer-category', [PerformerAPIController::class, 'becomePerformerCategory']); // used
     Route::get('/reviews', [PerformerAPIController::class, 'reviews']); //end
 
-    Route::get('/custom-field-by-category/{category}', [CustomFieldAPIController::class, 'getByCategoryId']); //end -
-    Route::get('/custom-field-values-by-task/{task}', [CustomFieldAPIController::class, 'getByTaskId']); //end -
 
     // Profile API
     Route::prefix('/profile')->group(function () {

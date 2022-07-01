@@ -5,6 +5,19 @@ namespace App\Http\Resources;
 use App\Models\Notification;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @property $id
+ * @property $type
+ * @property $is_read
+ * @property $user_id
+ * @property $task_id
+ * @property $name_task
+ * @property $user
+ * @property $performer
+ * @property $task
+ * @property $created_at
+ *
+ */
 class NotificationResource extends JsonResource
 {
 
@@ -24,7 +37,8 @@ class NotificationResource extends JsonResource
         };
     }
 
-    protected function descriptions($type) {
+    protected function descriptions($type): string
+    {
         return match ($type) {
             Notification::TASK_CREATED => __('task_name  №task_id с бюджетом до task_budget', [
                 'task_name' => $this->name_task, 'task_id' => $this->task_id,
@@ -56,7 +70,7 @@ class NotificationResource extends JsonResource
      * @param  $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'id' => $this->id,

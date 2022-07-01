@@ -2,53 +2,49 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\Api\TaskAddressRequest;
-use App\Http\Requests\Api\TaskBudgetRequest;
-use App\Http\Requests\Api\TaskContactsRequest;
-use App\Http\Requests\Api\TaskCustomRequest;
-use App\Http\Requests\Api\TaskDateRequest;
-use App\Http\Requests\Api\TaskFilterRequest;
-use App\Http\Requests\Api\TaskNameRequest;
-use App\Http\Requests\Api\TaskNoteRequest;
-use App\Http\Requests\Api\TaskRemoteRequest;
-use App\Http\Requests\Api\TaskVerificationRequest;
-use App\Http\Requests\Api\V1\Task\StoreRequest;
-use App\Http\Requests\Task\UpdateRequest;
-use App\Http\Requests\Api\TaskComplaintRequest;
-use App\Http\Resources\SameTaskResource;
-use App\Http\Resources\TaskIndexResource;
-use App\Http\Resources\TaskPaginationResource;
-use App\Http\Resources\TaskResponseResource;
-use App\Http\Resources\TaskSingleResource;
-use App\Models\Compliance;
-use App\Models\ComplianceType;
-use App\Models\Task;
-use App\Models\TaskResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Models\User;
+use App\Models\Task;
+use App\Models\Compliance;
 use App\Services\Response;
+use App\Models\TaskResponse;
+use App\Models\ComplianceType;
+use App\Services\TelegramService;
 use App\Services\Task\CreateService;
+use App\Services\Task\ResponseService;
 use App\Services\Task\CreateTaskService;
 use App\Services\Task\FilterTaskService;
-use App\Services\Task\ResponseService;
+use App\Http\Resources\SameTaskResource;
 use App\Services\Task\UpdateTaskService;
-use App\Services\TelegramService;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
-use App\Models\CustomFieldsValue;
+use App\Http\Resources\TaskIndexResource;
+use App\Http\Requests\Api\TaskDateRequest;
+use App\Http\Requests\Api\TaskNameRequest;
+use App\Http\Requests\Api\TaskNoteRequest;
+use App\Http\Resources\TaskSingleResource;
+use App\Http\Resources\TaskResponseResource;
+use App\Http\Requests\Api\TaskRemoteRequest;
+use App\Http\Requests\Api\TaskBudgetRequest;
+use App\Http\Requests\Api\TaskCustomRequest;
+use App\Http\Requests\Api\TaskAddressRequest;
+use App\Http\Resources\TaskPaginationResource;
+use App\Http\Requests\Api\TaskContactsRequest;
+use App\Http\Requests\Api\TaskComplaintRequest;
+use App\Http\Requests\Api\TaskVerificationRequest;
 
 class TaskAPIController extends Controller
 {
     use Response;
 
-    private $service;
-    private $response_service;
-    private $filter_service;
-    private $create_task_service;
-    private $update_task_service;
+    private CreateService $service;
+    private ResponseService $response_service;
+    private FilterTaskService $filter_service;
+    private CreateTaskService $create_task_service;
+    private UpdateTaskService $update_task_service;
 
     public function __construct()
     {
@@ -86,7 +82,7 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function same_tasks(Task $task, Request $request)
+    public function same_tasks(Task $task): AnonymousResourceCollection
     {
         $tasks = $task->category->tasks()->where('id', '!=', $task->id);
         $tasks = $tasks->where('status', Task::STATUS_OPEN)->take(10)->get();
@@ -120,7 +116,7 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function responses(Request $request, Task $task)
+    public function responses(Request $request, Task $task): AnonymousResourceCollection
     {
         if ($task->user_id == auth()->id()) {
             if ($request->get('filter') == 'rating') {
@@ -196,8 +192,9 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function response_store(Task $task, Request $request)
+    public function response_store(Task $task, Request $request): JsonResponse
     {
+        /** @var User $user */
         $user = auth()->user();
         if ($task->user_id == $user->id) {
             return $this->fail([], "Bu o'zingizning taskingiz");
@@ -296,7 +293,7 @@ class TaskAPIController extends Controller
      *     ),
      * )
      */
-    public function filter(Request $request)
+    public function filter(Request $request): AnonymousResourceCollection
     {
         $tasks = $this->filter_service->filter($request->all());
 
@@ -308,20 +305,6 @@ class TaskAPIController extends Controller
         return $task->addresses;
     }
 
-    public function task_find(Request $request)
-    {
-        if (isset($request->s)) {
-            $s = $request->s;
-            $tasks = Task::query()->where('status', Task::STATUS_OPEN)
-                ->where('name', 'like', "%$s%")
-                ->orWhere('description', 'like', "%$s%")
-                ->orWhere('phone', 'like', "%$s%")
-                ->orWhere('budget', 'like', "%$s%")->paginate();
-        } else {
-            $tasks = Task::query()->where('status', Task::STATUS_OPEN)->paginate();
-        }
-        return new TaskPaginationResource($tasks);
-    }
 
     /**
      * @OA\Get(
@@ -350,7 +333,7 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function task(Task $task)
+    public function task(Task $task): TaskIndexResource
     {
         if (auth()->guard('api')->check()) {
             $user_id = auth()->guard('api')->id();
@@ -394,10 +377,11 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function my_tasks_count(Request $request)
+    public function my_tasks_count(Request $request): JsonResponse
     {
+        /** @var User $user */
         $user = auth()->user();
-        $is_performer = $request->is_performer;
+        $is_performer = $request->get('is_performer');
 
         $column = $is_performer ? 'performer_id' : 'user_id';
 
@@ -449,11 +433,12 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function my_tasks_all(Request $request)
+    public function my_tasks_all(Request $request): TaskPaginationResource
     {
+        /** @var User $user */
         $user = auth()->user();
-        $is_performer = $request->is_performer;
-        $status = $request->status;
+        $is_performer = $request->get('is_performer');
+        $status = $request->get('status');
 
         $status = in_array($status, [Task::STATUS_OPEN, Task::STATUS_COMPLETE_WITHOUT_REVIEWS, Task::STATUS_COMPLETE, Task::STATUS_IN_PROGRESS]) ? $status : 0;
 
@@ -506,7 +491,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function name(TaskNameRequest $request)
+    public function name(TaskNameRequest $request): JsonResponse
     {
         return $this->success($this->create_task_service->name_store($request->validated()));
     }
@@ -545,7 +530,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function custom(TaskCustomRequest $request)
+    public function custom(TaskCustomRequest $request): JsonResponse
     {
         return $this->success($this->create_task_service->custom_store($request->validated(), $request));
     }
@@ -589,7 +574,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function remote(TaskRemoteRequest $request)
+    public function remote(TaskRemoteRequest $request): JsonResponse
     {
         return $this->success($this->create_task_service->remote_store($request->validated()));
     }
@@ -640,7 +625,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function address(TaskAddressRequest $request)
+    public function address(TaskAddressRequest $request): JsonResponse
     {
         return $this->success($this->create_task_service->address_store($request->validated()));
     }
@@ -694,7 +679,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function date(TaskDateRequest $request)
+    public function date(TaskDateRequest $request): JsonResponse
     {
         return $this->success($this->create_task_service->date_store($request->validated()));
     }
@@ -741,7 +726,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function budget(TaskBudgetRequest $request)
+    public function budget(TaskBudgetRequest $request): JsonResponse
     {
         return $this->success($this->create_task_service->budget_store($request->validated()));
     }
@@ -789,7 +774,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function note(TaskNoteRequest $request)
+    public function note(TaskNoteRequest $request): JsonResponse
     {
         return $this->success($this->create_task_service->note_store($request->validated()));
     }
@@ -831,8 +816,9 @@ class TaskAPIController extends Controller
      *         {"token": {}}
      *     },
      * )
+     * @throws ValidationException
      */
-    public function uploadImages(Request $request)
+    public function uploadImages(Request $request): JsonResponse
     {
         return $this->create_task_service->image_store($request);
     }
@@ -875,7 +861,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function contacts(TaskContactsRequest $request)
+    public function contacts(TaskContactsRequest $request): JsonResponse
     {
         return $this->success($this->create_task_service->contact_store($request->validated()));
     }
@@ -923,229 +909,9 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function verify(TaskVerificationRequest $request)
+    public function verify(TaskVerificationRequest $request): JsonResponse
     {
         return $this->create_task_service->verification($request->validated());
-    }
-
-    /**
-     * @OA\Post(
-     *     path="/api/task/create",
-     *     tags={"Task"},
-     *     summary="Task create",
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="name",
-     *                    type="string",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="address",
-     *                    type="string",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="date_type",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="budget",
-     *                    type="number",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="description",
-     *                    type="string",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="category_id",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="photos",
-     *                    type="file",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="phone",
-     *                    type="string",
-     *                 ),
-     *             ),
-     *         ),
-     *     ),
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
-    public function create(StoreRequest $request)
-    {
-        $data = $request->validated();
-        $data["user_id"] = auth()->user()->id;
-
-        $images = isset($data['photos']) ? $data['images'] : [];
-        $data['photos'] = [];
-        foreach ($images as $image) {
-            $name = md5(\Carbon\Carbon::now() . '_' . $image->getClientOriginalName() . '.' . $image->getClientOriginalExtension());
-            $filepath = Storage::disk('public')->putFileAs('/images', $image, $name);
-            $data['photos'][] = $filepath;
-        }
-
-
-        $result = Task::create($data);
-        if ($result)
-            return response()->json([
-                'message' => 'Created successfuly',
-                'success' => true,
-                'data' => $result
-            ]);
-        return response()->json([
-            'message' => 'Something wrong',
-            'success' => false,
-        ]);
-    }
-
-
-    /**
-     * @OA\Post(
-     *     path="/api/change-task/{task}",
-     *     tags={"Change Task"},
-     *     summary="Get Task",
-     *     @OA\Parameter (
-     *          in="path",
-     *          name="task",
-     *          required=true,
-     *          @OA\Schema (
-     *              type="string"
-     *          )
-     *     ),
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
-    public function getTask(Task $task)
-    {
-        return $task;
-    }
-
-    /**
-     * @OA\Put(
-     *     path="/api/change-task/{task}",
-     *     tags={"Task"},
-     *     summary="Change task",
-     *     @OA\Parameter (
-     *          in="path",
-     *          name="task",
-     *          required=true,
-     *          @OA\Schema (
-     *              type="string"
-     *          )
-     *     ),
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="name",
-     *                    type="string",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="location0",
-     *                    type="string",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="coordinates0",
-     *                    type="string",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="date_type",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="budget",
-     *                    type="number",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="description",
-     *                    type="string",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="category_id",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="photos",
-     *                    type="file",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="phone",
-     *                    type="string",
-     *                 ),
-     *             ),
-     *         ),
-     *     ),
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
-    public function changeTask(UpdateRequest $request, Task $task)
-    {
-        taskGuard($task);
-        $data = $request->validated();
-        //$data = getAddress($data); // шуни комментировать килиб койса swagger да ишлайди
-
-        $images = isset($data['photos']) ? $data['images'] : [];
-        $data['photos'] = [];
-        foreach ($images as $image) {
-            $name = md5(\Carbon\Carbon::now() . '_' . $image->getClientOriginalName() . '.' . $image->getClientOriginalExtension());
-            $filepath = Storage::disk('public')->putFileAs('/images', $image, $name);
-            $data['photos'][] = $filepath;
-        }
-
-        $task->update($data);
-        $this->service->syncCustomFields($task);
-
-        return response()->json(['success' => true, 'message' => 'Successfully Updated', 'task' => $task]);
-
     }
 
     /**
@@ -1178,7 +944,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function deletetask(Task $task)
+    public function deletetask(Task $task): JsonResponse
     {
         $task->status = Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
         $task->save();
@@ -1247,12 +1013,12 @@ class TaskAPIController extends Controller
      *
      *
      */
-    public function updateName(TaskNameRequest $request, Task $task)
+    public function updateName(TaskNameRequest $request, Task $task): JsonResponse
     {
         return $this->success($this->update_task_service->updateName($task, $request->validated()));
     }
 
-    public function updateCustom(Request $request, Task $task)
+    public function updateCustom(Request $request, Task $task): JsonResponse
     {
         return $this->success($this->update_task_service->updateCustom($task, $request));
     }
@@ -1305,7 +1071,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateRemote(TaskRemoteRequest $request, Task $task)
+    public function updateRemote(TaskRemoteRequest $request, Task $task): JsonResponse
     {
         return $this->success($this->update_task_service->updateRemote($task, $request->validated()));
     }
@@ -1365,7 +1131,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateAddress(TaskAddressRequest $request, Task $task)
+    public function updateAddress(TaskAddressRequest $request, Task $task): JsonResponse
     {
         return $this->success($this->update_task_service->updateAddress($task, $request->validated()));
     }
@@ -1428,7 +1194,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateDate(TaskDateRequest $request, Task $task)
+    public function updateDate(TaskDateRequest $request, Task $task): JsonResponse
     {
         return $this->success($this->update_task_service->updateDate($task, $request->validated()));
     }
@@ -1484,7 +1250,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateBudget(TaskBudgetRequest $request, Task $task)
+    public function updateBudget(TaskBudgetRequest $request, Task $task): JsonResponse
     {
         return $this->success($this->update_task_service->updateBudget($task, $request->validated()));
     }
@@ -1541,7 +1307,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateNote(TaskNoteRequest $request, Task $task)
+    public function updateNote(TaskNoteRequest $request, Task $task): JsonResponse
     {
         return $this->success($this->update_task_service->updateNote($task, $request->validated()));
     }
@@ -1593,7 +1359,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateUploadImages(Request $request, Task $task)
+    public function updateUploadImages(Request $request, Task $task): JsonResponse
     {
         return $this->update_task_service->updateImage($task, $request);
     }
@@ -1645,7 +1411,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateContacts(TaskContactsRequest $request, Task $task)
+    public function updateContacts(TaskContactsRequest $request, Task $task): JsonResponse
     {
         return $this->success($this->update_task_service->updateContact($task, $request->validated()));
     }
@@ -1702,7 +1468,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateVerify(TaskVerificationRequest $request, Task $task)
+    public function updateVerify(TaskVerificationRequest $request, Task $task): JsonResponse
     {
         return $this->update_task_service->verification($task, $request->validated());
     }
@@ -1754,7 +1520,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function complain(TaskComplaintRequest $request, Task $task)
+    public function complain(TaskComplaintRequest $request, Task $task): JsonResponse
     {
         $data = $request->validated();
         $data['task_id'] = $task->id;
@@ -1772,7 +1538,7 @@ class TaskAPIController extends Controller
         ]);
     }
 
-    public function complainTypes()
+    public function complainTypes(): JsonResponse
     {
         return response()->json([
             'success' => true,

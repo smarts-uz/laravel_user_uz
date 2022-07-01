@@ -10,15 +10,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use TCG\Voyager\Traits\Translatable;
 
 /**
- * Retrieve next step with additional fields
- * objects, relations
  * @property $user
  * @property object $category
  *
  * @property $id
+ * @property $name
  * @property $status
  * @property $budget
  * @property $oplata
+ * @property $addresses
  * @property $photos
  * @property $user_id
  * @property $phone

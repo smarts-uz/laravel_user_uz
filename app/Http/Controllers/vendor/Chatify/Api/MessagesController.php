@@ -143,7 +143,7 @@ class MessagesController extends Controller
         return Response::json([
             'success' => true,
             'message' => 'Success',
-        ], 200);
+        ]);
     }
 
     public function getContacts(): JsonResponse
