@@ -196,7 +196,7 @@
             count = count ? count : 0;
             count += 1
             $('#content_count').text(count)
-            $('#notifs').append(`
+            $('#notifs').prepend(`
             <li>
                 <a href=${data['url']} class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">${data['name']}</a>
             </li>
