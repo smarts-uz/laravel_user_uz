@@ -34,7 +34,7 @@ class PersonalInfoRequest extends FormRequest
             'email.required' => __('email.required'),
             'phone_number.required' => __('phone_number.required'),
             'phone_number.integer' => __('phone_number.integer'),
-            'phone_number.unique' => __('phone_number.unique'),
+            'phone_number.unique' => __('Этот номер зарегистрирован'),
             'phone_number.min' => __('phone_number.min'),
         ];
     }

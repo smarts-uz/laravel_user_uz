@@ -325,7 +325,7 @@ class LoginAPIController extends Controller
                 [
                     'phone_number.required' => __('login.phone_number.required'),
                     'phone_number.regex' => __('login.phone_number.regex'),
-                    'phone_number.unique' => __('login.phone_number.unique'),
+                    'phone_number.unique' => __('Этот номер зарегистрирован'),
                     'phone_number.min' => __('login.phone_number.min'),
                 ]
             );
