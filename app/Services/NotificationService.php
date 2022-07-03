@@ -63,37 +63,38 @@ class NotificationService
      */
     public static function sendTaskNotification($task, $user_id): void
     {
-        $performers = User::query()->where('role_id', 2)->pluck('category_id', 'id')->toArray();
+        $performers = User::query()->where('role_id', 2)->select('id', 'category_id', 'firebase_token')->get();
         $performer_ids = [];
-        foreach ($performers as $performer_id => $category_id) {
-            $user_cat_ids = explode(",", $category_id);
-            $check_for_true = in_array($task->category_id, $user_cat_ids);
-            if ($check_for_true !== false) {
-                $performer_ids[] = $performer_id;
+        foreach ($performers as $performer) {
+            $user_cat_ids = explode(",", $performer->category_id);
+            $notification = new Notification([
+                'user_id' => $user_id,
+                'performer_id' => $performer->id,
+                'description' => 'description',
+                'task_id' => $task->id,
+                "cat_id" => $task->category_id,
+                "name_task" => $task->name,
+                "type" => Notification::TASK_CREATED
+            ]);
+            $price = number_format($task->budget, 0, '.', ' ');
+            self::pushNotification($performer->firebase_token, [
+                'title' => __('Новая задания'),
+                'body' => __('task_name  №task_id с бюджетом до task_budget', [
+                    'task_name' => $task->name, 'task_id' => $task->id, 'budget' => $price])
+            ], 'notification', new NotificationResource($notification));
 
-                $notification = Notification::query()->create([
-                    'user_id' => $user_id,
-                    'performer_id' => $performer_id,
-                    'description' => 'description',
-                    'task_id' => $task->id,
-                    "cat_id" => $task->category_id,
-                    "name_task" => $task->name,
-                    "type" => Notification::TASK_CREATED
-                ]);
-                /** @var User $performer */
-                $performer = User::query()->find($performer_id);
-                $price = number_format($task->budget, 0, '.', ' ');
-                self::pushNotification($performer->firebase_token, [
-                    'title' => __('Новая задания'),
-                    'body' => __('task_name  №task_id с бюджетом до task_budget', [
-                        'task_name' => $task->name, 'task_id' => $task->id, 'budget' => $price])
-                ], 'notification', new NotificationResource($notification));
+            if (in_array($task->category_id, $user_cat_ids)) {
+                $performer_ids[] = $performer->id;
 
+                $notification->save();
+                $message = __('Новая задания') . "\n" . __('task_name  №task_id с бюджетом до task_budget', [
+                        'task_name' => $task->name, 'task_id' => $task->id, 'budget' => $price
+                    ]);
                 if ($performer->sms_notification) {
-                    (new SmsService())->send($performer->phone_number, (__('Новое задание для вас, успейте откликнуться.')));
+                    (new SmsService())->send($performer->phone_number, $message);
                 }
                 if ($performer->email_notification) {
-                    Mail::to($performer->email)->send(new MessageEmail(__('Новое задание для вас, успейте откликнуться.')));
+                    Mail::to($performer->email)->send(new MessageEmail($message));
                 }
             }
         }
@@ -121,7 +122,7 @@ class NotificationService
             $column = 'system_notification';
         }
 
-        $user_ids = User::query()->where($column, 1)->pluck('firebase_token',   'id')->toArray();
+        $user_ids = User::query()->where($column, 1)->pluck('firebase_token', 'id')->toArray();
         foreach ($user_ids as $user_id => $token) {
             $notification = Notification::query()->create([
                 'user_id' => $user_id,
@@ -132,7 +133,7 @@ class NotificationService
 
             self::pushNotification($token, [
                 'title' => __('Новости'),
-                'body' =>  __('Важные новости и объявления для вас')
+                'body' => __('Важные новости и объявления для вас')
             ], 'notification', new NotificationResource($notification));
         }
 
