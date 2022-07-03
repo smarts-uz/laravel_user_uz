@@ -1,6 +1,6 @@
 <figure class="w-full">
     <div class="float-right text-gray-500 text-lg">
-        <i class="far fa-eye"> {{ $user->performer_views_count }} {{__('просмотр')}}</i>
+        <i class="far fa-eye"> {{$user->performer_views()->count()}} {{__('просмотр')}}</i>
     </div>
     <div>
         @if(Cache::has('user-is-online-' . $user->id))
