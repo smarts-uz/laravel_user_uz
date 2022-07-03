@@ -10,6 +10,7 @@ use App\Http\Requests\UserRegisterRequest;
 use App\Models\Session;
 use App\Models\User;
 use App\Models\WalletBalance;
+use App\Services\SmsMobileService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
@@ -100,7 +101,9 @@ class UserAPIController extends Controller
         $user->verify_code = $sms_otp;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
-        (new SmsService())->send(preg_replace('/[^0-9]/', '', $user->phone_number), $sms_otp);
+
+        $sms_service = new SmsMobileService();
+        $sms_service->sms_packages($user->phone_number, $sms_otp);
         session(['phone' => $data['phone_number']]);
 
         return response()->json(['success' => true, 'message' => "SMS Code is send!"]);
