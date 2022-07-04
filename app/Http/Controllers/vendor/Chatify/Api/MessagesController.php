@@ -46,18 +46,18 @@ class MessagesController extends Controller
         ];
         $attachment = null;
         $attachment_title = null;
-
+        /** @var User $auth_user */
         $auth_user = Auth::user();
         // if there is attachment [file]
         if ($request->hasFile('file')) {
             // allowed extensions
-            $allowed_images = Chatify::getAllowedImages();
-            $allowed_files  = Chatify::getAllowedFiles();
+            $allowed_images = ChatifyMessenger::getAllowedImages();
+            $allowed_files  = ChatifyMessenger::getAllowedFiles();
             $allowed        = array_merge($allowed_images, $allowed_files);
 
             $file = $request->file('file');
             // check file size
-            if ($file->getSize() < Chatify::getMaxUploadSize()) {
+            if ($file->getSize() < ChatifyMessenger::getMaxUploadSize()) {
                 if (in_array($file->getClientOriginalExtension(), $allowed)) {
                     // get attachment name
                     $attachment_title = $file->getClientOriginalName();
@@ -77,7 +77,7 @@ class MessagesController extends Controller
         if (!$error->status) {
             // send to database
             $messageID = mt_rand(9, 999999999) + time();
-            Chatify::newMessage([
+            ChatifyMessenger::newMessage([
                 'id' => $messageID,
                 'type' => 'user', //$request['type'],
                 'from_id' => $auth_user->id,
@@ -90,13 +90,13 @@ class MessagesController extends Controller
             ]);
 
             // fetch message to send it with the response
-            $messageData = Chatify::fetchMessage($messageID);
+            $messageData = ChatifyMessenger::fetchMessage($messageID);
 
             // send to user using pusher
-            Chatify::push('private-chatify', 'messaging', [
+            ChatifyMessenger::push('private-chatify', 'messaging', [
                 'from_id' => $auth_user->id,
                 'to_id' => $request['id'],
-                'message' => Chatify::messageCard($messageData, 'default')
+                'message' => ChatifyMessenger::messageCard($messageData, 'default')
             ]);
             NotificationService::pushNotification($auth_user->firebase_token, [
                 'title' => 'New message', 'body' => 'See details'
@@ -124,7 +124,7 @@ class MessagesController extends Controller
      */
     public function fetch(Request $request): JsonResponse
     {
-        $query = Chatify::fetchMessagesQuery($request['id']);
+        $query = ChatifyMessenger::fetchMessagesQuery($request['id']);
         $query->where('seen',0)->update(['seen' => 1]);
 
         $messages = MessageResource::collection($query->latest()->get());
