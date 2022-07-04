@@ -29,7 +29,7 @@ class FilterTaskService
         $tasks = Task::query()->where('status', '=',Task::STATUS_OPEN);
 
         $tasks_items =  [];
-        if (isset($data['lat']) && isset($data['long']) && isset($data['difference']))
+        if (isset($data['lat']) && isset($data['long']) && isset($data['difference']) && !isset($data['is_remote']))
         {
             foreach ($tasks->get() as $task) {
                 $address = $task->addresses->first();
