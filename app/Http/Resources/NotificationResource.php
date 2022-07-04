@@ -82,7 +82,7 @@ class NotificationResource extends JsonResource
             'user_id' => $this->user_id,
             'user_name' => $this->user->name ?? null,
             'is_read' => $this->is_read,
-            'created_at' => $this->created_at->format('d.m.Y')
+            'created_at' => $this->created_at?->format('d.m.Y')
         ];
     }
 }
