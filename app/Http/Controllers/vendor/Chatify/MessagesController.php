@@ -259,7 +259,10 @@ class MessagesController extends Controller
         if (count($userIdsList) > 0) {
             $contacts = '';
             foreach ($userIdsList as $userId) {
-                $contacts .= $chatItem->getContactItem(User::query()->find($userId));
+                $user = User::query()->find($userId);
+                if ($user) {
+                    $contacts .= $chatItem->getContactItem($user);
+                }
             }
         } else {
             $contacts = '<p class="message-hint center-el"><span>Your contact list is empty</span></p>';
