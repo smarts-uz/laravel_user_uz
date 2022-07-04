@@ -129,7 +129,7 @@ class NotificationService
             ], 'notification', new NotificationResource($notification));
         }
 
-        self::sendNotificationRequest($user_ids, [
+        self::sendNotificationRequest(array_keys($user_ids), [
             'url' => $slug . '/' . $not->id, 'name' => $not->title, 'time' => 'recently'
         ]);
     }
