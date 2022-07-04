@@ -202,6 +202,16 @@ class NotificationService
         return true;
     }
 
+    public static function sendBalanceReplenished($user_id, $amount, $payment_system)
+    {
+        /** @var User $user */
+        $user = User::query()->find($user_id);
+        $sms_service = new SmsMobileService();
+        $text = "Your balance is replenished to $amount sum by $payment_system";
+        $sms_service->sms_packages($user->phone_number, $text);
+        Mail::to($user->email)->send(new MessageEmail($text));
+    }
+
     /**
      * Function for use send push(firebase) notifications
      *
