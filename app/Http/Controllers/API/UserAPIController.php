@@ -158,10 +158,10 @@ class UserAPIController extends Controller
         $user = User::query()->where('phone_number', $data['phone_number'])->firstOrFail();
         $user->password = Hash::make($data['password']);
         $user->save();
-        auth()->login($user);
-
-        $accessToken = auth()->user()->createToken('authToken')->accessToken;
-        return response(['user' => auth()->user(), 'access_token' => $accessToken]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Password was changed'
+        ]);
 
     }
 
