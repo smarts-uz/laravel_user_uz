@@ -253,7 +253,7 @@ class MessagesController extends Controller
      */
     public function getContacts(Request $request)
     {
-        $userIdsList = ContactService::contactsList(auth()->user());
+        $userIdsList = ContactService::contactsList(Auth::user());
         $chatItem = new Chatify();
 //        dd($chatItem->getLastMessageQuery($usersList[1]->id));
         if (count($userIdsList) > 0) {
