@@ -114,21 +114,13 @@ class NotificationService
      */
     public static function sendNotification($not, $slug): void
     {
-        if ($slug == 'news-notifications') {
-            $type = Notification::NEWS_NOTIFICATION;
-            $column = 'news_notification';
-        } else {
-            $type = Notification::SYSTEM_NOTIFICATION;
-            $column = 'system_notification';
-        }
-
-        $user_ids = User::query()->where($column, 1)->pluck('firebase_token', 'id')->toArray();
+        $user_ids = User::query()->where('news_notification', 1)->pluck('firebase_token', 'id')->toArray();
         foreach ($user_ids as $user_id => $token) {
             $notification = Notification::query()->create([
                 'user_id' => $user_id,
                 'description' => $not->message ?? 'description',
                 "name_task" => $not->title,
-                "type" => $type
+                "type" => Notification::NEWS_NOTIFICATION
             ]);
 
             self::pushNotification($token, [
@@ -140,7 +132,6 @@ class NotificationService
         self::sendNotificationRequest($user_ids, [
             'url' => $slug . '/' . $not->id, 'name' => $not->title, 'time' => 'recently'
         ]);
-
     }
 
     /**

@@ -162,11 +162,11 @@
                                     {{-- settings/ second tab -> enable notification start --}}
                                     <div class="md:w-4/5 w-full mt-5">
                                         <h3 class="font-bold text-3xl">{{__('Получать уведомления:')}}</h3>
-                                        <div class="grid grid-cols-10 mt-5">
-                                            <input type="checkbox" id="notif_checkbox1"
-                                                   {{$user->system_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
-                                            <span class="col-span-9 ml-2">{{__('Системные уведомления')}}</span>
-                                        </div>
+{{--                                        <div class="grid grid-cols-10 mt-5">--}}
+{{--                                            <input type="checkbox" id="notif_checkbox1"--}}
+{{--                                                   {{$user->system_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>--}}
+{{--                                            <span class="col-span-9 ml-2">{{__('Системные уведомления')}}</span>--}}
+{{--                                        </div>--}}
                                         <div class="grid grid-cols-10 mt-5">
                                             <input type="checkbox" id="notif_checkbox2"
                                                    {{$user->news_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
