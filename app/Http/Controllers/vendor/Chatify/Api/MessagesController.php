@@ -125,9 +125,10 @@ class MessagesController extends Controller
     public function fetch(Request $request): JsonResponse
     {
         $query = ChatifyMessenger::fetchMessagesQuery($request['id']);
+        $messages = $query->latest()->get();
         $query->where('seen',0)->update(['seen' => 1]);
 
-        $messages = MessageResource::collection($query->latest()->get());
+        $messages = MessageResource::collection($messages);
         return Response::json([
             'success' => true,
             'data' => $messages,

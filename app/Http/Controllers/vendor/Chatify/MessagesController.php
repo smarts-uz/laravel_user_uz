@@ -162,7 +162,7 @@ class MessagesController extends Controller
             $this->chatify->newMessage([
                 'id' => $messageID,
                 'type' => $request['type'],
-                'from_id' => Auth::user()->id,
+                'from_id' => Auth::id(),
                 'to_id' => $request['id'],
                 'body' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
                 'attachment' => ($attachment) ? json_encode((object)[
@@ -176,7 +176,7 @@ class MessagesController extends Controller
 
             // send to user using pusher
             $this->chatify->push('private-chatify', 'messaging', [
-                'from_id' => Auth::user()->id,
+                'from_id' => Auth::id(),
                 'to_id' => $request['id'],
                 'message' => $this->chatify->messageCard($messageData, 'default')
             ]);
