@@ -93,10 +93,15 @@
                     @break
                 @case('checkbox')
                     <div class="ml-4 md:ml-12 flex flex-row mt-8">
-                        <h1 class="font-bold h-auto w-48">{{ $value->custom_field->getTranslatedAttribute('title') }}</h1>
+                        <h1 class="font-bold h-auto w-48">{{ $value->custom_field->getTranslatedAttribute('label') }}</h1>
                         <div class="h-auto w-full ml-10">
                             <p class="text-gray-800">
-                                {{ implode(', ', json_decode($value->value)) }}
+                                @foreach(json_decode($value->value) as $item)
+                                    <div class="flex flex-row items-center gap-x-4 mb-4">
+                                        <i class="fas fa-check text-yellow-500"></i>
+                                        <span>{{$item}}</span>
+                                    </div>
+                                @endforeach
                             </p>
                         </div>
                     </div>
@@ -126,24 +131,24 @@
             @endswitch
         @endif
     @endforeach
-@if(isset($input_values))
-    <div class="ml-4 md:ml-12 flex flex-row mt-8">
-        <h1 class="font-bold h-auto w-48">{{ __('Параметры')  }}</h1>
-        <div class="flex flex-wrap gap-x-2 h-auto w-full ml-6">
-            <h1 class="ml-4">
-                {{ implode(', ', $input_values)  }}
-            </h1>
+    @if(isset($input_values))
+        <div class="ml-4 md:ml-12 flex flex-row mt-8">
+            <h1 class="font-bold h-auto w-48">{{ __('Параметры')  }}</h1>
+            <div class="flex flex-wrap gap-x-2 h-auto w-full ml-6">
+                <h1 class="ml-4">
+                    {{ implode(', ', $input_values)  }}
+                </h1>
+            </div>
         </div>
-    </div>
-@endif
+    @endif
 
-@if($task->docs == 1)
-    <div class="ml-4 md:ml-12 flex flex-row mt-8">
-        <h1 class="font-bold h-auto w-48">{{__('Предоставил(а) документы')}}</h1>
-    </div>
-@else
-    <div class="ml-4 md:ml-12 flex flex-row mt-8">
-        <h1 class="font-bold h-auto w-48">{{__('Не предоставил(а) документы')}}</h1>
-    </div>
-@endif
+    @if($task->docs == 1)
+        <div class="ml-4 md:ml-12 flex flex-row mt-8">
+            <h1 class="font-bold h-auto w-48">{{__('Предоставил(а) документы')}}</h1>
+        </div>
+    @else
+        <div class="ml-4 md:ml-12 flex flex-row mt-8">
+            <h1 class="font-bold h-auto w-48">{{__('Не предоставил(а) документы')}}</h1>
+        </div>
+    @endif
 
