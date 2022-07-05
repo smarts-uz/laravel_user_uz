@@ -12,19 +12,19 @@ class SmsMobileService
     /**
      *
      * Function  sms_packages
-     * Mazkur metod ikkita sms paketdan biri orqali 6ta raqamli sms code boradi boradi
+     * Mazkur metod ikkita sms paketdan biri orqali sms XABAR YUBORADI
      * @param   Object
      * @return
      */
-    public function sms_packages($phone_number, $code){
+    public function sms_packages($phone_number, $message){
 
         $phone_numberr=preg_replace('/[+]+/', '', $phone_number);
         switch(env('SMS_PROVIDER')) {
             case('eskiz_sms'):
-                Sms::send($phone_numberr, $code);
+                Sms::send($phone_numberr, $message);
                 break;
             case('playmobile_sms'):
-                (new SmsService())->send($phone_number, $code);
+                (new SmsService())->send($phone_number, $message);
                 break;
         }
 

@@ -78,18 +78,18 @@ class LoginController extends Controller
     public static function send_verification($needle, $user, $phone_number=null)
     {
         if ($needle == 'email') {
-            $code = sha1(time());
+            $message = sha1(time());
             $data = [
-                'code' => $code,
+                'code' => $message,
                 'user' => auth()->user()->id
             ];
             Mail::to($user->email)->send(new VerifyEmail($data));
         } else {
-            $code = rand(100000, 999999);
+            $message = rand(100000, 999999);
             $sms_service = new SmsMobileService();
-            $sms_service->sms_packages($phone_number, $code);
+            $sms_service->sms_packages($phone_number, $message);
         }
-        $user->verify_code = $code;
+        $user->verify_code = $message;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
 
@@ -97,12 +97,12 @@ class LoginController extends Controller
 
     public static function send_verification_for_task_phone($task, $phone_number)
     {
-        $code = rand(100000, 999999);
+        $message = rand(100000, 999999);
         $sms_service = new SmsMobileService();
-        $sms_service->sms_packages($phone_number, $code);
+        $sms_service->sms_packages($phone_number, $message);
 
         $task->phone = $phone_number;
-        $task->verify_code = $code;
+        $task->verify_code = $message;
         $task->verify_expiration = Carbon::now()->addMinutes(2);
         $task->save();
 

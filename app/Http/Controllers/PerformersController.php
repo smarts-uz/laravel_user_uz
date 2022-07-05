@@ -6,7 +6,7 @@ use App\Http\Resources\NotificationResource;
 use App\Models\WalletBalance;
 use App\Services\NotificationService;
 use App\Services\PerformersService;
-use App\Services\SmsTextService;
+use App\Services\SmsMobileService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Portfolio;
@@ -94,10 +94,10 @@ class PerformersController extends Controller
             $users_id = $request->session()->pull('given_id');
             $performer = User::query()->find($users_id);
             $text_url = route("searchTask.task",$task_id);
-            $text = "Заказчик предложил вам новую задания $text_url. Имя заказчика: " . $task_name->user->name;
+            $message = "Заказчик предложил вам новую задания $text_url. Имя заказчика: " . $task_name->user->name;
             $phone_number=$performer->phone_number;;
-            $sms_service = new SmsTextService();
-            $sms_service->sms_packages($phone_number, $text);
+            $sms_service = new SmsMobileService();
+            $sms_service->sms_packages($phone_number, $message);
             $notification = Notification::create([
                 'user_id' => $task_name->user_id,
                 'performer_id' => $users_id,

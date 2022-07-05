@@ -135,6 +135,7 @@
                         </div>
                     </label>
                 </div>
+                @if(!$task->remote == 1)
                 <div>
                     <div class="mb-4">
                         <div id="formulario" class="flex flex-col gap-y-4 text-base">
@@ -204,6 +205,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
                 <div>
                     <div class="ml-4 md:ml-12 flex flex-wrap mt-8">
                         <h1 class="font-bold mb-2">{{__('Рисунок')}}</h1>

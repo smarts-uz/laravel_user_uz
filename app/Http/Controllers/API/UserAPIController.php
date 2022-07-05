@@ -19,7 +19,6 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use PlayMobile\SMS\SmsService;
 
 class UserAPIController extends Controller
 {
@@ -97,13 +96,13 @@ class UserAPIController extends Controller
         $data = $request->validated();
         /** @var User $user */
         $user = User::query()->where('phone_number', $data['phone_number'])->firstOrFail();
-        $sms_otp = rand(100000, 999999);
-        $user->verify_code = $sms_otp;
+        $message = rand(100000, 999999);
+        $user->verify_code = $message;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
 
         $sms_service = new SmsMobileService();
-        $sms_service->sms_packages($user->phone_number, $sms_otp);
+        $sms_service->sms_packages($user->phone_number, $message);
         session(['phone' => $data['phone_number']]);
 
         return response()->json(['success' => true, 'message' => "SMS Code is send!"]);

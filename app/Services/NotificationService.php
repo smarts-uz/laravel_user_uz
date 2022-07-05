@@ -12,7 +12,6 @@ use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
-use PlayMobile\SMS\SmsService;
 
 class NotificationService
 {
@@ -91,7 +90,9 @@ class NotificationService
                         'task_name' => $task->name, 'task_id' => $task->id, 'budget' => $price
                     ]);
                 if ($performer->sms_notification) {
-                    (new SmsService())->send($performer->phone_number, $message);
+                    $sms_service = new SmsMobileService();
+                    $phone_number = $performer->phone_number;
+                    $sms_service->sms_packages($phone_number, $message);
                 }
                 if ($performer->email_notification) {
                     Mail::to($performer->email)->send(new MessageEmail($message));
@@ -207,9 +208,10 @@ class NotificationService
         /** @var User $user */
         $user = User::query()->find($user_id);
         $sms_service = new SmsMobileService();
-        $text = "Your balance is replenished to $amount sum by $payment_system";
-        $sms_service->sms_packages($user->phone_number, $text);
-        Mail::to($user->email)->send(new MessageEmail($text));
+        $message = "Your balance is replenished to $amount sum by $payment_system";
+        $phone_number = $user->phone_number;
+        $sms_service->sms_packages($phone_number, $message);
+        Mail::to($user->email)->send(new MessageEmail($message));
     }
 
     /**

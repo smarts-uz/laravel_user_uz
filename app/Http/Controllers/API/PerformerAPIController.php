@@ -15,10 +15,10 @@ use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\NotificationService;
+use App\Services\SmsMobileService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use PlayMobile\SMS\SmsService;
 
 class PerformerAPIController extends Controller
 {
@@ -140,8 +140,10 @@ class PerformerAPIController extends Controller
         $task = Task::where('id', $data['task_id'])->first();
         $performer = User::query()->findOrFail($data['performer_id']);
         $text_url = route("searchTask.task",$data['task_id']);
-        $text = "Заказчик предложил вам новую задания $text_url. Имя заказчика: " . $task->user->name;
-        (new SmsService())->send($performer->phone_number, $text);
+        $message = "Заказчик предложил вам новую задания $text_url. Имя заказчика: " . $task->user->name;
+        $phone_number = $performer->phone_number;
+        $sms_service = new SmsMobileService();
+        $sms_service->sms_packages($phone_number, $message);
         $notification = Notification::create([
             'user_id' => $task->user_id,
             'performer_id' => $data['performer_id'],

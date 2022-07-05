@@ -53,9 +53,9 @@
                                         <div class="col-span-3 md:text-right categoryid">
                                             <p class="text-xl font-medium text-gray-600">
                                                 @if ( session('lang') == 'uz' )
-                                                    {{$task->budget}} {{__('сум')}}{{__('до')}}
+                                                    {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
                                                 @else
-                                                    {{__('до')}} {{$task->budget}} {{__('сум')}}
+                                                    {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
                                                 @endif
                                             </p>
                                             @foreach ($categories2 as $category2)
@@ -63,7 +63,7 @@
                                                     <span class="text-sm text-gray-500 hover:text-red-600 my-3" about="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</span>
                                                 @endif
                                             @endforeach
-                                            <p class="text-sm text-gray-500"> {{__("Количество откликов :")}} 
+                                            <p class="text-sm text-gray-500"> {{__("Количество откликов :")}}
                                                 @if ($task->task_responses()->count() > 0)
                                                 {{  $task->task_responses()->count() }}
                                                 @else
@@ -110,9 +110,9 @@
                                             <div class="col-span-3 md:text-right categoryid">
                                                 <p class="text-xl font-medium text-gray-600">
                                                     @if ( session('lang') == 'uz')
-                                                        {{$task->budget}} {{__('сум')}}{{__('до')}}
+                                                        {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
                                                     @else
-                                                        {{__('до')}} {{$task->budget}} {{__('сум')}}
+                                                        {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
                                                     @endif
                                                 </p>
                                                 @foreach ($categories2 as $category2)

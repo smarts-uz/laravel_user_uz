@@ -13,20 +13,12 @@ use App\Http\Requests\Api\ProfileVideoRequest;
 use App\Http\Resources\PortfolioIndexResource;
 use App\Http\Resources\ReviewIndexResource;
 use App\Http\Resources\UserIndexResource;
-use App\Models\All_transaction;
 use App\Models\Portfolio;
 use App\Models\Session;
-use App\Models\Task;
 use App\Models\User;
-use App\Models\WalletBalance;
 use App\Services\Profile\ProfileService;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use OpenApi\Annotations as OA;
 
 class ProfileAPIController extends Controller
 {

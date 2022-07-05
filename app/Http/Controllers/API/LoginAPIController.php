@@ -6,11 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\VerifyCredentialsRequest;
 use App\Mail\VerifyEmail;
 use App\Models\User;
+use App\Services\SmsMobileService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use PlayMobile\SMS\SmsService;
-use RealRashid\SweetAlert\Facades\Alert;
 
 class LoginAPIController extends Controller
 {
@@ -43,9 +42,10 @@ class LoginAPIController extends Controller
     public static function sendVerification($type, $value)
     {
         if ($type == 'phone_number') {
-
-            $code = rand(100000, 999999);
-            (new SmsService())->send($value, $code);
+            $message = rand(100000, 999999);
+            $phone_number = $value;
+            $sms_service = new SmsMobileService();
+            $sms_service->sms_packages($phone_number, $message);
         } else {
             $code = sha1(time());
             $data = [
@@ -67,8 +67,10 @@ class LoginAPIController extends Controller
             ];
             Mail::to($user->email)->send(new VerifyEmail($data));
         } else {
-            $code = rand(100000, 999999);
-            (new SmsService())->send($user->phone_number, $code);
+            $message = rand(100000, 999999);
+            $phone_number = $user->phone_number;
+            $sms_service = new SmsMobileService();
+            $sms_service->sms_packages($phone_number, $message);
         }
         $user->verify_code = $code;
         $user->verify_expiration = Carbon::now()->addMinutes(5);

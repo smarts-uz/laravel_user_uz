@@ -13,7 +13,7 @@ use App\Models\User;
 use App\Models\UserExpense;
 use App\Models\WalletBalance;
 use App\Services\NotificationService;
-use App\Services\SmsTextService;
+use App\Services\SmsMobileService;
 use JetBrains\PhpStorm\ArrayShape;
 
 class ResponseService
@@ -116,10 +116,10 @@ class ResponseService
             $name = $response_user->name;
             $phone = $response_user->phone_number;
             $text_url = route("searchTask.task",$response->task_id);
-            $text = "Vi ispolnitel v zadanii $text_url. Kontakt zakazchika: $name. $phone";
+            $message = "Vi ispolnitel v zadanii $text_url. Kontakt zakazchika: $name. $phone";
             $phone_number=$performer->phone_number;
-            $sms_service = new SmsTextService();
-            $sms_service->sms_packages($phone_number, $text);
+            $sms_service = new SmsMobileService();
+            $sms_service->sms_packages($phone_number, $message);
         }
         $data = [
             'performer_name' => $performer->name,
