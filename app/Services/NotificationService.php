@@ -203,12 +203,13 @@ class NotificationService
         return true;
     }
 
-    public static function sendBalanceReplenished($user_id, $amount, $payment_system)
+    public static function sendBalanceReplenished($user_id, $amount, $payment_system): void
     {
         /** @var User $user */
         $user = User::query()->find($user_id);
         $sms_service = new SmsMobileService();
-        $message = "Your balance is replenished to $amount sum by $payment_system";
+        $amount = number_format($amount, 0, '.', ' ');
+        $message = "vash balans v UserUz papolnena $amount sum cherez $payment_system";
         $phone_number = $user->phone_number;
         $sms_service->sms_packages($phone_number, $message);
         Mail::to($user->email)->send(new MessageEmail($message));
