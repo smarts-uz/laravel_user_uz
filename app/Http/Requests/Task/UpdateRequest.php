@@ -25,8 +25,6 @@ class UpdateRequest extends FormRequest
     {
         $rule = [
             'name' => 'required',
-            'location0' => 'required',
-            'coordinates0' => 'required',
             'date_type' => 'required',
             'budget' => 'required',
             'description' => 'required',
