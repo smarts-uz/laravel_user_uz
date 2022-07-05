@@ -10,7 +10,7 @@ use App\Models\Notification;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\NotificationService;
-use App\Services\SmsTextService;
+use App\Services\SmsMobileService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 
@@ -161,10 +161,10 @@ class CreateService
             /** @var User $performer */
             $performer = User::query()->findOrFail($performer_id);
             $text_url = route("searchTask.task", $task->id);
-            $text = "Заказчик предложил вам новую задания $text_url. Имя заказчика: " . $user->name;
+            $message = "Заказчик предложил вам новую задания $text_url. Имя заказчика: " . $user->name;
             $phone_number=$performer->phone_number;;
-            $sms_service = new SmsTextService();
-            $sms_service->sms_packages($phone_number, $text);
+            $sms_service = new SmsMobileService();
+            $sms_service->sms_packages($phone_number, $message);
             Notification::query()->create([
                 'user_id' => $task->user_id,
                 'performer_id' => $performer_id,

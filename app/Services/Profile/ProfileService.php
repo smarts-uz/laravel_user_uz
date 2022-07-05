@@ -11,6 +11,7 @@ use App\Models\Session;
 use App\Models\User;
 use App\Models\WalletBalance;
 use App\Services\PaymentService;
+use App\Services\SmsMobileService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,6 @@ use App\Models\Portfolio;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
-use PlayMobile\SMS\SmsService;
 use TCG\Voyager\Models\Category;
 use UAParser\Parser;
 
@@ -371,17 +371,19 @@ class ProfileService
             $user->phone_number_old = $user->phone_number;
             $user->phone_number = $phoneNumber;
             $user->is_phone_number_verified = 0;
-            $code = rand(100000, 999999);
-            (new SmsService())->send($user->phone_number, $code);
-            $user->verify_code = $code;
+            $message = rand(100000, 999999);
+            $phone_number = $user->phone_number;
+            $sms_service = new SmsMobileService();
+            $sms_service->sms_packages($phone_number, $message);
+            $user->verify_code = $message;
             $user->save();
-            $message = trans('trans.Phone number updated successfully.');
+            $messages = trans('trans.Phone number updated successfully.');
             $success = true;
         }
         return [
             'success' => $success,
             'data' => [
-                'message' => $message
+                'messages' => $messages
             ]
         ];
     }

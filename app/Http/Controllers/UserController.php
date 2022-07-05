@@ -60,13 +60,13 @@ class UserController extends Controller
                 'message' => "This phone number does not have an account!"
             ]);
         }
-        $code = rand(100000, 999999);
-        $user->verify_code = $code;
+        $message = rand(100000, 999999);
+        $user->verify_code = $message;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
         $phone_number=$user->phone_number;
         $sms_service = new SmsMobileService();
-        $sms_service->sms_packages($phone_number, $code);
+        $sms_service->sms_packages($phone_number, $message);
 
         session()->put('verifications', ['key' => 'phone_number', 'value' => $data['phone_number']]);
 
