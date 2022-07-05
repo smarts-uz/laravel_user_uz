@@ -123,6 +123,8 @@ class CreateTaskService
     public function remote_store($data): array
     {
         $task = Task::query()->findOrFail($data['task_id']);
+        $task->remote = 1;
+        $task->save();
         return match ($data['radio']) {
             CustomField::ROUTE_ADDRESS => $this->get_address($task),
             CustomField::ROUTE_REMOTE => $this->get_date($task),
