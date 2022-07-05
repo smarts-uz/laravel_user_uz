@@ -59,6 +59,9 @@ class NotificationController extends VoyagerBaseController
     public function show_notification(Notification $notification)
     {
         $notification->update(['is_read' => 1]);
+        if ($notification->type == Notification::NEWS_NOTIFICATION || $notification->type == Notification::SYSTEM_NOTIFICATION) {
+            return redirect('/news');
+        }
         return redirect('/detailed-tasks/' . $notification->task_id);
     }
 

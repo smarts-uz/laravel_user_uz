@@ -59,11 +59,9 @@
                                                 <i class="fas fa-bookmark text-xl text-yellow-500"></i>
                                                 <div>
                                                     <p>{{__('Новости')}}</p>
-                                                    <button
-                                                        onclick="toggleModal121('modal-id121', '{{$notification->name_task}}', '{{$notification->description}}', {{$notification->id}})"
-                                                        class="font-bold hover:bg-gray-100 text-gray-700 text-left">
+                                                    <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
                                                         {{__('Важные новости и объявления для вас')}}
-                                                    </button>
+                                                    </a>
                                                 </div>
                                             </div>
                                         @elseif($notification->type == \App\Models\Notification::GIVE_TASK)
