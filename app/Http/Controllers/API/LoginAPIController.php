@@ -42,10 +42,10 @@ class LoginAPIController extends Controller
     public static function sendVerification($type, $value)
     {
         if ($type == 'phone_number') {
-            $message = rand(100000, 999999);
+            $code = rand(100000, 999999);
             $phone_number = $value;
             $sms_service = new SmsMobileService();
-            $sms_service->sms_packages($phone_number, $message);
+            $sms_service->sms_packages($phone_number, $code);
         } else {
             $code = sha1(time());
             $data = [

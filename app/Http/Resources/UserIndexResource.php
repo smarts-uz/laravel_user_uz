@@ -24,7 +24,7 @@ class UserIndexResource extends JsonResource
      */
     public function toArray($request)
     {
-        if($this->password==null) {
+        if(isset($this->password)) {
             $socialPassword=false;
         }
         else{
@@ -112,7 +112,7 @@ class UserIndexResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'social_password'=>$socialPassword,
+            'social_password'=> $socialPassword,
             'last_name' => $this->last_name,
             'email' => $this->email,
             'avatar' => asset('storage/'.$this->avatar),
