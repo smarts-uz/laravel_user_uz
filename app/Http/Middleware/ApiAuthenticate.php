@@ -19,6 +19,7 @@ class ApiAuthenticate extends Middleware
         if (auth()->user() !== null) {
             if (auth()->user()->is_active != 0) {
                 $isActive = 1;
+                auth()->logout();
             }
         }
         if (! $request->expectsJson() || !$isActive) {
