@@ -31,7 +31,7 @@ use App\Http\Controllers\vendor\Chatify\Api\MessagesController;
 |
 */
 
-Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
+Route::middleware('custom.auth:api')->group(function () {
     Route::post('logout', [UserAPIController::class, 'logout']); // need use
 
     Route::group(['prefix' => 'chat'], function (){
