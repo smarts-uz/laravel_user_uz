@@ -200,6 +200,8 @@ class TaskAPIController extends Controller
             return $this->fail([], "Bu o'zingizning taskingiz");
         } elseif ($user->role_id != 2) {
             return $this->fail([], "Siz Performer emassiz");
+        } elseif (!$user->is_phone_number_verified) {
+            return $this->fail([], "Verify phone number");
         }
 
         $response = $this->response_service->store($request, $task);
