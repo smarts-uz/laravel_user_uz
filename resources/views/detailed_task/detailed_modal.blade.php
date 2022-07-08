@@ -140,7 +140,7 @@
      class="btn-preloader hidden overflow-x-hidden overflow-y-auto fixed h-modal md:h-full top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center">
     <div
         class="relative w-full max-w-md px-4 h-full md:h-auto">
-        @if(Auth::check() && auth()->user()->phone_number == null)
+        @if(Auth::check() && auth()->user()->is_phone_number_verified!=1)
             <div
                 class="bg-white rounded-lg shadow relative dark:bg-gray-700">
                 <div class="flex justify-end p-2">
@@ -157,18 +157,12 @@
                     </button>
                 </div>
                     <header>
-                        <h2 class="font-semibold text-3xl mb-4 text-center">{{__('Номер телефона не введен')}}</h2>
+                        <h2 class="font-semibold text-3xl mb-4 text-center">{{__('Подтвердите номер телефона')}}</h2>
                     </header>
-                    <main>
-                       <h1 class="text-xl font-semibold text-center my-6">{{__('Пожалуйста введите ваш номер телефона')}}</h1>
+                    <main class="py-6">
+                       <h1 class="text-xl text-gray-900 text-center my-6">{{__('Вы не подтвердили свой номер телефона, пожалуйста, подтвердите свой номер телефона')}}</h1>
                     </main>
-                    <footer
-                        class="flex justify-center bg-transparent">
-                        <a href="{{route('profile.editData')}}"
-                                class=" bg-yellow-500 font-semibold text-white p-4 rounded-md my-8 focus:outline-none shadow-lg hover:shadow-none transition-all duration-300">
-                            {{__('Введите номер телефона')}}
-                        </a>
-                    </footer>
+
             </div>
         @else
             <!-- Modal content -->
