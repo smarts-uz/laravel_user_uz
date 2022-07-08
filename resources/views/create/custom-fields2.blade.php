@@ -149,6 +149,7 @@
                     </div>
                 </div>
             </div>
+            <script src="{{asset('js/custom.js')}}"></script>
         @endif
         @if($custom_field['type']  == 'number')
 
