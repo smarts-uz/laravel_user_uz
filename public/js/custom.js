@@ -1,4 +1,4 @@
-var input = document.getElementById('car_1');
+var input = document.querySelector('#car_2');
 var currentValue;
 
 input.addEventListener('input', function(event) {
@@ -64,16 +64,10 @@ function getNumberFormat() {
     return new Intl.NumberFormat();
 }
 
-/* From: http://stackoverflow.com/a/6969486/496992 */
 function escapeRegExp(str) {
     return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 }
 
-/*
-** Returns the caret (cursor) position of the specified text field.
-** Return value range is 0-oField.value.length.
-** From: http://stackoverflow.com/a/2897229/496992
-*/
 function getCaretPosition (oField) {
     // Initialize
     var iCaretPos = 0;
@@ -102,7 +96,6 @@ function getCaretPosition (oField) {
     return iCaretPos;
 }
 
-/* From: http://stackoverflow.com/a/512542/496992 */
 function setCaretPosition(elem, caretPos) {
     if(elem != null) {
         if(elem.createTextRange) {

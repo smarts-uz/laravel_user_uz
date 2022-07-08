@@ -143,13 +143,11 @@
 
                         <input
                             placeholder="{{ $custom_field['placeholder'] }}"
-                            id="car_{{ $custom_field['order'] }}" name="{{$custom_field['name']}}[]" type="number" value="{{ $custom_field['task_value'] }}"
+                            id="car_{{ $custom_field['order'] }}" name="{{$custom_field['name']}}[]" type="text" value="{{ $custom_field['task_value'] }}"
                             class="shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500" onkeypress='validate(event)'>
-
                     </div>
                 </div>
             </div>
-            <script src="{{asset('js/custom.js')}}"></script>
         @endif
         @if($custom_field['type']  == 'number')
 
@@ -180,7 +178,6 @@
         @endif
 
     @endforeach
-
     <style>
         [class*="copyrights-pane"]
         {display: none !important;}
@@ -191,6 +188,7 @@
             margin: 0;
         }
     </style>
+    <script src="{{asset('js/custom.js')}}"></script>
 @endif
 
 
