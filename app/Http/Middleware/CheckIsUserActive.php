@@ -26,6 +26,6 @@ class CheckIsUserActive
         throw new HttpResponseException(response()->json([
             'success'   => false,
             'message'   => 'User not active',
-        ], 401));
+        ], 400));
     }
 }
