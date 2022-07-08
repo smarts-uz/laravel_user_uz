@@ -15,14 +15,7 @@ class ApiAuthenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        $isActive = false;
-        if (auth()->user() !== null) {
-            if (auth()->user()->is_active != 0) {
-                $isActive = 1;
-                auth()->logout();
-            }
-        }
-        if (! $request->expectsJson() || !$isActive) {
+        if (! $request->expectsJson()) {
             throw new HttpResponseException(response()->json([
                 'success'   => false,
                 'message'   => 'auth.error',
