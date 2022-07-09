@@ -357,9 +357,14 @@ class MessagesController extends Controller
     {
         $getRecords = null;
         $input = trim(filter_var($request['input'], FILTER_SANITIZE_STRING));
-        $records = User::where('id', '!=', Auth::user()->id)
+        $ids = ContactService::contactsList(Auth::user());
+        if (($key = array_search(Auth::id(), $ids)) !== false) {
+            unset($ids[$key]);
+        }
+        $records = User::query()
+            ->select('id', 'name', 'active_status', 'avatar', 'last_seen')
+            ->whereIn('id',$ids)
             ->where('name', 'LIKE', "%{$input}%")
-            ->where('role_id', 6)
             ->paginate($request->per_page ?? $this->perPage);
         foreach ($records->items() as $record) {
             $getRecords .= view('Chatify::layouts.listItem', [
