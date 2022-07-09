@@ -47,6 +47,7 @@ class MessagesController extends Controller
         ];
         $attachment = null;
         $attachment_title = null;
+        $chatMessenger = new ChatifyMessenger();
         /** @var User $auth_user */
         $auth_user = Auth::user();
         // if there is attachment [file]
@@ -91,13 +92,13 @@ class MessagesController extends Controller
             ]);
 
             // fetch message to send it with the response
-            $messageData = ChatifyMessenger::fetchMessage($messageID);
+            $messageData = $chatMessenger->fetchMessage($messageID);
 
             // send to user using pusher
-            ChatifyMessenger::push('private-chatify', 'messaging', [
+            $chatMessenger->push('private-chatify', 'messaging', [
                 'from_id' => $auth_user->id,
                 'to_id' => $request['id'],
-                'message' => ChatifyMessenger::messageCard($messageData, 'default')
+                'message' => $chatMessenger->messageCard($messageData, 'default')
             ]);
             NotificationService::pushNotification($auth_user->firebase_token, [
                 'title' => 'New message', 'body' => 'See details'
