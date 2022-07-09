@@ -23,12 +23,12 @@
     <div class="flex flex-col mt-4">
         <div class="mb-4">
             <img class="border-2 border-radius-500 border-gray-400 w-32 h-32 rounded-lg" alt="#"
-                 src="@if ($task->user->avatar == ''){{ asset("storage/images/default.jpg") }}
+                 src="@if ($task->user?->avatar == ''){{ asset("storage/images/default.jpg") }}
                  @else{{asset("storage/{$task->user->avatar}") }}" @endif
             >
         </div>
         <div class="">
-            @if (Auth::check() && Auth::user()->id == $task->user->id)
+            @if (Auth::check() && Auth::user()->id == $task->user?->id)
                 <a href="/profile"
                    class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
                 </a>
