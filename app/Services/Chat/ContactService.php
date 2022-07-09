@@ -3,15 +3,17 @@
 namespace App\Services\Chat;
 
 use App\Models\Chat\ChMessage;
+use App\Models\Task;
 use App\Models\User;
 
 class ContactService
 {
     public static function contactsList($authUser)
     {
+        // get not deleted archive chat user ids
         $messages = ChMessage::query()->select('from_id', 'to_id', 'created_at')
-            ->where('to_id', auth()->id())
-            ->orWhere('from_id', \auth()->id())
+            ->where('to_id', $authUser->id)
+            ->orWhere('from_id', $authUser->id)
             ->orderByDesc('created_at')->distinct()->get()->toArray();
         $userIdsList = [];
         foreach ($messages as $message) {
@@ -21,11 +23,23 @@ class ContactService
                 $userIdsList[] = $message['from_id'];
             }
         }
+
+        // get moderators
         foreach (User::query()
                      ->whereIn('role_id', [1, 6])
                      ->whereNotIn('id', $userIdsList)
                      ->distinct()->pluck('id') as $moderator_id) {
             $userIdsList[] = $moderator_id;
+        }
+
+        // get performers and users where task is on process status
+        foreach (Task::query()
+                     ->where('status', Task::STATUS_IN_PROGRESS)
+                     ->where(function ($query) use ($authUser) {
+                         $query->where('user_id', $authUser->id)
+                             ->orWhere('performer_id', $authUser->id);
+                     }) as $id) {
+            $userIdsList[] = $id;
         }
 
         $userIdsList = array_unique($userIdsList);

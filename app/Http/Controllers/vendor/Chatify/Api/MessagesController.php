@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\vendor\Chatify\Api;
 
 use App\Http\Resources\MessageResource;
+use App\Http\Resources\UserInSearchChatResource;
 use App\Models\Chat\ChatifyMessenger;
 use App\Services\Chat\ContactService;
 use App\Services\NotificationService;
@@ -172,14 +173,18 @@ class MessagesController extends Controller
     public function search(Request $request): JsonResponse
     {
         $input = trim(filter_var($request['name'], FILTER_SANITIZE_STRING));
+        $ids = ContactService::contactsList(Auth::user());
+        if (($key = array_search(Auth::id(), $ids)) !== false) {
+            unset($ids[$key]);
+        }
         $records = User::query()
             ->select('id', 'name', 'active_status', 'avatar', 'last_seen')
-            ->where('id','!=',Auth::id())
+            ->whereIn('id',$ids)
             ->where('name', 'LIKE', "%{$input}%")
             ->get();
         return Response::json([
             'success' => true,
-            'data' => $records,
+            'data' => UserInSearchChatResource::collection($records),
             'message' => 'Success'
         ]);
     }
@@ -202,7 +207,7 @@ class MessagesController extends Controller
      * Delete conversation
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function deleteConversation(Request $request)
     {
@@ -223,14 +228,14 @@ class MessagesController extends Controller
         // dark mode
         if ($request['dark_mode']) {
             $request['dark_mode'] == "dark"
-                ? User::where('id', Auth::user()->id)->update(['dark_mode' => 1])  // Make Dark
-                : User::where('id', Auth::user()->id)->update(['dark_mode' => 0]); // Make Light
+                ? User::where('id', Auth::id())->update(['dark_mode' => 1])  // Make Dark
+                : User::where('id', Auth::id())->update(['dark_mode' => 0]); // Make Light
         }
 
         // If messenger color selected
         if ($request['messengerColor']) {
             $messenger_color = trim(filter_var($request['messengerColor'], FILTER_SANITIZE_STRING));
-            User::where('id', Auth::user()->id)
+            User::where('id', Auth::id())
                 ->update(['messenger_color' => $messenger_color]);
         }
         // if there is a [file]
@@ -251,7 +256,7 @@ class MessagesController extends Controller
                     }
                     // upload
                     $avatar = Str::uuid() . "." . $file->getClientOriginalExtension();
-                    $update = User::where('id', Auth::user()->id)->update(['avatar' => $avatar]);
+                    $update = User::where('id', Auth::id())->update(['avatar' => $avatar]);
                     $file->storeAs("public/" . config('chatify.user_avatar.folder'), $avatar);
                     $success = $update ? 1 : 0;
                 } else {
@@ -269,23 +274,23 @@ class MessagesController extends Controller
             'status' => $success ? 1 : 0,
             'error' => $error ? 1 : 0,
             'message' => $error ? $msg : 0,
-        ], 200);
+        ]);
     }
 
     /**
      * Set user's active status
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function setActiveStatus(Request $request)
     {
         $update = $request['status'] > 0
-            ? User::where('id', $request['user_id'])->update(['active_status' => 1])
-            : User::where('id', $request['user_id'])->update(['active_status' => 0]);
+            ? User::query()->where('id', $request['user_id'])->update(['active_status' => 1])
+            : User::query()->where('id', $request['user_id'])->update(['active_status' => 0]);
         // send the response
         return Response::json([
             'status' => $update,
-        ], 200);
+        ]);
     }
 }
