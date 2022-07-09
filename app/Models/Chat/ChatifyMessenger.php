@@ -85,7 +85,7 @@ class ChatifyMessenger
      * @param int $id
      * @return array
      */
-    public function fetchMessage($id)
+    public static function fetchMessage($id)
     {
         $attachment = null;
         $attachment_type = null;

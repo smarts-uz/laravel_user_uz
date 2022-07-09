@@ -9,8 +9,7 @@
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/uz_latn.js"></script>
-{{--<script src="{{ asset('js/detailed-task-map.js') }}"></script>--}}
-{{--    <style>.flatpickr-calendar{width:230px;} </style>--}}
+
 <style>.flatpickr-calendar{max-width: 295px; width: 100%;} </style>
     <script>
         let userAddress;
@@ -304,6 +303,7 @@
     </form>
 
     <x-laravelUppy route="{{route('task.create.images.store', $task->id)}}"/>
+    <script src="{{asset('js/custom.js')}}"></script>
     <script src='https://unpkg.com/imask'></script>
     <script id="map_api"
             src="https://api-maps.yandex.ru/2.1/?apikey=f4b34baa-cbd1-432b-865b-9562afa3fcdb&lang={{__('ru_RU')}}"

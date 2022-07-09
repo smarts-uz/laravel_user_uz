@@ -19,13 +19,13 @@ class CheckIsUserActive
     {
         if (auth()->user() !== null) {
             $user = auth()->user();
-            if ($user->is_active == 1) {
+            if ($user->is_active) {
                 return $next($request);
             }
         }
-        return throw new HttpResponseException(response()->json([
+        throw new HttpResponseException(response()->json([
             'success'   => false,
-            'message'   => 'Not active user',
-        ], 401));
+            'message'   => 'User not active',
+        ], 400));
     }
 }

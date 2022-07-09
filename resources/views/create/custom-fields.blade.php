@@ -73,9 +73,6 @@
                             @endif
                         </div>
                     </div>
-                    <div>
-                        <!-- <span class="underline hover:text-gray-400 decoration-dotted cursor-pointer float-right">Приватная информация</span> -->
-                    </div>
                 </div>
             </div>
         </div>
@@ -142,7 +139,7 @@
                 {{ $data->getTranslatedAttribute('label') }}
                 <input
                     placeholder="{{ $data->getTranslatedAttribute('placeholder') }}"
-                    id="car" name="{{$data->name}}[]" type="text"
+                    id="car_{{ $data['order'] }}" name="{{$data->name}}[]" type="text"
                     value="{{App\Services\Task\CustomFieldService::setInputValue($task, $data->id)}}"
                     class="shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500"
                     required
@@ -151,3 +148,4 @@
         </div>
     </div>
 @endif
+
