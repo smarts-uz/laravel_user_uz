@@ -147,6 +147,8 @@
     "ВНИМАНИЕ!!! Это задание за хороший отзыв для вас, не за деньги!!!": "DIQQAT!!! Bu siz uchun pul uchun emas, balki yaxshi ko'rib chiqish uchun vazifa !!!",
     "Вакансии": "Bo'sh ish o'rinlari",
     "Вакансия": "Bo'sh ish joyi",
+    "Время начала должно быть позже времени создания": "Boshlanish vaqti yaratilish vaqtidan keyin bo'lishi kerak",
+    "Время окончания должно быть позже времени начала": "Tugash vaqti boshlanish vaqtidan keyin bo'lishi kerak",
     "Вам остается выбрать среди откликов лучшее по цене или рейтингу исполнителя.": "Javoblar orasida ijrochining narxi yoki reytingini tanlashingiz kerak.",
     "Вас выбрали исполнителем": "Siz ijrochi sifatida tanlandingiz",
     "Вас выбрали исполнителем  в задании task_name №task_id task_user": "Siz \":task_name\" №:task_id topshiriqda :task_user tomonidan ijrochi sifatida tanlandingiz",

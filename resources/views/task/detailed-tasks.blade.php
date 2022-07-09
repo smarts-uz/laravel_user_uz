@@ -102,11 +102,11 @@
                             <div class="my-6">
                                 <div class="flex flex-row gap-x-2 my-4">
                                     @if ($respons_review->as_performer == 0)
-                                        <img src="@if ($task->user->avatar == ''){{ asset("storage/images/default.png") }}
+                                        <img src="@if ($task->user?->avatar == ''){{ asset("storage/images/default.png") }}
                                         @else{{asset("storage/{$task->user->avatar}") }}" @endif alt="#"
                                             class="w-12 h-12 border-2 rounded-lg border-gray-500">
                                     @elseif ($respons_review->as_performer == 1)
-                                        <img src="@if ($respons_review->user->avatar == ''){{ asset("storage/images/default.png") }}
+                                        <img src="@if ($respons_review->user?->avatar == ''){{ asset("storage/images/default.png") }}
                                         @else{{asset("storage/{$respons_review->user->avatar}") }}" @endif alt="#"
                                             class="w-12 h-12 border-2 rounded-lg border-gray-500">
                                     @endif

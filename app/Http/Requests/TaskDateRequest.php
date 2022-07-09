@@ -23,27 +23,23 @@ class TaskDateRequest extends FormRequest
      */
     public function rules()
     {
-        switch($this->request->get('date_type')) {
+        switch ($this->request->get('date_type')) {
             case 1:
                 return [
-                    'start_date'=>'required|date|after:now',
+                    'start_date' => 'required|date|after:now',
                     'date_type' => 'required'
                 ];
-                break;
             case 2:
                 return [
-                    'end_date'=>'required|date|after:now',
+                    'end_date' => 'required|date|after:now',
                     'date_type' => 'required'
                 ];
-                break;
             case 3:
                 return [
-                    'start_date'=>'required|date|after:now',
-                    'end_date'=>'required|date|after:start_date',
+                    'start_date' => 'required|date|after:now',
+                    'end_date' => 'required|date|after:start_date',
                     'date_type' => 'required'
-
                 ];
-
         }
     }
 
@@ -55,7 +51,7 @@ class TaskDateRequest extends FormRequest
             "end_date.required" => __('dateTime.end_date.required'),
             "end_date.date" => __('dateTime.end_date.date'),
             "start_date.after" => __('Время начала должно быть позже времени создания'),
-            "end_date.after" => __('dateTime.end_date.after'),
+            "end_date.after" => __('Время окончания должно быть позже времени начала'),
         ];
     }
 }
