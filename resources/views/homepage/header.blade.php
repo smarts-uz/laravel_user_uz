@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="{{ asset('/css/bundle.min.css') }}"/>
 
 
-<div class="left-50" style="background: #FFF5E5; height: 500px;">
+<div class="h-auto pb-8" style="background: #FFF5E5">
     <div class="w-xl">
         <main class="w-4/5 mx-auto grid grid-cols-2 gap-2">
             <div class="col-span-1 lg:block hidden">
