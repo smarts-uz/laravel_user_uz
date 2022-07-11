@@ -233,7 +233,7 @@
     "Забыли пароль?": "Parolni unutdingizmi?",
     "Завершение задания": "Topshiriqni tugatish",
     "Загрузить фото": "Fotosuratni yuklang",
-    "Задание": "Mashq qilmoq",
+    "Задание": "Vazifa",
     "Задание выполнено": "Vazifa tugadi",
     "Задание заполнено на": "Vazifa to'ldirildi",
     "Задание заполнено на 14%": "Vazifa 14% bilan to'ldirilgan",
@@ -649,7 +649,7 @@
     "итайте отзывы о заказчиках и выполняйте задания со Сделкой без риска: при успешном завершении работы вы гарантированно получите оплату на карту.": "Mijozlar haqida ko'proq sharhlarni va vazifalarni xavf ostiga qo'ygan vazifa bilan bajaring: agar siz ishni muvaffaqiyatli tugatgan bo'lsangiz, kartangiz uchun to'lovni qabul qilish kafolatlanadi.",
     "как с вами связаться?": "Qanday qilib siz bilan bog'lanish kerak?",
     "км": "km",
-    "лет": "yillar",
+    "лет": "yosh",
     "на Universal Services с ": "Umumiy xizmatlar bo'yicha",
     "нет номера": "raqam yo'q",
     "новое задание": "Yangi vazifa",
@@ -687,5 +687,8 @@
     "task_name  №task_id с бюджетом до task_budget": "\":task_name\"  №:task_id :budget so'mgacha bo'lgan byudjet bilan",
     "performer откликнулся на задания task_name": "\":task_name\" vazifaga \":performer\" javob qildi",
     "Выбрана задача": "Vazifa tanlandi",
-    "Аккаунт отключен": "Foydalanuvchi o'chirilgan"
+    "Аккаунт отключен": "Foydalanuvchi o'chirilgan",
+    "Необходимо предоставить личные документы": "Shaxsiy hujjatlar taqdim etish kerak",
+    "Личные документы не требуются": "Shaxsiy hujjatlar taqdim etish shart emas",
+    "Параметры": "Ma'lumotlari"
 }

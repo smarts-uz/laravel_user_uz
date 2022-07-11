@@ -109,7 +109,7 @@
 
                 @case('select')
                     <div class="ml-4 md:ml-12 flex flex-row mt-8">
-                        <h1 class="font-bold h-auto w-48">{{ $value->custom_field->label}}</h1>
+                        <h1 class="font-bold h-auto w-48">{{ $value->custom_field->getTranslatedAttribute('label')}}</h1>
                         <div class="h-auto w-full ml-10">
                             <p class="text-gray-800">
                                 {{ json_decode($value->value)[0] }}
@@ -120,7 +120,7 @@
 
                 @case('radio')
                     <div class="ml-4 md:ml-12 flex flex-row mt-8">
-                        <h1 class="font-bold h-auto w-48">{{ $value->custom_field->label }}</h1>
+                        <h1 class="font-bold h-auto w-48">{{ $value->custom_field->getTranslatedAttribute('label') }}</h1>
                         <div class="h-auto w-full ml-10">
                             <p class="text-gray-800">
                                 {{ json_decode($value->value)[0] }}
@@ -144,11 +144,11 @@
 
     @if($task->docs == 1)
         <div class="ml-4 md:ml-12 flex flex-row mt-8">
-            <h1 class="font-bold h-auto w-48">{{__('Предоставил(а) документы')}}</h1>
+            <h1 class="font-bold h-auto w-48">{{__('Необходимо предоставить личные документы')}}</h1>
         </div>
     @else
         <div class="ml-4 md:ml-12 flex flex-row mt-8">
-            <h1 class="font-bold h-auto w-48">{{__('Не предоставил(а) документы')}}</h1>
+            <h1 class="font-bold h-auto w-48">{{__('Личные документы не требуются')}}</h1>
         </div>
     @endif
 

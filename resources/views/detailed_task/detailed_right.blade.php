@@ -40,7 +40,7 @@
 
             <br>
             <a class="text-xl text-gray-500">
-                @if($task->user->age != "")
+                @if($task->user->age != "" && $task->user->age > 0)
                     <p class="inline-block text-m mr-2">
                         {{$task->user->age}}
                         @if($task->user->age>20 && $task->user->age%10==1) {{__('год')}}
