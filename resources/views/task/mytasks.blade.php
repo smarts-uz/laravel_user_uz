@@ -47,7 +47,7 @@
                                             @elseif($task->status < 3)
                                                 <p class="text-green-400 font-normal">{{__('Открыто')}}</p>
                                             @else
-                                                <p class="text-red-400 font-normal">{{__('Закрыто')}}</p>
+                                                <p class="text-red-400 font-normal">{{__('Отменен')}}</p>
                                             @endif
                                         </div>
                                         <div class="col-span-3 md:text-right categoryid">
@@ -104,7 +104,7 @@
                                                 @elseif($task->status < 3)
                                                     <p class="text-green-400 font-normal">{{__('Открыто')}}</p>
                                                 @else
-                                                    <p class="text-red-400 font-normal">{{__('Закрыто')}}</p>
+                                                    <p class="text-red-400 font-normal">{{__('Отменен')}}</p>
                                                 @endif
                                             </div>
                                             <div class="col-span-3 md:text-right categoryid">
@@ -231,7 +231,7 @@
                     if(status == 3){
                         status_text = '{{__('В исполнение')}}'
                     }else if(status == 4){
-                        status_text = '{{__('Закрыто')}}'
+                        status_text = '{{__('Отменен')}}'
                     }else {
                         status_text = '{{__('Открыто')}}'
                     }
