@@ -72,7 +72,7 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                        
+
                                         @endforeach
 
                                     </div>
@@ -114,7 +114,7 @@
             $('.child-category').removeClass('hidden')
             $('.child-category').addClass('hidden')
             $('.child-category-'+$(this).val()).removeClass('hidden')
-            window.location.href = "/task/create?category_id=" + 
+            window.location.href = "/task/create?category_id=" +
              $('*[data-parent="' + $(this).val() + '"]:first').val();
             $('#username').attr('placeholder',$('#naprimer').text() + $('*[data-parent="' + $(this).val() + '"]:first').text())
         })
@@ -179,6 +179,6 @@
 @endsection
 
 
-@section("javascript")
+@push("javascript")
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
-@endsection
+@endpush

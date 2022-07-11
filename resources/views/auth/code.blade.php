@@ -40,9 +40,3 @@
 @endsection
 
 
-
-@section("javasript")
-
-
-
-@endsection
