@@ -68,7 +68,10 @@ class SocialAPIController extends Controller
                 $provider = 'facebook';
             }
             $providerUser = Socialite::driver($provider)->userFromToken($data['access_token']);
-            $user = User::where($provider . '_id', $providerUser->id)->first();
+            $user = User::query()
+                ->where($provider . '_id', $providerUser->id)
+                ->orWhere('email', $providerUser->email)
+                ->first();
             // if there is no record with these data, create a new user
             if ($user == null) {
                 $user = User::create([
