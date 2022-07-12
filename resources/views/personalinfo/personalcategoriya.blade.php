@@ -61,6 +61,6 @@
 </div>
 
 @endsection
-@section('javascript')
+@push('javascript')
     <script src="{{ asset('js/personalinfo/personalcategoriya.js') }}"></script>
-@endsection
+@endpush

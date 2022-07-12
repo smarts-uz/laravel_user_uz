@@ -106,8 +106,8 @@
 
 @endsection
 
-@section('javascript')
+@push('javascript')
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 <script src="{{ asset('js/personalinfo/personalinfo.js') }}"></script>
-@endsection
+@endpush

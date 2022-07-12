@@ -39,9 +39,3 @@
 @endsection
 
 
-
-@section("javasript")
-
-
-
-@endsection

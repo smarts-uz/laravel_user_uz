@@ -170,7 +170,7 @@
 
 @endsection
 
-@section("javascript")
+@push("javascript")
 
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
     <script src="https://api-maps.yandex.ru/2.1/?lang={{app()->getLocale()}}&apikey=f4b34baa-cbd1-432b-865b-9562afa3fcdb"
@@ -254,14 +254,7 @@
                     geoObjects[i] = new ymaps.Placemark(mytaskCoordinates[i].coordinates.split(','), getPointData(i), getPointOptions());
                 }
             }
-
-
-            /*clusterer.options.set({
-                gridSize: 80,
-                clusterDisableClickZoom: true
-            });*/
-
-
+            
             clusterer.add(geoObjects);
             myMap.geoObjects.add(clusterer);
             myMap.setBounds(clusterer.getBounds(), {
@@ -269,10 +262,7 @@
                 checkZoomRange: true
             });
         }
-    </script>
 
-
-    <script>
         let tabsContainer = document.querySelector("#tabs");
 
         let tabTogglers = tabsContainer.querySelectorAll("a");
@@ -300,8 +290,7 @@
 
         document.getElementById("default-tab").click();
 
-        </script>
-    <script>
+
         @foreach ($categories as $category)
         $( "#{{ preg_replace('/[ ,]+/', '', $category->name) }}" ).click(function() {
             console.log('{{$category->slug}}', 123)
@@ -342,8 +331,7 @@
                 }
             });
         });
-    </script>
-    <script>
+
         $(document).ready(function(){
             var category = $(".category");
             var category2 = $(".category2");
@@ -353,4 +341,4 @@
                 }
         });
     </script>
-@endsection
+@endpush

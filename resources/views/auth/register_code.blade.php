@@ -36,10 +36,3 @@
     </div>
 @endsection
 
-
-
-@section("javasript")
-
-
-
-@endsection

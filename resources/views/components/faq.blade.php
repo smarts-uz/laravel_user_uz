@@ -7,6 +7,6 @@
     </div>
 </div>
 
-@section("javascript")
+@push("javascript")
     <script src="{{ asset('js/components/faq.js') }}"></script>
-@endsection
+@endpush

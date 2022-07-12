@@ -190,8 +190,8 @@
     </script>
 @endsection
 
-@section("javascript")
+@push("javascript")
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/uz_latn.js"></script>
-@endsection
+@endpush
