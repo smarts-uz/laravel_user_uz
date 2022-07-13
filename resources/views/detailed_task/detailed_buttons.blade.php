@@ -64,14 +64,11 @@
                         type="submit">
                         {{__('Задание выполнено')}}
                     </button>
-                    <form action="{{route('update.not_completed', [$task])}}" method="POST">
-                        @csrf
-                        <button
+                    <button onclick="toggleModal45()"
                             class="text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
                             type="submit">
-                            {{__('Задание не выполнено')}}
-                        </button>
-                    </form>
+                        {{__('Задание не выполнено')}}
+                    </button>
                 </div>
             @endif
 
@@ -82,14 +79,11 @@
                         type="submit">
                         {{__('Задание выполнено')}}
                     </button>
-                    <form action="{{route('update.not_completed', [$task])}}" method="POST">
-                        @csrf
-                        <button
+                    <button onclick="toggleModal45()"
                             class="text-lg font-semibold bg-red-500 text-white hover:bg-red-400 px-5 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
                             type="submit">
-                            {{__('Задание не выполнено')}}
-                        </button>
-                    </form>
+                        {{__('Задание не выполнено')}}
+                    </button>
                 </div>
             @endif
         @endauth
