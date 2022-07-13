@@ -14,10 +14,10 @@ class FilterTaskService
      * Filter tasks with the parameters shown below
      * - latitude, longitude, difference // filter with location
      * - categories // filter with task categories
-     * - child_categories // filter with task child categories
+     * - child_categories filter with task child categories
      * - budget // filter with budget amount
      * - is_remote // filter with task can be work remotely
-     * - without_response // filter with task does not have responses
+     * - without_response Filter with task does not have responses
      * - search // filter task by name, description, phone, budget by LIKE operator
      *
      *
