@@ -52,7 +52,8 @@ class CustomFieldService
         $options = $options ? $options['options']:[];
         $item = [];
         $data = [];
-        foreach ($options as $option) {
+        foreach ($options as $key => $option) {
+            $item['id'] = $key;
             $item['selected'] = in_array($option, $values[$custom_field->id]);
             $item['value'] = $option;
             $data[] = $item;

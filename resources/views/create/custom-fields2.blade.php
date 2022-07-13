@@ -24,7 +24,7 @@
                                     class="shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
                                     required>
                                 @foreach($custom_field['options'] as $key => $option)
-                                    <option {{ $option['selected'] ? 'selected':'' }} value="{{$option['value']}}">{{$option['value']}}</option>
+                                    <option {{ $option['selected'] ? 'selected':'' }} value="{{$option['id']}}">{{$option['value']}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -59,7 +59,7 @@
                                         <label class="md:w-2/3 block mt-6">
                                             <input
                                                 class="mr-2  h-4 w-4" type="checkbox" {{ $option['selected']?'checked':'' }}
-                                                value="{{ $option['value'] }}" name="{{$custom_field['name']}}[]">
+                                                value="{{ $option['id'] }}" name="{{$custom_field['name']}}[]">
                                             <span class="text-slate-900">
                                                     {{$option['value']}}
                                                     </span>
@@ -103,7 +103,7 @@
 
                                         <input type="radio"
                                                id="radio_{{$key}}" name="{{$custom_field['name']}}[]"
-                                               value="{{$option['value']}}" {{ $option['selected']? 'checked':'' }}>
+                                               value="{{$option['id']}}" {{ $option['selected']? 'checked':'' }}>
                                         <label for="radio_{{$key}}">{{$option['value']}}</label>
                                         <br>
                                         <br>
