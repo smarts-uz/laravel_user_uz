@@ -45,8 +45,10 @@
                         <p class="text-amber-500 font-normal md:border-r-2 border-gray-400 pr-2">{{__('В исполнении')}}</p>
                     @elseif($task->status < 3)
                         <p class="text-green-400 font-normal md:border-r-2 border-gray-400 pr-2">{{__('Открыто')}}</p>
-                    @else
+                    @elseif($task->status == 6)
                         <p class="text-red-400 font-normal md:border-r-2 border-gray-400 pr-2">{{__('Отменен')}}</p>
+                    @else
+                        <p class="text-red-400 font-normal md:border-r-2 border-gray-400 pr-2">{{__('Закрыто')}}</p>
                     @endif
                     <p class="font-normal md:border-r-2 border-gray-400 md:px-2 px-0">{{$task->views }}  {{__('просмотров')}}</p>
                     <p class="mr-3 md:pl-2 pr-3 md:border-r-2 border-gray-400">{{$created}}</p>

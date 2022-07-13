@@ -46,8 +46,10 @@
                                                 <p class="text-amber-500 font-normal">{{__('В исполнении')}}</p>
                                             @elseif($task->status < 3)
                                                 <p class="text-green-400 font-normal">{{__('Открыто')}}</p>
-                                            @else
+                                            @elseif($task->status == 6)
                                                 <p class="text-red-400 font-normal">{{__('Отменен')}}</p>
+                                            @else
+                                                <p class="text-red-400 font-normal">{{__('Закрыто')}}</p>
                                             @endif
                                         </div>
                                         <div class="col-span-3 md:text-right categoryid">
@@ -103,8 +105,10 @@
                                                     <p class="text-amber-500 font-normal">{{__('В исполнении')}}</p>
                                                 @elseif($task->status < 3)
                                                     <p class="text-green-400 font-normal">{{__('Открыто')}}</p>
-                                                @else
+                                                @elseif($task->status == 6)
                                                     <p class="text-red-400 font-normal">{{__('Отменен')}}</p>
+                                                @else
+                                                    <p class="text-red-400 font-normal">{{__('Закрыто')}}</p>
                                                 @endif
                                             </div>
                                             <div class="col-span-3 md:text-right categoryid">
@@ -231,6 +235,8 @@
                     if(status == 3){
                         status_text = '{{__('В исполнение')}}'
                     }else if(status == 4){
+                        status_text = '{{__('Закрыто')}}'
+                    }else if(status == 6){
                         status_text = '{{__('Отменен')}}'
                     }else {
                         status_text = '{{__('Открыто')}}'
@@ -254,7 +260,7 @@
                     geoObjects[i] = new ymaps.Placemark(mytaskCoordinates[i].coordinates.split(','), getPointData(i), getPointOptions());
                 }
             }
-            
+
             clusterer.add(geoObjects);
             myMap.geoObjects.add(clusterer);
             myMap.setBounds(clusterer.getBounds(), {
