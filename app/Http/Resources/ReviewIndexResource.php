@@ -22,7 +22,7 @@ class ReviewIndexResource extends JsonResource
         if ($this->last_seen >= $date) {
             $lastSeen = 'online';
         } else {
-            $lastSeen = Carbon::parse($this->last_seen)->diffForHumans();
+            $lastSeen = Carbon::parse($user->last_seen)->diffForHumans();
         }
         return [
             'id' => $this->id,
