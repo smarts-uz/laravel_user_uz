@@ -32,7 +32,7 @@ class NotificationResource extends JsonResource
             Notification::SELECT_PERFORMER => __('Вас выбрали исполнителем'),
             Notification::SEND_REVIEW_PERFORMER => __('Новый отзыв'),
             Notification::RESPONSE_TO_TASK_FOR_USER => __('Новый отклик'),
-            Notification::CANCELLED_TASK => __('3адания отменен'),
+            Notification::CANCELLED_TASK => __('3адание отменено'),
             default => 'Title',
         };
     }
@@ -57,7 +57,7 @@ class NotificationResource extends JsonResource
             Notification::RESPONSE_TO_TASK_FOR_USER => __('performer откликнулся на задания task_name', [
                 'performer' => $this->performer?->name, 'task_name' => $this->name_task
             ]),
-            Notification::CANCELLED_TASK => __('Ваша задания task_name №task_id было отменена', [
+            Notification::CANCELLED_TASK => __('Ваше задание task_name №task_id было отменено', [
                 'task_name' => $this->name_task, 'task_id' => $this->task_id,
             ]),
             default => 'Title',

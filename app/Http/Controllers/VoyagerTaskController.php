@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Services\NotificationService;
 use App\Services\Task\CreateService;
 use Illuminate\Http\Request;
 
@@ -40,5 +41,12 @@ class VoyagerTaskController extends Controller
         abort_if(!auth()->user()->hasPermission('delete_tasks'),403);
         $this->service->delete($task);
         return redirect()->route('admin.tasks.reported');
+    }
+
+    public function cancelTask(Task $task)
+    {
+        NotificationService::sendNotificationForCancelledTask($task);
+        $task->update(['status' => Task::STATUS_CANCELLED]);
+        return redirect()->route('voyager.tasks.index');
     }
 }

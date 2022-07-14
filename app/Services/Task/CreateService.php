@@ -89,8 +89,8 @@ class CreateService
         ]);
 
         NotificationService::pushNotification($task->user->firebase_token, [
-            'title' => __('3адания отменен'),
-            'body' => __('Ваша задания task_name №task_id было отменена', [
+            'title' => __('3адание отменено'),
+            'body' => __('Ваше задание task_name №task_id было отменено', [
                 'task_name' => $task->name, 'task_id' => $task->id,
             ])
         ], 'notification', new NotificationResource($notification));

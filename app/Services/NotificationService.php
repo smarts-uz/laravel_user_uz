@@ -8,7 +8,9 @@ use App\Events\SendNotificationEvent;
 use App\Http\Resources\NotificationResource;
 use App\Mail\MessageEmail;
 use App\Models\Notification;
+use App\Models\Task;
 use App\Models\User;
+use App\Models\WalletBalance;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
@@ -241,5 +243,74 @@ class NotificationService
                 "click_action" => "FLUTTER_NOTIFICATION_CLICK"
             ]
         )->body();
+    }
+
+    public static function sendNotificationForCancelledTask($task)
+    {
+        if ($task->performer_id) { // Send notification to selected performer
+            $notification = Notification::query()->create([
+                'user_id' => $task->performer_id,
+                'description' => $task->desciption ?? 'task description',
+                'task_id' => $task->id,
+                "cat_id" => $task->category_id,
+                "name_task" => $task->name,
+                "type" => Notification::CANCELLED_TASK
+            ]);
+
+            self::sendNotificationRequest([$task->performer_id], [
+                'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+            ]);
+
+            self::pushNotification($task->performer->firebase_token, [
+                'title' => __('3адание отменено'),
+                'body' => __('3адание task_name №task_id было отменено', ['task_name' => $task->name, 'task_id' => $task->id])
+            ], 'notification', new NotificationResource($notification));
+
+        }
+        elseif ($task->task_responses()->count() > 0) { // Send notification to responses performers
+            $responses = $task->task_responses()
+                ->without('user', 'task')
+                ->with('performer:id,name,firebase_token')
+                ->get();
+
+            foreach ($responses as $response) {
+                if ($response->not_free) {
+                    WalletBalance::walletBalanceUpdateOrCreate($response->performer_id, setting('admin.pullik_otklik'));
+                }
+                $notification = Notification::query()->create([
+                    'performer_id' => $response->performer_id,
+                    'description' => $task->desciption ?? 'task description',
+                    'task_id' => $task->id,
+                    "cat_id" => $task->category_id,
+                    "name_task" => $task->name,
+                    "type" => Notification::CANCELLED_TASK
+                ]);
+                self::pushNotification($response->performer->firebase_token, [
+                    'title' => __('3адание отменено'),
+                    'body' => __('3адание task_name №task_id было отменено', [
+                        'performer' => $response->performer->name, 'task_name' => $task->name
+                    ])
+                ], 'notification', new NotificationResource($notification));
+            }
+        }
+
+        // Send notification to task user
+        $notification = Notification::query()->create([
+            'user_id' => $task->user_id,
+            'description' => $task->desciption ?? 'task description',
+            'task_id' => $task->id,
+            "cat_id" => $task->category_id,
+            "name_task" => $task->name,
+            "type" => Notification::CANCELLED_TASK
+        ]);
+
+        self::sendNotificationRequest([$task->user_id], [
+            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+        ]);
+
+        self::pushNotification($task->user->firebase_token, [
+            'title' => __('3адание отменено'),
+            'body' => __('Ваше задание task_name №task_id было отменено', ['task_name' => $task->name, 'task_id' => $task->id])
+        ], 'notification', new NotificationResource($notification));
     }
 }
