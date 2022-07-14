@@ -30,15 +30,6 @@
                             </a>
                         @endif
                     @endauth
-                    @if ($task->email_confirm == 1)
-                        <h1 class="my-2 text-green-400">{{__('Сделка без риска')}}</h1>
-                        <i class="far fa-credit-card text-green-400 mx-3 my-1 text-2xl"></i>
-                    @endif
-                </div>
-                <div class="md:flex flex-row float-left">
-                    @if ($task->show_only_to_performers == 1)
-                        <p class="mt-4 text-gray-400 font-normal">{{__('Заказчик отдает предпочтение застрахованным исполнителям')}}</p>
-                    @endif
                 </div>
                 <div class="md:flex flex-row text-gray-400 mt-4 text-base">
                     @if ($task->status == 3)

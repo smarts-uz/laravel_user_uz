@@ -48,7 +48,7 @@
                 0
                 @endif
             </span>
-            <p class="text-sm sm:mt-1 mt-0">{{ $task->category_name }}</p>
+            <p class="text-sm sm:mt-1 mt-0">{{$task->getTranslatedAttribute('category_name',Session::get('lang') , 'fallbackLocale')}}</p>
             @if (Auth::check() && Auth::user()->id == $task->user_id)
             <a href="/profile"
                 class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $task->user_name?$task->user_name:'' }}</a>
