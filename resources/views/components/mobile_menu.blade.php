@@ -136,13 +136,26 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                        @elseif ($notification->type == \App\Models\Notification::CANCELLED_TASK)
+                                        @elseif ($notification->type == \App\Models\Notification::CANCELLED_TASK && $notification->user_id == auth()->id())
                                             <div class="w-full flex flex-row gap-x-4">
                                                 <i class="fas fa-star text-xl text-yellow-500"></i>
                                                 <div>
                                                     <p>{{__('3адание отменено')}}</p>
                                                     <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
                                                         {{ __('Ваше задание task_name №task_id было отменено', [
+                                                                'task_name' => $notification->name_task, 'task_id' => $notification->task_id,
+                                                            ])
+                                                        }}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        @elseif($notification->type == \App\Models\Notification::CANCELLED_TASK && $notification->performer_id == auth()->id())
+                                            <div class="w-full flex flex-row gap-x-4">
+                                                <i class="fas fa-star text-xl text-yellow-500"></i>
+                                                <div>
+                                                    <p>{{__('3адание отменено')}}</p>
+                                                    <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
+                                                        {{ __('3адание task_name №task_id было отменено', [
                                                                 'task_name' => $notification->name_task, 'task_id' => $notification->task_id,
                                                             ])
                                                         }}
