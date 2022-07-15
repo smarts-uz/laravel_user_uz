@@ -6,6 +6,7 @@ namespace App\Http\Controllers\vendor\Chatify;
 use App\Models\Chat\ChMessage;
 use App\Models\Chat\ChFavorite;
 use App\Services\Chat\ContactService;
+use App\Services\NotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -180,6 +181,9 @@ class MessagesController extends Controller
                 'to_id' => $request['id'],
                 'message' => $this->chatify->messageCard($messageData, 'default')
             ]);
+            NotificationService::pushNotification(User::query()->find($request['id'])->firebase_token, [
+                'title' => trans('Новое сообщение'), 'body' => trans('У вас новое сообщение от user', ['user' => Auth::user()->name])
+            ], 'chat', $messageData ?? []);
         }
 
         // send the response
@@ -269,7 +273,9 @@ class MessagesController extends Controller
         }
 
         return Response::json([
-            'contacts' => $contacts
+            'contacts' => $contacts,
+            'total' => 1,
+            'last_page' => 1,
         ]);
     }
 

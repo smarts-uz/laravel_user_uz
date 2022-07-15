@@ -133,7 +133,7 @@ class SearchService
 
                 if ($categories->contains($task->category_id)) {
                     $task->category_icon = $categories->get($task->category_id)->ico;
-                    $task->category_name = $categories->get($task->category_id)->name;
+                    $task->category_name = $categories->get($task->category_id)->getTranslatedAttribute('name');
                 }
 
                 if ($task->start_date){

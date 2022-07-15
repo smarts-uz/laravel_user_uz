@@ -46,12 +46,10 @@
                                                         </div>
                                                     </div>
                                                     <div id="tooltip-light" role="tooltip" class="inline-block shadow-xl absolute visible py-2 px-1 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 shadow-sm opacity-100 tooltip" style="z-index: 100;!important;">
-                                                        <input class="focus:outline-none text-center text-yellow-500 text-xl" type="text" id="amount2" name="amount" readonly >
+                                                        <input class="focus:outline-none text-center text-yellow-500 text-xl" type="text" id="amount2" name="amount2" readonly >
                                                     </div>
                                                     <div class="handle__27597">
-
-                                                        <input class="focus:outline-none focus:border-yellow-500  mt-8" type="text" id="amount" name="amount1" readonly >
-
+                                                        <input class="focus:outline-none focus:border-yellow-500  mt-8" type="text" id="amount" name="amount" readonly >
                                                     </div>
                                                     <div class="tickWrapper__6685b" style="width: 16.6667%; left: 0%;">
                                                         <div class="dot__b4c97"></div>
@@ -93,16 +91,16 @@
                                             {{__('Выберите бюджет')}}
                                         </option>
                                         <option value="от {{$category->max/5}} UZS">
-                                            от {{$category->max/5}} UZS
+                                            до {{$category->max/5}} UZS
                                         </option>
                                         <option value="от {{$category->max/5 * 2}} UZS">
-                                            от {{$category->max/5 * 2}} UZS
+                                            до {{$category->max/5 * 2}} UZS
                                         </option>
                                         <option value="от {{$category->max/5 * 3}} UZS">
-                                            от {{$category->max/5 * 3}} UZS
+                                            до {{$category->max/5 * 3}} UZS
                                         </option>
                                         <option value="от {{$category->max/5 * 4}} UZS">
-                                            от {{$category->max/5 * 4}} UZS
+                                            до {{$category->max/5 * 4}} UZS
                                         </option>
                                         <option value="до {{$category->max}} UZS">
                                             до {{$category->max}} UZS
@@ -149,21 +147,25 @@
             $("#slider-range-min").slider({
                 range: "min",
                 value: 0,
-                min: {{$category->max}}/6,
+                min: 0,//{{$category->max}}/6,
                 max: {{$category->max}},
-                step: {{$category->max}}/6,
+                step: {{$category->max}}/5,
                 slide: function(event, ui) {
 
                     var maximum = {{$category->max}};
                     var pre_maximum = Math.floor({{$category->max}} - ({{$category->max}}/6));
                     if (maximum == Math.floor(ui.value)) {
 
-                        $("#amount").val("от " + maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
-                        $("#amount2").val("от " + maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
+                        $("#amount").val("до " + maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
+                        $("#amount2").val("до " + maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
                     }else if (pre_maximum == Math.floor(ui.value)){
                         $("#amount").val("до " + maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
                         $("#amount2").val("до " + maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
-                    } else {
+                    } else if(Math.floor(ui.value) == 0) {
+                        $("#amount").val("0 " + " UZS");
+                        $("#amount2").val("0 " + " UZS");
+                    }
+                    else {
                         var delitel = ui.value / 1000;
                         var round   = Math.floor(delitel)*1000;
                         $("#amount").val("до " + round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
@@ -180,8 +182,8 @@
             $(".ui-slider-handle").css("display", 'block');
             var delitel = Math.floor($("#slider-range-min").slider("value")) / 1000;
             var round   = Math.floor(delitel)*1000;
-            $("#amount").val('до ' + round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' UZS');
-            $("#amount2").val('до ' + round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' UZS');
+            $("#amount").val(' ' + round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' UZS');
+            $("#amount2").val(' ' + round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' UZS');
         });
     </script>
 @endsection

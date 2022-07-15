@@ -100,8 +100,8 @@ class MessagesController extends Controller
                 'to_id' => $request['id'],
                 'message' => $chatMessenger->messageCard($messageData, 'default')
             ]);
-            NotificationService::pushNotification($auth_user->firebase_token, [
-                'title' => 'New message', 'body' => 'See details'
+            NotificationService::pushNotification(User::query()->find($request['id'])->firebase_token, [
+                'title' => trans('Новое сообщение'), 'body' => trans('У вас новое сообщение от user', ['user' => Auth::user()->name])
             ], 'chat', $messageData ?? []);
 
             return Response::json([

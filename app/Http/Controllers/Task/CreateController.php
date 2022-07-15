@@ -147,6 +147,7 @@ class CreateController extends Controller
 
     public function budget_store(Task $task, Request $request)
     {
+        $request->dd();
         $task->budget = preg_replace('/[^0-9.]+/', '', $request->amount1);
         $task->save();
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET, $request);
