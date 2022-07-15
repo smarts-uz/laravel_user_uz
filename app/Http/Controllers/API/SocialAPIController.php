@@ -8,6 +8,7 @@ use App\Http\Resources\PerformerIndexResource;
 use App\Models\User;
 use App\Models\WalletBalance;
 use Exception;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -84,6 +85,12 @@ class SocialAPIController extends Controller
                 $wallBal->balance = setting('admin.bonus');
                 $wallBal->user_id = $user->id;
                 $wallBal->save();
+            }
+            if (!$user->isActive()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('Аккаунт отключен'),
+                ]);
             }
             // create a token for the user, so they can login
             Auth::login($user);
