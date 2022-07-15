@@ -17,7 +17,7 @@ class SameTaskResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'address' => $this->address? json_decode($this->address): __('udalyonka'),
+            'address' => $this->addresses ? TaskAddressResource::collection($this->addresses) : __('udalyonka'),
             'budget' => $this->budget,
             'image' => asset('storage/'.$this->category->ico),
             'oplata' => $this->oplata,
