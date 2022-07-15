@@ -86,7 +86,8 @@
 
                             </div>
                                 <div class="w-[100px]  md:w-[200px] md:hidden text-center">
-                                    <select name="amount" class="border md:ml-14 bg-yellow-400  text-white font-semibold rounded-lg text-lg md:text-2xl my-4 py-3 px-10 hover:bg-yellow-600">
+                                    <select name="amount" class="border md:ml-14 bg-yellow-400  text-white font-semibold rounded-lg text-lg md:text-2xl my-4 py-3 px-10 hover:bg-yellow-600"
+                                    onchange="$('#amount2').val(this.value)">
                                         <option value="0">
                                             {{__('Выберите бюджет')}}
                                         </option>
