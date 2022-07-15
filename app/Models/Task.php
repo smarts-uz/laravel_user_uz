@@ -11,6 +11,7 @@ use TCG\Voyager\Traits\Translatable;
 
 /**
  * @property $user
+ * @property $performer
  * @property object $category
  *
  * @property $id

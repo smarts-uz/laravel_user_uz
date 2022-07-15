@@ -108,7 +108,7 @@ class UpdateController extends Controller
                 // user review to performer
                 $request['status'] = 1;
                 $notification = ReviewService::userReview($task, $request);
-                NotificationService::pushNotification($task->user->firebase_token, [
+                NotificationService::pushNotification($task->performer->firebase_token, [
                     'title' => __('Новый отзыв'), 'body' => __('О вас оставлен новый отзыв') . " \"$task->name\" №$task->id"
                 ], 'notification', new NotificationResource($notification));
 

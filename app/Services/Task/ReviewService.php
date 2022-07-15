@@ -39,7 +39,7 @@ class ReviewService
             'description' => 1,
             'type' => Notification::SEND_REVIEW
         ]);
-        NotificationService::sendNotificationRequest([$task->user_id], [
+        NotificationService::sendNotificationRequest([$task->performer_id], [
             'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
         ]);
 
