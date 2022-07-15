@@ -49,7 +49,7 @@
                                                         <input class="focus:outline-none text-center text-yellow-500 text-xl" type="text" id="amount2" name="amount2" readonly >
                                                     </div>
                                                     <div class="handle__27597">
-                                                        <input class="focus:outline-none focus:border-yellow-500  mt-8" type="text" id="amount" name="amount" readonly >
+                                                        <input class="focus:outline-none focus:border-yellow-500  mt-8" type="text" id="amount"  readonly >
                                                     </div>
                                                     <div class="tickWrapper__6685b" style="width: 16.6667%; left: 0%;">
                                                         <div class="dot__b4c97"></div>
@@ -86,20 +86,20 @@
 
                             </div>
                                 <div class="w-[100px]  md:w-[200px] md:hidden text-center">
-                                    <select id="" name="amount" class="border md:ml-14 bg-yellow-400  text-white font-semibold rounded-lg text-lg md:text-2xl my-4 py-3 px-10 hover:bg-yellow-600">
+                                    <select name="amount" class="border md:ml-14 bg-yellow-400  text-white font-semibold rounded-lg text-lg md:text-2xl my-4 py-3 px-10 hover:bg-yellow-600">
                                         <option value="0">
                                             {{__('Выберите бюджет')}}
                                         </option>
-                                        <option value="от {{$category->max/5}} UZS">
+                                        <option value="{{$category->max/5}}">
                                             до {{$category->max/5}} UZS
                                         </option>
-                                        <option value="от {{$category->max/5 * 2}} UZS">
+                                        <option value="{{$category->max/5 * 2}}">
                                             до {{$category->max/5 * 2}} UZS
                                         </option>
-                                        <option value="от {{$category->max/5 * 3}} UZS">
+                                        <option value="{{$category->max/5 * 3}}">
                                             до {{$category->max/5 * 3}} UZS
                                         </option>
-                                        <option value="от {{$category->max/5 * 4}} UZS">
+                                        <option value="{{$category->max/5 * 4}}">
                                             до {{$category->max/5 * 4}} UZS
                                         </option>
                                         <option value="до {{$category->max}} UZS">
@@ -108,7 +108,9 @@
                                     </select>
                                 </div>
                             @include('create.custom-fields2')
-
+                            @error('amount2')
+                                <p class="text-center text-2xl text-red-500"> {{$message}}</p>
+                            @enderror
                             <div class="mt-4">
                                     <div class="flex w-full mt-4">
                                         <a onclick="myFunction()"

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\LoginController;
+use App\Http\Requests\BudgetRequest;
 use App\Http\Requests\CreateContactRequest;
 use App\Http\Requests\TaskDateRequest;
 use App\Http\Requests\UserPhoneRequest;
@@ -145,10 +146,9 @@ class CreateController extends Controller
         return view('create.budget', compact('task', 'category', 'custom_fields'));
     }
 
-    public function budget_store(Task $task, Request $request)
+    public function budget_store(Task $task, BudgetRequest $request)
     {
-        $request->dd();
-        $task->budget = preg_replace('/[^0-9.]+/', '', $request->amount1);
+        $task->budget = $request->amount2;
         $task->save();
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET, $request);
 
