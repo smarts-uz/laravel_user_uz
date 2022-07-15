@@ -59,7 +59,7 @@
            <script>
                const chatPanel = (event) => {
                    jsPanel.create({
-                       content: `<iframe src="{{url('/chat/482')}}" frameborder="0" style="width: 100%; height: 100%"></iframe>`,
+                       content: `<iframe src="{{url('/chat/' . setting('site.moderator_id'))}}" frameborder="0" style="width: 100%; height: 100%"></iframe>`,
                        theme: 'primary',
                        position: 'center',
                        closeOnEscape: true,

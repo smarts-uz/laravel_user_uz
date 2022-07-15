@@ -41,6 +41,7 @@ class ContactService
                      }) as $id) {
             $userIdsList[] = $id;
         }
+        $userIdsList[] = setting('site.moderator_id');
 
         $userIdsList = array_unique($userIdsList);
         if (($key = array_search($authUser->id, $userIdsList)) !== false) {
