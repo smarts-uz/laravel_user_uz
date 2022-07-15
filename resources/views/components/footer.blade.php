@@ -38,15 +38,15 @@
        <div class="md:col-span-1 col-span-3 flex flex-col md:mx-auto md:mx-0 lg:mt-0 mt-8">
                <div class="mb-3">
                     <div><i class="fas fa-phone-alt  text-gray-300"></i><span class="font-bold text-gray-300 text-lg ml-4">{{__('Телефон')}}</span></div>
-                    <h1 class="text-lg text-gray-300">+998(90)123 12 12</h1>
+                    <h1 class="text-lg text-gray-300">+998 (91) 480 96 96</h1>
                </div>
                <div class="my-3">
                     <div><i class="far fa-envelope text-gray-300"></i><span class="font-bold text-gray-300 text-lg ml-4">{{__('Эл.Почта')}}</span></div>
-                    <h1 class="text-lg text-gray-300">universal-user@mail.ru</h1>
+                    <h1 class="text-lg text-gray-300">useruz@user.uz</h1>
                </div>
                <div class="my-3">
                     <div><i class="fas fa-map-marker-alt text-gray-300"></i><span class="font-bold text-gray-300 text-lg ml-4">{{__('Локация')}}</span></div>
-                    <h1 class="text-lg text-gray-300">{!!__('Улица Хуршида, Ташкент, <br> Узбекистан')!!}</h1>
+                    <h1 class="text-lg text-gray-300">{{__('город Фергана')}}</h1>
                </div>
        </div>
        <div class="md:col-span-1 col-span-3 flex flex-col md:mx-auto md:mx-0 lg:mt-0 mt-8">

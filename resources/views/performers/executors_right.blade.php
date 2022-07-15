@@ -34,7 +34,7 @@
         </div>
     </div>
     <div class="mt-8">
-        <h1 class="text-3xl font-medium">{{__('Виды выполняемых работ')}}</h1>
+        <h1 class="text-3xl font-medium">{{__('Прикрепленные категории')}}</h1>
         <ul>
             @foreach(explode(',', $user->category_id) as $user_cat)
                 @foreach(getAllCategories() as $cat)

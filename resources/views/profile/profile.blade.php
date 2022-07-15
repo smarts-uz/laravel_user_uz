@@ -116,7 +116,7 @@
                     </div>
                     <div class="mt-8">
                         <p class="text-2xl font-semibold">
-                            {{__('Виды выполняемых работ')}}
+                            {{__('Прикрепленные категории')}}
                         </p>
                         <div class="my-4">
                             <ul class="pl-10 leading-7">
