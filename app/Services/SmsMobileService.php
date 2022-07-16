@@ -21,7 +21,11 @@ class SmsMobileService
         $phone_numberr=preg_replace('/[+]+/', '', $phone_number);
         switch(env('SMS_PROVIDER')) {
             case('eskiz_sms'):
-                Sms::send($phone_numberr, $message);
+                try {
+                    Sms::send($phone_numberr, $message);
+                } catch (\Exception) {
+
+                }
                 break;
             case('playmobile_sms'):
                 (new SmsService())->send($phone_number, $message);
