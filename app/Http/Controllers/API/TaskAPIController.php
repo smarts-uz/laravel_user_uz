@@ -438,12 +438,14 @@ class TaskAPIController extends Controller
      */
     public function my_tasks_all(Request $request): TaskPaginationResource
     {
+        $request->validate([
+            'status' => 'in:0,1,3,4,5,6'
+        ]);
         /** @var User $user */
         $user = auth()->user();
         $is_performer = $request->get('is_performer');
-        $status = $request->get('status');
+        $status = intval($request->get('status'));
 
-        $status = in_array($status, [Task::STATUS_OPEN, Task::STATUS_COMPLETE_WITHOUT_REVIEWS, Task::STATUS_COMPLETE, Task::STATUS_IN_PROGRESS. Task::STATUS_CANCELLED]) ? $status : 0;
 
         $column = $is_performer ? 'performer_id' : 'user_id';
         $tasks = Task::query()->where($column, $user->id);
