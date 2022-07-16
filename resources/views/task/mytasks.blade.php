@@ -105,6 +105,8 @@
                                                     <p class="text-amber-500 font-normal">{{__('В исполнении')}}</p>
                                                 @elseif($task->status < 3)
                                                     <p class="text-green-400 font-normal">{{__('Открыто')}}</p>
+                                                @elseif($task->status == 5)
+                                                    <p class="text-red-400 font-normal">{{__('Не выполнено')}}</p>
                                                 @elseif($task->status == 6)
                                                     <p class="text-red-400 font-normal">{{__('Отменен')}}</p>
                                                 @else

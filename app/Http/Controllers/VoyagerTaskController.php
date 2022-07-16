@@ -20,7 +20,7 @@ class VoyagerTaskController extends Controller
     public function reported_tasks(Request $request)
     {
         abort_if(!auth()->user()->hasPermission('reported_task_view'),403);
-        $tasks = Task::query()->where('status',Task::STATUS_COMPLETE_WITHOUT_REVIEWS)->with(['reviews','user','performer'])
+        $tasks = Task::query()->where('status',Task::STATUS_NOT_COMPLETED)->with(['reviews','user','performer'])
             ->whereHas('user')
             ->whereHas('performer')
             ->paginate(60);

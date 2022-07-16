@@ -92,9 +92,11 @@ class UpdateController extends Controller
 
     }
 
-    public function not_completed(Task $task)
+    public function not_completed(Request $request, Task $task)
     {
-        $task->update(['status' => Task::STATUS_COMPLETE_WITHOUT_REVIEWS]);
+        $request->validate(['reason' => 'required']);
+
+        $task->update(['status' => Task::STATUS_NOT_COMPLETED, 'not_completed_reason' => $request->get('reason')]);
         Alert::success(__('Успешно сохранено'));
         return back();
     }
