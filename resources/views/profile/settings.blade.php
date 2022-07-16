@@ -50,7 +50,6 @@
                             <!-- Tab Contents -->
                             <div id="tab-contents" class="w-full">
                                 <div id="first" class="p-4 tab-pane w-full">
-                                    {{-- settings/ first tab -> base settings start --}}
                                     <div class="flex justify-left w-full">
                                         <div class="md:w-3/5 w-full md:m-4 m-0">
                                             <h1 class="block w-3/5 text-left text-gray-800 text-3xl font-bold mb-6">
@@ -123,7 +122,7 @@
                                                         name="description"
                                                         id="textarea">{{old('description')??$user->description}}</textarea>
                                                     @error('description')
-                                                    <p class="text-red-500">{{ $message }}</p>
+                                                        <p class="text-red-500">{{ $message }}</p>
                                                     @enderror
 
                                                 </div>

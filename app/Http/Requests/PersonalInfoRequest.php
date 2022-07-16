@@ -24,18 +24,20 @@ class PersonalInfoRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required',
-            'phone_number' => 'required|integer|unique:users|min:13',
+            'email' => 'required|email|unique:users',
+            'phone_number' => 'required|numeric|unique:users|min:13',
         ];
     }
     public function messages()
     {
         return [
-            'email.required' => __('email.required'),
-            'phone_number.required' => __('phone_number.required'),
-            'phone_number.integer' => __('phone_number.integer'),
-            'phone_number.unique' => __('Этот номер зарегистрирован'),
-            'phone_number.min' => __('phone_number.min'),
+            'email.required' => __('login.email.required'),
+            'email.email' => __('login.email.email'),
+            'email.unique' => __('login.email.unique'),
+            'phone_number.required' => __('login.phone_number.required'),
+            'phone_number.numeric' => __('login.phone_number.numeric'),
+            'phone_number.unique' => __('login.phone_number.unique'),
+            'phone_number.min' => __('login.phone_number.min'),
         ];
     }
     public function getValidatorInstance()

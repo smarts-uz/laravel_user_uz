@@ -25,18 +25,18 @@ class UserPhoneRequest extends FormRequest
     {
         session()->flash('phone');
         return [
-            'phone_number' => 'required|integer|min:13|exists:users'
+            'phone_number' => 'required|numeric|min:13|exists:users'
         ];
     }
 
     public function messages()
     {
         return [
-            'phone_number.required' => __('lang.contact_phone'),
-            'phone_number.integer' => 'The Phone must be a number',
-            'phone_number.min' => 'The Phone length must be 13',
-            'phone_number.unique' => 'The Phone is already exists',
-            'phone_number.exists' => 'This phone number does not exist'
+            'phone_number.required' =>  __('login.phone_number.required'),
+            'phone_number.min' =>  __('login.phone_number.min'),
+            'phone_number.unique' => __('login.phone_number.unique'),
+            'phone_number.exists' => __('login.phone_number.exists'),
+            'phone_number.numeric' => __('login.phone_number.numeric'),
         ];
 
     }

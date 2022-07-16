@@ -15,7 +15,7 @@
                 @csrf
                 <div class="mt-3 mb-3">
                     <label class="text-gray-500 text-sm" for="lastname"> {{__('Электронная почта')}}</label>
-                    <input type="email" id="lastname" name="email" value="{{auth()->user()->email}}" class=" block px-2 w-full border  border-grey-300 py-2 rounded-lg shadow-sm focus:outline-none focus:border-indigo-200 focus:ring focus:ring-indigo-500" />
+                    <input type="email" id="lastname" name="email" value="{{auth()->user()->email}}" class="block px-2 w-full border  border-grey-300 py-2 rounded-lg shadow-sm focus:outline-none focus:border-yellow-500" />
                 </div>
                 <div class="mt-3">
                     <label class="text-gray-500 text-sm" for="name"> {{__('Телефон')}}</label>

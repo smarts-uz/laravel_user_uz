@@ -27,6 +27,16 @@ class ResetRequest extends FormRequest
             'phone_number' => 'required|integer|exists:users|min:13'
         ];
     }
+    public function messages()
+    {
+        return [
+            'phone_number.required' =>  __('login.phone_number.required'),
+            'phone_number.unique' => __('login.phone_number.unique'),
+            'phone_number.exists' => __('login.phone_number.exists'),
+            'phone_number.numeric' => __('login.phone_number.numeric'),
+        ];
+
+    }
     public function getValidatorInstance()
     {
         $this->cleanPhoneNumber();

@@ -20,9 +20,11 @@ return [
     "phone_number" => [
         "int" => "Noto'g'ri telefon raqami formati!",
         "min" => "Noto'g'ri telefon raqami formati!",
-        "regex" => "#VALUE!",
+        "regex" => "Maydon formati noto'g'ri",
         "required" => "To'ldirish talab qilinadi!",
-        "unique" => "Bu raqam tizimda!"
+        "unique" => "Bu raqam tizimda!",
+        "numeric"=> "Maydon raqam bo'lishi kerak",
+        "exists"=> "Telefon raqam uchun tanlangan qiymat noto‘g‘ri",
     ],
     "signin_below" => "Boshqarish paneliga kirish",
     "welcome" => "Katakchada yo'qolgan boshqaruv paneli"
