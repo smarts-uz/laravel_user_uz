@@ -18,12 +18,12 @@
 .m-list-active,
 .m-list-active:hover,
 .m-list-active:focus{
-	background: {{ $messengerColor }};
+	background: rgb(15,105,159);
 }
 
 .m-list-active b{
 	background: #fff !important;
-	color: {{ $messengerColor }} !important;
+	color: black !important;
 }
 
 .messenger-list-item td b{

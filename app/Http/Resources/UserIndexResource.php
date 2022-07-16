@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\UserView;
 use App\Models\WalletBalance;
 use App\Services\Profile\ProfileService;
 use Carbon\Carbon;
@@ -148,7 +149,7 @@ class UserIndexResource extends JsonResource
             'system_notification' =>$this->system_notification,
             'news_notification' => $this->news_notification,
             'portfolios' => PortfolioIndexResource::collection($this->portfolios),
-            'views' => $this->views,
+            'views' => $this->performer_views()->count(),
             'directories' => $directories,
             'wallet_balance' => $balance,
             'last_seen' => $lastSeen,

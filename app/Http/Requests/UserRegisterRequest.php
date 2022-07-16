@@ -43,6 +43,8 @@ class UserRegisterRequest extends FormRequest
                 'password.required' => __('login.password.required'),
                 'password.min' => __('login.password.min'),
                 'password.confirmed' => __('login.password.confirmed'),
+                'password_confirmation.required' => __('login.password.required'),
+                'password_confirmation.min' => __('login.password.min'),
             ];
     }
     public function getValidatorInstance()

@@ -24,7 +24,16 @@ class CreateContactRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone_number' => 'required|integer|min:13|unique:users,phone_number,' . auth()->id(),
+            'phone_number' => 'required|numeric|min:13|unique:users,phone_number,' . auth()->id(),
+        ];
+    }
+    public function messages()
+    {
+        return  [
+            'phone_number.required' => __('login.phone_number.required'),
+            'phone_number.unique' => __('login.phone_number.unique'),
+            'phone_number.min' => __('login.phone_number.min'),
+            'phone_number.numeric' => __('login.phone_number.numeric'),
         ];
     }
     public function getValidatorInstance()

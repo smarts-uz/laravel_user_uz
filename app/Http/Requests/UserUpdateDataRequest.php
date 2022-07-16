@@ -26,7 +26,6 @@ class UserUpdateDataRequest extends FormRequest
         $validation = [
             'email' => 'required|email|unique:users',
             'age' => 'nullable|int',
-            'gender' => 'nullable|int',
             'phone_number' => 'required|numeric|unique:users|min:13',
             'description' => 'nullable',
             'location' => 'nullable',
@@ -45,15 +44,13 @@ class UserUpdateDataRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => __('login.name.required'),
-            'email.required' => __('login.name.required'),
-            'age.int' => __('login.name.required'),
+            'email.email' => __('login.email.email'),
+            'email.required' => __('login.email.required'),
+            'email.unique' => __('login.email.unique'),
             'phone_number.int' => __('login.phone_number.int'),
             'phone_number.min' => __('login.phone_number.min'),
             'phone_number.required' => __('login.phone_number.required'),
-            'phone_number.unique' => __('Этот номер зарегистрирован'),
-            'role_id.required' => __('login.name.required'),
-
+            'phone_number.unique' => __('login.phone_number.unique'),
         ];
     }
     public function getValidatorInstance()
