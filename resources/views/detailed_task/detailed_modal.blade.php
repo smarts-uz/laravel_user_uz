@@ -11,23 +11,14 @@
                     <i class="fas fa-times text-xl w-full"></i>
                 </button>
                 <h1 class="font-medium text-3xl block mt-6">
-                    {{__('Напишите свое возражение по созданной задаче')}}
+                    {{__('Напишите причину по которой задание не было закончено')}}
                 </h1>
             </div>
             <div class="text-center my-6">
 
-                <form action="{{route('searchTask.comlianse_save')}}" method="POST">
+                <form action="{{route('update.not_completed', ['task' => $task])}}" method="POST">
                     @csrf
-                    <input type="hidden" name="taskId" value="{{ $task->id }}">
-                    <input type="hidden" name="userId"
-                           value="{{ Auth::check() ? Auth::user()->id : $task->user->id}}">
-                    <select name="c_type" id=""
-                            class="w-4/5 border-2 border-gray-500 rounded-lg mb-4 py-2 px-2 focus:outline-none hover:border-yellow-500">
-                        @foreach ($complianceType as $complType)
-                            <option value="{{$complType->id}}">{{$complType->name}}</option>
-                        @endforeach
-                    </select>
-                    <textarea name="c_text" id="" required
+                    <textarea name="reason" required
                               class="border-2 border-gray-500 rounded-lg p-2 w-4/5 focus:outline-none hover:border-yellow-500"></textarea>
                     <input type="submit" value="{{__('Отправить')}}" required
                            class="bg-yellow-500 mt-4 py-3 px-5 rounded-lg text-white text-xl cursor-pointer font-medium border-2 border-gray-500 hover:bg-yellow-600">

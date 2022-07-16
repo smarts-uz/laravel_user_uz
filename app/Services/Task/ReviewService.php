@@ -13,7 +13,7 @@ class ReviewService
 {
     public static function userReview($task, $request)
     {
-        $task->status = $request->status ? Task::STATUS_COMPLETE : Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
+        $task->status = $request->status ? Task::STATUS_COMPLETE : Task::STATUS_NOT_COMPLETED;
         $task->save();
         ChMessage::query()->where('from_id', $task->user_id)->where('to_id', $task->performer_id)->delete();
         ChMessage::query()->where('to_id', $task->user_id)->where('from_id', $task->performer_id)->delete();

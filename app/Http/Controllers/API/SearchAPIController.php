@@ -215,7 +215,7 @@ class SearchAPIController extends Controller
                 "message" => "No Permission"
             ], 403);
         }
-        $task->status = Task::STATUS_COMPLETE_WITHOUT_REVIEWS;
+        $task->status = Task::STATUS_NOT_COMPLETED;
         $task->save();
         return response()->json([
             'success' => true,

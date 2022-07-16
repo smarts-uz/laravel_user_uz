@@ -39,7 +39,7 @@ class Task extends Model
     const STATUS_RESPONSE = 2;
     const STATUS_IN_PROGRESS = 3;
     const STATUS_COMPLETE = 4;
-    const STATUS_COMPLETE_WITHOUT_REVIEWS = 5;
+    const STATUS_NOT_COMPLETED = 5;
     const STATUS_CANCELLED = 6;
 
     protected $guarded = [];
@@ -122,5 +122,20 @@ class Task extends Model
 
             Notification::query()->where('task_id', $task->id)->delete();
         });
+    }
+
+    public function getStatusTextAttribute()
+    {
+        if ($this->status == Task::STATUS_IN_PROGRESS) {
+            return __('В исполнении');
+        } elseif ($this->status < Task::STATUS_IN_PROGRESS) {
+            return __('Открыто');
+        } elseif ($this->status == Task::STATUS_NOT_COMPLETED) {
+            return __('Не выполнено');
+        } elseif ($this->status == Task::STATUS_CANCELLED) {
+            return __('Отменен');
+        } else {
+            return __('Закрыто');
+        }
     }
 }
