@@ -387,38 +387,7 @@ class ProfileService
             ]
         ];
     }
-    /**
-     *
-     * Function  payment
-     * Mazkur metod cash bladega transacsiyalarni chiqaradi
-     * @param $request Object
-     */
-    public function payment($request)
-    {
-        $payment = $request->get("paymethod");
-        $amount = $request->get("amount");
-        $request['user_id'] = auth()->id();
-        switch($payment) {
-            case All_transaction::DRIVER_CLICK:
-                $url = PaymentService::clickTransaction($amount);
-                return redirect()->to($url);
 
-
-            case All_transaction::DRIVER_PAYME:
-                $tr = PaymentService::paymeTransaction($amount);
-                return redirect('https://checkout.paycom.uz')->withInput([
-                    'merchant' => config('payments.payme.merchant_id'),
-                    'amount' => $tr->amount * 100,
-                    'order_id' => $tr->id
-                ]);
-
-            default:
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Bad request'
-                ]);
-        }
-    }
     /**
      *
      * Function  changePassword

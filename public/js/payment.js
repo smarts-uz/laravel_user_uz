@@ -1,27 +1,4 @@
-let payment_form = $('#choose_payment_type');
-payment_form.submit(function (event){
-    let data = payment_form.serializeArray()
-    if (data[1]['value'] == 'Paynet') {
-        // event.preventDefault();
-        let form_data = {user_id: data[0]['value'], amount: data[2]['value']}
-        $.ajax({
-            type: "POST",
-            url: "{{route('paynet-transaction')}}",
-            data: form_data,
-            dataType: "json",
-            encode: true,
-        }).done(function (data) {
-            alert('Transaction ID: ' + data['id'] + "  Amount: " + data['amount'])
-            console.log(data);
-            toggleModal1()
-        });
-    }
-    else {
-        payment_form.submit();
-    }
-});
-
-
+console.log(PAYMENT_TEST)
 function toggleModal() {
     document.getElementById("modal-id").classList.toggle("hidden");
     document.getElementById("modal-id" + "-backdrop").classList.toggle("hidden");
@@ -50,7 +27,11 @@ function borderColor() {
 
 function inputFunction() {
     var x = document.getElementById("myText").value;
-    if (x < 4000) {
+    let amount = 4000;
+    if (PAYMENT_TEST) {
+        amount = 1000;
+    }
+    if (x < amount) {
         document.getElementById('button').removeAttribute("onclick");
         document.getElementById('button').classList.remove("bg-green-500");
         document.getElementById('button').classList.add("bg-gray-500");
@@ -73,17 +54,6 @@ function checkFunction() {
     } else {
         document.getElementById("button").innerHTML = "К оплате " + x + "UZS";
     }
-}
-
-function paymentSubmit(event) {
-    event.preventDefault();
-
-    const data = new FormData(e.target);
-
-    const value = data.get('paymethod');
-
-    console.log({ value });
-    // console.log($('#choose_payment_type').values())
 }
 
 function validate(evt) {

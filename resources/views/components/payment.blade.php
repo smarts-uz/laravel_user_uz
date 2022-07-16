@@ -49,18 +49,18 @@
             </div>
 
             <div class="container mb-12">
-                <form action="/ref" method="GET" id="choose_payment_type">
+                <form action="{{route('payment.client.checkout')}}" method="GET">
                     @isset(Auth::user()->id)
-                        <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+                        <input type="hidden" name="key" value="{{Auth::user()->id}}">
                     @endisset
                     <div class="my-3 w-3/5 mx-auto">
                         <div class="custom-control custom-radio mb-4 text-3xl flex flex-row items-center">
-                            <input id="credit" onclick="doBlock()" name="paymethod" checked type="radio" value="Payme" class="custom-control-input w-5 h-5 ">
+                            <input id="credit" onclick="doBlock()" name="payment_system" checked type="radio" value="payme" class="custom-control-input w-5 h-5 ">
                             <button type="button" class=" w-52 focus:border-2 focus:border-dashed focus:border-green-500 mx-8" name="button"><label for="credit"><img
                                         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBUPBIFq--0RLaG-j2I9jtnOewkrM5v70tPi5NnWBLwrdL0v2gyIyFBdqXCKW__A8MTA&usqp=CAU" class="h-12" alt=""></label></button>
                         </div>
                         <div class="custom-control custom-radio my-8 text-3xl flex flex-row items-center">
-                            <input id="debit" onclick="doBlock()" name="paymethod" value="Click" type="radio" class="custom-control-input w-5 h-5 ">
+                            <input id="debit" onclick="doBlock()" name="payment_system" value="click" type="radio" class="custom-control-input w-5 h-5 ">
                             <button type="button" class=" w-52 focus:border-2 focus:border-dashed focus:border-green-500 mx-8" name="button"><label for="debit"><img
                                         src="https://docs.click.uz/wp-content/themes/click_help/assets/images/logo.png" class="h-14" alt=""></label></button>
                         </div>
@@ -85,4 +85,5 @@
 <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id-backdrop"></div>
 <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal1-id-backdrop"></div>
 
+<script>let PAYMENT_TEST = '{{env('PAYMENT_TEST')}}'</script>
 <script src="{{ asset('js/payment.js') }}"></script>

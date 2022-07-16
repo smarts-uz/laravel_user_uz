@@ -377,38 +377,6 @@ class ProfileAPIController extends Controller
         ]);
     }
 
-    /**
-     * @OA\Get(
-     *     path="/api/profile/description",
-     *     tags={"Profile"},
-     *     summary="Profile description",
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
-    public function description()
-    {
-        $user = auth()->user();
-        return  response()->json([
-            'success' => true,
-            'data' => [
-                'description' => $user->description
-            ]
-        ]);
-    }
 
     /**
      * @OA\Get(
@@ -535,47 +503,6 @@ class ProfileAPIController extends Controller
             'success' => false,
             'message' => trans('trans.Incorrect code.')
         ]);
-    }
-
-
-    /**
-     * @OA\Post(
-     *     path="/api/payment",
-     *     tags={"Profile"},
-     *     summary="Payment method",
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="paymethod",
-     *                    description="Click, PayMe, Paynet - bittasini yozing",
-     *                    type="string",
-     *                 ),
-     *             ),
-     *         ),
-     *     ),
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
-    public function payment(Request $request)
-    {
-        return $this->profileService->payment($request);
     }
 
 

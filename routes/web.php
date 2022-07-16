@@ -17,11 +17,9 @@ use App\Http\Controllers\vendor\Chatify\MessagesController;
 use App\Http\Controllers\VoyagerTaskController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\PerformersController;
-use App\Http\Controllers\RefillController;
 use App\Http\Controllers\Task\SearchTaskController;
 use App\Http\Controllers\admin\VoyagerUserController;
 use App\Http\Controllers\Task\CreateController;
-use Teamprodev\LaravelPayment\PayUz;
 
 /*
 |--------------------------------------------------------------------------
@@ -257,24 +255,5 @@ Route::post('/register/code', [UserController::class, 'code_submit'])->name('use
 Route::post('/account/password/change', [ProfileController::class, 'change_password'])->name('profile.change_password');
 #endregion
 
-#region payments
-Route::get('/send', [RefillController::class, 'ref'])->name('paycom.send'); // javoxir
-Route::get('/ref', [RefillController::class, 'ref']); // javoxir
 // Show transactions history
 Route::get('profile/transactions/history', [UserTransactionHistory::class, 'getTransactions'])->name('user.transactions.history')->middleware('auth');
-
-#region payments
-Route::any('/paynet', function () {
-    (new PayUz)->driver('paynet')->handle();
-});
-Route::any('/payme', function () {
-    (new PayUz)->driver('payme')->handle();
-});
-Route::any('/click', function () {
-    (new PayUz)->driver('click')->handle();
-});
-Route::any('/click/user-balance', function () {
-    return (new PayUz())->click_additional();
-});
-#endregion
-

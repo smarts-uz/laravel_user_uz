@@ -3,18 +3,16 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\BlogController;
-use App\Http\Controllers\API\CategoriesAPIController; // javoxir
-use App\Http\Controllers\API\CustomFieldAPIController;
+use App\Http\Controllers\API\CategoriesAPIController;
 use App\Http\Controllers\API\LoginAPIController;
-use App\Http\Controllers\API\PerformerAPIController; // javoxir
-use App\Http\Controllers\API\ProfileAPIController; // javoxir +
+use App\Http\Controllers\API\PerformerAPIController;
+use App\Http\Controllers\API\ProfileAPIController;
 use App\Http\Controllers\API\SessionController;
 use App\Http\Controllers\API\SocialAPIController;
-use App\Http\Controllers\API\TaskAPIController; // javoxir
+use App\Http\Controllers\API\TaskAPIController;
 use App\Http\Controllers\API\UpdateAPIController;
-use App\Http\Controllers\API\UserAPIController; // javoxir
-use App\Http\Controllers\API\SearchAPIController; // javoxir -
-use App\Http\Controllers\API\RefillAPIController; // javoxir
+use App\Http\Controllers\API\UserAPIController;
+use App\Http\Controllers\API\SearchAPIController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PortfolioAPIController;
 use App\Http\Controllers\vendor\Chatify\Api\MessagesController;
@@ -108,9 +106,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
         Route::post('/video', [ProfileAPIController::class, 'videoStore']); // used
         Route::delete('/video/delete', [ProfileAPIController::class, 'videoDelete']); //end
         Route::get('/balance', [ProfileAPIController::class, 'balance']); // used
-        Route::get('/description', [ProfileAPIController::class, 'description']); //end +
         Route::post('/description/edit', [ProfileAPIController::class, 'editDesctiption']); // used
-        Route::post('/payment', [ProfileAPIController::class, 'payment']); //end
         Route::post('/categories-subscribe', [ProfileAPIController::class, 'subscribeToCategory']); // used
         Route::post('/firebase-token', [NotificationController::class, 'setToken']); //used
         Route::get('/sessions', [SessionController::class, 'index']); // used
@@ -168,9 +164,6 @@ Route::get('/performers/{performer}', [PerformerAPIController::class, 'performer
 //Portfolio
 Route::get('/portfolio_albums/{performer}', [PortfolioAPIController::class, 'index']); //end +
 Route::get('/portfolio_album/{portfolio}', [PortfolioAPIController::class, 'show']); //end +
-
-//Refill
-Route::get('/ref', [RefillAPIController::class, 'ref']); //end
 
 #Social
 Route::post('/social-login', [SocialAPIController::class, 'login']); // used
