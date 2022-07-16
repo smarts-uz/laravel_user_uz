@@ -39,6 +39,7 @@ class PerformerIndexResource extends JsonResource
             'description' => $this->description,
             'stars' => $this->review_rating,
             'role_id' => $this->role_id,
+            'views' => $this->performer_views()->count(),
         ];
     }
 }
