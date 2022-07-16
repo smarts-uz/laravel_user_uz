@@ -6,15 +6,11 @@
     <title>F.A.Q </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="{{$app_logo ?? ''}}"/>
-    <link rel="stylesheet" href="{{asset('vendor/fontawesome-free/css/all.min.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,600" rel="stylesheet">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-
-
 </head>
-
 <body>
-
     <section class="bg-gray-500 py-8 mb-7">
         <div class="lg:w-8/12 mx-auto w-10/12">
                 <div class="sm:block lg:flex flex-column justify-between ">
@@ -35,23 +31,19 @@
                         </svg>
                     </button>
                     <input id="inp" class="bg-gray-400 border-none outline-none transition h-16 pl-16 pr-4 rounded-md focus:outline-none focus:bg-white w-full text-black lg:md:text-base text-base hover:bg-gray-300" type="search" name="search" placeholder="{{__('Поиск ответов')}}" />
-                    
+
                 </div>
             </form>
         </div>
     </section>
 
-    <div class="lg:w-8/12 mx-auto w-10/12 text-gray-500">
-        <span class="lg:md:text-base sm:text-sm text-xs">{{__('Все коллекции')}}  <i class="fa fa-angle-right text-sm"></i> {{$fc->getTranslatedAttribute('title',Session::get('lang') , 'fallbackLocale')}}</span>
-    </div>
-
      <section class="mt-7">
-        <div class="lg:w-10/12 md:w-8/12 mx-auto md:flex flex flex-col justify-start bg-slate-100 py-5 px-8 rounded-md shadow-lg shadow-indigo-300/40">
+        <div class="lg:w-10/12 md:w-8/12 mx-auto md:flex flex flex-col justify-start bg-slate-100 py-5 px-8 rounded-md shadow-lg">
             <div class="md:flex flex flex-row">
                 <img src="{{asset('images/faq-chat-png.png')}}" alt="" class="lg:h-20 md:h-16 sm:h-14 h-10 md:m-5 mx-auto lg:mt-8 md:mt-10 mt-10">
                     <div class="px-6 py-3">
-                        <h4 class="lg:text-[28px] md:text-[24px] sm:text-[20px] text-gray-500 text-[16px] mb-1">{{$fc->getTranslatedAttribute('title',Session::get('lang') , 'fallbackLocale')}}</h4>
-                        <p class=" lg:text-[16px] md:text-[14px] sm:text-[12px] leading-6 text-gray-400 mb-3 pr-3 text-[10px]">{{$fc->getTranslatedAttribute('description',Session::get('lang') , 'fallbackLocale')}} </p>
+                        <h4 class="text-gray-500 mb-1">{{$fc->getTranslatedAttribute('title',Session::get('lang') , 'fallbackLocale')}}</h4>
+                        <p class=" text-gray-400 mb-3 pr-3">{{$fc->getTranslatedAttribute('description',Session::get('lang') , 'fallbackLocale')}} </p>
                     </div>
             </div>
         </div>

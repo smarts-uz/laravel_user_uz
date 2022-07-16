@@ -2,7 +2,7 @@
     <div class="text-left md:ml-4 ml-0">
         <p class="mb-6 font-semibold text-xl text-gray-600">{{__('Частые вопросы')}}</p>
         @foreach(getFaqCategories() as $faq)
-       <p class="my-2"> <a href="/questions/{{$faq->id}}" class="my-4 text-gray-500 hover:text-yellow-500 hover:underline text-base">{{ $faq->getTranslatedAttribute('title',Session::get('lang') , 'fallbackLocale') }}</a></p>
+            <p class="my-2"> <a href="/questions/{{$faq->id}}" class="my-4 text-gray-500 hover:text-yellow-500 hover:underline text-base">{{ $faq->getTranslatedAttribute('title',Session::get('lang') , 'fallbackLocale') }}</a></p>
         @endforeach
     </div>
 </div>
