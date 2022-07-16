@@ -12,7 +12,6 @@
 
 
 </head>
-{{-- {{dd($fc)}} --}}
 <body class="bg-slate-200">
     <section class="bg-gray-500 py-8">
         <div class="lg:w-8/12 mx-auto w-10/12">
@@ -26,7 +25,6 @@
                 </div>
                 <h1 class="lg:text-3xl md:text-2xl sm:text-xl text-white  font-light  my-6">
                     {{__('Ответы на частые вопросы и рекомендации от Universal Services')}}</h1>
-                {{-- input --}}
             <form action="{{ route('faq.index') }}" method="GET">
                 @csrf
                 <div class="flex relative mx-auto w-full">
@@ -45,17 +43,8 @@
         <div class=" lg:w-10/12 md:w-8/12 sm:w-8/12 flex mx-auto md:flex sm:flex items-center bg-white py-5 px-8 rounded-md shadow-lg shadow-indigo-300/40">
             <img src="{{asset('images/faq-chat-png.png')}}" alt="" class="lg:h-20 md:h-16 sm:h-14 h-8">
             <div class="px-6 py-3">
-
                 <a href="/questions/{{$faq->id}}"><h4 class="lg:text-[18px] md:text-[16px] sm:text-[14px] text-gray-500 mb-1 text-[12px]">{{$faq->getTranslatedAttribute('title',Session::get('lang') , 'fallbackLocale')}}</h4></a>
                 <p class="lg:text-[16px] md:text-[14px] sm:text-[12px] text-[9px] leading-6 text-gray-400 mb-3 pr-3 ">{{$faq->getTranslatedAttribute('description', Session::get('lang'), 'fallbackLocale')}}</p>
-                <!-- <div class="flex flex-row items-center">
-                    <img src="{{asset('images/avatar-avtor-image.png')}}" alt="avatar" class="h-8 rounded-full mr-3 object-cover ">
-
-                        <div class="flex flex-col">
-                            <a  class="text-slate-500 text-sm">16 статей в этой коллекции </a>
-                            <span class="text-sm">Автор:<a  class="text-slate-600"> Агния</a> </span>
-                        </div>
-                </div> -->
             </div>
         </div>
     </section>
