@@ -44,13 +44,12 @@ class PerformerAPIController extends Controller
      */
     public function service(Request $request)
     {
-        $performers = User::query()->where('role_id', 2);
+        $performers = User::query()->where('role_id', 2)->orderByDesc('review_rating')->orderByRaw('(review_good - review_bad) DESC');
         if (isset($request->online))
         {
             $date = Carbon::now()->subMinutes(2)->toDateTimeString();
             $performers = $performers->where('role_id', 2)->where('last_seen', ">=",$date);
         }
-
         return PerformerIndexResource::collection($performers->paginate($request->per_page));
     }
 
