@@ -1028,6 +1028,7 @@ class ProfileAPIController extends Controller
      */
     public function userProfile(User $user)
     {
+        setview($user);
         return response()->json([
             'success' => true,
             'data' => new UserIndexResource($user)
