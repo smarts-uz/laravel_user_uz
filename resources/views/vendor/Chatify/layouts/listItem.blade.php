@@ -10,8 +10,8 @@
             </td>
             {{-- center side --}}
             <td>
-                <p data-id="{{ Auth::user()->id }}" data-type="user">Saved Messages <span>You</span></p>
-                <span>Save messages secretly</span>
+                <p data-id="{{ Auth::user()->id }}" data-type="user">{{__('Сохраненные сообщения')}} <span>{{__('Ты')}}</span></p>
+                <span>{{__('Сохраняйте сообщения тайно')}}</span>
             </td>
         </tr>
     </table>
@@ -77,9 +77,9 @@
             <span>asda</span></p>
         <span>
             {{-- Last Message user indicator --}}
-        
+
             {{-- Last message body --}}
-            
+
         </span>
         {{-- New messages counter --}}
             {!! $unseenCounter > 0 ? "<b>".$unseenCounter."</b>" : '' !!}

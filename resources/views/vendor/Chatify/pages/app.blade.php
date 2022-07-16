@@ -5,19 +5,18 @@
         {{-- Header and search bar --}}
         <div class="m-header">
             <nav>
-                <a ><i class="fas fa-inbox"></i> <span class="messenger-headTitle">MESSAGES</span> </a>
+                <a ><i class="fas fa-inbox"></i> <span class="messenger-headTitle">{{__('СООБЩЕНИЯ')}}</span> </a>
                 {{-- header buttons --}}
                 <nav class="m-header-right">
-                    <a ><i class="fas fa-cog settings-btn"></i></a>
                     <a  class="listView-x"><i class="fas fa-times"></i></a>
                 </nav>
             </nav>
             {{-- Search input --}}
-            <input type="text" class="messenger-search" placeholder="Search" />
+            <input type="text" class="messenger-search" placeholder="{{__('Поиск')}}" />
             {{-- Tabs --}}
             <div class="messenger-listView-tabs">
                 <a  @if($type == 'user') class="active-tab" @endif data-view="users">
-                    <span class="far fa-user"></span> People</a>
+                    <span class="far fa-user"></span> {{__('Пользователи')}}</a>
             </div>
         </div>
         {{-- tabs and lists --}}
@@ -46,9 +45,9 @@
              {{-- ---------------- [ Search Tab ] ---------------- --}}
            <div class="messenger-tab search-tab app-scroll" data-view="search">
                 {{-- items --}}
-                <p class="messenger-title">Search moderators</p>
+                <p class="messenger-title">{{__('Поиск модераторов')}}</p>
                 <div class="search-records">
-                    <p class="message-hint center-el"><span>Type to search..</span></p>
+                    <p class="message-hint center-el"><span>{{__('Введите для поиска')}}..</span></p>
                 </div>
              </div>
         </div>
@@ -68,21 +67,20 @@
                 </div>
                 {{-- header buttons --}}
                 <nav class="m-header-right">
-                    <a  class="add-to-favorite"><i class="fas fa-star"></i></a>
                     <a  class="show-infoSide"><i class="fas fa-info-circle"></i></a>
                 </nav>
             </nav>
         </div>
         {{-- Internet connection --}}
         <div class="internet-connection">
-            <span class="ic-connected">Connected</span>
-            <span class="ic-connecting">Connecting...</span>
-            <span class="ic-noInternet">No internet access</span>
+            <span class="ic-connected">{{__('Связано')}}</span>
+            <span class="ic-connecting">{{__('Подключение')}}...</span>
+            <span class="ic-noInternet">{{__('Нет доступа в Интернет')}}</span>
         </div>
         {{-- Messaging area --}}
         <div class="m-body messages-container app-scroll">
             <div class="messages">
-                <p class="message-hint center-el"><span>Please select a chat to start messaging</span></p>
+                <p class="message-hint center-el"><span>{{__('Пожалуйста, выберите чат, чтобы начать обмен сообщениями')}}</span></p>
             </div>
             {{-- Typing indicator --}}
             <div class="typing-indicator">
