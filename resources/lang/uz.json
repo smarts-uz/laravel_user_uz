@@ -710,5 +710,15 @@
     "Пожалуйста, выберите чат, чтобы начать обмен сообщениями": "Xabar yozishni boshlash uchun chatni tanlang",
     "Сохраненные сообщения": "Saqlangan xabarlar",
     "Ты": "Siz",
-    "Сохраняйте сообщения тайно": "Xabarlarni yashirincha saqlang"
+    "Сохраняйте сообщения тайно": "Xabarlarni yashirincha saqlang",
+    "Как оплатить через Paynet?": "Paynet bilan qanday to'lash mumkin?",
+    "этап": "bosqich",
+    "Для начала вам надо скачать программу Paynet.uz  и зарегистироваться.": "Avval Paynet.uz dasturini yuklab olishingiz va ro'yxatdan o'tishingiz kerak.",
+    "После установки, перейдите в раздел оплата. Нажмите на значок поиска в правом углу": "O'rnatishdan so'ng, to'lov bo'limiga o'ting. O'ng burchakdagi qidiruv belgisini bosing",
+    "Напишите Universal services и кликните на результат поиска.": "Universal xizmatlarni yozing va qidiruv natijasini bosing.",
+    "Перейти в профиль и скопируйте свой ID.": "Profilga o'ting va identifikatoringizdan nusxa oling.",
+    "Введите свой ID который вы скопировали и гапишите сумму.": "Nusxa olgan shaxsingizni kiriting va summani yozing.",
+    "Подтвердите оплату.": "To'lovni tasdiqlang.",
+    "Поздравляем": "Tabriklaymiz",
+    "Вы пополнили свой счет.": "Hisobingizni toʻldirdingiz."
 }

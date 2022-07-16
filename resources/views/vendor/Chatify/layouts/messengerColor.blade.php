@@ -29,9 +29,6 @@
 .messenger-list-item td b{
     background: {{ $messengerColor }};
 }
-.messenger-list-item:hover{
-    background: rgb(15,105,159);
-}
 
 .messenger-infoView nav a{
     color: {{ $messengerColor }};
