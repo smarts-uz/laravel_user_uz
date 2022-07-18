@@ -68,12 +68,12 @@
                                             <div class="w-full flex flex-row gap-x-4">
                                                 <i class="fas fa-comment text-xl text-yellow-500"></i>
                                                 <div>
-                                                    <p>{{__('Заказчик предложил вам новую заданию')}}</p>
-                                                    <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
-                                                        “{{$notification->name_task}}" №{{$notification->task_id}}
-                                                    </a>
-                                                    <a class="hover:text-blue-500" href="/performers/{{$notification->user_id}}">
-                                                        {{$notification->user->name ?? 'None'}}
+                                                    <p>{{__('Предложение')}}</p>
+                                                    <a class="hover:text-blue-500"
+                                                       href="{{route('show_notification', [$notification])}}">
+                                                        {{__('Вам предложили новое задание task_name №task_id от заказчика task_user', [
+                                                            'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name
+                                                        ])}}
                                                     </a>
                                                 </div>
                                             </div>

@@ -53,7 +53,7 @@
                             <div>
                                 <p>{{__('Предложение')}}</p>
                                 <a class="hover:text-blue-500"
-                                   href="{{route('show_notification_user', [$notification])}}">
+                                   href="{{route('show_notification', [$notification])}}">
                                     {{__('Вам предложили новое задание task_name №task_id от заказчика task_user', [
                                         'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name
                                     ])}}
