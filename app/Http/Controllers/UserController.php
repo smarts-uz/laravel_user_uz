@@ -57,7 +57,7 @@ class UserController extends Controller
         $user = User::query()->where('phone_number', $data['phone_number'])->first();
         if (!$user) {
             return back()->with([
-                'message' => "This phone number does not have an account!"
+                'message' => __("Этот номер телефона не зарегистрирован!")
             ]);
         }
         $message = rand(100000, 999999);
@@ -82,7 +82,7 @@ class UserController extends Controller
         $user = User::query()->where('email', $data['email'])->first();
         if (!$user) {
             return back()->with([
-                'message' => "This Email does not have an account!"
+                'message' => __("Этот адрес электронной почты не имеет учетной записи!")
             ]);
         }
         $sms_otp = rand(100000, 999999);
@@ -113,7 +113,7 @@ class UserController extends Controller
                 abort(419);
             }
         } else {
-            return back()->with(['error' => 'Error Code']);
+            return back()->with(['error' => __('Код ошибки')]);
         }
     }
 
@@ -177,11 +177,11 @@ class UserController extends Controller
                 return redirect()->route('searchTask.task', $request->for_ver_func);
             } else {
                 auth()->logout();
-                return back()->with('expired_message', __('lang.contact_expired'));
+                return back()->with('expired_message', __('Срок действия номера истек'));
             }
         } else {
             auth()->logout();
-            return back()->with('incorrect_message', __('lang.contact_notVerify'));
+            return back()->with('incorrect_message', __('Ваш номер не подтвержден'));
         }
 
     }
