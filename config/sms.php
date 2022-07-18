@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'token_lifetime' => env('ESKIZ_SMS_TOKEN_DURATION', 24 * 3600 * 30),
+    'token_lifetime' => env('ESKIZ_SMS_TOKEN_DURATION', 24 * 3600 * 25),
     'api_url' => env('ESKIZ_SMS_URL', 'http://notify.eskiz.uz/api/'),
-    'email' => env('ESKIZ_SMS_EMAIL', 'sodikov42@gmail.com'),
-    'password' => env('ESKIZ_SMS_PASSWORD', 'qQhPt1AWH24jT9L7AhWVJHKy0q9E4ywFENG9FO4M'),
+    'email' => env('ESKIZ_SMS_EMAIL', ''),
+    'password' => env('ESKIZ_SMS_PASSWORD', ''),
 ];
