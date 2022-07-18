@@ -63,3 +63,12 @@ function ConfirmDelete() {
         return false;
     }
 }
+flatpickr.localize(flatpickr.l10ns.uz_latn);
+flatpickr.localize(flatpickr.l10ns.ru);
+flatpickr(".flatpickr", {
+    wrap: true,
+    altInput: true,
+    altFormat: "F j, Y",
+    dateFormat: "Y-m-d",
+    locale: "@lang('lang.dateLang')",
+}, )
