@@ -1,13 +1,13 @@
-<div class="w-4/5 mx-auto my-16">
-    <div class="w-full">
+<div class="sm:w-4/5 w-full mx-auto my-16">
+    <div class="sm:w-full w-4/5 mx-auto text-center">
         <h1 class="text-2xl font-bold">{{__('Что заказывают на «Universal Services» прямо сейчас')}}</h1>
     </div>
     <div class="grid md:grid-cols-3 grid-cols-2 mx-auto mb-56">
         <div  class="lg:col-span-2 col-span-3 md:w-10/12 w-full h-screen blog1 mt-8">
             <div class="w-full overflow-y-scroll h-screen border rounded-lg px-4 home-categories">
                 @foreach($tasks as $task)
-                    <div class="w-full grid grid-cols-5 gap-2 items-center border rounded-lg my-2 h-28 overflow-hidden force-overflow">
-                        <div class="icon sm:col-span-1 col-span-2 mx-auto">
+                    <div class="w-full grid sm:grid-cols-5 grid-cols-3 gap-2 items-center border rounded-lg my-2 h-28 overflow-hidden force-overflow">
+                        <div class="icon col-span-1 mx-auto">
                             <img src="{{ asset('storage/'.$task->category->ico) }}" alt="" class="sm:h-14 h-10 sm:w-14 w-10 bg-blue-200 p-2 rounded-xl">
                         </div>
                         <div class="sm:col-span-4 col-span-2">

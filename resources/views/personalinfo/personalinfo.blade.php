@@ -19,8 +19,8 @@
                 <img src="{{ getContentImage('verificationInfo', 'verificationInfo') }}" alt="">
             </div>
         </div>
-        <div class="grid-rows-12 px-5 pb-5  showshad hidden">
-            <div class="container p-5">
+        <div class="grid-rows-12 sm:px-5 px-0 pb-5  showshad hidden">
+            <div class="container sm:p-5 sm:p-0">
                 <p class="text-2xl font-semibold mb-3 text-center ">
                     <span class="p-5">{{__('Как вас представлять заказчикам?')}}</span>
                 </p>

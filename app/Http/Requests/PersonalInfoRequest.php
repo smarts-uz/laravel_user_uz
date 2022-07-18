@@ -24,8 +24,8 @@ class PersonalInfoRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|unique:users',
-            'phone_number' => 'required|numeric|unique:users|min:13',
+            'email' => 'required|email',
+            'phone_number' => 'required|numeric|min:13',
         ];
     }
     public function messages()

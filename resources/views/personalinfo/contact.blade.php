@@ -3,10 +3,10 @@
 @section("content")
 <div class="shadow-2xl border-t px-10 rounded-md w-full md:w-6/12 mx-auto grid grid-flow-col gap-4 my-5 flex flex-wrap md:flex-wrap-reverse">
 
-    <div сlass="grid-rows-12">
-        <div class="container p-5">
+    <div сlass="">
+        <div class="container sm:p-5 p-0">
             <p class="text-2xl font-semibold mb-3 text-center">
-                {{__('как с вами связаться?')}}
+                {{__('Kак с вами связаться?')}}
             </p>
             <p class="text-base mt-3 text-center md:px-10 px-1">
                 {{__('Заказчики будут контактировать с вами по телефону, либо в чате. На почту будем присылать уведомления.')}}

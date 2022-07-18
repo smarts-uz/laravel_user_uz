@@ -47,7 +47,7 @@
                 </h1>
                 <p class="my-3">{{__('Расскажите об этом заказе в социальных сетях — оно заслуживает того, чтобы его увидели.')}}</p>
             </div>
-            <div class="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-4 mb-8">
+            <div class="grid grid-cols-4 mb-8">
                 <span class="telegram mx-auto"><i
                         class="fab fa-telegram px-4 py-3 bg-blue-500 text-white rounded-lg m-4 text-4xl cursor-pointer"></i></span>
                 <span class="instagram mx-auto"><i
