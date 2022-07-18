@@ -33,7 +33,7 @@ class LoginController extends Controller
             ->first();
 
         if (!$user || !Hash::check($data['password'], $user->password)){
-            Alert::error(__('lang.sign_in'));
+            Alert::error(__('Пароль неверен'));
             return back();
         }
         if (!$user->isActive()) {
@@ -111,7 +111,7 @@ class LoginController extends Controller
     public function send_email_verification()
     {
         self::send_verification('email',auth()->user());
-        Alert::info('Email sent', 'Your verification link has been successfully sent!');
+        Alert::info(__( 'Ваша ссылка для подтверждения успешно отправлена!'));
         return redirect()->route('profile.profileData');
     }
 
@@ -198,7 +198,7 @@ class LoginController extends Controller
             self::send_verification('email',$user);
 
 
-            Alert::success('Congrats', 'Your Email have successfully changed and We have sent to verification link to ' . $user->email);
+            Alert::success(__('Поздравляю'), __('Ваш адрес электронной почты успешно изменен, и мы отправили ссылку для подтверждения на') . $user->email);
 
             return redirect()->back();
         }

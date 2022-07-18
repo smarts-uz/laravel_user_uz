@@ -262,7 +262,7 @@ class CreateController extends Controller
         taskGuard($task);
         $task->photos = null;
         $task->save();
-        Alert::success('success');
+        Alert::success(__('Изменено успешно'));
         return back();
     }
 }

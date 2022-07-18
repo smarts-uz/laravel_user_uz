@@ -691,6 +691,7 @@
     "performer откликнулся на задания task_name": "\":task_name\" vazifaga \":performer\" javob qildi",
     "Выбрана задача": "Vazifa tanlandi",
     "Аккаунт отключен": "Foydalanuvchi o'chirilgan",
+    "Пароль неверен": "Parol noto'g'ri",
     "Необходимо предоставить личные документы": "Shaxsiy hujjatlar taqdim etish kerak",
     "Личные документы не требуются": "Shaxsiy hujjatlar taqdim etish shart emas",
     "Параметры": "Ma'lumotlari",
@@ -721,5 +722,11 @@
     "Подтвердите оплату.": "To'lovni tasdiqlang.",
     "Поздравляем": "Tabriklaymiz",
     "Вы пополнили свой счет.": "Hisobingizni toʻldirdingiz.",
-    "Недостаточно баланса":"Balansingiz yetarli emas"
+    "Недостаточно баланса":"Balansingiz yetarli emas",
+    "Изменено успешно": "Muvaffaqiyatli o'zgartirildi",
+    "Настройки успешно сохранены": "Sozlamalar muvaffaqiyatli saqlandi",
+    "Ваш пароль был успешно обновлен": "Sizning parolingiz muvaffaqiyatli yangilandi",
+    "Ваш адрес электронной почты успешно изменен, и мы отправили ссылку для подтверждения на":"Sizning elektron pochta manzilingiz muvaffaqiyatli o'zgartirildi va biz tasdiqlash havolasini yubordik",
+    "Неопределенный способ оплаты": "Noma'lum to'lov usuli",
+    "Ваш проверочный код успешно отправлен на": "Tasdiqlash kodingiz muvaffaqiyatli yuborildi"
 }
