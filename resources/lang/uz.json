@@ -728,5 +728,12 @@
     "Ваш пароль был успешно обновлен": "Sizning parolingiz muvaffaqiyatli yangilandi",
     "Ваш адрес электронной почты успешно изменен, и мы отправили ссылку для подтверждения на":"Sizning elektron pochta manzilingiz muvaffaqiyatli o'zgartirildi va biz tasdiqlash havolasini yubordik",
     "Неопределенный способ оплаты": "Noma'lum to'lov usuli",
-    "Ваш проверочный код успешно отправлен на": "Tasdiqlash kodingiz muvaffaqiyatli yuborildi"
+    "Ваш проверочный код успешно отправлен на": "Tasdiqlash kodingiz muvaffaqiyatli yuborildi",
+    "Уже было": "Allaqachon bor edi",
+    "Выполнено успешно": "Muvaffaqiyatli bajarildi",
+    "Этот номер телефона не зарегистрирован!": "Bu telefon raqamida hisob yo'q!",
+    "Этот адрес электронной почты не имеет учетной записи!": "Ushbu elektron pochtada hisob qaydnomasi yo'q!",
+    "Код ошибки": "Xato kod",
+    "Ваш номер не подтвержден": "Raqamingiz tasdiqlanmagan",
+    "Срок действия номера истек": "Raqam muddati tugagan"
 }

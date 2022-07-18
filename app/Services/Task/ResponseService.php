@@ -53,13 +53,13 @@ class ResponseService
             }
             if ($balanceSufficient) {
                 $success = false;
-                $message = __('not_enough_balance');
+                $message = __('Недостаточно баланса');
             }else if($task->responses()->where('performer_id', $auth_user->id)->first()){
                 $success = false;
-                $message = __('already_had');
+                $message = __('Уже было');
             } else {
                 $success = true;
-                $message = __('success');
+                $message = __('Выполнено успешно');
                 TaskResponse::query()->create($data);
                 if ($request->get('not_free') == 1) {
                     $balance->balance = $balance->balance - setting('admin.pullik_otklik');
@@ -164,7 +164,7 @@ class ResponseService
             ]);
         }
         TaskResponse::query()->where(['task_id' => $task->id, 'not_free' => 0])->where('performer_id', '!=', $performer->id)->delete();
-        return ['success' => true,'message' => __('success'), 'data' => $data];
+        return ['success' => true,'message' => __('Выполнено успешно'), 'data' => $data];
     }
 
 
