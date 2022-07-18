@@ -34,7 +34,7 @@ class ResponseService
             abort(403,"Bu o'zingizning taskingiz");
         $data = $request->validate([
             'description' => 'required|string',
-            'price' => 'required|int',
+            'price' => 'required',
             'notificate' => 'nullable',
             'not_free' => 'nullable|int'
         ]);
@@ -84,7 +84,7 @@ class ResponseService
             }
         } else {
             $success = false;
-            $message = __('not_enough_balance');
+            $message = __('Недостаточно баланса');
         }
 
         return compact('success', 'message');

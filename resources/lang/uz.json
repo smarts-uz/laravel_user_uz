@@ -720,5 +720,6 @@
     "Введите свой ID который вы скопировали и гапишите сумму.": "Nusxa olgan shaxsingizni kiriting va summani yozing.",
     "Подтвердите оплату.": "To'lovni tasdiqlang.",
     "Поздравляем": "Tabriklaymiz",
-    "Вы пополнили свой счет.": "Hisobingizni toʻldirdingiz."
+    "Вы пополнили свой счет.": "Hisobingizni toʻldirdingiz.",
+    "Недостаточно баланса":"Balansingiz yetarli emas"
 }
