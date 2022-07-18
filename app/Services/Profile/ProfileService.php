@@ -2,12 +2,14 @@
 
 namespace App\Services\Profile;
 
+use App\Http\Resources\TransactionHistoryResource;
 use App\Item\ProfileCashItem;
 use App\Item\ProfileDataItem;
 use App\Models\All_transaction;
 use App\Models\Region;
 use App\Models\Review;
 use App\Models\Session;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Models\WalletBalance;
 use App\Services\PaymentService;
@@ -320,18 +322,18 @@ class ProfileService
      */
     public function balance($request)
     {
-        $user = auth()->user()->load('transactions');
+        $user = auth()->user();
         if (WalletBalance::query()->where('user_id', $user->id)->first() != null)
             $balance = WalletBalance::query()->where('user_id', $user->id)->first()->balance;
         else
             $balance = 0;
-        $transactions = All_transaction::query()->where(['user_id' => $user->id]);
+        $transactions = Transaction::query()->where(['transactionable_id' => $user->id]);
         $period = $request->get('period');
         $from = $request->get('from');
         $to = $request->get('to');
         $type = $request->get('type');
         if ($type == 'in') {
-            $transactions = $transactions->whereIn('method', ['Payme', 'Click', 'Paynet']);
+            $transactions = $transactions->whereIn('method', ['Payme', 'Click', 'Paynet', 'payme', 'click', 'paynet']);
         } elseif ($type == 'out') {
             $transactions = $transactions->where('method', '=', 'Task');
         }
@@ -348,7 +350,7 @@ class ProfileService
         }
         return [
             'balance' => $balance,
-            'transactions' => $transactions->paginate(15)
+            'transactions' => TransactionHistoryResource::collection($transactions->orderByDesc('id')->paginate(15))
         ];
     }
     /**
