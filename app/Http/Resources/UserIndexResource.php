@@ -110,6 +110,7 @@ class UserIndexResource extends JsonResource
             $seenDate->locale($this->locale);
             $lastSeen = $seenDate->diffForHumans();
         }
+        $age = Carbon::parse($this->born_date)->age;
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -123,7 +124,7 @@ class UserIndexResource extends JsonResource
             'phone_number' => $this->phone_number,
             'location' => $this->location,
             'district' => $this->district,
-            'age' => $this->age,
+            'age' => $age,
             'description' => $this->description,
             'categories' => CategoryIndexResource::collection(Category::query()
                 ->select('id', 'parent_id', 'name', 'ico')

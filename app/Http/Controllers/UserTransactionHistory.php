@@ -18,7 +18,7 @@ class UserTransactionHistory extends Controller
         if(in_array($_GET['method'], All_transaction::METHODS)) {
             $transactionMethod = All_transaction::query()->where('method', $_GET['method'])->where(['user_id' => $user->id]);
         } else {
-            Alert::error('Undefined payment method');
+            Alert::error(__('Неопределенный способ оплаты'));
             return response()->json([
                 'success' => false,
                 'message' => 'Undefined payment method'

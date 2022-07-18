@@ -94,7 +94,7 @@
             <div class="bg-gray-100 rounded-[10px] p-4">
                 <div class="ml-0">
                     <div
-                        class="text-[17px] text-gray-500 font-semibold">{{__('Стоимость')}} {{ number_format($auth_response->price) }}
+                        class="text-[17px] text-gray-500 font-semibold">{{__('Стоимость')}} {{ $auth_response->price }}
                         UZS
                     </div>
 
