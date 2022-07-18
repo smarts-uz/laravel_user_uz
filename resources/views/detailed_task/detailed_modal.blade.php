@@ -190,14 +190,14 @@
                         <label>
                             <input type="text" required
                                    onkeypress='validate(event)'
-                                   checked name="price"
+                                   name="price" id="car_2"
                                    class="border border-gray-300 rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 mb-2">UZS
-                            <input type="text" name="pay"
-                                   class="pays border rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 my-2 hidden"
+                            <input type="hidden" name="pay"
+                                   class="pays border rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 my-2"
                                    value="0">
-                            <input type="text"
+                            <input type="hidden"
                                    name="task_user_id"
-                                   class="pays border rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 my-2 hidden"
+                                   class="pays border rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 my-2"
                                    value="{{$task->user_id}}">
                         </label>
                         <hr>
@@ -275,3 +275,4 @@
            href="/profile/cash">{{__('Пополнить')}}</a>
     </div>
 </div>
+<script src="{{asset('js/custom.js')}}"></script>
