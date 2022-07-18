@@ -174,6 +174,7 @@
             {{-- tugashi o'ng tomon ispolnitel --}}
         </div>
     </div>
+    <script>let PAYMENT_TEST = '{{env('PAYMENT_TEST')}}'</script>
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('js/profile/cash.js') }}"></script>
 @endsection

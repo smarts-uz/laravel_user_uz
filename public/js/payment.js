@@ -1,4 +1,3 @@
-console.log(PAYMENT_TEST)
 function toggleModal() {
     document.getElementById("modal-id").classList.toggle("hidden");
     document.getElementById("modal-id" + "-backdrop").classList.toggle("hidden");

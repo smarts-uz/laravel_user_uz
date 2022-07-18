@@ -1,7 +1,11 @@
  // input cash
 function inputCash() {
     var x = document.getElementById("myText1").value;
-    if (x < 4000) {
+    let amount = 4000;
+    if (PAYMENT_TEST) {
+        amount = 1000;
+    }
+    if (x < amount) {
         document.getElementById('button2').removeAttribute("onclick");
         document.getElementById('button2').classList.remove("bg-green-500","hover:bg-green-600");
         document.getElementById('button2').classList.add("bg-gray-500");

@@ -20,6 +20,7 @@ use App\Http\Controllers\PerformersController;
 use App\Http\Controllers\Task\SearchTaskController;
 use App\Http\Controllers\admin\VoyagerUserController;
 use App\Http\Controllers\Task\CreateController;
+use Teamprodev\LaravelPayment\PayUz;
 
 /*
 |--------------------------------------------------------------------------
