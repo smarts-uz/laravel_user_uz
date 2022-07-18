@@ -15,8 +15,8 @@ class VerifyCsrfToken extends Middleware
         '/task/create/note/*/images/store',
         '/uploadImage',
         '/paynet',
-        '/payme',
-        '/click',
-        '/click/user-balance'
+        '/payment/payme',
+        '/payment/click',
+        '/payment/click/user-balance'
     ];
 }
