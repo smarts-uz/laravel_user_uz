@@ -19,10 +19,11 @@ class TransactionHistoryResource extends ResourceCollection
             'total' => $this->total(),
             'first_page_url' => $this->url(1),
             'last_page' => $this->lastPage(),
-            'last_page_url' => $this->url($this->total()),
+            'last_page_url' => $this->url($this->lastPage()),
             'count' => $this->count(),
+            'test' => $this->hasMorePages(),
             'per_page' => $this->perPage(),
-            'links' => $this->getUrlRange(1, $this->total()),
+            'links' => $this->getUrlRange(1, $this->lastPage()),
             "prev_page_url" => $this->previousPageUrl(),
             'current_page' => $this->currentPage(),
             'total_pages' => $this->lastPage()
