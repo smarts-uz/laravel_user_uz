@@ -23,18 +23,16 @@
         <div class="flex-initial sm:w-2/3 w-full sm:mt-0 mt-6 sm:ml-8 ml-0">
             <div class="w-2/3 text-base text-gray-500">
                 @if($user->age>0)
-                    @isset($user->age)
-                        <p class="inline-block mr-2">
-                            {{$user->age}}
-                            @if($user->age>20 && $user->age%10==1)
-                                {{__('года')}}
-                            @elseif ($user->age>20 && ($user->age%10==2 || $user->age%10==3 || $user->age%10==1))
-                                {{__('года')}}
-                            @else
-                                {{__('лет')}}
-                            @endif
-                        </p>
-                    @endisset
+                    <p class="inline-block mr-2">
+                        {{$user->age}}
+                        @if($user->age%10==1)
+                            {{__('год')}}
+                        @elseif ($user->age%10==2 || $user->age%10==3 || $user->age%10==4)
+                            {{__('года')}}
+                        @else
+                            {{__('лет')}}
+                        @endif
+                    </p>
                 @endif
                 <span class="inline-block">
                     <p class="inline-block text-m">
@@ -47,11 +45,24 @@
                 </span>
             </div>
             <div class="text-gray-500 text-base mt-2">
-                <p class="mt-2">{{__('Создал')}} <a>
-                    <span>
-                        {{count($user->tasks??[])}}
-                    </span> {{__('задание')}}</a></p>
+                @if ( session('lang') == 'uz' )
+                    <p class="mt-2">
+                        <a href="{{route('searchTask.mytasks')}}" class="text-blue-500 hover:text-red-600">
+                            <span>{{count($user->tasks??[])}}</span> {{__('задание')}}
+                        </a>
+                        {{__('Создал')}}
+                    </p>
+                @else
+                    <p class="mt-2">{{__('Создал')}}
+                        <a href="{{route('searchTask.mytasks')}}" class="text-blue-500 hover:text-red-600">
+                            <span>{{count($user->tasks??[])}}</span> {{__('задание')}}
+                        </a>
+                    </p>
+                @endif
                 @switch($review_good + $review_bad)
+                    @case(0)
+                    <span>{{__('Отзывов нет')}}</span>
+                    @break
                     @case(1)
                     <span>{{__('Получил')}} {{($review_good) + ($review_bad) }} {{__('Отзыв')}}</span>
                     @break

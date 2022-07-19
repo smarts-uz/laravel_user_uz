@@ -40,12 +40,15 @@
 
             <br>
             <a class="text-xl text-gray-500">
-                @if($task->user->age != "" && $task->user->age > 0)
-                    <p class="inline-block text-m mr-2">
+                @if($task->user->age>0)
+                    <p class="inline-block mr-2">
                         {{$task->user->age}}
-                        @if($task->user->age>20 && $task->user->age%10==1) {{__('год')}}
-                        @elseif ($task->user->age>20 && ($task->user->age%10==2 || $task->user->age%10==3 || $task->user->age%10==1)) {{__('года')}}
-                        @else {{__('лет')}}
+                        @if($task->user->age%10==1)
+                            {{__('год')}}
+                        @elseif ($task->user->age%10==2 || $task->user->age%10==3 || $task->user->age%10==4)
+                            {{__('года')}}
+                        @else
+                            {{__('лет')}}
                         @endif
                     </p>
                 @endif
