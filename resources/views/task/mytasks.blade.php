@@ -7,7 +7,7 @@
         <div class="col-span-2">
             <div class="">
                 <!-- Tabs -->
-                <div class="w-full bg-gray-50 rounded-md px-5 py-5 border-gray-100">
+                <div class="w-full bg-gray-100 rounded-md px-5 py-5 border-gray-100">
                     <ul id="tabs" class="flex rounded-sm sm:w-96 w-full divide-x shadow bg-gray-200">
                         <li id="first_tab" class="w-full text-center p-1 bg-gray-400 rounded-sm text-white">
                             <a id="default-tab" href="#first" >{{__('Я исполнитель')}}</a>

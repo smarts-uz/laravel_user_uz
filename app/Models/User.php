@@ -57,8 +57,6 @@ class User extends \TCG\Voyager\Models\User
         'email_verified_at' => 'datetime',
     ];
 
-    protected $appends = ['age'];
-
     public function getAgeAttribute()
     {
         return Carbon::parse($this->attributes['born_date'])->age;
