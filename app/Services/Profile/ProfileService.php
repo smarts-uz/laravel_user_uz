@@ -351,7 +351,8 @@ class ProfileService
         }
         return [
             'balance' => $balance,
-            'transactions' => new TransactionHistoryResource($transactions->orderByDesc('created_at')->paginate(15))
+            'transaction' => TransactionHistoryCollection::collection($transactions->orderByDesc('created_at')->paginate(15))->response()->getData(true)
+//            'transactions' => new TransactionHistoryResource($transactions->orderByDesc('created_at')->paginate(15))
         ];
     }
     /**
