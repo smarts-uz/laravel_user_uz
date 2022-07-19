@@ -2,6 +2,7 @@
 
 namespace App\Services\Profile;
 
+use App\Http\Resources\TransactionHistoryCollection;
 use App\Http\Resources\TransactionHistoryResource;
 use App\Item\ProfileCashItem;
 use App\Item\ProfileDataItem;
@@ -350,7 +351,7 @@ class ProfileService
         }
         return [
             'balance' => $balance,
-            'transactions' => TransactionHistoryResource::collection($transactions->orderByDesc('id')->paginate(15))
+            'transactions' => new TransactionHistoryResource($transactions->orderByDesc('created_at')->paginate(15))
         ];
     }
     /**
