@@ -336,7 +336,7 @@ class ProfileService
         if ($type == 'in') {
             $transactions = $transactions->whereIn('payment_system', ['Payme', 'Click', 'Paynet', 'payme', 'click', 'paynet']);
         } elseif ($type == 'out') {
-            $transactions = $transactions->where('method', '=', 'Task');
+            $transactions = $transactions->where('payment_system', '=', 'Task');
         }
         $now = Carbon::now();
         if ($period) {
