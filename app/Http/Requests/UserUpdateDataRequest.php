@@ -27,7 +27,7 @@ class UserUpdateDataRequest extends FormRequest
             'email' => 'required|email|unique:users',
             'age' => 'nullable|int',
             'phone_number' => 'required|numeric|unique:users|min:13',
-            'description' => 'nullable',
+            'born_date'=>'required',
             'location' => 'nullable',
         ];
         if (auth()->user()->email == $this->request->get('email')) {
@@ -51,6 +51,7 @@ class UserUpdateDataRequest extends FormRequest
             'phone_number.min' => __('login.phone_number.min'),
             'phone_number.required' => __('login.phone_number.required'),
             'phone_number.unique' => __('login.phone_number.unique'),
+            'born_date.required' => __('login.name.required'),
         ];
     }
     public function getValidatorInstance()

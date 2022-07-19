@@ -19,8 +19,8 @@
                 <img src="{{ getContentImage('verificationInfo', 'verificationInfo') }}" alt="">
             </div>
         </div>
-        <div class="grid-rows-12 px-5 pb-5  showshad hidden">
-            <div class="container p-5">
+        <div class="grid-rows-12 sm:px-5 px-0 pb-5  showshad hidden">
+            <div class="container sm:p-5 sm:p-0">
                 <p class="text-2xl font-semibold mb-3 text-center ">
                     <span class="p-5">{{__('Как вас представлять заказчикам?')}}</span>
                 </p>
@@ -37,9 +37,6 @@
                     <script src="https://npmcdn.com/flatpickr/dist/l10n/uz_latn.js"></script>
                     <div>
                         <div class="flex items-center rounded-lg border py-1">
-                            <button class="flex-shrink-0 border-transparent text-teal-500 text-md py-1 px-2 rounded focus:outline-none" type="button">
-                                A
-                            </button>
                             <input autocomplete="off" oninput="myFunction()" name="location" id="suggest0" class="appearance-none bg-transparent w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none focus:border-yellow-500" type="text" placeholder="{{__('Город, Улица, Дом')}}" value="{{session('location2')}}" name="location0" required>
                             <button id="getlocal" class="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 px-2 rounded" type="button"> <svg class="h-4 w-4 text-purple-500" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" />
@@ -107,7 +104,6 @@
 @endsection
 
 @push('javascript')
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 <script src="{{ asset('js/personalinfo/personalinfo.js') }}"></script>
 @endpush

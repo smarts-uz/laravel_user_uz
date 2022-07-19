@@ -8,7 +8,6 @@
             <div class="">
                 <!-- Tabs -->
                 <div class="w-full bg-gray-50 rounded-md px-5 py-5 border-gray-100">
-
                     <ul  id="tabs" class="flex rounded-sm sm:w-96 w-full divide-x shadow bg-gray-200">
                         <div id="first_tab" class="w-full text-center">
                             <a id="default-tab" href="#first" class="inline-block relative py-1 w-full">{{__('Я исполнитель')}}</a>
@@ -23,123 +22,114 @@
     <!-- Tab Contents -->
             <div id="tab-contents">
                 <div id="first">
-                    <div id="scrollbar" class="w-full blog1">
                     <div class="w-full scroll-smooth hover:scroll-auto w-full">
                         <p class="p-5 lenght"></p>
-                    @foreach($perform_tasks as $task)
-
-                                <div class="w-full border-t border-solid hover:bg-blue-100 category">
-                                    <div class="md:grid md:grid-cols-10 p-2">
+                        @foreach($perform_tasks as $task)
+                            <div class="w-full border-t border-solid hover:bg-blue-100 category">
+                                <div class="md:grid md:grid-cols-10 p-2">
+                                    @foreach ($categories2 as $category2)
+                                        @if ($category2->id == $task->category_id)
+                                            <img src=" {{ asset('storage/'.$task->category->ico) }}" alt="" class="h-14 w-14 bg-blue-200 p-2 rounded-xl md:mb-0 mb-3">
+                                        @endif
+                                    @endforeach
+                                    <div class="col-span-6">
+                                        <a href="/detailed-tasks/{{$task->id}}" class="text-blue-500 text-xl hover:text-red-500">
+                                            {{$task->name}}
+                                        </a>
+                                        @if($task->address !== NULL)
+                                            <p class=" text-sm mt-2">{{json_decode($task->address, true)['location']}}</p>
+                                        @endif
+                                        @if ($task->status == 3)
+                                            <p class="text-amber-500 font-normal">{{__('В исполнении')}}</p>
+                                        @elseif($task->status < 3)
+                                            <p class="text-green-400 font-normal">{{__('Открыто')}}</p>
+                                        @elseif($task->status == 6)
+                                            <p class="text-red-400 font-normal">{{__('Отменен')}}</p>
+                                        @else
+                                            <p class="text-red-400 font-normal">{{__('Закрыто')}}</p>
+                                        @endif
+                                    </div>
+                                    <div class="col-span-3 md:text-right categoryid">
+                                        <p class="text-xl font-medium text-gray-600">
+                                            @if ( session('lang') == 'uz' )
+                                                {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
+                                            @else
+                                                {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
+                                            @endif
+                                        </p>
                                         @foreach ($categories2 as $category2)
-                                            @if ($category2->id == $task->category_id)
-                                                 <img src=" {{ asset('storage/'.$task->category->ico) }}" alt="" class="h-14 w-14 bg-blue-200 p-2 rounded-xl md:mb-0 mb-3">
+                                            @if($category2->id == $task->category_id)
+                                                <span class="text-sm text-gray-500 hover:text-red-600 my-3" about="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</span>
                                             @endif
                                         @endforeach
-                                        <div class="col-span-6">
-                                            <a href="/detailed-tasks/{{$task->id}}" class="text-blue-500 text-xl hover:text-red-500">
-                                                {{$task->name}}
-                                            </a>
-                                            @if($task->address !== NULL)
-                                                <p class=" text-sm mt-2">{{json_decode($task->address, true)['location']}}</p>
-                                            @endif
-                                            @if ($task->status == 3)
-                                                <p class="text-amber-500 font-normal">{{__('В исполнении')}}</p>
-                                            @elseif($task->status < 3)
-                                                <p class="text-green-400 font-normal">{{__('Открыто')}}</p>
-                                            @elseif($task->status == 6)
-                                                <p class="text-red-400 font-normal">{{__('Отменен')}}</p>
-                                            @else
-                                                <p class="text-red-400 font-normal">{{__('Закрыто')}}</p>
-                                            @endif
-                                        </div>
-                                        <div class="col-span-3 md:text-right categoryid">
-                                            <p class="text-xl font-medium text-gray-600">
-                                                @if ( session('lang') == 'uz' )
-                                                    {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
-                                                @else
-                                                    {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
-                                                @endif
-                                            </p>
-                                            @foreach ($categories2 as $category2)
-                                                @if($category2->id == $task->category_id)
-                                                    <span class="text-sm text-gray-500 hover:text-red-600 my-3" about="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</span>
-                                                @endif
-                                            @endforeach
-                                            <p class="text-sm text-gray-500"> {{__("Количество откликов :")}}
-                                                @if ($task->task_responses()->count() > 0)
+                                        <p class="text-sm text-gray-500"> {{__("Количество откликов :")}}
+                                            @if ($task->task_responses()->count() > 0)
                                                 {{  $task->task_responses()->count() }}
-                                                @else
+                                            @else
                                                 0
-                                                @endif
-                                            </p>
-                                        </div>
+                                            @endif
+                                        </p>
                                     </div>
                                 </div>
-                            @endforeach
-                        </div>
+                            </div>
+                        @endforeach
                     </div>
-
                 </div>
 
                 <div id="second" class="hidden">
-
-                    <div id="scrollbar" class="w-full blog1">
-                            <div class="w-full scroll-smooth hover:scroll-auto w-full">
-                                <p class="p-5 lenght2"></p>
-                            @foreach($tasks as $task)
-                                    <div class="w-full border-t border-solid hover:bg-blue-100 category2 my-5">
-                                        <div class="md:grid md:grid-cols-10 p-2">
-                                            @foreach ($categories2 as $category2)
-                                                @if ($category2->id == $task->category_id)
-                                                <img src=" {{ asset('storage/'.$task->category->ico) }}" alt="" class="h-14 w-14 bg-blue-200 p-2 rounded-xl md:mb-0 mb-3">
-                                                @endif
-                                            @endforeach
-                                            <div class="col-span-6">
-                                                <a href="/detailed-tasks/{{$task->id}}" class="text-blue-500 text-xl hover:text-red-500">
-                                                    {{$task->name}}
-                                                </a>
-                                                @if($task->address !== NULL)
-                                                     <p class=" text-sm mt-2">{{json_decode($task->address, true)['location']}}</p>
-                                                @endif
-                                                @if ($task->status == 3)
-                                                    <p class="text-amber-500 font-normal">{{__('В исполнении')}}</p>
-                                                @elseif($task->status < 3)
-                                                    <p class="text-green-400 font-normal">{{__('Открыто')}}</p>
-                                                @elseif($task->status == 5)
-                                                    <p class="text-red-400 font-normal">{{__('Не выполнено')}}</p>
-                                                @elseif($task->status == 6)
-                                                    <p class="text-red-400 font-normal">{{__('Отменен')}}</p>
-                                                @else
-                                                    <p class="text-red-400 font-normal">{{__('Закрыто')}}</p>
-                                                @endif
-                                            </div>
-                                            <div class="col-span-3 md:text-right categoryid">
-                                                <p class="text-xl font-medium text-gray-600">
-                                                    @if ( session('lang') == 'uz')
-                                                        {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
-                                                    @else
-                                                        {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
-                                                    @endif
-                                                </p>
-                                                @foreach ($categories2 as $category2)
-                                                    @if($category2->id == $task->category_id)
-                                                        <span class="text-sm text-gray-500 hover:text-red-600 my-3" about="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</span>
-                                                    @endif
-                                                @endforeach
-                                                    <p class="text-sm text-gray-500"> {{__("Количество откликов :")}} @if ($task->task_responses()->count() > 0)
-                                                        {{  $task->task_responses()->count() }}
-                                                        @else
-                                                        0
-                                                        @endif
-                                                    </p>
-                                            </div>
-                                        </div>
+                    <div class="w-full scroll-smooth hover:scroll-auto w-full">
+                        <p class="p-5 lenght2"></p>
+                        @foreach($tasks as $task)
+                            <div class="w-full border-t border-solid hover:bg-blue-100 category2 my-5">
+                                <div class="md:grid md:grid-cols-10 p-2">
+                                    @foreach ($categories2 as $category2)
+                                        @if ($category2->id == $task->category_id)
+                                            <img src=" {{ asset('storage/'.$task->category->ico) }}" alt="" class="h-14 w-14 bg-blue-200 p-2 rounded-xl md:mb-0 mb-3">
+                                        @endif
+                                    @endforeach
+                                    <div class="col-span-6">
+                                        <a href="/detailed-tasks/{{$task->id}}" class="text-blue-500 text-xl hover:text-red-500">
+                                            {{$task->name}}
+                                        </a>
+                                        @if($task->address !== NULL)
+                                            <p class=" text-sm mt-2">{{json_decode($task->address, true)['location']}}</p>
+                                        @endif
+                                        @if ($task->status == 3)
+                                            <p class="text-amber-500 font-normal">{{__('В исполнении')}}</p>
+                                        @elseif($task->status < 3)
+                                            <p class="text-green-400 font-normal">{{__('Открыто')}}</p>
+                                        @elseif($task->status == 5)
+                                            <p class="text-red-400 font-normal">{{__('Не выполнено')}}</p>
+                                        @elseif($task->status == 6)
+                                            <p class="text-red-400 font-normal">{{__('Отменен')}}</p>
+                                        @else
+                                            <p class="text-red-400 font-normal">{{__('Закрыто')}}</p>
+                                        @endif
                                     </div>
-                            @endforeach
-
-                        </div>
+                                    <div class="col-span-3 md:text-right categoryid">
+                                        <p class="text-xl font-medium text-gray-600">
+                                            @if ( session('lang') == 'uz')
+                                                {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
+                                            @else
+                                                {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
+                                            @endif
+                                        </p>
+                                        @foreach ($categories2 as $category2)
+                                            @if($category2->id == $task->category_id)
+                                                <span class="text-sm text-gray-500 hover:text-red-600 my-3" about="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</span>
+                                            @endif
+                                        @endforeach
+                                        <p class="text-sm text-gray-500"> {{__("Количество откликов :")}} @if ($task->task_responses()->count() > 0)
+                                                {{  $task->task_responses()->count() }}
+                                            @else
+                                                0
+                                            @endif
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
-
                 </div>
             </div>
         </div>

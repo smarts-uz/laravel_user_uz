@@ -36,18 +36,19 @@
                             <h4 class="inline font-bold text-lg text-gray-700">{{__('Немного о себе')}}</h4>
                             @if ($user->description == Null)
                                 <span class="ml-10">
-                                        <i class="fas fa-pencil-alt inline text-gray-700"></i>
-                                        <p class="inline text-gray-500 cursor-pointer hover:text-red-500 border-b-2 hover:border-b-2 hover:border-red-500"
-                                           id="padd">{{__('Добавить')}}</p>
-                                    </span>
-                                <p class="text-red-400 desc mt-4">
-                                    {{__('Заказчики ничего о вас не знают. Добавьте информацию о вашем опыте.')}}</p>
+                                     <i class="fas fa-pencil-alt inline text-gray-700"></i>
+                                     <p class="inline text-gray-500 cursor-pointer hover:text-red-500 border-b-2 hover:border-b-2 hover:border-red-500"
+                                           id="padd">{{__('Добавить')}}
+                                     </p>
+                                </span>
+                                <p class="text-red-400 desc mt-4">{{__('Заказчики ничего о вас не знают. Добавьте информацию о вашем опыте.')}}</p>
                             @else
                                 <span class="ml-10">
-                                        <i class="fas fa-pencil-alt inline text-gray-700"></i>
-                                        <p class="inline text-gray-500 cursor-pointer"
-                                           id="padd">{{__('Редактировать')}}</p>
-                                    </span>
+                                     <i class="fas fa-pencil-alt inline text-gray-700"></i>
+                                     <p class="inline text-gray-500 cursor-pointer"
+                                           id="padd">{{__('Редактировать')}}
+                                     </p>
+                                </span>
                                 <p class="mt-3 w-4/5 desc">{{$user->description}}</p>
                             @endif
                             <form action="{{route('profile.EditDescription')}}" method="POST" class="formdesc hidden">

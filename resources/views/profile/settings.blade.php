@@ -90,15 +90,26 @@
                                                     @enderror
                                                 </div>
                                                 <div class="w-full block w-full mb-4">
-                                                    <label class="mb-2 text-md md:block text-gray-400"
-                                                           for="age">{{__('Возраст')}}</label>
-                                                    <input
-                                                        class="focus:outline-none focus:border-yellow-500 rounded-xl border py-2 px-3 w-full text-grey-900"
-                                                        min="18" type="number" name="age" id="age"
-                                                        value="{{$user->age}}">
-                                                    @error('age')
-                                                    <p class="text-red-500">{{ $message }}</p>
-                                                    @enderror
+                                                    <label for="date" class="mt-3 text-gray-500 text-sm">{{__('Дата рождения')}}</label>
+                                                    <div class="flatpickr inline-block flex flex-shrink">
+                                                        <div class="flex-shrink">
+                                                            <input type="text" name="born_date" value="{{auth()->user()->born_date}}" placeholder="{{__('Какой месяц..')}}" data-input class=" bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm text-xs rounded-lg focus:outline-none focus:border-yellow-500 block pl-10 p-2.5 dark:bg-gray-700 dark:border-yellow-300 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required> <!-- input is mandatory -->
+                                                        </div>
+
+                                                        <div class="transform hover:scale-125 relative right-8 my-auto">
+                                                            <a class="input-button w-1 h-1" title="toggle" data-toggle>
+                                                                <i class="far fa-calendar-alt fill-current text-yellow-500"></i>
+                                                            </a>
+                                                        </div>
+                                                        <div class="transform hover:scale-125 my-auto">
+                                                            <a class="input-button w-1 h-1" title="clear" data-clear>
+                                                                <i class="fas fa-trash-alt stroke-current text-red-500 "></i>
+                                                            </a>
+                                                        </div>
+                                                        @error('born_date')
+                                                            <p class="text-red-500 mt-2 ml-2">{{ $message }}</p>
+                                                        @enderror
+                                                    </div>
                                                 </div>
                                                 <div class="w-full block w-full mb-6 mt-2 flex gap-x-5">
                                                     <div class="flex items-center gap-x-2">
@@ -113,18 +124,6 @@
                                                         <label for="fermale"
                                                                class="text-gray-800 text-lg cursor-pointer">{{__('Женской')}}</label>
                                                     </div>
-                                                </div>
-                                                <div class="w-full block w-full mb-4">
-                                                    <label class="mb-2 text-md md:block text-gray-400"
-                                                           for="textarea">{{__('Другие сведения')}}</label>
-                                                    <textarea
-                                                        class="border rounded-xl py-2 px-3 w-full  text-grey-900 focus:outline-none focus:border-yellow-500"
-                                                        name="description"
-                                                        id="textarea">{{old('description')??$user->description}}</textarea>
-                                                    @error('description')
-                                                        <p class="text-red-500">{{ $message }}</p>
-                                                    @enderror
-
                                                 </div>
                                                 <div class="w-full block w-full mb-4">
                                                     <label class="mb-2 text-md md:block text-gray-400"
@@ -409,6 +408,7 @@
 
         </div>
     </div>
+
     <script>
         let notif_11, notif_22;
 
@@ -455,6 +455,13 @@
 
 
     </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/uz_latn.js"></script>
     <script src="https://unpkg.com/imask"></script>
     <script src="{{ asset('js/profile/setting.js') }}"></script>
 @endsection
