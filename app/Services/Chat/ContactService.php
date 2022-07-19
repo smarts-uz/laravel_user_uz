@@ -43,6 +43,7 @@ class ContactService
         }
         $userIdsList[] = setting('site.moderator_id');
 
+        // get unique elements and remove current user from list
         $userIdsList = array_unique($userIdsList);
         if (($key = array_search($authUser->id, $userIdsList)) !== false) {
             unset($userIdsList[$key]);
