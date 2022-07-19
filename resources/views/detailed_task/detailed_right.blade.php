@@ -7,7 +7,7 @@
                 <i class="fas fa-share-alt"></i>
             </button>
             @if (Auth::check())
-                <button onclick="toggleModal45()"
+                <button onclick="toggleModal88()"
                         class="px-3 py-3 border border-3 ml-4 rounded-md border-gray-500 hover:border-gray-400">
                     <i class="far fa-flag"></i>
                 </button>

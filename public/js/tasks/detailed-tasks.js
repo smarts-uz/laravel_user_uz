@@ -184,3 +184,9 @@ function toggleModal33() {
     document.getElementById("modal-id33").classList.toggle("flex");
     document.getElementById("modal-id33" + "-backdrop").classList.toggle("flex");
 }
+function toggleModal88() {
+    document.getElementById("modal-id88").classList.toggle("hidden");
+    document.getElementById("modal-id88" + "-backdrop").classList.toggle("hidden");
+    document.getElementById("modal-id88").classList.toggle("flex");
+    document.getElementById("modal-id88" + "-backdrop").classList.toggle("flex");
+}

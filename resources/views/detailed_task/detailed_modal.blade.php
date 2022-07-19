@@ -1,4 +1,4 @@
-{{-- podelitsa modal start --}}
+{{-- not_complete modal start --}}
 <div
     class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none        justify-center items-center"
     style="background-color:rgba(0,0,0,0.5)" id="modal-id45">
@@ -29,6 +29,47 @@
     </div>
 </div>
 <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id45-backdrop"></div>
+{{-- not_complete modal end --}}
+
+{{-- podelitsa modal start --}}
+<div class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
+    style="background-color:rgba(0,0,0,0.5)" id="modal-id88">
+    <div class="relative w-full my-6 mx-auto max-w-3xl" id="modal88">
+        <div
+            class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none">
+            <div class=" text-center p-6  rounded-t">
+                <button type="submit" onclick="toggleModal88()"
+                        class="rounded-md w-100 h-16 absolute top-1 right-4 focus:outline-none">
+                    <i class="fas fa-times text-xl w-full"></i>
+                </button>
+                <h1 class="font-medium text-3xl block mt-6">
+                    {{__('Напишите свое возражение по созданной задаче')}}
+                </h1>
+            </div>
+            <div class="text-center my-6">
+
+                <form action="{{route('searchTask.comlianse_save')}}" method="POST">
+                    @csrf
+                    <input type="hidden" name="taskId" value="{{ $task->id }}">
+                    <input type="hidden" name="userId"
+                           value="{{ Auth::check() ? Auth::user()->id : $task->user->id}}">
+                    <select name="c_type" id=""
+                            class="w-4/5 border-2 border-gray-500 rounded-lg mb-4 py-2 px-2 focus:outline-none hover:border-yellow-500">
+                        @foreach ($complianceType as $complType)
+                            <option value="{{$complType->id}}">{{$complType->name}}</option>
+                        @endforeach
+                    </select>
+                    <textarea name="c_text" id="" required
+                              class="border-2 border-gray-500 rounded-lg p-2 w-4/5 focus:outline-none hover:border-yellow-500"></textarea>
+                    <input type="submit" value="{{__('Отправить')}}" required
+                           class="bg-yellow-500 mt-4 py-3 px-5 rounded-lg text-white text-xl cursor-pointer font-medium border-2 border-gray-500 hover:bg-yellow-600">
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id88-backdrop"></div>
 {{-- podelitsa modal end --}}
 
 {{-- share modal start --}}
