@@ -60,7 +60,7 @@ class LoginAPIController extends Controller
     public function send_email_verification()
     {
         VerificationService::send_verification('email', auth()->user());
-        return response()->json(['success' => true, 'message' => 'success']);
+        return response()->json(['success' => true, 'message' => __('Ваша ссылка для подтверждения успешно отправлена!')]);
     }
 
     /**
@@ -90,7 +90,7 @@ class LoginAPIController extends Controller
         /** @var User $user */
         $user = auth()->user();
         VerificationService::send_verification('phone', $user, $user->phone_number);
-        return response()->json(['message' => 'success']);
+        return response()->json(['success' => true, 'message' => __('Код отправлен!')]);
     }
 
     /**
