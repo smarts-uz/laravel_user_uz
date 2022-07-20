@@ -4,30 +4,25 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\VerifyCredentialsRequest;
-use App\Mail\VerifyEmail;
 use App\Models\User;
-use App\Services\SmsMobileService;
+use App\Services\VerificationService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 class LoginAPIController extends Controller
 {
-
     public function verifyCredentials(VerifyCredentialsRequest $request)
     {
         $data = $request->validated();
         $column = $data['type'];
         $verified = 'is_' . $column . '_verified';
         if (!User::query()->where($column, $data['data'])->where($verified, 1)->exists()) {
-            $code = self::sendVerification($data['type'], $data['data']);
             /** @var User $user */
             $user = auth()->user();
             $user->$column = $data['data'];
             $user->$verified = 0;
-            $user->verify_code = $code;
-            $user->verify_expiration = Carbon::now()->addMinutes(5);
             $user->save();
+            VerificationService::send_verification($data['type'], $user);
             return response()->json([
                 'success' => true,
                 'message' => $data['type'] == 'email' ? __('Ваша ссылка для подтверждения успешно отправлена.') : __('Код отправлен!')
@@ -35,47 +30,10 @@ class LoginAPIController extends Controller
         }
         return response()->json([
             'success' => false,
-            'message' => $data['type'] == 'email' ? __('Пользователь с такой почтой уже существует!'): __('Пользователь с таким номером уже существует!')
+            'message' => $data['type'] == 'email' ? __('Пользователь с такой почтой уже существует!') : __('Пользователь с таким номером уже существует!')
         ]);
     }
 
-    public static function sendVerification($type, $value)
-    {
-        if ($type == 'phone_number') {
-            $code = rand(100000, 999999);
-            $phone_number = $value;
-            $sms_service = new SmsMobileService();
-            $sms_service->sms_packages($phone_number, $code);
-        } else {
-            $code = sha1(time());
-            $data = [
-                'code' => $code,
-                'user' => auth()->user()->id
-            ];
-            Mail::to($value)->send(new VerifyEmail($data));
-        }
-        return $code;
-    }
-
-    public static function send_verification($needle, $user)
-    {
-        if ($needle == 'email') {
-            $code = sha1(time());
-            $data = [
-                'code' => $code,
-                'user' => auth()->user()->id
-            ];
-            Mail::to($user->email)->send(new VerifyEmail($data));
-        } else {
-            $message = rand(100000, 999999);
-            $phone_number = $user->phone_number;
-            $sms_service = new SmsMobileService();
-            $sms_service->sms_packages($phone_number, $message);
-        }
-        $user->verify_code = $code;
-        $user->verify_expiration = Carbon::now()->addMinutes(5);
-        $user->save();
-    }
 
     /**
      * @OA\Get(
@@ -101,7 +59,7 @@ class LoginAPIController extends Controller
      */
     public function send_email_verification()
     {
-        self::send_verification('email', auth()->user());
+        VerificationService::send_verification('email', auth()->user());
         return response()->json(['success' => true, 'message' => 'success']);
     }
 
@@ -129,33 +87,11 @@ class LoginAPIController extends Controller
      */
     public function send_phone_verification()
     {
-        self::send_verification('phone', auth()->user());
+        /** @var User $user */
+        $user = auth()->user();
+        VerificationService::send_verification('phone', $user, $user->phone_number);
         return response()->json(['message' => 'success']);
     }
-
-
-    public static function verifyColum($request, $needle, $user, $hash)
-    {
-        $needle = 'is_' . $needle . "_verified";
-
-        $result = false;
-
-        if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-            if ($hash == $user->verify_code || $hash == setting('admin.CONFIRM_CODE')) {
-                $user->$needle = 1;
-                $user->save();
-                $result = true;
-                if ($needle != 'is_phone_number_verified')
-                    self::send_verification('phone', auth()->user());
-            } else {
-                $result = false;
-            }
-        } else {
-            abort(419);
-        }
-        return $result;
-    }
-
 
     /**
      * @OA\Post(
@@ -196,17 +132,28 @@ class LoginAPIController extends Controller
         $request->validate([
             'code' => 'required'
         ]);
-        if (self::verifyColum($request, __('phone_number'), auth()->user(), $request->code)) {
-            return response()->json([
-                'success' => true,
-                'message' => __('Ваш телефон успешно подтвержден')
-            ]);
+        /** @var User $user */
+        $user = auth()->user();
+
+        if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
+            if ($request->get('code') == $user->verify_code || $request->get('code') == setting('admin.CONFIRM_CODE')) {
+                $user->is_phone_number_verified = 1;
+                $user->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => __('Ваш телефон успешно подтвержден')
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('Неправильный код!')
+                ]);
+            }
         } else {
             return response()->json([
                 'success' => false,
-                'message' => __('Неправильный код!')
+                'message' => __('Срок действия номера истек')
             ]);
-
         }
     }
 
@@ -247,30 +194,26 @@ class LoginAPIController extends Controller
      */
     public function change_email(Request $request)
     {
-
+        /** @var User $user */
         $user = auth()->user();
 
-        if ($request->email == $user->email) {
+        if ($request->get('email') == $user->email) {
             return response()->json([
                 'success' => false,
                 'message' => __('Error, Your email is given'),
-                'data' => $request->email,
+                'data' => $request->get('email'),
             ]);
         } else {
             $request->validate([
                 'email' => 'required|unique:users|email'
-            ],
-                [
-                    'email.required' => __('login.email.required'),
-                    'email.email' => __('login.email.email'),
-                    'email.unique' => __('login.email.unique'),
-                ]
-            );
-            $user->email = $request->email;
+            ], [
+                'email.required' => __('login.email.required'),
+                'email.email' => __('login.email.email'),
+                'email.unique' => __('login.email.unique'),
+            ]);
+            $user->email = $request->get('email');
             $user->save();
-            self::send_verification('email', $user);
-
-
+            VerificationService::send_verification('email', $user);
             return response()->json(['message' => 'Verification link is send to your email', 'success' => true]);
         }
     }
@@ -312,13 +255,13 @@ class LoginAPIController extends Controller
      */
     public function change_phone_number(Request $request)
     {
-
+        /** @var User $user */
         $user = auth()->user();
 
         if ($request->get('phone_number') == $user->phone_number) {
             return response()->json([
                 'email-message' => 'Error, Your phone',
-                'email' => $request->email
+                'email' => $request->get('email')
             ]);
         } else {
             $request->validate([
@@ -331,9 +274,9 @@ class LoginAPIController extends Controller
                     'phone_number.min' => __('login.phone_number.min'),
                 ]
             );
-            $user->phone_number = $request->phone_number;
+            $user->phone_number = $request->get('phone_number');
             $user->save();
-            self::send_verification('phone_number', auth()->user());
+            VerificationService::send_verification('phone_number', $user, $user->phone_number);
 
             return response()->json([
                 'message' => __('Код отправлен!'),
