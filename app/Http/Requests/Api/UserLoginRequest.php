@@ -5,6 +5,7 @@ namespace App\Http\Requests\Api;
 use App\Http\Controllers\LoginController;
 use App\Http\Requests\Api\BaseRequest;
 use App\Models\User;
+use App\Services\VerificationService;
 use Faker\Provider\Base;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -48,7 +49,7 @@ class UserLoginRequest extends BaseRequest
         }
         auth()->login($user);
         if (!$user->is_email_verified)
-            LoginController::send_verification('email', auth()->user());
+            VerificationService::send_verification('email', auth()->user());
     }
 
 

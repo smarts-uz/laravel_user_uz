@@ -11,6 +11,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Services\NotificationService;
 use App\Services\Response;
+use App\Services\VerificationService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
@@ -341,13 +342,13 @@ class CreateTaskService
         if (!$user->is_phone_number_verified && $user->phone_number != $data['phone_number']) {
             $data['is_phone_number_verified'] = 0;
             $user->update($data);
-            LoginController::send_verification('phone', $user, $user->phone_number);
+            VerificationService::send_verification('phone', $user, $user->phone_number);
             return $this->get_verify($task, $user);
         } elseif ($user->phone_number != $data['phone_number']) {
             LoginController::send_verification_for_task_phone($task, $data['phone_number']);
             return $this->get_verify($task, $user);
         } elseif (!$user->is_phone_number_verified) {
-            LoginController::send_verification('phone', $user, $user->phone_number);
+            VerificationService::send_verification('phone', $user, $user->phone_number);
             return $this->get_verify($task, $user);
         }
 

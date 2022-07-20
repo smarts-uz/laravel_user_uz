@@ -11,6 +11,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Services\NotificationService;
 use App\Services\Response;
+use App\Services\VerificationService;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
@@ -222,7 +223,7 @@ class UpdateTaskService
         if (!$user->is_phone_number_verified || $user->phone_number != $data['phone_number']) {
             $data['is_phone_number_verified'] = 0;
             $user->update($data);
-            LoginController::send_verification('phone', $user, $user->phone_number);
+            VerificationService::send_verification('phone', $user, $user->phone_number);
             return $this->get_verify($task, $user);
         }
 

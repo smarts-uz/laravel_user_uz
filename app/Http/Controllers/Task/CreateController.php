@@ -16,6 +16,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Services\Task\CreateService;
 use App\Services\Task\CustomFieldService;
+use App\Services\VerificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -202,15 +203,15 @@ class CreateController extends Controller
 
     public function contact_store(Task $task, CreateContactRequest $request)
     {
+        /** @var User $user */
         $user = auth()->user();
-
         $data = $request->validated();
-
         if (!($user->is_phone_number_verified && $user->phone_number == $data['phone_number'])) {
-            LoginController::send_verification('phone', $user, $data['phone_number']);
+            VerificationService::send_verification('phone', $user, $data['phone_number']);
             $task->phone = $data['phone_number'];
             if ($user->phone_number == null) {
-                $user->phone_number == $task->phone;
+                $user->phone_number = $task->phone;
+                $user->save();
             }
             $task->save();
             return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
@@ -232,7 +233,7 @@ class CreateController extends Controller
         $data = $request->validated();
         $data['password'] = Hash::make('login123');
         $user = User::create($data);
-        LoginController::send_verification('phone', $user, $user->phone_number);
+        VerificationService::send_verification('phone', $user, $user->phone_number);
         return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
 
     }
@@ -241,7 +242,7 @@ class CreateController extends Controller
     {
         $request->validated();
         $user = User::query()->where('phone_number', $request->phone_number)->first();
-        LoginController::send_verification('phone', $user, $user->phone_number);
+        VerificationService::send_verification('phone', $user, $user->phone_number);
         return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id])->with(['not-show', 'true']);
 
     }
