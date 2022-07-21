@@ -19,7 +19,7 @@ class UserInTaskResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'avatar' => $this->avatar?asset('storage/'.$this->avatar):null,
+            'avatar' => asset('storage/'.$this->avatar),
             'phone_number' => $this->phone_number,
             'degree' => $this->phone_number,
             'likes' => $goods,
