@@ -34,6 +34,7 @@ class VoyagerTaskController extends Controller
         abort_if(!auth()->user()->hasPermission('reported_task_complete'),403);
         $task->status = Task::STATUS_COMPLETE;
         $task->save();
+
         return redirect()->route('admin.tasks.reported');
     }
 

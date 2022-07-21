@@ -205,6 +205,15 @@ class NotificationService
         return true;
     }
 
+    /**
+     * Send notification when balance replenished by payment systems (Click, Payme, Paynet)
+     *
+     * @param $user_id
+     * @param $amount
+     * @param $payment_system
+     * @param $transaction_id
+     * @return void
+     */
     public static function sendBalanceReplenished($user_id, $amount, $payment_system, $transaction_id): void
     {
         /** @var User $user */
@@ -215,6 +224,54 @@ class NotificationService
         $phone_number = $user->phone_number;
         $sms_service->sms_packages($phone_number, $message);
         Mail::to($user->email)->send(new MessageEmail($message));
+    }
+
+    /**
+     * Send notification when admin closes the task
+     *
+     * @param $task
+     * @return void
+     */
+    public function sendAdminCloseTask($task)
+    {
+        $notification = Notification::query()->create([
+            'user_id' => $task->user_id,
+            'description' => $task->desciption ?? 'task description',
+            'task_id' => $task->id,
+            "cat_id" => $task->category_id,
+            "name_task" => $task->name,
+            "type" => Notification::ADMIN_CLOSE_TASK
+        ]);
+
+        self::sendNotificationRequest([$task->user_id], [
+            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+        ]);
+
+        self::pushNotification($task->user->firebase_token, [
+            'title' => __('Отклик к заданию'),
+            'body' => __('task_name №task_id отправлен', ['task_name' => $task->name, 'task_id' => $task->id])
+        ], 'notification', new NotificationResource($notification));
+
+        $notification = Notification::query()->create([
+            'performer_id' => $task->performer_id,
+            'description' => $task->desciption ?? 'task description',
+            'task_id' => $task->id,
+            "cat_id" => $task->category_id,
+            "name_task" => $task->name,
+            "type" => Notification::RESPONSE_TO_TASK_FOR_USER
+        ]);
+
+        self::sendNotificationRequest([$task->performer_id], [
+            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+        ]);
+
+        self::pushNotification($task->performer->firebase_token, [
+            'title' => __('Новый отклик'),
+            'body' => __('performer откликнулся на задания task_name', [
+                'performer' => $user->name, 'task_name' => $task->name
+            ])
+        ], 'notification', new NotificationResource($notification));
+
     }
 
     /**
@@ -245,6 +302,12 @@ class NotificationService
         )->body();
     }
 
+    /**
+     * Send notification when admin cancels the task
+     *
+     * @param $task
+     * @return void
+     */
     public static function sendNotificationForCancelledTask($task)
     {
         if ($task->performer_id) { // Send notification to selected performer
