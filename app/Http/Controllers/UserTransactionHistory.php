@@ -16,9 +16,10 @@ class UserTransactionHistory extends Controller
     public function getTransactions (): JsonResponse
     {
         $user = auth()->user();
-        if(in_array($_GET['method'], Transaction::METHODS)) {
+        $payment = strtolower($_GET['method']);
+        if(in_array($payment, Transaction::METHODS) ||  $payment == 'task') {
             $transactionMethod = Transaction::query()
-                ->where('payment_system', $_GET['method'])
+                ->where('payment_system', strtolower($_GET['method']))
                 ->where(['transactionable_id' => $user->id]);
         } else {
             Alert::error(__('Неопределенный способ оплаты'));
