@@ -102,16 +102,10 @@
                                         @elseif($notification->type == \App\Models\Notification::SELECT_PERFORMER)
                                             <div class="w-full flex flex-row gap-x-4">
                                                 <i class="fas fa-user text-xl text-yellow-500"></i>
-                                                <div>
-                                                    <p>{{__('Вас выбрали исполнителем  в задании task_name №task_id task_user', [
-                        'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name])}}</p>
-                                                    <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
-                                                        “{{$notification->name_task}}" №{{$notification->task_id}}
-                                                    </a>
-                                                    <a class="hover:text-blue-500" href="/performers/{{$notification->user_id}}">
-                                                        {{$notification->user->name}}
-                                                    </a>
-                                                </div>
+                                                <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
+                                                    {{__('Вас выбрали исполнителем  в задании task_name №task_id task_user', ['task_name' => $notification->name_task,
+                                                    'task_id' => $notification->task_id, 'task_user' => $notification->user?->name])}}
+                                                </a>
                                             </div>
                                         @elseif ($notification->type == \App\Models\Notification::SEND_REVIEW_PERFORMER)
                                             <div class="w-full flex flex-row gap-x-4">

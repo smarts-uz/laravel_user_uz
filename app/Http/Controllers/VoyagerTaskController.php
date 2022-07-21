@@ -23,6 +23,7 @@ class VoyagerTaskController extends Controller
         $tasks = Task::query()->where('status',Task::STATUS_NOT_COMPLETED)->with(['reviews','user','performer'])
             ->whereHas('user')
             ->whereHas('performer')
+            ->orderBy('updated_at', 'desc')
             ->paginate(60);
         return view('task.reported-tasks',compact('tasks'));
     }

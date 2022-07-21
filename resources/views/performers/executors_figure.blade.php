@@ -47,16 +47,12 @@
             <div class="text-gray-500 text-base mt-2">
                 @if ( session('lang') == 'uz' )
                     <p class="mt-2">
-                        <a href="{{route('searchTask.mytasks')}}" class="text-blue-500 hover:text-red-600">
-                            <span>{{count($user->tasks??[])}}</span> {{__('задание')}}
-                        </a>
+                        <span>{{count($user->tasks??[])}}</span> {{__('задание')}}
                         {{__('Создал')}}
                     </p>
                 @else
                     <p class="mt-2">{{__('Создал')}}
-                        <a href="{{route('searchTask.mytasks')}}" class="text-blue-500 hover:text-red-600">
-                            <span>{{count($user->tasks??[])}}</span> {{__('задание')}}
-                        </a>
+                        <span>{{count($user->tasks??[])}}</span> {{__('задание')}}
                     </p>
                 @endif
                 @switch($review_good + $review_bad)
