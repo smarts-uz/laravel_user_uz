@@ -109,7 +109,7 @@ function categories()
 
 function getAllCategories()
 {
-    return Category::withTranslations()->get();
+    return Category::query()->where('parent_id', '!=', 0)->withTranslations()->get();
 }
 
 function getCategoriesByParent($parent)
