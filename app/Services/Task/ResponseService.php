@@ -9,6 +9,7 @@ use App\Models\All_transaction;
 use App\Models\Notification;
 use App\Models\Task;
 use App\Models\TaskResponse;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserExpense;
 use App\Models\WalletBalance;
@@ -70,12 +71,15 @@ class ResponseService
                         'client_id' => $data['user_id'],
                         'amount' => setting('admin.pullik_otklik')
                     ]);
-                    All_transaction::query()->create([
-                        'user_id' => $data['performer_id'],
-                        'method' => All_transaction::METHODS['Task'],
+                    Transaction::query()->create([
+                        'payment_system' => Transaction::DRIVER_TASK,
                         'amount' => setting('admin.pullik_otklik'),
-                        'status' => All_transaction::STATUS_SUCCESS,
-                        'state' => All_transaction::STATE_PAY_ACCEPTED
+                        'system_transaction_id' => rand(10000000000, 99999999999),
+                        'currency_code' => 860,
+                        'state' => All_transaction::STATE_PAY_ACCEPTED,
+                        'transactionable_type' => User::class,
+                        'transactionable_id' => $data['performer_id'],
+                        'status' => Transaction::STATE_COMPLETED,
                     ]);
                 }
 
