@@ -35,9 +35,13 @@
                                     <a href="/detailed-tasks/{{$task->id}}" class="text-blue-500 text-xl hover:text-red-500">
                                         {{$task->name}}
                                     </a>
-                                    @if($task->address !== NULL)
-                                        <p class=" text-sm mt-2">{{json_decode($task->address, true)['location']}}</p>
+
+                                    @if(count($task->addresses))
+                                        <p class="font-normal text-sm mt-1">{{$task->addresses[0]->location}}</p>
+                                    @else
+                                        <p class="font-normal text-sm mt-1">{{__('Виртуальное задание')}}</p>
                                     @endif
+
                                     @if ($task->status == 3)
                                         <p class="text-amber-500 font-normal">{{__('В исполнении')}}</p>
                                     @elseif($task->status < 3)
@@ -88,9 +92,13 @@
                                     <a href="/detailed-tasks/{{$task->id}}" class="text-blue-500 text-xl hover:text-red-500">
                                         {{$task->name}}
                                     </a>
-                                    @if($task->address !== NULL)
-                                        <p class=" text-sm mt-2">{{json_decode($task->address, true)['location']}}</p>
+
+                                    @if(count($task->addresses))
+                                        <p class="font-normal text-sm mt-1">{{$task->addresses[0]->location}}</p>
+                                    @else
+                                        <p class="font-normal text-sm mt-1">{{__('Виртуальное задание')}}</p>
                                     @endif
+
                                     @if ($task->status == 3)
                                         <p class="text-amber-500 font-normal">{{__('В исполнении')}}</p>
                                     @elseif($task->status < 3)
@@ -193,9 +201,10 @@
         let mytaskCoordinates = [];
         let myCoordinates = [[],[]];
         mytaskCoordinates = $.parseJSON(JSON.stringify({!! $tasks !!}));
-        if (mytaskCoordinates[0].coordinates){
+        if (mytaskCoordinates[0].coordinates != null){
             myCoordinates = mytaskCoordinates[0].coordinates
         }
+
         ymaps.ready(init);
         function init() {
             if (!myCoordinates[0]){
@@ -260,7 +269,8 @@
 
                 geoObjects = [];
             for(var i = 0, len = mytaskCoordinates.length; i < len; i++) {
-                if (mytaskCoordinates[i].coordinates) {
+                console.log(mytaskCoordinates[i].coordinates)
+                if (mytaskCoordinates[i].coordinates != null) {
                     geoObjects[i] = new ymaps.Placemark(mytaskCoordinates[i].coordinates.split(','), getPointData(i), getPointOptions());
                 }
             }
