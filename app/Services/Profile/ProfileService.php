@@ -328,7 +328,7 @@ class ProfileService
             $balance = WalletBalance::query()->where('user_id', $user->id)->first()->balance;
         else
             $balance = 0;
-        $transactions = Transaction::query()->where(['transactionable_id' => $user->id]);
+        $transactions = Transaction::query()->where(['transactionable_id' => $user->id])->where('state', 2);
         $period = $request->get('period');
         $from = $request->get('from');
         $to = $request->get('to');
