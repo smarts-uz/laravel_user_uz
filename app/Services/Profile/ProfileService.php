@@ -334,7 +334,7 @@ class ProfileService
         $to = $request->get('to');
         $type = $request->get('type');
         if ($type == 'in') {
-            $transactions = $transactions->whereIn('payment_system', ['Payme', 'Click', 'Paynet', 'payme', 'click', 'paynet']);
+            $transactions = $transactions->whereIn('payment_system', Transaction::METHODS);
         } elseif ($type == 'out') {
             $transactions = $transactions->where('payment_system', '=', 'Task');
         }

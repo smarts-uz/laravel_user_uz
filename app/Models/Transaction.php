@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     use HasFactory;
+
+    const METHODS = ['Payme', 'Click', 'Paynet', 'payme', 'click', 'paynet'];
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\All_transaction;
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -15,7 +16,7 @@ class UserTransactionHistory extends Controller
     public function getTransactions (): JsonResponse
     {
         $user = auth()->user();
-        if(in_array($_GET['method'], All_transaction::METHODS)) {
+        if(in_array($_GET['method'], Transaction::METHODS)) {
             $transactionMethod = All_transaction::query()->where('method', $_GET['method'])->where(['user_id' => $user->id]);
         } else {
             Alert::error(__('Неопределенный способ оплаты'));
