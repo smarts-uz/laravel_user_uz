@@ -76,10 +76,9 @@ class ResponseService
                         'amount' => setting('admin.pullik_otklik'),
                         'system_transaction_id' => rand(10000000000, 99999999999),
                         'currency_code' => 860,
-                        'state' => All_transaction::STATE_PAY_ACCEPTED,
+                        'state' => Transaction::STATE_COMPLETED,
                         'transactionable_type' => User::class,
                         'transactionable_id' => $data['performer_id'],
-                        'status' => Transaction::STATE_COMPLETED,
                     ]);
                 }
 
