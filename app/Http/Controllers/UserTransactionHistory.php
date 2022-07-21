@@ -17,7 +17,9 @@ class UserTransactionHistory extends Controller
     {
         $user = auth()->user();
         if(in_array($_GET['method'], Transaction::METHODS)) {
-            $transactionMethod = Transaction::query()->where('method', $_GET['method'])->where(['user_id' => $user->id]);
+            $transactionMethod = Transaction::query()
+                ->where('payment_system', $_GET['method'])
+                ->where(['transactionable_id' => $user->id]);
         } else {
             Alert::error(__('Неопределенный способ оплаты'));
             return response()->json([
@@ -49,7 +51,7 @@ class UserTransactionHistory extends Controller
         }
         $data = [];
         foreach ($transactions as $transaction) {
-            $amount = $transaction->amount;
+            $amount = ucfirst($transaction->payment_system) == 'Paynet' ? $transaction->amount / 100 : $transaction->amount;
             $created_at = $transaction->created_at;
             $date = new Carbon($created_at);
             $data[] = ['amount' => $amount, 'created_at' => $date->toDateTimeString()];
