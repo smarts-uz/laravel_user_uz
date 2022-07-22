@@ -227,54 +227,6 @@ class NotificationService
     }
 
     /**
-     * Send notification when admin closes the task
-     *
-     * @param $task
-     * @return void
-     */
-    public function sendAdminCloseTask($task)
-    {
-        $notification = Notification::query()->create([
-            'user_id' => $task->user_id,
-            'description' => $task->desciption ?? 'task description',
-            'task_id' => $task->id,
-            "cat_id" => $task->category_id,
-            "name_task" => $task->name,
-            "type" => Notification::ADMIN_CLOSE_TASK
-        ]);
-
-        self::sendNotificationRequest([$task->user_id], [
-            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
-        ]);
-
-        self::pushNotification($task->user->firebase_token, [
-            'title' => __('Отклик к заданию'),
-            'body' => __('task_name №task_id отправлен', ['task_name' => $task->name, 'task_id' => $task->id])
-        ], 'notification', new NotificationResource($notification));
-
-        $notification = Notification::query()->create([
-            'performer_id' => $task->performer_id,
-            'description' => $task->desciption ?? 'task description',
-            'task_id' => $task->id,
-            "cat_id" => $task->category_id,
-            "name_task" => $task->name,
-            "type" => Notification::RESPONSE_TO_TASK_FOR_USER
-        ]);
-
-        self::sendNotificationRequest([$task->performer_id], [
-            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
-        ]);
-
-        self::pushNotification($task->performer->firebase_token, [
-            'title' => __('Новый отклик'),
-            'body' => __('performer откликнулся на задания task_name', [
-                'performer' => $user->name, 'task_name' => $task->name
-            ])
-        ], 'notification', new NotificationResource($notification));
-
-    }
-
-    /**
      * Function for use send push(firebase) notifications
      *
      * @param $user_token // User firebase token
@@ -302,78 +254,53 @@ class NotificationService
         )->body();
     }
 
-    /**
-     * Send notification when admin cancels the task
-     *
-     * @param $task
-     * @return void
-     */
-    public static function sendNotificationForCancelledTask($task)
+    public static function titles($type): string
     {
-        if ($task->performer_id) { // Send notification to selected performer
-            $notification = Notification::query()->create([
-                'user_id' => $task->performer_id,
-                'description' => $task->desciption ?? 'task description',
-                'task_id' => $task->id,
-                "cat_id" => $task->category_id,
-                "name_task" => $task->name,
-                "type" => Notification::CANCELLED_TASK
-            ]);
+        return match ($type) {
+            Notification::TASK_CREATED => __('Новое задание'),
+            Notification::NEWS_NOTIFICATION, Notification::SYSTEM_NOTIFICATION => __('Новости'),
+            Notification::GIVE_TASK => __('Предложение'),
+            Notification::RESPONSE_TO_TASK => __('Отклик к заданию'),
+            Notification::SEND_REVIEW => __('Задание выполнено'),
+            Notification::SELECT_PERFORMER => __('Вас выбрали исполнителем'),
+            Notification::SEND_REVIEW_PERFORMER => __('Новый отзыв'),
+            Notification::RESPONSE_TO_TASK_FOR_USER => __('Новый отклик'),
+            Notification::CANCELLED_TASK, Notification::ADMIN_CANCEL_TASK => __('3адание отменено'),
+            Notification::ADMIN_COMPLETE_TASK => __('Задания завершено'),
+            default => 'Title',
+        };
+    }
 
-            self::sendNotificationRequest([$task->performer_id], [
-                'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
-            ]);
-
-            self::pushNotification($task->performer->firebase_token, [
-                'title' => __('3адание отменено'),
-                'body' => __('3адание task_name №task_id было отменено', ['task_name' => $task->name, 'task_id' => $task->id])
-            ], 'notification', new NotificationResource($notification));
-
-        }
-        elseif ($task->task_responses()->count() > 0) { // Send notification to responses performers
-            $responses = $task->task_responses()
-                ->without('user', 'task')
-                ->with('performer:id,name,firebase_token')
-                ->get();
-
-            foreach ($responses as $response) {
-                if ($response->not_free) {
-                    WalletBalance::walletBalanceUpdateOrCreate($response->performer_id, setting('admin.pullik_otklik'));
-                }
-                $notification = Notification::query()->create([
-                    'performer_id' => $response->performer_id,
-                    'description' => $task->desciption ?? 'task description',
-                    'task_id' => $task->id,
-                    "cat_id" => $task->category_id,
-                    "name_task" => $task->name,
-                    "type" => Notification::CANCELLED_TASK
-                ]);
-                self::pushNotification($response->performer->firebase_token, [
-                    'title' => __('3адание отменено'),
-                    'body' => __('3адание task_name №task_id было отменено', [
-                        'performer' => $response->performer->name, 'task_name' => $task->name
-                    ])
-                ], 'notification', new NotificationResource($notification));
-            }
-        }
-
-        // Send notification to task user
-        $notification = Notification::query()->create([
-            'user_id' => $task->user_id,
-            'description' => $task->desciption ?? 'task description',
-            'task_id' => $task->id,
-            "cat_id" => $task->category_id,
-            "name_task" => $task->name,
-            "type" => Notification::CANCELLED_TASK
-        ]);
-
-        self::sendNotificationRequest([$task->user_id], [
-            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
-        ]);
-
-        self::pushNotification($task->user->firebase_token, [
-            'title' => __('3адание отменено'),
-            'body' => __('Ваше задание task_name №task_id было отменено', ['task_name' => $task->name, 'task_id' => $task->id])
-        ], 'notification', new NotificationResource($notification));
+    public static function descriptions($notification): string
+    {
+        return match ($notification->type) {
+            Notification::TASK_CREATED => __('task_name  №task_id с бюджетом до task_budget', [
+                'task_name' => $notification->name_task, 'task_id' => $notification->task_id,
+                'budget' => number_format($notification->task?->budget, 0, '.', ' ')]),
+            Notification::NEWS_NOTIFICATION, Notification::SYSTEM_NOTIFICATION => __('Важные новости и объявления для вас'),
+            Notification::GIVE_TASK => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
+                'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name
+            ]),
+            Notification::RESPONSE_TO_TASK => __('task_name №task_id отправлен', ['task_name' => $notification->name_task, 'task_id' => $notification->task_id]),
+            Notification::SEND_REVIEW => __('Заказчик сказал, что вы выполнили эго задачу task_name №task_id и оставил вам отзыв', [
+                'task_name' => $notification->name_task, 'task_id' => $notification->task_id,
+            ]),
+            Notification::SELECT_PERFORMER => __('Вас выбрали исполнителем  в задании task_name №task_id task_user', [
+                'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name]),
+            Notification::SEND_REVIEW_PERFORMER => __('О вас оставлен новый отзыв') . " \"$notification->name_task\" №$notification->task_id",
+            Notification::RESPONSE_TO_TASK_FOR_USER => __('performer откликнулся на задания task_name', [
+                'performer' => $notification->performer?->name, 'task_name' => $notification->name_task
+            ]),
+            Notification::CANCELLED_TASK => __('Ваше задание task_name №task_id было отменено', [
+                'task_name' => $notification->name_task, 'task_id' => $notification->task_id,
+            ]),
+            Notification::ADMIN_COMPLETE_TASK => __('3адание task_name №task_id было завершено администрацией', [
+                'task_name' => $notification->name_task, 'task_id' => $notification->task_id,
+            ]),
+            Notification::ADMIN_CANCEL_TASK => __('3адание task_name №task_id было отменено администрацией', [
+                'task_name' => $notification->name_task, 'task_id' => $notification->task_id,
+            ]),
+            default => 'Description',
+        };
     }
 }

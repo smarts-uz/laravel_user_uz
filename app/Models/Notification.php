@@ -33,8 +33,8 @@ class Notification extends Model
     public const SEND_REVIEW_PERFORMER = 8;
     public const RESPONSE_TO_TASK_FOR_USER = 9;
     public const CANCELLED_TASK = 10;
-    public const ADMIN_CLOSE_TASK = 11;
-    public const ADMIN_DELETE_TASK = 12;
+    public const ADMIN_COMPLETE_TASK = 11;
+    public const ADMIN_CANCEL_TASK = 12;
 
     public function user(): BelongsTo
     {

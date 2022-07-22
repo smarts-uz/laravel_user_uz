@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use App\Models\Task;
 use App\Services\NotificationService;
 use App\Services\Task\CreateService;
+use App\Services\TaskNotificationService;
+use App\Services\UserNotificationService;
 use Illuminate\Http\Request;
 
 
@@ -35,19 +38,25 @@ class VoyagerTaskController extends Controller
         $task->status = Task::STATUS_COMPLETE;
         $task->save();
 
+        // Send notification when admin closes the task
+        UserNotificationService::sendNotificationToUser($task, Notification::ADMIN_COMPLETE_TASK);
+
+        UserNotificationService::sendNotificationToPerformer($task, Notification::ADMIN_COMPLETE_TASK);
+
         return redirect()->route('admin.tasks.reported');
     }
 
     public function delete_task(Task $task)
     {
         abort_if(!auth()->user()->hasPermission('delete_tasks'),403);
-        $this->service->delete($task);
+        $task->update(['status' => Task::STATUS_CANCELLED]);
+        TaskNotificationService::sendNotificationForCancelledTask($task);
         return redirect()->route('admin.tasks.reported');
     }
 
     public function cancelTask(Task $task)
     {
-        NotificationService::sendNotificationForCancelledTask($task);
+        TaskNotificationService::sendNotificationForCancelledTask($task);
         $task->update(['status' => Task::STATUS_CANCELLED]);
         return redirect()->route('voyager.tasks.index');
     }

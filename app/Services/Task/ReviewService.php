@@ -17,21 +17,21 @@ class ReviewService
         $task->save();
         ChMessage::query()->where('from_id', $task->user_id)->where('to_id', $task->performer_id)->delete();
         ChMessage::query()->where('to_id', $task->user_id)->where('from_id', $task->performer_id)->delete();
-        $performer = User::find($task->performer_id);
+        $performer = User::query()->find($task->performer_id);
         if ($request->good == 1) {
             $performer->increment('review_good');
         } else {
             $performer->increment('review_bad');
         }
         $performer->increment('reviews');
-        Review::create([
+        Review::query()->create([
             'description' => $request->comment,
             'good_bad' => $request->good,
             'task_id' => $task->id,
             'reviewer_id' => $task->user_id,
             'user_id' => $task->performer_id,
         ]);
-        $notification = Notification::create([
+        $notification = Notification::query()->create([
             'user_id' => $task->user_id,
             'performer_id' => $task->performer_id,
             'task_id' => $task->id,
@@ -57,7 +57,7 @@ class ReviewService
             'user_id' => $task->user_id,
             'as_performer' => 1
         ]);
-        $notification = Notification::create([
+        $notification = Notification::query()->create([
             'user_id' => $task->user_id,
             'performer_id' => $task->performer_id,
             'task_id' => $task->id,
