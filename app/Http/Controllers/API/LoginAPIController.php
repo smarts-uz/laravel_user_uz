@@ -16,7 +16,10 @@ class LoginAPIController extends Controller
         $data = $request->validated();
         $column = $data['type'];
         $verified = 'is_' . $column . '_verified';
-        if (!User::query()->where($column, $data['data'])->where($verified, 1)->exists()) {
+        if (!User::query()
+            ->where($column, $data['type'] == 'phone_number' ? "+" . $data['data'] : $data['data'])
+            ->where($verified, 1)->exists()
+        ) {
             /** @var User $user */
             $user = auth()->user();
             $user->$column = $data['type'] == 'phone_number' ? "+" . $data['data'] : $data['data'];
