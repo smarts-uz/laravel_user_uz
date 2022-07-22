@@ -22,7 +22,7 @@ class PerformerResponseResource extends JsonResource
         return [
             'id' => $performer->id,
             'name' => $performer->name,
-            'avatar' => $performer->avatar?asset('storage/'.$this->avatar):null,
+            'avatar' => $performer->avatar?asset('storage/'.$performer->avatar):null,
             'phone_number' => $performer->phone_number,
             'degree' => $performer->phone_number,
             'likes' => $goods,
