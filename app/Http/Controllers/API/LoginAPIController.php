@@ -22,7 +22,12 @@ class LoginAPIController extends Controller
             $user->$column = $data['data'];
             $user->$verified = 0;
             $user->save();
-            VerificationService::send_verification($data['type'], $user);
+            if ($data['type'] == 'phone') {
+                VerificationService::send_verification($data['type'], $user, phone_number: $data['data']);
+            } else {
+                VerificationService::send_verification($data['type'], $user, email: $data['data']);
+            }
+
             return response()->json([
                 'success' => true,
                 'message' => $data['type'] == 'email' ? __('Ваша ссылка для подтверждения успешно отправлена.') : __('Код отправлен!')
