@@ -134,6 +134,15 @@ function taskGuard($task)
     }
 }
 
+function taskGuardApi($task)
+{
+    if ($task->user_id != auth()->id() && $task->performer_id != auth()->id()) {
+        throw new \Illuminate\Http\Exceptions\HttpResponseException(response()->json([
+            'success' => false, 'message' => "No Permission"
+        ], 403));
+    }
+}
+
 function generate_url()
 {
     return "http://ws.smarts.uz/api/send-notification";

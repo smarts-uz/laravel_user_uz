@@ -73,7 +73,7 @@ class UpdateAPIController extends Controller
      */
     public function completed(Task $task): JsonResponse
     {
-        taskGuard($task);
+        taskGuardApi($task);
         $data = [
             'status' => Task::STATUS_COMPLETE
         ];
@@ -82,6 +82,18 @@ class UpdateAPIController extends Controller
 
         $task->update($data);
         return response()->json(['message' => 'Success', 'success' => true, 'task' => new TaskIndexResource($task)]);
+    }
+
+    public function not_completed(Request $request, Task $task)
+    {
+        taskGuardApi($task);
+
+        $request->validate(['reason' => 'required'], ['reason.required' => 'Reason is required']);
+        $task->update(['status' => Task::STATUS_NOT_COMPLETED, 'not_completed_reason' => $request->get('reason')]);
+        return response()->json([
+            'success' => true,
+            'message' => __('Успешно сохранено')
+        ]);
     }
 
 

@@ -85,6 +85,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::post('/task/{task}/complain', [TaskAPIController::class, 'complain']); // used
     Route::post('/select-performer/{response}', [TaskAPIController::class, 'selectPerformer']); // used
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); //end +
+    Route::post('tasks/{task}/not-complete', [UpdateAPIController::class, 'not_completed'])->name('update.not_completed'); // javoxir
     Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); //end +
     Route::post('give-task', [PerformerAPIController::class, 'give_task']); // used
     Route::post('/become-performer', [PerformerAPIController::class, 'becomePerformerData']); // used
