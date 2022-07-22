@@ -19,13 +19,13 @@ class LoginAPIController extends Controller
         if (!User::query()->where($column, $data['data'])->where($verified, 1)->exists()) {
             /** @var User $user */
             $user = auth()->user();
-            $user->$column = $data['data'];
+            $user->$column = $data['type'] == 'phone_number' ? "+" . $data['data'] : $data['data'];
             $user->$verified = 0;
             $user->save();
             if ($data['type'] == 'phone_number') {
-                VerificationService::send_verification($data['type'], $user, $data['data']);
+                VerificationService::send_verification($data['type'], $user, phone_number: $data['data']);
             } else {
-                VerificationService::send_verification($data['type'], $user, null, $data['data']);
+                VerificationService::send_verification($data['type'], $user, email: $data['data']);
             }
 
             return response()->json([
