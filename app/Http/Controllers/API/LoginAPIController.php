@@ -16,13 +16,21 @@ class LoginAPIController extends Controller
         $data = $request->validated();
         $column = $data['type'];
         $verified = 'is_' . $column . '_verified';
-        if (!User::query()->where($column, $data['data'])->where($verified, 1)->exists()) {
+        if (!User::query()
+            ->where($column, $data['type'] == 'phone_number' ? "+" . $data['data'] : $data['data'])
+            ->where($verified, 1)->exists()
+        ) {
             /** @var User $user */
             $user = auth()->user();
-            $user->$column = $data['data'];
+            $user->$column = $data['type'] == 'phone_number' ? "+" . $data['data'] : $data['data'];
             $user->$verified = 0;
             $user->save();
-            VerificationService::send_verification($data['type'], $user);
+            if ($data['type'] == 'phone_number') {
+                VerificationService::send_verification($data['type'], $user, phone_number: $data['data']);
+            } else {
+                VerificationService::send_verification($data['type'], $user, email: $data['data']);
+            }
+
             return response()->json([
                 'success' => true,
                 'message' => $data['type'] == 'email' ? __('Ваша ссылка для подтверждения успешно отправлена.') : __('Код отправлен!')

@@ -165,7 +165,7 @@ class CreateService
             $phone_number=$performer->phone_number;;
             $sms_service = new SmsMobileService();
             $sms_service->sms_packages($phone_number, $message);
-            Notification::query()->create([
+            $notification = Notification::query()->create([
                 'user_id' => $task->user_id,
                 'performer_id' => $performer_id,
                 'task_id' => $task->id,
@@ -177,6 +177,12 @@ class CreateService
             NotificationService::sendNotificationRequest([$performer_id], [
                 'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
             ]);
+
+            NotificationService::pushNotification($performer->firebase_token, [
+                'title' => __('Предложение'), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
+                    'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name
+                ])
+            ], 'notification', new NotificationResource($notification));
 
             session()->forget('performer_id_for_task');
         }

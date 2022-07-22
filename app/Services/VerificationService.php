@@ -16,7 +16,11 @@ class VerificationService
                 'code' => $message,
                 'user' => $user->id
             ];
-            Mail::to($user->email)->send(new VerifyEmail($data));
+            if ($email) {
+                Mail::to($email)->send(new VerifyEmail($data));
+            } else {
+                Mail::to($user->email)->send(new VerifyEmail($data));
+            }
         } else {
             $message = rand(100000, 999999);
             $sms_service = new SmsMobileService();
