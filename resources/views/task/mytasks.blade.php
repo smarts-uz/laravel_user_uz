@@ -46,6 +46,8 @@
                                         <p class="text-amber-500 font-normal">{{__('В исполнении')}}</p>
                                     @elseif($task->status < 3)
                                         <p class="text-green-400 font-normal">{{__('Открыто')}}</p>
+                                    @elseif($task->status == 5)
+                                        <p class="text-red-400 font-normal">{{__('Не выполнено')}}</p>
                                     @elseif($task->status == 6)
                                         <p class="text-red-400 font-normal">{{__('Отменен')}}</p>
                                     @else
@@ -204,11 +206,9 @@
         if (mytaskCoordinates[0].coordinates != null){
             myCoordinates = mytaskCoordinates[0].coordinates
         }
-
         ymaps.ready(init);
         function init() {
             if (!myCoordinates[0]){
-                /*myCoordinates = mytaskCoordinates[0].coordinates*/
             let location = ymaps.geolocation;
                 location.get({
                     mapStateAutoApply: true
@@ -216,8 +216,6 @@
                     .then(
                         function (result) {
                             myCoordinates = result.geoObjects.get(0).geometry.getCoordinates();
-                            console.log(myCoordinates)
-                            /*myMap.setCenter(result.geoObjects.get(0).geometry.getCoordinates());*/
                         },
                         function (err) {
                             console.log('Ошибка: ' + err);
@@ -227,7 +225,6 @@
             var myMap = new ymaps.Map('map', {
                     center: [myCoordinates[0],myCoordinates[1]],
                     zoom: 9,
-                    /*behaviors: ['scrollZoom'],*/
                     controls: ['zoomControl']
                 }, {
                     searchControlProvider: 'yandex#search'
@@ -249,6 +246,8 @@
                         status_text = '{{__('В исполнение')}}'
                     }else if(status == 4){
                         status_text = '{{__('Закрыто')}}'
+                    }else if(status == 5){
+                        status_text = '{{__('Не выполнено')}}'
                     }else if(status == 6){
                         status_text = '{{__('Отменен')}}'
                     }else {
@@ -269,7 +268,6 @@
 
                 geoObjects = [];
             for(var i = 0, len = mytaskCoordinates.length; i < len; i++) {
-                console.log(mytaskCoordinates[i].coordinates)
                 if (mytaskCoordinates[i].coordinates != null) {
                     geoObjects[i] = new ymaps.Placemark(mytaskCoordinates[i].coordinates.split(','), getPointData(i), getPointOptions());
                 }
