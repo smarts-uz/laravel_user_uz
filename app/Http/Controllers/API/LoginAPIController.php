@@ -22,10 +22,10 @@ class LoginAPIController extends Controller
             $user->$column = $data['data'];
             $user->$verified = 0;
             $user->save();
-            if ($data['type'] == 'phone') {
-                VerificationService::send_verification($data['type'], $user, phone_number: $data['data']);
+            if ($data['type'] == 'phone_number') {
+                VerificationService::send_verification($data['type'], $user, $data['data']);
             } else {
-                VerificationService::send_verification($data['type'], $user, email: $data['data']);
+                VerificationService::send_verification($data['type'], $user, null, $data['data']);
             }
 
             return response()->json([
