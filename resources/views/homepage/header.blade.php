@@ -119,4 +119,3 @@
     });
 
 </script>
-{{--<script src="{{ asset('/js/jit_cdn.js') }}"></script>--}}
