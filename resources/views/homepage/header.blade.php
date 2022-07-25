@@ -1,77 +1,60 @@
-<link rel="stylesheet" href="{{ asset ('/css/header.css') }}">
-<link rel="stylesheet" href="{{ asset('/css/bundle.min.css') }}"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
 
-
+<style>
+    .swiper-container{
+        width: 450px;
+        height: auto;
+    }
+    .nextt{
+        position: relative;
+        bottom: 232px;
+        left: 413px;
+        z-index: 50;
+    }
+    .prevv{
+        position: relative;
+        bottom: 280px;
+        right: 3px;
+        z-index: 50;
+    }
+</style>
 <div class="h-auto pb-8" style="background: #FFF5E5">
     <div class="w-xl">
-        <main class="w-4/5 mx-auto grid grid-cols-2 gap-2">
+        <main class="w-11/12 mx-auto grid grid-cols-2 gap-2">
             <div class="col-span-1 lg:block hidden">
-                <div class="relative z-10 top-8 xl:left-60 left-36" style=" height: 450px;width: 450px">
-                    <div>
-                        <!-- first -->
-                        <div class="">
-                            <input class="sr-only peer" type="radio" name="carousel" id="carousel-1" checked />
-                            <!-- content #1 -->
-                            <div
-                                class="absolute top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg transition-all duration-300 opacity-0 peer-checked:opacity-100 peer-checked:z-10 z-0">
-                                <img class="rounded-full" style="height: 400px; width: 400px;" src="/storage/{!!str_replace("\\","/",setting('site.carusel_img1'))!!}" alt="" />
-                                <!-- controls -->
-                                <div class="absolute top-1/2 w-full flex justify-between z-20">
-                                    <label for="carousel-3" class="inline-block text-red-600 cursor-pointer -translate-x-5 bg-white rounded-full shadow-md active:translate-y-0.5">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L9.414 11H13a1 1 0 100-2H9.414l1.293-1.293z" clip-rule="evenodd" />
-                                        </svg>
-                                    </label>
-                                    <label for="carousel-2" class="inline-block text-red-600 cursor-pointer translate-x-5 bg-white rounded-full shadow-md active:translate-y-0.5">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
-                                        </svg>
-                                    </label>
+                <div class="mt-16">
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide ">
+                                <div class="card-image rounded-full shadow-lg">
+                                    <img class="rounded-full w-full" style="height: 450px" src="/storage/{!!str_replace("\\","/",setting('site.carusel_img1'))!!}" alt="Image Slider">
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="card-image rounded-full shadow-lg">
+                                    <img class="rounded-full w-full" style="height: 450px" src="/storage/{!!str_replace("\\","/",setting('site.carusel_img2'))!!}" alt="Image Slider">
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="card-image rounded-full shadow-lg">
+                                    <img class="rounded-full w-full" style="height: 450px" src="/storage/{!!str_replace("\\","/",setting('site.carusel_img3'))!!}" alt="Image Slider">
                                 </div>
                             </div>
                         </div>
-                        <!-- second -->
-                        <div class="">
-                            <input class="sr-only peer" type="radio" name="carousel" id="carousel-2" />
-                            <!-- content #2 -->
-                            <div
-                                class="absolute top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg transition-all duration-300 opacity-0 peer-checked:opacity-100 peer-checked:z-10 z-0">
-                                <img class="rounded-full" style="height: 400px; width: 400px;" src="/storage/{!!str_replace("\\","/",setting('site.carusel_img2'))!!}" alt="" />
-                                <!-- controls -->
-                                <div class="absolute top-1/2 w-full flex justify-between z-20">
-                                    <label for="carousel-1" class="inline-block text-blue-600 cursor-pointer -translate-x-5 bg-white rounded-full shadow-md active:translate-y-0.5">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L9.414 11H13a1 1 0 100-2H9.414l1.293-1.293z" clip-rule="evenodd" />
-                                        </svg>
-                                    </label>
-                                    <label for="carousel-3" class="inline-block text-blue-600 cursor-pointer translate-x-5 bg-white rounded-full shadow-md active:translate-y-0.5">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
-                                        </svg>
-                                    </label>
-                                </div>
+
+                        <div class="next">
+                            <div class="nextt inline-block text-yellow-600 cursor-pointer -translate-x-5 bg-white rounded-full shadow-md active:translate-y-0.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
+                                </svg>
                             </div>
                         </div>
-                        <!-- three -->
-                        <div class="">
-                            <input class="sr-only peer" type="radio" name="carousel" id="carousel-3" />
-                            <!-- content #3 -->
-                            <div
-                                class="absolute top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg transition-all duration-300 opacity-0 peer-checked:opacity-100 peer-checked:z-10 z-0">
-                                <img class="rounded-full" style="height: 400px; width: 400px;" src="/storage/{!!str_replace("\\","/",setting('site.carusel_img3'))!!}" alt="" />
-                                <!-- controls -->
-                                <div class="absolute top-1/2 w-full flex justify-between z-20">
-                                    <label for="carousel-2" class="inline-block text-yellow-600 cursor-pointer -translate-x-5 bg-white rounded-full shadow-md active:translate-y-0.5">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L9.414 11H13a1 1 0 100-2H9.414l1.293-1.293z" clip-rule="evenodd" />
-                                        </svg>
-                                    </label>
-                                    <label for="carousel-1" class="inline-block text-yellow-600 cursor-pointer translate-x-5 bg-white rounded-full shadow-md active:translate-y-0.5">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
-                                        </svg>
-                                    </label>
-                                </div>
+                        <div class="prev">
+                            <div class="prevv inline-block text-yellow-600 cursor-pointer -translate-x-5 bg-white rounded-full shadow-md active:translate-y-0.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L9.414 11H13a1 1 0 100-2H9.414l1.293-1.293z" clip-rule="evenodd" />
+                                </svg>
                             </div>
                         </div>
                     </div>
@@ -80,7 +63,7 @@
             <div class="lg:col-span-1 col-span-2 pt-32 relative z-10">
                 {!! getContentText('home', 'main_text') !!}
                 <div class="mx-auto">
-                    <div class="w-full flex-1 mt-8">
+                    <div class="xl:w-4/5 w-full flex-1 mt-8">
                         <input name="TypeList" list="TypeList" type="text" id="header_input" maxlength="40" placeholder="{{__('Чем вам помочь...')}}"
                                class="input_text w-full md:px-4 px-2 py-2.5 md:py-3 rounded-xl focus:placeholder-transparent focus:outline-none focus:border-yellow-500 flex-1 text-lg border-0">
                         <datalist id="TypeList">
@@ -117,5 +100,23 @@
         </main>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
+<script>
+    // Swiper Configuration
+    var swiper = new Swiper(".swiper-container", {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        centeredSlides: true,
+        loop: true,
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false
+        },
+        navigation: {
+            nextEl: " .next",
+            prevEl: ".prev",
+        },
+    });
 
-<script src="{{ asset('/js/jit_cdn.js') }}"></script>
+</script>
+{{--<script src="{{ asset('/js/jit_cdn.js') }}"></script>--}}

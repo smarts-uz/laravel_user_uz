@@ -1,8 +1,9 @@
 @extends('layouts.app')
 <!-- test -->
 @section('content')
+    <link rel="stylesheet" href="{{ asset ('/css/header.css') }}">
 
-{{--    header blog--}}
+
     @include('homepage.header')
     <main>
 {{--        categories section--}}
