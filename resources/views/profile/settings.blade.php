@@ -444,7 +444,7 @@
                         icon: 'success',
                         title: '{{__('Сохранено')}}',
                         showConfirmButton: false,
-                        timer: 1000
+                        timer: 2000
                     })
                 },
                 error: function (error) {
