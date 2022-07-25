@@ -580,7 +580,7 @@
     "У задания нет откликов": "Vazifa hech qanday javob yo'q",
     "У частных исполнителей нет расходов на офис, рекламу, зарплату секретарю и других затрат, которые сервисные компании обычно включают в стоимость своих услуг.": "Xususiy ijrochilar Kotibiyat xarajatlari, reklama, ish haqi, xizmat kompaniyalari odatda o'z xizmatlarining narxiga kiradi, ular esa o'z xizmatlarining narxiga kiradi.",
     "Уведомления": "Bildirishnoma",
-    "Удалить": "O'chirmoq",
+    "Удалить": "O'chirish",
     "Удалить профиль": "Profilni o'chirish",
     "Удалённая работа": "Online ishlash",
     "Удобная и безопасная оплата": "Qulay va xavfsiz to'lov",
@@ -738,5 +738,8 @@
     "Код ошибки": "Xato kod",
     "Ваш номер не подтвержден": "Raqamingiz tasdiqlanmagan",
     "Срок действия номера истек": "Raqam muddati tugagan",
-    "Отзывов нет": "Sharhlar yo'q"
+    "Отзывов нет": "Sharhlar yo'q",
+    "Сохранено":"Saqlandi",
+    "Введённые данные будут потеряны. <br> Удалить задание?": "Kiritilgan ma'lumotlar yo'qoladi. <br> Vazifa o'chirilsinmi?",
+    "Продолжить создание": "Yaratishda davom etish"
 }

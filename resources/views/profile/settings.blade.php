@@ -442,7 +442,7 @@
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
-                        title: 'Saved',
+                        title: '{{__('Сохранено')}}',
                         showConfirmButton: false,
                         timer: 1000
                     })
