@@ -154,7 +154,7 @@ class UserAPIController extends Controller
     {
         $data = $request->validated();
         /** @var User $user */
-        $user = User::query()->where('phone_number', $data['phone_number'])->firstOrFail();
+        $user = User::query()->where('phone_number', '+' . $data['phone_number'])->firstOrFail();
         $user->password = Hash::make($data['password']);
         $user->save();
         return response()->json([
@@ -207,7 +207,7 @@ class UserAPIController extends Controller
             'phone_number' => 'required|numeric|exists:users'
         ]);
         /** @var User $user */
-        $user = User::query()->where('phone_number', $data['phone_number'])->firstOrFail();
+        $user = User::query()->where('phone_number', '+' . $data['phone_number'])->firstOrFail();
 
         if ($data['code'] == $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
