@@ -146,6 +146,11 @@ class User extends \TCG\Voyager\Models\User
         return $this->hasMany(Portfolio::class);
     }
 
+    public function sessions()
+    {
+        return $this->hasMany(Session::class);
+    }
+
     public function getBalanceAttribute()
     {
         return $this->walletBalance->balance ?? 0;

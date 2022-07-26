@@ -302,9 +302,7 @@
             </div>
         </div>
     </div>
-
 @endif
-<div class="hidden  fixed inset-0 z-40 " id="modal-id33-backdrop"></div>
 {{-- zakazchik ispolnitel tanlagandagi modal end--}}
 <div class='modal' id='modal1'>
     <div class='content'>

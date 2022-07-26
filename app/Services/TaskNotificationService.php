@@ -37,7 +37,7 @@ class TaskNotificationService extends NotificationService
                     "name_task" => $task->name,
                     "type" => Notification::CANCELLED_TASK
                 ]);
-                self::pushNotification($response->performer->firebase_token, [
+                self::pushNotification($response->performer, [
                     'title' => self::titles(Notification::CANCELLED_TASK),
                     'body' => self::descriptions($notification)
                 ], 'notification', new NotificationResource($notification));

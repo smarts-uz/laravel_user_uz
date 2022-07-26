@@ -155,7 +155,7 @@ class PerformerAPIController extends Controller
         NotificationService::sendNotificationRequest([$data['performer_id']], [
             'url' => 'detailed-tasks' . '/' . $data['task_id'], 'name' => $task->name, 'time' => 'recently'
         ]);
-        NotificationService::pushNotification($performer->firebase_token, [
+        NotificationService::pushNotification($performer, [
             'title' => __('Предложение'), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
                 'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name
             ])

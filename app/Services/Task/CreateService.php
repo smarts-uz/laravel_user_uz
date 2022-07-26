@@ -88,7 +88,7 @@ class CreateService
             'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
         ]);
 
-        NotificationService::pushNotification($task->user->firebase_token, [
+        NotificationService::pushNotification($task->user, [
             'title' => __('3адание отменено'),
             'body' => __('Ваше задание task_name №task_id было отменено', [
                 'task_name' => $task->name, 'task_id' => $task->id,
@@ -178,7 +178,7 @@ class CreateService
                 'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
             ]);
 
-            NotificationService::pushNotification($performer->firebase_token, [
+            NotificationService::pushNotification($performer, [
                 'title' => __('Предложение'), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
                     'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name
                 ])

@@ -32,6 +32,44 @@ $(document).ready(function () {
         $("#class_demo1").addClass("text-gray-500");
     })
 });
+
+const modal = document.querySelector('.modal');
+const closeModal = document.querySelectorAll('.close-modal');
+closeModal.forEach(close => {
+    close.addEventListener('click', function () {
+        modal.classList.add('hidden')
+    });
+});
+$(".modal").each(function () {
+    $(this).wrap('<div class="overlay"></div>')
+});
+
+$(".open-modal").on('click', function (e) {
+    e.preventDefault();
+    e.stopImmediatePropagation;
+
+    var $this = $(this),
+        modal = $($this).data("modal");
+
+    $(modal).parents(".overlay").addClass("open");
+    setTimeout(function () {
+        $(modal).addClass("open");
+    }, 350);
+
+    $(document).on('click', function (e) {
+        var target = $(e.target);
+
+        if ($(target).hasClass("overlay")) {
+            $(target).find(".modal").each(function () {
+                $(this).removeClass("open");
+            });
+            setTimeout(function () {
+                $(target).removeClass("open");
+            }, 350);
+        }
+    });
+});
+
 $('#btn1').click(function () {
     $('#not_free').val(1)
 })

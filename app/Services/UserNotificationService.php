@@ -22,7 +22,7 @@ class UserNotificationService extends NotificationService
             'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
         ]);
 
-        self::pushNotification($task->performer->firebase_token, [
+        self::pushNotification($task->performer, [
             'title' => self::titles($type),
             'body' => self::descriptions($notification)
         ], 'notification', new NotificationResource($notification));
@@ -43,7 +43,7 @@ class UserNotificationService extends NotificationService
             'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
         ]);
 
-        self::pushNotification($task->user->firebase_token, [
+        self::pushNotification($task->user, [
             'title' => self::titles($type),
             'body' => self::descriptions($notification)
         ], 'notification', new NotificationResource($notification));

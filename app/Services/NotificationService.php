@@ -78,7 +78,7 @@ class NotificationService
                 "type" => Notification::TASK_CREATED
             ]);
             $price = number_format($task->budget, 0, '.', ' ');
-            self::pushNotification($performer->firebase_token, [
+            self::pushNotification($performer, [
                 'title' => __('Новая задания'),
                 'body' => __('task_name  №task_id с бюджетом до task_budget', [
                     'task_name' => $task->name, 'task_id' => $task->id, 'budget' => $price])
@@ -176,7 +176,7 @@ class NotificationService
             'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
         ]);
 
-        self::pushNotification($user->firebase_token, [
+        self::pushNotification($user, [
             'title' => __('Отклик к заданию'),
             'body' => __('task_name №task_id отправлен', ['task_name' => $task->name, 'task_id' => $task->id])
         ], 'notification', new NotificationResource($notification));
@@ -195,7 +195,7 @@ class NotificationService
             'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
         ]);
 
-        self::pushNotification($task->user->firebase_token, [
+        self::pushNotification($task->user, [
             'title' => __('Новый отклик'),
             'body' => __('performer откликнулся на задания task_name', [
                 'performer' => $user->name, 'task_name' => $task->name
@@ -229,29 +229,30 @@ class NotificationService
     /**
      * Function for use send push(firebase) notifications
      *
-     * @param $user_token // User firebase token
+     * @param $user // User firebase token
      * @param $notification // Notification title and body
      * @param $type // for notification or chat. Values - e.g. "chat", "notification"
      * @param $model // data for handling in mobile
-     * @return string
      */
-    public static function pushNotification($user_token, $notification, $type, $model): string
+    public static function pushNotification($user, $notification, $type, $model)
     {
-        return Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'Authorization' => 'key=' . env('FCM_SERVER_KEY')
-        ])->post('https://fcm.googleapis.com/fcm/send',
-            [
-                "to" => $user_token,
-                "notification" => $notification,
-                "data" => [
-                    "type" => $type,
-                    "data" => $model,
+        foreach ($user->sessions as $session) {
+            Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => 'key=' . env('FCM_SERVER_KEY')
+            ])->post('https://fcm.googleapis.com/fcm/send',
+                [
+                    "to" => $session->token,
+                    "notification" => $notification,
+                    "data" => [
+                        "type" => $type,
+                        "data" => $model,
+                        "click_action" => "FLUTTER_NOTIFICATION_CLICK"
+                    ],
                     "click_action" => "FLUTTER_NOTIFICATION_CLICK"
-                ],
-                "click_action" => "FLUTTER_NOTIFICATION_CLICK"
-            ]
-        )->body();
+                ]
+            )->body();
+        }
     }
 
     public static function titles($type): string
