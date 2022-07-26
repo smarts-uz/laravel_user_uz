@@ -204,7 +204,7 @@ class UserAPIController extends Controller
     {
         $data = $request->validate([
             'code' => 'required|numeric|min:6',
-            'phone_number' => 'required|numeric|exists:users'
+            'phone_number' => 'required|numeric'
         ]);
         /** @var User $user */
         $user = User::query()->where('phone_number', '+' . $data['phone_number'])->firstOrFail();
