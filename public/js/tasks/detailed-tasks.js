@@ -33,54 +33,13 @@ $(document).ready(function () {
     })
 });
 
-
-$(document).ready(function () {
-
-    $(".pay").click(function () {
-        $(".pays").attr("value", 4000);
-    });
-    var $temp = $("<input>");
-    var $url = $(location).attr('href');
-});
-
-$(".save-data").click(function (event) {
-    event.preventDefault();
-    let response_desc = $('textarea#form8').val();
-    var notificate = null;
-    if ($("input[name=notificate]").is(':checked')) {
-        var notificate = 1;
-    } else {
-        var notificate = 0;
-    }
-    var response_time = null;
-    if ($('.answer').is(':visible')) {
-        var response_time = 1;
-    }
-    window.setTimeout(function () {
-        $('.preloader').hide();
-        $('.modal___1').show();
-    }, 1000);
-    $('.modal___1').hide();
-    window.location.reload();
-});
-
-
 const modal = document.querySelector('.modal');
-
 const closeModal = document.querySelectorAll('.close-modal');
-
 closeModal.forEach(close => {
     close.addEventListener('click', function () {
         modal.classList.add('hidden')
     });
 });
-
-
-$(".send-data").click(function (event) {
-    event.preventDefault();
-});
-
-
 $(".modal").each(function () {
     $(this).wrap('<div class="overlay"></div>')
 });
@@ -108,9 +67,7 @@ $(".open-modal").on('click', function (e) {
                 $(target).removeClass("open");
             }, 350);
         }
-
     });
-
 });
 
 $('#btn1').click(function () {

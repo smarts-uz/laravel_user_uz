@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserInTaskResource extends JsonResource
@@ -14,8 +15,16 @@ class UserInTaskResource extends JsonResource
      */
     public function toArray($request)
     {
-        $goods = $this->review_good;
-        $bads =  $this->review_bad;
+        $goods = $this->goodReviews()->count();
+        $bads = $this->badReviews()->count();
+        $date = Carbon::now()->subMinutes(2)->toDateTimeString();
+        if ($this->last_seen >= $date) {
+            $lastSeen = 'online';
+        } else {
+            $seenDate = Carbon::parse($this->last_seen);
+            $seenDate->locale($this->locale);
+            $lastSeen = $seenDate->diffForHumans();
+        }
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -25,7 +34,7 @@ class UserInTaskResource extends JsonResource
             'likes' => $goods,
             'dislikes' => $bads,
             'stars' => round($goods * 5 / (($goods+$bads==0) ? 1 : ($goods + $bads))),
-            'last_seen' => $this->last_seen_at,
+            'last_seen' => $lastSeen,
         ];
     }
 }
