@@ -219,7 +219,6 @@ Route::get('/lang/{lang}', [Controller::class, 'lang'])->name('lang'); // javoxi
 Route::get('/', [Controller::class, 'home'])->name('home'); // javoxir
 Route::get('/terms',[Controller::class,'terms']);
 Route::get('/paynet_oplata',[Controller::class,'paynet_oplata']);
-Route::get('/file-download', [Controller::class, 'download'])->name('file_download.download');
 Route::get('/show-notification/{notification}', [NotificationController::class, 'show_notification'])->name('show_notification');
 Route::get('/show-notification-user/{notification}', [NotificationController::class, 'show_notification_user'])->name('show_notification_user');
 Route::get('/read-notification/{notification}', [NotificationController::class, 'read_notification'])->name('read_notification');
