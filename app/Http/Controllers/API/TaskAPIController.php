@@ -116,7 +116,7 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function responses(Request $request, Task $task): JsonResponse
+    public function responses(Request $request, Task $task): AnonymousResourceCollection
     {
         if ($task->user_id == auth()->id()) {
             if ($request->get('filter') == 'rating') {
@@ -132,12 +132,9 @@ class TaskAPIController extends Controller
         } else {
             $responses = $task->responses()->where('performer_id', auth()->id());
         }
-        $count = $task->responses()->count();
         $responses->where('performer_id', '!=', $task->performer_id);
-        return response()->json([
-            'responses' => TaskResponseResource::collection($responses->paginate(5)),
-            'count' => $count
-        ]);
+        return TaskResponseResource::collection($responses->paginate(5));
+
     }
 
     /**
