@@ -9,7 +9,7 @@
             <div class="lg:w-3/5 w-full">
                 <div>
                     <a class="text-sm text-blue-500 hover:text-red-500" href="/profile"><i
-                            class="fas fa-arrow-left"></i> {{__('Венруться в профиль')}}</a>
+                            class="fas fa-arrow-left"></i> {{__('Вернуться к профилю')}}</a>
                     <h1 class="font-semibold md:text-2xl text-lg ">{{__('Создание нового альбома')}}</h1>
                 </div>
                 <div id="comdes" class="bg-yellow-100 p-8 rounded-md my-6">

@@ -403,7 +403,7 @@ if(dataGeo[index].address_main) {
 }
 return {
 balloonContentBody: '<br><font size=4><b><a class="text-blue-500" href="/detailed-tasks/' + dataGeo[index].id + '">' + dataGeo[index].name + '</a></b></font><br><br><font size=3><p>' + addrM + '</p><br><p>'+ sd +'</p><p>' + ed + '</p></font><br><font size=3><p>' + bdgt + '</p></font>',
-clusterCaption: '{{__('Задания')}} <strong>' + dataGeo[index].id + '</strong>'
+clusterCaption: '{{__('Задание')}} <strong>' + dataGeo[index].id + '</strong>'
 };
 },
 getPointOptions = function () {
