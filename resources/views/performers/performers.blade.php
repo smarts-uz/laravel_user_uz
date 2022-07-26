@@ -164,8 +164,7 @@
     </div>
 
     {{-- Modal start --}}
-    <div
-        class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
+    <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
         id="modal-id12" style="background-color:rgba(0,0,0,0.5)">
         <div class="relative w-auto my-6 mx-auto max-w-3xl" id="modal-id12">
             <div

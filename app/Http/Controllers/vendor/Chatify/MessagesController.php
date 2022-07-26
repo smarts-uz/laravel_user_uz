@@ -205,6 +205,7 @@ class MessagesController extends Controller
     {
         $query = $this->chatify->fetchMessagesQuery($request['id'])->latest();
         $messages = $query->paginate($request->per_page ?? $this->perPage);
+        $query->where('seen',0)->update(['seen' => 1]);
         $totalMessages = $messages->total();
         $lastPage = $messages->lastPage();
         $response = [

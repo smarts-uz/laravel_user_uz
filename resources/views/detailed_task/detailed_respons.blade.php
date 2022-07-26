@@ -311,7 +311,7 @@
                                     action="{{ route('response.selectPerformer', $selected->id) }}"
                                     method="post">
                                     @csrf
-                                    <button type="submit" class="cursor-pointer text-semibold text-center w-[200px] md:w-[320px] md:ml-4 inline-block py-3 px-4 bg-white transition duration-200 text-white bg-green-500 hover:bg-green-500 font-medium border border-transparent rounded-md"> {{__('Выбрать исполнителем')}}</button>
+                                    <button type="submit" class="cursor-pointer text-semibold text-center md:ml-4 inline-block py-3 px-4 bg-white transition duration-200 text-white bg-green-500 hover:bg-green-500 font-medium border border-transparent rounded-md"> {{__('Выбрать исполнителем')}}</button>
                                 </form>
                             @endif
 
@@ -474,23 +474,18 @@
                                     </script>
                                 </div>
                             @elseif($task->status <= 2 && auth()->user()->id == $task->user_id)
-                                <form
-                                    action="{{ route('response.selectPerformer', $response->id) }}"
-                                    method="post">
+                                <form action="{{ route('response.selectPerformer', $response->id) }}" method="post">
                                     @csrf
-                                    <button
-                                        type="submit"
-                                        class="cursor-pointer text-semibold text-center w-[200px]
-                    md:w-[320px] md:ml-4 inline-block py-3 px-4 bg-white transition
-                    duration-200 text-white bg-green-500 hover:bg-green-500 font-medium
-                    border border-transparent rounded-md"> {{__('Выбрать исполнителем')}}</button>
-
+                                    <button type="submit" class="cursor-pointer text-semibold text-center md:ml-4 inline-block py-3
+                                         px-4 bg-white transition duration-200 text-white bg-green-500 hover:bg-green-500 font-medium
+                                        border border-transparent rounded-md"> {{__('Выбрать исполнителем')}}
+                                    </button>
                                 </form>
                             @endif
 
                         @endauth
 
-                        <div class="text-gray-400 text-[14px] my-6">
+                        <div class="text-gray-400 my-6">
                             {{__('Выберите исполнителя, чтобы потом оставить отзыв о работе.')}}
                         </div>
                     </div>

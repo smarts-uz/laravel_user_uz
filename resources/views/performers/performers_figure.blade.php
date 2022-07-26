@@ -118,7 +118,7 @@
         </div>
         <div class="mt-6">
             @auth
-                @if($tasks->count() > 0 && Auth::user()->id != $user->id)
+                @if($tasks->where('status', '<=', 2)->count() > 0 && Auth::user()->id != $user->id)
                     <a id="open{{$user->id}}">
                         <button
                             class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
@@ -126,7 +126,7 @@
                             {{__('Предложить задание')}}
                         </button>
                     </a>
-                @elseif ($tasks->count() > 0 && Auth::user()->id == $user->id)
+                @elseif ($tasks->where('status', '<=', 2)->count() > 0 && Auth::user()->id == $user->id)
                     <a class="">
                         <button
                             class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
