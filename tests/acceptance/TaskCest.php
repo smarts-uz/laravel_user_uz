@@ -1,5 +1,7 @@
 <?php
 
+use function PHPUnit\Framework\assertTrue;
+
 class TaskCest
 {
     public function _before(AcceptanceTester $I)
@@ -30,7 +32,15 @@ class TaskCest
         $I->click('Далее');
         $I->fillField('description','Description Test');
         $I->click('Далее');
+        assertTrue('true');
 //        $I->fillField('phone_number','+998(94)916-46-86');
 //        $I->click('Oтправить');
+    }
+    public function task_search(AcceptanceTester $I)
+    {
+        $I->amOnPage('/task-search');
+        $I->fillField('filter','asdas');
+        $I->click('Найти');
+        assertTrue('true');
     }
 }
