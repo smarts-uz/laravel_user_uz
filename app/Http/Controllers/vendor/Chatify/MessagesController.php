@@ -507,6 +507,8 @@ class MessagesController extends Controller
     }
 
     public static function unseenCount() {
-        return ChMessage::where('to_id', Auth::id())->where('seen', 0)->count();
+        return ChMessage::query()->where('seen', 0)->where(function ($query) {
+            $query->where('to_id', Auth::id())->orWhere('from_id', Auth::id());
+        })->count();
     }
 }
