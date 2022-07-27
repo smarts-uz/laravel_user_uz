@@ -35,7 +35,7 @@ class ResponseService
             abort(403,"Bu o'zingizning taskingiz");
         $data = $request->validate([
             'description' => 'required|string',
-            'price' => 'required',
+            'price' => 'int|required',
             'notificate' => 'nullable',
             'not_free' => 'nullable|int'
         ]);
