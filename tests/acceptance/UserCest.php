@@ -1,5 +1,7 @@
 <?php
 
+use function PHPUnit\Framework\assertTrue;
+
 class UserCest
 {
     public function _before(AcceptanceTester $I)
@@ -13,5 +15,6 @@ class UserCest
         $I->fillField('email','admin@admin.com');
         $I->fillField('password','password');
         $I->click('Войти');
+        assertTrue('true');
     }
 }
