@@ -21,9 +21,7 @@ class ResponseController extends Controller
 
     public function store(Request $request, Task $task)
     {
-
         $response = $this->service->store($request, $task);
-
         if (!$response['success'])
             Alert::error($response['message']);
         else

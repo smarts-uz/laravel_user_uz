@@ -229,15 +229,10 @@
                                   name="description"></textarea>
                         <p class="text-base">{{__('Сколько вы предлагаете')}}</p>
                         <label>
-                            <input type="text" required
-                                   onkeypress='validate(event)'
-                                   name="price" id="car_2"
+                            <input type="text" required onkeypress='validate(event)' id="car_2"
                                    class="border border-gray-300 rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 mb-2">UZS
-                            <input type="hidden" name="pay"
-                                   class="pays border rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 my-2"
-                                   value="0">
-                            <input type="hidden"
-                                   name="task_user_id"
+                            <input type="hidden" name="price" id="price">
+                            <input type="hidden" name="task_user_id"
                                    class="pays border rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 my-2"
                                    value="{{$task->user_id}}">
                         </label>
@@ -314,4 +309,11 @@
            href="/profile/cash">{{__('Пополнить')}}</a>
     </div>
 </div>
+<script>
+    $("#car_2").keyup(function () {
+        var text = $(this).val()
+        text = text.replace(/[^0-9.]/g, "")
+        $("#price").val(text)
+    })
+</script>
 <script src="{{asset('js/custom.js')}}"></script>

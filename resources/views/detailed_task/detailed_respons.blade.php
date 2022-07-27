@@ -1,4 +1,15 @@
 @if($auth_response)
+    <div class="text-4xl font-semibold my-6">
+        @if ($task->response_count <= 4)
+            @if ($task->responses_count == 1)
+                {{__('У задания')}} {{$task->responses()->count()}} {{__('отклик')}}
+            @else
+                {{__('У задания')}} {{$task->responses()->count()}} {{__('откликa')}}
+            @endif
+        @else
+            {{__('У задания')}} {{$task->responses()->count()}} {{__('откликов')}}
+        @endif
+    </div>
 <div class="mt-3">
     <h1 class="text-3xl font-semibold text-black">{{__('Ваш отклик')}}</h1>
     <div class="border-2 border-gray-400 p-2 rounded-lg my-2">
@@ -94,7 +105,7 @@
             <div class="bg-gray-100 rounded-[10px] p-4">
                 <div class="ml-0">
                     <div
-                        class="text-[17px] text-gray-500 font-semibold">{{__('Стоимость')}} {{ $auth_response->price }}
+                        class="text-gray-500 font-semibold">{{__('Стоимость')}} {{ number_format($auth_response->price) }}
                         UZS
                     </div>
 
@@ -103,7 +114,7 @@
                     </div>
 
                     <div
-                        class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}}
+                        class="text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}}
                          {{ auth()->user()->phone_number }}
                     </div>
                     @if ($task->status == 3 && auth()->user()->id == $task->performer_id)
@@ -262,7 +273,7 @@
                 <div class="bg-gray-100 rounded-[10px] p-4">
                     <div class="ml-0">
                         <div
-                            class="text-[17px] text-gray-500 font-semibold">{{__('Стоимость')}} {{$selected->price}}
+                            class="text-gray-500 font-semibold">{{__('Стоимость')}} {{number_format($selected->price)}}
                             UZS
                         </div>
 
@@ -272,7 +283,7 @@
 
                         @if($selected->not_free == 1 || $task->user_id == auth()->id())
                             <div
-                                class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} {{$selected->performer->phone_number}}</div>
+                                class="text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} {{$selected->performer->phone_number}}</div>
                         @endif
 
 
@@ -432,7 +443,7 @@
                 <div class="bg-gray-100 rounded-[10px] p-4">
                     <div class="ml-0">
                         <div
-                            class="text-[17px] text-gray-500 font-semibold">{{__('Стоимость')}} {{$response->price}}
+                            class="text-gray-500 font-semibold">{{__('Стоимость')}} {{number_format($response->price)}}
                             UZS
                         </div>
 
@@ -440,7 +451,7 @@
                             class="text-[17px] text-gray-500 my-5">{{$response->description}}</div>
                         @if($response->not_free === 1)
                             <div
-                                class="text-[17px] text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} {{$response->performer->phone_number}}</div>
+                                class="text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} {{$response->performer->phone_number}}</div>
                         @endif
 
                         @auth()
