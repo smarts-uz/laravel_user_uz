@@ -7,33 +7,24 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
-          integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/uz_latn.js"></script>
-{{--    <style>.flatpickr-calendar{width:230px;} </style>--}}
     <style>.flatpickr-calendar{max-width: 295px; width: 100%;} </style>
 @endsection
 
 
 @section('content')
-    <style media="screen">
-
-    </style>
-    <!-- Information section -->
-    {{--<script src="https://unpkg.com/@themesberg/flowbite@1.3.0/dist/datepicker.bundle.js"></script>--}}
-
-
-
     <form action="{{route('task.create.date.store', $task->id)}}" novalidate method="post">
         @csrf
-
-
         <div class="mx-auto sm:w-9/12 w-11/12 my-16">
             <div class="grid grid-cols-3 gap-x-20">
                 <div class="lg:col-span-2 col-span-3">
                     <div class="w-full text-center text-2xl">
-                        {{__('Ищем исполнителя для задания')}} "{{$task->name}}"
+                        @if(session('lang')=='uz')
+                            "{{$task->name}}" {{__('Ищем исполнителя для задания')}}
+                        @else
+                            {{__('Ищем исполнителя для задания')}} "{{$task->name}}"
+                        @endif
                     </div>
                     <div class="w-full text-center my-4 text-gray-400">
                         {{__('Задание заполнено на 70%')}}
@@ -122,20 +113,17 @@
                                     <div class="flex w-full mt-4">
                                         <a onclick="myFunction()"
                                            class="bg-white my-4 cursor-pointer hover:border-yellow-500 text-gray-600 hover:text-yellow-500 transition duration-300 font-normal text-xl py-3 sm:px-8 px-4 rounded-2xl border border-2">
-                                            <!-- <button type="button"> -->
-                                        {{__('Назад')}}
-                                        <!-- </button> -->
+                                            {{__('Назад')}}
                                             <script>
                                                 function myFunction() {
                                                     window.history.back();
                                                 }
                                             </script>
                                         </a>
-                                        <button type="submit"
-                                        style="background: linear-gradient(164.22deg, #FDC4A5 4.2%, #FE6D1D 87.72%);"
-                                        class="bg-yellow-500 hover:bg-yellow-600 m-4 cursor-pointer text-white font-normal text-2xl py-3 sm:px-14 px-8 rounded-2xl "
-                                         name="">{{__('Далее')}}</button>
-
+                                        <button type="submit" style="background: linear-gradient(164.22deg, #FDC4A5 4.2%, #FE6D1D 87.72%);"
+                                            class="bg-yellow-500 hover:bg-yellow-600 m-4 cursor-pointer text-white font-normal text-2xl py-3 sm:px-14 px-8 rounded-2xl "
+                                             name="">{{__('Далее')}}
+                                        </button>
                                     </div>
 
 
@@ -150,7 +138,6 @@
         </div>
     </form>
     <script>
-
         flatpickr.localize(flatpickr.l10ns.uz_latn);
         flatpickr.localize(flatpickr.l10ns.ru);
         flatpickr(".flatpickr",
@@ -160,9 +147,8 @@
                 allowInput: true,
                 altInput: true,
                 minDate: "today",
-                dateFormat: "Y-m-d H:i:s",
-                altFormat: "Y-m-d H:i:s",
-
+                dateFormat: "Y-m-d H:i",
+                altFormat: "Y-m-d H:i",
                 locale: "{{__('ru')}}",
             },
         )
@@ -186,12 +172,6 @@
         @if(!$errors->has('end_date'))
         $('#start-date').css('display', 'inline-block');
         @endif
-
     </script>
 @endsection
 
-@push("javascript")
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
-    <script src="https://npmcdn.com/flatpickr/dist/l10n/uz_latn.js"></script>
-@endpush

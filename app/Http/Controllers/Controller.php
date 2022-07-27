@@ -14,6 +14,7 @@ use TCG\Voyager\Models\Category;
 use App\Models\Massmedia;
 use App\Services\ControllerService;
 use App\Models\BlogNew;
+use TCG\Voyager\Models\Setting;
 
 class Controller extends BaseController
 {
@@ -66,14 +67,6 @@ class Controller extends BaseController
         return redirect()->back();
     }
 
-    public function download()
-    {
-        $filePath = public_path("Правила_сервиса.pdf");
-        $headers = ['Content-Type: application/pdf'];
-        $fileName = 'Правила_сервиса.pdf';
-        return response()->download($filePath, $fileName, $headers);
-    }
-
     public function index()
     {
         $medias = Massmedia::paginate(20);
@@ -102,7 +95,9 @@ class Controller extends BaseController
     }
 
     public function terms(){
-        return view('auth.terms');
+        $path= json_decode(setting('site.Правила_сервиса'))[0]->download_link;
+        $filePath = str_replace('\\', '/', $path);
+        return view('auth.terms',compact('filePath'));
     }
 
     public function paynet_oplata(){

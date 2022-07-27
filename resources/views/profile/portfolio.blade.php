@@ -5,7 +5,7 @@
         <div class="lg:w-7/12 w-full">
             @if ($portfolio->user_id == $user->id)
                 <a class="text-sm text-blue-500 hover:text-red-500" href="/profile"><i
-                class="fas fa-arrow-left"></i> {{__('Венруться в профиль')}}</a>
+                class="fas fa-arrow-left"></i> {{__('Вернуться к профилю')}}</a>
             @endif
             <form action="{{ route('profile.updatePortfolio', $portfolio->id) }}" method="post">
                 @csrf

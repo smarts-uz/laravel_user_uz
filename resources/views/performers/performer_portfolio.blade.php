@@ -6,7 +6,7 @@
     <div class="grid grid-cols-3 grid-flow-row mt-10">
         <div class="col-span-3 mt-4">
             <a class="text-lg text-blue-500 hover:text-red-500 cursor-pointer" onclick="myportfolio()"><i
-                class="fas fa-arrow-left"></i> {{__('Венруться в профиль')}}
+                class="fas fa-arrow-left"></i> {{__('Вернуться к профилю')}}
                 <script>
                     function myportfolio() {
                         window.history.back();
