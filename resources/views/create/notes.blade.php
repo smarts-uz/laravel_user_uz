@@ -12,7 +12,11 @@
             <div class="grid md:grid-cols-3 lg:gap-x-20 md:gap-x-14">
                 <div class="lg:col-span-2 col-span-3">
                     <div class="w-full text-center text-2xl">
-                        {{__('Ищем исполнителя для задания')}} "{{$task->name}}"
+                        @if(session('lang')=='uz')
+                            "{{$task->name}}" {{__('Ищем исполнителя для задания')}}
+                        @else
+                            {{__('Ищем исполнителя для задания')}} "{{$task->name}}"
+                        @endif
                     </div>
                     <div class="w-full text-center my-4 text-gray-400">
                         {{__('Задание заполнено на 90%')}}
