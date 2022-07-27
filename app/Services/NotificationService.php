@@ -242,7 +242,7 @@ class NotificationService
                 'Authorization' => 'key=' . env('FCM_SERVER_KEY')
             ])->post('https://fcm.googleapis.com/fcm/send',
                 [
-                    "to" => $session->token,
+                    "to" => $session->firebase_token,
                     "notification" => $notification,
                     "data" => [
                         "type" => $type,
