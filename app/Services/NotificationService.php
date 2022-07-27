@@ -117,22 +117,22 @@ class NotificationService
      */
     public static function sendNotification($not, $slug): void
     {
-        $user_ids = User::query()->where('news_notification', 1)->pluck('firebase_token', 'id')->toArray();
-        foreach ($user_ids as $user_id => $token) {
+        $users = User::query()->with('sessions')->where('news_notification', 1)->select('id')->get();
+        foreach ($users as $user) {
             $notification = Notification::query()->create([
-                'user_id' => $user_id,
+                'user_id' => $user->id,
                 'description' => $not->message ?? 'description',
                 "name_task" => $not->title,
                 "type" => Notification::NEWS_NOTIFICATION
             ]);
 
-            self::pushNotification($token, [
+            self::pushNotification($user, [
                 'title' => __('Новости'),
                 'body' => __('Важные новости и объявления для вас')
             ], 'notification', new NotificationResource($notification));
         }
 
-        self::sendNotificationRequest(array_keys($user_ids), [
+        self::sendNotificationRequest($users->map->id->toArray(), [
             'url' => $slug . '/' . $not->id, 'name' => $not->title, 'time' => 'recently'
         ]);
     }
