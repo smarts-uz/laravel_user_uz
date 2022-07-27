@@ -18,13 +18,6 @@
                            onkeypress='validate(event)' type="text" value="4000">
                 </div>
                 <p class="text-sm mt-2 leading-6 text-gray-400">{{__('Сумма пополнения, минимум — 4000 UZS')}}</p>
-
-                <!-- <div class="mt-8"> -->
-                <!-- <input type="checkbox" id="myCheck" onclick="checkFunction()"  class="w-5 h-5 rounded-md inline-block " /> -->
-                <!-- <p class="text-md inline-block ml-2">Оформить полис на 7 дней за 10000 UZS</p> -->
-                <!-- </div> -->
-
-
                 <div class="mt-16">
                     <a onclick="toggleModal1()" class="px-10 py-4 font-sans  text-xl  font-semibold bg-green-500 text-white hover:bg-green-500  h-12 rounded-md text-xl" id="button"
                        href="#">{{__('К оплате')}}</a>

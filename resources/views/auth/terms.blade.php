@@ -6,7 +6,7 @@
 
     <h1 class="text-4xl text-black font-bold">{{__('Правила сервиса')}}</h1>
     <div class="mt-24">
-        <a href="{{route('file_download.download')}}" class="text-gray-500 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">
+        <a target="_blank" href="{{ asset('storage/' . $filePath)}}" class="text-gray-500 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">
             {{__('Правила сервиса Universal Services')}}
         </a>
     </div>

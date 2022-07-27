@@ -124,11 +124,11 @@ class NotificationController extends VoyagerBaseController
         $data = $request->validated();
         /** @var User $user */
         $user = auth()->user();
-        $user->update(['firebase_token' => $data['token']]);
         $session = Session::query()->updateOrCreate(
             ['device_id' => $data['device_id']],
             [
                 'id' => Str::random(40),
+                'firebase_token' => $data['token'],
                 'user_id' => $user->id,
                 'ip_address' => $request->ip(),
                 'payload' => $data['token'],

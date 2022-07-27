@@ -79,7 +79,7 @@
                                            class="border border-gray-400 hover:border-yellow-500 focus:outline-none rounded-lg sm:w-2/3 w-full p-2"
                                            placeholder="{{__('Ссылка на ролик с YouTube')}}" required>
                                     <button
-                                            class="sm:w-1/3 w-2/3 sm:mx-3 mx-0 rounded-lg bg-green-500 hover:bg-green-600 text-white py-2 px-4 cursor-pointer sm:mt-0 mt-3">{{('Добавить')}}</button>
+                                            class="sm:w-1/3 w-2/3 sm:mx-3 mx-0 rounded-lg bg-green-500 hover:bg-green-600 text-white py-2 px-4 cursor-pointer sm:mt-0 mt-3">{{__('Добавить')}}</button>
                                 </div>
                             </div>
                         </form>

@@ -28,6 +28,7 @@ class UserUpdateDataRequest extends FormRequest
             'age' => 'nullable|int',
             'phone_number' => 'required|numeric|unique:users|min:13',
             'born_date'=>'required',
+            'gender'=>'nullable',
             'location' => 'nullable',
         ];
         if (auth()->user()->email == $this->request->get('email')) {

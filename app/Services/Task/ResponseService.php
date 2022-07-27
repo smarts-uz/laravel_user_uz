@@ -142,7 +142,7 @@ class ResponseService
         NotificationService::sendNotificationRequest([$performer->id], [
             'url' => 'detailed-tasks' . '/' . $response->task_id, 'name' => $task->name, 'time' => 'recently'
         ]);
-        NotificationService::pushNotification($performer->firebase_token, [
+        NotificationService::pushNotification($performer, [
             'title' => __('Вас выбрали исполнителем'), 'body' => __('Вас выбрали исполнителем  в задании task_name №task_id task_user', [
                 'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name])
         ], 'notification', new NotificationResource($notification));
