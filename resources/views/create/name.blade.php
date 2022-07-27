@@ -1,19 +1,10 @@
 @extends("layouts.app")
 
-@section('style')
-
-@endsection
-
 @section("content")
-
 
     <script>
         let var_for_id_task = null;
     </script>
-    <!-- Information section -->
-    <!-- <form class="" action="" method="post"> -->
-
-    {{--    Created Road map for Create a New Tast--}}
     <div class="mx-auto sm:w-9/12 w-11/12 my-16">
         <div class="grid grid-cols-3   lg:gap-x-8 md:gap-x-0.5 h-full">
             <div class="lg:col-span-2 col-span-3">
