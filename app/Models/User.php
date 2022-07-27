@@ -151,6 +151,11 @@ class User extends \TCG\Voyager\Models\User
         return $this->hasMany(Session::class);
     }
 
+    public function messages()
+    {
+        return $this->hasMany(\App\Models\Chat\ChMessage::class);
+    }
+
     public function getBalanceAttribute()
     {
         return $this->walletBalance->balance ?? 0;
@@ -179,6 +184,7 @@ class User extends \TCG\Voyager\Models\User
             $user->reviews()->delete();
             $user->portfolios()->delete();
             $user->compliances()->delete();
+            $user->messages()->delete();
 
             TaskResponse::query()->where('user_id', $user->id)->orWhere('performer_id', $user->id)->delete();
             Notification::query()->where('user_id', $user->id)->orWhere('performer_id', $user->id)->delete();
