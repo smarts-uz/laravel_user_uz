@@ -48,6 +48,12 @@ class User extends \TCG\Voyager\Models\User
         'remember_token',
     ];
 
+    protected $appends = [
+        'review_good',
+        'review_bad',
+        'review_rating'
+    ];
+
     /**
      * The attributes that should be cast.
      *
@@ -167,6 +173,21 @@ class User extends \TCG\Voyager\Models\User
     public function compliances()
     {
         return $this->hasMany(Compliance::class);
+    }
+
+    protected function getReviewGoodAttribute($value)
+    {
+        return $this->goodReviews()->count();
+    }
+
+    protected function getReviewBadAttribute($value)
+    {
+        return $this->badReviews()->count();
+    }
+
+    protected function getReviewRatingAttribute($value)
+    {
+        return round($this->review_good * 5 / (($this->review_good+$this->review_bad==0) ? 1 : ($this->review_good + $this->review_good)));
     }
 
     public static function boot ()
