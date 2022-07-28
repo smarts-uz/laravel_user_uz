@@ -192,7 +192,7 @@ class User extends \TCG\Voyager\Models\User
 
     protected function getReviewRatingAttribute($value)
     {
-        return round($this->review_good * 5 / (($this->review_good+$this->review_bad==0) ? 1 : ($this->review_bad + $this->review_good)));
+        return round($this->goodReviews()->where('as_performer', 0)->count() * 5 / (($this->goodReviews()->where('as_performer', 0)->count()+$this->badReviews()->where('as_performer', 0)->count()==0) ? 1 : ($this->goodReviews()->where('as_performer', 0)->count() + $this->badReviews()->where('as_performer', 0)->count())));
     }
 
     public static function boot ()
