@@ -182,17 +182,17 @@ class User extends \TCG\Voyager\Models\User
 
     protected function getReviewGoodAttribute($value)
     {
-        return $this->goodReviews()->count();
+        return $this->goodReviews()->where('as_performer', 0)->count();
     }
 
     protected function getReviewBadAttribute($value)
     {
-        return $this->badReviews()->count();
+        return $this->badReviews()->where('as_performer', 0)->count();
     }
 
     protected function getReviewRatingAttribute($value)
     {
-        return round($this->goodReviews()->where('as_performer', 0)->count() * 5 / (($this->goodReviews()->where('as_performer', 0)->count()+$this->badReviews()->where('as_performer', 0)->count()==0) ? 1 : ($this->goodReviews()->where('as_performer', 0)->count() + $this->badReviews()->where('as_performer', 0)->count())));
+        return round($this->review_good * 5 / (($this->review_good + $this->review_bad ? 1 : ($this->review_good + $this->review_bad))));
     }
 
     public static function boot ()
