@@ -16,8 +16,6 @@ class PerformerIndexResource extends JsonResource
     public function toArray($request)
     {
         $locale = app()->getLocale();
-        $goods = $this->goodReviews()->count();
-        $bads =  $this->badReviews()->count();
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
         if ($this->last_seen >= $date) {
             $lastSeen = 'online';
@@ -34,8 +32,8 @@ class PerformerIndexResource extends JsonResource
             'phone_number' => $this->phone_number,
             'location' => $this->location,
             'last_seen' => $lastSeen,
-            'likes' => $goods,
-            'dislikes' => $bads,
+            'likes' => $this->review_good,
+            'dislikes' => $this->review_bad,
             'description' => $this->description,
             'stars' => $this->review_rating,
             'role_id' => $this->role_id,

@@ -102,7 +102,6 @@ class UserIndexResource extends JsonResource
             }
         }
         $goodReviews = $this->goodReviews();
-        $badReviews = $this->badReviews();
         $lastReview = $goodReviews->get()->last();
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
         if ($this->last_seen >= $date) {
@@ -140,8 +139,8 @@ class UserIndexResource extends JsonResource
             'created_tasks' => Task::query()->where(['user_id' => $this->id])->whereIn('status', [1, 2, 3, 4, 5, 6])->get()->count(),
             'performed_tasks' => Task::query()->where(['performer_id' => $this->id])->whereIn('status', [1, 2, 3, 4, 5, 6])->get()->count(),
             'reviews' => [
-                'review_bad' => $goodReviews->count(),
-                'review_good' => $badReviews->count(),
+                'review_bad' => $this->review_bad,
+                'review_good' => $this->review_good,
                 'rating' => $this->review_rating,
                 'last_review' => $lastReview ? [
                     'description' => $lastReview->description,

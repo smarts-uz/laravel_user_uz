@@ -17,17 +17,15 @@ class PerformerResponseResource extends JsonResource
     public function toArray($request)
     {
         $performer = $this->performer;
-        $goods = $performer->review_good;
-        $bads =  $performer->review_bad;
         return [
             'id' => $performer->id,
             'name' => $performer->name,
             'avatar' => $performer->avatar?asset('storage/'.$performer->avatar):null,
             'phone_number' => $performer->phone_number,
             'degree' => $performer->phone_number,
-            'likes' => $goods,
-            'dislikes' => $bads,
-            'stars' => round($goods * 5 / (($goods+$bads==0) ? 1 : ($goods + $bads))),
+            'likes' => $performer->review_good,
+            'dislikes' => $performer->review_bad,
+            'stars' => $performer->review_rating,
             'last_seen' => $performer->last_seen_at,
             'price' => $this->price,
             'description' => $this->description,
