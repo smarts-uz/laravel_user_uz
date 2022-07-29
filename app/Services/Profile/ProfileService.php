@@ -276,6 +276,8 @@ class ProfileService
                 $imgData[] = $filename;
             }
         }
+        $data['comment'] = $request->get('comment');
+        $data['description'] = $request->get('description');
         $data['image'] = json_encode($imgData);
         $portfolio->update($data);
         $portfolio->save();
