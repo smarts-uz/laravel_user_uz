@@ -1432,7 +1432,7 @@ class TaskAPIController extends Controller
 
     public function deleteImage(Request $request, Task $task)
     {
-        return $this->update_task_service->deleteImage($task, $request);
+        return $this->update_task_service->deleteImage($request, $task);
     }
 
 

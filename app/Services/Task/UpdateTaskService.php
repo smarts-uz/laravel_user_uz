@@ -277,7 +277,10 @@ class UpdateTaskService
         $updatedImages = array_diff($images, [$image]);
         $task->photos = json_encode(array_values($updatedImages));
         $task->save();
-        return true;
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully deleted'
+        ]);
     }
 
     /////////////////
