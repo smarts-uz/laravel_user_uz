@@ -284,13 +284,13 @@
                                                                 @csrf
 
                                                                 <div class="mx-auto max-w-lg">
-                                                                    @if($user->passwrod != '' || $user->passwrod != null)
+                                                                    @if($user->has_password)
                                                                         <div class="py-2" x-data="{ show: true }">
                                                                         <span
-                                                                            class="px-1 text-sm text-gray-600">{{__('Stariy пароль')}}</span>
+                                                                            class="px-1 text-sm text-gray-600">{{__('Старый пароль')}}</span>
                                                                             <div class="relative">
                                                                                 <input placeholder=""
-                                                                                       name="old_password"
+                                                                                       name="old_password" required
                                                                                        :type="show ? 'password' : 'text'"
                                                                                        class="text-md block px-3 py-2 rounded-lg w-full
                                                                                 bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md

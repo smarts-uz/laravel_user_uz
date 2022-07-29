@@ -42,6 +42,8 @@ class User extends \TCG\Voyager\Models\User
 
     protected $guarded = [];
 
+    protected $appends = ['has_password'];
+
     protected $withCount = ['views', 'tasks', 'performer_views', 'performer_tasks'];
 
     protected $hidden = [
@@ -57,6 +59,11 @@ class User extends \TCG\Voyager\Models\User
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getHasPasswordAttribute()
+    {
+        return ! empty($this->attributes['password']);
+    }
 
     public function getAgeAttribute()
     {

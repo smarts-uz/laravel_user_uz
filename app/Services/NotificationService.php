@@ -33,10 +33,11 @@ class NotificationService
             ->where(function ($query) use ($user, $web) {
                 $query->where(function ($query) use ($user) {
                     $query->where('performer_id', '=', $user->id)
-                        ->whereIn('type', [4, 6, 7, 10]);
+                        ->whereIn('type', [4, 6, 7, 10, 11, 12]);
                 })
                     ->orWhere(function ($query) use ($user) {
-                        $query->where('user_id', '=', $user->id)->whereIn('type', [5, 8, 9, 10]);
+                        $query->where('user_id', '=', $user->id)
+                            ->whereIn('type', [5, 8, 9, 10, 11, 12]);
                     });
                 if ($user->role_id == 2 && $web)
                     $query->orWhere(function ($query) use ($user) {
