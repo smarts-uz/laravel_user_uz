@@ -15,8 +15,6 @@ class UserInTaskResource extends JsonResource
      */
     public function toArray($request)
     {
-        $goods = $this->goodReviews()->count();
-        $bads = $this->badReviews()->count();
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
         if ($this->last_seen >= $date) {
             $lastSeen = 'online';
@@ -31,9 +29,9 @@ class UserInTaskResource extends JsonResource
             'avatar' => asset('storage/'.$this->avatar),
             'phone_number' => $this->phone_number,
             'degree' => $this->phone_number,
-            'likes' => $goods,
-            'dislikes' => $bads,
-            'stars' => round($goods * 5 / (($goods+$bads==0) ? 1 : ($goods + $bads))),
+            'likes' => $this->review_good,
+            'dislikes' => $this->review_bad,
+            'stars' => $this->review_rating,
             'last_seen' => $lastSeen,
         ];
     }
