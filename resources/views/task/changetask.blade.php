@@ -41,7 +41,7 @@
                     <select onchange="func_for_select(Number(this.options[this.selectedIndex].value));"
                             class="mr-4 form-select block w-full  px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-yellow-500 focus:outline-none"
                             aria-label="Default select example">
-                        <option disabled>{{__('Выберите один из пунктов')}}</option>
+                        <option disabled>{{__('Выберите одну из категорий')}}</option>
                         <option>{{$task->category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}</option>
                     </select>
 
@@ -49,7 +49,7 @@
                             onchange="func_for_select(Number(this.options[this.selectedIndex].value));"
                             class="form-select block w-full  px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-yellow-500 focus:outline-none md:mt-0 mt-3"
                             aria-label="Default select example">
-                        <option disabled>{{__('Выберите один из пунктов')}}</option>
+                        <option disabled>{{__('Выберите одну из категорий')}}</option>
                         @foreach($task->category->parent->childs as $category)
                             <option
                                 value="{{ $category->id }}" {{ $category->id == $task->category_id ? 'selected' : null }} >
