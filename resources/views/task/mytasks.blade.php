@@ -22,7 +22,7 @@
                 <!-- Tab Contents -->
                 <div id="tab-contents">
                     <div id="first">
-                        <p class="p-5 lenght"></p>
+                        <p class="p-5">{{__("Количество заданий : ")}}<span class="lenght">0</span></p>
                         @foreach($perform_tasks as $task)
                             <div class="w-full border-t border-solid hover:bg-blue-100 category">
                                 <div class="md:grid md:grid-cols-10 p-2">
@@ -84,7 +84,7 @@
                     </div>
 
                     <div id="second" class="hidden">
-                        <p class="p-5 lenght2"></p>
+                        <p class="p-5">{{__("Количество заданий : ")}} <span class="lenght2">0</span></p>
                         @foreach($tasks as $task)
                             <div class="w-full border-t border-solid hover:bg-blue-100 category2 my-5">
                                 <div class="md:grid md:grid-cols-10 p-2">
@@ -335,9 +335,9 @@
         });
 
         $(document).ready(function () {
-            $(".lenght2").text(`{{__("Количество заданий : ")}}` + $(".category2").length);
+            $(".lenght2").text($(".category2").length);
             if ($(".category").is(":visible")) {
-                $(".lenght").text(`{{__("Количество заданий : ")}}` + $(".category").length);
+                $(".lenght").text($(".category").length);
             }
         });
     </script>
