@@ -55,7 +55,9 @@ class UserAPIController extends Controller
                 'phone_verified' => boolval($user->is_phone_number_verified),
                 'role_id' => $user->role_id,
             ],
-            'access_token' => $accessToken]);
+            'access_token' => $accessToken,
+            'socialpas' => isset($user->password)
+        ]);
     }
 
 
