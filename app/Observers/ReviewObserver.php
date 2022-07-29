@@ -16,13 +16,6 @@ class ReviewObserver
     public function created(Review $review)
     {
         $user = User::find($review->user_id);
-        if (!$review->as_performer) {
-            if($review->good_bad == 1) {
-                $user->review_good += 1;
-            } else {
-                $user->review_bad += 1;
-            }
-        }
         $user->review_rating = round($user->review_good * 5 / (($user->review_good+$user->review_bad==0) ? 1 : ($user->review_good + $user->review_bad)));
         $user->save();
         $reviewer = User::query()->find($review->reviewer_id);
