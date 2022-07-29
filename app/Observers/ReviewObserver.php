@@ -18,14 +18,12 @@ class ReviewObserver
         $user = User::find($review->user_id);
         if (!$review->as_performer) {
             if($review->good_bad == 1) {
-                $user->increment('review_good');
+                $user->review_good += 1;
             } else {
-                $user->increment('review_bad');
+                $user->review_bad += 1;
             }
         }
-        $goods = $user->review_good;
-        $bads = $user->review_bad;
-        $user->review_rating = round($goods * 5 / (($goods+$bads==0) ? 1 : ($goods + $bads)));
+        $user->review_rating = round($user->review_good * 5 / (($user->review_good+$user->review_bad==0) ? 1 : ($user->review_good + $user->review_bad)));
         $user->save();
         $reviewer = User::query()->find($review->reviewer_id);
         $review->reviewer_name = $reviewer->name;
