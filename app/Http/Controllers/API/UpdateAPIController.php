@@ -173,7 +173,8 @@ class UpdateAPIController extends Controller
                 ], 'notification', new NotificationResource($notification));
 
             }
-        } catch (Exception) {
+        } catch (Exception $e) {
+            dd($e);
             DB::rollBack();
             return response()->json(['success' => false, 'message' => "fail"]);  //back();
         }

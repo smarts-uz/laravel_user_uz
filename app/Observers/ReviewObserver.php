@@ -20,7 +20,7 @@ class ReviewObserver
             if($review->good_bad == 1) {
                 $user->increment('review_good');
             } else {
-                $user->inctement('review_bad');
+                $user->increment('review_bad');
             }
         }
         $goods = $user->review_good;
