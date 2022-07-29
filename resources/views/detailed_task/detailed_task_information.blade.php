@@ -88,7 +88,7 @@
         @if($value->value &&  $value->custom_field)
             @switch($value->custom_field->type)
                 @case('input')
-                    <?php $input_values[] = $value->custom_field->getTranslatedAttribute('label') . ': ' . json_decode($value->value)[0]?>
+                    @php $input_values[] = $value->custom_field->getTranslatedAttribute('label') . ': ' . json_decode($value->value)[0] @endphp
                     @break
 {{--                @case('checkbox')--}}
                     <div class="ml-4 md:ml-12 flex flex-row mt-8">

@@ -20,9 +20,10 @@
                             class="shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
                             required
                     >
-                        @foreach($data->options_ru['options'] as $key => $option)
+                        @php $options = app()->getLocale() == 'ru' ? $data->options_ru['options'] : $data->options['options'] @endphp
+                        @foreach($options as $key => $option)
                             <option
-                                @if(App\Services\Task\CustomFieldService::showOptions($task, $data->id, $key, $option))
+                                @if(in_array($key, json_decode($task->custom_field_values()->where('custom_field_id', $data->id)->first()->value)))
                                     selected
                                 @endif
                                 value="{{ $option }}"
@@ -49,18 +50,18 @@
             {{ $data->getTranslatedAttribute('description') }}
         </div>
     @endif
-
     @if($data->options)
         <div class="py-4 mx-auto  text-left ">
             <div class="mb-4">
                 <div id="formulario" class="flex flex-col gap-y-4">
                     <div>
                         <div class="mb-3 xl:w-full">
-                            @if(array_key_exists('options', $data->options))
-                                @foreach($data->options_ru['options'] as $key => $option)
+                            @if(array_key_exists('options', $data->options) || array_key_exists('options', $data->options_ru))
+                                @php $options = app()->getLocale() == 'ru' ? $data->options_ru['options'] : $data->options['options'] @endphp
+                                @foreach($options as $key => $option)
                                     <label class="md:w-2/3 block mt-6">
                                         <input
-                                            @if(App\Services\Task\CustomFieldService::showOptions($task, $data->id, $key, $option))
+                                            @if(in_array($key, json_decode($task->custom_field_values()->where('custom_field_id', $data->id)->first()->value)))
                                                 checked
                                             @endif
                                             class="mr-2  h-4 w-4" type="checkbox"
@@ -98,9 +99,10 @@
                 <div id="formulario" class="flex flex-col gap-y-4">
                     <div>
                         <div name="glassSht" class="mb-3 xl:w-full">
-                            @foreach($data->options_ru['options'] as $key => $option)
+                            @php $options = app()->getLocale() == 'ru' ? $data->options_ru['options'] : $data->options['options'] @endphp
+                            @foreach($options as $key => $option)
                                 <input type="radio"
-                                       @if(App\Services\Task\CustomFieldService::showOptions($task, $data->id, $key, $option))
+                                       @if(in_array($key, json_decode($task->custom_field_values()->where('custom_field_id', $data->id)->first()->value)))
                                            checked
                                        @endif
                                        id="radio_{{$key}}" name="{{$data->name}}[]"
