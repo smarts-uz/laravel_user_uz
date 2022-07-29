@@ -253,20 +253,20 @@
                         <select
                             class="border border-gray-300 rounded-md w-full focus:outline-none focus:border-yellow-500 py-2 px-4"
                             name="budget" id="budget">
-                            <option {{ $task->budget==$task->category->max/5 ? 'selected': '' }} value="{{$task->category->max/5}}">
+                            <option @if($task->budget==$task->category->max/5) selected @endif value="{{$task->category->max/5}}">
                                 {{$task->category->max/5}} UZS
                             </option>
-                            <option {{ $task->budget==$task->category->max/5*2 ? 'selected': '' }} value="{{$task->category->max/5*2}}">
+                            <option @if($task->budget==$task->category->max/5*2) selected @endif value="{{$task->category->max/5*2}}">
                                 {{$task->category->max/5*2}} UZS
                             </option>
-                            <option {{ $task->budget==$task->category->max/5*4 ? 'selected': '' }} value="{{$task->category->max/5*3}}">
+                            <option @if($task->budget==$task->category->max/5*3) selected @endif value="{{$task->category->max/5*3}}">
                                 {{$task->category->max/5*3}} UZS
                             </option>
-                            <option {{ $task->budget==$task->category->max/5*4 ? 'selected': '' }} value="{{$task->category->max/5*4}}">
+                            <option @if($task->budget==$task->category->max/5*4) selected @endif value="{{$task->category->max/5*4}}">
                                 {{$task->category->max/5*4}} UZS
                             </option>
-                            <option {{ $task->budget==$task->category->max ? 'selected': '' }} value="{{$task->category->max}}">
-                                {{$task->category->max/5}} UZS
+                            <option @if($task->budget==$task->category->max) selected @endif value="{{$task->category->max}}">
+                                {{$task->category->max}} UZS
                             </option>
                         </select>
                     </div>
