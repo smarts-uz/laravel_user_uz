@@ -919,54 +919,6 @@ class TaskAPIController extends Controller
         return $this->create_task_service->verification($request->validated());
     }
 
-    /**
-     * @OA\DELETE(
-     *     path="/api/for_del_new_task/{task}",
-     *     tags={"Search"},
-     *     summary="Delete Task",
-     *     @OA\Parameter(
-     *          in="path",
-     *          name="task",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          ),
-     *     ),
-     *     @OA\Response(
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
-    public function deletetask(Task $task): JsonResponse
-    {
-        $task->status = Task::STATUS_NOT_COMPLETED;
-        $task->save();
-
-        if ($task) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Successfully Deleted'
-            ]);
-        }
-        return response()->json([
-            'success' => false,
-            'message' => 'Not Deleted'
-        ], 404);
-
-    }
-
 
     /**
      * @OA\Post(

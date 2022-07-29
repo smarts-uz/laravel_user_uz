@@ -265,34 +265,6 @@ class UserAPIController extends Controller
     }
 
     /**
-     * @OA\DELETE(
-     *     path="/api/delete",
-     *     tags={"Profile"},
-     *     summary="Delete User",
-     *     @OA\Response(
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
-    public function destroy()
-    {
-        auth()->user()->delete();
-        return response()->json(['status' => true, 'message' => 'User data deleted!']);
-    }
-
-    /**
      * @OA\Post(
      *     path="/api/logout",
      *     tags={"UserAPI"},
