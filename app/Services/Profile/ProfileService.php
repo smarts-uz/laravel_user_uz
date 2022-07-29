@@ -267,24 +267,19 @@ class ProfileService
      */
     public function updatePortfolio($request, $portfolio)
     {
-        $user = auth()->user();
-        $data = $request->except('images');
-        $data['user_id'] = $user->id;
+        $user = $portfolio->user;
+        $imgData = $portfolio->image ? json_decode($portfolio->image) : [];
         if ($request->hasFile('images')) {
-            $portfolioImages = json_decode($portfolio->image);
-            foreach ($portfolioImages as $portfolioImage) {
-                File::delete(public_path() . '/portfolio/'. $portfolioImage);
-            }
-            $image = [];
             foreach ($request->file('images') as $uploadedImage) {
-                $filename = $user->name.'/'.time() . '_' . $uploadedImage->getClientOriginalName();
-                $uploadedImage->move(public_path() . '/portfolio/' . $user->name.'/', $filename);
-                $image[] = $filename;
+                $filename = $user->name . '/' . time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move(public_path() . '/portfolio/' . $user->name . '/', $filename);
+                $imgData[] = $filename;
             }
-            $data['image'] = json_encode($image);
         }
+        $data['image'] = $imgData;
         $portfolio->update($data);
         $portfolio->save();
+
         return $portfolio;
     }
 
