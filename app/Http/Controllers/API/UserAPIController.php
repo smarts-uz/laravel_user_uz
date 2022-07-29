@@ -56,7 +56,7 @@ class UserAPIController extends Controller
                 'role_id' => $user->role_id,
             ],
             'access_token' => $accessToken,
-            'socialpas' => isset($user->password)
+            'socialpas' => $user->password !== '' || $user->password !== null
         ]);
     }
 

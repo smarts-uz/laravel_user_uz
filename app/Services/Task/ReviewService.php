@@ -18,6 +18,11 @@ class ReviewService
         ChMessage::query()->where('from_id', $task->user_id)->where('to_id', $task->performer_id)->delete();
         ChMessage::query()->where('to_id', $task->user_id)->where('from_id', $task->performer_id)->delete();
         $performer = User::query()->find($task->performer_id);
+        if ($request->good == 1) {
+            $performer->increment('review_good');
+        } else {
+            $performer->increment('review_bad');
+        }
         $performer->increment('reviews');
         Review::query()->create([
             'description' => $request->comment,
