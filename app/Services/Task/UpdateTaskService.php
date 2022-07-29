@@ -197,9 +197,9 @@ class UpdateTaskService
         }
         $imgData = [];
         if ($request->hasFile('images')) {
-            $oldImages = $task->photos;
+            $oldImages = json_decode($task->photos);
             foreach ($oldImages as $oldImage) {
-                File::delete(public_path() . 'storage/uploads/'. $oldImage);
+                File::delete(public_path() . '/storage/uploads/'. $oldImage);
             }
             foreach ($request->file('images') as $uploadedImage) {
                 $fileName = time() . '_' . $uploadedImage->getClientOriginalName();
@@ -207,7 +207,8 @@ class UpdateTaskService
                 $imgData[] = $fileName;
             }
         }
-        $task->photos = json_encode($imgData);
+        $data['photos'] = $imgData;
+        $task->update($data);
         $task->save();
 
         return response()->json([
