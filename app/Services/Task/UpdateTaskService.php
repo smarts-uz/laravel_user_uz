@@ -229,7 +229,7 @@ class UpdateTaskService
         $task->phone = $user->phone_number;
         $task->save();
 
-        NotificationService::sendTaskNotification($task, $user->id);
+//        NotificationService::sendTaskNotification($task, $user->id);
 
         return [
             'task_id' => $task->id,
@@ -251,7 +251,7 @@ class UpdateTaskService
                 $task->update(['status' => 1, 'user_id' => $user->id, 'phone' => $user->phone_number]);
 
                 // send notification
-                NotificationService::sendTaskNotification($task, $user->id);
+//                NotificationService::sendTaskNotification($task, $user->id);
 
                 return $this->success([
                     'task_id' => $task->id,
