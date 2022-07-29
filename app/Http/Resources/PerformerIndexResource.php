@@ -16,8 +16,6 @@ class PerformerIndexResource extends JsonResource
     public function toArray($request)
     {
         $locale = app()->getLocale();
-        $goods = $this->goodReviews()->count();
-        $bads =  $this->badReviews()->count();
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
         if ($this->last_seen >= $date) {
             $lastSeen = 'online';

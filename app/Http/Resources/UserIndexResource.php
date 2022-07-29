@@ -102,7 +102,6 @@ class UserIndexResource extends JsonResource
             }
         }
         $goodReviews = $this->goodReviews();
-        $badReviews = $this->badReviews();
         $lastReview = $goodReviews->get()->last();
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
         if ($this->last_seen >= $date) {
