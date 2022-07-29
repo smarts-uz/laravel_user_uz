@@ -261,7 +261,7 @@
     "Закончить": "Tugatish",
     "Закончить работу": "Ishni tugatish",
     "Отменен": "Bekor qilingan",
-    "Заполните заявку": "Ilovani to'ldiring",
+    "Изменить задачу": "Vazifani tahrirlash",
     "Заполните форму": "Shaklni to'ldiring",
     "Зарабатывайте и добивайтесь <br> своих целей с Universal Services": "Umumjahon xizmatlar bilan maqsadlaringizga erishish va erishish",
     "Зарабатывайте на заказах с Universal Services без ограничений. Используйте сервис для подработки или начните развивать собственное дело.": "Umumjahon xizmatlar bilan cheklovlarsiz buyurtma berish. Ishtirok etish uchun xizmatdan foydalaning yoki o'z biznesingizni rivojlantira boshlang.",
@@ -742,5 +742,6 @@
     "Продолжить создание": "Yaratishda davom etish",
     "Новости сайта": "Sayt yangiliklari",
     "Дополнительные типы уведомлений:": "Qo'shimcha bildirishnoma turlari:",
-    "Напишите причину по которой задание не было закончено": "Topshiriq bajarilmaganligi sababini yozing"
+    "Напишите причину по которой задание не было закончено": "Topshiriq bajarilmaganligi sababini yozing",
+    "Количество заданий : ": "Vazifalar soni : "
 }
