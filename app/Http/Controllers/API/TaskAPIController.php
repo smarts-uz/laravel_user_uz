@@ -1430,6 +1430,11 @@ class TaskAPIController extends Controller
         return $this->update_task_service->verification($task, $request->validated());
     }
 
+    public function deleteImage(Request $request, Task $task)
+    {
+        return $this->update_task_service->deleteImage($task, $request);
+    }
+
 
     /**
      * @OA\Post(

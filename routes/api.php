@@ -62,6 +62,8 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::post('update-task/{task}/contacts', [TaskAPIController::class, 'updateContacts']); // used
     Route::post('update-task/{task}/verify', [TaskAPIController::class, 'updateVerify']); // used
 
+    Route::post('update-task/{task}/delete-image', [TaskAPIController::class, 'deleteImage']);
+
     Route::get('/notifications', [NotificationController::class, 'getNotifications']); //used
     Route::get('/count/notifications', [NotificationController::class, 'count']);
     Route::post('/read-notification/{notification}', [NotificationController::class, 'read_notification']); //used

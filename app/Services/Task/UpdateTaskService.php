@@ -195,12 +195,8 @@ class UpdateTaskService
                 'data' => $validator->errors()
             ]);
         }
-        $imgData = [];
+        $imgData = $task->photos ? json_decode($task->photos) : [];
         if ($request->hasFile('images')) {
-            $oldImages = json_decode($task->photos);
-            foreach ($oldImages as $oldImage) {
-                File::delete(public_path() . '/storage/uploads/'. $oldImage);
-            }
             foreach ($request->file('images') as $uploadedImage) {
                 $fileName = time() . '_' . $uploadedImage->getClientOriginalName();
                 $uploadedImage->move(public_path("storage/uploads/"), $fileName);
@@ -271,6 +267,17 @@ class UpdateTaskService
                 'sms_otp' => ['incorrect_message']
             ], 'Validation errors');
         }
+    }
+
+    public function deleteImage($request, $task)
+    {
+        $image = $request->get('image');
+        File::delete(public_path() . '/storage/uploads/' . $image);
+        $images = json_decode($task->photos);
+        $updatedImages = array_diff($images, [$image]);
+        $task->photos = json_encode(array_values($updatedImages));
+        $task->save();
+        return true;
     }
 
     /////////////////
