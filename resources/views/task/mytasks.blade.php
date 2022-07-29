@@ -213,7 +213,8 @@
 
         let myTaskCoordinates = [];
         let myCoordinates = [];
-        myTaskCoordinates = $.parseJSON(JSON.stringify({!! $tasks->where('coordinates', '!=', '') !!}));
+        myTaskCoordinates = $.parseJSON(JSON.stringify({!! $tasks->merge($perform_tasks)->where('coordinates', '!=', '') !!}));
+        console.log(myTaskCoordinates)
         if (myTaskCoordinates[Object.keys(myTaskCoordinates)[0]].coordinates != null) {
             myCoordinates = myTaskCoordinates[Object.keys(myTaskCoordinates)[0]].coordinates
         }
