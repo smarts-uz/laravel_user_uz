@@ -276,7 +276,7 @@ class ProfileService
                 $imgData[] = $filename;
             }
         }
-        $data['image'] = $imgData;
+        $data['image'] = json_encode($imgData);
         $portfolio->update($data);
         $portfolio->save();
 

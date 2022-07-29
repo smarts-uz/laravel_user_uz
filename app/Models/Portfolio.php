@@ -11,4 +11,9 @@ class Portfolio extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'portfolios';
     protected $guarded =[];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
