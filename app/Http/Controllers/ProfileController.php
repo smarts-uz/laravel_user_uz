@@ -196,14 +196,15 @@ class ProfileController extends Controller
 
     public function change_password(UserPasswordRequest $request)
     {
-
         $data = $request->validated();
-        if (!$data) {
-            return redirect()->route('settings#four');
+        $user = auth()->user();
+        if (!$data || (isset($data['old_password']) && $user->password)) {
+//            Alert::error(__('Ваш пароль быллен'));
+            return redirect()->back();
         }
 
         $data['password'] = Hash::make($data['password']);
-        auth()->user()->update($data);
+        $user->update($data);
 
         Alert::success(__('Ваш пароль был успешно обновлен'));
 

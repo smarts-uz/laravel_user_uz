@@ -24,6 +24,7 @@ class UserPasswordRequest extends FormRequest
     public function rules()
     {
         return [
+            'old_password' => '',
             'password' => 'required|confirmed|min:6'
         ];
     }
