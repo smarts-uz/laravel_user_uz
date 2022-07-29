@@ -19,6 +19,7 @@ use App\Models\User;
 use App\Services\Profile\ProfileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class ProfileAPIController extends Controller
 {

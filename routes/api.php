@@ -104,6 +104,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
         Route::post('/portfolio/create', [ProfileAPIController::class, 'portfolioCreate']); // used
         Route::post('/portfolio/{portfolio}/update', [ProfileAPIController::class, 'portfolioUpdate']); // used
         Route::post('/portfolio/{portfolio}/delete', [ProfileAPIController::class, 'portfolioDelete']); // used
+        Route::post('/portfolio/{portfolio}/delete-image', [PortfolioAPIController::class, 'deleteImage']);
         Route::get('/reviews', [ProfileAPIController::class, 'reviews']); // used
         Route::post('/video', [ProfileAPIController::class, 'videoStore']); // used
         Route::delete('/video/delete', [ProfileAPIController::class, 'videoDelete']); //end
