@@ -55,19 +55,23 @@
                         <span>{{count($user->tasks??[])}}</span> {{__('задание')}}
                     </p>
                 @endif
-                @switch($review_good + $review_bad)
-                    @case(0)
-                    <span>{{__('Отзывов нет')}}</span>
-                    @break
-                    @case(1)
-                    <span>{{__('Получил')}} {{($review_good) + ($review_bad) }} {{__('Отзыв')}}</span>
-                    @break
-                    @case(1 && 5)
-                    <span>{{__('Получил')}} {{($review_good) + ($review_bad) }} {{__('Отзыва')}}</span>
-                    @break
-                    @default
-                    <span>{{__('Получил')}} {{($review_good) + ($review_bad) }} {{__('Отзывов')}}</span>
-                @endswitch
+                @if(session('lang')=='uz')
+                    {{$review_good + $review_bad}} {{__('ta sharh oldim')}}
+                @else
+                    @switch($review_good + $review_bad)
+                        @case(0)
+                            <span>{{__('Отзывов нет')}}</span>
+                            @break
+                        @case(1)
+                            <span>{{__('Получил')}} {{($review_good) + ($review_bad) }} {{__('Отзыв')}}</span>
+                            @break
+                        @case(1 && 5)
+                            <span>{{__('Получил')}} {{($review_good) + ($review_bad) }} {{__('Отзыва')}}</span>
+                            @break
+                        @default
+                            <span>{{__('Получил')}} {{($review_good) + ($review_bad) }} {{__('Отзывов')}}</span>
+                    @endswitch
+                @endif
             </div>
             <div class="flex flex-row items-center mt-3" id="str1">
                 <div class="flex flex-row items-center text-gray-500 text-base"> <p>{{__('Средняя оценка:')}}</p>
