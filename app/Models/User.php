@@ -3,6 +3,7 @@
 namespace App\Models;
 
 
+use App\Models\Chat\ChMessage;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -153,7 +154,8 @@ class User extends \TCG\Voyager\Models\User
 
     public function messages()
     {
-        return $this->hasMany(\App\Models\Chat\ChMessage::class);
+
+        return $this->hasMany(\App\Models\Chat\ChMessage::class, '');
     }
 
     public function getBalanceAttribute()
@@ -184,8 +186,8 @@ class User extends \TCG\Voyager\Models\User
             $user->reviews()->delete();
             $user->portfolios()->delete();
             $user->compliances()->delete();
-            $user->messages()->delete();
 
+            ChMessage::query()->where('from_id', $user->id)->where('to_id', $user->id)->delete();
             TaskResponse::query()->where('user_id', $user->id)->orWhere('performer_id', $user->id)->delete();
             Notification::query()->where('user_id', $user->id)->orWhere('performer_id', $user->id)->delete();
 
