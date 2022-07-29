@@ -293,34 +293,35 @@
         }
 
         @foreach ($categories as $category)
-        $("#{{ preg_replace('/[ ,]+/', '', $category->name) }}").click(function () {
-            console.log('{{$category->slug}}', 123)
-            if ($("#{{$category->slug}}").hasClass("hidden")) {
+            $("#{{ preg_replace('/[ ,]+/', '', $category->name) }}").click(function () {
+                console.log('{{$category->slug}}', 123)
+                if ($("#{{$category->slug}}").hasClass("hidden")) {
 
-                $("#{{$category->slug}}").removeClass('hidden');
-            } else {
-                $("#{{$category->slug}}").addClass('hidden');
-            }
-        });
-        @foreach ($categories2 as $category2)
-        $("#{{$category2->id}}").click(function () {
-            var category = $(".categoryid").children("span");
-            $(category).each(function () {
-
-                if ($(this).attr("about") != {{$category2->id}}) {
-                    $(this).parents(".category").hide();
+                    $("#{{$category->slug}}").removeClass('hidden');
                 } else {
-                    $(this).parents(".category").show();
-                }
-                if ($(this).attr("about") != {{$category2->id}}) {
-                    $(this).parents(".category2").hide();
-                } else {
-                    $(this).parents(".category2").show();
+                    $("#{{$category->slug}}").addClass('hidden');
                 }
             });
-        });
         @endforeach
+        @foreach ($categories2 as $category2)
+            $("#{{$category2->id}}").click(function () {
+                var category = $(".categoryid").children("span");
+                $(category).each(function () {
+
+                    if ($(this).attr("about") != {{$category2->id}}) {
+                        $(this).parents(".category").hide();
+                    } else {
+                        $(this).parents(".category").show();
+                    }
+                    if ($(this).attr("about") != {{$category2->id}}) {
+                        $(this).parents(".category2").hide();
+                    } else {
+                        $(this).parents(".category2").show();
+                    }
+                });
+            });
         @endforeach
+
         $(".allshow").click(function () {
             var category = $(".categoryid").children("span");
             $(category).each(function () {
@@ -334,11 +335,9 @@
         });
 
         $(document).ready(function () {
-            var category = $(".category");
-            var category2 = $(".category2");
-            $(".lenght2").text(`{{__("Количество заданий :")}}` + category2.length);
-            if (category.is(":visible")) {
-                $(".lenght").text(`{{__("Количество заданий :")}}` + category.length);
+            $(".lenght2").text(`{{__("Количество заданий : ")}}` + $(".category2").length);
+            if ($(".category").is(":visible")) {
+                $(".lenght").text(`{{__("Количество заданий : ")}}` + $(".category").length);
             }
         });
     </script>
