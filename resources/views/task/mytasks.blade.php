@@ -22,7 +22,7 @@
                 <!-- Tab Contents -->
                 <div id="tab-contents">
                     <div id="first">
-                        <p class="p-5 lenght"></p>
+                        <p class="p-5">{{__("Количество заданий : ")}}<span class="lenght">0</span></p>
                         @foreach($perform_tasks as $task)
                             <div class="w-full border-t border-solid hover:bg-blue-100 category">
                                 <div class="md:grid md:grid-cols-10 p-2">
@@ -84,7 +84,7 @@
                     </div>
 
                     <div id="second" class="hidden">
-                        <p class="p-5 lenght2"></p>
+                        <p class="p-5">{{__("Количество заданий : ")}} <span class="lenght2">0</span></p>
                         @foreach($tasks as $task)
                             <div class="w-full border-t border-solid hover:bg-blue-100 category2 my-5">
                                 <div class="md:grid md:grid-cols-10 p-2">
@@ -213,7 +213,8 @@
 
         let myTaskCoordinates = [];
         let myCoordinates = [];
-        myTaskCoordinates = $.parseJSON(JSON.stringify({!! $tasks->where('coordinates', '!=', '') !!}));
+        myTaskCoordinates = $.parseJSON(JSON.stringify({!! $tasks->merge($perform_tasks)->where('coordinates', '!=', '') !!}));
+        console.log(myTaskCoordinates)
         if (myTaskCoordinates[Object.keys(myTaskCoordinates)[0]].coordinates != null) {
             myCoordinates = myTaskCoordinates[Object.keys(myTaskCoordinates)[0]].coordinates
         }
@@ -293,34 +294,35 @@
         }
 
         @foreach ($categories as $category)
-        $("#{{ preg_replace('/[ ,]+/', '', $category->name) }}").click(function () {
-            console.log('{{$category->slug}}', 123)
-            if ($("#{{$category->slug}}").hasClass("hidden")) {
+            $("#{{ preg_replace('/[ ,]+/', '', $category->name) }}").click(function () {
+                console.log('{{$category->slug}}', 123)
+                if ($("#{{$category->slug}}").hasClass("hidden")) {
 
-                $("#{{$category->slug}}").removeClass('hidden');
-            } else {
-                $("#{{$category->slug}}").addClass('hidden');
-            }
-        });
-        @foreach ($categories2 as $category2)
-        $("#{{$category2->id}}").click(function () {
-            var category = $(".categoryid").children("span");
-            $(category).each(function () {
-
-                if ($(this).attr("about") != {{$category2->id}}) {
-                    $(this).parents(".category").hide();
+                    $("#{{$category->slug}}").removeClass('hidden');
                 } else {
-                    $(this).parents(".category").show();
-                }
-                if ($(this).attr("about") != {{$category2->id}}) {
-                    $(this).parents(".category2").hide();
-                } else {
-                    $(this).parents(".category2").show();
+                    $("#{{$category->slug}}").addClass('hidden');
                 }
             });
-        });
         @endforeach
+        @foreach ($categories2 as $category2)
+            $("#{{$category2->id}}").click(function () {
+                var category = $(".categoryid").children("span");
+                $(category).each(function () {
+
+                    if ($(this).attr("about") != {{$category2->id}}) {
+                        $(this).parents(".category").hide();
+                    } else {
+                        $(this).parents(".category").show();
+                    }
+                    if ($(this).attr("about") != {{$category2->id}}) {
+                        $(this).parents(".category2").hide();
+                    } else {
+                        $(this).parents(".category2").show();
+                    }
+                });
+            });
         @endforeach
+
         $(".allshow").click(function () {
             var category = $(".categoryid").children("span");
             $(category).each(function () {
@@ -334,11 +336,9 @@
         });
 
         $(document).ready(function () {
-            var category = $(".category");
-            var category2 = $(".category2");
-            $(".lenght2").text(`{{__("Количество заданий :")}}` + category2.length);
-            if (category.is(":visible")) {
-                $(".lenght").text(`{{__("Количество заданий :")}}` + category.length);
+            $(".lenght2").text($(".category2").length);
+            if ($(".category").is(":visible")) {
+                $(".lenght").text($(".category").length);
             }
         });
     </script>

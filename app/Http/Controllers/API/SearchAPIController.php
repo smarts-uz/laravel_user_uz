@@ -177,6 +177,22 @@ class SearchAPIController extends Controller
         return view('task.changetask', compact('task'));
     }
 
+    public function cancelTask(Task $task)
+    {
+        if ($task->user_id != auth()->id()){
+            return response()->json([
+                'success' => false,
+                "message" => "No Permission"
+            ], 403);
+        }
+        $task->status = Task::STATUS_CANCELLED;
+        $task->save();
+        return response()->json([
+            'success' => true,
+            'message' => "Successfully cancelled"
+        ]);
+    }
+
     /**
      * @OA\DELETE(
      *     path="/api/delete-task/{task}",
@@ -209,14 +225,13 @@ class SearchAPIController extends Controller
      */
     public function delete_task(Task $task)
     {
-        if ($task->user_id != auth()->user()->id){
+        if ($task->user_id != auth()->id()){
             return response()->json([
                 'success' => false,
                 "message" => "No Permission"
             ], 403);
         }
-        $task->status = Task::STATUS_NOT_COMPLETED;
-        $task->save();
+        $task->delete();
         return response()->json([
             'success' => true,
             'message' => "Successfully deleted"

@@ -2,18 +2,12 @@
 
 @include('layouts.fornewtask')
 
-@section('style')
-
+@section('content')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
-    <script src="https://npmcdn.com/flatpickr/dist/l10n/uz_latn.js"></script>
-    <style>.flatpickr-calendar{max-width: 295px; width: 100%;} </style>
-@endsection
-
-
-@section('content')
+    <style>.flatpickr-calendar{max-width: 300px; width: 100%;} </style>
     <form action="{{route('task.create.date.store', $task->id)}}" novalidate method="post">
         @csrf
         <div class="mx-auto sm:w-9/12 w-11/12 my-16">
@@ -58,7 +52,7 @@
                                    <div class="grid grid-cols-2 gap-4">
                                     <div id="start-date" class="@if(!$errors->has('start_date')) xl:col-span-1 col-span-2 hidden @endif">
                                         <div class="flatpickr inline-block flex items-center">
-                                            <div class="flex " >
+                                            <div class="flex">
                                                 <input type="text" name="start_date"
                                                        placeholder="{{__('Какой месяц..')}}"
                                                        data-input
@@ -68,12 +62,12 @@
                                             <div class="flatpickr-calendar max-w-[295px] w-full sm:text-sm text-[10px]"></div>
                                             <div class="transform hover:scale-125 relative right-8">
                                                 <a class="input-button w-1 h-1" title="toggle" data-toggle>
-                                                    <i class="far fa-calendar-alt fill-current text-yellow-500"></i>
+                                                    <i class="far fa-calendar-alt fill-current text-yellow-500 cursor-pointer"></i>
                                                 </a>
                                             </div>
                                             <div class="transform hover:scale-125">
                                                 <a class="input-button w-1 h-1 " title="clear" data-clear>
-                                                    <i class="fas fa-trash-alt stroke-current text-red-600 "></i>
+                                                    <i class="fas fa-trash-alt stroke-current text-red-600 cursor-pointer"></i>
                                                 </a>
                                             </div>
                                         </div>
@@ -92,12 +86,12 @@
 
                                             <div class="transform hover:scale-125 relative right-8">
                                                 <a class="input-button w-1 h-1" title="toggle" data-toggle>
-                                                    <i class="far fa-calendar-alt fill-current text-yellow-500"></i>
+                                                    <i class="far fa-calendar-alt fill-current text-yellow-500 cursor-pointer"></i>
                                                 </a>
                                             </div>
                                             <div class="transform hover:scale-125">
                                                 <a class="input-button w-1 h-1" title="clear" data-clear>
-                                                    <i class="fas fa-trash-alt stroke-current text-red-600 "></i>
+                                                    <i class="fas fa-trash-alt stroke-current text-red-600 cursor-pointer"></i>
                                                 </a>
                                             </div>
                                         </div>
@@ -138,8 +132,6 @@
         </div>
     </form>
     <script>
-        flatpickr.localize(flatpickr.l10ns.uz_latn);
-        flatpickr.localize(flatpickr.l10ns.ru);
         flatpickr(".flatpickr",
             {
                 wrap: true,
@@ -149,7 +141,20 @@
                 minDate: "today",
                 dateFormat: "Y-m-d H:i",
                 altFormat: "Y-m-d H:i",
-                locale: "{{__('ru')}}",
+                @if(session('lang')=='ru')
+                    locale: 'ru',
+                @else
+                    locale: {
+                        weekdays: {
+                            shorthand: ['Yak', 'Du', 'Se', 'Chor', 'Pay', 'Juma', 'Shan'],
+                            longhand: ['Yakshanba', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba'],
+                        },
+                        months: {
+                            shorthand: ['Yan', 'Фев', 'Mart', 'Apr', 'May', 'Iyun', 'Iyul', 'Avg', 'Sen', 'Okt', 'Noy', 'Dek'],
+                            longhand: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust', 'Sentabr', 'Oktabr', 'Noyabr', 'Dekabr'],
+                        },
+                    }
+                @endif
             },
         )
         $('#periud').change(function () {

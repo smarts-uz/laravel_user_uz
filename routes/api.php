@@ -68,9 +68,8 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
 
     Route::get('/my-tasks-count', [TaskAPIController::class, 'my_tasks_count']); // used
     Route::get('/my-tasks', [TaskAPIController::class, 'my_tasks_all']); // used
-    Route::delete('/for_del_new_task/{task}', [TaskAPIController::class, 'deletetask']); //end +
+    Route::post('/cancel-task/{task}', [SearchAPIController::class, 'cancelTask']); // should use
     Route::delete('/delete-task/{task}', [SearchAPIController::class, 'delete_task']); // used
-    Route::delete('/delete', [UserAPIController::class, 'destroy']); //end +
 
     Route::get('account/verify', [LoginAPIController::class, 'verifyCredentials']); // used
     Route::get('account/verification/email', [LoginAPIController::class, 'send_email_verification']); //end +

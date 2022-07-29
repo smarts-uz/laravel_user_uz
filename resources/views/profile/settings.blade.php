@@ -1,7 +1,11 @@
 @extends("layouts.app")
 
 @section("content")
-
+    <style>.flatpickr-calendar{max-width: 300px; width: 100%;} </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
     <div class="w-11/12  mx-auto text-base mt-4">
         <div class="grid lg:grid-cols-3 grid-cols-2 lg:w-5/6 w-full mx-auto">
             {{-- user ma'lumotlari --}}
@@ -91,24 +95,21 @@
                                                 </div>
                                                 <div class="w-full block w-full mb-4">
                                                     <label for="date" class="mt-3 text-gray-500 text-sm">{{__('Дата рождения')}}</label>
-                                                    <div class="flatpickr inline-block flex flex-shrink">
+                                                    <div class="flatpickr inline-block flex items-center">
                                                         <div class="flex-shrink">
                                                             <input type="text" name="born_date" value="{{auth()->user()->born_date}}" placeholder="{{__('Какой месяц..')}}" data-input class=" bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm text-xs rounded-lg focus:outline-none focus:border-yellow-500 block pl-10 p-2.5 dark:bg-gray-700 dark:border-yellow-300 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required> <!-- input is mandatory -->
                                                         </div>
-
-                                                        <div class="transform hover:scale-125 relative right-8 my-auto">
+                                                        <div class="flatpickr-calendar w-full sm:text-sm"></div>
+                                                        <div class="transform hover:scale-125 relative right-8">
                                                             <a class="input-button w-1 h-1" title="toggle" data-toggle>
-                                                                <i class="far fa-calendar-alt fill-current text-yellow-500"></i>
+                                                                <i class="far fa-calendar-alt fill-current text-yellow-500 cursor-pointer"></i>
                                                             </a>
                                                         </div>
-                                                        <div class="transform hover:scale-125 my-auto">
-                                                            <a class="input-button w-1 h-1" title="clear" data-clear>
-                                                                <i class="fas fa-trash-alt stroke-current text-red-500 "></i>
+                                                        <div class="transform hover:scale-125">
+                                                            <a class="input-button w-1 h-1 " title="clear" data-clear>
+                                                                <i class="fas fa-trash-alt stroke-current text-red-600 cursor-pointer"></i>
                                                             </a>
                                                         </div>
-                                                        @error('born_date')
-                                                            <p class="text-red-500 mt-2 ml-2">{{ $message }}</p>
-                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="w-full block w-full mb-6 mt-2 flex gap-x-5">
@@ -160,11 +161,6 @@
                                     {{-- settings/ second tab -> enable notification start --}}
                                     <div class="md:w-4/5 w-full mt-5">
                                         <h3 class="font-bold text-3xl">{{__('Получать уведомления:')}}</h3>
-{{--                                        <div class="grid grid-cols-10 mt-5">--}}
-{{--                                            <input type="checkbox" id="notif_checkbox1"--}}
-{{--                                                   {{$user->system_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>--}}
-{{--                                            <span class="col-span-9 ml-2">{{__('Системные уведомления')}}</span>--}}
-{{--                                        </div>--}}
                                         <div class="grid grid-cols-10 mt-5">
                                             <input type="checkbox" id="notif_checkbox2"
                                                    {{$user->news_notification==1 ? 'checked' : ''}} class="w-5 h-5 col-span-1 my-auto mx-auto"/>
@@ -452,16 +448,29 @@
                 }
             });
         }
-
-
+        flatpickr(".flatpickr",
+            {
+                wrap: true,
+                altInput: true,
+                altFormat: "F j, Y",
+                dateFormat: "Y-m-d",
+                @if(session('lang')=='ru')
+                locale: 'ru',
+                @else
+                locale: {
+                    weekdays: {
+                        shorthand: ['Yak', 'Du', 'Se', 'Chor', 'Pay', 'Juma', 'Shan'],
+                        longhand: ['Yakshanba', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba'],
+                    },
+                    months: {
+                        shorthand: ['Yan', 'Фев', 'Mart', 'Apr', 'May', 'Iyun', 'Iyul', 'Avg', 'Sen', 'Okt', 'Noy', 'Dek'],
+                        longhand: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust', 'Sentabr', 'Oktabr', 'Noyabr', 'Dekabr'],
+                    },
+                }
+                @endif
+            }
+        )
     </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-    <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
-    <script src="https://npmcdn.com/flatpickr/dist/l10n/uz_latn.js"></script>
     <script src="https://unpkg.com/imask"></script>
     <script src="{{ asset('js/profile/setting.js') }}"></script>
 @endsection
