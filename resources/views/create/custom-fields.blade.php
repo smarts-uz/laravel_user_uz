@@ -26,7 +26,7 @@
                                 @if(in_array($key, json_decode($task->custom_field_values()->where('custom_field_id', $data->id)->first()->value)))
                                     selected
                                 @endif
-                                value="{{ $option }}"
+                                value="{{ $key }}"
                             >
                                 {{ __($option) }}
                             </option>
@@ -65,7 +65,7 @@
                                                 checked
                                             @endif
                                             class="mr-2  h-4 w-4" type="checkbox"
-                                            value="{{ $option }}" name="{{$data->name}}[]">
+                                            value="{{ $key }}" name="{{$data->name}}[]">
                                         <span class="text-slate-900">
                                             {{ __($option) }}
                                         </span>
@@ -106,7 +106,7 @@
                                            checked
                                        @endif
                                        id="radio_{{$key}}" name="{{$data->name}}[]"
-                                       value="{{$option}}">
+                                       value="{{$key}}">
 
 
                                 <label for="radio_{{$key}}">{{ __($option) }}</label>
