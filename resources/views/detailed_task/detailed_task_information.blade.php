@@ -84,68 +84,70 @@
         @endif
     @endforeach
 </div>
-    @foreach($task->custom_field_values as $value)
-        @if($value->value &&  $value->custom_field && $value->value != "[null]")
-            @switch($value->custom_field->type)
-                @case('input')
-                    @php $input_values[] = $value->custom_field->getTranslatedAttribute('label') . ': ' . json_decode($value->value)[0] @endphp
-                    @break
-                    <div class="ml-4 md:ml-12 flex flex-row mt-8">
-                        <div class="h-auto w-full ml-10">
-                            <p class="text-gray-800">
-                                @foreach($value->getValuesByIds() as $item)
-                                    <div class="flex flex-row items-center gap-x-4 mb-4">
-                                        <i class="fas fa-check text-yellow-500"></i>
-                                        <span>{{$item}}</span>
-                                    </div>
-                                @endforeach
-                            </p>
-                        </div>
-                    </div>
-                    @break
+@foreach($task->custom_field_values as $value)
+    @if($value->value &&  $value->custom_field && $value->value != "[null]")
+        @switch($value->custom_field->type)
+            @case('input')
+                @php $input_values[] = $value->custom_field->getTranslatedAttribute('label') . ': ' . json_decode($value->value)[0] @endphp
+            @break
 
-                @case('select')
-                    <div class="ml-4 md:ml-12 flex flex-row mt-8">
-                        <h1 class="font-bold h-auto w-48">{{ $value->custom_field->getTranslatedAttribute('label')}}</h1>
-                        <div class="h-auto w-full ml-10">
-                            <p class="text-gray-800">
-                                {{ array_values($value->getValuesByIds())[0] }}
-                            </p>
-                        </div>
-                    </div>
-                    @break
-
-                @case('radio')
-                    <div class="ml-4 md:ml-12 flex flex-row mt-8">
-                        <h1 class="font-bold h-auto w-48">{{ $value->custom_field->getTranslatedAttribute('label') }}</h1>
-                        <div class="h-auto w-full ml-10">
-                            <p class="text-gray-800">
-                                {{ array_values($value->getValuesByIds())[0] }}
-                            </p>
-                        </div>
-                    </div>
-                    @break
-            @endswitch
-        @endif
-    @endforeach
-    @if(isset($input_values))
-        <div class="ml-4 md:ml-12 flex flex-row mt-8">
-            <h1 class="font-bold h-auto w-48">{{ __('Параметры')  }}</h1>
-            <div class="flex flex-wrap gap-x-2 h-auto w-full ml-6">
-                <h1 class="ml-4">
-                    {{ implode(', ', $input_values)  }}
-                </h1>
+            @case('checkbox')
+            <div class="ml-4 md:ml-12 flex flex-row mt-8">
+                <div class="h-auto w-full ml-10">
+                    <p class="text-gray-800">
+                        @foreach($value->getValuesByIds() as $item)
+                            <div class="flex flex-row items-center gap-x-4 mb-4">
+                                <i class="fas fa-check text-yellow-500"></i>
+                                <span>{{$item}}</span>
+                            </div>
+                        @endforeach
+                    </p>
+                </div>
             </div>
-        </div>
-    @endif
+            @break
 
-    @if($task->docs == 1)
-        <div class="ml-4 md:ml-12 flex flex-row mt-8">
-            <h1 class="font-bold h-auto w-48">{{__('Необходимо предоставить личные документы')}}</h1>
-        </div>
-    @else
-        <div class="ml-4 md:ml-12 flex flex-row mt-8">
-            <h1 class="font-bold h-auto w-48">{{__('Личные документы не требуются')}}</h1>
-        </div>
+            @case('select')
+            <div class="ml-4 md:ml-12 flex flex-row mt-8">
+                <h1 class="font-bold h-auto w-48">{{ $value->custom_field->getTranslatedAttribute('label')}}</h1>
+                <div class="h-auto w-full ml-10">
+                    <p class="text-gray-800">
+                        {{ array_values($value->getValuesByIds())[0] }}
+                    </p>
+                </div>
+            </div>
+            @break
+
+            @case('radio')
+            <div class="ml-4 md:ml-12 flex flex-row mt-8">
+                <h1 class="font-bold h-auto w-48">{{ $value->custom_field->getTranslatedAttribute('label') }}</h1>
+                <div class="h-auto w-full ml-10">
+                    <p class="text-gray-800">
+                        {{ array_values($value->getValuesByIds())[0] }}
+                    </p>
+                </div>
+            </div>
+            @break
+        @endswitch
     @endif
+@endforeach
+@if(isset($input_values))
+    <div class="ml-4 md:ml-12 flex flex-row mt-8">
+        <h1 class="font-bold h-auto w-48">{{ __('Параметры')  }}</h1>
+        <div class="flex flex-wrap gap-x-2 h-auto w-full ml-6">
+            <h1 class="ml-4">
+                {{ implode(', ', $input_values)  }}
+            </h1>
+        </div>
+    </div>
+@endif
+
+@if($task->docs == 1)
+    <div class="ml-4 md:ml-12 flex flex-row mt-8">
+        <h1 class="font-bold h-auto w-48">{{__('Необходимо предоставить личные документы')}}</h1>
+    </div>
+@else
+    <div class="ml-4 md:ml-12 flex flex-row mt-8">
+        <h1 class="font-bold h-auto w-48">{{__('Личные документы не требуются')}}</h1>
+    </div>
+@endif
 
