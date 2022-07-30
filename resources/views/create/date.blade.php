@@ -56,7 +56,7 @@
                                                 <input type="text" name="start_date"
                                                        placeholder="{{__('Какой месяц..')}}"
                                                        data-input
-                                                       class="bg-gray-50 border focus:outline-none text-gray-900 text-base rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5"
+                                                       class="bg-gray-50 border focus:outline-none text-gray-900 text-base rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block sm:w-full w-60 p-2.5"
                                                        required> <!-- input is mandatory -->
                                             </div>
                                             <div class="flatpickr-calendar max-w-[295px] w-full sm:text-sm text-[10px]"></div>
@@ -80,7 +80,7 @@
                                             <div class="flex">
                                                 <input type="text" name="end_date" placeholder="{{__('Какой месяц..')}}"
                                                        data-input
-                                                       class="bg-gray-50 border focus:outline-none text-gray-900 text-base rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5"
+                                                       class="bg-gray-50 border focus:outline-none text-gray-900 text-base rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block sm:w-full w-60 p-2.5"
                                                        required> <!-- input is mandatory -->
                                             </div>
 

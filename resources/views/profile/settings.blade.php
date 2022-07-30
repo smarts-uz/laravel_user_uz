@@ -100,11 +100,9 @@
                                                            class="mt-3 text-gray-500 text-sm">{{__('Дата рождения')}}</label>
                                                     <div class="flatpickr inline-block flex items-center">
                                                         <div class="flex-shrink">
-                                                            <input type="text" name="born_date"
-                                                                   value="{{auth()->user()->born_date}}"
-                                                                   placeholder="{{__('Какой месяц..')}}" data-input
-                                                                   class=" bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm text-xs rounded-lg focus:outline-none focus:border-yellow-500 block pl-10 p-2.5 dark:bg-gray-700 dark:border-yellow-300 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                                   required> <!-- input is mandatory -->
+                                                            <input type="text" name="born_date" value="{{auth()->user()->born_date}}"
+                                                                   placeholder="{{__('Какой месяц..')}}" data-input required
+                                                                   class="sm:w-full w-60 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm text-xs rounded-lg focus:outline-none focus:border-yellow-500 block pl-10 p-2.5">
                                                         </div>
                                                         <div class="flatpickr-calendar w-full sm:text-sm"></div>
                                                         <div class="transform hover:scale-125 relative right-8">

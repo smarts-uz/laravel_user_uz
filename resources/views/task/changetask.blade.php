@@ -92,7 +92,7 @@
                                     <div class="flatpickr inline-block flex items-center sm:mb-0 mb-4 hidden" id="start-date">
                                         <div class="flex ">
                                             <input type="hidden" name="start_date" placeholder="{{ $task->getRawOriginal('start_date') }}" data-input="{{ $task->getRawOriginal('start_date') }}"
-                                                class="focus:outline-none w-full text-left bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm text-xs rounded-lg focus:border-blue-500 block pl-3 p-2.5 flatpickr-input"
+                                                class="focus:outline-none sm:w-full w-60 text-left bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm text-xs rounded-lg focus:border-blue-500 block pl-3 p-2.5 flatpickr-input"
                                                    value="{{ $task->getRawOriginal('start_date') }}">
                                         </div>
                                         <div class="flatpickr-calendar w-full sm:text-sm"></div>
@@ -112,7 +112,7 @@
                                     <div class="flatpickr inline-block flex items-center {{ $task->getRawOriginal('end_date')?'':"hidden" }} " id="end-date">
                                         <div class="flex">
                                             <input type="hidden" name="end_date" placeholder="{{ $task->getRawOriginal('end_date') }}" data-input="{{ $task->getRawOriginal('end_date') }}"
-                                                class="focus:outline-none w-full text-left bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm text-xs rounded-lg focus:border-blue-500 block pl-3 p-2.5 flatpickr-input"
+                                                class="focus:outline-none sm:w-full w-60 text-left bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm text-xs rounded-lg focus:border-blue-500 block pl-3 p-2.5 flatpickr-input"
                                                 required="" value="{{ $task->getRawOriginal('end_date') }}">
                                         </div>
                                         <div class="flatpickr-calendar w-full sm:text-sm"></div>
