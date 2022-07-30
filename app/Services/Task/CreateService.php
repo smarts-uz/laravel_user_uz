@@ -58,7 +58,7 @@ class CreateService
             $value = new CustomFieldsValue();
             $value->task_id = $task->id;
             $value->custom_field_id = $data->id;
-            $arr = $data->name !== null ? Arr::get(request()->all(), str_replace(' ', '_', $data->name)) : null;
+            $arr = $data->name !== null ? (Arr::get(request()->all(), str_replace(' ', '_', $data->name)) ?? [null] ): null;
             $value->value = is_array($arr) ? json_encode($arr) : $arr;
             $value->save();
         }
@@ -110,7 +110,7 @@ class CreateService
             $value = $task->custom_field_values()->where('custom_field_id', $data->id)->first() ?? new CustomFieldsValue();
             $value->task_id = $task->id;
             $value->custom_field_id = $data->id;
-            $arr = $data->name !== null ? Arr::get($request->all(), str_replace(' ', '_', $data->name)) : null;
+            $arr = $data->name !== null ? (Arr::get($request->all(), str_replace(' ', '_', $data->name)) ?? [null]): [];
             $value->value = is_array($arr) ? json_encode($arr) : $arr;
             $value->save();
         }

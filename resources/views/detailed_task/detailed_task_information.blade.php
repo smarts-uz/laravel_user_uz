@@ -85,12 +85,10 @@
     @endforeach
 </div>
     @foreach($task->custom_field_values as $value)
-        @if($value->value &&  $value->custom_field)
+        @if($value->value &&  $value->custom_field && $value->value != "[null]")
             @switch($value->custom_field->type)
                 @case('input')
-                    @if($value->value!="[null]")
-                        @php $input_values[] = $value->custom_field->getTranslatedAttribute('label') . ': ' . json_decode($value->value)[0] @endphp
-                    @endif
+                    @php $input_values[] = $value->custom_field->getTranslatedAttribute('label') . ': ' . json_decode($value->value)[0] @endphp
                     @break
                     <div class="ml-4 md:ml-12 flex flex-row mt-8">
                         <div class="h-auto w-full ml-10">
