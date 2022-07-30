@@ -66,7 +66,7 @@
                                         </p>
                                         @foreach ($categories2 as $category2)
                                             @if($category2->id == $task->category_id)
-                                                <span class="text-sm text-gray-500 hover:text-red-600 my-3"
+                                                <span class="text-sm text-gray-500 hover:text-red-600 my-3" id="text{{$category2->id}}"
                                                       about="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</span>
                                             @endif
                                         @endforeach
@@ -128,7 +128,7 @@
                                         </p>
                                         @foreach ($categories2 as $category2)
                                             @if($category2->id == $task->category_id)
-                                                <span class="text-sm text-gray-500 hover:text-red-600 my-3"
+                                                <span class="text-sm text-gray-500 hover:text-red-600 my-3" id="text1{{$category2->id}}"
                                                       about="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</span>
                                             @endif
                                         @endforeach
@@ -321,6 +321,8 @@
                     }
                 });
             });
+
+
         @endforeach
 
         $(".allshow").click(function () {
@@ -331,6 +333,12 @@
                 }
                 if ($(this).parents(".category2").is(":hidden")) {
                     $(this).parents(".category2").show();
+                }
+            });
+            $(document).ready(function () {
+                $(".lenght2").text($(".category2").length);
+                if ($(".category").is(":visible")) {
+                    $(".lenght").text($(".category").length);
                 }
             });
         });

@@ -92,18 +92,19 @@
             @break
 
             @case('checkbox')
-            <div class="ml-4 md:ml-12 flex flex-row mt-8">
-                <div class="h-auto w-full ml-10">
-                    <p class="text-gray-800">
-                        @foreach($value->getValuesByIds() as $item)
-                            <div class="flex flex-row items-center gap-x-4 mb-4">
-                                <i class="fas fa-check text-yellow-500"></i>
-                                <span>{{$item}}</span>
-                            </div>
-                        @endforeach
-                    </p>
+                <div class="ml-4 md:ml-12 flex flex-row mt-8">
+                    <h1 class="font-bold h-auto w-48">{{ $value->custom_field->getTranslatedAttribute('label') }}</h1>
+                    <div class="h-auto w-full ml-10">
+                        <div class="text-gray-800">
+                            @foreach($value->getValuesByIds() as $item)
+                                <div class="flex flex-row items-center gap-x-4 mb-4">
+                                    <i class="fas fa-check text-yellow-500"></i>
+                                    <span>{{$item}}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
-            </div>
             @break
 
             @case('select')
@@ -127,6 +128,7 @@
                 </div>
             </div>
             @break
+            @default
         @endswitch
     @endif
 @endforeach
