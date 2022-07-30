@@ -66,7 +66,7 @@
                                         </p>
                                         @foreach ($categories2 as $category2)
                                             @if($category2->id == $task->category_id)
-                                                <span class="text-sm text-gray-500 hover:text-red-600 my-3" id="text{{$category2->id}}"
+                                                <span class="text-sm text-gray-500 hover:text-red-600 my-3"
                                                       about="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</span>
                                             @endif
                                         @endforeach
@@ -128,7 +128,7 @@
                                         </p>
                                         @foreach ($categories2 as $category2)
                                             @if($category2->id == $task->category_id)
-                                                <span class="text-sm text-gray-500 hover:text-red-600 my-3" id="text1{{$category2->id}}"
+                                                <span class="text-sm text-gray-500 hover:text-red-600 my-3"
                                                       about="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</span>
                                             @endif
                                         @endforeach
@@ -295,9 +295,7 @@
 
         @foreach ($categories as $category)
             $("#{{ preg_replace('/[ ,]+/', '', $category->name) }}").click(function () {
-                console.log('{{$category->slug}}', 123)
                 if ($("#{{$category->slug}}").hasClass("hidden")) {
-
                     $("#{{$category->slug}}").removeClass('hidden');
                 } else {
                     $("#{{$category->slug}}").addClass('hidden');
@@ -306,20 +304,23 @@
         @endforeach
         @foreach ($categories2 as $category2)
             $("#{{$category2->id}}").click(function () {
+                let count = 0;
+                let count2 = 0;
                 var category = $(".categoryid").children("span");
                 $(category).each(function () {
-
                     if ($(this).attr("about") != {{$category2->id}}) {
                         $(this).parents(".category").hide();
-                    } else {
-                        $(this).parents(".category").show();
-                    }
-                    if ($(this).attr("about") != {{$category2->id}}) {
                         $(this).parents(".category2").hide();
                     } else {
+                        $(this).parents(".category").show();
                         $(this).parents(".category2").show();
+                        count++
                     }
                 });
+                console.log(count)
+                console.log(count2)
+            $(".lenght").text(count);
+            $(".lenght2").text(count2);
             });
 
 
