@@ -67,7 +67,9 @@
                                         @foreach ($categories2 as $category2)
                                             @if($category2->id == $task->category_id)
                                                 <span class="text-sm text-gray-500 hover:text-red-600 my-3"
-                                                      about="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</span>
+                                                      about="{{$category2->id}}" type="performer">
+                                                    {{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
+                                                </span>
                                             @endif
                                         @endforeach
                                         <p class="text-sm text-gray-500"> {{__("Количество откликов :")}}
@@ -129,7 +131,9 @@
                                         @foreach ($categories2 as $category2)
                                             @if($category2->id == $task->category_id)
                                                 <span class="text-sm text-gray-500 hover:text-red-600 my-3"
-                                                      about="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</span>
+                                                      about="{{$category2->id}}" type="user">
+                                                    {{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
+                                                </span>
                                             @endif
                                         @endforeach
                                         <p class="text-sm text-gray-500"> {{__("Количество откликов :")}} @if ($task->task_responses()->count() > 0)
@@ -214,11 +218,11 @@
         let myTaskCoordinates = [];
         let myCoordinates = [];
         myTaskCoordinates = $.parseJSON(JSON.stringify({!! $tasks->merge($perform_tasks)->where('coordinates', '!=', '') !!}));
-        console.log(myTaskCoordinates)
         if (myTaskCoordinates[Object.keys(myTaskCoordinates)[0]].coordinates != null) {
             myCoordinates = myTaskCoordinates[Object.keys(myTaskCoordinates)[0]].coordinates
         }
         ymaps.ready(init);
+
         function init() {
             if (myCoordinates) {
                 let location = ymaps.geolocation;
@@ -294,36 +298,37 @@
         }
 
         @foreach ($categories as $category)
-            $("#{{ preg_replace('/[ ,]+/', '', $category->name) }}").click(function () {
-                if ($("#{{$category->slug}}").hasClass("hidden")) {
-                    $("#{{$category->slug}}").removeClass('hidden');
+        $("#{{ preg_replace('/[ ,]+/', '', $category->name) }}").click(function () {
+            if ($("#{{$category->slug}}").hasClass("hidden")) {
+                $("#{{$category->slug}}").removeClass('hidden');
+            } else {
+                $("#{{$category->slug}}").addClass('hidden');
+            }
+        });
+        @endforeach
+
+        @foreach ($categories2 as $category2)
+        $("#{{$category2->id}}").click(function () {
+            let count = 0;
+            let count2 = 0;
+            var category = $(".categoryid").children("span");
+            $(category).each(function () {
+                if ($(this).attr("about") != {{$category2->id}}) {
+                    $(this).parents(".category").hide();
+                    $(this).parents(".category2").hide();
                 } else {
-                    $("#{{$category->slug}}").addClass('hidden');
+                    $(this).parents(".category").show();
+                    $(this).parents(".category2").show();
+                    if ($(this).attr("type") === "performer") {
+                        count++
+                    } else {
+                        count2++
+                    }
                 }
             });
-        @endforeach
-        @foreach ($categories2 as $category2)
-            $("#{{$category2->id}}").click(function () {
-                let count = 0;
-                let count2 = 0;
-                var category = $(".categoryid").children("span");
-                $(category).each(function () {
-                    if ($(this).attr("about") != {{$category2->id}}) {
-                        $(this).parents(".category").hide();
-                        $(this).parents(".category2").hide();
-                    } else {
-                        $(this).parents(".category").show();
-                        $(this).parents(".category2").show();
-                        count++
-                    }
-                });
-                console.log(count)
-                console.log(count2)
             $(".lenght").text(count);
             $(".lenght2").text(count2);
-            });
-
-
+        });
         @endforeach
 
         $(".allshow").click(function () {
@@ -336,19 +341,13 @@
                     $(this).parents(".category2").show();
                 }
             });
-            $(document).ready(function () {
-                $(".lenght2").text($(".category2").length);
-                if ($(".category").is(":visible")) {
-                    $(".lenght").text($(".category").length);
-                }
-            });
+            $(".lenght2").text($(".category2").length);
+            $(".lenght").text($(".category").length);
         });
 
         $(document).ready(function () {
             $(".lenght2").text($(".category2").length);
-            if ($(".category").is(":visible")) {
-                $(".lenght").text($(".category").length);
-            }
+            $(".lenght").text($(".category").length);
         });
     </script>
 @endpush
