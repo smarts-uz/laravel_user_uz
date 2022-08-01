@@ -3,18 +3,18 @@
 
 <style>
     .swiper-container{
-        width: 450px;
+        width: 400px;
         height: auto;
     }
     .nextt{
         position: relative;
-        bottom: 232px;
-        left: 413px;
+        bottom: 215px;
+        left: 360px;
         z-index: 50;
     }
     .prevv{
         position: relative;
-        bottom: 280px;
+        bottom: 265px;
         right: 3px;
         z-index: 50;
     }
@@ -28,17 +28,17 @@
                         <div class="swiper-wrapper">
                             <div class="swiper-slide ">
                                 <div class="card-image rounded-full shadow-lg">
-                                    <img class="rounded-full w-full" style="height: 450px" src="/storage/{!!str_replace("\\","/",setting('site.carusel_img1'))!!}" alt="Image Slider">
+                                    <img class="rounded-full w-full" style="height: 400px" src="/storage/{!!str_replace("\\","/",setting('site.carusel_img1'))!!}" alt="Image Slider">
                                 </div>
                             </div>
                             <div class="swiper-slide">
                                 <div class="card-image rounded-full shadow-lg">
-                                    <img class="rounded-full w-full" style="height: 450px" src="/storage/{!!str_replace("\\","/",setting('site.carusel_img2'))!!}" alt="Image Slider">
+                                    <img class="rounded-full w-full" style="height: 400px" src="/storage/{!!str_replace("\\","/",setting('site.carusel_img2'))!!}" alt="Image Slider">
                                 </div>
                             </div>
                             <div class="swiper-slide">
                                 <div class="card-image rounded-full shadow-lg">
-                                    <img class="rounded-full w-full" style="height: 450px" src="/storage/{!!str_replace("\\","/",setting('site.carusel_img3'))!!}" alt="Image Slider">
+                                    <img class="rounded-full w-full" style="height: 400px" src="/storage/{!!str_replace("\\","/",setting('site.carusel_img3'))!!}" alt="Image Slider">
                                 </div>
                             </div>
                         </div>
