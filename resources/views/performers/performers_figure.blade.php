@@ -120,23 +120,20 @@
             @auth
                 @if($tasks->where('status', '<=', 2)->count() > 0 && Auth::user()->id != $user->id)
                     <a id="open{{$user->id}}">
-                        <button
-                            class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
+                        <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
                             onclick="$('#performer_id').val({{$user->id}}); $('#performer_id_task').val({{$user->id}});">
                             {{__('Предложить задание')}}
                         </button>
                     </a>
                 @elseif ($tasks->where('status', '<=', 2)->count() > 0 && Auth::user()->id == $user->id)
-                    <a class="">
-                        <button
-                            class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
-                            {{__('Предложить задание')}}</button>
-                    </a>
+                    <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-gray-500 transition duration-300 text-white mt-3">
+                        {{__('Предложить задание')}}
+                    </button>
                 @else
                     <a onclick="toggleModal12('modal-id12')" class="">
-                        <button
-                            class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
-                            {{__('Предложить задание')}}</button>
+                        <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
+                            {{__('Предложить задание')}}
+                        </button>
                     </a>
                 @endif
                 <input type="hidden" id="performer_id" value="">

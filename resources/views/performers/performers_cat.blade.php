@@ -199,7 +199,6 @@
 
 <script>
     @foreach ($users as $user)
-        // let star = $('.review{{$user->id}}').text();
         $("#stars{{$user->id}}").raty({
             path: 'https://cdn.jsdelivr.net/npm/jquery-raty-js@2.8.0/lib/images',
             readOnly: true,
@@ -336,24 +335,6 @@
             document.getElementById('modal').style.display = "none";
             document.getElementById('modal_content').style.display = "none";
         };
-    </script>
-    <script>
-        @foreach($users as $user)
-        var star = $('#review{{$user->id}}').text();
-        if (star > 0) {
-            for (let i = 0; i < star; i++) {
-                $(".stars{{$user->id}}").append('<i class="fas fa-star text-yellow-500"></i>');
-            }
-            for (let u = star; u < 5; u++) {
-                $(".stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
-            }
-        }
-        else {
-            for (let e = 0; e < 5; e++) {
-                $(".stars{{$user->id}}").append('<i class="fas fa-star text-gray-500"></i>');
-            }
-        }
-        @endforeach
     </script>
 @endsection
 
