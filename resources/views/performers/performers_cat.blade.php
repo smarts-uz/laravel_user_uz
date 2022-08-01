@@ -226,7 +226,7 @@
             document.getElementById(modalID12 + "-backdrop").classList.toggle("flex");
         }
     </script>
-    <script> //Bu scriptda Active Performers id lari Session table dan Ajax orqali chaqililadi va ekranga chiqaziladi.
+    <script> //Bu scriptda Active Performers id lari User table dan Ajax orqali chaqililadi va ekranga chiqaziladi.
         let activePerformersId = [];
         $('#online').click(function () {
             let id, find;
@@ -239,12 +239,12 @@
                         $('.difficultTask').each(function () {
                             id = $(this).attr('id');
                             find = 0;
-                            $.each(activePerformersId, function (index, activePerformersId){
-                                if (activePerformersId.user_id == id) {
+                            $.each(activePerformersId, function (index, activePerformersId) {
+                                if (activePerformersId.id == id) {
                                     find = 1;
                                 }
                             });
-                            if (find){
+                            if (find) {
                                 $(this).show();
                             } else {
                                 $(this).hide();
