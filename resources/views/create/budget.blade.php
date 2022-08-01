@@ -84,10 +84,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-
-
                             </div>
                                 <div class="w-[100px]  md:w-[200px] md:hidden text-center">
                                     <select name="amount" class="border md:ml-14 bg-yellow-400  text-white font-semibold rounded-lg text-lg md:text-2xl my-4 py-3 px-10 hover:bg-yellow-600"
@@ -95,20 +91,20 @@
                                         <option value="0">
                                             {{__('Выберите бюджет')}}
                                         </option>
-                                        <option value="{{$category->max/5}}">
-                                            до {{$category->max/5}} UZS
+                                        <option value="{{round($category->max/5)}}">
+                                            до {{round($category->max/5)}} UZS
                                         </option>
-                                        <option value="{{$category->max/5 * 2}}">
-                                            до {{$category->max/5 * 2}} UZS
+                                        <option value="{{round($category->max/5 * 2)}}">
+                                            до {{round($category->max/5 * 2)}} UZS
                                         </option>
-                                        <option value="{{$category->max/5 * 3}}">
-                                            до {{$category->max/5 * 3}} UZS
+                                        <option value="{{round($category->max/5 * 3)}}">
+                                            до {{round($category->max/5 * 3)}} UZS
                                         </option>
-                                        <option value="{{$category->max/5 * 4}}">
-                                            до {{$category->max/5 * 4}} UZS
+                                        <option value="{{round($category->max/5 * 4)}}">
+                                            до {{round($category->max/5 * 4)}} UZS
                                         </option>
-                                        <option value="до {{$category->max}} UZS">
-                                            до {{$category->max}} UZS
+                                        <option value="до {{round($category->max)}} UZS">
+                                            до {{round($category->max)}} UZS
                                         </option>
                                     </select>
                                 </div>
@@ -154,27 +150,21 @@
             $("#slider-range-min").slider({
                 range: "min",
                 value: 0,
-                min: 0,//{{$category->max}}/6,
+                min: 0,
                 max: {{$category->max}},
                 step: {{$category->max}}/5,
                 slide: function(event, ui) {
 
                     var maximum = {{$category->max}};
-                    var pre_maximum = Math.floor({{$category->max}} - ({{$category->max}}/6));
                     if (maximum == Math.floor(ui.value)) {
-
                         $("#amount").val("до " + maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
                         $("#amount2").val("до " + maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
-                    }else if (pre_maximum == Math.floor(ui.value)){
-                        $("#amount").val("до " + maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
-                        $("#amount2").val("до " + maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
-                    } else if(Math.floor(ui.value) == 0) {
+                    }else if(Math.floor(ui.value) == 0) {
                         $("#amount").val("0 " + " UZS");
                         $("#amount2").val("0 " + " UZS");
                     }
                     else {
-                        var delitel = ui.value / 1000;
-                        var round   = Math.floor(delitel)*1000;
+                        var round   = Math.floor(ui.value);
                         $("#amount").val("до " + round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
                         $("#amount2").val("до " + round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
 
@@ -187,8 +177,8 @@
             $(".ui-slider-range").css("background", 'linear-gradient(rgb(255, 132, 56)  , rgb(255, 132, 56))');
             $(".ui-slider-range").css("top", '-147px');
             $(".ui-slider-handle").css("display", 'block');
-            var delitel = Math.floor($("#slider-range-min").slider("value")) / 1000;
-            var round   = Math.floor(delitel)*1000;
+            var delitel = Math.floor($("#slider-range-min").slider("value"));
+            var round   = Math.floor(delitel);
             $("#amount").val(' ' + round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' UZS');
             $("#amount2").val(' ' + round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' UZS');
         });

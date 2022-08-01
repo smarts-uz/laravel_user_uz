@@ -35,14 +35,12 @@
                 @foreach($task->category->custom_fields as $data)
                     @include('create.custom-fields')
                 @endforeach
-
-
                 <div class="md:flex mt-5">
                     <select onchange="func_for_select(Number(this.options[this.selectedIndex].value));"
                             class="mr-4 form-select block w-full  px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-yellow-500 focus:outline-none"
                             aria-label="Default select example">
                         <option disabled>{{__('Выберите одну из категорий')}}</option>
-                        <option>{{$task->category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}</option>
+                        <option>{{$task->category->parent->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}</option>
                     </select>
 
                     <select name="category_id"
@@ -251,17 +249,17 @@
                         <select
                             class="border border-gray-300 rounded-md w-full focus:outline-none focus:border-yellow-500 py-2 px-4"
                             name="budget" id="budget">
-                            <option @if($task->budget==$task->category->max/5) selected @endif value="{{$task->category->max/5}}">
-                                {{$task->category->max/5}} UZS
+                            <option @if($task->budget==round($task->category->max/5)) selected @endif value="{{round($task->category->max/5)}}">
+                                {{round($task->category->max/5)}} UZS
                             </option>
-                            <option @if($task->budget==$task->category->max/5*2) selected @endif value="{{$task->category->max/5*2}}">
-                                {{$task->category->max/5*2}} UZS
+                            <option @if($task->budget==round($task->category->max/5*2)) selected @endif value="{{round($task->category->max/5*2)}}">
+                                {{round($task->category->max/5*2)}} UZS
                             </option>
-                            <option @if($task->budget==$task->category->max/5*3) selected @endif value="{{$task->category->max/5*3}}">
-                                {{$task->category->max/5*3}} UZS
+                            <option @if($task->budget==round($task->category->max/5*3)) selected @endif value="{{round($task->category->max/5*3)}}">
+                                {{round($task->category->max/5*3)}} UZS
                             </option>
-                            <option @if($task->budget==$task->category->max/5*4) selected @endif value="{{$task->category->max/5*4}}">
-                                {{$task->category->max/5*4}} UZS
+                            <option @if($task->budget==round($task->category->max/5*4)) selected @endif value="{{round($task->category->max/5*4)}}">
+                                {{round($task->category->max/5*4)}} UZS
                             </option>
                             <option @if($task->budget==$task->category->max) selected @endif value="{{$task->category->max}}">
                                 {{$task->category->max}} UZS
