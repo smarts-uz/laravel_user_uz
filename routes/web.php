@@ -40,7 +40,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/fordelnotif/{notification}/', [PerformersController::class, 'deleteNotification'])->name('performers.deleteNotification'); // javoxir
 });
 Route::post('del-notif', [PerformersController::class, 'del_all_notif']); // javoxir
-
 Route::get('perf-ajax/{id}', [PerformersController::class, 'perf_ajax']); // javoxir
 Route::get('active-performers', [PerformersController::class, 'ajaxAP'])->name('performers.active_performers'); // Shuxrat78
 Route::post('give-task', [PerformersController::class, 'give_task']); // javoxir
@@ -130,6 +129,8 @@ Route::get('/geotaskshint', [Controller::class, 'geotaskshint'])->name('geotasks
 Route::get('/security', [Controller::class, 'security'])->name('security'); // javoxir
 Route::get('/badges', [Controller::class, 'badges'])->name('badges'); // javoxir
 Route::get('/news', [Controller::class, 'news'])->name('news'); // javoxir
+Route::get('/privacy', [Controller::class, 'policy'])->name('privacy'); // javoxir
+
 #endregion
 
 #region Profile
