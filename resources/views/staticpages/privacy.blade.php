@@ -2,11 +2,11 @@
 
 @section('content')
 
-    <div class="m-5 ">
+    <div class="m-3">
 
         @foreach ($policies as $policy)
-            <h4 class="font-semibold mb-1">{{$policy->title}}</h4>
-            <p>{{$policy->text}}</p>
+            <h4 class="font-semibold m-3">{{$policy->title}}</h4>
+            <p class="text-base">{{$policy->text}}</p>
         @endforeach
     </div>
 
