@@ -4,9 +4,9 @@
 
     <div class="m-3">
 
-        @foreach ($policies as $policy)
-            <h4 class="font-semibold m-3">{{$policy->title}}</h4>
-            <p class="text-base">{{$policy->text}}</p>
+        @foreach ($policies as $polic)
+            <h4 class="font-semibold m-3">{{$polic->title}}</h4>
+            <p class="text-base">{{$polic->text}}</p>
         @endforeach
     </div>
 
