@@ -4,7 +4,8 @@
                 <div class="w-1/2 h-24 bg-contain bg-no-repeat bg-center" style="background-image: url({{asset('images/like.png')}});">
                 </div>
                 <div class="font-bold text-xs text-gray-700 text-left my-auto">
-                {!!__('Станьте исполнителем <br> U-ser. И начните  <br> зарабатывать')!!}
+                    {!!__('Станьте исполнителем <br> U-ser. И начните  <br> зарабатывать')!!}
+                </div>
             </a>
         @endif
     <div class="mt-6 ml-4">
