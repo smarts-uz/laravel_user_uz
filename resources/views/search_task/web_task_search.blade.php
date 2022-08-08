@@ -47,17 +47,17 @@
                                             class="form-select py-1 px-2 w-full text-gray-700 border-2 rounded-md focus:shadow-sm focus:border-yellow-500 text-lg-left text-black-700 rounded"
                                             onchange="">
                                             <option value="">{{__('Без ограничений')}}</option>
-                                            <option value="1.5">1.5 {{__('км')}}</option>
-                                            <option value="3">3 {{__('км')}}</option>
-                                            <option value="5">5 {{__('км')}}</option>
-                                            <option value="10">10 {{__('км')}}</option>
-                                            <option value="15" >15 {{__('км')}}</option>
-                                            <option value="20">20 {{__('км')}}</option>
-                                            <option value="30">30 {{__('км')}}</option>
-                                            <option value="50" selected="selected">50 {{__('км')}}</option>
-                                            <option value="75">75 {{__('км')}}</option>
-                                            <option value="100">100 {{__('км')}}</option>
-                                            <option value="200">200 {{__('км')}}</option>
+                                            <option value="1.5|13">1.5 {{__('км')}}</option>
+                                            <option value="3|12">3 {{__('км')}}</option>
+                                            <option value="5|11">5 {{__('км')}}</option>
+                                            <option value="10|10">10 {{__('км')}}</option>
+                                            <option value="15|9">15 {{__('км')}}</option>
+                                            <option value="20|9">20 {{__('км')}}</option>
+                                            <option value="30|8">30 {{__('км')}}</option>
+                                            <option value="50|7.5" selected="selected">50 {{__('км')}}</option>
+                                            <option value="75|7">75 {{__('км')}}</option>
+                                            <option value="100|6.5">100 {{__('км')}}</option>
+                                            <option value="200|6">200 {{__('км')}}</option>
                                         </select>
                                     </div>
                                     <div class="relative pl-5 md:w-2/5">

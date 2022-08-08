@@ -54,8 +54,11 @@ $('#geobut2').show();
 });
 
 $("#selectGeo").change(function() {
-r = $('#selectGeo').val();
-console.log(r)
+/*r = $('#selectGeo').val();*/
+const mArr = $('#selectGeo').val().split("|");
+r = mArr[0];
+mArr[1] ? zoomVar = mArr[1] : zoomVar = 8;
+console.log(mArr);
 /*map_reset(k);*/
 });
 
@@ -290,41 +293,41 @@ console.log('Ошибка: ' + err);
 );
 }
 
-switch(r) {
-    case '200':
-        zoomVar = 6;
-        break;
-    case '100':
-        zoomVar = 6.5;
-        break;
-    case '75':
-        zoomVar = 7;
-        break;
-    case '50':
-        zoomVar = 7.5;
-        break;
-    case '30':
-        zoomVar = 8;
-        break;
-    case '20':
-        zoomVar = 9;
-        break;
-    case '15':
-        zoomVar = 9;
-        break;
-    case '10':
-        zoomVar = 10;
-        break;
-    case '5':
-        zoomVar = 11;
-        break;
-    case '3':
-        zoomVar = 12;
-        break;
-    case '1.5':
-        zoomVar = 13;
-        break;
-    }
+/*switch(r) {*/
+/*    case '200':*/
+/*        zoomVar = 6;*/
+/*        break;*/
+/*    case '100':*/
+/*        zoomVar = 6.5;*/
+/*        break;*/
+/*    case '75':*/
+/*        zoomVar = 7;*/
+/*        break;*/
+/*    case '50':*/
+/*        zoomVar = 7.5;*/
+/*        break;*/
+/*    case '30':*/
+/*        zoomVar = 8;*/
+/*        break;*/
+/*    case '20':*/
+/*        zoomVar = 9;*/
+/*        break;*/
+/*    case '15':*/
+/*        zoomVar = 9;*/
+/*        break;*/
+/*    case '10':*/
+/*        zoomVar = 10;*/
+/*        break;*/
+/*    case '5':*/
+/*        zoomVar = 11;*/
+/*        break;*/
+/*    case '3':*/
+/*        zoomVar = 12;*/
+/*        break;*/
+/*    case '1.5':*/
+/*        zoomVar = 13;*/
+/*        break;*/
+/*    }*/
 
 let myMap2 = new ymaps.Map('map', {
 center: [userCoordinates[0], userCoordinates[1]],
