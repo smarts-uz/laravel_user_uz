@@ -498,7 +498,11 @@ class ProfileService
                 ];
             }
         }
-        $checkbox = implode(",", $categories);
+        $parentCategories = \App\Models\Category::with('childs')->where('parent_id', null)->whereIn('id', $categories)->get();
+        $childCategories = $parentCategories->pluck('childs')->flatten()->pluck('id')->toArray();
+        $withoutParents = array_diff($categories, $parentCategories->pluck('id')->toArray());
+        $allChildCategories = array_unique(array_merge($childCategories, $withoutParents));
+        $checkbox = implode(",", $allChildCategories);
         $smsNotification = 0;
         $emailNotification = 0;
         if ($request->get('sms_notification') == 1) {

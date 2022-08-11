@@ -47,7 +47,9 @@ class FilterTaskService
         $tasks->whereIn('id', $tasks_items);
         if (isset($data['categories'])) {
             $categories = is_array($data['categories'])?$data['categories']:json_decode($data['categories']);
-            $tasks->whereIn('category_id', $categories)->pluck('id')->toArray();
+            $childCategories = Category::query()->whereIn('parent_id',$categories)->pluck('id')->toArray();
+            $allCategories = array_unique(array_merge($categories, $childCategories));
+            $tasks->whereIn('category_id', $allCategories)->pluck('id')->toArray();
         }
         if (isset($data['child_categories'])) {
             $categories = is_array($data['child_categories'])?$data['child_categories']:json_decode($data['child_categories']);
