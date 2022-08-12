@@ -160,3 +160,11 @@ function getContentImage($page, $key): string
     $path = str_replace('\\', '/', $path);
     return asset('storage/' . $path);
 }
+
+function updateCache($key, $property, $value)
+{
+    $data = cache()->get($key);
+    $data[$property] = $value;
+    cache()->put($key, $data);
+    return $data;
+}

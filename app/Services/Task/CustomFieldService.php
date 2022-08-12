@@ -12,7 +12,7 @@ class CustomFieldService
         $values = $this->getValuesOfTask($task);
 
         foreach ($custom_fields as $custom_field) {
-            $result[] = $this->initCustomField($custom_field, $task,$values);
+            $result[] = $this->initCustomField($custom_field, $task, $values);
         }
         return $result;
     }
@@ -23,11 +23,12 @@ class CustomFieldService
         $result = [];
         $values = $this->getValuesOfTask($task);
         foreach ($custom_fields as $custom_field) {
-            $result[] = $this->initCustomField($custom_field, $task,$values);
+            $result[] = $this->initCustomField($custom_field, $task, $values);
         }
         return $result;
     }
-    private function initCustomField($custom_field,$task, $values)
+
+    private function initCustomField($custom_field, $task, $values)
     {
         $item = [];
         $item['description'] = $custom_field->getTranslatedAttribute('description');
@@ -35,21 +36,21 @@ class CustomFieldService
         $item['title'] = $custom_field->getTranslatedAttribute('title');
         $item['label'] = $custom_field->getTranslatedAttribute('label');
         $item['type'] = $custom_field->type;
-        $item['options'] = $this->setOption($custom_field,$task);
+        $item['options'] = $this->setOption($custom_field, $task);
         $item['values'] = $custom_field->values;
         $item['order'] = $custom_field->order;
         $item['name'] = $custom_field->name;
-        $item['task_value'] = ($custom_field->type == 'input' or $custom_field->type == 'number') ? count($values[$custom_field->id]) ? (string)$values[$custom_field->id][0]:'':'';
+        $item['task_value'] = ($custom_field->type == 'input' or $custom_field->type == 'number') ? count($values[$custom_field->id]) ? (string)$values[$custom_field->id][0] : '' : '';
         return $item;
 
     }
 
-    private function setOption($custom_field,$task)
+    private function setOption($custom_field, $task)
     {
         $values = $this->getValuesOfTask($task);
 
-        $options = app()->getLocale()=='ru' && $custom_field->options_ru ? $custom_field->options_ru: $custom_field->options;
-        $options = $options ? $options['options']:[];
+        $options = app()->getLocale() == 'ru' && $custom_field->options_ru ? $custom_field->options_ru : $custom_field->options;
+        $options = $options ? $options['options'] : [];
         $item = [];
         $data = [];
         foreach ($options as $key => $option) {
@@ -60,6 +61,7 @@ class CustomFieldService
         }
         return $data;
     }
+
     private function getValuesOfTask($task)
     {
         $data = [];
@@ -67,7 +69,7 @@ class CustomFieldService
             $data[$custom_field->id] = [];
         }
         foreach ($task->custom_field_values as $custom_fields_value) {
-            $data[$custom_fields_value->custom_field_id] = $custom_fields_value->value?json_decode($custom_fields_value->value):[];
+            $data[$custom_fields_value->custom_field_id] = $custom_fields_value->value ? json_decode($custom_fields_value->value) : [];
         }
 
         return $data;
@@ -78,7 +80,7 @@ class CustomFieldService
     {
         if (isset($task)) {
             $field = $task->custom_field_values()->where('custom_field_id', $data_id)->first();
-            if ($field && is_array( json_decode($field->value)) && in_array($option, json_decode($field->value))) {
+            if ($field && is_array(json_decode($field->value)) && in_array($option, json_decode($field->value))) {
                 return true;
             };
         }
