@@ -158,13 +158,13 @@ class ChatifyMessenger
      * Make messages between the sender [Auth user] and
      * the receiver [User id] as seen.
      *
-     * @param int $user_id
-     * @return bool
+     * @param $user_id
+     * @return int
      */
-    public function makeSeen($user_id)
+    public static function makeSeen($user_id): int
     {
-        Message::Where('from_id', $user_id)
-            ->where('to_id', Auth::user()->id)
+        Message::query()->where('from_id', $user_id)
+            ->where('to_id', Auth::id())
             ->where('seen', 0)
             ->update(['seen' => 1]);
         return 1;

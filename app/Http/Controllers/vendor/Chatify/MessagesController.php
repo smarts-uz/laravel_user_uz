@@ -205,7 +205,7 @@ class MessagesController extends Controller
     {
         $query = $this->chatify->fetchMessagesQuery($request['id'])->latest();
         $messages = $query->paginate($request->per_page ?? $this->perPage);
-        $query->where('seen',0)->update(['seen' => 1]);
+        $this->chatify->makeSeen($request['id']);
         $totalMessages = $messages->total();
         $lastPage = $messages->lastPage();
         $response = [
@@ -303,62 +303,12 @@ class MessagesController extends Controller
         ], 200);
     }
 
-    /**
-     * Put a user in the favorites list
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function favorite(Request $request)
-    {
-        // check action [star/unstar]
-        if (Chatify::inFavorite($request['user_id'])) {
-            // UnStar
-            Chatify::makeInFavorite($request['user_id'], 0);
-            $status = 0;
-        } else {
-            // Star
-            Chatify::makeInFavorite($request['user_id'], 1);
-            $status = 1;
-        }
-
-        // send the response
-        return Response::json([
-            'status' => @$status,
-        ], 200);
-    }
-
-    /**
-     * Get favorites list
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getFavorites(Request $request)
-    {
-        $favoritesList = null;
-        $favorites = ChFavorite::where('user_id', Auth::user()->id);
-        foreach ($favorites->get() as $favorite) {
-            // get user data
-            $user = User::where('id', $favorite->favorite_id)->first();
-            $favoritesList .= view('Chatify::layouts.favorite', [
-                'user' => $user,
-            ]);
-        }
-        // send the response
-        return Response::json([
-            'count' => $favorites->count(),
-            'favorites' => $favorites->count() > 0
-                ? $favoritesList
-                : 0,
-        ], 200);
-    }
 
     /**
      * Search in messenger
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function search(Request $request)
     {
@@ -395,7 +345,7 @@ class MessagesController extends Controller
      * Get shared photos
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function sharedPhotos(Request $request)
     {
@@ -493,7 +443,7 @@ class MessagesController extends Controller
      * Set user's active status
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function setActiveStatus(Request $request)
     {
@@ -507,8 +457,6 @@ class MessagesController extends Controller
     }
 
     public static function unseenCount() {
-        return ChMessage::query()->where('seen', 0)->where(function ($query) {
-            $query->where('to_id', Auth::id())->orWhere('from_id', Auth::id());
-        })->count();
+        return ChMessage::query()->where('to_id', Auth::id())->where('seen', 0)->count();
     }
 }
