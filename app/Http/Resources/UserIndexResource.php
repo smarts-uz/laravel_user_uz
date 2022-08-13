@@ -90,7 +90,7 @@ class UserIndexResource extends JsonResource
             'message' => $message
         ];
 
-        $tasks = Task::query()->where(['performer_id' => $this->id])->where('status', Task::STATUS_COMPLETE)->get();
+        $tasks = Task::query()->where(['performer_id' => $this->id])->where('status', Task::STATUS_COMPLETE)->latest()->get();
         $performed_tasks = $tasks->groupBy('category_id');
         $performed_tasks_count = [];
         foreach ($performed_tasks as $id => $task) {
