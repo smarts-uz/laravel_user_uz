@@ -15,6 +15,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use JetBrains\PhpStorm\ArrayShape;
 
 class UpdateTaskService
 {
@@ -35,7 +36,7 @@ class UpdateTaskService
         $this->custom_field_service = new CustomFieldService();
     }
 
-    public function get_custom($task): JsonResponse
+    public function get_custom($task): array
     {
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM);
         if (!$task->category->customFieldsInCustom->count()) {
@@ -44,34 +45,37 @@ class UpdateTaskService
             }
             return $this->get_address($task);
         }
-        return response()->json(['route' => 'custom', 'task_id' => $task->id, 'steps' => 6, 'custom_fields' => $custom_fields]);
+        return ['route' => 'custom', 'task_id' => $task->id, 'steps' => 6, 'custom_fields' => $custom_fields];
     }
 
-    public function get_remote($task): JsonResponse
+    #[ArrayShape([])]
+    public function get_remote($task): array
     {
-        return response()->json([
+        return [
             'route' => 'remote', 'task_id' => $task->id, 'steps' => 5,
             'custom_fields' => []
-        ]);
+        ];
     }
 
-    public function get_address($task): JsonResponse
+    #[ArrayShape([])]
+    public function get_address($task): array
     {
         if ($task->category->parent->double_address) {
-            return response()->json(['route' => 'address', 'address' => 2, 'steps' => 4, 'custom_fields' => []]);
+            return ['route' => 'address', 'address' => 2, 'steps' => 4, 'custom_fields' => []];
         }
-        return response()->json(['route' => 'address', 'address' => 1, 'steps' => 4, 'custom_fields' => []]);
+        return ['route' => 'address', 'address' => 1, 'steps' => 4, 'custom_fields' => []];
     }
 
-    public function get_date($task): JsonResponse
+    #[ArrayShape([])]
+    public function get_date($task): array
     {
-        return response()->json([
+        return [
             'route' => 'date', 'task_id' => $task->id, 'steps' => 3,
             'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_DATE)
-        ]);
+        ];
     }
 
-    public function updateName($task, $data): JsonResponse
+    public function updateName($task, $data): array
     {
         updateCache('task_update_' . $task->id, 'name', $data['name']);
         updateCache('task_update_' . $task->id, 'category_id', $data['category_id']);
@@ -79,7 +83,7 @@ class UpdateTaskService
         return $this->get_custom($task);
     }
 
-    public function updateCustom($task, $request): JsonResponse
+    public function updateCustom($task, $request): array
     {
         $customFields = [];
         foreach ($task->category->custom_fields()->where('route', CustomField::ROUTE_CUSTOM)->get() as $customField) {
@@ -96,16 +100,16 @@ class UpdateTaskService
         return $this->get_address($task);
     }
 
-    public function updateRemote($task, $data): JsonResponse
+    public function updateRemote($task, $data): array
     {
         return match ($data['radio']) {
             CustomField::ROUTE_ADDRESS => $this->get_address($task),
             CustomField::ROUTE_REMOTE => $this->get_date($task),
-            default => response()->json(['success' => false, 'message' => 'Incorrect value'])
+            default => ['success' => false, 'message' => 'Incorrect value']
         };
     }
 
-    public function updateAddress($task, $data): JsonResponse
+    public function updateAddress($task, $data): array
     {
         $length = min(count($data['points']), setting('site.max_address'));
         $addresses = [];
@@ -128,47 +132,50 @@ class UpdateTaskService
 
     }
 
-    public function updateDate($task, $data): JsonResponse
+    public function updateDate($task, $data): array
     {
         unset($data['task_id']);
         updateCache('task_update_' . $task->id, 'date', $data);
         return $this->get_budget($task);
     }
 
-    public function get_budget($task): JsonResponse
+    #[ArrayShape([])]
+    public function get_budget($task): array
     {
-        return response()->json([
+        return [
             'route' => 'budget', 'task_id' => $task->id, 'steps' => 2, 'price' => Category::query()->findOrFail($task->category_id)->max,
             'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET)
-        ]);
+        ];
     }
 
-    public function updateBudget($task, $data): JsonResponse
+    public function updateBudget($task, $data): array
     {
         updateCache('task_update_' . $task->id, 'budget', $data['amount']);
         updateCache('task_update_' . $task->id, 'oplata', $data['budget_type']);
         return $this->get_note($task);
     }
 
-    public function get_note($task): JsonResponse
+    #[ArrayShape([])]
+    public function get_note($task): array
     {
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_NOTE);
-        return response()->json(['route' => 'note', 'task_id' => $task->id, 'steps' => 1, 'custom_fields' => $custom_fields]);
+        return ['route' => 'note', 'task_id' => $task->id, 'steps' => 1, 'custom_fields' => $custom_fields];
     }
 
-    public function updateNote($task, $data): JsonResponse
+    public function updateNote($task, $data): array
     {
         unset($data['task_id']);
         updateCache('task_update_' . $task->id, 'note', $data);
         return $this->get_contact($task);
     }
 
-    public function get_contact($task): JsonResponse
+    #[ArrayShape([])]
+    public function get_contact($task): array
     {
-        return response()->json([
+        return [
             'route' => 'contact', 'task_id' => $task->id, 'steps' => 0,
             'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CONTACTS)
-        ]);
+        ];
     }
 
     public function updateImage($task, $request): JsonResponse
@@ -201,7 +208,7 @@ class UpdateTaskService
         ]);
     }
 
-    public function updateContact($task, $data): JsonResponse
+    public function updateContact($task, $data): array
     {
         /** @var User $user */
         $user = auth()->user();
@@ -217,15 +224,16 @@ class UpdateTaskService
 
 //        NotificationService::sendTaskNotification($task, $user->id);
 
-        return response()->json([
+        return [
             'task_id' => $task->id,
             'route' => 'end',
-        ]);
+        ];
     }
 
-    public function get_verify($task, $user): JsonResponse
+    #[ArrayShape([])]
+    public function get_verify($task, $user): array
     {
-        return response()->json(['route' => 'verify', 'task_id' => $task->id, 'user' => $user]);
+        return ['route' => 'verify', 'task_id' => $task->id, 'user' => $user];
     }
 
     public function verification($task, $data): JsonResponse
@@ -269,6 +277,7 @@ class UpdateTaskService
             'message' => 'Successfully deleted'
         ]);
     }
+
 
     private function updateTask($task, $user): void
     {
