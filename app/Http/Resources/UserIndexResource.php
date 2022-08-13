@@ -137,7 +137,7 @@ class UserIndexResource extends JsonResource
             'facebook_id' => $this->facebook_id,
             'born_date' => $this->born_date,
             'created_tasks' => Task::query()->where(['user_id' => $this->id])->whereIn('status', [1, 2, 3, 4, 5, 6])->get()->count(),
-            'performed_tasks' => Task::query()->where(['performer_id' => $this->id])->whereIn('status', [1, 2, 3, 4, 5, 6])->get()->count(),
+            'performed_tasks' => Task::query()->where(['performer_id' => $this->id])->where('status', 4)->get()->count(),
             'reviews' => [
                 'review_bad' => $this->review_bad,
                 'review_good' => $this->review_good,
