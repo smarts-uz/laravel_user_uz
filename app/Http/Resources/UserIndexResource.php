@@ -90,7 +90,7 @@ class UserIndexResource extends JsonResource
             'message' => $message
         ];
 
-        $tasks = Task::query()->where(['performer_id' => $this->id])->get();
+        $tasks = Task::query()->where(['performer_id' => $this->id])->where('status', Task::STATUS_COMPLETE)->get();
         $performed_tasks = $tasks->groupBy('category_id');
         $performed_tasks_count = [];
         foreach ($performed_tasks as $id => $task) {
@@ -137,7 +137,7 @@ class UserIndexResource extends JsonResource
             'facebook_id' => $this->facebook_id,
             'born_date' => $this->born_date,
             'created_tasks' => Task::query()->where(['user_id' => $this->id])->whereIn('status', [1, 2, 3, 4, 5, 6])->get()->count(),
-            'performed_tasks' => Task::query()->where(['performer_id' => $this->id])->where('status', 4)->get()->count(),
+            'performed_tasks' => Task::query()->where(['performer_id' => $this->id])->where('status', Task::STATUS_COMPLETE)->get()->count(),
             'reviews' => [
                 'review_bad' => $this->review_bad,
                 'review_good' => $this->review_good,

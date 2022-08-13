@@ -234,7 +234,7 @@ class ProfileService
         } elseif ($request->get('review') == 'bad') {
             $reviews->where(['good_bad' => 0]);
         }
-        return $reviews->get();
+        return $reviews->orderByDesc('created_at')->get();
     }
     /**
      *
