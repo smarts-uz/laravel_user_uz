@@ -27,6 +27,16 @@ class SearchTaskController extends VoyagerBaseController
         $this->create_service = new CreateService();
     }
 
+    public function taskNames(Request $request)
+    {
+        $name = $request->get('name');
+        $tasks = Task::search($name)->get();
+        $options = "";
+        foreach ($tasks as $task) {
+            $options .= "<option value='$task->name' id='$task->id'>$task->name</option>";
+        }
+        return $options;
+    }
     public function task(Task $task, Request $request)
     {
         if (!$task->user_id) {

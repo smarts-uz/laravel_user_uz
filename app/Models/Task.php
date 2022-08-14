@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 use TCG\Voyager\Traits\Translatable;
 
 /**
@@ -16,6 +17,7 @@ use TCG\Voyager\Traits\Translatable;
  *
  * @property $id
  * @property $name
+ * @property $reviews_count
  * @property $status
  * @property $budget
  * @property $oplata
@@ -23,15 +25,39 @@ use TCG\Voyager\Traits\Translatable;
  * @property $photos
  * @property $user_id
  * @property $phone
+ * @property $views
+ * @property $start_date
+ * @property $end_date
  * @property $verify_code
  * @property $verify_expiration
  * @property $performer_id
+ * @property $created_at
  * @return array //Value Returned
  */
 class Task extends Model
 {
 
     use HasFactory, SoftDeletes;
+    use Searchable;
+
+    public function toSearchableArray()
+    {
+        return [
+            'name' => $this->name,
+        ];
+    }
+
+    protected $mapping = [
+        'properties' => [
+            'id' => [
+                "type" => "id"
+            ],
+            'name' => [
+                "type" => "string"
+            ],
+        ]
+    ];
+
     //use Translatable;
 
     const STATUS_NEW = 0;

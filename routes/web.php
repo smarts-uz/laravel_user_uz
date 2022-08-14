@@ -1,6 +1,7 @@
 <?php
 
 
+use Elastic\ScoutDriverPlus\Support\Query;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\TaskAPIController;
 use App\Http\Controllers\Controller;
@@ -33,6 +34,10 @@ use Teamprodev\LaravelPayment\PayUz;
 |
 */
 
+
+Route::get('/test', function () {
+    dd(\App\Models\Task::search("test")->get());
+});
 
 #region performers
 Route::get('/for_del_new_task/{task}', [CreateController::class, 'deletetask']); // javoxir
@@ -82,6 +87,7 @@ Route::group(['prefix' => 'admin'], function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/my-tasks', [Controller::class, 'my_tasks'])->name('searchTask.mytasks'); // javoxir
 });
+Route::get('/completed-task-names', [SearchTaskController::class, 'taskNames'])->name('search.task_name');
 Route::get('task-search', [SearchTaskController::class, 'search_new'])->name('searchTask.task_search'); // javoxir
 Route::post('tasks-search', [SearchTaskController::class, 'search_new2'])->name('searchTask.ajax_tasks');
 Route::post('ajax-request', [SearchTaskController::class, 'task_response']); // javoxir

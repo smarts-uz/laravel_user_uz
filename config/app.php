@@ -1,5 +1,7 @@
 <?php
 
+use Elastic\ScoutDriverPlus\ServiceProvider;
+
 return [
 
     /*
@@ -180,6 +182,7 @@ return [
         \Chatify\ChatifyServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+
 
     ],
 

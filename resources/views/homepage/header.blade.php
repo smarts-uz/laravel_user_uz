@@ -62,7 +62,7 @@
                 {!! getContentText('home', 'main_text') !!}
                 <div class="mx-auto">
                     <div class="xl:w-4/5 w-full flex-1 mt-8">
-                        <input name="TypeList" list="TypeList" type="text" id="header_input" maxlength="40" placeholder="{{__('Чем вам помочь...')}}"
+                        <input name="TypeList" list="TypeList" type="text" id="header_input" maxlength="40" placeholder="{{__('Чем вам помочь...')}}" onkeyup="searchTaskName()"
                                class="input_text w-full md:px-4 px-2 py-2.5 md:py-3 rounded-xl focus:placeholder-transparent focus:outline-none focus:border-yellow-500 flex-1 text-lg border-0">
                         <datalist id="TypeList">
                             @foreach($child_categories as $category)
@@ -115,5 +115,16 @@
             prevEl: ".prev",
         },
     });
+
+    function searchTaskName()
+    {
+        $.ajax({
+            url: '{{route('search.task_name')}}',
+            data: {name: $("#header_input").val()},
+            success: function (res) {
+                $("#TypeList").html(res)
+            },
+        });
+    }
 
 </script>
