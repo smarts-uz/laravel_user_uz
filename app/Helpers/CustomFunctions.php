@@ -168,3 +168,10 @@ function updateCache($key, $property, $value)
     cache()->put($key, $data);
     return $data;
 }
+
+function correctPhoneNumber($phone)
+{
+    if (strlen($phone) == 12) {
+        return '+' . $phone;
+    }
+}
