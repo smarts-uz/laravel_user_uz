@@ -342,10 +342,10 @@ class CreateTaskService
         if (!$user->is_phone_number_verified && $user->phone_number != $data['phone_number']) {
             $data['is_phone_number_verified'] = 0;
             $user->update($data);
-            VerificationService::send_verification('phone', $user, $user->phone_number);
+            VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
             return $this->get_verify($task, $user);
         } elseif ($user->phone_number != $data['phone_number']) {
-            LoginController::send_verification_for_task_phone($task, $data['phone_number']);
+            LoginController::send_verification_for_task_phone($task, correctPhoneNumber($data['phone_number']));
             return $this->get_verify($task, $user);
         } elseif (!$user->is_phone_number_verified) {
             VerificationService::send_verification('phone', $user, $user->phone_number);
@@ -376,8 +376,9 @@ class CreateTaskService
         /** @var Task $task */
         $task = Task::query()->findOrFail($data['task_id']);
         /** @var User $user */
-        $user = User::query()->where('phone_number', correctPhoneNumber($data['phone_number']))->firstOrFail();
-        if ($data['sms_otp'] == $user->verify_code) {
+        $user = auth()->user();
+
+        if (!$user->is_phone_number_verified && $data['sms_otp'] == $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
                 $user->update(['is_phone_number_verified' => 1]);
                 $task->update(['status' => 1, 'user_id' => $user->id, 'phone' => $user->phone_number]);
