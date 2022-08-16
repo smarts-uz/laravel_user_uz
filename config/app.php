@@ -1,7 +1,5 @@
 <?php
 
-use Elastic\ScoutDriverPlus\ServiceProvider;
-
 return [
 
     /*
@@ -183,6 +181,9 @@ return [
         Laravel\Passport\PassportServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
 
+        \Laravel\Scout\ScoutServiceProvider::class,
+        \Elastic\ScoutDriver\ServiceProvider::class,
+        \Elastic\Client\ServiceProvider::class
 
     ],
 
