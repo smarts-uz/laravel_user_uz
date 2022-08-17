@@ -117,7 +117,7 @@ class ResponseService
         $performer = $response->performer;
         if ($performer->phone_number) {
             $name = $response_user->name;
-            $phone = $response_user->phone_number;
+            $phone = $task->phone ?? $response_user->phone_number;
             $text_url = route("searchTask.task",$response->task_id);
             $message = "Vi ispolnitel v zadanii $text_url. Kontakt zakazchika: $name. $phone";
             $phone_number=$performer->phone_number;
