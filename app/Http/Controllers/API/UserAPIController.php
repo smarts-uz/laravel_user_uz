@@ -56,7 +56,7 @@ class UserAPIController extends Controller
                 'role_id' => $user->role_id,
             ],
             'access_token' => $accessToken,
-            'socialpas' => $user->password !== '' || $user->password !== null
+            'socialpas' => $user->has_password
         ]);
     }
 
@@ -241,7 +241,7 @@ class UserAPIController extends Controller
             Auth::login($user);
             $accessToken = auth()->user()->createToken('authToken')->accessToken;
 
-            return response()->json(['user' => auth()->user(), 'access_token' => $accessToken]);
+            return response()->json(['user' => auth()->user(), 'access_token' => $accessToken, 'socialpas' => $user->has_password]);
         } catch (ValidationException $e) {
             return response()->json(array_values($e->errors()));
         }
