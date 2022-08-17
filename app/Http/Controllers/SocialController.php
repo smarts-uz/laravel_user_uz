@@ -94,7 +94,6 @@ class SocialController extends Controller
                 $new_user->email = $user->email;
                 $new_user->google_id = $user->id;
                 $new_user->avatar = self::get_avatar($user);
-                $new_user->password = encrypt('123456');
                 $new_user->is_email_verified = 1;
                 $new_user->save();
                 $wallBal = new WalletBalance();
