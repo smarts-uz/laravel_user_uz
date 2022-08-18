@@ -1,5 +1,10 @@
 <?php
 
+//$query = \Elastic\ScoutDriverPlus\Support\Query::wildcard()
+//    ->field('name')
+//    ->value('*tet*');
+//$searchResult = \App\Models\Task::searchQuery($query)->execute();
+//dd($searchResult->models());
 
 use Elastic\ScoutDriverPlus\Support\Query;
 use Illuminate\Support\Facades\Route;

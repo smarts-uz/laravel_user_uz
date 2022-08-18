@@ -6,6 +6,7 @@ use App\Models\TaskResponse;
 use App\Services\Task\CreateService;
 use App\Services\Task\CustomFieldService;
 use App\Models\Task;
+use Elastic\ScoutDriverPlus\Support\Query;
 use Illuminate\Support\Facades\Cache;
 use TCG\Voyager\Models\Category;
 use Illuminate\Http\Request;
@@ -16,28 +17,40 @@ use Jenssegers\Agent\Agent;
 
 class SearchTaskController extends VoyagerBaseController
 {
-    private $service;
-    private $custom_fields_servie;
-    private $create_service;
+    private SearchService $service;
+    private CreateService $create_service;
 
     public function __construct()
     {
         $this->service = new SearchService();
-        $this->custom_fields_servie = new CustomFieldService();
         $this->create_service = new CreateService();
     }
 
-    public function taskNames(Request $request)
+    /**
+     * @param Request $request
+     * @return string
+     */
+    public function taskNames(Request $request): string
     {
         $name = $request->get('name');
-        $tasks = Task::search($name)->get();
+        $query = Query::wildcard()
+            ->field('name')
+            ->value('*' . $name . '*');
+        $searchResult = Task::searchQuery($query)->execute();
+        $tasks = $searchResult->models();
         $options = "";
         foreach ($tasks as $task) {
-            $options .= "<option value='$task->name' id='$task->id'>$task->name</option>";
+            $options .= "<option value='$task->name' id='$task->category_id'>$task->name</option>";
         }
         return $options;
     }
-    public function task(Task $task, Request $request)
+
+    /**
+     * @param Task $task
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+     */
+    public function task(Task $task, Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         if (!$task->user_id) {
             abort(404);
@@ -84,11 +97,11 @@ class SearchTaskController extends VoyagerBaseController
             $responses = TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')
                 ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.reviews')->get();
         } else {
-            $responses = $item->responses;
+            $responses = $item->responses->get();
         }
         return view('task.detailed-tasks',
         ['review_description' => $item->review_description,'task' => $task, 'created' => $created, 'end' => $end, 'start' => $start, 'review' => $review, 'complianceType' => $item->complianceType, 'same_tasks' => $item->same_tasks,
-        'auth_response' => $item->auth_response, 'selected' => $item->selected, 'responses' => $responses->get(), 'addresses' => $item->addresses, 'top_users'=>$item->top_users, 'respons_reviews'=>$item->respons_reviews]);
+        'auth_response' => $item->auth_response, 'selected' => $item->selected, 'responses' => $responses, 'addresses' => $item->addresses, 'top_users'=>$item->top_users, 'respons_reviews'=>$item->respons_reviews]);
     }
 
     public function comlianse_save(Request $request)

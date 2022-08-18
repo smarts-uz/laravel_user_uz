@@ -181,9 +181,9 @@ return [
         Laravel\Passport\PassportServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
 
-//        \Laravel\Scout\ScoutServiceProvider::class,
-//        \Elastic\ScoutDriver\ServiceProvider::class,
-//        \Elastic\Client\ServiceProvider::class
+        \Laravel\Scout\ScoutServiceProvider::class,
+        \Elastic\ScoutDriver\ServiceProvider::class,
+        \Elastic\Client\ServiceProvider::class
 
     ],
 
