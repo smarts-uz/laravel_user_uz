@@ -17,9 +17,9 @@ class VerificationService
                 'user' => $user->id
             ];
             if ($email) {
-                Mail::to($email)->send(new VerifyEmail($data));
+                Mail::to($email)->send(new VerifyEmail($data, $user, $email));
             } else {
-                Mail::to($user->email)->send(new VerifyEmail($data));
+                Mail::to($user->email)->send(new VerifyEmail($data, $user, $email));
             }
         } else {
             $message = rand(100000, 999999);

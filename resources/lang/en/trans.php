@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'verify phone' => 'Verify your phone number',
+    'your task' => 'This is your task',
+    'not performer' => 'You are not a performer',
     'Enter comment.' => 'Enter comment.',
     'Enter description.' => 'Enter description.',
     'Portfolio deleted successfully.' => 'Portfolio deleted successfully.',
