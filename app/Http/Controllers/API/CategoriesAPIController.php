@@ -41,7 +41,7 @@ class CategoriesAPIController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::select('parent_id', 'name', 'ico')->withTranslation($request->lang)->whereNull('parent_id')->get();
+        $categories = Category::select('parent_id', 'name', 'ico')->withTranslation(app()->getLocale())->whereNull('parent_id')->get();
         return CategoryIndexResource::collection($categories);
     }
 
