@@ -16,9 +16,10 @@ class MessageEmail extends Mailable
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct($data, $contact)
     {
         $this->data = $data;
+        $this->contact = $contact;
     }
 
     /**
@@ -28,6 +29,6 @@ class MessageEmail extends Mailable
      */
     public function build()
     {
-        return $this->from(env("MAIL_USERNAME"))->subject("noreply: Email Data")->view('email.messageEmail', ['data'=>$this->data]);
+        return $this->from(env("MAIL_USERNAME"))->to($this->contact->email)->subject("noreply: Email Data")->view('email.messageEmail', ['data'=>$this->data]);
     }
 }
