@@ -84,14 +84,14 @@ class LoginController extends Controller
     public static function send_verification_for_task_phone($task, $phone_number)
     {
         $message = rand(100000, 999999);
-        $sms_service = new SmsMobileService();
-        $sms_service->sms_packages($phone_number, $message);
 
         $task->phone = $phone_number;
         $task->verify_code = $message;
         $task->verify_expiration = Carbon::now()->addMinutes(2);
         $task->save();
 
+        $sms_service = new SmsMobileService();
+        $sms_service->sms_packages($phone_number, __("Код подтверждения") . ' ' . $message);
     }
 
     public function send_email_verification()

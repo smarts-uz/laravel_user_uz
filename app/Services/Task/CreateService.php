@@ -161,7 +161,9 @@ class CreateService
             /** @var User $performer */
             $performer = User::query()->findOrFail($performer_id);
             $text_url = route("searchTask.task", $task->id);
-            $message = "Заказчик предложил вам новую задания $text_url. Имя заказчика: " . $user->name;
+            $message = __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
+                'task_name' => $text_url, 'task_id' => $task->id, 'task_user' => $user->name
+            ]);
             $phone_number=$performer->phone_number;;
             $sms_service = new SmsMobileService();
             $sms_service->sms_packages($phone_number, $message);

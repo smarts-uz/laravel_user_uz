@@ -137,13 +137,17 @@ class PerformerAPIController extends Controller
     {
         $data = $request->validated();
         $task = Task::where('id', $data['task_id'])->first();
+        /** @var User $performer */
         $performer = User::query()->findOrFail($data['performer_id']);
         $text_url = route("searchTask.task",$data['task_id']);
-        $message = "Заказчик предложил вам новую задания $text_url. Имя заказчика: " . $task->user->name;
+        $message = __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
+            'task_name' => $text_url, 'task_id' => $task->id, 'task_user' => $task->user?->name
+        ]);
         $phone_number = $performer->phone_number;
         $sms_service = new SmsMobileService();
         $sms_service->sms_packages($phone_number, $message);
-        $notification = Notification::create([
+        /** @var Notification $notification */
+        $notification = Notification::query()->create([
             'user_id' => $task->user_id,
             'performer_id' => $data['performer_id'],
             'task_id' => $data['task_id'],
@@ -163,31 +167,6 @@ class PerformerAPIController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Success']);
     }
-
-    public function validatorRules($step)
-    {
-        if ($step == 1) {
-            return [
-                'name' => 'required',
-                'address' => 'required',
-                'birth_date' => 'required'
-            ];
-        } elseif ($step == 2) {
-            return [
-                'phone_number' => 'required',
-                'email' => 'required|email'
-            ];
-        } elseif ($step == 3) {
-            return [
-                'avatar' => 'required'
-            ];
-        } else {
-            return [
-                'categories' => 'required'
-            ];
-        }
-    }
-
 
     /**
      * @OA\Post(

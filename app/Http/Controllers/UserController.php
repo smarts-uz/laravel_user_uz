@@ -54,6 +54,7 @@ class UserController extends Controller
     public function reset_submit(ResetRequest $request)
     {
         $data = $request->validated();
+        /** @var User $user */
         $user = User::query()->where('phone_number', $data['phone_number'])->first();
         if (!$user) {
             return back()->with([
@@ -66,6 +67,7 @@ class UserController extends Controller
         $user->save();
         $phone_number=$user->phone_number;
         $sms_service = new SmsMobileService();
+        $message = __("Код подтверждения") . ' ' . $message;
         $sms_service->sms_packages($phone_number, $message);
 
         session()->put('verifications', ['key' => 'phone_number', 'value' => $data['phone_number']]);

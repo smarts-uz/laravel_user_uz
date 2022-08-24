@@ -221,10 +221,12 @@ class NotificationService
         $user = User::query()->find($user_id);
         $sms_service = new SmsMobileService();
         $amount = number_format($amount, 0, '.', ' ');
-        $message = "vash balans v UserUz papolnena $amount sum cherez $payment_system tranzaksiya=$transaction_id";
+        $message = __("Ваш баланс на сайте UserUz пополнен на сумму amount через payment_system. Номер транзакции = transaction_id ID пользователя = user_id", [
+            'amount' => $amount, 'payment_system' => $payment_system, 'transaction_id' => $transaction_id, 'user_id' => $user_id
+        ]);
         $phone_number = $user->phone_number;
         $sms_service->sms_packages($phone_number, $message);
-        Mail::to($user->email)->send(new MessageEmail($message, $user));
+        Mail::to($user->email)->send(new MessageEmail($message));
     }
 
     /**

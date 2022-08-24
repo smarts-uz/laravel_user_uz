@@ -13,22 +13,23 @@ class SmsMobileService
      *
      * Function  sms_packages
      * Mazkur metod ikkita sms paketdan biri orqali sms XABAR YUBORADI
-     * @param   Object
-     * @return
+     * @param $phone_number
+     * @param $message
+     * @return void
      */
     public function sms_packages($phone_number, $message){
 
-        $phone_numberr=preg_replace('/[+]+/', '', $phone_number);
+        $phone =preg_replace('/[+]+/', '', $phone_number);
         switch(env('SMS_PROVIDER')) {
             case('eskiz_sms'):
                 try {
-                    Sms::send($phone_numberr, $message);
+                    Sms::send($phone, $message);
                 } catch (\Exception) {
 
                 }
                 break;
             case('playmobile_sms'):
-                (new SmsService())->send($phone_number, $message);
+                (new SmsService())->send($phone, $message);
                 break;
         }
 

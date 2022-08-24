@@ -33,11 +33,6 @@ use Teamprodev\LaravelPayment\PayUz;
 |
 */
 
-
-Route::get('/test', function () {
-    dd(\App\Models\Task::search("test")->get());
-});
-
 #region performers
 Route::get('/for_del_new_task/{task}', [CreateController::class, 'deletetask']); // javoxir
 Route::group(['middleware' => 'auth'], function () {

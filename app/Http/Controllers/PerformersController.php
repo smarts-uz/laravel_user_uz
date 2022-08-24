@@ -92,13 +92,16 @@ class PerformersController extends Controller
         if (isset($task_id)) {
             $task_name = Task::where('id', $task_id)->first();
             $users_id = $request->session()->pull('given_id');
+            /** @var User $performer */
             $performer = User::query()->find($users_id);
             $text_url = route("searchTask.task",$task_id);
-            $message = "Заказчик предложил вам новую задания $text_url. Имя заказчика: " . $task_name->user->name;
+            $message = __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
+                'task_name' => $text_url, 'task_id' => $task_id, 'task_user' => $task_name->user?->name
+            ]);
             $phone_number=$performer->phone_number;;
             $sms_service = new SmsMobileService();
             $sms_service->sms_packages($phone_number, $message);
-            $notification = Notification::create([
+            $notification = Notification::query()->create([
                 'user_id' => $task_name->user_id,
                 'performer_id' => $users_id,
                 'task_id' => $task_id,

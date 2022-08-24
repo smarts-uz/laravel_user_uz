@@ -117,9 +117,10 @@ class ResponseService
         $performer = $response->performer;
         if ($performer->phone_number) {
             $name = $response_user->name;
-            $phone = $task->phone ?? $response_user->phone_number;
             $text_url = route("searchTask.task",$response->task_id);
-            $message = "Vi ispolnitel v zadanii $text_url. Kontakt zakazchika: $name. $phone";
+            $message = __('Вас выбрали исполнителем  в задании task_name №task_id task_user', [
+                'task_name' => $text_url, 'task_id' => $task->id, 'task_user' => $name
+            ]);
             $phone_number=$performer->phone_number;
             $sms_service = new SmsMobileService();
             $sms_service->sms_packages($phone_number, $message);
