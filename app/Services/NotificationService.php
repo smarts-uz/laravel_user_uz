@@ -65,7 +65,7 @@ class NotificationService
      */
     public static function sendTaskNotification($task, $user_id): void
     {
-        $performers = User::query()->where('role_id', 2)->select('id', 'email', 'category_id', 'firebase_token', 'sms_notification', 'email_notification', 'phone_number', 'email')->get();
+        $performers = User::query()->where('role_id', 2)->select('id', 'email', 'category_id', 'firebase_token', 'sms_notification', 'email_notification', 'phone_number')->get();
         $performer_ids = [];
         foreach ($performers as $performer) {
             $user_cat_ids = explode(",", $performer->category_id);
@@ -97,6 +97,7 @@ class NotificationService
                     $phone_number = $performer->phone_number;
                     $sms_service->sms_packages($phone_number, $message);
                 }
+                info(json_encode($performer));
                 if ($performer->email_notification) {
                     Mail::to($performer->email)->send(new MessageEmail($message));
                 }
