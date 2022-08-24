@@ -17,7 +17,7 @@ class CategoryIndexResource extends JsonResource
         return [
             'id' => $this->id,
             'parent_id' => $this->parent_id,
-            'name' => $this->name,
+            'name' => $this->getTranslatedAttribute('name'),
             'child_count' => $this->childs()->count(),
             'ico' => asset('storage/' . $this->ico),
         ];
