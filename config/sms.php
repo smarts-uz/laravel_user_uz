@@ -5,4 +5,5 @@ return [
     'api_url' => env('ESKIZ_SMS_URL', 'http://notify.eskiz.uz/api/'),
     'email' => env('ESKIZ_SMS_EMAIL', ''),
     'password' => env('ESKIZ_SMS_PASSWORD', ''),
+    'from' => env('ESKIZ_SMS_FROM', '')
 ];
