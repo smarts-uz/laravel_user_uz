@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Resources\ComplianceTypeResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
@@ -1504,7 +1505,7 @@ class TaskAPIController extends Controller
     {
         return response()->json([
             'success' => true,
-            'data' => ComplianceType::all()
+            'data' => ComplianceTypeResource::collection(ComplianceType::all())
         ]);
     }
 }
