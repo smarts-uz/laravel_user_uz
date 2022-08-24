@@ -11,15 +11,16 @@ class MessageEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $data;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($data, $contact)
+    public function __construct($data)
     {
         $this->data = $data;
-        $this->contact = $contact;
     }
 
     /**
@@ -29,6 +30,6 @@ class MessageEmail extends Mailable
      */
     public function build()
     {
-        return $this->subject("noreply: Email Data")->view('email.messageEmail', ['data'=>$this->data]);
+        return $this->from(env("MAIL_USERNAME"))->subject("noreply: Email Data")->view('email.messageEmail', ['data'=>$this->data]);
     }
 }
