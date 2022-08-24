@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'verify phone' => 'Подтвердите ваш номер телефона',
+    'your task' => 'Это ваше задание',
+    'not performer' => 'Вы не являетесь исполнителем',
     'Enter comment.' => 'Введите комментарий.',
     'Enter description.' => 'Введите описание.',
     'Portfolio deleted successfully.' => 'Портфолио удалено успешно.',

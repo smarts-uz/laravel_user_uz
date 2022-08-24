@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Resources\ComplianceTypeResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
@@ -198,11 +199,11 @@ class TaskAPIController extends Controller
         /** @var User $user */
         $user = auth()->user();
         if ($task->user_id == $user->id) {
-            return $this->fail([], "Bu o'zingizning taskingiz");
+            return $this->fail([], trans('trans.your task'));
         } elseif ($user->role_id != 2) {
-            return $this->fail([], "Siz Performer emassiz");
+            return $this->fail([], trans('trans.not performer'));
         } elseif (!$user->is_phone_number_verified) {
-            return $this->fail([], "Verify phone number");
+            return $this->fail([], trans('trans.verify phone'));
         }
 
         $response = $this->response_service->store($request, $task);
@@ -1504,7 +1505,7 @@ class TaskAPIController extends Controller
     {
         return response()->json([
             'success' => true,
-            'data' => ComplianceType::all()
+            'data' => ComplianceTypeResource::collection(ComplianceType::all())
         ]);
     }
 }

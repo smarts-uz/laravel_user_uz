@@ -98,7 +98,7 @@ class NotificationService
                     $sms_service->sms_packages($phone_number, $message);
                 }
                 if ($performer->email_notification) {
-                    Mail::to($performer->email)->send(new MessageEmail($message));
+                    Mail::to($performer->email)->send(new MessageEmail($message, $performer));
                 }
             }
         }
@@ -224,7 +224,7 @@ class NotificationService
         $message = "vash balans v UserUz papolnena $amount sum cherez $payment_system tranzaksiya=$transaction_id";
         $phone_number = $user->phone_number;
         $sms_service->sms_packages($phone_number, $message);
-        Mail::to($user->email)->send(new MessageEmail($message));
+        Mail::to($user->email)->send(new MessageEmail($message, $user));
     }
 
     /**

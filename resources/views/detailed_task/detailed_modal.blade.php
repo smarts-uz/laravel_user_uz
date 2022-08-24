@@ -56,7 +56,7 @@
                     <select name="c_type" id=""
                             class="w-4/5 border-2 border-gray-500 rounded-lg mb-4 py-2 px-2 focus:outline-none hover:border-yellow-500">
                         @foreach ($complianceType as $complType)
-                            <option value="{{$complType->id}}">{{$complType->name}}</option>
+                            <option value="{{$complType->id}}">{{$complType->getTranslatedAttribute('name')}}</option>
                         @endforeach
                     </select>
                     <textarea name="c_text" id="" required

@@ -91,7 +91,7 @@ class UserController extends Controller
         $user->save();
         session()->put('verifications', ['key' => 'email', 'value' => $data['email']]);
 
-        Mail::to($user->email)->send(new MessageEmail($sms_otp));
+        Mail::to($user->email)->send(new MessageEmail($sms_otp, $user));
         Alert::success(__('Поздравляю'), __('Ваш проверочный код успешно отправлен на') . $user->email);
 
         return redirect()->route('user.reset_code_view_email');
