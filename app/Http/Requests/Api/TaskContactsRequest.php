@@ -28,7 +28,7 @@ class TaskContactsRequest extends BaseRequest
     {
         $phone = $this->get('phone_number');
         if (!str_starts_with($phone, '+')) {
-            $this->request->replace([
+            $this->replace([
                 'phone_number' => '+' . $phone
             ]);
         }
