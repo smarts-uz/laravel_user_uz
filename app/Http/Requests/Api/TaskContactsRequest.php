@@ -33,4 +33,13 @@ class TaskContactsRequest extends BaseRequest
             ]);
         }
     }
+
+    public function messages()
+    {
+        return [
+            "phone_number.required" => __('login.phone_number.required'),
+            "phone_number.unique" => __('login.phone_number.unique'),
+            "task_id.required" => __('login.name.required'),
+        ];
+    }
 }
