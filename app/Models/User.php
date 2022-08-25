@@ -16,6 +16,7 @@ use Laravel\Passport\HasApiTokens;
  * @property $verify_expiration
  * @property $verify_code
  * @property $phone_number
+ * @property $phone_number_old
  * @property $id
  * @property $oplata
  * @property $photos

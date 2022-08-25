@@ -34,7 +34,8 @@ class ProfileService
      * Mazkur metod user portfolioda qoldirilgan commentni saqlaydi
      * @param $request Object
      */
-    public function commentServ($request){
+    public function commentServ($request)
+    {
         $user = Auth::user();
         $comment = $request->input('comment');
         $description = $request->input('description');
@@ -54,7 +55,7 @@ class ProfileService
     public function uploadImageServ(Request $request)
     {
         $user = auth()->user();
-        $imgData = session()->has('images') ? json_decode(session('images')):[];
+        $imgData = session()->has('images') ? json_decode(session('images')) : [];
         foreach ($request->file('images') as $uploadedImage) {
             $filename = $user->name . '/' . time() . '_' . $uploadedImage->getClientOriginalName();
             $uploadedImage->move(public_path() . '/portfolio/' . $user->name . '/', $filename);
@@ -69,7 +70,8 @@ class ProfileService
      * Mazkur metod user portfolioni tahrirlaydi
      * @param $request Object
      */
-    public function testBaseServ($request){
+    public function testBaseServ($request)
+    {
         $user = Auth::user();
         $comment = $user->portfolios()->orderBy('created_at', 'desc')->first();
         $image = File::allFiles("portfolio/{$user->name}");
@@ -83,18 +85,20 @@ class ProfileService
             return dd(false);
         }
     }
+
     /**
      *
      * Function  settingsEdit
      * Mazkur metod sozlamalar bo'limida ma'lumotlarni chiqarib beradi
      * @param setting Object
      */
-    public function settingsEdit() {
+    public function settingsEdit()
+    {
         $user = Auth::user();
-        $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->select('id','name')->get();
-        $categories2 = Category::where('parent_id','<>', null)->select('id','parent_id','name')->get();
+        $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->select('id', 'name')->get();
+        $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
         $regions = Region::withTranslations(['ru', 'uz'])->get();
-        $top_users = User::where('role_id', 2)->where('review_rating','!=',0)->orderbyRaw('(review_good - review_bad) DESC')
+        $top_users = User::where('role_id', 2)->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(20)->pluck('id')->toArray();
         $sessions = Session::query()->where('user_id', $user->id)->get();
         $parser = Parser::create();
@@ -114,13 +118,15 @@ class ProfileService
             'review_rating' => $review_rating,
         );
     }
+
     /**
      *
      * Function  settingsUpdate
      * Mazkur metod sozlamalar bo'limida ma'lumotlarni tahrirlaydi
      * @param $data Object
      */
-    public function settingsUpdate($data) {
+    public function settingsUpdate($data)
+    {
         if ($data['email'] != auth()->user()->email) {
             $data['is_email_verified'] = 0;
             $data['email_old'] = auth()->user()->email;
@@ -131,6 +137,7 @@ class ProfileService
         }
         return $data;
     }
+
     /**
      *
      * Function  storeProfilePhoto
@@ -151,6 +158,7 @@ class ProfileService
         }
         return null;
     }
+
     /**
      *
      * Function  editDescription
@@ -177,36 +185,40 @@ class ProfileService
         $user->news_notification = $request->notif22;
         $user->save();
     }
+
     /**
      *
      * Function  profileCash
      * Mazkur metod profile cash bo'limini ochib beradi
      * @param $user Object
      */
-    public function profileCash($user){
+    public function profileCash($user)
+    {
         $item = new ProfileCashItem();
-        $item ->user = Auth()->user()->load('transactions');
-        $item ->balance =  $item ->user->walletBalance;
-        $item ->task =  $item ->user->tasks()->count();
-        $item ->transactions =  $item ->user->transactions()->paginate(15);
-        $item->top_users = User::where('role_id', 2)->where('review_rating','!=',0)->orderbyRaw('(review_good - review_bad) DESC')
-        ->limit(20)->pluck('id')->toArray();
-        $item ->review_rating = $user->review_rating;
-        $item ->review_good = $user->review_good;
-        $item ->review_bad = $user->review_bad;
+        $item->user = Auth()->user()->load('transactions');
+        $item->balance = $item->user->walletBalance;
+        $item->task = $item->user->tasks()->count();
+        $item->transactions = $item->user->transactions()->paginate(15);
+        $item->top_users = User::where('role_id', 2)->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
+            ->limit(20)->pluck('id')->toArray();
+        $item->review_rating = $user->review_rating;
+        $item->review_good = $user->review_good;
+        $item->review_bad = $user->review_bad;
         return $item;
     }
+
     /**
      *
      * Function  profileData
      * Mazkur metod profile  bo'limini ochib beradi
      * @param $user Object
      */
-    public function profileData($user){
+    public function profileData($user)
+    {
         $item = new ProfileDataItem();
         $item->task = $user->tasks_count;
         $item->portfolios = $user->portfolios()->where('image', '!=', null)->get();
-        $item->top_users = User::where('role_id', 2)->where('review_rating','!=',0)->orderbyRaw('(review_good - review_bad) DESC')
+        $item->top_users = User::where('role_id', 2)->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(20)->pluck('id')->toArray();
         $item->categories = Category::withTranslations(['ru', 'uz'])->get();
         $item->review_good = $user->review_good;
@@ -216,6 +228,7 @@ class ProfileService
         $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->get();
         return $item;
     }
+
     /**
      *
      * Function  userReviews
@@ -236,6 +249,7 @@ class ProfileService
         }
         return $reviews->orderByDesc('created_at')->get();
     }
+
     /**
      *
      * Function  createPortfolio
@@ -259,6 +273,7 @@ class ProfileService
         $portfolio = Portfolio::create($data);
         return $portfolio;
     }
+
     /**
      *
      * Function  updatePortfolio
@@ -312,6 +327,7 @@ class ProfileService
             ]
         ];
     }
+
     /**
      *
      * Function  balance
@@ -352,6 +368,7 @@ class ProfileService
 //            'transactions' => new TransactionHistoryResource($transactions->orderByDesc('created_at')->paginate(15))
         ];
     }
+
     /**
      *
      * Function  phoneUpdate
@@ -361,23 +378,23 @@ class ProfileService
     public function phoneUpdate($request)
     {
         $phoneNumber = $request->get('phone_number');
+        /** @var User $userPhone */
         $userPhone = User::query()->where(['phone_number' => $phoneNumber])->first();
+        /** @var User $user */
         $user = auth()->user();
-        if ($userPhone) {
-            if ($userPhone->id != $user->id) {
-                $message = trans('trans.User with entered phone number already exists.');
-                $success = false;
-            }
+        if ($userPhone && ($userPhone->id != $user->id)) {
+            $messages = trans('trans.User with entered phone number already exists.');
+            $success = false;
         } else {
             $user->phone_number_old = $user->phone_number;
             $user->phone_number = $phoneNumber;
             $user->is_phone_number_verified = 0;
             $message = rand(100000, 999999);
             $phone_number = $user->phone_number;
-            $sms_service = new SmsMobileService();
-            $sms_service->sms_packages($phone_number, $message);
             $user->verify_code = $message;
             $user->save();
+            $sms_service = new SmsMobileService();
+            $sms_service->sms_packages($phone_number, __("Код подтверждения") . ' ' . $message);
             $messages = trans('trans.Phone number updated successfully.');
             $success = true;
         }
@@ -420,6 +437,7 @@ class ProfileService
             'data' => []
         ]);
     }
+
     /**
      *
      * Function  changeAvatar
@@ -439,6 +457,7 @@ class ProfileService
         $data['avatar'] = $imagename;
         $user->update($data);
     }
+
     /**
      *
      * Function  updateSettings
@@ -456,6 +475,7 @@ class ProfileService
         $user->update($validated);
         $user->save();
     }
+
     /**
      *
      * Function  notifications
@@ -478,6 +498,7 @@ class ProfileService
         $user->save();
         return $message;
     }
+
     /**
      *
      * Function  subscribeToCategory

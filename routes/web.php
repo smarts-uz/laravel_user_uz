@@ -1,6 +1,5 @@
 <?php
 
-
 use Elastic\ScoutDriverPlus\Support\Query;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\TaskAPIController;
@@ -33,11 +32,6 @@ use Teamprodev\LaravelPayment\PayUz;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
-Route::get('/test', function () {
-    dd(\App\Models\Task::search("test")->get());
-});
 
 #region performers
 Route::get('/for_del_new_task/{task}', [CreateController::class, 'deletetask']); // javoxir

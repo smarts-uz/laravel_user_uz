@@ -33,7 +33,7 @@ class LoginAPIController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => $data['type'] == 'email' ? __('Ваша ссылка для подтверждения успешно отправлена.') : __('Код отправлен!')
+                'message' => $data['type'] == 'email' ? __('Ваша ссылка для подтверждения успешно отправлена!') : __('Код отправлен!')
             ]);
         }
         return response()->json([

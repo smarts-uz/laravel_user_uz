@@ -32,7 +32,7 @@ class BecomePerformerEmailPhone extends FormRequest
                     'numeric',
                     Rule::unique('users')->ignore(auth()->user()->id),
                 ],
-            'email' =>  [
+            'email' => [
                 'required',
                 'email',
                 Rule::unique('users')->ignore(auth()->user()->id),
@@ -43,13 +43,13 @@ class BecomePerformerEmailPhone extends FormRequest
     public function messages()
     {
         return [
-            'email.required' => 'Email is required',
-            'email.email' => 'Email is must be compatible with EMAIL',
-            'email.uniques' => 'Email is must be auth email',
-            'phone_number.required' => 'Phone is required',
-            'phone_number.numeric' => 'Phone is must be numeric',
-            'phone_number.min' => 'Entered Phone must be minimum 9',
-            'phone_number.unique' => 'Entered Phone must be auth phone 9',
+            'email.required' => __('login.email.required'),
+            'email.email' => __('login.email.email'),
+            'email.uniques' => __('login.email.unique'),
+            'phone_number.required' => __('login.phone_number.unique'),
+            'phone_number.numeric' => __('login.phone_number.numeric'),
+            'phone_number.min' => __('login.phone_number.min'),
+            'phone_number.unique' => __('login.phone_number.unique'),
         ];
     }
 }

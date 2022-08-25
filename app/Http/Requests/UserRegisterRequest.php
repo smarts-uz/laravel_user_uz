@@ -35,17 +35,18 @@ class UserRegisterRequest extends FormRequest
     public function messages()
     {
         return [
-                'name.required' => __('login.name.required'),
-                'name.unique' => __('login.name.unique'),
-                'email.required' => __('login.email.required'),
-                'email.email' => __('login.email.email'),
-                'email.unique' => __('login.email.unique'),
-                'password.required' => __('login.password.required'),
-                'password.min' => __('login.password.min'),
-                'password.confirmed' => __('login.password.confirmed'),
-                'password_confirmation.required' => __('login.password.required'),
-                'password_confirmation.min' => __('login.password.min'),
-            ];
+            'name.required' => trans('login.name.required'),
+            'name.unique' => trans('login.name.unique'),
+            'email.required' => trans('login.email.required'),
+            'email.email' => trans('login.email.email'),
+            'email.unique' => trans('login.email.unique'),
+            'password.required' => trans('login.password.required'),
+            'password.min' => trans('login.password.min'),
+            'password.confirmed' => trans('login.password.confirmed'),
+            'password_confirmation.required' => trans('login.password.required'),
+            'password_confirmation.min' => trans('login.password.min'),
+            'phone_number.unique' => trans('login.phone_number.unique')
+        ];
     }
     public function getValidatorInstance()
     {

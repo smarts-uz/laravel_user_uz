@@ -26,10 +26,10 @@
            <div class="@if($type == 'user') show @endif messenger-tab users-tab app-scroll" data-view="users">
 
                {{-- Favorites --}}
-               <div class="favorites-section">
-                <p class="messenger-title">Favorites</p>
-                <div class="messenger-favorites app-scroll-thin"></div>
-               </div>
+{{--               <div class="favorites-section">--}}
+{{--                <p class="messenger-title">Favorites</p>--}}
+{{--                <div class="messenger-favorites app-scroll-thin"></div>--}}
+{{--               </div>--}}
 
                {{-- Saved Messages --}}
 

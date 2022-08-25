@@ -65,7 +65,7 @@ class NotificationService
      */
     public static function sendTaskNotification($task, $user_id): void
     {
-        $performers = User::query()->where('role_id', 2)->select('id', 'category_id', 'firebase_token', 'sms_notification', 'email_notification', 'phone_number', 'email')->get();
+        $performers = User::query()->where('role_id', 2)->select('id', 'email', 'category_id', 'firebase_token', 'sms_notification', 'email_notification', 'phone_number')->get();
         $performer_ids = [];
         foreach ($performers as $performer) {
             $user_cat_ids = explode(",", $performer->category_id);
@@ -97,6 +97,7 @@ class NotificationService
                     $phone_number = $performer->phone_number;
                     $sms_service->sms_packages($phone_number, $message);
                 }
+                info(json_encode($performer));
                 if ($performer->email_notification) {
                     Mail::to($performer->email)->send(new MessageEmail($message));
                 }
@@ -221,7 +222,9 @@ class NotificationService
         $user = User::query()->find($user_id);
         $sms_service = new SmsMobileService();
         $amount = number_format($amount, 0, '.', ' ');
-        $message = "vash balans v UserUz papolnena $amount sum cherez $payment_system tranzaksiya=$transaction_id";
+        $message = __("Ваш баланс на сайте UserUz пополнен на сумму amount через payment_system. Номер транзакции = transaction_id ID пользователя = user_id", [
+            'amount' => $amount, 'payment_system' => $payment_system, 'transaction_id' => $transaction_id, 'user_id' => $user_id
+        ]);
         $phone_number = $user->phone_number;
         $sms_service->sms_packages($phone_number, $message);
         Mail::to($user->email)->send(new MessageEmail($message));

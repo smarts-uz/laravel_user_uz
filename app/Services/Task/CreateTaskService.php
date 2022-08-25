@@ -341,6 +341,7 @@ class CreateTaskService
         unset($data['task_id']);
         if (!$user->is_phone_number_verified && $user->phone_number != $data['phone_number']) {
             $data['is_phone_number_verified'] = 0;
+            $data['phone_number'] = correctPhoneNumber($data['phone_number']);
             $user->update($data);
             VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
             return $this->get_verify($task, $user);
@@ -348,7 +349,7 @@ class CreateTaskService
             LoginController::send_verification_for_task_phone($task, correctPhoneNumber($data['phone_number']));
             return $this->get_verify($task, $user);
         } elseif (!$user->is_phone_number_verified) {
-            VerificationService::send_verification('phone', $user, $user->phone_number);
+            VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
             return $this->get_verify($task, $user);
         }
 

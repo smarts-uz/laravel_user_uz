@@ -17,14 +17,14 @@ class VerificationService
                 'user' => $user->id
             ];
             if ($email) {
-                Mail::to($email)->send(new VerifyEmail($data));
+                Mail::to($email)->send(new VerifyEmail($data, $user, $email));
             } else {
-                Mail::to($user->email)->send(new VerifyEmail($data));
+                Mail::to($user->email)->send(new VerifyEmail($data, $user, $email));
             }
         } else {
             $message = rand(100000, 999999);
             $sms_service = new SmsMobileService();
-            $sms_service->sms_packages($phone_number, $message);
+            $sms_service->sms_packages($phone_number, __("Код подтверждения") . ' ' . $message);
         }
         $user->verify_code = $message;
         $user->verify_expiration = Carbon::now()->addMinutes(5);

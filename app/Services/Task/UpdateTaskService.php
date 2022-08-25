@@ -282,24 +282,29 @@ class UpdateTaskService
     private function updateTask($task, $user): void
     {
         $cacheValues = cache()->get('task_update_' . $task->id);
-        // Save task custom fields
-        $task->custom_field_values()->delete();
-        foreach ($cacheValues['custom_fields'] as $customField) {
-            $customField['task_id'] = $task->id;
-            CustomFieldsValue::query()->create($customField);
+        if (array_key_exists('custom_fields', $cacheValues)) {
+            // Save task custom fields
+            $task->custom_field_values()->delete();
+            foreach ($cacheValues['custom_fields'] as $customField) {
+                $customField['task_id'] = $task->id;
+                CustomFieldsValue::query()->create($customField);
+            }
         }
-
-        // Save task addresses
-        $task->addresses()->delete();
-        foreach ($cacheValues['addresses'] as $address) {
-            Address::query()->create($address);
+        $addressesCount = 0;
+        if (array_key_exists('addresses', $cacheValues)) {
+            // Save task addresses
+            $addressesCount = count($cacheValues['addresses']);
+            $task->addresses()->delete();
+            foreach ($cacheValues['addresses'] as $address) {
+                Address::query()->create($address);
+            }
         }
 
         $task->update([
             'name' => $cacheValues['name'],
             'category_id' => $cacheValues['category_id'],
-            'start_date' => $cacheValues['date']['start_date'],
-            'end_date' => $cacheValues['date']['end_date'],
+            'start_date' => $cacheValues['date']['start_date'] ?? null,
+            'end_date' => $cacheValues['date']['end_date'] ?? null,
             'date_type' => $cacheValues['date']['date_type'],
             'budget' => $cacheValues['budget'],
             'oplata' => $cacheValues['oplata'],
@@ -308,7 +313,8 @@ class UpdateTaskService
             'status' => Task::STATUS_OPEN,
             'user_id' => $user->id,
             'phone' => $user->phone_number,
-            'coordinates' => $cacheValues['addresses'][0]['latitude'] . ',' . $cacheValues['addresses'][0]['longitude']
+            'coordinates' => $addressesCount > 0 ? $cacheValues['addresses'][0]['latitude'] . ',' . $cacheValues['addresses'][0]['longitude'] : ''
         ]);
+
     }
 }

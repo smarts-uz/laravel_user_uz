@@ -33,9 +33,9 @@ class BecomePerformerRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required'  => 'Name is required!',
-            'location.required'  => 'location is required!',
-            'born_date.required'  => 'born_date is required!',
+            'name.required'  => __('login.name.required'),
+            'location.required'  => __('login.name.required'),
+            'born_date.required'  => __('login.name.required'),
         ];
     }
 }

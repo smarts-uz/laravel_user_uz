@@ -17,6 +17,8 @@ class CustomFieldsValue extends Model
 {
     use SoftDeletes;
 
+    protected $guarded = [];
+
     public function custom_field()
     {
         return $this->belongsTo(CustomField::class);

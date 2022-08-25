@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'verify phone' => 'Telefon raqamingizni tasdiqlang',
+    'your task' => 'Bu o\'zingizning taskingiz',
+    'not performer' => 'Siz Performer emassiz',
     'Enter comment.' => 'Kommentariya kiriting.',
     'Enter description.' => 'Tasvir kiriting.',
     'Portfolio deleted successfully.' => 'Portfolio muvaffaqiyatli o\'chirildi.',
