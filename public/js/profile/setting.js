@@ -54,7 +54,7 @@ function fileadd() {
 }
 
 function ConfirmDelete() {
-    var result = confirm("__('Вы хотите удалить профиль?')");
+    var result = confirm(__('Вы хотите удалить профиль?'));
     if (result == true) {
         window.location.href = "http://" + window.location.hostname + "/profile/delete";
         return true;
