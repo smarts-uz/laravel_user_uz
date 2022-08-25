@@ -2,7 +2,7 @@
 
 return [
     "email" => [
-        "email" => "To'ldirish talab qilinadi!",
+        "email" => "Emailni to'g'ri formatda kiriting!",
         "required" => "To'ldirish talab qilinadi!",
         "unique" => "Bunday pochtadagi foydalanuvchi allaqachon mavjud!"
     ],

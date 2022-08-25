@@ -687,6 +687,7 @@
     "Код отправлен!": "Kod jo'natildi!",
     "Ваша ссылка для подтверждения успешно отправлена!": "Tasdiqlash havolasi muvaffaqiyatli yuborildi!",
     "Пользователь с такой почтой уже существует!": "Bunday emailga ega foydalanuvchi allaqachon mavjud!",
+    "Пользователь с таким номером уже существует!": "Bunday raqamga ega foydalanuvchi allaqachon mavjud!",
     "Неправильный код!": "Noto'g'ri kod!",
 
     "Your Email have successfully verified": "Sizning elektron pochtangiz muvaffaqiyatli tekshirildi",
