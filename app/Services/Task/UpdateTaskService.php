@@ -303,8 +303,8 @@ class UpdateTaskService
         $task->update([
             'name' => $cacheValues['name'],
             'category_id' => $cacheValues['category_id'],
-            'start_date' => $cacheValues['date']['start_date'],
-            'end_date' => $cacheValues['date']['end_date'],
+            'start_date' => $cacheValues['date']['start_date'] ?? null,
+            'end_date' => $cacheValues['date']['end_date'] ?? null,
             'date_type' => $cacheValues['date']['date_type'],
             'budget' => $cacheValues['budget'],
             'oplata' => $cacheValues['oplata'],
