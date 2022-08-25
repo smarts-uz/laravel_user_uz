@@ -10,10 +10,27 @@ class TaskContactsRequest extends BaseRequest
     {
         return [
             'phone_number' => [
-                'required', 'integer', 'min:13',
+                'required',
                 Rule::unique('users')->ignore(auth()->id())
             ],
             'task_id' => 'required',
         ];
+    }
+
+    public function getValidatorInstance()
+    {
+        $this->formatPhoneNumber();
+
+        return parent::getValidatorInstance();
+    }
+
+    protected function formatPhoneNumber()
+    {
+        $phone = $this->get('phone_number');
+        if (!str_starts_with($phone, '+')) {
+            $this->request->replace([
+                'phone_number' => '+' . $phone
+            ]);
+        }
     }
 }
