@@ -20,7 +20,7 @@ class PerformerIndexResource extends JsonResource
         if ($this->last_seen >= $date) {
             $lastSeen = 'online';
         } else {
-            $seenDate = Carbon::parse($this->last_seen);
+            $seenDate = Carbon::parse(app()->getLocale() . '-' . app()->getLocale());
             $seenDate->locale($locale);
             $lastSeen = $seenDate->diffForHumans();
         }

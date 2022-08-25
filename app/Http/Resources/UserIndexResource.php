@@ -108,7 +108,7 @@ class UserIndexResource extends JsonResource
             $lastSeen = 'online';
         } else {
             $seenDate = Carbon::parse($this->last_seen);
-            $seenDate->locale($this->locale);
+            $seenDate->locale(app()->getLocale() . '-' . app()->getLocale());
             $lastSeen = $seenDate->diffForHumans();
         }
         $age = Carbon::parse($this->born_date)->age;
