@@ -10,7 +10,8 @@ return [
     "loggingin" => "Manmanlik",
     "name" => [
         "required" => "To'ldirish talab qilinadi!",
-        "unique" => "Ushbu ismli foydalanuvchi allaqachon mavjud!"
+        "unique" => "Ushbu ismli foydalanuvchi allaqachon mavjud!",
+        "int"=>"Format noto'g'ri"
     ],
     "password" => [
         "confirmed" => "Parol bir xil emos",

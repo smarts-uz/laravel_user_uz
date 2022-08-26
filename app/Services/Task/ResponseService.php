@@ -16,6 +16,7 @@ use App\Models\WalletBalance;
 use App\Services\NotificationService;
 use App\Services\SmsMobileService;
 use JetBrains\PhpStorm\ArrayShape;
+use App\Http\Requests\Api\TaskResponseRequest;
 
 class ResponseService
 {
@@ -27,18 +28,13 @@ class ResponseService
      * @param $task
      * @return array
      */
-    public function store($request, $task): array
+    public function store(TaskResponseRequest $request, $task): array
     {
         /** @var User $auth_user */
         $auth_user = auth()->user();
         if ($task->user_id == $auth_user->id)
             abort(403,"Bu o'zingizning taskingiz");
-        $data = $request->validate([
-            'description' => 'required|string',
-            'price' => 'int|required',
-            'notificate' => 'nullable',
-            'not_free' => 'nullable|int'
-        ]);
+        $data = $request->validated();
         $data['notificate'] = $request->notificate ? 1 : 0;
         $data['task_id'] = $task->id;
         $data['user_id'] = $task->user_id;
