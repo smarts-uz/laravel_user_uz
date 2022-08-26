@@ -15,13 +15,11 @@ class PerformerIndexResource extends JsonResource
      */
     public function toArray($request)
     {
-        $locale = app()->getLocale();
-        $date = Carbon::now()->subMinutes(2)->toDateTimeString();
-        if ($this->last_seen >= $date) {
+        if ($this->last_seen >= Carbon::now()->subMinutes(2)->toDateTimeString()) {
             $lastSeen = 'online';
         } else {
-            $seenDate = Carbon::parse(app()->getLocale() . '-' . app()->getLocale());
-            $seenDate->locale($locale);
+            $seenDate = Carbon::parse($this->last_seen);
+            $seenDate->locale(app()->getLocale() . '-' . app()->getLocale());
             $lastSeen = $seenDate->diffForHumans();
         }
         return [
