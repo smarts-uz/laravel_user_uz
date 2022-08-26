@@ -13,7 +13,6 @@
             <div class="grid-cols-1 text-left">
                 {!! getContentText('home', 'economy_third') !!}
             </div>
-
         </div>
 
         <div class="w-8/12 mx-auto -mt-16 lg:block hidden">
