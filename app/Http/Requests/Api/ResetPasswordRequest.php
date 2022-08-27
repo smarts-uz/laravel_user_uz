@@ -16,9 +16,9 @@ class ResetPasswordRequest extends BaseRequest
     public function messages()
     {
         return [
-            'phone_number.required' => trans('trans.Enter phone number.'),
-            'password.required' => trans('trans.Enter password.'),
-            'password.confirmed' => trans('trans.Confirm password.'),
+            'phone_number.required' => __('login.phone_number.required'),
+            'password.required' => __('login.password.required'),
+            'password.confirmed' => __('login.password.confirmed'),
         ];
     }
 }

@@ -14,7 +14,7 @@ return [
         "int"=>"Format noto'g'ri"
     ],
     "password" => [
-        "confirmed" => "Parol bir xil emos",
+        "confirmed" => "Parol bir xil emas",
         "min" => "Parollar kamida 6 ta belgidan iborat bo'lishi kerak",
         "required" => "To'ldirish talab qilinadi!"
     ],
