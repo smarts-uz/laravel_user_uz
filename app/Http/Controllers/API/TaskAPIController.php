@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Requests\Api\TaskResponseRequest;
 use App\Http\Resources\ComplianceTypeResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -194,7 +195,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function response_store(Task $task, Request $request): JsonResponse
+    public function response_store(Task $task, TaskResponseRequest $request): JsonResponse
     {
         /** @var User $user */
         $user = auth()->user();

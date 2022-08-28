@@ -16,7 +16,6 @@ use App\Models\WalletBalance;
 use App\Services\NotificationService;
 use App\Services\SmsMobileService;
 use JetBrains\PhpStorm\ArrayShape;
-use App\Http\Requests\Api\TaskResponseRequest;
 
 class ResponseService
 {
@@ -28,7 +27,7 @@ class ResponseService
      * @param $task
      * @return array
      */
-    public function store(TaskResponseRequest $request, $task): array
+    public function store( $request, $task): array
     {
         /** @var User $auth_user */
         $auth_user = auth()->user();
