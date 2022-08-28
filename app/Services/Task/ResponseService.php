@@ -33,7 +33,18 @@ class ResponseService
         $auth_user = auth()->user();
         if ($task->user_id == $auth_user->id)
             abort(403,"Bu o'zingizning taskingiz");
-        $data = $request->validated();
+        $data = $request->validate([
+            'description' => 'required|string',
+            'price' => 'int|required',
+            'notificate' => 'nullable',
+            'not_free' => 'nullable|int'
+        ],
+        [
+            'description.required' => __('login.name.required'),
+            'price.required' => __('login.name.required'),
+            'price.int' => __('login.name.int'),
+            'not_free.int' => __('login.name.int'),
+        ]);
         $data['notificate'] = $request->notificate ? 1 : 0;
         $data['task_id'] = $task->id;
         $data['user_id'] = $task->user_id;

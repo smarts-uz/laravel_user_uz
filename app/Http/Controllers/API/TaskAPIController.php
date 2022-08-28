@@ -195,7 +195,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function response_store(Task $task, TaskResponseRequest $request): JsonResponse
+    public function response_store(Task $task, Request $request): JsonResponse
     {
         /** @var User $user */
         $user = auth()->user();
