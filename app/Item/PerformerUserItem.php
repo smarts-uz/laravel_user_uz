@@ -23,5 +23,6 @@ class PerformerUserItem
     public $review_rating;
     public $goodReviews;
     public $badReviews;
+    public $task_count;
 
 }

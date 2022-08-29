@@ -47,12 +47,12 @@
             <div class="text-gray-500 text-base mt-2">
                 @if ( session('lang') == 'uz' )
                     <p class="mt-2">
-                        <span>{{count($user->tasks??[])}}</span> {{__('задание')}}
+                        <span>{{count($task_count??[])}}</span> {{__('задание')}}
                         {{__('Создал')}}
                     </p>
                 @else
                     <p class="mt-2">{{__('Создал')}}
-                        <span>{{count($user->tasks??[])}}</span> {{__('задание')}}
+                        <span>{{count($task_count??[])}}</span> {{__('задание')}}
                     </p>
                 @endif
                 @if(session('lang')=='uz')

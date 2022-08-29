@@ -48,14 +48,14 @@
                 @if ( session('lang') == 'uz' )
                     <p class="mt-2">
                         <a href="{{route('searchTask.mytasks')}}" class="text-blue-500 hover:text-red-600">
-                            <span>{{count($user->tasks??[])}}</span> {{__('задание')}}
+                            <span>{{count($task??[])}}</span> {{__('задание')}}
                         </a>
                         {{__('Создал')}}
                     </p>
                 @else
                     <p class="mt-2">{{__('Создал')}}
                         <a href="{{route('searchTask.mytasks')}}" class="text-blue-500 hover:text-red-600">
-                            <span>{{count($user->tasks??[])}}</span> {{__('задание')}}
+                            <span>{{count($task??[])}}</span> {{__('задание')}}
                         </a>
                     </p>
                 @endif

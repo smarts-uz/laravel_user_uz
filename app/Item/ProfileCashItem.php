@@ -13,7 +13,6 @@ class ProfileCashItem
     public $task;
     public $transactions;
     public $top_users;
-    public $task_count;
     public $review_good;
     public $review_bad;
 }

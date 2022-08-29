@@ -10,6 +10,7 @@ use App\Models\All_transaction;
 use App\Models\Region;
 use App\Models\Review;
 use App\Models\Session;
+use App\Models\Task;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\WalletBalance;
@@ -105,6 +106,7 @@ class ProfileService
         $review_good = $user->review_good;
         $review_bad = $user->review_bad;
         $review_rating = $user->review_rating;
+        $task = Task::where('user_id', Auth::id())->whereIn('status', [1,2,3,4,5,6])->get();
         return array(
             'user' => $user,
             'categories' => $categories,
@@ -116,6 +118,7 @@ class ProfileService
             'review_good' => $review_good,
             'review_bad' => $review_bad,
             'review_rating' => $review_rating,
+            'task'=>$task
         );
     }
 
@@ -197,7 +200,7 @@ class ProfileService
         $item = new ProfileCashItem();
         $item->user = Auth()->user()->load('transactions');
         $item->balance = $item->user->walletBalance;
-        $item->task = $item->user->tasks()->count();
+        $item->task = Task::where('user_id', Auth::id())->whereIn('status', [1,2,3,4,5,6])->get();
         $item->transactions = $item->user->transactions()->paginate(15);
         $item->top_users = User::where('role_id', 2)->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(20)->pluck('id')->toArray();
@@ -216,7 +219,7 @@ class ProfileService
     public function profileData($user)
     {
         $item = new ProfileDataItem();
-        $item->task = $user->tasks_count;
+        $item->task = Task::where('user_id', Auth::id())->whereIn('status', [1,2,3,4,5,6])->get();
         $item->portfolios = $user->portfolios()->where('image', '!=', null)->get();
         $item->top_users = User::where('role_id', 2)->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(20)->pluck('id')->toArray();

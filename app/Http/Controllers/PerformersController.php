@@ -78,6 +78,7 @@ class PerformersController extends Controller
                 'review_good' => $item->review_good,
                 'review_bad' =>$item->review_bad,
                 'review_rating' => $item->review_rating,
+                'task_count'=> $item->task_count
             ]);
     }
 
