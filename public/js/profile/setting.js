@@ -47,20 +47,10 @@ function fileupdate() {
     var x = document.getElementById("buttons");
     x.style.display = "block";
 }
-
-function fileadd() {
-    var x = document.getElementById("baatton");
-    x.classList.add("hidden");
-}
-
-function ConfirmDelete() {
-    var result = confirm(__('Вы хотите удалить профиль?'));
-    if (result == true) {
-        window.location.href = "http://" + window.location.hostname + "/profile/delete";
-        return true;
-    } else {
-        console.log(result);
-        return false;
-    }
+function toggleModal111() {
+    document.getElementById("modal-id111").classList.toggle("hidden");
+    document.getElementById("modal-id111" + "-backdrop").classList.toggle("hidden");
+    document.getElementById("modal-id111").classList.toggle("flex");
+    document.getElementById("modal-id111" + "-backdrop").classList.toggle("flex");
 }
 

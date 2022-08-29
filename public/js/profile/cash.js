@@ -21,10 +21,6 @@ function inputCash() {
         x.style.display = "block";
     }
 
-    function fileadd() {
-        var x = document.getElementById("buttons");
-        x.classList.add("hidden");
-    }
     // tab content
      let tabsContainer = document.querySelector("#tabs");
      let tabTogglers = tabsContainer.querySelectorAll("#tabs a");

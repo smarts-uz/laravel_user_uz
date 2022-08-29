@@ -156,8 +156,10 @@
                                                 <hr>
                                             </form>
 
-                                            <a href="{{ route('profile.destroy') }}" onclick="ConfirmDelete()"
-                                               class="block xl:w-3/5 lg:w-3/4 sm:w-3/5 w-full text-center bg-red-400 hover:bg-red-600 text-white mt-5 uppercase p-4 rounded-xl cursor-pointer">{{__('Удалить профиль')}}</a>
+                                            <a onclick="toggleModal111()"
+                                               class="block xl:w-3/5 lg:w-3/4 sm:w-3/5 w-full text-center bg-red-400 hover:bg-red-600 text-white mt-5 uppercase p-4 rounded-xl cursor-pointer">
+                                                {{__('Удалить профиль')}}
+                                            </a>
                                         </div>
                                     </div>
                                     {{-- settings/ first tab -> base settings end--}}
@@ -453,7 +455,31 @@
 
         </div>
     </div>
-
+    {{-- delete user modal start --}}
+    <div class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
+         style="background-color:rgba(0,0,0,0.5)" id="modal-id111">
+        <div class="relative w-full my-6 mx-auto max-w-3xl" id="modal111">
+            <div class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none">
+                <div class=" text-center p-6  rounded-t">
+                    <h1 class="font-medium text-3xl block mt-6">
+                        {{__('Вы хотите удалить профиль?')}}
+                    </h1>
+                </div>
+                <div class="text-center my-6">
+                    <a href="{{ route('profile.destroy') }}" class="mx-4">
+                        <button class="bg-red-500 hover:bg-red-700 text-white font-medium py-2 px-4 rounded">
+                            Да
+                        </button>
+                    </a>
+                    <button class="mx-4 bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded" onclick="toggleModal111()">
+                        Нет
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id111-backdrop"></div>
+    {{-- delete user modal end --}}
     <script>
 
         let notif_11, notif_22;
@@ -469,12 +495,7 @@
             } else {
                 notif_22 = 0;
             }
-            console.log(notif_11)
-            console.log(notif_22)
-            {{--            @php $id=auth()->user()->id  @endphp--}}
-            {{--            let id={{$id}}--}}
             let id = {{auth()->user()->id}}
-            console.log(id);
             $.ajax({
                 url: "{{route('profile.notif_setting_ajax')}}",
                 type: 'GET',

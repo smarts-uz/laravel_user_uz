@@ -3,10 +3,6 @@ function fileupdate(){
     var x = document.getElementById("buttons");
     x.style.display = "block";
 }
-function fileadd(){
-    var x = document.getElementById("buttons");
-    x.classList.add("hidden");
-}
 $('#padd').click(function(){
     $('.desc').addClass('hidden')
     $('.formdesc').removeClass('hidden').addClass('block')
