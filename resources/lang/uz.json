@@ -751,6 +751,8 @@
     "Дополнительные типы уведомлений:": "Qo'shimcha bildirishnoma turlari:",
     "Напишите причину по которой задание не было закончено": "Topshiriq bajarilmaganligi sababini yozing",
     "Количество заданий : ": "Vazifalar soni : ",
-    "Вы хотите удалить профиль?": "Profilni ochirishni hohlaysizmi?"
+    "Вы хотите удалить профиль?": "Profilni ochirishni hohlaysizmi?",
+    "Да" : "Ha",
+    "Нет" : "Yo'q"
 
 }
