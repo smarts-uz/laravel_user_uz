@@ -2,11 +2,17 @@
 
 @section('content')
 
-    <div class="m-3">
+    <div class="w-4/5 mx-auto mx-3 mt-16">
 
         @foreach ($policies as $polic)
-            <h4 class="font-semibold m-3">{{$polic->title}}</h4>
-            <p class="text-base">{{$polic->text}}</p>
+            <div class="my-4">
+                <h4 class="font-semibold my-3">
+                    {{$polic->getTranslatedAttribute('title',Session::get('lang') , 'fallbackLocale')}}
+                </h4>
+                <p class="text-base">
+                    {{$polic->getTranslatedAttribute('text',Session::get('lang') , 'fallbackLocale')}}
+                </p>
+            </div>
         @endforeach
     </div>
 
