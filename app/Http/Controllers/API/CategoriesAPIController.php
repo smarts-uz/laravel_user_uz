@@ -47,15 +47,21 @@ class CategoriesAPIController extends Controller
 
     public function popular(Request $request)
     {
+//        dd(Category::select('id', 'parent_id', 'name', 'ico')->withTranslation('uz')->whereNull('parent_id')->get());
         $name = $request->get('category');
-        return Task::query()->with('category:id,name,parent_id,ico')
+        $categories = Task::query()->with('category:id,name,parent_id,ico', 'category.translations')
             ->whereHas('category', function ($q) use ($name){
-                return $q->where('name', 'like', "%$name%");
+                return $q->whereTranslation('name', 'like', "%$name%")->orWhere('name', 'like', "%$name%");
             })
             ->select('category_id', DB::raw('count(*) as total'))
             ->groupBy('category_id')
             ->orderByDesc('total')
             ->get();
+        foreach ($categories as $category) {
+            $category->category->name = $category->category->getTranslatedAttribute('name', app()->getLocale() , 'ru');
+            unset($category->category->translations);
+        }
+        return $categories;
     }
 
     /**
