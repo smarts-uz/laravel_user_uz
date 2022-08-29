@@ -106,13 +106,9 @@
                         class="appearance-none focus:outline-none border border-solid border-gray-500 rounded-lg text-gray-500 px-6 py-2 text-lg mt-6 hover:text-yellow-500  hover:border-yellow-500 hover:shadow-xl shadow-yellow-500 mx-auto block"><br>
 
                     @foreach($tasks as $task)
-                        @auth
-                            @if ($task->status <= 2)
-                                <option value="{{ $task->id }}">
-                                    {{ $task->name }}
-                                </option>
-                            @endif
-                        @endauth
+                        <option value="{{ $task->id }}">
+                            {{ $task->name }}
+                        </option>
                     @endforeach
                     <option value="1">
                         + {{__('новое задание')}}

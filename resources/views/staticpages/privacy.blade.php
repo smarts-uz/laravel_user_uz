@@ -7,10 +7,10 @@
         @foreach ($policies as $polic)
             <div class="my-4">
                 <h4 class="font-semibold my-3">
-                    {{$polic->getTranslatedAttribute('title',Session::get('lang') , 'fallbackLocale')}}
+                    {{$polic->title}}
                 </h4>
                 <p class="text-base">
-                    {{$polic->getTranslatedAttribute('text',Session::get('lang') , 'fallbackLocale')}}
+                    {{$polic->text}}
                 </p>
             </div>
         @endforeach

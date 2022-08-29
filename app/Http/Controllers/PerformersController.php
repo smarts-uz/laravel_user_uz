@@ -48,7 +48,7 @@ class PerformersController extends Controller
         $authId = Auth::id();
 
         $service = new PerformersService();
-        $item = $service->service($authId, $user);
+        $item = $service->service($authId);
 
        return view('performers/performers',
            [
@@ -127,8 +127,9 @@ class PerformersController extends Controller
 
     public function perf_ajax($cf_id, User $user)
     {
+        $authId = Auth::id();
         $service = new PerformersService();
-        $item = $service->perf_ajax($cf_id, $user);
+        $item = $service->perf_ajax($cf_id, $authId);
         return view('performers/performers_cat',
         [
             'child_categories' => $item->child_categories,

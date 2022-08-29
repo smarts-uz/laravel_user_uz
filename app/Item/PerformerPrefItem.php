@@ -15,4 +15,5 @@ class PerformerPrefItem
     public $users;
     public $categories;
     public $tasks;
+    public $categories2;
 }

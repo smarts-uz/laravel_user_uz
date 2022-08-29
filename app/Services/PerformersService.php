@@ -24,10 +24,10 @@ class PerformersService
      * @param $user User Object
      * @return  PerformerServiceItem
      */
-    public function service($authId, $user)
+    public function service($authId)
     {
         $item = new PerformerServiceItem();
-        $item->tasks = Task::where('user_id', $authId)->get();
+        $item->tasks = Task::where('user_id', $authId)->whereIn('status', [1, 2])->orderBy('created_at', 'DESC')->get();
         $item->categories = Category::where('parent_id', null)->select('id', 'name', 'slug')->get();
         $item->categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
         $item->users = User::query()
@@ -71,7 +71,7 @@ class PerformersService
      * @param $cf_id  Object
      *
      */
-    public function perf_ajax($cf_id){
+    public function perf_ajax($cf_id,$authId){
         $item = new PerformerPrefItem();
         $item->categories = Category::where('parent_id', null)->select('id', 'name', 'slug')->get();
         $item->categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
@@ -85,7 +85,7 @@ class PerformersService
         ->where('review_rating', '!=', 0)
         ->where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
         ->limit(20)->pluck('id')->toArray();
-        $item-> tasks = Task::where('user_id', Auth::id())->get();
+        $item->tasks = Task::where('user_id', $authId)->whereIn('status', [1, 2])->orderBy('created_at', 'DESC')->get();
         return $item;
     }
 }

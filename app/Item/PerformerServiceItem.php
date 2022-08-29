@@ -22,6 +22,5 @@ class PerformerServiceItem
     public $categories;
     public $categories2;
     public $users;
-    public $task_count;
     public $top_users;
 }
