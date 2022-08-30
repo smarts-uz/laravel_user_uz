@@ -97,7 +97,7 @@ class UserIndexResource extends JsonResource
             if (Category::query()->find($id) !== null) {
                 $performed_tasks_count[] = [
                     'name' => Category::query()->find($id)->name,
-                    'count' => __('Выполнено ') . $task->count() . __(' заданий')
+                    'count' => __('Выполнено ') . ' ' . $task->count() . __(' заданий')
                 ];
             }
         }
