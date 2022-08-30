@@ -144,7 +144,7 @@ class User extends \TCG\Voyager\Models\User
 
     public function getLastSeenAtAttribute()
     {
-        return Carbon::parse($this->attributes['last_seen'])->diffForHumans();
+        return Carbon::parse($this->attributes['last_seen'])->locale(app()->getLocale() . '-' . app()->getLocale())->diffForHumans();
     }
 
     public function portfolios()
