@@ -174,4 +174,5 @@ function correctPhoneNumber($phone)
     if (strlen($phone) == 12) {
         return '+' . $phone;
     }
+    return $phone;
 }

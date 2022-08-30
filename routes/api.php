@@ -74,11 +74,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::delete('/delete-task/{task}', [SearchAPIController::class, 'delete_task']); // used
 
     Route::get('account/verify', [LoginAPIController::class, 'verifyCredentials']); // used
-    Route::get('account/verification/email', [LoginAPIController::class, 'send_email_verification']); //end +
-    Route::get('account/verification/phone', [LoginAPIController::class, 'send_phone_verification']); //end +
     Route::post('account/verification/phone', [LoginAPIController::class, 'verify_phone']); // used
-    Route::post("account/change/email", [LoginAPIController::class, 'change_email']); //end +
-    Route::post("account/change/phone", [LoginAPIController::class, 'change_phone_number']); //end +
 
     Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']); // used
     Route::get('/responses/{task}', [TaskAPIController::class, 'responses']); // used
@@ -86,8 +82,8 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::post('/task/{task}/complain', [TaskAPIController::class, 'complain']); // used
     Route::post('/select-performer/{response}', [TaskAPIController::class, 'selectPerformer']); // used
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); //end +
-    Route::post('tasks/{task}/not-complete', [UpdateAPIController::class, 'not_completed'])->name('update.not_completed'); // javoxir
-    Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); //end +
+    Route::post('tasks/{task}/not-complete', [UpdateAPIController::class, 'not_completed'])->name('update.not_completed'); // used
+    Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); // used
     Route::post('give-task', [PerformerAPIController::class, 'give_task']); // used
     Route::post('/become-performer', [PerformerAPIController::class, 'becomePerformerData']); // used
     Route::post('/become-performer-phone', [PerformerAPIController::class, 'becomePerformerEmailPhone']); // used
@@ -120,10 +116,9 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
             Route::post('/change-avatar', [ProfileAPIController::class, 'avatar']); //end -
             Route::get('/phone', [ProfileAPIController::class, 'phoneEdit']); //end +
             Route::post('/phone/edit', [ProfileAPIController::class, 'phoneUpdate']); // used
-            Route::post('/phone/verify', [ProfileAPIController::class, 'phoneVerify']); //end
             Route::post('/password/change', [ProfileAPIController::class, 'change_password']); // used
             Route::post('/notifications', [ProfileAPIController::class, 'userNotifications']); // used
-            Route::post('/change-lang', [ProfileAPIController::class, 'changeLanguage']); //end
+            Route::post('/change-lang', [ProfileAPIController::class, 'changeLanguage']); // used
         });
     });
 });
@@ -147,13 +142,8 @@ Route::get('/blog-news', [BlogController::class, 'index']); // used
 Route::get('task/{task}', [TaskAPIController::class, 'task']); // used
 Route::get('tasks-filter', [TaskAPIController::class, 'filter']); // used
 Route::get('same-tasks/{task}', [TaskAPIController::class, 'same_tasks']); // used
-Route::get('tasks-search', [SearchAPIController::class, 'ajax_tasks']); //end
-Route::get('search-task', [SearchAPIController::class, 'task_search']); //end
-Route::post('ajax-request', [SearchAPIController::class, 'task_response']); //not
-Route::get('/detailed-tasks/{task}', [SearchAPIController::class, 'task']); //end
 
 //Categories
-
 Route::get('/categories', [CategoriesAPIController::class, 'index']); //end -
 Route::get('/popular-categories', [CategoriesAPIController::class, 'popular']); // used
 Route::get('/categories-parent', [CategoriesAPIController::class, 'parents']); //used
@@ -164,9 +154,6 @@ Route::get('/category/search', [CategoriesAPIController::class, 'search']); // u
 Route::get('/performers', [PerformerAPIController::class, 'service']); // used
 Route::get('/performers/{performer}', [PerformerAPIController::class, 'performer']); //end +
 
-//Portfolio
-Route::get('/portfolio_albums/{performer}', [PortfolioAPIController::class, 'index']); //end +
-Route::get('/portfolio_album/{portfolio}', [PortfolioAPIController::class, 'show']); //end +
 
 #Social
 Route::post('/social-login', [SocialAPIController::class, 'login']); // used
