@@ -6,7 +6,7 @@
         @if(Cache::has('user-is-online-' . $user->id))
             <span class="text-green-500">Online</span>
         @else
-            <span class="text-gray-500"> {{ Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</span>
+            <span class="text-gray-500"> {{ $user->last_seen_at }}</span>
         @endif
         <h1 class="text-3xl font-bold ">{{$user->name}}</h1>
     </div>

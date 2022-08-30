@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-	Review::observe(ReviewObserver::class);
+	    Review::observe(ReviewObserver::class);
         Voyager::addAction(\App\Actions\ActiveAction::class);
         Voyager::addAction(\App\Actions\CancelAction::class);
         foreach (glob(__DIR__.'/../Helpers/*.php') as $filename) {
