@@ -45,7 +45,7 @@ class TaskIndexResource extends JsonResource
             'performer' => new PerformerResponseResource($performer_response),
             'other'=> $this->category->name === "Что-то другое" || $this->category->name === "Boshqa narsa",
             'parent_category_name'=>$this->category->parent->getTranslatedAttribute('name'),
-            'category_name' => $this->category->name,
+            'category_name' => $this->category->getTranslatedAttribute('name'),
             'category_id' => $this->category_id,
             'current_user_response' => (bool)$user_response,
             'responses_count' => $this->responses()->count(),
