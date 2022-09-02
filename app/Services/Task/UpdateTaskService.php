@@ -260,16 +260,16 @@ class UpdateTaskService
                 return $this->success([
                     'task_id' => $task->id,
                     'route' => 'end',
-                ], 'Successfully verified');
+                ], __('Ваш телефон успешно подтвержден'));
             } else {
                 return $this->fail([
                     'sms_otp' => ['expired_message']
-                ], 'Validation errors');
+                ],  __('Срок действия номера истек'));
             }
         } else {
             return $this->fail([
                 'sms_otp' => ['incorrect_message']
-            ], 'Validation errors');
+            ],  __('Неправильный код!'));
         }
     }
 
