@@ -2,6 +2,7 @@
 
 namespace App\Services\Task;
 
+use App\Http\Controllers\LoginController;
 use App\Models\Address;
 use App\Models\Category;
 use App\Models\CustomField;
@@ -213,16 +214,26 @@ class UpdateTaskService
         /** @var User $user */
         $user = auth()->user();
         unset($data['task_id']);
-        if (!$user->is_phone_number_verified || $user->phone_number != $data['phone_number']) {
+        if (!$user->is_phone_number_verified && $user->phone_number != $data['phone_number']) {
             $data['is_phone_number_verified'] = 0;
+            $data['phone_number'] = correctPhoneNumber($data['phone_number']);
             $user->update($data);
-            VerificationService::send_verification('phone', $user, $user->phone_number);
+            VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
+            return $this->get_verify($task, $user);
+        } elseif ($user->phone_number != $data['phone_number']) {
+            LoginController::send_verification_for_task_phone($task, correctPhoneNumber($data['phone_number']));
+            return $this->get_verify($task, $user);
+        } elseif (!$user->is_phone_number_verified) {
+            VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
             return $this->get_verify($task, $user);
         }
 
-        $this->updateTask($task, $user);
+        $task->status = Task::STATUS_OPEN;
+        $task->user_id = $user->id;
+        $task->phone = $user->phone_number;
+        $task->save();
 
-//        NotificationService::sendTaskNotification($task, $user->id);
+        $this->updateTask($task, $user);
 
         return [
             'task_id' => $task->id,
@@ -245,8 +256,6 @@ class UpdateTaskService
                 $user->update(['is_phone_number_verified' => 1]);
 
                 $this->updateTask($task, $user);
-
-//                NotificationService::sendTaskNotification($task, $user->id);
 
                 return $this->success([
                     'task_id' => $task->id,
