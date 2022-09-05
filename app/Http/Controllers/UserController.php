@@ -67,7 +67,7 @@ class UserController extends Controller
         $user->save();
         $phone_number=$user->phone_number;
         $sms_service = new SmsMobileService();
-        $message = __("Код подтверждения") . ' ' . $message;
+        $message ="User.Uz ". __("Код подтверждения") . ' ' . $message;
         $sms_service->sms_packages($phone_number, $message);
 
         session()->put('verifications', ['key' => 'phone_number', 'value' => $data['phone_number']]);

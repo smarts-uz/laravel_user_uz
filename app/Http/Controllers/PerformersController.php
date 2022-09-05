@@ -19,23 +19,6 @@ use Illuminate\Support\Facades\Auth;
 class PerformersController extends Controller
 {
 
-
-    public function performer_chat($id)
-    {
-
-        $wallet1 = WalletBalance::where('user_id', $id)->first();
-        $wallet2 = WalletBalance::where('user_id', auth()->user()->id)->first();
-        if ($wallet1 == null || $wallet2 == null) {
-            return redirect()->back();
-        }
-        if ($wallet1->balance >= 4000 and $wallet2->balance >= 4000) {
-            return redirect()->route('chat', ['id' => $id]);
-        } else {
-            return redirect()->back();
-        }
-    }
-
-
     /**
      *
      * Function  service
@@ -61,7 +44,7 @@ class PerformersController extends Controller
     }
 
 
-    public function performer(User $user, Request $request)
+    public function performer(User $user)
     {
         setview($user);
 
@@ -169,7 +152,6 @@ class PerformersController extends Controller
     }
 
     public function performers_portfolio(User $user,Portfolio $portfolio){
-
         return view('performers.performer_portfolio',compact('portfolio','user'));
     }
 }

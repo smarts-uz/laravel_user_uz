@@ -397,14 +397,14 @@ class ProfileService
             $user->verify_code = $message;
             $user->save();
             $sms_service = new SmsMobileService();
-            $sms_service->sms_packages($phone_number, __("Код подтверждения") . ' ' . $message);
+            $sms_service->sms_packages($phone_number, "User.Uz ". __("Код подтверждения") . ' ' . $message);
             $messages = trans('trans.Phone number updated successfully.');
             $success = true;
         }
         return [
             'success' => $success,
             'data' => [
-                'messages' => $messages
+                'messages' => $messages 
             ]
         ];
     }

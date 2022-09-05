@@ -91,7 +91,7 @@ class LoginController extends Controller
         $task->save();
 
         $sms_service = new SmsMobileService();
-        $sms_service->sms_packages($phone_number, __("Код подтверждения") . ' ' . $message);
+        $sms_service->sms_packages($phone_number,"User.Uz ". __("Код подтверждения") . ' ' . $message);
     }
 
     public function send_email_verification()

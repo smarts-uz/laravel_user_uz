@@ -47,7 +47,6 @@ Route::group(['prefix' => 'performers'], function () {
     Route::post('/', [PerformersController::class, 'service']); // javoxir
     Route::get('/', [PerformersController::class, 'service'])->name('performers.service'); // javoxir
     Route::get('/{user}', [PerformersController::class, 'performer'])->name('performers.performer'); // javoxir
-    Route::get('/chat/{id}', [PerformersController::class, 'performer_chat'])->name('performers.performer_chat'); // javoxir
 });
 #endregion
 
@@ -117,7 +116,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'verification'], function () {
 });
 #endregion
 
-#region foterpage
+#region footerpage
 Route::get('/faq', [FaqsController::class, 'index'])->name('faq.index'); // javoxir
 Route::get('/questions/{id}', [FaqsController::class, 'questions'])->name('faq.questions'); // javoxir
 Route::view('/faq', 'faq.faq');
@@ -130,7 +129,6 @@ Route::get('/security', [Controller::class, 'security'])->name('security'); // j
 Route::get('/badges', [Controller::class, 'badges'])->name('badges'); // javoxir
 Route::get('/news', [Controller::class, 'news'])->name('news'); // javoxir
 Route::get('/privacy', [Controller::class, 'policy'])->name('privacy'); // javoxir
-
 #endregion
 
 #region Profile
@@ -151,12 +149,9 @@ Route::group(['middleware' => 'auth'], function () {
         // Profile delete
         Route::get('/delete', [ProfileController::class, 'destroy'])->name('profile.destroy'); // javoxir
 
-
         //added category id
         Route::post('/getcategory', [ProfileController::class, 'getCategory'])->name('profile.getCategory'); // javoxir
-
         Route::post('/storeDistrict', [ProfileController::class, 'StoreDistrict'])->name('profile.StoreDistrict'); // javoxir
-
         Route::post('/store/profile/image', [ProfileController::class, 'storeProfileImage'])->name('profile.storeProfileImage'); // javoxir
         Route::post('/comment', [ProfileController::class, 'comment'])->name('profile.comment'); // javoxir
         Route::post('/testBase', [ProfileController::class, 'testBase'])->name('profile.testBase'); // javoxir
@@ -183,7 +178,6 @@ Route::prefix("task")->group(function () {
     Route::prefix("create")->group(function () {
         Route::get('/', [CreateController::class, 'name'])->name('task.create.name');
         Route::post('/name', [CreateController::class, 'name_store'])->name('task.create.name.store');
-
         Route::get('/remote/{task}', [CreateController::class, 'remote_get'])->name('task.create.remote');
         Route::post('/remote/{task}', [CreateController::class, 'remote_store'])->name('task.create.remote.store');
         Route::get('/custom/{task}', [CreateController::class, 'custom_get'])->name('task.create.custom.get');
