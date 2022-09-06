@@ -174,7 +174,10 @@
             {{-- tugashi o'ng tomon ispolnitel --}}
         </div>
     </div>
-    <script>let PAYMENT_TEST = '{{env('PAYMENT_TEST')}}' // Used in cash.js </script>
+    <script>
+        let PAYMENT_TEST = '{{env('PAYMENT_TEST')}}' // Used in cash.js
+        let MIN_AMOUNT = '{{setting('admin.min_amount') ?? 4000}}' // Used in cash.js
+    </script>
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('js/profile/cash.js') }}"></script>
 @endsection

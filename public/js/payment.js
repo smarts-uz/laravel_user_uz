@@ -26,7 +26,7 @@ function borderColor() {
 
 function inputFunction() {
     var x = document.getElementById("myText").value;
-    let amount = 4000;
+    let amount = MIN_AMOUNT;
     if (PAYMENT_TEST) {
         amount = 1000;
     }

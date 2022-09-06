@@ -78,5 +78,8 @@
 <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id-backdrop"></div>
 <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal1-id-backdrop"></div>
 
-<script>let PAYMENT_TEST = '{{env('PAYMENT_TEST')}}'</script>
+<script>
+    let PAYMENT_TEST = '{{env('PAYMENT_TEST')}}' // Used in payment.js
+    let MIN_AMOUNT = '{{setting('admin.min_amount') ?? 4000}}' // Used in payment.js
+</script>
 <script src="{{ asset('js/payment.js') }}"></script>

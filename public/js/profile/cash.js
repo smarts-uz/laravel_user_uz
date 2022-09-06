@@ -1,7 +1,7 @@
  // input cash
 function inputCash() {
     var x = document.getElementById("myText1").value;
-    let amount = 4000;
+    let amount = MIN_AMOUNT;
     if (PAYMENT_TEST) {
         amount = 1000;
     }

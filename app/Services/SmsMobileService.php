@@ -17,7 +17,8 @@ class SmsMobileService
      * @param $message
      * @return void
      */
-    public function sms_packages($phone_number, $message){
+    public static function sms_packages($phone_number, $message): void
+    {
 
         $phone =preg_replace('/[+]+/', '', $phone_number);
         switch(env('SMS_PROVIDER')) {
