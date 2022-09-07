@@ -45,16 +45,6 @@ function inputFunction() {
     }
 }
 
-function checkFunction() {
-    var x = document.getElementById("myText").value;
-    var checkBox = document.getElementById("myCheck");
-    if (checkBox.checked == true) {
-        document.getElementById("button").innerHTML = "К оплате " + (parseInt(x) + 10000);
-    } else {
-        document.getElementById("button").innerHTML = "К оплате " + x + "UZS";
-    }
-}
-
 function validate(evt) {
     var theEvent = evt || window.event;
     // Handle paste

@@ -36,7 +36,7 @@ class ResponseAPIController extends Controller
 
         $ballance = WalletBalance::where('user_id', auth()->user()->id)->first();
         if ($ballance) {
-            if ($ballance->balance < 4000) {
+            if ($ballance->balance < setting('admin.min_amount')) {
                 response()->json(["success" => false, 'message'=>'Hisobingizda yetarli mablag\' mavjud emas!']);
             }else if($task->responses()->where('creator_id', auth()->user()->id)->first()){
                 return response()->json(['success' => false, "Siz allaqachon so'rov yuborgansiz"]);

@@ -16,7 +16,6 @@
     " считается в каждой категории отдельно и обновляется раз в сутки. От него зависит, на каком месте окажется отклик исполнителя в откликах на задание. Чем выше рейтинг в категории, тем выше размещается отклик и тем больше шансов получить задание.": " U har bir kategoriyada alohida ko'rib chiqiladi va kuniga bir marta yangilanadi. Bu uning vazifasi vazifa bo'yicha javoblarda u unga bog'liq bo'lgan unga bog'liq. Kategoriyada reyting qanchalik yuqori bo'lsa, javob qanchalik yuqori bo'lsa va vazifani bajarish uchun ko'proq imkoniyat bo'lsa.",
     ". Средняя оценка:": ". O'rtacha reyting:",
     "35 секунд": "35 soniya",
-    "4000 UZS.": "4000 so'm.",
     "Facebook": "Facebook",
     "Google": "Google",
     "Oтправить": "Yuborish",
@@ -568,7 +567,7 @@
     "Стоимость": "Narx",
     "Стоимость заданий": "Vazifalar narxi",
     "Стоимость услуг": "Xizmat narxi",
-    "Сумма пополнения, минимум — 4000 UZS": "To'ldirish miqdori, kamida 4000 so'm",
+    "Сумма пополнения, минимум — ": "To'ldirish miqdori, kamida ",
     "Счет": "Hisob raqamim",
     "Телефон": "Telefon",
     "Телефон исполнителя:": "ijrochining telefoni:",
@@ -753,6 +752,7 @@
     "Количество заданий : ": "Vazifalar soni : ",
     "Вы хотите удалить профиль?": "Profilni ochirishni hohlaysizmi?",
     "Да" : "Ha",
-    "Нет" : "Yo'q"
+    "Нет" : "Yo'q",
+    "Universal Services списывает с исполнителей фиксированную оплату за возможность оставлять к заданиям отклики с контактными данными. Оплата за отклики не возвращается.":"Universal Services aloqa ma'lumotlari bilan topshiriqlarga javob qoldirish imkoniyati uchun ijrochilardan qat'iy belgilangan to'lovni ushlab qoladi. Javob to'lovlari qaytarilmaydi."
 
 }

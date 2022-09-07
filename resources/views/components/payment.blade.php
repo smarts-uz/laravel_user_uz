@@ -15,9 +15,9 @@
             <div class="text-center h-64">
                 <div class="w-1/3 mx-auto h-16 border-b" id="demo" onclick="borderColor()">
                     <input class="focus:outline-none focus:border-yellow-500  w-full h-full text-4xl text-center " maxlength="7" minlength="3" id="myText" oninput="inputFunction()"
-                           onkeypress='validate(event)' type="text" value="4000">
+                           onkeypress='validate(event)' type="text" value="{{setting('admin.min_amount')}}">
                 </div>
-                <p class="text-sm mt-2 leading-6 text-gray-400">{{__('Сумма пополнения, минимум — 4000 UZS')}}</p>
+                <p class="text-sm mt-2 leading-6 text-gray-400">{{__('Сумма пополнения, минимум — ')}}{{setting('admin.min_amount')}} UZS</p>
                 <div class="mt-16">
                     <a onclick="toggleModal1()" class="px-10 py-4 font-sans  text-xl  font-semibold bg-green-500 text-white hover:bg-green-500  h-12 rounded-md text-xl" id="button"
                        href="#">{{__('К оплате')}}</a>

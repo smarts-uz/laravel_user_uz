@@ -47,7 +47,7 @@
                             <input
                                 class="focus:outline-none focus:border-yellow-500  inline rounded-xl xl:ml-3 ring-1 text-2xl text-center h-18 w-36  pb-1"
                                 onkeyup="myText.value = this.value" oninput="inputCash()" onkeypress='validate(event)'
-                                id="myText1" type='text' min="4000" maxlength="7" value="4000" />
+                                id="myText1" type='text' min="{{setting('admin.min_amount')}}" maxlength="7" value="{{setting('admin.min_amount')}}" />
                             <span class="xl:ml-1 xl:text-xl lg:text-lg text-xl">UZS</span>
                             <button onclick="toggleModal()" type="submit" id="button2"
                                 class="md:inline block xl:ml-10 lg:ml-2 mx-auto mt-5 md:mt-0 h-10 rounded-xl ring-0 hover:bg-green-600 text-white bg-green-500 md:w-40 w-full">
@@ -155,12 +155,12 @@
                             <h2 class="font-medium text-2xl text-gray-700">{{__('Частые вопросы')}}</h2>
                             <h4 class="font-medium text-lg mt-2 text-gray-700">
                                 {{__('Условия работы с Universal Services.')}}</h4>
-                            <p class="text-base">{{__('Universal Services списывает с исполнителей фиксированную оплату за возможность оставлять к заданиям
-                                отклики с контактными данными. Стоимость одного отклика зависит от категории заданий и
-                                начинается от 20 uzs. Оплата за отклики не возвращается.')}}</p>
+                            <p class="text-base">
+                                {{__('Universal Services списывает с исполнителей фиксированную оплату за возможность оставлять к заданиям отклики с контактными данными. Оплата за отклики не возвращается.')}}
+                            </p>
                             <h4 class="font-medium text-lg mt-2 text-gray-700">
                                 {{__('Какая минимальная сумма для пополнения счета?')}}</h4>
-                            <p class="text-base">{{__('4000 UZS.')}}</p>
+                            <p class="text-base">{{setting('admin.min_amount')}} UZS</p>
                         </div>
                     </div>
                     {{-- cash end --}}
