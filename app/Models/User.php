@@ -71,11 +71,6 @@ class User extends \TCG\Voyager\Models\User
         return Carbon::parse($this->attributes['born_date'])->age;
     }
 
-    public function appeals()
-    {
-        return $this->hasMany(Message::class);
-    }
-
     public function Socials()
     {
         return $this->hasMany(Social::class);
