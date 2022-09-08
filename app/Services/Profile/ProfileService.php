@@ -227,8 +227,8 @@ class ProfileService
         $item->review_good = $user->review_good;
         $item->review_bad = $user->review_bad;
         $item->review_rating = $user->review_rating;
-        $item->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->get();
-        $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->get();
+        $item->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->latest()->get();
+        $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->latest()->get();
         return $item;
     }
 
@@ -404,7 +404,7 @@ class ProfileService
         return [
             'success' => $success,
             'data' => [
-                'messages' => $messages 
+                'messages' => $messages
             ]
         ];
     }

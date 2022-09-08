@@ -60,8 +60,8 @@ class PerformersService
         $item->review_good = $user->review_good;
         $item->review_bad = $user->review_bad;
         $item->review_rating = $user->review_rating;
-        $item->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->get();
-        $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->get();
+        $item->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->latest()->get();
+        $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->latest()->get();
         $item->task_count = Task::where('user_id', Auth::id())->whereIn('status', [1,2,3,4,5,6])->get();
         return $item;
     }
