@@ -66,6 +66,10 @@ class Controller extends BaseController
     public function lang($lang)
     {
         Session::put('lang', $lang);
+        if (auth()->check()) {
+            app()->setLocale($lang);
+            cache()->put('lang' . auth()->id(), $lang);
+        }
         return redirect()->back();
     }
 

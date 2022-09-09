@@ -176,3 +176,8 @@ function correctPhoneNumber($phone)
     }
     return $phone;
 }
+
+function cacheLang($id)
+{
+    return cache()->get('lang' . $id);
+}

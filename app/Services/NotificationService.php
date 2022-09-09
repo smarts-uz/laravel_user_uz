@@ -4,16 +4,14 @@
 namespace App\Services;
 
 
-use App\Events\SendNotificationEvent;
-use App\Http\Resources\NotificationResource;
+use App\Models\User;
 use App\Mail\MessageEmail;
 use App\Models\Notification;
-use App\Models\Task;
-use App\Models\User;
-use App\Models\WalletBalance;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use App\Events\SendNotificationEvent;
+use App\Http\Resources\NotificationResource;
 
 class NotificationService
 {
@@ -78,20 +76,21 @@ class NotificationService
                 "name_task" => $task->name,
                 "type" => Notification::TASK_CREATED
             ]);
+            $locale = cacheLang($performer->id);
             $price = number_format($task->budget, 0, '.', ' ');
             self::pushNotification($performer, [
-                'title' => __('Новая задания'),
+                'title' => __('Новая задания', [], $locale),
                 'body' => __('task_name  №task_id с бюджетом до task_budget', [
-                    'task_name' => $task->name, 'task_id' => $task->id, 'budget' => $price])
+                    'task_name' => $task->name, 'task_id' => $task->id, 'budget' => $price], $locale)
             ], 'notification', new NotificationResource($notification));
 
             if (in_array($task->category_id, $user_cat_ids)) {
                 $performer_ids[] = $performer->id;
 
                 $notification->save();
-                $message = __('Новая задания') . "\n" . __('task_name  №task_id с бюджетом до task_budget', [
+                $message = __('Новая задания', [], $locale) . "\n" . __('task_name  №task_id с бюджетом до task_budget', [
                         'task_name' => $task->name, 'task_id' => $task->id, 'budget' => $price
-                    ]);
+                    ], $locale);
                 if ($performer->sms_notification) {
                     $sms_service = new SmsMobileService();
                     $phone_number = $performer->phone_number;
@@ -119,6 +118,7 @@ class NotificationService
      */
     public static function sendNotification($not, $slug): void
     {
+        /** @var User $users */
         $users = User::query()->with('sessions')->where('news_notification', 1)->select('id')->get();
         foreach ($users as $user) {
             $notification = Notification::query()->create([
@@ -127,10 +127,10 @@ class NotificationService
                 "name_task" => $not->title,
                 "type" => Notification::NEWS_NOTIFICATION
             ]);
-
+            $locale = cacheLang($user->id);
             self::pushNotification($user, [
-                'title' => __('Новости'),
-                'body' => __('Важные новости и объявления для вас')
+                'title' => __('Новости', [], $locale),
+                'body' => __('Важные новости и объявления для вас', [], $locale)
             ], 'notification', new NotificationResource($notification));
         }
 
@@ -150,7 +150,7 @@ class NotificationService
     {
         foreach ($user_ids as $user_id) {
             broadcast(
-                new SendNotificationEvent(json_encode($data, $assoc = true), $user_id)
+                new SendNotificationEvent(json_encode($data, true), $user_id)
             )->toOthers();
         }
     }
@@ -163,8 +163,11 @@ class NotificationService
      */
     public static function sendResponseToTaskNotification($task): bool
     {
+        // 1. Send notification to responded performer
         /** @var User $user */
         $user = auth()->user();
+        $locale = cacheLang($user->id);
+        /** @var Notification $notification */
         $notification = Notification::query()->create([
             'user_id' => $user->id,
             'description' => $task->desciption ?? 'task description',
@@ -179,10 +182,12 @@ class NotificationService
         ]);
 
         self::pushNotification($user, [
-            'title' => __('Отклик к заданию'),
-            'body' => __('task_name №task_id отправлен', ['task_name' => $task->name, 'task_id' => $task->id])
+            'title' => self::titles($notification->type, $locale),
+            'body' => self::descriptions($notification, $locale)
         ], 'notification', new NotificationResource($notification));
 
+        // 2. Send notification to task owner(user)
+        /** @var Notification $notification */
         $notification = Notification::query()->create([
             'user_id' => $task->user_id,
             'performer_id' => $user->id,
@@ -193,15 +198,15 @@ class NotificationService
             "type" => Notification::RESPONSE_TO_TASK_FOR_USER
         ]);
 
+        $locale = cacheLang($task->user_id);
+
         self::sendNotificationRequest([$task->user_id], [
             'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
         ]);
 
         self::pushNotification($task->user, [
-            'title' => __('Новый отклик'),
-            'body' => __('performer откликнулся на задания task_name', [
-                'performer' => $user->name, 'task_name' => $task->name
-            ])
+            'title' => self::titles($notification->type, $locale),
+            'body' => self::descriptions($notification, $locale)
         ], 'notification', new NotificationResource($notification));
 
         return true;
@@ -224,7 +229,7 @@ class NotificationService
         $amount = number_format($amount, 0, '.', ' ');
         $message = __("Ваш баланс на сайте UserUz пополнен на сумму amount через payment_system. Номер транзакции = transaction_id ID пользователя = user_id", [
             'amount' => $amount, 'payment_system' => $payment_system, 'transaction_id' => $transaction_id, 'user_id' => $user_id
-        ]);
+        ], cacheLang($user_id));
         $phone_number = $user->phone_number;
         $sms_service->sms_packages($phone_number, $message);
         Mail::to($user->email)->send(new MessageEmail($message));
@@ -259,52 +264,56 @@ class NotificationService
         }
     }
 
-    public static function titles($type): string
+    public static function titles($type, $locale = null): string
     {
         return match ($type) {
-            Notification::TASK_CREATED => __('Новое задание'),
-            Notification::NEWS_NOTIFICATION, Notification::SYSTEM_NOTIFICATION => __('Новости'),
-            Notification::GIVE_TASK => __('Предложение'),
-            Notification::RESPONSE_TO_TASK => __('Отклик к заданию'),
-            Notification::SEND_REVIEW => __('Задание выполнено'),
-            Notification::SELECT_PERFORMER => __('Вас выбрали исполнителем'),
-            Notification::SEND_REVIEW_PERFORMER => __('Новый отзыв'),
-            Notification::RESPONSE_TO_TASK_FOR_USER => __('Новый отклик'),
-            Notification::CANCELLED_TASK, Notification::ADMIN_CANCEL_TASK => __('3адание отменено'),
-            Notification::ADMIN_COMPLETE_TASK => __('Задания завершено'),
+            Notification::TASK_CREATED => __('Новое задание', [], $locale),
+            Notification::NEWS_NOTIFICATION, Notification::SYSTEM_NOTIFICATION => __('Новости', [], $locale),
+            Notification::GIVE_TASK => __('Предложение', [], $locale),
+            Notification::RESPONSE_TO_TASK => __('Отклик к заданию', [], $locale),
+            Notification::SEND_REVIEW => __('Задание выполнено', [], $locale),
+            Notification::SELECT_PERFORMER => __('Вас выбрали исполнителем', [], $locale),
+            Notification::SEND_REVIEW_PERFORMER => __('Новый отзыв', [], $locale),
+            Notification::RESPONSE_TO_TASK_FOR_USER => __('Новый отклик', [], $locale),
+            Notification::CANCELLED_TASK, Notification::ADMIN_CANCEL_TASK => __('3адание отменено', [], $locale),
+            Notification::ADMIN_COMPLETE_TASK => __('Задания завершено', [], $locale),
             default => 'Title',
         };
     }
 
-    public static function descriptions($notification): string
+    public static function descriptions($notification, $locale = null): string
     {
         return match ($notification->type) {
             Notification::TASK_CREATED => __('task_name  №task_id с бюджетом до task_budget', [
                 'task_name' => $notification->name_task, 'task_id' => $notification->task_id,
-                'budget' => number_format($notification->task?->budget, 0, '.', ' ')]),
-            Notification::NEWS_NOTIFICATION, Notification::SYSTEM_NOTIFICATION => __('Важные новости и объявления для вас'),
+                'budget' => number_format($notification->task?->budget, 0, '.', ' ')
+            ], $locale),
+            Notification::NEWS_NOTIFICATION, Notification::SYSTEM_NOTIFICATION => __('Важные новости и объявления для вас', [], $locale),
             Notification::GIVE_TASK => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
                 'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name
-            ]),
-            Notification::RESPONSE_TO_TASK => __('task_name №task_id отправлен', ['task_name' => $notification->name_task, 'task_id' => $notification->task_id]),
+            ], $locale),
+            Notification::RESPONSE_TO_TASK => __('task_name №task_id отправлен', [
+                'task_name' => $notification->name_task, 'task_id' => $notification->task_id
+            ], $locale),
             Notification::SEND_REVIEW => __('Заказчик сказал, что вы выполнили эго задачу task_name №task_id и оставил вам отзыв', [
                 'task_name' => $notification->name_task, 'task_id' => $notification->task_id,
-            ]),
+            ], $locale),
             Notification::SELECT_PERFORMER => __('Вас выбрали исполнителем  в задании task_name №task_id task_user', [
-                'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name]),
-            Notification::SEND_REVIEW_PERFORMER => __('О вас оставлен новый отзыв') . " \"$notification->name_task\" №$notification->task_id",
+                'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name
+            ], $locale),
+            Notification::SEND_REVIEW_PERFORMER => __('О вас оставлен новый отзыв', [], $locale) . " \"$notification->name_task\" №$notification->task_id",
             Notification::RESPONSE_TO_TASK_FOR_USER => __('performer откликнулся на задания task_name', [
                 'performer' => $notification->performer?->name, 'task_name' => $notification->name_task
-            ]),
+            ], $locale),
             Notification::CANCELLED_TASK => __('Ваше задание task_name №task_id было отменено', [
                 'task_name' => $notification->name_task, 'task_id' => $notification->task_id,
-            ]),
+            ], $locale),
             Notification::ADMIN_COMPLETE_TASK => __('3адание task_name №task_id было завершено администрацией', [
                 'task_name' => $notification->name_task, 'task_id' => $notification->task_id,
-            ]),
+            ], $locale),
             Notification::ADMIN_CANCEL_TASK => __('3адание task_name №task_id было отменено администрацией', [
                 'task_name' => $notification->name_task, 'task_id' => $notification->task_id,
-            ]),
+            ], $locale),
             default => 'Description',
         };
     }

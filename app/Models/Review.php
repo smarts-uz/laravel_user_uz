@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ *  @property $user
+ *  @property $good_bad
+ *
+ */
 class Review extends Model
 {
     use HasFactory, SoftDeletes;
@@ -54,5 +59,18 @@ class Review extends Model
         } elseif ($type == 'all') {
             return $query;
         }
+    }
+
+    public static function boot ()
+    {
+        parent::boot();
+
+        self::deleting(function (Review $review) {
+            if ($review->good_bad == 1) {
+                $review->user->decrement('review_good');
+            } else {
+                $review->user->decrement('review_bad');
+            }
+        });
     }
 }

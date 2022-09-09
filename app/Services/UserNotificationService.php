@@ -21,10 +21,10 @@ class UserNotificationService extends NotificationService
         self::sendNotificationRequest([$task->performer_id], [
             'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
         ]);
-
+        $locale = cacheLang($task->performer_id);
         self::pushNotification($task->performer, [
-            'title' => self::titles($type),
-            'body' => self::descriptions($notification)
+            'title' => self::titles($type, $locale),
+            'body' => self::descriptions($notification, $locale)
         ], 'notification', new NotificationResource($notification));
     }
 
@@ -42,10 +42,10 @@ class UserNotificationService extends NotificationService
         self::sendNotificationRequest([$task->user_id], [
             'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
         ]);
-
+        $locale = cacheLang($task->user_id);
         self::pushNotification($task->user, [
-            'title' => self::titles($type),
-            'body' => self::descriptions($notification)
+            'title' => self::titles($type, $locale),
+            'body' => self::descriptions($notification, $locale)
         ], 'notification', new NotificationResource($notification));
     }
 }

@@ -33,6 +33,7 @@ use Laravel\Passport\HasApiTokens;
  * @property $role_id
  * @property $api_token
  * @property $remember_token
+ * @property $map
  * @return array //Value Returned
  */
 class User extends \TCG\Voyager\Models\User
