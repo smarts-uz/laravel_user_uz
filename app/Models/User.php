@@ -184,7 +184,7 @@ class User extends \TCG\Voyager\Models\User
         self::deleting(function (User $user) {
 
             $user->tasks()->delete();
-//            $user->reviews()->delete(); - don't need to delete old reviews
+            $user->reviews()->delete();
             $user->portfolios()->delete();
             $user->compliances()->delete();
 
