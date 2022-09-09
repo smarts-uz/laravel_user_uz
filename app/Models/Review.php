@@ -23,11 +23,11 @@ class Review extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class,'reviewer_id');
+        return $this->belongsTo(User::class);
     }
     public function reviewer()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'reviewer_id');
     }
     public function task()
     {
@@ -66,9 +66,10 @@ class Review extends Model
         parent::boot();
 
         self::deleting(function (Review $review) {
-            if ($review->good_bad == 1) {
+            $user = $review->user;
+            if ($review->good_bad == 1 && $user->review_good > 1) {
                 $review->user->decrement('review_good');
-            } else {
+            } elseif ($user->review_bad > 1) {
                 $review->user->decrement('review_bad');
             }
         });

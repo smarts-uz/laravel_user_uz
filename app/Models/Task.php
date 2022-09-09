@@ -12,6 +12,7 @@ use Elastic\ScoutDriverPlus\Searchable;
 /**
  * @property $user
  * @property $performer
+ * @property $reviews
  * @property object $category
  *
  * @property $id
@@ -142,7 +143,9 @@ class Task extends Model
             $task->responses()->delete();
             $task->custom_field_values()->delete();
             $task->addresses()->delete();
-            $task->reviews()->delete();
+            foreach ($task->reviews as $review) {
+                $review->delete();
+            }
             $task->compliances()->delete();
 
             Notification::query()->where('task_id', $task->id)->delete();
