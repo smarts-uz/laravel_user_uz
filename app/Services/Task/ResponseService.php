@@ -121,12 +121,13 @@ class ResponseService
         $response_user = $response->user;
         $task->update($data);
         $performer = $response->performer;
+        $locale = cacheLang($performer->id);
         if ($performer->phone_number) {
             $name = $response_user->name;
             $text_url = route("searchTask.task",$response->task_id);
             $message = __('Вас выбрали исполнителем  в задании task_name №task_id task_user', [
                 'task_name' => $text_url, 'task_id' => $task->id, 'task_user' => $name
-            ]);
+            ], $locale);
             $phone_number=$performer->phone_number;
             $sms_service = new SmsMobileService();
             $sms_service->sms_packages($phone_number, $message);
@@ -150,8 +151,8 @@ class ResponseService
             'url' => 'detailed-tasks' . '/' . $response->task_id, 'name' => $task->name, 'time' => 'recently'
         ]);
         NotificationService::pushNotification($performer, [
-            'title' => __('Вас выбрали исполнителем'), 'body' => __('Вас выбрали исполнителем  в задании task_name №task_id task_user', [
-                'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name])
+            'title' => NotificationService::titles($notification->type, $locale),
+            'body' => NotificationService::descriptions($notification, $locale)
         ], 'notification', new NotificationResource($notification));
         $taskResponse = TaskResponse::query()->where(['task_id' => $task->id])->where(['performer_id' => $performer->id])->first();
         if ($taskResponse->not_free == 0) {

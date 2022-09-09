@@ -222,7 +222,7 @@ class CreateController extends Controller
         $task->phone = $data['phone_number'];
 
         $create_service = new CreateService();
-        $create_service->perform_notif($task, $user);
+        $create_service->perform_notification($task, $user);
 
         $task->save();
         return redirect()->route('searchTask.task', $task->id);

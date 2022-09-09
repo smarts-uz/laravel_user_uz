@@ -13,6 +13,7 @@ use App\Services\NotificationService;
 use App\Services\SmsMobileService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Session;
 
 class CreateService
 {
@@ -87,12 +88,12 @@ class CreateService
         NotificationService::sendNotificationRequest([$task->user_id], [
             'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
         ]);
-
+        $locale = cacheLang($task->user_id);
         NotificationService::pushNotification($task->user, [
-            'title' => __('3адание отменено'),
+            'title' => __('3адание отменено', [], $locale),
             'body' => __('Ваше задание task_name №task_id было отменено', [
                 'task_name' => $task->name, 'task_id' => $task->id,
-            ])
+            ], $locale)
         ], 'notification', new NotificationResource($notification));
     }
 
@@ -150,30 +151,32 @@ class CreateService
 
     /**
      *
-     * Function  perform_notif
+     * Function  perform_notification
      * Mazkur metod Task yaratganda notification va sms yuborish
      * @param $task $user
      * @param $user
      */
-    public function perform_notif($task,$user){
-        $performer_id = session()->get('performer_id_for_task');
+    public function perform_notification($task,$user){
+        $performer_id = Session::get('performer_id_for_task');
         if ($performer_id) {
             /** @var User $performer */
             $performer = User::query()->findOrFail($performer_id);
+            $locale = cacheLang($performer_id);
             $text_url = route("searchTask.task", $task->id);
             $message = __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
                 'task_name' => $text_url, 'task_id' => $task->id, 'task_user' => $user->name
-            ]);
-            $phone_number=$performer->phone_number;;
+            ], $locale);
+            $phone_number=$performer->phone_number;
             $sms_service = new SmsMobileService();
             $sms_service->sms_packages($phone_number, $message);
+            /** @var Notification $notification */
             $notification = Notification::query()->create([
                 'user_id' => $task->user_id,
                 'performer_id' => $performer_id,
                 'task_id' => $task->id,
                 'name_task' => $task->name,
                 'description' => '123',
-                'type' => 4,
+                'type' => Notification::GIVE_TASK,
             ]);
 
             NotificationService::sendNotificationRequest([$performer_id], [
@@ -181,9 +184,9 @@ class CreateService
             ]);
 
             NotificationService::pushNotification($performer, [
-                'title' => __('Предложение'), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
+                'title' => __('Предложение', [], $locale), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
                     'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name
-                ])
+                ], $locale)
             ], 'notification', new NotificationResource($notification));
 
             session()->forget('performer_id_for_task');

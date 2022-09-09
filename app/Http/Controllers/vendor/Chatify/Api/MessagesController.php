@@ -100,8 +100,10 @@ class MessagesController extends Controller
                 'to_id' => $request['id'],
                 'message' => $chatMessenger->messageCard($messageData, 'default')
             ]);
+            $locale = cacheLang($request['id']);
             NotificationService::pushNotification(User::query()->find($request['id']), [
-                'title' => trans('Новое сообщение'), 'body' => trans('У вас новое сообщение от user', ['user' => Auth::user()->name])
+                'title' => trans('Новое сообщение', [], $locale),
+                'body' => trans('У вас новое сообщение от user', ['user' => Auth::user()->name], $locale)
             ], 'chat', $messageData ?? []);
 
             return Response::json([

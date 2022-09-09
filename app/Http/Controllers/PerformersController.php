@@ -97,10 +97,11 @@ class PerformersController extends Controller
             NotificationService::sendNotificationRequest([$users_id], [
                 'url' => 'detailed-tasks' . '/' . $task_id, 'name' => $task_name->name, 'time' => 'recently'
             ]);
+            $locale = cacheLang($performer->id);
             NotificationService::pushNotification($performer, [
-                'title' => __('Предложение'), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
+                'title' => __('Предложение', [], $locale), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
                     'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name
-                ])
+                ], $locale)
             ], 'notification', new NotificationResource($notification));
 
             return response()->json(['success' => $users_id]);

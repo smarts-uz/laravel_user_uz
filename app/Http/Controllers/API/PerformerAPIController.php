@@ -139,10 +139,11 @@ class PerformerAPIController extends Controller
         $task = Task::where('id', $data['task_id'])->first();
         /** @var User $performer */
         $performer = User::query()->findOrFail($data['performer_id']);
+        $locale = cacheLang($performer->id);
         $text_url = route("searchTask.task",$data['task_id']);
         $message = __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
             'task_name' => $text_url, 'task_id' => $task->id, 'task_user' => $task->user?->name
-        ]);
+        ], $locale);
         $phone_number = $performer->phone_number;
         $sms_service = new SmsMobileService();
         $sms_service->sms_packages($phone_number, $message);
@@ -160,9 +161,8 @@ class PerformerAPIController extends Controller
             'url' => 'detailed-tasks' . '/' . $data['task_id'], 'name' => $task->name, 'time' => 'recently'
         ]);
         NotificationService::pushNotification($performer, [
-            'title' => __('Предложение'), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
-                'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name
-            ])
+            'title' => NotificationService::titles($notification->type, $locale),
+            'body' => NotificationService::descriptions($notification, $locale)
         ], 'notification', new NotificationResource($notification));
 
         return response()->json(['success' => true, 'message' => 'Success']);
