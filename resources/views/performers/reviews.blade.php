@@ -24,16 +24,16 @@
         @if($goodReview->user && $goodReview->task)
             <div class="my-6">
                 <div class="flex flex-row gap-x-2 my-4 items-start">
-                    <img src="{{ asset('storage/'.$goodReview->user->avatar) }}" alt="#"
+                    <img src="{{ asset('storage/'.$goodReview->reviewer->avatar) }}" alt="#"
                          class="w-12 h-12 border-2 rounded-lg border-gray-500">
                     <a href="{{ route('performers.performer',$goodReview->reviewer_id ) }}"
-                       class="text-blue-500 hover:text-red-500 text-xl">{{ $goodReview->user->name }}</a>
+                       class="text-blue-500 hover:text-red-500 text-xl">{{ $goodReview->reviewer->name }}</a>
                     @if ($goodReview->as_performer==0)
                         <p> - Заказчик</p>
                     @elseif ($goodReview->as_performer==1)
                         <p> - Исполнитель</p>
                     @endif
-                       
+
                 </div>
                 <div class="w-full p-3 bg-yellow-50 rounded-xl">
                     <p>{{__('Задание')}} <a
@@ -53,15 +53,15 @@
         @if($badReview->user && $badReview->task)
             <div class="my-6">
                 <div class="flex flex-row gap-x-2 my-4 items-start">
-                    <img src="{{  asset('storage/'.$badReview->user->avatar) }}" alt="#"
+                    <img src="{{  asset('storage/'.$badReview->reviewer->avatar) }}" alt="#"
                          class="w-12 h-12 border-2 rounded-lg border-gray-500">
                     <a href="{{ route('performers.performer',$badReview->reviewer_id ) }}"
-                       class="text-blue-500 hover:text-red-500 text-xl">{{ $badReview->user->name }}</a>
+                       class="text-blue-500 hover:text-red-500 text-xl">{{ $badReview->reviewer->name }}</a>
                     @if ($badReview->as_performer==0)
                        <p> - Заказчик</p>
                     @elseif ($badReview->as_performer==1)
                        <p> - Исполнитель</p>
-                    @endif  
+                    @endif
                 </div>
                 <div class="w-full p-3 bg-yellow-50 rounded-xl">
                     <p>{{__('Задание')}} <a href="{{ route('searchTask.task',$badReview->task_id) }}"
