@@ -118,10 +118,11 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
             Route::post('/phone/edit', [ProfileAPIController::class, 'phoneUpdate']); // used
             Route::post('/password/change', [ProfileAPIController::class, 'change_password']); // used
             Route::post('/notifications', [ProfileAPIController::class, 'userNotifications']); // used
-            Route::post('/change-lang', [ProfileAPIController::class, 'changeLanguage']); // used
+
         });
     });
 });
+Route::post('/profile/settings/change-lang', [ProfileAPIController::class, 'changeLanguage']); // used
 Route::get('/profile/{user}', [ProfileAPIController::class, 'userProfile']); // used
 Route::get('/profile/{user}/portfolios', [ProfileAPIController::class, 'userPortfolios']); // used
 Route::get('/profile/{user}/reviews', [ProfileAPIController::class, 'userReviews']); // used

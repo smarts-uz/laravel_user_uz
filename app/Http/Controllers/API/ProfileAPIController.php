@@ -1060,13 +1060,21 @@ class ProfileAPIController extends Controller
      */
     public function changeLanguage(Request $request)
     {
-        cache()->forever('lang' . auth()->id(), $request->get('lang'));
-        app()->setLocale($request->get('lang'));
+        if (Auth::guard('api')->check()) {
+            cache()->forever('lang' . auth()->id(), $request->get('lang'));
+            app()->setLocale($request->get('lang'));
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'message' => trans('trans.Language changed successfully.')
+                ]
+            ]);
+        }
         return response()->json([
-           'success' => true,
-           'data' => [
-               'message' => trans('trans.Language changed successfully.')
-           ]
+            'success' => true,
+            'data' => [
+                'message' => trans('trans.Language changed successfully.')
+            ]
         ]);
     }
 }
