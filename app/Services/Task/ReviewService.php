@@ -85,7 +85,7 @@ class ReviewService
             }
             $notification = ReviewService::userReview($task, $request);
             NotificationService::pushNotification($task->performer, [
-                'title' => __('Новый отзыв', [], $locale), 'body' => __('О вас оставлен новый отзыв', $locale) . " \"$task->name\" №$task->id"
+                'title' => __('Новый отзыв', [], $locale), 'body' => __('О вас оставлен новый отзыв', [], $locale) . " \"$task->name\" №$task->id"
             ], 'notification', new NotificationResource($notification));
 
         } elseif ($task->performer_id == auth()->id()) {
