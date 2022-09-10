@@ -44,18 +44,7 @@ class ReviewObserver
      */
     public function deleted(Review $review)
     {
-        $user = User::find($review->user_id);
-        if (!$review->as_performer) {
-            if($review->good_bad == 1) {
-                $user->decrement('review_good');
-            } else {
-                $user->decrement('review_bad');
-            }
-        }
-        $goods = $user->review_good;
-        $bads = $user->review_bad;
-        $user->review_rating = round($goods * 5 / (($goods+$bads==0) ? 1 : ($goods + $bads)));
-        $user->save();
+
     }
 
     /**
