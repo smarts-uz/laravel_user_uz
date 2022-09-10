@@ -21,7 +21,7 @@
 {{-- tab contents --}}
 <div id="first" class="tabcontent">
     @foreach($goodReviews as $goodReview)
-        @if($goodReview->user && $goodReview->task)
+        @if($goodReview->reviewer && $goodReview->task)
             <div class="my-6">
                 <div class="flex flex-row gap-x-2 my-4 items-start">
                     <img src="{{ asset('storage/'.$goodReview->reviewer->avatar) }}" alt="#"
@@ -50,7 +50,7 @@
 
 <div id="second" class="tabcontent">
     @foreach($badReviews as $badReview)
-        @if($badReview->user && $badReview->task)
+        @if($badReview->reviewer && $badReview->task)
             <div class="my-6">
                 <div class="flex flex-row gap-x-2 my-4 items-start">
                     <img src="{{  asset('storage/'.$badReview->reviewer->avatar) }}" alt="#"
