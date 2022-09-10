@@ -185,10 +185,7 @@ class User extends \TCG\Voyager\Models\User
         self::deleting(function (User $user) {
 
             $user->tasks()->delete();
-            foreach ($user->reviews as $review) {
-                $review->delete();
-            }
-
+            $user->reviews()->delete();
             $user->portfolios()->delete();
             $user->compliances()->delete();
 
