@@ -35,6 +35,7 @@ use Laravel\Passport\HasApiTokens;
  * @property $remember_token
  * @property $map
  * @property $reviews
+ * @property $tasks
  * @return array //Value Returned
  */
 class User extends \TCG\Voyager\Models\User
@@ -184,8 +185,13 @@ class User extends \TCG\Voyager\Models\User
 
         self::deleting(function (User $user) {
 
-            $user->tasks()->delete();
-            $user->reviews()->delete();
+            foreach ($user->tasks as $task) {
+                $task->delete();
+            }
+            foreach ($user->reviews as $review) {
+                $review->delete();
+            }
+
             $user->portfolios()->delete();
             $user->compliances()->delete();
 
