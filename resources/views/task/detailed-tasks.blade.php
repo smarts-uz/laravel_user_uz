@@ -105,8 +105,8 @@
                                         @else{{asset("storage/{$task->user->avatar}") }}" @endif alt="#"
                                             class="w-12 h-12 border-2 rounded-lg border-gray-500">
                                     @elseif ($respons_review->as_performer == 1)
-                                        <img src="@if ($respons_review->user?->avatar == ''){{ asset("storage/images/default.png") }}
-                                        @else{{asset("storage/{$respons_review->user->avatar}") }}" @endif alt="#"
+                                        <img src="@if ($respons_review->reviewer?->avatar == ''){{ asset("storage/images/default.png") }}
+                                        @else{{asset("storage/{$respons_review->reviewer->avatar}") }}" @endif alt="#"
                                             class="w-12 h-12 border-2 rounded-lg border-gray-500">
                                     @endif
 
@@ -119,11 +119,11 @@
                                             class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
                                             </a>
                                         @elseif ( $respons_review->as_performer == 1)
-                                            <a  @if (Auth::check() && Auth::user()->id == $respons_review->user->id)
+                                            <a  @if (Auth::check() && Auth::user()->id == $respons_review->reviewer->id)
                                                 href="/profile"
-                                                @else href="/performers/{{$respons_review->user->id}}"
+                                                @else href="/performers/{{$respons_review->reviewer->id}}"
                                                 @endif
-                                            class="text-2xl text-blue-500 hover:text-red-500">{{$respons_review->user->name ?? $respons_review->user_name}}
+                                            class="text-2xl text-blue-500 hover:text-red-500">{{$respons_review->reviewer->name}}
                                             </a>
                                         @endif
                                         <div class="flex flex-row gap-x-2">
@@ -151,8 +151,8 @@
                                         @else{{asset("storage/{$task->user->avatar}") }}" @endif alt="#"
                                             class="w-12 h-12 border-2 rounded-lg border-gray-500">
                                     @elseif ($respons_review->as_performer == 1)
-                                        <img src="@if ($respons_review->user->avatar == ''){{ asset("storage/images/default.png") }}
-                                        @else{{asset("storage/{$respons_review->user->avatar}") }}" @endif alt="#"
+                                        <img src="@if ($respons_review->reviewer->avatar == ''){{ asset("storage/images/default.png") }}
+                                        @else{{asset("storage/{$respons_review->reviewer->avatar}") }}" @endif alt="#"
                                             class="w-12 h-12 border-2 rounded-lg border-gray-500">
                                     @endif
                                     <div class="flex flex-col">
@@ -164,11 +164,11 @@
                                             class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
                                             </a>
                                         @elseif ( $respons_review->as_performer == 1)
-                                            <a  @if (Auth::check() && Auth::user()->id == $respons_review->user->id)
+                                            <a  @if (Auth::check() && Auth::user()->id == $respons_review->reviewer->id)
                                                 href="/profile"
-                                                @else href="/performers/{{$respons_review->user->id}}"
+                                                @else href="/performers/{{$respons_review->reviewer->id}}"
                                                 @endif
-                                            class="text-2xl text-blue-500 hover:text-red-500">{{$respons_review->user->name ?? $respons_review->user_name}}
+                                            class="text-2xl text-blue-500 hover:text-red-500">{{$respons_review->reviewer->name}}
                                             </a>
                                         @endif
                                        <div class="flex flex-row gap-x-2">
