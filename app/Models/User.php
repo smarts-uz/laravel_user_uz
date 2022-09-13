@@ -35,6 +35,7 @@ use Laravel\Passport\HasApiTokens;
  * @property $remember_token
  * @property $map
  * @property $reviews
+ * @property $reviewsObj
  * @property $tasks
  * @return array //Value Returned
  */
@@ -84,9 +85,9 @@ class User extends \TCG\Voyager\Models\User
         return $query->whereId($id)->increment('views', 1);
     }
 
-    public function reviews()
+    public function reviewsObj()
     {
-        return $this->hasMany(Review::class, 'user_id', 'id');
+        return $this->hasMany(Review::class, 'reviewer_id', 'id');
     }
 
     public function goodReviews()
@@ -188,7 +189,7 @@ class User extends \TCG\Voyager\Models\User
             foreach ($user->tasks as $task) {
                 $task->delete();
             }
-            foreach ($user->reviews as $review) {
+            foreach ($user->reviewsObj as $review) {
                 $review->delete();
             }
 

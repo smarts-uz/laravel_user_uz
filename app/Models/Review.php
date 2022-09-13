@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  *  @property $user
  *  @property $good_bad
+ *  @property $user_id
  *
  */
 class Review extends Model
@@ -64,7 +65,6 @@ class Review extends Model
     public static function boot ()
     {
         parent::boot();
-
         self::deleting(function (Review $review) {
             $user = $review->user;
             if ($review->good_bad == 1 && $user->review_good > 0) {
