@@ -23,6 +23,7 @@ use App\Models\Portfolio;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use JetBrains\PhpStorm\ArrayShape;
 use TCG\Voyager\Models\Category;
 use UAParser\Parser;
 
@@ -281,7 +282,9 @@ class ProfileService
      *
      * Function  updatePortfolio
      * Mazkur metod portfolio rasmlarni tahrirlash
-     * @param $portfolio Object
+     * @param $request
+     * @param $portfolio
+     * @return mixed
      */
     public function updatePortfolio($request, $portfolio)
     {
@@ -307,10 +310,13 @@ class ProfileService
      *
      * Function  videoStore
      * Mazkur metod profilga video saqlash
-     * @param $request Object
+     * @param $request
+     * @return array
      */
+    #[ArrayShape([])]
     public function videoStore($request)
     {
+        /** @var User $user */
         $user = auth()->user();
         $validated = $request->validated();
         $link = $validated['link'];
@@ -335,13 +341,18 @@ class ProfileService
      *
      * Function  balance
      * Mazkur metod cash bladega balansni chiqaradi
-     * @param $request Object
+     * @param $request
+     * @return array
      */
+    #[ArrayShape([])]
     public function balance($request)
     {
+        /** @var User $user */
         $user = auth()->user();
-        if (WalletBalance::query()->where('user_id', $user->id)->first() != null)
-            $balance = WalletBalance::query()->where('user_id', $user->id)->first()->balance;
+        /** @var WalletBalance $balance */
+        $balance = WalletBalance::query()->where('user_id', $user->id)->first();
+        if ($balance != null)
+            $balance = $balance->balance;
         else
             $balance = 0;
         $transactions = Transaction::query()->where(['transactionable_id' => $user->id])->where('state', 2);
@@ -368,7 +379,6 @@ class ProfileService
         return [
             'balance' => $balance,
             'transaction' => TransactionHistoryCollection::collection($transactions->orderByDesc('created_at')->paginate(15))->response()->getData(true)
-//            'transactions' => new TransactionHistoryResource($transactions->orderByDesc('created_at')->paginate(15))
         ];
     }
 
@@ -376,8 +386,10 @@ class ProfileService
      *
      * Function  phoneUpdate
      * Mazkur metod telefon raqamni tahrirlaydi
-     * @param $request Object
+     * @param $request
+     * @return array
      */
+    #[ArrayShape([])]
     public function phoneUpdate($request)
     {
         $phoneNumber = $request->get('phone_number');
@@ -413,10 +425,12 @@ class ProfileService
      *
      * Function  changePassword
      * Mazkur metod passwordni tahrirlash
-     * @param $data Object
+     * @param $data
+     * @return \Illuminate\Http\JsonResponse
      */
     public function changePassword($data)
     {
+        /** @var User $user */
         $user = auth()->user();
         if (isset($user->password)) {
             if (Hash::check($data['old_password'], $user->password)) {
@@ -445,7 +459,7 @@ class ProfileService
      *
      * Function  changeAvatar
      * Mazkur metod profilda rasm tahrirlash
-     * @param $request Object
+     * @param $request
      */
     public function changeAvatar($request)
     {

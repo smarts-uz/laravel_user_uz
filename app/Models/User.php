@@ -21,6 +21,8 @@ use Laravel\Passport\HasApiTokens;
  * @property $oplata
  * @property $photos
  * @property $user_id
+ * @property $is_active
+ * @property $youtube_link
  * @property $phone
  * @property $firebase_token
  * @property $sms_notification
@@ -196,7 +198,7 @@ class User extends \TCG\Voyager\Models\User
             $user->portfolios()->delete();
             $user->compliances()->delete();
 
-            ChMessage::query()->where('from_id', $user->id)->where('to_id', $user->id)->delete();
+            ChMessage::query()->where('from_id', $user->id)->orWhere('to_id', $user->id)->delete();
             TaskResponse::query()->where('user_id', $user->id)->orWhere('performer_id', $user->id)->delete();
             Notification::query()->where('user_id', $user->id)->orWhere('performer_id', $user->id)->delete();
 
