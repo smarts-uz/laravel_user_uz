@@ -30,7 +30,7 @@ function inputFunction() {
     if (PAYMENT_TEST) {
         amount = 1000;
     }
-    if (x < amount) {
+    if (isNaN(x) || isNaN(parseFloat(x)) || parseInt(x) < parseInt(amount)) {
         document.getElementById('button').removeAttribute("onclick");
         document.getElementById('button').classList.remove("bg-green-500");
         document.getElementById('button').classList.add("bg-gray-500");

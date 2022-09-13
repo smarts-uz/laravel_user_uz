@@ -407,8 +407,4 @@ class PerformerAPIController extends Controller
         ]);
     }
 
-    public function getByCategories()
-    {
-        return response()->json(['id' => request()->category_id]);
-    }
 }
