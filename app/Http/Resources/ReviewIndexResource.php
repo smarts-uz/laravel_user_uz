@@ -2,21 +2,31 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Task;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @property $id
+ * @property $reviewer
+ * @property $task
+ * @property $description
+ * @property $good_bad
+ * @property $created_at
+ */
 class ReviewIndexResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @param Request $request
+     * @return array
      */
-    public function toArray($request)
+    #[ArrayShape([])]
+    public function toArray($request): array
     {
-        $user = $this->user;
+        $user = $this->reviewer;
         $task = $this->task;
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
         if ($user->last_seen >= $date) {
