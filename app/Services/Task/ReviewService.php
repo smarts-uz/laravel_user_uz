@@ -12,7 +12,7 @@ use App\Services\NotificationService;
 
 class ReviewService
 {
-    public static function userReview($task, $request)
+    public static function userReview($task, $request): Notification
     {
         $task->status = $request->status ? Task::STATUS_COMPLETE : Task::STATUS_NOT_COMPLETED;
         $task->save();
@@ -32,6 +32,7 @@ class ReviewService
             'reviewer_id' => $task->user_id,
             'user_id' => $task->performer_id,
         ]);
+        /** @var Notification $notification */
         $notification = Notification::query()->create([
             'user_id' => $task->user_id,
             'performer_id' => $task->performer_id,
@@ -48,7 +49,7 @@ class ReviewService
     }
 
 
-    public static function performerReview($task, $request)
+    public static function performerReview($task, $request): Notification
     {
         Review::query()->create([
             'description' => $request->comment,
@@ -58,6 +59,7 @@ class ReviewService
             'user_id' => $task->user_id,
             'as_performer' => 1
         ]);
+        /** @var Notification $notification */
         $notification = Notification::query()->create([
             'user_id' => $task->user_id,
             'performer_id' => $task->performer_id,
@@ -69,14 +71,20 @@ class ReviewService
         NotificationService::sendNotificationRequest([$task->user_id], [
             'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
         ]);
-        $task->user->increment('reviews');
+        $user = User::query()->find($task->user_id);
+        if ($request->good == 1) {
+            $user->increment('review_good');
+        } else {
+            $user->increment('review_bad');
+        }
+        $user->increment('reviews');
         $task->performer_review = 1;
         $task->save();
 
         return $notification;
     }
 
-    public static function sendReview($task, $request, $status = false)
+    public static function sendReview($task, $request, $status = false): void
     {
         if ($task->user_id == auth()->id()) {
             // user review to performer
