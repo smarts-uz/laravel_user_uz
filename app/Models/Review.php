@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *  @property $user
  *  @property $good_bad
  *  @property $user_id
+ *  @property $reviewer_id
+ *  @property $reviewer_name
+ *  @property $created_at
  *
  */
 class Review extends Model
@@ -37,9 +40,9 @@ class Review extends Model
     public function getCreatedAttribute()
     {
         $value = Carbon::parse($this->created_at)->locale(getLocale());
-        $value->minute<10 ? $minut = '0'.$value->minute : $minut = $value->minute;
-        $day = $value == now()->toDateTimeString()? "Bugun": "$value->day-$value->monthName";
-        return "$day  $value->noZeroHour:$minut";
+        $value->minute<10 ? $minute = '0'.$value->minute : $minute = $value->minute;
+        $day = $value == now()->toDateTimeString() ? "Bugun": "$value->day-$value->monthName";
+        return "$day  $value->noZeroHour:$minute";
     }
 
     public function scopeFromUserType($query, $type)

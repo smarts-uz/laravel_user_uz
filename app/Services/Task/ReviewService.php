@@ -69,6 +69,7 @@ class ReviewService
         NotificationService::sendNotificationRequest([$task->user_id], [
             'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
         ]);
+        $task->user->increment('reviews');
         $task->performer_review = 1;
         $task->save();
 

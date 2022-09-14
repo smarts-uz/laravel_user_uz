@@ -22,6 +22,10 @@ use Laravel\Passport\HasApiTokens;
  * @property $photos
  * @property $user_id
  * @property $is_active
+ * @property $review_rating
+ * @property $review_good
+ * @property $review_bad
+ * @property $reviewer_id
  * @property $youtube_link
  * @property $phone
  * @property $firebase_token
