@@ -215,7 +215,8 @@ class ProfileService
      *
      * Function  profileData
      * Mazkur metod profile  bo'limini ochib beradi
-     * @param $user Object
+     * @param $user
+     * @return ProfileDataItem
      */
     public function profileData($user)
     {

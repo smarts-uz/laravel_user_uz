@@ -96,7 +96,7 @@ class UserIndexResource extends JsonResource
         foreach ($performed_tasks as $id => $task) {
             if (Category::query()->find($id) !== null) {
                 $performed_tasks_count[] = [
-                    'name' => Category::query()->find($id)->name,
+                    'name' => Category::query()->find($id)->getTranslatedAttribute('name'),
                     'count' => __('Выполнено ') . ' ' . $task->count() . __(' заданий')
                 ];
             }
