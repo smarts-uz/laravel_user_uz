@@ -40,13 +40,16 @@
 
             <br>
             <a class="text-xl text-gray-500">
-                @if($task->user->age>0)
+                @php
+                    $age = Carbon\Carbon::parse($task->user->born_date)->age;
+                @endphp
+                @if( $age>0)
                     <p class="inline-block mr-2">
-                        {{$task->user->age}}
-                        @if($task->user->age%10==1)
-                            {{__('год')}}
-                        @elseif ($task->user->age%10==2 || $task->user->age%10==3 || $task->user->age%10==4)
-                            {{__('года')}}
+                        {{ $age}}
+                        @if( $age%10==1)
+                            {{('год')}}
+                        @elseif ( $age%10==2 ||  $age%10==3 ||  $age%10==4)
+                            {{('года')}}
                         @else
                             {{__('лет')}}
                         @endif

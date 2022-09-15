@@ -22,13 +22,16 @@
 
         <div class="flex-initial sm:w-2/3 w-full sm:mt-0 mt-6 sm:ml-8 ml-0">
             <div class="w-2/3 text-base text-gray-500">
-                @if($user->age>0)
+                @php
+                    $age = Carbon\Carbon::parse($user->born_date)->age;
+                @endphp
+                @if( $age>0)
                     <p class="inline-block mr-2">
-                        {{$user->age}}
-                        @if($user->age%10==1)
-                            {{__('год')}}
-                        @elseif ($user->age%10==2 || $user->age%10==3 || $user->age%10==4)
-                            {{__('года')}}
+                        {{ $age}}
+                        @if( $age%10==1)
+                            {{('год')}}
+                        @elseif ( $age%10==2 ||  $age%10==3 ||  $age%10==4)
+                            {{('года')}}
                         @else
                             {{__('лет')}}
                         @endif
