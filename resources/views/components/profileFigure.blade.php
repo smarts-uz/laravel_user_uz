@@ -60,20 +60,20 @@
                     </p>
                 @endif
                 @if(session('lang')=='uz')
-                    {{$review_good + $review_bad}} {{__('ta sharh oldim')}}
+                    {{$user->reviews}} {{__('ta sharh oldim')}}
                 @else
-                    @switch($review_good + $review_bad)
+                    @switch($user->reviews)
                         @case(0)
                             <span>{{__('Отзывов нет')}}</span>
                             @break
                         @case(1)
-                            <span>{{__('Получил')}} {{($review_good) + ($review_bad) }} {{__('Отзыв')}}</span>
+                            <span>{{__('Получил')}} {{$user->reviews}} {{__('Отзыв')}}</span>
                             @break
                         @case(1 && 5)
-                            <span>{{__('Получил')}} {{($review_good) + ($review_bad) }} {{__('Отзыва')}}</span>
+                            <span>{{__('Получил')}} {{$user->reviews}} {{__('Отзыва')}}</span>
                             @break
                         @default
-                            <span>{{__('Получил')}} {{($review_good) + ($review_bad) }} {{__('Отзывов')}}</span>
+                            <span>{{__('Получил')}} {{$user->reviews}} {{__('Отзывов')}}</span>
                     @endswitch
                 @endif
             </div>
