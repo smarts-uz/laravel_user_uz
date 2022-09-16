@@ -100,8 +100,8 @@
                                         <table id="history-table1" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;" data-page-length='10'>
                                             <thead>
                                                 <tr>
-                                                    <th>Date</th>
-                                                    <th>Amount</th>
+                                                    <th>{{__('Дата')}}</th>
+                                                    <th>{{__('Количество')}}</th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -112,8 +112,8 @@
                                         <table id="history-table2" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                                             <thead>
                                             <tr>
-                                                <th data-priority="1">Date</th>
-                                                <th data-priority="2">Amount</th>
+                                                <th data-priority="1">{{__('Дата')}}</th>
+                                                <th data-priority="2">{{__('Количество')}}</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -126,8 +126,8 @@
                                         <table id="history-table3" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                                             <thead>
                                             <tr>
-                                                <th data-priority="1">Date</th>
-                                                <th data-priority="2">Amount</th>
+                                                <th data-priority="1">{{__('Дата')}}</th>
+                                                <th data-priority="2">{{__('Количество')}}</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -140,8 +140,8 @@
                                         <table id="history-table4" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                                             <thead>
                                             <tr>
-                                                <th data-priority="1">Date</th>
-                                                <th data-priority="2">Amount</th>
+                                                <th data-priority="1">{{__('Дата')}}</th>
+                                                <th data-priority="2">{{__('Количество')}}</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -178,6 +178,41 @@
         let PAYMENT_TEST = '{{env('PAYMENT_TEST')}}' // Used in cash.js
         let MIN_AMOUNT = '{{setting('admin.min_amount') ?? 4000}}' // Used in cash.js
     </script>
-    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('js/profile/cash.js') }}"></script>
+    <script>
+        // datatable js
+        function getTransactions (data, table_num) {
+            $(`#history-table${table_num}`).DataTable({
+                destroy: true,
+                processing: false,
+                serverSide: false,
+                paging: true,
+                language:{
+                    @if(session('lang')=='uz')
+                        url: "//cdn.datatables.net/plug-ins/1.12.1/i18n/uz.json"
+                    @else
+                        url: "//cdn.datatables.net/plug-ins/1.12.1/i18n/ru.json"
+                    @endif
+                },
+                ajax: {
+                    url: '/profile/transactions/history',
+                    type: 'GET',
+                    dataSrc: 'transactions',
+                    data: function (d) {
+                        d.method = data['method'];
+                        if ('period' in data) {
+                            d.period = data['period']
+                        } else {
+                            d.from_date = data['from_date']
+                            d.to_date = data['to_date']
+                        }
+                    }
+                },
+                columns: [
+                    { data: 'created_at' },
+                    { data: 'amount' }
+                ]
+            });
+        }
+    </script>
 @endsection

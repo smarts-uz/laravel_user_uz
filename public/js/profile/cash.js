@@ -52,34 +52,6 @@ $('#period').change(function(){
     }
 });
 
-// datatable js
- function getTransactions (data, table_num) {
-     $(`#history-table${table_num}`).DataTable({
-         destroy: true,
-         processing: false,
-         serverSide: false,
-         paging: true,
-         ajax: {
-             url: '/profile/transactions/history',
-             type: 'GET',
-             dataSrc: 'transactions',
-             data: function (d) {
-                 d.method = data['method'];
-                 if ('period' in data) {
-                     d.period = data['period']
-                 } else {
-                     d.from_date = data['from_date']
-                     d.to_date = data['to_date']
-                 }
-             }
-         },
-         columns: [
-             { data: 'created_at' },
-             { data: 'amount' }
-         ]
-     });
- }
-
  function getTransactionsByDate (method, period, table_num) {
      if (period === 'date-period') {
          var data = {
