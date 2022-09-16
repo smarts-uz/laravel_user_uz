@@ -76,11 +76,6 @@ class User extends \TCG\Voyager\Models\User
         return ! empty($this->attributes['password']);
     }
 
-    public function getAgeAttribute()
-    {
-        return Carbon::parse($this->attributes['born_date'])->age;
-    }
-
     public function Socials()
     {
         return $this->hasMany(Social::class);

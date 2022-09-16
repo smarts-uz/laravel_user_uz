@@ -318,7 +318,7 @@
     "Место оказания услуги": "Xizmat ko'rsatish joyi",
     "Местоположение": "Manzil",
     "Мне нужно": "Menga kerak",
-    "Может быть вы хотите стать": "Ehtimol siz bo'lishni xohlaysiz",
+    "Может быть вы хотите стать исполнителем Universal Services?": "Balki siz Universal xizmatlar ijrochisi bo'lishni xohlaysizmi?",
     "Можно выполнить удаленно": "Masofadan bajarilishi mumkin",
     "Мои заказы": "Mening buyurtmalarim",
     "Мужской": "Erkak",
@@ -632,7 +632,7 @@
     "было отправлено письмо со кодом для подтверждения вашего аккаунта на Universal Services.": "Universal xizmatlar hisob raqamingizni tasdiqlash uchun kod bilan xat yuborildi.",
     "было отправлено письмо со ссылкой для подтверждения вашей почты на Universal Services.": "Maktubni universal xizmatlar orqali tasdiqlash uchun xat yuborildi.",
     "выполнено": "bajarildi",
-    "г": "Gina",
+    "г": "yil",
     "год": "yosh",
     "года": "yosh",
     "город не обозначен": "Shahar ko'rsatilmagan",
@@ -754,6 +754,8 @@
     "Вы хотите удалить профиль?": "Profilni ochirishni hohlaysizmi?",
     "Да" : "Ha",
     "Нет" : "Yo'q",
-    "Universal Services списывает с исполнителей фиксированную оплату за возможность оставлять к заданиям отклики с контактными данными. Оплата за отклики не возвращается.":"Universal Services aloqa ma'lumotlari bilan topshiriqlarga javob qoldirish imkoniyati uchun ijrochilardan qat'iy belgilangan to'lovni ushlab qoladi. Javob to'lovlari qaytarilmaydi."
+    "Universal Services списывает с исполнителей фиксированную оплату за возможность оставлять к заданиям отклики с контактными данными. Оплата за отклики не возвращается.":"Universal Services aloqa ma'lumotlari bilan topshiriqlarga javob qoldirish imkoniyati uchun ijrochilardan qat'iy belgilangan to'lovni ushlab qoladi. Javob to'lovlari qaytarilmaydi.",
+    "Дата": "Sana",
+    "Количество": "Miqdori"
 
 }
