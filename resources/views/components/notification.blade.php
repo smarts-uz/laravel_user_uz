@@ -87,7 +87,8 @@
         channel.bind('server-user', function (data) {
             data = JSON.parse(data.data)
             console.log(data)
-            let count = parseInt($('#content_count').text())
+
+            let count = $('#content_count').text();
             count = count ? count : 0;
             count += 1
             $('#content_count').text(count)
