@@ -14,17 +14,10 @@
                     <p class="w-full mt-10 text-base">
                     {{__('Universal Services — удобный сервис, который позволяет быстро и безопасно находить надежных исполнителей для решения бытовых и бизнес-задач. Достаточно разместить задание на сервисе, и через несколько минут вы начнете получать отклики от исполнителей, которые будут готовы его выполнить.')}}
                     </p><br>
-                    <p class="w-full text-base">
-                        {{__('Исполнители проходят')}}
-                    <a href="/verificationInfo" class="text-blue-600 hover:text-orange-500">
-                        {{__('пециальную проверку')}}
-                    </a> 
-                    {{__('администрацией сервиса, поэтому Universal Services')}}
-                    <a href="/security" class="text-blue-600 hover:text-orange-500">
-               {!!__('Станьте исполнителем <br> U-ser. И начните <br> зарабатывать')!!} {{__('безопасен для заказчиков.')}}</a></p>
-                    <iframe class="w-full mb-10 h-96 mt-10" width="727" height="409" src="https://www.youtube.com/embed/_nb4qzvpEhE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-                        
+                    <iframe class="w-full mb-10 h-96 mt-10" src="https://www.youtube.com/embed/_nb4qzvpEhE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
 
                     <h1 class="font-medium text-4xl mt-10 text-center">
                         {{__('Как создать задание на Universal Services?')}}
@@ -36,12 +29,13 @@
                         {{__('В свободной форме опишите детали вашего задания')}}
                     </p>
                     <img src="https://docs.microsoft.com/en-us/powerapps/maker/portals/media/contact-us-form.png" class="mx-auto"/>
-                </div>
-            
+               </div>
+
 
                 <div class="w-full mx-auto my-10">
                     <hr>
                 </div>
+
                 <div class="flex lg:flex-row flex-col mt-10 sm:w-4/5 w-full mx-auto">
                     <div class="lg:w-1/2 w-full my-auto text-center">
                             <h4 class="text-2xl font-medium mb-2">
@@ -53,24 +47,23 @@
                         <img src="https://f.hubspotusercontent30.net/hubfs/8822336/location-icon-pin-pointer-map%20(2).jpg" class="mx-auto w-80 h-64"/>
                     </div>
                 </div>
+
                 <div class="flex lg:flex-row flex-col mt-4 sm:w-4/5 w-full mx-auto">
-                    
-                        <div class="lg:w-1/2 w-full lg:block hidden">
-                            <img src="https://aviafrezer.ru/assets/images/resources/14/3356.jpg" class="mx-auto w-80 h-52"/>
-                        </div>
-                        <div class="lg:w-1/2 w-full text-center ml-4 mt-4 lg:block hidden">
-                                <h4 class="text-2xl font-medium mb-2">{{__('Выберите лучшего исполнителя')}}</h4>
-                                <p>{{__('Вам остается выбрать среди откликов лучшее по цене или рейтингу исполнителя.')}}</p>
-                        </div>
-                   
-                        <div class="lg:w-1/2 w-full text-center ml-4 mt-4 lg:hidden block">
-                            <h4 class="text-2xl font-medium mb-2">{{__('Выберите лучшего исполнителя')}}</h4>
-                            <p class="mb-8">{{__('Вам остается выбрать среди откликов лучшее по цене или рейтингу исполнителя.')}}</p>
-                         </div>
-                         <div class="lg:w-1/2 w-full lg:hidden block">
-                            <img src="https://aviafrezer.ru/assets/images/resources/14/3356.jpg" class="mx-auto w-80 h-52"/>
-                        </div>
-                    
+                    <div class="lg:w-1/2 w-full lg:block hidden">
+                        <img src="https://aviafrezer.ru/assets/images/resources/14/3356.jpg" class="mx-auto w-80 h-52"/>
+                    </div>
+                    <div class="lg:w-1/2 w-full text-center ml-4 mt-4 lg:block hidden">
+                        <h4 class="text-2xl font-medium mb-2">{{__('Выберите лучшего исполнителя')}}</h4>
+                        <p>{{__('Вам остается выбрать среди откликов лучшее по цене или рейтингу исполнителя.')}}</p>
+                    </div>
+
+                    <div class="lg:w-1/2 w-full text-center ml-4 mt-4 lg:hidden block">
+                        <h4 class="text-2xl font-medium mb-2">{{__('Выберите лучшего исполнителя')}}</h4>
+                        <p class="mb-8">{{__('Вам остается выбрать среди откликов лучшее по цене или рейтингу исполнителя.')}}</p>
+                    </div>
+                    <div class="lg:w-1/2 w-full lg:hidden block">
+                        <img src="https://aviafrezer.ru/assets/images/resources/14/3356.jpg" class="mx-auto w-80 h-52"/>
+                    </div>
                 </div>
                 <div class="flex lg:flex-row flex-col mt-10 sm:w-4/5 w-full mx-auto">
                     <div class="lg:w-1/2 w-full my-auto text-center">
@@ -81,7 +74,7 @@
                         <img src="https://pixy.org/src/58/thumbs350/582432.jpg" class="mx-auto w-72 h-52"/>
                     </div>
                 </div>
-                <div class="sm:w-4/5 w-full mx-auto mt-20">{{__('значки')}}
+                <div class="sm:w-4/5 w-full mx-auto mt-20">
                     <hr>
                 </div>
                 <div class="flex lg:flex-row flex-col mt-10 sm:w-4/5 w-full mx-auto gap-x-2">
@@ -93,7 +86,9 @@
                         </a>
                     </div>
                     <div class="lg:w-1/2 w-full mx-auto lg:mt-0 mt-6">
-                        <p>{{__('Может быть вы хотите стать')}}<a href="/verification" class="text-blue-500 underline hover:text-orange-400">{{__('исполнителем Universal Services?')}}</a></p>
+                        <a href="/verification" class="hover:text-red-600">
+                            {{__('Может быть вы хотите стать исполнителем Universal Services?')}}
+                        </a>
                     </div>
                 </div>
             </div>
