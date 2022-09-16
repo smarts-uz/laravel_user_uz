@@ -54,8 +54,11 @@
             <a class="text-gray-300 hover:text-yellow-400 text-lg my-2" href="/news">{{__('Новости сайта')}}</a>
             <a class="text-gray-300 hover:text-yellow-400 text-lg my-2" href="/geotaskshint">{{__('Как это работает')}}</a>
             <a class="text-gray-300 hover:text-yellow-400 text-lg my-2" href="/author-reviews">{{__('Отзывы заказчиков')}}</a>
-{{--            <a class="text-gray-300 hover:text-yellow-400 text-lg my-2" target='blank' href="{{ setting('site.telegram_url') }}">{{__('Служба поддержки')}}</a>--}}
-           <a class="text-gray-300 hover:text-yellow-400 text-lg my-2 chat" href="">{{__('Служба поддержки')}}</a>
+            @if(Auth::check())
+                <a class="text-gray-300 hover:text-yellow-400 text-lg my-2 chat" href="">{{__('Служба поддержки')}}</a>
+            @else
+               <a href="/badges" class="text-gray-300 hover:text-yellow-400 text-lg my-2">{{__('Награды и рейтинг')}}</a>
+            @endif
            <script>
                const chatPanel = (event) => {
                    jsPanel.create({
