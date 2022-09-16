@@ -99,10 +99,12 @@ class Controller extends BaseController
         $news = BlogNew::orderBy('created_at', 'desc')->get();
         return view('/staticpages/news',compact('news'));
     }
-public function policy(){
+
+    public function policy(){
         $policies = Privacy::get();
         return view('/staticpages/privacy',compact('policies'));
-}
+    }
+
     public function terms(){
         $path= json_decode(setting('site.Правила_сервиса'))[0]->download_link;
         $filePath = str_replace('\\', '/', $path);
