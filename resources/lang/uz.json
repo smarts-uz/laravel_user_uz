@@ -152,7 +152,7 @@
     "Время окончания должно быть позже времени начала": "Tugash vaqti boshlanish vaqtidan keyin bo'lishi kerak",
     "Вам остается выбрать среди откликов лучшее по цене или рейтингу исполнителя.": "Javoblar orasida ijrochining narxi yoki reytingini tanlashingiz kerak.",
     "Вас выбрали исполнителем": "Siz ijrochi sifatida tanlandingiz",
-    "Вас выбрали исполнителем  в задании task_name №task_id task_user": "Siz \":task_name\" №:task_id topshiriqda :task_user tomonidan ijrochi sifatida tanlandingiz",
+    "Вы исполнитель в задании task_name. Контакты заказчика : task_user . phone_number": "Siz \":task_name\" vazifasini bajaruvchisiz. Mijoz bilan bog'lanish: :task_user. phone_number",
     "Ваш адрес электронной почты успешно подтвержден": "Sizning elektron pochta manzilingiz muvaffaqiyatli tasdiqlandi",
     "Ваш баланс": "Sizning balansingiz",
     "Ваш отклик": "Sizning javobingiz",
