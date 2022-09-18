@@ -122,7 +122,6 @@ Route::get('/questions/{id}', [FaqsController::class, 'questions'])->name('faq.q
 Route::view('/reviews', 'reviews.review');
 Route::view('/author-reviews', 'reviews.authors_reviews');
 Route::get('/press', [Controller::class, 'index'])->name('massmedia'); // javoxir
-Route::view('/vacancies', 'reviews.vacancies');
 Route::get('/geotaskshint', [Controller::class, 'geotaskshint'])->name('geotaskshint'); // javoxir
 Route::get('/security', [Controller::class, 'security'])->name('security'); // javoxir
 Route::get('/badges', [Controller::class, 'badges'])->name('badges'); // javoxir

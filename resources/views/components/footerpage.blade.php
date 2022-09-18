@@ -12,7 +12,6 @@
     <ul class="mb-5">
         <li><a  href="/paynet_oplata" class="paynet hover:text-red-500 text-md text-blue-600 cursor-pointer">{{__('Оплата через пайнет')}}</a></li>
         <li><a  href="/press" class="press hover:text-red-500 text-md text-blue-600 cursor-pointer">{{__('СМИ о нас')}}</a></li>
-        <li><a  href="/vacancies" class="job hover:text-red-500 text-md text-blue-600 cursor-pointer">{{__('Вакансии')}}</a></li>
     </ul>
 </div>
 
@@ -41,10 +40,6 @@
     else if(link[3] == 'press'){
         $(".press").removeClass("text-blue-600");
         $(".press").addClass("text-red-400");
-    }
-    else if(link[3] == 'vacancies'){
-        $(".job").removeClass("text-blue-600");
-        $(".job").addClass("text-red-400");
     }
     else if(link[3] == 'paynet_oplata'){
         $(".paynet").removeClass("text-blue-600");
