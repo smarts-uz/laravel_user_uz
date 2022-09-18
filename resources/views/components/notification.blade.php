@@ -19,7 +19,7 @@
             <span class="block text-base font-bold">{{__('Уведомления')}}</span>
         @endif
     </div>
-    <ul class="py-1 overflow-y-auto max-h-96" id="notifs" aria-labelledby="dropdown">
+    <ul class="py-1 overflow-y-auto max-h-96" id="notifications" aria-labelledby="dropdown">
         @foreach($notifications as $notification)
             <li class="border-b-2 border-gray-500 flex gap-x-2 p-3 text-gray-800">
                 <div class="flex flex-col w-full">
@@ -71,7 +71,7 @@
 
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <script>
-        // Pusher.logToConsole = true;
+        Pusher.logToConsole = false;
 
         let pusher = new Pusher('{{env("MIX_PUSHER_APP_KEY")}}', {
             cluster: '{{env("PUSHER_APP_CLUSTER")}}',
@@ -88,16 +88,23 @@
             data = JSON.parse(data.data)
             console.log(data)
 
-            let count = $('#content_count').text();
-            count = count ? count : 0;
+            let element = $('#content_count');
+            let count = element.text();
+            count = isNumeric(String(count)) ? parseInt(count) : 0;
             count += 1
-            $('#content_count').text(count)
-            $('#notifs').prepend(`
+            element.text(count)
+            $('#notifications').prepend(`
             <li>
                 <a href=${data['url']} class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">${data['name']}</a>
             </li>
             `)
         });
+
+        function isNumeric(str) {
+            if (typeof str != "string") return false // we only process strings!
+            return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+                !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+        }
 
         function toggleModal121(modalID121, title, description, not_id) {
             if (not_id !== 0) {

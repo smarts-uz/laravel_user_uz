@@ -47,21 +47,19 @@ class CategoriesAPIController extends Controller
 
     public function popular(Request $request)
     {
-//        dd(Category::select('id', 'parent_id', 'name', 'ico')->withTranslation('uz')->whereNull('parent_id')->get());
         $name = $request->get('category');
-        $categories = Task::query()->with('category:id,name,parent_id,ico', 'category.translations')
-            ->whereHas('category', function ($q) use ($name){
-                return $q->whereTranslation('name', 'like', "%$name%")->orWhere('name', 'like', "%$name%");
-            })
-            ->select('category_id', DB::raw('count(*) as total'))
-            ->groupBy('category_id')
-            ->orderByDesc('total')
-            ->get();
+        $categories = Category::query()->select('id', 'parent_id', 'name', 'ico')->withCount('tasks')->withTranslation('uz')
+            ->whereTranslation('name', 'like', "%$name%")->orWhere('name', 'like', "%$name%")->whereNotNull('parent_id')->orderByDesc('tasks_count')->get();
+        $response = [];
         foreach ($categories as $category) {
-            $category->category->name = $category->category->getTranslatedAttribute('name', app()->getLocale() , 'ru');
-            unset($category->category->translations);
+            $object['category_id'] = $category->id;
+            $object['total'] = $category->tasks_count;
+            $category->name = $category->getTranslatedAttribute('name', app()->getLocale() , 'ru');
+            unset($category->translations);
+            $object['category'] = $category;
+            $response[] = $object;
         }
-        return $categories;
+        return $response;
     }
 
     /**
