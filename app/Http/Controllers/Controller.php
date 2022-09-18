@@ -79,7 +79,7 @@ class Controller extends BaseController
         return view('reviews.CMI', compact('medias'));
     }
 
-    public function reviews(){
+    public function performer_reviews(){
         $performer_reviews = FooterReview::where('review_type',2)->latest()->get();
         return view('reviews.review',compact('performer_reviews'));
     }
