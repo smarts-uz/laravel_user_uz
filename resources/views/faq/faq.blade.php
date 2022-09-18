@@ -34,25 +34,22 @@
                         </svg>
                     </button>
                     <input id="inp" class="bg-gray-400 border-none outline-none transition h-16 pl-16 pr-6 rounded-md focus:outline-none focus:border-yellow-500 focus:bg-white w-full text-black lg:md:text-base text-base hover:bg-gray-400" type="search" name="search" placeholder="Поиск ответов..." />
+                    <input type="submit" class="rounded-md bg-gray-400 cursor-pointer ml-4 px-5 text-xl hover:bg-white" value="{{__('Отправить')}}">
                 </div>
             </form>
         </div>
     </section>
-@foreach($fc as $faq)
-    <section class="mt-7">
-        <div class=" lg:w-10/12 md:w-8/12 sm:w-8/12 flex mx-auto md:flex sm:flex items-center bg-white py-5 px-8 rounded-md shadow-lg shadow-indigo-300/40">
-            <img src="{{asset('images/faq-chat-png.png')}}" alt="" class="lg:h-20 md:h-16 sm:h-14 h-8">
-            <div class="px-6 py-3">
-                <a href="/questions/{{$faq->id}}"><h4 class="lg:text-[18px] md:text-[16px] sm:text-[14px] text-gray-500 mb-1 text-[12px]">{{$faq->getTranslatedAttribute('title',Session::get('lang') , 'fallbackLocale')}}</h4></a>
-                <p class="lg:text-[16px] md:text-[14px] sm:text-[12px] text-[9px] leading-6 text-gray-400 mb-3 pr-3 ">{{$faq->getTranslatedAttribute('description', Session::get('lang'), 'fallbackLocale')}}</p>
+    @foreach($fc as $faq)
+        <section class="mt-7">
+            <div class=" lg:w-10/12 md:w-8/12 sm:w-8/12 flex mx-auto md:flex sm:flex items-center bg-white py-5 px-8 rounded-md shadow-lg shadow-indigo-300/40">
+                <img src="{{asset('images/faq-chat-png.png')}}" alt="" class="lg:h-20 md:h-16 sm:h-14 h-8">
+                <div class="px-6 py-3">
+                    <a href="/questions/{{$faq->id}}"><h4 class="lg:text-[18px] md:text-[16px] sm:text-[14px] text-gray-500 mb-1 text-[12px]">{{$faq->getTranslatedAttribute('title',Session::get('lang') , 'fallbackLocale')}}</h4></a>
+                    <p class="lg:text-[16px] md:text-[14px] sm:text-[12px] text-[9px] leading-6 text-gray-400 mb-3 pr-3 ">{{$faq->getTranslatedAttribute('description', Session::get('lang'), 'fallbackLocale')}}</p>
+                </div>
             </div>
-        </div>
-    </section>
-@endforeach
+        </section>
+    @endforeach
 
-    <footer class="lg:md:text-base sm:text-sm text-xs bg-white w-full flex flex-col p-8 justify-center items-center mt-8">
-        <h2>user.uz</h2>
-        <p>{{__('Мы используем Intercom')}}</p>
-    </footer>
     <script src="{{ asset('js/faq/faq.js') }}"></script>
 </body>
