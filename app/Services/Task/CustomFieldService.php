@@ -31,10 +31,10 @@ class CustomFieldService
     private function initCustomField($custom_field, $task, $values)
     {
         $item = [];
-        $item['description'] = $custom_field->getTranslatedAttribute('description');
-        $item['placeholder'] = $custom_field->getTranslatedAttribute('placeholder');
-        $item['title'] = $custom_field->getTranslatedAttribute('title');
-        $item['label'] = $custom_field->getTranslatedAttribute('label');
+        $item['description'] = $custom_field->getTranslatedAttribute('description', app()->getLocale());
+        $item['placeholder'] = $custom_field->getTranslatedAttribute('placeholder', app()->getLocale());
+        $item['title'] = $custom_field->getTranslatedAttribute('title', app()->getLocale());
+        $item['label'] = $custom_field->getTranslatedAttribute('label', app()->getLocale());
         $item['type'] = $custom_field->type;
         $item['options'] = $this->setOption($custom_field, $task);
         $item['values'] = $custom_field->values;
