@@ -119,8 +119,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'verification'], function () {
 #region footerpage
 Route::get('/faq', [FaqsController::class, 'index'])->name('faq.index'); // javoxir
 Route::get('/questions/{id}', [FaqsController::class, 'questions'])->name('faq.questions'); // javoxir
-Route::view('/reviews', 'reviews.review');
-Route::view('/author-reviews', 'reviews.authors_reviews');
+Route::get('/reviews',[Controller::class,'reviews']);
+Route::get('/author-reviews',[Controller::class,'authors_reviews']);
 Route::get('/press', [Controller::class, 'index'])->name('massmedia'); // javoxir
 Route::get('/geotaskshint', [Controller::class, 'geotaskshint'])->name('geotaskshint'); // javoxir
 Route::get('/security', [Controller::class, 'security'])->name('security'); // javoxir
