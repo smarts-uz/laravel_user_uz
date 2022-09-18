@@ -154,6 +154,7 @@
     "Вас выбрали исполнителем": "Siz ijrochi sifatida tanlandingiz",
     "Вы исполнитель в задании task_name. Контакты заказчика : task_user . phone_number": "Siz \":task_name\" vazifasini bajaruvchisiz. Mijoz bilan bog'lanish: :task_user. phone_number",
     "Ваш адрес электронной почты успешно подтвержден": "Sizning elektron pochta manzilingiz muvaffaqiyatli tasdiqlandi",
+    "Вас выбрали исполнителем  в задании task_name №task_id task_user": "Siz \":task_name\" №:task_id topshiriqda :task_user tomonidan ijrochi sifatida tanlandingiz",
     "Ваш баланс": "Sizning balansingiz",
     "Ваш отклик": "Sizning javobingiz",
     "Ваше задание task_name №task_id было отменено": "Sizning \":task_name\" №:task_id vazifangiz bekor qilindi",
