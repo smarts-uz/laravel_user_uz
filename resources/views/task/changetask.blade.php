@@ -130,8 +130,7 @@
                         </div>
                     </label>
                 </div>
-                @if(!$task->remote == 1)
-                <div>
+                @if(!$task->remote==1)
                     <div class="mb-4">
                         <div id="formulario" class="flex flex-col gap-y-4 text-base">
 
@@ -149,10 +148,7 @@
                                        class="appearance-none bg-transparent w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none focus:border-yellow-500"
                                        type="text" placeholder="Город, Улица, Дом" name="location0"
                                        value="{{ count($addresses)? $addresses[0]->location:'' }}">
-
-
                                 @error('location0')
-
                                 <p class="text-red-500">{{ $message }}</p>
                                 @enderror
                                 <button id="getlocal"
@@ -199,7 +195,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
                 @endif
                 <div>
                     <div class="ml-4 md:ml-12 flex flex-wrap mt-8">
