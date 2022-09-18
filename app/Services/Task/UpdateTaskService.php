@@ -116,7 +116,7 @@ class UpdateTaskService
         $addresses = [];
         for ($i = 0; $i < $length; $i++) {
             $address = [
-                'task_id' => $data['task_id'],
+                'task_id' => $task->id,
                 'location' => $data['points'][$i]['location'],
                 'latitude' => $data['points'][$i]['latitude'],
                 'longitude' => $data['points'][$i]['longitude']
@@ -325,5 +325,6 @@ class UpdateTaskService
             'coordinates' => $addressesCount > 0 ? $cacheValues['addresses'][0]['latitude'] . ',' . $cacheValues['addresses'][0]['longitude'] : ''
         ]);
 
+        cache()->forget('task_update_' . $task->id);
     }
 }
