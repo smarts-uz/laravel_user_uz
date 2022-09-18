@@ -36,6 +36,9 @@ class UpdateController extends Controller
             $request->validate([
                 'location0' => 'required',
                 'coordinates0' => 'required',
+            ],[
+                'location0.required' => __('login.name.required'),
+                'coordinates0.required' => __('login.name.required'),
             ]);
         }
 
@@ -52,7 +55,11 @@ class UpdateController extends Controller
         $note = $request->validate([
             'description' => 'required|string',
             'oplata' => 'required',
-        ]);
+        ],[
+            'description.required' => __('login.name.required'),
+            'oplata.required' => __('login.name.required'),
+            'description.string' => __('login.name.required')
+            ]);
         if ($request['docs'] === "on") {
             $note['docs'] = 1;
         } else {

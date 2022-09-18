@@ -60,13 +60,13 @@ class UpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Напишите имю',
-            'phone.required' => 'Пополните полю',
-            'description.required' => 'Пополните полю',
-            'start_date.required' => 'Пополните полю',
-            'date_type.required' => 'Пополните полю',
-            'budget.required' => 'Пополните полю',
-            'category_id.required' => 'Пополните полю',
+            'name.required' => __('login.name.required'),
+            'phone.required' => __('login.name.required'),
+            'description.required' => __('login.name.required'),
+            'start_date.required' => __('login.name.required'),
+            'date_type.required' => __('login.name.required'),
+            'budget.required' => __('login.name.required'),
+            'category_id.required' => __('login.name.required'),
         ];
     }
     public function getValidatorInstance()
