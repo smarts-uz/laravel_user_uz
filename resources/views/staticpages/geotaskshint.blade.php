@@ -11,24 +11,19 @@
                     <h1 class="font-semibold text-4xl">
                         {{__('Как это работает?')}}
                     </h1>
-                    <p class="w-full mt-10 text-base">
-                    {{__('Universal Services — удобный сервис, который позволяет быстро и безопасно находить надежных исполнителей для решения бытовых и бизнес-задач. Достаточно разместить задание на сервисе, и через несколько минут вы начнете получать отклики от исполнителей, которые будут готовы его выполнить.')}}
-                    </p><br>
-
-                    <iframe class="w-full mb-10 h-96 mt-10" src="https://www.youtube.com/embed/_nb4qzvpEhE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-
-
+                    {!! getContentText('geotaskshint', 'geotaskshint_text') !!}
                     <h1 class="font-medium text-4xl mt-10 text-center">
                         {{__('Как создать задание на Universal Services?')}}
                     </h1>
-                    <h3 class="mt-10 font-medium text-2xl text-center mb-2"></h3>
-                    {{__('Выберите категорию')}}
-                    <img src="https://i1.wp.com/composs.ru/wp-content/uploads/2017/03/oshibka_651-7.jpg" class="mx-auto"/>
+                    <h3 class="mt-10 font-medium text-2xl text-center mb-2">
+                        {!! getContentText('geotaskshint', 'geotaskshint_category') !!}
+                    </h3>
+                    <img src="{{ getContentImage('geotaskshint', 'geotaskshint_category') }}" class="mx-auto"/>
+
                     <p class="mt-10 font-medium text-2xl text-center mb-2">
-                        {{__('В свободной форме опишите детали вашего задания')}}
+                        {!! getContentText('geotaskshint', 'geotaskshint_second') !!}
                     </p>
-                    <img src="https://docs.microsoft.com/en-us/powerapps/maker/portals/media/contact-us-form.png" class="mx-auto"/>
+                    <img src="{{ getContentImage('geotaskshint', 'geotaskshint_second') }}" class="mx-auto"/>
                </div>
 
 
@@ -38,40 +33,34 @@
 
                 <div class="flex lg:flex-row flex-col mt-10 sm:w-4/5 w-full mx-auto">
                     <div class="lg:w-1/2 w-full my-auto text-center">
-                            <h4 class="text-2xl font-medium mb-2">
-                                {{__('Получайте отклики исполнителей')}}
-                            </h4>
-                            <p>{{__('Сразу после создания задания вам начнут поступать отклики от людей, которые готовы его выполнить.')}}</p>
+                        {!! getContentText('geotaskshint', 'geotaskshint_ispolnitel') !!}
                     </div>
                     <div class="lg:w-1/2 w-full">
-                        <img src="https://f.hubspotusercontent30.net/hubfs/8822336/location-icon-pin-pointer-map%20(2).jpg" class="mx-auto w-80 h-64"/>
+                        <img src="{{ getContentImage('geotaskshint', 'geotaskshint_ispolnitel') }}" class="mx-auto w-80 h-64"/>
                     </div>
                 </div>
 
                 <div class="flex lg:flex-row flex-col mt-4 sm:w-4/5 w-full mx-auto">
                     <div class="lg:w-1/2 w-full lg:block hidden">
-                        <img src="https://aviafrezer.ru/assets/images/resources/14/3356.jpg" class="mx-auto w-80 h-52"/>
+                        <img src="{{ getContentImage('geotaskshint', 'geotaskshint_4') }}" class="mx-auto w-80 h-52"/>
                     </div>
                     <div class="lg:w-1/2 w-full text-center ml-4 mt-4 lg:block hidden">
-                        <h4 class="text-2xl font-medium mb-2">{{__('Выберите лучшего исполнителя')}}</h4>
-                        <p>{{__('Вам остается выбрать среди откликов лучшее по цене или рейтингу исполнителя.')}}</p>
+                        {!! getContentText('geotaskshint', 'geotaskshint_4') !!}
                     </div>
 
                     <div class="lg:w-1/2 w-full text-center ml-4 mt-4 lg:hidden block">
-                        <h4 class="text-2xl font-medium mb-2">{{__('Выберите лучшего исполнителя')}}</h4>
-                        <p class="mb-8">{{__('Вам остается выбрать среди откликов лучшее по цене или рейтингу исполнителя.')}}</p>
+                        {!! getContentText('geotaskshint', 'geotaskshint_4') !!}
                     </div>
                     <div class="lg:w-1/2 w-full lg:hidden block">
-                        <img src="https://aviafrezer.ru/assets/images/resources/14/3356.jpg" class="mx-auto w-80 h-52"/>
+                        <img src="{{ getContentImage('geotaskshint', 'geotaskshint_4') }}" class="mx-auto w-80 h-52"/>
                     </div>
                 </div>
                 <div class="flex lg:flex-row flex-col mt-10 sm:w-4/5 w-full mx-auto">
                     <div class="lg:w-1/2 w-full my-auto text-center">
-                            <h4 class="text-2xl font-medium mb-2">{{__('Завершение задания')}}</h4>
-                            <p>{{__('После выполнения задания не забудьте подтвердить, что исполнитель выполнил поручение, и написать отзыв о его работе.')}}</p>
+                        {!! getContentText('geotaskshint', 'geotaskshint_5') !!}
                     </div>
                     <div class="lg:w-1/2 w-full ml-4 lg:mt-0 mt-8">
-                        <img src="https://pixy.org/src/58/thumbs350/582432.jpg" class="mx-auto w-72 h-52"/>
+                        <img src="{{ getContentImage('geotaskshint', 'geotaskshint_5') }}" class="mx-auto w-72 h-52"/>
                     </div>
                 </div>
                 <div class="sm:w-4/5 w-full mx-auto mt-20">
