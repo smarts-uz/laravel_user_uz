@@ -74,19 +74,18 @@ class Controller extends BaseController
         return redirect()->back();
     }
 
-    public function index()
-    {
+    public function index() {
         $medias = Massmedia::paginate(20);
         return view('reviews.CMI', compact('medias'));
     }
 
     public function reviews(){
-        $performer_reviews = FooterReview::where('review_type',2)->get();
+        $performer_reviews = FooterReview::where('review_type',2)->latest()->get();
         return view('reviews.review',compact('performer_reviews'));
     }
 
     public function authors_reviews(){
-        $customer_reviews = FooterReview::where('review_type',1)->get();
+        $customer_reviews = FooterReview::where('review_type',1)->latest()->get();
         return view('reviews.authors_reviews',compact('customer_reviews'));
     }
 
