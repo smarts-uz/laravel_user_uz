@@ -697,7 +697,7 @@
     "phone_number": "phone_number",
     "Congrats": "Congrats",
     "Новое задание для вас, успейте откликнуться.": "Новое задание для вас, успейте откликнуться.",
-    "task_name  №task_id с бюджетом до task_budget": "\":task_name\"  №:task_id с бюджетом до :budget сум",
+    "№task_id task_name с бюджетом до task_budget": "№:task_id \":task_name\" с бюджетом до :budget сум",
     "performer откликнулся на задания task_name": "\":performer\" откликнулся на задания \":task_name\"",
     "Выбрана задача": "Выбрана задача",
     "Аккаунт отключен": "Аккаунт отключен",
