@@ -81,14 +81,21 @@ class UpdateAPIController extends Controller
         ChMessage::query()->where('to_id', $task->user_id)->where('from_id', $task->performer_id)->delete();
 
         $task->update($data);
-        return response()->json(['message' => 'Success', 'success' => true, 'task' => new TaskIndexResource($task)]);
+        return response()->json([
+            'success' => true,
+            'message' => __('Успешно сохранено'),
+            'task' => new TaskIndexResource($task)
+        ]);
     }
 
     public function not_completed(Request $request, Task $task)
     {
         taskGuardApi($task);
-
         $request->validate(['reason' => 'required'], ['reason.required' => 'Reason is required']);
+
+        ChMessage::query()->where('from_id', $task->user_id)->where('to_id', $task->performer_id)->delete();
+        ChMessage::query()->where('to_id', $task->user_id)->where('from_id', $task->performer_id)->delete();
+
         $task->update(['status' => Task::STATUS_NOT_COMPLETED, 'not_completed_reason' => $request->get('reason')]);
         return response()->json([
             'success' => true,
