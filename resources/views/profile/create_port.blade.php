@@ -39,8 +39,8 @@
                     <div id="comdes1" class="text-center h-full w-full text-base hidden">
                         @csrf
                         <div id="photos" class="bg-yellow-50 p-8 rounded-md my-6"></div>
-                        <input type="submit"
-                               class="bg-green-500 hover:bg-green-700 text-white py-2 px-10 mb-4 cursor-pointer rounded"
+                        <input type="submit" id="save_button"
+                               class="bg-green-500 hover:bg-green-700 text-white py-2 px-10 mb-4 cursor-pointer rounded hidden"
                                value="{{__('Сохранить')}}">
                     </div>
                 </div>
@@ -49,7 +49,10 @@
     </div>
 
     <script src="{{ asset('js/profile/create_port.js') }}"></script>
-
     <x-laravelUppy route="{{route('profile.UploadImage')}}"/>
-
+    <script>
+        $('.uppy-StatusBar-actions').click(function (){
+            $('#save_button').removeClass('hidden');
+        })
+    </script>
 @endsection
