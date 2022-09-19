@@ -33,11 +33,12 @@
                     </div>
                 </div>
                 <div class="flex justify-center">
-                    <button id="update" class=" mr-5 bg-green-500 hover:bg-green-700 text-white cursor-pointer py-2 px-10 mb-4 rounded " type="submit">{{__('Сохранить')}}</button>
-
                     @if($isDelete)
                         <input type="button" id="delete-btn" class=" mr-5 bg-red-500 hover:bg-red-700 text-white cursor-pointer py-2 px-10 mb-4 rounded" value="{{__('Удалить')}}">
                     @endif
+
+                    <button id="update" class=" mr-5 bg-green-500 hover:bg-green-700 text-white cursor-pointer py-2 px-10 mb-4 rounded " type="submit">{{__('Сохранить')}}</button>
+
                 </div>
             </form>
             <form action="{{ route('profile.delete', $portfolio->id) }}" method="post" id="delete-form">

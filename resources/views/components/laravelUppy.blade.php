@@ -11,6 +11,12 @@
             showProgressDetails: true,
             allowedFileTypes: ['image/*'],
             debug: true,
+            @if(session('lang')=='ru')
+                locale: Uppy.locales.ru_RU,
+            @else
+
+            @endif
+
             note: 'Все типы файлов, до 10 МБ',
             height: 400,
             metaFields: [
