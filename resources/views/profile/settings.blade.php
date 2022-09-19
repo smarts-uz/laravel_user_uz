@@ -18,20 +18,21 @@
                 <div class="content mt-20 ">
                     <div class="grid grid-cols-10">
                         <ul class=" md:col-span-9 col-span-10 md:items-left items-center">
-                            <li class="inline md:mr-5 mr-1"><a href="/profile"
-                                                               class="text-lg text-gray-600">{{__('Обо мне')}}</a>
+                            <li class="inline md:mr-5 mr-1">
+                                <a href="/profile" class="text-lg text-gray-600">{{__('Обо мне')}}</a>
                             </li>
-                            <li class="inline md:mr-5 mr-1"><a href="/profile/cash"
-                                                               class="text-lg text-gray-600 md:mx-0 mx-3">{{__('Счет')}}</a>
+                            <li class="inline md:mr-5 mr-1">
+                                <a href="/profile/cash" class="text-lg text-gray-600 md:mx-0 mx-3">{{__('Счет')}}</a>
                             </li>
-                            <li class="inline md:mr-5 mr-1 md:hidden block"><a href="/profile/settings"
-                                                                               class="text-lg border-b-4 border-green-500 pb-3 text-gray-700"
-                                                                               id="settingsText">{{__('Настройки')}}</a>
+                            <li class="inline md:mr-5 mr-1 md:hidden block">
+                                <a href="/profile/settings" class="text-lg border-b-4 border-green-500 pb-3 text-gray-700" id="settingsText">{{__('Настройки')}}</a>
                             </li>
-
                         </ul>
-                        <div class="md:col-span-1 md:block hidden ml-4" id="settingsIcon"><a href="/profile/settings"><i
-                                    class="fas fa-cog text-2xl border-b-4 border-green-500 pb-3"></i></a></div>
+                        <div class="md:col-span-1 md:block hidden ml-4" id="settingsIcon">
+                            <a href="/profile/settings">
+                                <i class="fas fa-cog text-2xl border-b-4 border-green-500 pb-3"></i>
+                            </a>
+                        </div>
                     </div>
 
                     <hr class="md:mt-0 mt-3">
@@ -43,15 +44,18 @@
                         <div class="w-full mx-auto mt-4  rounded">
                             <!-- Tabs -->
                             <ul id="tabs" class="md:inline-flex block w-full flex-center px-1 pt-2">
-                                <li class="xl:px-4 md:px-2 py-2 tab-name md:ring-0 w-full md:w-inherit font-semibold text-gray-800 border-b-2 border-blue-400 opacity-50">
-                                    <a id="default-tab"
-                                       href="#first">{{__('Общие настройки')}}</a></li>
-                                <li class="xl:px-4 md:px-2 py-2  tab-name md:ring-0 w-full md:w-inherit font-semibold text-gray-800 opacity-50">
-                                    <a href="#second">{{__('Уведомления')}}</a></li>
-                                <li class="xl:px-2 md:px-2 py-2 tab-name md:ring-0 w-full md:w-inherit font-semibold text-gray-800 opacity-50">
-                                    <a href="#third">{{__('Подписка на задания')}}</a></li>
-                                <li class="xl:px-4 md:px-2 tab-name py-2  @if($errors->has('password')) error  @endif  md:ring-0 w-full md:w-inherit font-semibold text-gray-800 opacity-50">
-                                    <a href="#fourth">{{__('Безопасность')}}</a></li>
+                                <li class="xl:px-4 md:px-2 py-2 tab-name md:ring-0 w-full md:w-inherit text-center font-semibold text-gray-800 border-b-2 border-blue-400 opacity-50">
+                                    <a id="default-tab" href="#first">{{__('Общие настройки')}}</a>
+                                </li>
+                                <li class="xl:px-4 md:px-2 py-2  tab-name md:ring-0 text-center w-full md:w-inherit font-semibold text-gray-800 opacity-50">
+                                    <a href="#second">{{__('Уведомления')}}</a>
+                                </li>
+                                <li class="xl:px-2 md:px-2 py-2 tab-name md:ring-0 text-center w-full md:w-inherit font-semibold text-gray-800 opacity-50">
+                                    <a href="#third">{{__('Подписка на задания')}}</a>
+                                </li>
+                                <li class="xl:px-4 md:px-2 tab-name py-2 text-center  @if($errors->has('password')) error  @endif  md:ring-0 w-full md:w-inherit font-semibold text-gray-800 opacity-50">
+                                    <a href="#fourth">{{__('Безопасность')}}</a>
+                                </li>
                             </ul>
                             <!-- Tab Contents -->
                             <div id="tab-contents" class="w-full">

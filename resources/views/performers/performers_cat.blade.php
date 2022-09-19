@@ -59,14 +59,14 @@
             </div>
 
             <div class="lg:col-span-2 col-span-3 lg:mt-0 mt-16">
-                <div class="bg-gray-100 h-40 rounded-xl w-full sm:mx-0 mx-auto">
+                <div class="bg-gray-100 rounded-xl w-full sm:mx-0 mx-auto">
                     <div class="font-bold text-2xl mx-8 py-4">
                         <p>{{__('Все исполнители')}}</p>
                     </div>
-                    <div class="form-check flex flex-row mx-8 mt-10">
+                    <div class="form-check flex flex-row mx-8 pb-4">
                         <input class="focus:outline-none  form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-black-600 checked:border-black-600 focus:outline-none focus:border-yellow-500 transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                type="checkbox" value="1" id="online">
-                        <label class="form-check-label inline-block text-gray-800" for="online">
+                        <label class="form-check-label inline-block text-gray-800 cursor-pointer" for="online">
                             {{__('Сейчас на сайте')}}
                         </label>
                     </div>

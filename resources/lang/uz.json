@@ -757,6 +757,10 @@
     "Universal Services списывает с исполнителей фиксированную оплату за возможность оставлять к заданиям отклики с контактными данными. Оплата за отклики не возвращается.":"Universal Services aloqa ma'lumotlari bilan topshiriqlarga javob qoldirish imkoniyati uchun ijrochilardan qat'iy belgilangan to'lovni ushlab qoladi. Javob to'lovlari qaytarilmaydi.",
     "Дата": "Sana",
     "Количество": "Miqdori",
-    "Оплата через пайнет": "Paynet orqali to'lash"
+    "Оплата через пайнет": "Paynet orqali to'lash",
+    "Пополнить через Paynet": "Paynet orqali to'ldirish",
+    "Пополнить через Payme": "Payme orqali to'ldirish",
+    "Пополнить через Click": "Click orqali to'ldirish"
+
 
 }
