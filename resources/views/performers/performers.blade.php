@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="text-sm w-full bg-gray-200 my-4 py-3">
-        <p class="w-8/12 mx-auto text-gray-500 font-normal">{{__('Вы находитесь в разделе исполнителей U-Ser')}} <br>
+        <p class="w-8/12 mx-auto text-gray-500 font-normal">{{__('Вы находитесь в разделе исполнителей USer.Uz')}} <br>
             {{__("Чтобы предложить работу выбранному исполнителю, нужно нажать на кнопку «Предложить задание» в его профиле.")}}</p>
     </div>
     <div class="xl:w-9/12 container mx-auto mt-16 text-base">
@@ -20,7 +20,7 @@
                              style="background-image: url({{asset('images/like.png')}});">
                         </div>
                         <div class="font-bold text-xs text-gray-700 text-left my-auto">
-                            {!!__('Станьте исполнителем <br> U-ser. И начните  <br> зарабатывать')!!}
+                            {!!__('Станьте исполнителем <br> USer.Uz. И начните  <br> зарабатывать')!!}
                         </div>
                     </a>
                 @else
@@ -29,7 +29,7 @@
                              style="background-image: url({{asset('images/like.png')}});">
                         </div>
                         <div class="font-bold text-xs text-gray-700 text-left my-auto">
-                            {!!__('Станьте исполнителем <br> U-ser. И начните  <br> зарабатывать')!!}
+                            {!!__('Станьте исполнителем <br> USer.Uz. И начните  <br> зарабатывать')!!}
                         </div>
                     </a>
                 @endif
