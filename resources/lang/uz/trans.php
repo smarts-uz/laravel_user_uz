@@ -41,7 +41,7 @@ return [
     'Notifications turned on.' => 'Bildirishnoma yoqildi.',
     'Notifications turned off.' => 'Bildirishnoma o\'chirildi.',
     'All values should be int.' => 'Ma\'lumotlar son bo\'lishi kerak.',
-    'You successfully subscribed for notifications by task categories.' => 'Kategoriya bo\'yicha xabarnomaga muvaffaqiyatli ulandingiz.',
+    'You successfully subscribed for notifications by task categories.' => 'Kategoriya bo\'yicha xabarnomaga muvaffaqiyatli biriktirdingiz.',
     'Language changed successfully.' => 'Til muvaffaqiyatli o\'zgardi.',
     'Choose the type.' => 'Turni tanlang.',
     'Enter the text.' => 'Tekstni kiriting.',
