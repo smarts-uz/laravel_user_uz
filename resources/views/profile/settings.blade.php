@@ -154,16 +154,18 @@
                                                     @enderror
 
                                                 </div>
-                                                <input type="submit"
-                                                       class="block xl:w-3/5 lg:w-3/4 sm:w-3/5 w-full text-center bg-green-400 hover:bg-green-600 text-white uppercase p-4 rounded-xl mb-5 cursor-pointer"
-                                                       name="submit1" value="{{__('Сохранить')}}">
-                                                <hr>
+                                               <div class="flex sm:flex-row flex-col sm:mt-8 mt-4">
+                                                   <input type="submit" class="text-xl bg-green-500 hover:bg-green-600 text-white py-4 px-8 rounded-xl cursor-pointer mr-3"
+                                                          name="submit1" value="{{__('Сохранить')}}">
+
+                                                   <a onclick="toggleModal111()"
+                                                      class="text-xl bg-red-500 hover:bg-red-600 text-white p-4 rounded-xl cursor-pointer text-center sm:mt-0 mt-3">
+                                                       {{__('Удалить профиль')}}
+                                                   </a>
+                                               </div>
                                             </form>
 
-                                            <a onclick="toggleModal111()"
-                                               class="block xl:w-3/5 lg:w-3/4 sm:w-3/5 w-full text-center bg-red-400 hover:bg-red-600 text-white mt-5 uppercase p-4 rounded-xl cursor-pointer">
-                                                {{__('Удалить профиль')}}
-                                            </a>
+
                                         </div>
                                     </div>
                                     {{-- settings/ first tab -> base settings end--}}
