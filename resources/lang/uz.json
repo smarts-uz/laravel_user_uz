@@ -694,7 +694,7 @@
     "phone_number": "telefon raqami",
     "Congrats": "Tabriklash",
     "Новое задание для вас, успейте откликнуться.": "Siz uchun yangi vazifa, javob berishga vaqtingiz bor.",
-    "№task_id task_name с бюджетом до task_budget": "№:task_id \":task_name\" :budget so'mgacha bo'lgan byudjet bilan",
+    "task_name  №task_id с бюджетом до task_budget": "№:task_id \":task_name\" :budget so'mgacha bo'lgan byudjet bilan",
     "performer откликнулся на задания task_name": "\":task_name\" vazifaga \":performer\" javob qildi",
     "Выбрана задача": "Vazifa tanlandi",
     "Аккаунт отключен": "Foydalanuvchi o'chirilgan",
