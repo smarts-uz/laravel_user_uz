@@ -86,7 +86,7 @@
    </div>
 
     <div class="text-center h-12" style="background-color: #1B1B1C">
-            <h1 class="text-center text-sm py-4" style="color: #857F7F">© 2022 Universal Services (user.uz)</h1>
+            <h1 class="text-center text-sm py-4" style="color: #857F7F">© 2022 Universal Services (USer.Uz)</h1>
     </div>
     <div class="w-full md:block hidden">
         <div class="scroll-up-btn">

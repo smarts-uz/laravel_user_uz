@@ -67,10 +67,10 @@ class UserIndexResource extends JsonResource
         // check top performer part
         if (in_array($this->id, $item->top_users)) {
             $best = asset('images/best.png');
-            $message = __('Входит в ТОП-20 исполнителей User.uz');
+            $message = __('Входит в ТОП-20 исполнителей USer.Uz');
         } else {
             $best = asset('images/best_gray.png');
-            $message = __('Не входит в ТОП-20 всех исполнителей User.uz');
+            $message = __('Не входит в ТОП-20 всех исполнителей USer.Uz');
         }
         $achievements[] = [
             'image' => $best,

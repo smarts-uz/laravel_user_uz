@@ -102,7 +102,7 @@ class UserAPIController extends Controller
         $user->verify_code = $message;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
-        $message = "User.Uz ". __("Код подтверждения") . ' ' . $message;
+        $message = "USer.Uz ". __("Код подтверждения") . ' ' . $message;
 
         $sms_service = new SmsMobileService();
         $sms_service->sms_packages($user->phone_number, $message);
