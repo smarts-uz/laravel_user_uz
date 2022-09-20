@@ -11,10 +11,10 @@
             showProgressDetails: true,
             allowedFileTypes: ['image/*'],
             debug: true,
-            @if(session('lang')=='ru')
-                locale: Uppy.locales.ru_RU,
-            @else
+            @if(session('lang')=='uz')
 
+            @else
+                locale: Uppy.locales.ru_RU,
             @endif
 
             note: 'Все типы файлов, до 10 МБ',
