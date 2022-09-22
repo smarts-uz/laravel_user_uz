@@ -105,6 +105,7 @@
         slidesPerView: 1,
         spaceBetween: 10,
         centeredSlides: true,
+        speed: 700,
         loop: true,
         autoplay: {
             delay: 3000,

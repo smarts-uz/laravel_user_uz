@@ -550,7 +550,7 @@
     "Сохранить": "Saqlash",
     "Сохранить новый пароль": "Yangi parolni saqlang",
     "Специалисты отдела мониторинга готовы подключиться к любой сложной ситуации и сделать все возможное, чтобы помочь пользователям ее разрешить.": "Monitoring bo'limi mutaxassislari har qanday qiyin vaziyatga ulanishga va foydalanuvchilarga ruxsat berishlariga yordam beradigan hamma narsani qilishlari mumkin.",
-    "Списания со счета": "Hisob qaydnomasini yozing",
+    "Списания <br> со счета": "Hisob qaydnomasini <br> yozing",
     "Спортмастер": "Sportmaster",
     "Способ оплаты": "To'lov usuli",
     "Сразу после создания задания вам начнут поступать отклики от людей, которые готовы его выполнить.": "Topshiriqni yaratgandan so'ng darhol siz uni bajarishga tayyor bo'lgan odamlarning javoblarini qabul qila boshlaysiz.",
@@ -758,9 +758,9 @@
     "Дата": "Sana",
     "Количество": "Miqdori",
     "Оплата через пайнет": "Paynet orqali to'lash",
-    "Пополнить через Paynet": "Paynet orqali to'ldirish",
-    "Пополнить через Payme": "Payme orqali to'ldirish",
-    "Пополнить через Click": "Click orqali to'ldirish"
+    "Пополнить <br> через Paynet": "Paynet orqali <br> to'ldirish",
+    "Пополнить <br> через Payme": "Payme orqali <br> to'ldirish",
+    "Пополнить <br> через Click": "Click orqali <br> to'ldirish"
 
 
 }

@@ -79,20 +79,20 @@
                             <ul id="tabs" class="flex sm:flex-row flex-col rounded-sm w-full shadow bg-gray-200 mt-4">
                                 <div id="first_tab" class="w-full text-center">
                                     <a id="default-tab" href="#first" data-method="Click" data-number="1"
-                                        class="inline-block relative py-1 w-full payment-type px-10">{{__('Пополнить через Click')}}</a>
+                                        class="inline-block relative py-1 w-full payment-type">{!!__('Пополнить <br> через Click')!!}</a>
                                 </div>
                                 <div class="w-full text-center">
                                     <a href="#second" data-method="Payme" data-number="2"
-                                        class="inline-block relative py-1 w-full payment-type px-10">{{__('Пополнить через Payme')}}</a>
+                                        class="inline-block relative py-1 w-full payment-type">{!!__('Пополнить <br> через Payme')!!}</a>
                                 </div>
                                 <div class="w-full text-center">
                                     <a href="#third" data-method="Paynet" data-number="3"
-                                        class="inline-block relative py-1 w-full payment-type px-10">{{__('Пополнить через Paynet')}}</a>
+                                        class="inline-block relative py-1 w-full payment-type">{!!__('Пополнить <br> через Paynet')!!}</a>
                                 </div>
                                 <div class="w-full text-center">
                                     <a href="#fourth" data-method="Task" data-number="4"
-                                        class="inline-block relative py-1 w-full payment-type  @if(session('lang') == 'ru') px-10 @endif">
-                                        {{__('Списания со счета')}}
+                                        class="inline-block relative py-1 w-full payment-type">
+                                        {!!__('Списания <br> со счета')!!}
                                     </a>
                                 </div>
                             </ul>

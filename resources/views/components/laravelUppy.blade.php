@@ -2,6 +2,7 @@
 <script src="https://releases.transloadit.com/uppy/v2.4.1/uppy.min.js"></script>
 <script src="https://releases.transloadit.com/uppy/v2.4.1/uppy.legacy.min.js" nomodule></script>
 <script src="https://releases.transloadit.com/uppy/locales/v2.0.5/ru_RU.min.js"></script>
+<script src="https://releases.transloadit.com/uppy/locales/v3.0.0/uz_UZ.min.js"></script>
 <script>
     var uppy = new Uppy.Core()
         .use(Uppy.Dashboard, {
@@ -12,7 +13,7 @@
             allowedFileTypes: ['image/*'],
             debug: true,
             @if(session('lang')=='uz')
-
+                locale: Uppy.locales.uz_UZ,
             @else
                 locale: Uppy.locales.ru_RU,
             @endif
