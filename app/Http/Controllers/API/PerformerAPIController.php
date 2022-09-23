@@ -213,7 +213,9 @@ class PerformerAPIController extends Controller
     public function becomePerformerData(BecomePerformerRequest $request)
     {
         $data = $request->validated();
+        /** @var User $user */
         $user = auth()->user();
+        $data['born_date'] = Carbon::parse($data['born_date'])->format('Y-m-d');
         $user->update($data);
 
         return response()->json(['success' => 'true', 'message' => 'Successfully updated']);
