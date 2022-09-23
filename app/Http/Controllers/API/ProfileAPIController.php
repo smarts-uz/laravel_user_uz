@@ -615,10 +615,8 @@ class ProfileAPIController extends Controller
         $message = trans('trans.Settings updated successfully.');
         return response()->json([
             'success' => true,
-            'data' => [
-                'message' => $message
-            ]
-        ], 201);
+            'message' => $message
+        ]);
     }
 
 

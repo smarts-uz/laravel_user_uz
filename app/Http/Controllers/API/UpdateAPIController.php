@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\ReviewRequest;
 use App\Http\Requests\Task\UpdateRequest;
 use App\Http\Resources\NotificationResource;
 use App\Http\Resources\TaskIndexResource;
@@ -154,13 +155,8 @@ class UpdateAPIController extends Controller
      *     },
      * )
      */
-    public function sendReview(Task $task, Request $request): JsonResponse
+    public function sendReview(Task $task, ReviewRequest $request): JsonResponse
     {
-        $request->validate([
-            'comment' => 'required',
-            'good' => 'required',
-            'status' => 'required',
-        ]);
         taskGuard($task);
         DB::beginTransaction();
 
