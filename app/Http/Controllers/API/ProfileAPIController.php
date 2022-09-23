@@ -657,6 +657,7 @@ class ProfileAPIController extends Controller
             'gender' => $user->gender,
         ];
         return response()->json([
+            'success' => true,
             'data' => $data
         ]);
     }
