@@ -330,11 +330,10 @@ class ProfileService
             $message = trans('trans.Video added successfully.');
             $success = true;
         }
+
         return [
             'success' => $success,
-            'data' => [
-                'message' => $message
-            ]
+            'message' => $message
         ];
     }
 
@@ -480,16 +479,18 @@ class ProfileService
      *
      * Function  updateSettings
      * Mazkur metod settingni tahrirlash
-     * @param $request Object
+     * @param $request
      */
     public function updateSettings($request)
     {
         $validated = $request->validated();
-        if ($validated['email'] != auth()->user()->email) {
-            $validated['is_email_verified'] = 0;
-            $validated['email_old'] = auth()->user()->email;
-        }
+        /** @var User $user */
         $user = auth()->user();
+        if ($validated['email'] != $user->email) {
+            $validated['is_email_verified'] = 0;
+            $validated['email_old'] = $user->email;
+        }
+
         $user->update($validated);
         $user->save();
     }
