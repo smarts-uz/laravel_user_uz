@@ -485,6 +485,7 @@ class ProfileService
     {
         $validated = $request->validated();
         unset($validated['age']);
+        $validated['born_date'] = Carbon::parse($validated['born_date']->format('Y-m-d'));
         /** @var User $user */
         $user = auth()->user();
         if ($validated['email'] != $user->email) {

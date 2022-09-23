@@ -2,20 +2,17 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Category;
-use App\Models\Review;
-use App\Models\Task;
-use App\Models\User;
-use App\Models\UserView;
-use App\Models\WalletBalance;
-use App\Services\Profile\ProfileService;
 use Carbon\Carbon;
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\Task;
+use App\Models\Category;
+use App\Models\WalletBalance;
 use Illuminate\Support\Facades\File;
+use App\Services\Profile\ProfileService;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserIndexResource extends JsonResource
 {
-    protected $locale;
+    protected string $locale;
 
     /**
      * Transform the resource into an array.

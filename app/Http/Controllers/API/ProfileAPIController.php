@@ -644,6 +644,7 @@ class ProfileAPIController extends Controller
      */
     public function editData()
     {
+        /** @var User $user */
         $user = auth()->user();
         $data = [
             'name' => $user->name,

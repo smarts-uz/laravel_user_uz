@@ -13,6 +13,7 @@ use Laravel\Passport\HasApiTokens;
 /**
  * @property $is_phone_number_verified
  * @property $is_email_verified
+ * @property $born_date
  * @property $verify_expiration
  * @property $verify_code
  * @property $phone_number
@@ -33,6 +34,9 @@ use Laravel\Passport\HasApiTokens;
  * @property $email_notification
  * @property $email
  * @property $name
+ * @property $last_name
+ * @property $location
+ * @property $gender
  * @property $dark_mode
  * @property $password
  * @property $avatar
