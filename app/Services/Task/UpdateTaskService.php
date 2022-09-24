@@ -250,7 +250,7 @@ class UpdateTaskService
     public function verification($task, $data): JsonResponse
     {
         /** @var User $user */
-        $user = User::query()->where('phone_number', $data['phone_number'])->first();
+        $user = User::query()->where('phone_number', correctPhoneNumber($data['phone_number']))->firstOrFail();
         if ($data['sms_otp'] == $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
                 $user->update(['is_phone_number_verified' => 1]);
