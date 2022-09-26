@@ -44,22 +44,21 @@
                                             <p class="font-normal text-sm mt-1">{{__('Виртуальное задание')}}</p>
                                         @endif
 
-                                        @switch($task->status)
-                                            @case(1 && 2)
+                                        @switch(true)
+                                            @case($task->status<3)
                                                 <p class="text-green-400 font-normal">{{__('Открыто')}}</p>
                                                 @break
-                                            @case(3)
+                                            @case($task->status === 3)
                                                 <p class="text-green-400 font-normal">{{__('В исполнении')}}</p>
                                                 @break
-                                            @case(4)
-                                                <p class="text-red-400 font-normal">{{__('Закрыто')}}</p>
+                                            @case($task->status === 4)
+                                                <p class="text-green-400 font-normal">{{__('Закрыто')}}</p>
                                                 @break
-                                            @case(5)
+                                            @case($task->status === 5)
                                                 <p class="text-red-400 font-normal">{{__('Не выполнено')}}</p>
                                                 @break
-                                            @case(6)
+                                            @default
                                                 <p class="text-red-400 font-normal">{{__('Отменен')}}</p>
-                                                @break
                                         @endswitch
 
                                     </div>
@@ -115,22 +114,21 @@
                                             <p class="font-normal text-sm mt-1">{{__('Виртуальное задание')}}</p>
                                         @endif
 
-                                        @switch($task->status)
-                                            @case(1 && 2)
+                                        @switch(true)
+                                            @case($task->status<3)
                                                 <p class="text-green-400 font-normal">{{__('Открыто')}}</p>
                                                 @break
-                                            @case(3)
+                                            @case($task->status === 3)
                                                 <p class="text-green-400 font-normal">{{__('В исполнении')}}</p>
                                                 @break
-                                            @case(4)
-                                                <p class="text-red-400 font-normal">{{__('Закрыто')}}</p>
+                                            @case($task->status === 4)
+                                                <p class="text-green-400 font-normal">{{__('Закрыто')}}</p>
                                                 @break
-                                            @case(5)
+                                            @case($task->status === 5)
                                                 <p class="text-red-400 font-normal">{{__('Не выполнено')}}</p>
                                                 @break
-                                            @case(6)
+                                            @default
                                                 <p class="text-red-400 font-normal">{{__('Отменен')}}</p>
-                                                @break
                                         @endswitch
                                     </div>
                                     <div class="col-span-3 md:text-right categoryid">

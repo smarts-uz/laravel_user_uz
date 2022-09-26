@@ -32,22 +32,21 @@
                     @endauth
                 </div>
                 <div class="md:flex flex-row text-gray-400 mt-4 text-base">
-                    @switch($task->status)
-                        @case(1 && 2)
-                            <p class="text-green-400 font-normal">{{__('Открыто')}}</p>
+                    @switch(true)
+                        @case($task->status<3)
+                            <p class="text-green-400 font-normal md:border-r-2 border-gray-400 pr-2">{{__('Открыто')}}</p>
                             @break
-                        @case(3)
-                            <p class="text-green-400 font-normal">{{__('В исполнении')}}</p>
+                        @case($task->status === 3)
+                            <p class="text-green-400 font-normal md:border-r-2 border-gray-400 pr-2">{{__('В исполнении')}}</p>
                             @break
-                        @case(4)
-                            <p class="text-red-400 font-normal">{{__('Закрыто')}}</p>
+                        @case($task->status === 4)
+                            <p class="text-green-400 font-normal md:border-r-2 border-gray-400 pr-2">{{__('Закрыто')}}</p>
                             @break
-                        @case(5)
-                            <p class="text-red-400 font-normal">{{__('Не выполнено')}}</p>
+                        @case($task->status === 5)
+                            <p class="text-red-400 font-normal md:border-r-2 border-gray-400 pr-2">{{__('Не выполнено')}}</p>
                             @break
-                        @case(6)
-                            <p class="text-red-400 font-normal">{{__('Отменен')}}</p>
-                            @break
+                        @default
+                            <p class="text-red-400 font-normal md:border-r-2 border-gray-400 pr-2">{{__('Отменен')}}</p>
                     @endswitch
                     <p class="font-normal md:border-r-2 border-gray-400 md:px-2 px-0">{{$task->views }}  {{__('просмотров')}}</p>
                     <p class="mr-3 md:pl-2 pr-3 md:border-r-2 border-gray-400">{{$created}}</p>
@@ -56,9 +55,7 @@
                         @else
                             <p class="pr-3 ">{{ $task->category->getTranslatedAttribute('name') }}</p>
                         @endif
-                    @if($task->user_id == auth()->id() && !count($responses) && $task->status == 1 )
-                    {{--        @if($task->user_id == auth()->id() && !$task->responses_count && $task->status == 1 )--}}
-
+                    @if($task->user_id === auth()->id() && !count($responses) && $task->status === 1 )
                         <form action="{{route("searchTask.delete_task", $task->id)}}" method="post">
                             @csrf
                             @method('delete')
