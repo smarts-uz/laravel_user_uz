@@ -80,7 +80,7 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $isDelete = false;
-        if ($portfolio->user_id == $user->id) {
+        if ($portfolio->user_id === $user->id) {
             $isDelete = true;
         }
         return view('profile/portfolio', compact('user', 'portfolio', 'isDelete'));
@@ -163,10 +163,10 @@ class ProfileController extends Controller
         $checkbox = implode(",", $request->get('category'));
         $smsNotification = 0;
         $emailNotification = 0;
-        if ($request->get('sms_notification') == 1) {
+        if ($request->get('sms_notification') === 1) {
             $smsNotification = 1;
         }
-        if ($request->get('email_notification') == 1) {
+        if ($request->get('email_notification') === 1) {
             $emailNotification = 1;
         }
         $user->update(['category_id' => $checkbox, 'sms_notification' => $smsNotification, 'email_notification' => $emailNotification]);

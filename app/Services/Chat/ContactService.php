@@ -17,7 +17,7 @@ class ContactService
             ->orderByDesc('created_at')->distinct()->get()->toArray();
         $userIdsList = [];
         foreach ($messages as $message) {
-            if ($message['from_id'] == $authUser->id) {
+            if ($message['from_id'] === $authUser->id) {
                 $userIdsList[] = $message['to_id'];
             } else {
                 $userIdsList[] = $message['from_id'];

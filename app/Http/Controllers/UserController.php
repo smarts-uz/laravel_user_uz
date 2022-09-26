@@ -38,19 +38,6 @@ class UserController extends Controller
         return view('auth.confirm');
     }
 
-    public function code_submit(Request $request)
-    {
-
-        $user = auth()->user();
-        if ($request->code == $user->verify_code) {
-            if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-                return redirect('/profile');
-            } else {
-            }
-        }
-    }
-
-
     public function reset_submit(ResetRequest $request)
     {
         $data = $request->validated();
@@ -108,7 +95,7 @@ class UserController extends Controller
 
         $user = User::query()->where($verifications['key'], $verifications['value'])->first();
 
-        if ($data['code'] == $user->verify_code) {
+        if ($data['code'] === $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
                 return redirect()->route('user.reset_password');
             } else {
@@ -145,24 +132,23 @@ class UserController extends Controller
         return redirect('/profile');
     }
 
-    public function verifyProfil(Request $request, User $user, Task $task)
+    public function verifyProfil(Request $request, User $user)
     {
-
         $task = Task::query()->find($request->get('for_ver_func'));
         $request->validate(
             ['sms_otp' => 'required'],
             ['sms_otp.required' => 'Требуется заполнение!']
         );
 
-        if ($request->sms_otp == $user->verify_code) {
+        if ($request->sms_otp === $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-               if($task->phone==null && $user->phone_number != $task->phone && $user->is_phone_number_verified==0){
+               if($task->phone === null && $user->phone_number !== $task->phone && $user->is_phone_number_verified === 0){
                     $user->update(['is_phone_number_verified' => 0]);
                }
                else{
                     $user->update(['is_phone_number_verified' => 1]);
                }
-               if($task->phone==null){
+               if($task->phone === null){
                     Task::findOrFail($request->for_ver_func)->update(['status' => 1, 'user_id' => $user->id,'phone'=>$user->phone_number]);
                     auth()->login($user);
                }

@@ -20,7 +20,7 @@ class PlaymobileSMSController extends Controller
         'phone'    => $request->phone,
         'message'  => $request->message,
         'response' => $response,
-        'status'   => ($response == 'Request is received') ? SmsLog::STATUS_SUCCESS : SmsLog::STATUS_FAILD
+        'status'   => ($response === 'Request is received') ? SmsLog::STATUS_SUCCESS : SmsLog::STATUS_FAILD
     ]);
      return $response;
     }

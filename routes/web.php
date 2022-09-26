@@ -244,7 +244,6 @@ Route::get('/code', [UserController::class, 'reset_code_view'])->name('user.rese
 Route::view('/code-email', 'auth.codeEmail')->name('user.reset_code_view_email');
 Route::post('/code', [UserController::class, 'reset_code'])->name('user.reset_code');
 Route::get('/register/code', [UserController::class, 'code'])->name('user.code');
-Route::post('/register/code', [UserController::class, 'code_submit'])->name('user.code_submit');
 Route::post('/account/password/change', [ProfileController::class, 'change_password'])->name('profile.change_password');
 #endregion
 

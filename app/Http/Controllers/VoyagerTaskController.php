@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Notification;
 use App\Models\Task;
-use App\Services\NotificationService;
 use App\Services\Task\CreateService;
 use App\Services\TaskNotificationService;
 use App\Services\UserNotificationService;

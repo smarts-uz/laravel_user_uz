@@ -3,10 +3,8 @@
 namespace App\Services\Profile;
 
 use App\Http\Resources\TransactionHistoryCollection;
-use App\Http\Resources\TransactionHistoryResource;
 use App\Item\ProfileCashItem;
 use App\Item\ProfileDataItem;
-use App\Models\All_transaction;
 use App\Models\Region;
 use App\Models\Review;
 use App\Models\Session;
@@ -14,7 +12,6 @@ use App\Models\Task;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\WalletBalance;
-use App\Services\PaymentService;
 use App\Services\SmsMobileService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -131,11 +128,11 @@ class ProfileService
      */
     public function settingsUpdate($data)
     {
-        if ($data['email'] != auth()->user()->email) {
+        if ($data['email'] !== auth()->user()->email) {
             $data['is_email_verified'] = 0;
             $data['email_old'] = auth()->user()->email;
         }
-        if ($data['phone_number'] != auth()->user()->phone_number) {
+        if ($data['phone_number'] !== auth()->user()->phone_number) {
             $data['is_phone_number_verified'] = 0;
             $data['phone_number_old'] = auth()->user()->phone_number;
         }
@@ -247,9 +244,9 @@ class ProfileService
         if (isset($performer)) {
             $reviews->where(['as_performer' => $performer]);
         }
-        if ($request->get('review') == 'good') {
+        if ($request->get('review') === 'good') {
             $reviews->where(['good_bad' => 1]);
-        } elseif ($request->get('review') == 'bad') {
+        } elseif ($request->get('review') === 'bad') {
             $reviews->where(['good_bad' => 0]);
         }
         return $reviews->orderByDesc('created_at')->get();
@@ -360,9 +357,9 @@ class ProfileService
         $from = $request->get('from');
         $to = $request->get('to');
         $type = $request->get('type');
-        if ($type == 'in') {
+        if ($type === 'in') {
             $transactions = $transactions->whereIn('payment_system', Transaction::METHODS);
-        } elseif ($type == 'out') {
+        } elseif ($type === 'out') {
             $transactions = $transactions->where('payment_system', '=', 'Task');
         }
         $now = Carbon::now();
@@ -488,7 +485,7 @@ class ProfileService
         $validated['born_date'] = Carbon::parse($validated['born_date'])->format('Y-m-d');
         /** @var User $user */
         $user = auth()->user();
-        if ($validated['email'] != $user->email) {
+        if ($validated['email'] !== $user->email) {
             $validated['is_email_verified'] = 0;
             $validated['email_old'] = $user->email;
         }
@@ -507,11 +504,11 @@ class ProfileService
     {
         $notification = $request->get('notification');
         $user = auth()->user();
-        if ($notification == 1) {
+        if ($notification === 1) {
             $user->system_notification = 1;
             $user->news_notification = 1;
             $message = trans('trans.Notifications turned on.');
-        } elseif ($notification == 0) {
+        } elseif ($notification === 0) {
             $user->system_notification = 0;
             $user->news_notification = 0;
             $message = trans('trans.Notifications turned off.');
@@ -547,10 +544,10 @@ class ProfileService
         $checkbox = implode(",", $allChildCategories);
         $smsNotification = 0;
         $emailNotification = 0;
-        if ($request->get('sms_notification') == 1) {
+        if ($request->get('sms_notification') === 1) {
             $smsNotification = 1;
         }
-        if ($request->get('email_notification') == 1) {
+        if ($request->get('email_notification') === 1) {
             $emailNotification = 1;
         }
         $user->update(['category_id' => $checkbox, 'sms_notification' => $smsNotification, 'email_notification' => $emailNotification]);

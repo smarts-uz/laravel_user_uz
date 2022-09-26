@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\All_transaction;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -17,7 +16,7 @@ class UserTransactionHistory extends Controller
     {
         $user = auth()->user();
         $payment = strtolower($_GET['method']);
-        if(in_array($payment, Transaction::METHODS) ||  $payment == 'task') {
+        if(in_array($payment, Transaction::METHODS) ||  $payment === 'task') {
             $transactionMethod = Transaction::query()
                 ->where('payment_system', strtolower($_GET['method']))
                 ->where(['transactionable_id' => $user->id]);
@@ -52,7 +51,7 @@ class UserTransactionHistory extends Controller
         }
         $data = [];
         foreach ($transactions as $transaction) {
-            $amount = ucfirst($transaction->payment_system) == 'Paynet' ? $transaction->amount / 100 : $transaction->amount;
+            $amount = ucfirst($transaction->payment_system) === 'Paynet' ? $transaction->amount / 100 : $transaction->amount;
             $created_at = $transaction->created_at;
             $date = new Carbon($created_at);
             $data[] = ['amount' => $amount, 'created_at' => $date->toDateTimeString()];

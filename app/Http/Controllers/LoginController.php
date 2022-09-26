@@ -123,7 +123,7 @@ class LoginController extends Controller
                 $user->$needle = 1;
                 $user->save();
                 $result = true;
-                if ($needle != 'is_phone_number_verified' && !$user->is_phone_number_verified)
+                if ($needle !== 'is_phone_number_verified' && !$user->is_phone_number_verified)
                     VerificationService::send_verification('phone', $user, $user->phone_number);
             }
         } else {
@@ -162,7 +162,7 @@ class LoginController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-        if ($request->get('email') == $user->email) {
+        if ($request->get('email') === $user->email) {
             return back()->with([
                 'email-message' => 'Your email',
                 'email' => $request->get('email')
@@ -187,7 +187,7 @@ class LoginController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-        if ($request->get('phone_number') == $user->phone_number) {
+        if ($request->get('phone_number') === $user->phone_number) {
             return back()->with([
                 'email-message' => 'Your phone',
                 'email' => $request->get('email')

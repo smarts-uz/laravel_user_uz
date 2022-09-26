@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\NotificationResource;
-use App\Models\WalletBalance;
 use App\Services\NotificationService;
 use App\Services\PerformersService;
 use App\Services\SmsMobileService;
@@ -26,7 +25,7 @@ class PerformersController extends Controller
      * @param Request $request
      * @return  \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function service(User $user, Request $request)
+    public function service()
     {
         $authId = Auth::id();
 
@@ -68,7 +67,7 @@ class PerformersController extends Controller
 
     public function give_task(Request $request)
     {
-        if ($request->input('user_id') != null) {
+        if ($request->input('user_id') !== null) {
             $request->session()->put('given_id', $request->input('user_id'));
         }
         $task_id = $request->input('task_id');

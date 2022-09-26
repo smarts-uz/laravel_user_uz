@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PortfolioRequest;
 use App\Http\Resources\PortfolioIndexResource;
 use App\Models\Portfolio;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\File;

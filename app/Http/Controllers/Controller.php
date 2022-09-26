@@ -17,8 +17,6 @@ use App\Services\ControllerService;
 use App\Models\BlogNew;
 use App\Models\Privacy;
 
-use TCG\Voyager\Models\Setting;
-
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;

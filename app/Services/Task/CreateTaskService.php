@@ -124,15 +124,20 @@ class CreateTaskService
     public function remote_store($data): array
     {
         $task = Task::query()->findOrFail($data['task_id']);
-        if ($data['radio'] == CustomField::ROUTE_ADDRESS) {
-            return $this->get_address($task);
-        } elseif ($data['radio'] == CustomField::ROUTE_REMOTE) {
-            $task->remote = 1;
-            $task->save();
-            return $this->get_date($task);
-        } else {
-            return [];
+        switch ($data['radio'] ){
+            case CustomField::ROUTE_ADDRESS :
+                return $this->get_address($task);
+                break;
+            case CustomField::ROUTE_REMOTE :
+                $task->remote = 1;
+                $task->save();
+                return $this->get_date($task);
+                break;
+            default :
+                return [];
+                break;
         }
+
     }
 
     /**
@@ -169,7 +174,7 @@ class CreateTaskService
                 'latitude' => $data['points'][$i]['latitude'],
                 'longitude' => $data['points'][$i]['longitude']
             ];
-            if ($i == 0) {
+            if ($i === 0) {
                 $address['default'] = 1;
             }
             Address::query()->create($address);
@@ -341,13 +346,13 @@ class CreateTaskService
         /** @var Task $task */
         $task = Task::query()->findOrFail($data['task_id']);
         unset($data['task_id']);
-        if (!$user->is_phone_number_verified && $user->phone_number != $data['phone_number']) {
+        if (!$user->is_phone_number_verified && $user->phone_number !== $data['phone_number']) {
             $data['is_phone_number_verified'] = 0;
             $data['phone_number'] = correctPhoneNumber($data['phone_number']);
             $user->update($data);
             VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
             return $this->get_verify($task, $user);
-        } elseif ($user->phone_number != $data['phone_number']) {
+        } elseif ($user->phone_number !== $data['phone_number']) {
             LoginController::send_verification_for_task_phone($task, correctPhoneNumber($data['phone_number']));
             return $this->get_verify($task, $user);
         } elseif (!$user->is_phone_number_verified) {
