@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\Api\TaskResponseRequest;
 use App\Http\Resources\ComplianceTypeResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -120,13 +119,13 @@ class TaskAPIController extends Controller
      */
     public function responses(Request $request, Task $task): AnonymousResourceCollection
     {
-        if ($task->user_id == auth()->id()) {
-            if ($request->get('filter') == 'rating') {
+        if ($task->user_id === auth()->id()) {
+            if ($request->get('filter') === 'rating') {
                 $responses = TaskResponse::query()->select('task_responses.*')->join('users', 'task_responses.performer_id', '=', 'users.id')
                     ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating');
-            } elseif ($request->get('filter') == 'date') {
+            } elseif ($request->get('filter') === 'date') {
                 $responses = $task->responses()->orderByDesc('created_at');
-            } elseif ($request->get('filter') == 'price') {
+            } elseif ($request->get('filter') === 'price') {
                 $responses = $task->responses()->orderBy('price');
             } else {
                 $responses = $task->responses();
@@ -199,9 +198,10 @@ class TaskAPIController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-        if ($task->user_id == $user->id) {
+
+        if ($task->user_id === $user->id) {
             return $this->fail([], trans('trans.your task'));
-        } elseif ($user->role_id != 2) {
+        } elseif ($user->role_id !== 2) {
             return $this->fail([], trans('trans.not performer'));
         } elseif (!$user->is_phone_number_verified) {
             return $this->fail([], trans('trans.verify phone'));

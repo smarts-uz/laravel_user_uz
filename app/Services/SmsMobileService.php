@@ -25,7 +25,7 @@ class SmsMobileService
             case('eskiz_sms'):
                 try {
                     Sms::send($phone, $message);
-                } catch (\Exception) {
+                } catch (\Exception $e) {
 
                 }
                 break;

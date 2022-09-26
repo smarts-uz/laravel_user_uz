@@ -92,7 +92,7 @@ class PerformerAPIController extends Controller
     {
         setView($performer);
 
-        return $performer->role_id == 5 ? new PerformerIndexResource($performer) : abort(404);
+        return $performer->role_id === 5 ? new PerformerIndexResource($performer) : abort(404);
     }
 
     /**
@@ -264,11 +264,11 @@ class PerformerAPIController extends Controller
     {
         $data = $request->validated();
         $user = auth()->user();
-        if ($data['phone_number'] != $user->phone_number) {
+        if ($data['phone_number'] !== $user->phone_number) {
             $user->phone_number = $data['phone_number'];
             $user->is_phone_number_verified = 0;
         }
-        if ($data['email'] != $user->email) {
+        if ($data['email'] !== $user->email) {
             $user->email = $data['email'];
             $user->is_email_verified = 0;
         }

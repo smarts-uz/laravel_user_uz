@@ -10,7 +10,7 @@ class SearchAPIController extends Controller
 {
     public function cancelTask(Task $task)
     {
-        if ($task->user_id != auth()->id()){
+        if ($task->user_id !== auth()->id()){
             return response()->json([
                 'success' => false,
                 "message" => "No Permission"
@@ -56,7 +56,7 @@ class SearchAPIController extends Controller
      */
     public function delete_task(Task $task)
     {
-        if ($task->user_id != auth()->id()){
+        if ($task->user_id !== auth()->id()){
             return response()->json([
                 'success' => false,
                 "message" => "No Permission"

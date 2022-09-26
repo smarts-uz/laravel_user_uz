@@ -4,12 +4,10 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TaskIndexResource;
-use App\Models\Response;
 use App\Models\Task;
 use App\Models\TaskResponse;
 use App\Models\WalletBalance;
 use Illuminate\Http\Request;
-use RealRashid\SweetAlert\Facades\Alert;
 
 class ResponseAPIController extends Controller
 {
@@ -28,7 +26,7 @@ class ResponseAPIController extends Controller
         $data['task_id'] = $task->id;
         $data['user_id'] = $task->user_id;
         $data['creator_id'] = auth()->user()->id;
-        if ($request->pay == 0) {
+        if ($request->pay === 0) {
             $data['not_free'] = 0;
         } else {
             $data['not_free'] = 1;

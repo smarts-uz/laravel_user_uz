@@ -212,7 +212,7 @@ class UserAPIController extends Controller
         /** @var User $user */
         $user = User::query()->where('phone_number', '+' . $data['phone_number'])->firstOrFail();
 
-        if ($data['code'] == $user->verify_code) {
+        if ($data['code'] === $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
                 return response()->json(['success' => true, 'message' => 'Enter a new password']);
             } else {

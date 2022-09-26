@@ -5,11 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ReviewRequest;
 use App\Http\Requests\Task\UpdateRequest;
-use App\Http\Resources\NotificationResource;
 use App\Http\Resources\TaskIndexResource;
 use App\Models\Chat\ChMessage;
 use App\Models\Task;
-use App\Services\NotificationService;
 use App\Services\Task\ReviewService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -162,7 +160,7 @@ class UpdateAPIController extends Controller
 
         try {
             ReviewService::sendReview($task, $request);
-        } catch (Exception) {
+        } catch (Exception $e) {
             DB::rollBack();
             return response()->json(['success' => false, 'message' => "fail"]);  //back();
         }

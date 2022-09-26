@@ -5,10 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Resources\CategoryIndexResource;
 use App\Http\Resources\CategoryShowResource;
 use App\Models\Category;
-use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\DB;
 
 class CategoriesAPIController extends Controller
 {
@@ -121,7 +119,7 @@ class CategoriesAPIController extends Controller
      *     )
      * )
      */
-    public function parents(Request $request){
+    public function parents(){
         $categories = Category::query()->whereNull('parent_id')->get();
         return CategoryIndexResource::collection($categories);
 

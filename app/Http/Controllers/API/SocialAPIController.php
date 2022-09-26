@@ -8,7 +8,6 @@ use App\Http\Resources\PerformerIndexResource;
 use App\Models\User;
 use App\Models\WalletBalance;
 use Exception;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -63,7 +62,7 @@ class SocialAPIController extends Controller
     {
         try {
             $data = $request->validated();
-            if ($data['type'] == 0) {
+            if ($data['type'] === 0) {
                 $provider = 'google';
             } else {
                 $provider = 'facebook';
@@ -74,7 +73,7 @@ class SocialAPIController extends Controller
                 ->orWhere('email', $providerUser->email)
                 ->first();
             // if there is no record with these data, create a new user
-            if ($user == null) {
+            if ($user === null) {
                 $user = User::create([
                     $provider . '_id' => $providerUser->id,
                     'name' => $providerUser->name,

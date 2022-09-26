@@ -17,15 +17,15 @@ class LoginAPIController extends Controller
         $column = $data['type'];
         $verified = 'is_' . $column . '_verified';
         if (!User::query()
-            ->where($column, $data['type'] == 'phone_number' ? "+" . $data['data'] : $data['data'])
+            ->where($column, $data['type'] === 'phone_number' ? "+" . $data['data'] : $data['data'])
             ->where($verified, 1)->exists()
         ) {
             /** @var User $user */
             $user = auth()->user();
-            $user->$column = $data['type'] == 'phone_number' ? "+" . $data['data'] : $data['data'];
+            $user->$column = $data['type'] === 'phone_number' ? "+" . $data['data'] : $data['data'];
             $user->$verified = 0;
             $user->save();
-            if ($data['type'] == 'phone_number') {
+            if ($data['type'] === 'phone_number') {
                 VerificationService::send_verification($data['type'], $user, phone_number: $data['data']);
             } else {
                 VerificationService::send_verification($data['type'], $user, email: $data['data']);
@@ -33,12 +33,12 @@ class LoginAPIController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => $data['type'] == 'email' ? __('Ваша ссылка для подтверждения успешно отправлена!') : __('Код отправлен!')
+                'message' => $data['type'] === 'email' ? __('Ваша ссылка для подтверждения успешно отправлена!') : __('Код отправлен!')
             ]);
         }
         return response()->json([
             'success' => false,
-            'message' => $data['type'] == 'email' ? __('Пользователь с такой почтой уже существует!') : __('Пользователь с таким номером уже существует!')
+            'message' => $data['type'] === 'email' ? __('Пользователь с такой почтой уже существует!') : __('Пользователь с таким номером уже существует!')
         ]);
     }
 
@@ -86,7 +86,7 @@ class LoginAPIController extends Controller
         $user = auth()->user();
 
         if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-            if ($request->get('code') == $user->verify_code || $request->get('code') == setting('admin.CONFIRM_CODE')) {
+            if ($request->get('code') === $user->verify_code || $request->get('code') === setting('admin.CONFIRM_CODE')) {
                 $user->is_phone_number_verified = 1;
                 $user->save();
                 return response()->json([
