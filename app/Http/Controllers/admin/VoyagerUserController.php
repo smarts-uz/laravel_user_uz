@@ -25,7 +25,7 @@ class VoyagerUserController extends BaseVoyagerUserController
         $this->authorize('add', app($dataType->model_name));
         if (
             User::query()->where("email", $request->email)->first() &&
-            User::query()->where("email", $request->email)->first()->id != auth()->user()->id
+            User::query()->where("email", $request->email)->first()->id !== auth()->user()->id
         ) {
             return back()
                 ->with([
@@ -58,7 +58,7 @@ class VoyagerUserController extends BaseVoyagerUserController
     //
     public function update(Request $request, $id)
     {
-        if (Auth::user()->getKey() == $id) {
+        if (Auth::user()->getKey() === $id) {
             $request->merge([
                 'role_id'                              => Auth::user()->role_id,
                 'is_active'                              => 1,
@@ -148,53 +148,6 @@ class VoyagerUserController extends BaseVoyagerUserController
         ]);
     }
 
- //    public function users(Request $request)
-////    {
-////        if (!auth()->user()->hasPermission("browse_admins_menu")){
-////           return back()->with([
-//                'message'    => "Sizga ruxsat etilmagan!",
-//                'alert-type' => 'error',
-//            ]);        }
-//        $users = User::all();
-//
-//        $dataType = Voyager::model('DataType')->where('slug', '=', "users")->first();
-//
-//        $dataTypeContent = $users;
-//        $showCheckboxColumn = false;
-//        if (Auth::user()->can('delete', app($dataType->model_name))) {
-//            $showCheckboxColumn = true;
-//        } else {
-//            foreach ($actions as $action) {
-//                if (method_exists($action, 'massAction')) {
-//                    $showCheckboxColumn = true;
-//                }
-//            }
-//        }
-//
-//        // Actions
-//        $actions = [];
-//        if (!empty($users->first())) {
-//            foreach (Voyager::actions() as $action) {
-//                $action = new $action($dataType, $users->first());
-//
-//                if ($action->shouldActionDisplayOnDataType()) {
-//                    $actions[] = $action;
-//                }
-//            }
-//        }
-//
-//        $is_active = auth()->user()->hasPermission("change_activeness");
-//
-//        return Voyager::view("admins", compact(
-//            'actions',
-//            'dataType',
-//            'dataTypeContent',
-//            'showCheckboxColumn',
-//            'is_active',
-//            'users'
-//        ));
-//    }
-
     public function admins(Request $request)
     {
 
@@ -216,7 +169,7 @@ class VoyagerUserController extends BaseVoyagerUserController
 
         $rows = [];
         foreach (DataRow::all() as $item) {
-           if (($item->field == "name"||$item->field == "email"||$item->field == "user_belongsto_role_relationship"||$item->field == "created_at")&& $item->data_type_id==1){
+           if (($item->field === "name"||$item->field === "email"||$item->field === "user_belongsto_role_relationship"||$item->field === "created_at")&& $item->data_type_id === 1){
                $rows[] = $item;
            }
 
@@ -242,12 +195,12 @@ class VoyagerUserController extends BaseVoyagerUserController
         $showSoftDeleted = false;
 
         // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
-        if (strlen($dataType->model_name) != 0) {
+        if (strlen($dataType->model_name) !== 0) {
             $model = app($dataType->model_name);
 
             $query = $model::select($dataType->name.'.*');
 
-            if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
+            if ($dataType->scope && $dataType->scope !== '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
                 $query->{$dataType->scope}();
             }
 
@@ -264,9 +217,9 @@ class VoyagerUserController extends BaseVoyagerUserController
             // If a column has a relationship associated with it, we do not want to show that field
             $this->removeRelationshipField($dataType, 'browse');
 
-            if ($search->value != '' && $search->key && $search->filter) {
-                $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
-                $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
+            if ($search->value !== '' && $search->key && $search->filter) {
+                $search_filter = ($search->filter === 'equals') ? '=' : 'LIKE';
+                $search_value = ($search->filter === 'equals') ? $search->value : '%'.$search->value.'%';
 
                 $searchField = $dataType->name.'.'.$search->key;
                 if ($row = $this->findSearchableRelationshipRow($dataType->rows->where('type', 'relationship'), $search->key)) {
@@ -298,7 +251,7 @@ class VoyagerUserController extends BaseVoyagerUserController
 
                 $dataTypeContent = call_user_func([
                     $query->orderBy($orderBy, $querySortOrder),
-                    $query>where("role_id",'!=', 9),
+                    $query->where("role_id",'!=', 9),
                     $getter,
                 ]);
             } else {
@@ -430,7 +383,7 @@ class VoyagerUserController extends BaseVoyagerUserController
         $showSoftDeleted = false;
 
         // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
-        if (strlen($dataType->model_name) != 0) {
+        if (strlen($dataType->model_name) !== 0) {
             $model = app($dataType->model_name);
 
             $query = $model::select($dataType->name.'.*');
@@ -452,9 +405,9 @@ class VoyagerUserController extends BaseVoyagerUserController
             // If a column has a relationship associated with it, we do not want to show that field
             $this->removeRelationshipField($dataType, 'browse');
 
-            if ($search->value != '' && $search->key && $search->filter) {
-                $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
-                $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
+            if ($search->value !== '' && $search->key && $search->filter) {
+                $search_filter = ($search->filter === 'equals') ? '=' : 'LIKE';
+                $search_value = ($search->filter === 'equals') ? $search->value : '%'.$search->value.'%';
 
                 $searchField = $dataType->name.'.'.$search->key;
                 if ($row = $this->findSearchableRelationshipRow($dataType->rows->where('type', 'relationship'), $search->key)) {
@@ -486,7 +439,7 @@ class VoyagerUserController extends BaseVoyagerUserController
 
                 $dataTypeContent = call_user_func([
                     $query->orderBy($orderBy, $querySortOrder),
-                    $query>where("role_id",'!=', 9),
+                    $query->where("role_id",'!=', 9),
                     $getter,
                 ]);
             } else {
