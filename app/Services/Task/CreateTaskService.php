@@ -386,7 +386,7 @@ class CreateTaskService
         /** @var User $user */
         $user = auth()->user();
 
-        if (!$user->is_phone_number_verified && $data['sms_otp'] == $user->verify_code) {
+        if (!$user->is_phone_number_verified && $data['sms_otp'] === $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
                 $user->update(['is_phone_number_verified' => 1]);
                 $task->update(['status' => 1, 'user_id' => $user->id, 'phone' => $user->phone_number]);

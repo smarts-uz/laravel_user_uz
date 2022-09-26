@@ -4,12 +4,9 @@
 namespace App\Services;
 
 use App\Models\Task;
-use App\Models\Report;
 use App\Models\Category;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
-use App\Item\ReportItem;
 use Yajra\DataTables\DataTables;
 
 class ReportService
@@ -127,6 +124,31 @@ class ReportService
                 $application = Task::whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', 1)->pluck('budget')->toArray();
                 return array_sum($application);
             })
+
+                ->addColumn('cencelled_count', function($app){
+                    $date = Cache::get('date');
+                    $date_1 = Cache::get('date_1');
+                    $start_date = Carbon::parse("{$date}-31")
+                        ->toDateTimeString();
+
+                    $end_date = Carbon::parse("{$date_1}-31")
+                        ->toDateTimeString();
+                    $cat = Category::where('parent_id', $app->id)->pluck('id')->toarray();
+                    $application = Task::whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', 6)->get();
+                    return count($application);
+                })
+                ->addColumn('cencelled_sum', function($app){
+                    $date = Cache::get('date');
+                    $date_1 = Cache::get('date_1');
+                    $start_date = Carbon::parse("{$date}-31")
+                        ->toDateTimeString();
+
+                    $end_date = Carbon::parse("{$date_1}-31")
+                        ->toDateTimeString();
+                    $cat = Category::where('parent_id', $app->id)->pluck('id')->toarray();
+                    $application = Task::whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', 6)->pluck('budget')->toArray();
+                    return array_sum($application);
+                })
 
             ->addColumn('total_count', function($app){
                 $date = Cache::get('date');
@@ -261,6 +283,31 @@ class ReportService
                             ->toDateTimeString();
                         $cat = Category::where('id', $app->id)->pluck('id')->toarray();
                         $application = Task::whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', 1)->pluck('budget')->toArray();
+                        return array_sum($application);
+                    })
+
+                    ->addColumn('cencelled_count', function($app){
+                        $date = Cache::get('date');
+                        $date_1 = Cache::get('date_1');
+                        $start_date = Carbon::parse("{$date}-31")
+                            ->toDateTimeString();
+
+                        $end_date = Carbon::parse("{$date_1}-31")
+                            ->toDateTimeString();
+                        $cat = Category::where('id', $app->id)->pluck('id')->toarray();
+                        $application = Task::whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', 6)->get();
+                        return count($application);
+                    })
+                    ->addColumn('cencelled_sum', function($app){
+                        $date = Cache::get('date');
+                        $date_1 = Cache::get('date_1');
+                        $start_date = Carbon::parse("{$date}-31")
+                            ->toDateTimeString();
+
+                        $end_date = Carbon::parse("{$date_1}-31")
+                            ->toDateTimeString();
+                        $cat = Category::where('id', $app->id)->pluck('id')->toarray();
+                        $application = Task::whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', 6)->pluck('budget')->toArray();
                         return array_sum($application);
                     })
 

@@ -31,7 +31,7 @@ class ResponseService
     {
         /** @var User $auth_user */
         $auth_user = auth()->user();
-        if ($task->user_id == $auth_user->id)
+        if ($task->user_id === $auth_user->id)
             abort(403,"Bu o'zingizning taskingiz");
         $data = $request->validate([
             'description' => 'required|string',
@@ -53,7 +53,7 @@ class ResponseService
         $balance = WalletBalance::query()->where('user_id', $auth_user->id)->first();
         if ($balance) {
             $freeResponsesCount = TaskResponse::query()->where(['performer_id' => $data['performer_id'], 'not_free' => 0])->get()->count();
-            if ($request->get('not_free') == 1) {
+            if ($request->get('not_free') === 1) {
                 $balanceSufficient = $balance->balance < setting('admin.pullik_otklik') + $freeResponsesCount * setting('admin.bepul_otklik');
             } else {
                 $balanceSufficient = $balance->balance < setting('admin.bepul_otklik') + $freeResponsesCount * setting('admin.bepul_otklik');
@@ -68,7 +68,7 @@ class ResponseService
                 $success = true;
                 $message = __('Выполнено успешно');
                 TaskResponse::query()->create($data);
-                if ($request->get('not_free') == 1) {
+                if ($request->get('not_free') === 1) {
                     $balance->balance = $balance->balance - setting('admin.pullik_otklik');
                     $balance->save();
                     UserExpense::query()->create([
@@ -111,7 +111,7 @@ class ResponseService
     public function selectPerformer($response): array
     {
         $task = $response->task;
-        if ($task->status >= 3 || auth()->id() == $response->performer_id ) {
+        if ($task->status >= 3 || auth()->id() === $response->performer_id ) {
             abort(403, 'No Permission');
         }
         $data = [
@@ -154,7 +154,7 @@ class ResponseService
             'body' => NotificationService::descriptions($notification, $locale)
         ], 'notification', new NotificationResource($notification));
         $taskResponse = TaskResponse::query()->where(['task_id' => $task->id])->where(['performer_id' => $performer->id])->first();
-        if ($taskResponse->not_free == 0) {
+        if ($taskResponse->not_free === 0) {
             /** @var WalletBalance $balance */
             $balance = WalletBalance::query()->where('user_id', $performer->id)->first();
             $balance->balance = $balance->balance - setting('admin.bepul_otklik');

@@ -40,7 +40,7 @@ class CustomFieldService
         $item['values'] = $custom_field->values;
         $item['order'] = $custom_field->order;
         $item['name'] = $custom_field->name;
-        $item['task_value'] = ($custom_field->type == 'input' or $custom_field->type == 'number') ? count($values[$custom_field->id]) ? (string)$values[$custom_field->id][0] : '' : '';
+        $item['task_value'] = ($custom_field->type === 'input' or $custom_field->type === 'number') ? count($values[$custom_field->id]) ? (string)$values[$custom_field->id][0] : '' : '';
         return $item;
 
     }
@@ -49,7 +49,7 @@ class CustomFieldService
     {
         $values = $this->getValuesOfTask($task);
 
-        $options = app()->getLocale() == 'ru' && $custom_field->options_ru ? $custom_field->options_ru : $custom_field->options;
+        $options = app()->getLocale() === 'ru' && $custom_field->options_ru ? $custom_field->options_ru : $custom_field->options;
         $options = $options ? $options['options'] : [];
         $item = [];
         $data = [];

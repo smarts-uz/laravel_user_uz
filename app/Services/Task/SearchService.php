@@ -151,7 +151,6 @@ class SearchService
         });
         $dataForMap=$tasks->map(function ($task) {
             return collect($task)
-            /*->only(['id', 'name', 'address_main', 'start_date', 'end_date', 'budget', 'latitude', 'longitude'])*/
             ->only(['id', 'name', 'address_main', 'sd_parse', 'ed_parse', 'budget', 'latitude', 'longitude'])
             ->toArray();
           });

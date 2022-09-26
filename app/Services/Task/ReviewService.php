@@ -72,7 +72,7 @@ class ReviewService
             'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
         ]);
         $user = User::query()->find($task->user_id);
-        if ($request->good == 1) {
+        if ($request->good === 1) {
             $user->increment('review_good');
         } else {
             $user->increment('review_bad');
@@ -86,7 +86,7 @@ class ReviewService
 
     public static function sendReview($task, $request, $status = false): void
     {
-        if ($task->user_id == auth()->id()) {
+        if ($task->user_id === auth()->id()) {
             // user review to performer
             $locale = cacheLang($task->performer_id);
             if ($status) {
@@ -97,7 +97,7 @@ class ReviewService
                 'title' => __('Новый отзыв', [], $locale), 'body' => __('О вас оставлен новый отзыв', [], $locale) . " \"$task->name\" №$task->id"
             ], 'notification', new NotificationResource($notification));
 
-        } elseif ($task->performer_id == auth()->id()) {
+        } elseif ($task->performer_id === auth()->id()) {
             // performer review to user
             $locale = cacheLang($task->user_id);
             $notification = ReviewService::performerReview($task, $request);
