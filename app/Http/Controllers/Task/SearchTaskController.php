@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Task;
 
 use App\Models\TaskResponse;
 use App\Services\Task\CreateService;
-use App\Services\Task\CustomFieldService;
 use App\Models\Task;
 use Elastic\ScoutDriverPlus\Support\Query;
 use Illuminate\Support\Facades\Cache;
@@ -56,10 +55,10 @@ class SearchTaskController extends VoyagerBaseController
             abort(404);
         }
         $review = null;
-        if ($task->reviews_count == 2) $review = true;
+        if ($task->reviews_count === 2) $review = true;
 
         $user_id = auth()->id();
-        if (auth()->check() && $user_id != $task->user_id) {
+        if (auth()->check() && $user_id !== $task->user_id) {
             $viewed_tasks = Cache::get('user_viewed_tasks'. $user_id) ?? [];
             if (!in_array($task->id, $viewed_tasks)) {
                 $viewed_tasks[] = $task->id;
@@ -88,16 +87,22 @@ class SearchTaskController extends VoyagerBaseController
         $auth_response = auth()->check();
         $userId = auth()->id();
         $item = $this->service->task_service($auth_response, $userId, $task);
-        if ($request->get('filter') == 'rating') {
-            $responses = TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')
-                ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating')->get();
-        } elseif ($request->get('filter') == 'date') {
-            $responses = $item->responses->orderByDesc('created_at')->get();
-        } elseif ($request->get('filter') == 'reviews') {
-            $responses = TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')
-                ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.reviews')->get();
-        } else {
-            $responses = $item->responses->get();
+        $filter = $request->get('filter');
+        switch ($filter){
+            case 'rating' :
+                $responses = TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')
+                    ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating')->get();
+                break;
+            case 'date' :
+                $responses = $item->responses->orderByDesc('created_at')->get();
+                break;
+            case 'reviews' :
+                $responses = TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')
+                    ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.reviews')->get();
+                break;
+            default :
+                $responses = $item->responses->get();
+                break;
         }
         return view('task.detailed-tasks',
         ['review_description' => $item->review_description,'task' => $task, 'created' => $created, 'end' => $end, 'start' => $start, 'review' => $review, 'complianceType' => $item->complianceType, 'same_tasks' => $item->same_tasks,
@@ -113,7 +118,7 @@ class SearchTaskController extends VoyagerBaseController
     public function delete_task(Task $task)
     {
         taskGuard($task);
-        abort_if($task->responses()->count() || $task->status != Task::STATUS_OPEN,403, 'No permission');
+        abort_if($task->responses()->count() || $task->status !== Task::STATUS_OPEN,403, 'No permission');
 
 
         $this->create_service->delete($task);

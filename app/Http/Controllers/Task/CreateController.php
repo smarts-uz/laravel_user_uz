@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\LoginController;
 use App\Http\Requests\BudgetRequest;
 use App\Http\Requests\CreateContactRequest;
 use App\Http\Requests\TaskDateRequest;
@@ -206,10 +205,10 @@ class CreateController extends Controller
         /** @var User $user */
         $user = auth()->user();
         $data = $request->validated();
-        if (!($user->is_phone_number_verified && $user->phone_number == $data['phone_number'])) {
+        if (!($user->is_phone_number_verified && $user->phone_number === $data['phone_number'])) {
             VerificationService::send_verification('phone', $user, $data['phone_number']);
             $task->phone = $data['phone_number'];
-            if ($user->phone_number == null) {
+            if ($user->phone_number === null) {
                 $user->phone_number = $task->phone;
                 $user->save();
             }

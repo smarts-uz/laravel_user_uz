@@ -4,13 +4,8 @@ namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\UpdateRequest;
-use App\Http\Resources\NotificationResource;
 use App\Models\Chat\ChMessage;
-use App\Models\Notification;
 use App\Models\Task;
-use App\Models\Review;
-use App\Models\User;
-use App\Services\NotificationService;
 use App\Services\Task\ReviewService;
 use Illuminate\Http\Request;
 use App\Services\Task\CreateService;
@@ -32,7 +27,7 @@ class UpdateController extends Controller
         taskGuard($task);
         if ($task->responses_count)
             abort(403, "No Permission");
-        if (!$task->remote == 1) {
+        if (!$task->remote === 1) {
             $request->validate([
                 'location0' => 'required',
                 'coordinates0' => 'required',
@@ -114,7 +109,7 @@ class UpdateController extends Controller
 
         try {
             ReviewService::sendReview($task, $request, true);
-        } catch (\Exception) {
+        } catch (\Exception $e) {
             DB::rollBack();
         }
         return back();
