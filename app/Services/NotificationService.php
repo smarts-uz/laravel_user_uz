@@ -92,9 +92,8 @@ class NotificationService
                         'task_name' => $task->name, 'task_id' => $task->id, 'budget' => $price
                     ], $locale);
                 if ($performer->sms_notification) {
-                    $sms_service = new SmsMobileService();
                     $phone_number = $performer->phone_number;
-                    $sms_service->sms_packages($phone_number, $message);
+                    SmsMobileService::sms_packages($phone_number, $message);
                 }
                 info(json_encode($performer));
                 if ($performer->email_notification) {
@@ -225,13 +224,12 @@ class NotificationService
     {
         /** @var User $user */
         $user = User::query()->find($user_id);
-        $sms_service = new SmsMobileService();
         $amount = number_format($amount, 0, '.', ' ');
         $message = __("Ваш баланс на сайте UserUz пополнен на сумму amount через payment_system. Номер транзакции = transaction_id ID пользователя = user_id", [
             'amount' => $amount, 'payment_system' => $payment_system, 'transaction_id' => $transaction_id, 'user_id' => $user_id
         ], cacheLang($user_id));
         $phone_number = $user->phone_number;
-        $sms_service->sms_packages($phone_number, $message);
+        SmsMobileService::sms_packages($phone_number, $message);
         Mail::to($user->email)->send(new MessageEmail($message));
     }
 

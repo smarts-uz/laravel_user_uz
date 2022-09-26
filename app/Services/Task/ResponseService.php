@@ -129,8 +129,7 @@ class ResponseService
                 'task_name' => $text_url, 'phone_number' => $task->phone, 'task_user' => $name
             ], $locale);
             $phone_number=$performer->phone_number;
-            $sms_service = new SmsMobileService();
-            $sms_service->sms_packages($phone_number, $message);
+            SmsMobileService::sms_packages($phone_number, $message);
         }
         $data = [
             'performer_name' => $performer->name,

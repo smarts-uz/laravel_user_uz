@@ -81,9 +81,8 @@ class PerformersController extends Controller
             $message = __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
                 'task_name' => $text_url, 'task_id' => $task_id, 'task_user' => $task_name->user?->name
             ]);
-            $phone_number=$performer->phone_number;;
-            $sms_service = new SmsMobileService();
-            $sms_service->sms_packages($phone_number, $message);
+            $phone_number=$performer->phone_number;
+            SmsMobileService::sms_packages($phone_number, $message);
             $notification = Notification::query()->create([
                 'user_id' => $task_name->user_id,
                 'performer_id' => $users_id,

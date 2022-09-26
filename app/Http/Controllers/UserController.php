@@ -48,14 +48,13 @@ class UserController extends Controller
                 'message' => __("Этот номер телефона не зарегистрирован!")
             ]);
         }
-        $message = rand(100000, 999999);
-        $user->verify_code = $message;
+        $code = rand(100000, 999999);
+        $user->verify_code = $code;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
         $phone_number=$user->phone_number;
-        $sms_service = new SmsMobileService();
-        $message ="USer.Uz ". __("Код подтверждения") . ' ' . $message;
-        $sms_service->sms_packages($phone_number, $message);
+        $message ="USer.Uz ". __("Код подтверждения") . ' ' . $code;
+        SmsMobileService::sms_packages($phone_number, $message);
 
         session()->put('verifications', ['key' => 'phone_number', 'value' => $data['phone_number']]);
 

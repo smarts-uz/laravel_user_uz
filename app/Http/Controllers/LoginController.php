@@ -90,8 +90,7 @@ class LoginController extends Controller
         $task->verify_expiration = Carbon::now()->addMinutes(2);
         $task->save();
 
-        $sms_service = new SmsMobileService();
-        $sms_service->sms_packages($phone_number,"USer.Uz ". __("Код подтверждения") . ' ' . $message);
+        SmsMobileService::sms_packages($phone_number,"USer.Uz ". __("Код подтверждения") . ' ' . $message);
     }
 
     public function send_email_verification()
@@ -119,7 +118,7 @@ class LoginController extends Controller
         $result = false;
 
         if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-            if ($hash == $user->verify_code || $hash == setting('admin.CONFIRM_CODE')) {
+            if ($hash === $user->verify_code || $hash === setting('admin.CONFIRM_CODE')) {
                 $user->$needle = 1;
                 $user->save();
                 $result = true;

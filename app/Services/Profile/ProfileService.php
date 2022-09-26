@@ -405,8 +405,7 @@ class ProfileService
             $phone_number = $user->phone_number;
             $user->verify_code = $message;
             $user->save();
-            $sms_service = new SmsMobileService();
-            $sms_service->sms_packages($phone_number, "USer.Uz ". __("Код подтверждения") . ' ' . $message);
+            SmsMobileService::sms_packages($phone_number, "USer.Uz ". __("Код подтверждения") . ' ' . $message);
             $messages = trans('trans.Phone number updated successfully.');
             $success = true;
         }

@@ -10,7 +10,7 @@ class VerificationService
 {
     public static function send_verification($needle, $user, $phone_number = null, $email = null)
     {
-        if ($needle == 'email') {
+        if ($needle === 'email') {
             $message = sha1(time());
             $data = [
                 'code' => $message,
@@ -23,8 +23,7 @@ class VerificationService
             }
         } else {
             $message = rand(100000, 999999);
-            $sms_service = new SmsMobileService();
-            $sms_service->sms_packages($phone_number,"USer.Uz ". __("Код подтверждения") . ' ' . $message);
+            SmsMobileService::sms_packages($phone_number,"USer.Uz ". __("Код подтверждения") . ' ' . $message);
         }
         $user->verify_code = $message;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
