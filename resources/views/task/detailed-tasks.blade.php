@@ -23,7 +23,7 @@
                             @endif
                         </span>
                     @auth()
-                        @if($task->user_id == auth()->user()->id && !$task->responses_count)
+                        @if($task->user_id === auth()->user()->id && !$task->responses_count)
                             <a href="{{ route('searchTask.changetask', $task->id) }}"
                                class="py-2 px-2 text-gray-500 hover:text-red-500">
                                 <i class="fas fa-pencil-alt"></i>
@@ -32,17 +32,23 @@
                     @endauth
                 </div>
                 <div class="md:flex flex-row text-gray-400 mt-4 text-base">
-                    @if ($task->status == 3)
-                        <p class="text-amber-500 font-normal md:border-r-2 border-gray-400 pr-2">{{__('В исполнении')}}</p>
-                    @elseif($task->status < 3)
-                        <p class="text-green-400 font-normal md:border-r-2 border-gray-400 pr-2">{{__('Открыто')}}</p>
-                    @elseif($task->status == 5)
-                        <p class="text-red-400 font-normal md:border-r-2 border-gray-400 pr-2">{{__('Не выполнено')}}</p>
-                    @elseif($task->status == 6)
-                        <p class="text-red-400 font-normal md:border-r-2 border-gray-400 pr-2">{{__('Отменен')}}</p>
-                    @else
-                        <p class="text-red-400 font-normal md:border-r-2 border-gray-400 pr-2">{{__('Закрыто')}}</p>
-                    @endif
+                    @switch($task->status)
+                        @case(1 && 2)
+                            <p class="text-green-400 font-normal">{{__('Открыто')}}</p>
+                            @break
+                        @case(3)
+                            <p class="text-green-400 font-normal">{{__('В исполнении')}}</p>
+                            @break
+                        @case(4)
+                            <p class="text-red-400 font-normal">{{__('Закрыто')}}</p>
+                            @break
+                        @case(5)
+                            <p class="text-red-400 font-normal">{{__('Не выполнено')}}</p>
+                            @break
+                        @case(6)
+                            <p class="text-red-400 font-normal">{{__('Отменен')}}</p>
+                            @break
+                    @endswitch
                     <p class="font-normal md:border-r-2 border-gray-400 md:px-2 px-0">{{$task->views }}  {{__('просмотров')}}</p>
                     <p class="mr-3 md:pl-2 pr-3 md:border-r-2 border-gray-400">{{$created}}</p>
                         @if($task->category->getTranslatedAttribute('name')==="Что-то другое" ||$task->category->getTranslatedAttribute('name')==="Boshqa narsa")
@@ -95,31 +101,31 @@
                     @include('detailed_task.detailed_respons')
                {{-- task respons  --}}
 
-                @if ($task->status == 4)
+                @if ($task->status === 4)
                     @foreach ($respons_reviews as $respons_review)
-                        @if ($respons_review->good_bad==1 && $respons_review->task_id == $task->id)
+                        @if ($respons_review->good_bad === 1 && $respons_review->task_id === $task->id)
                             <div class="my-6">
                                 <div class="flex flex-row gap-x-2 my-4">
-                                    @if ($respons_review->as_performer == 0)
-                                        <img src="@if ($task->user?->avatar == ''){{ asset("storage/images/default.png") }}
+                                    @if ($respons_review->as_performer === 0)
+                                        <img src="@if ($task->user?->avatar === ''){{ asset("storage/images/default.png") }}
                                         @else{{asset("storage/{$task->user->avatar}") }}" @endif alt="#"
                                             class="w-12 h-12 border-2 rounded-lg border-gray-500">
-                                    @elseif ($respons_review->as_performer == 1)
-                                        <img src="@if ($respons_review->reviewer?->avatar == ''){{ asset("storage/images/default.png") }}
+                                    @elseif ($respons_review->as_performer === 1)
+                                        <img src="@if ($respons_review->reviewer?->avatar === ''){{ asset("storage/images/default.png") }}
                                         @else{{asset("storage/{$respons_review->reviewer->avatar}") }}" @endif alt="#"
                                             class="w-12 h-12 border-2 rounded-lg border-gray-500">
                                     @endif
 
                                     <div class="flex flex-col">
-                                        @if ($respons_review->as_performer == 0)
-                                            <a @if (Auth::check() && Auth::user()->id == $task->user->id)
+                                        @if ($respons_review->as_performer === 0)
+                                            <a @if (Auth::check() && Auth::user()->id === $task->user->id)
                                                 href="/profile"
                                             @else href="/performers/{{$task->user->id}}"
                                              @endif
                                             class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
                                             </a>
-                                        @elseif ( $respons_review->as_performer == 1)
-                                            <a  @if (Auth::check() && Auth::user()->id == $respons_review->reviewer->id)
+                                        @elseif ( $respons_review->as_performer === 1)
+                                            <a  @if (Auth::check() && Auth::user()->id === $respons_review->reviewer->id)
                                                 href="/profile"
                                                 @else href="/performers/{{$respons_review->reviewer->id}}"
                                                 @endif
@@ -128,9 +134,9 @@
                                         @endif
                                         <div class="flex flex-row gap-x-2">
                                             <i class="far fa-thumbs-up text-gray-400"></i>
-                                            @if ($respons_review->as_performer==0)
+                                            @if ($respons_review->as_performer === 0)
                                                 <p class="text-base"> - {{__('Заказчик')}}</p>
-                                            @elseif ($respons_review->as_performer==1)
+                                            @elseif ($respons_review->as_performer === 1)
                                                 <p class="text-base"> - {{__('Исполнитель')}}</p>
                                             @endif
                                        </div>
@@ -143,28 +149,28 @@
                                     <p class="text-right">{{$respons_review->created}}</p>
                                 </div>
                             </div>
-                        @elseif ($respons_review->good_bad==0 && $respons_review->task_id == $task->id)
+                        @elseif ($respons_review->good_bad === 0 && $respons_review->task_id === $task->id)
                             <div class="my-6">
                                 <div class="flex flex-row gap-x-2 my-4">
-                                    @if ($respons_review->as_performer == 0)
-                                        <img src="@if ($task->user->avatar == ''){{ asset("storage/images/default.png") }}
+                                    @if ($respons_review->as_performer === 0)
+                                        <img src="@if ($task->user->avatar === ''){{ asset("storage/images/default.png") }}
                                         @else{{asset("storage/{$task->user->avatar}") }}" @endif alt="#"
                                             class="w-12 h-12 border-2 rounded-lg border-gray-500">
-                                    @elseif ($respons_review->as_performer == 1)
-                                        <img src="@if ($respons_review->reviewer->avatar == ''){{ asset("storage/images/default.png") }}
+                                    @elseif ($respons_review->as_performer === 1)
+                                        <img src="@if ($respons_review->reviewer->avatar === ''){{ asset("storage/images/default.png") }}
                                         @else{{asset("storage/{$respons_review->reviewer->avatar}") }}" @endif alt="#"
                                             class="w-12 h-12 border-2 rounded-lg border-gray-500">
                                     @endif
                                     <div class="flex flex-col">
-                                        @if ($respons_review->as_performer == 0)
-                                            <a @if (Auth::check() && Auth::user()->id == $task->user->id)
+                                        @if ($respons_review->as_performer === 0)
+                                            <a @if (Auth::check() && Auth::user()->id === $task->user->id)
                                                 href="/profile"
                                             @else href="/performers/{{$task->user->id}}"
                                             @endif
                                             class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
                                             </a>
-                                        @elseif ( $respons_review->as_performer == 1)
-                                            <a  @if (Auth::check() && Auth::user()->id == $respons_review->reviewer->id)
+                                        @elseif ( $respons_review->as_performer === 1)
+                                            <a  @if (Auth::check() && Auth::user()->id === $respons_review->reviewer->id)
                                                 href="/profile"
                                                 @else href="/performers/{{$respons_review->reviewer->id}}"
                                                 @endif
@@ -173,9 +179,9 @@
                                         @endif
                                        <div class="flex flex-row gap-x-2">
                                             <i class="far fa-thumbs-down text-gray-400"></i>
-                                            @if ($respons_review->as_performer==0)
+                                            @if ($respons_review->as_performer === 0)
                                                 <p class="text-base"> - {{__('Заказчик')}}</p>
-                                            @elseif ($respons_review->as_performer==1)
+                                            @elseif ($respons_review->as_performer === 1)
                                                 <p class="text-base"> - {{__('Исполнитель')}}</p>
                                             @endif
                                        </div>
@@ -197,7 +203,7 @@
                         <div class=" my-3">
                             <h1 class="font-medium text-3xl mt-3">{{__('Похожиe задания')}}</h1>
                             @foreach($same_tasks as $item)
-                                @if ($item->user_id !=null)
+                                @if ($item->user_id !==null)
                                     <div class="border-2 border-gray-500 rounded-xl bg-gray-50 hover:bg-blue-100 h-auto my-3">
                                         <div class="grid grid-cols-5 w-11/12 mx-auto py-2">
                                             <div class="sm:col-span-3 col-span-5 flex flex-row">
@@ -209,13 +215,13 @@
                                                     <a href="/detailed-tasks/{{$item->id}}"
                                                     class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">{{ $item->name }}</a>
                                                     <p class="text-sm">{{ count($item->addresses)? $item->addresses[0]->location:'Можно выполнить удаленно' }}</p>
-                                                    @if($item->date_type == 1 || $item->date_type == 3)
+                                                    @if($item->date_type === 1 || $item->date_type === 3)
                                                         <p class="text-sm my-0.5">{{__('Начать')}} {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $item->start_date)->translatedFormat('d-M  H:i') }}  </p>
                                                     @endif
-                                                    @if($item->date_type == 2 || $item->date_type == 3)
+                                                    @if($item->date_type === 2 || $item->date_type === 3)
                                                         <p class="text-sm my-0.5">{{__('Закончить')}}{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $item->end_date)->translatedFormat('d-M  H:i') }}  </p>
                                                     @endif
-                                                    @if($item->oplata == 1)
+                                                    @if($item->oplata === 1)
                                                         <p class="text-sm">{{__(' Оплата наличными')}}</p>
                                                     @else
                                                         <p class="text-sm">{{__('Оплата через карту')}}</p>
@@ -224,7 +230,7 @@
                                             </div>
                                             <div class="sm:col-span-2 col-span-5 sm:text-right text-left sm:ml-0 ml-16">
                                                 <p class="sm:text-lg text-sm font-semibold text-gray-700">
-                                                    @if ( session('lang') == 'uz' )
+                                                    @if ( session('lang') === 'uz' )
                                                         {{ number_format($item->budget) }} {{__('сум')}}{{__('до')}}
                                                     @else
                                                         {{__('до')}} {{ number_format($item->budget) }} {{__('сум')}}
@@ -238,7 +244,7 @@
                                                     @endif
                                                 </span>
                                                 <p class="text-sm sm:mt-1 mt-0">{{ $item->category->name }}</p>
-                                                @if (Auth::check() && Auth::id() == $item->user_id)
+                                                @if (Auth::check() && Auth::id() === $item->user_id)
                                                     <a href="/profile"
                                                     class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $item->user?$item->user->name:'' }}</a>
                                                 @else
