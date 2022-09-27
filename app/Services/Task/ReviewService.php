@@ -72,7 +72,7 @@ class ReviewService
             'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
         ]);
         $user = User::query()->find($task->user_id);
-        if ($request->good === 1) {
+        if ($request->good == 1) {
             $user->increment('review_good');
         } else {
             $user->increment('review_bad');
