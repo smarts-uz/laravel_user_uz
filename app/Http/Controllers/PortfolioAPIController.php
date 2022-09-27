@@ -57,7 +57,7 @@ class PortfolioAPIController extends Controller
     public function createPortfolio(PortfolioRequest $request)
     {
         $data = $request->validated();
-        $portfolio = Portfolio::create($data);
+        $portfolio = Portfolio::query()->create($data);
         return new PortfolioIndexResource($portfolio);
     }
 

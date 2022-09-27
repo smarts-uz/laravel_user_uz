@@ -23,7 +23,7 @@ use App\Services\Profile\ProfileService;
 class ProfileController extends Controller
 {
     //portfolio
-    public $agent;
+    public Agent $agent;
 
     public function __construct()
     {
@@ -32,12 +32,13 @@ class ProfileController extends Controller
 
     public function setSession(Request $request)
     {
-        \session()->put('performer_id_for_task', $request->performer_id);
+        \session()->put('performer_id_for_task', $request->get('performer_id'));
         return redirect('categories/1');
     }
 
     public function clear_sessions()
     {
+        /** @var User $user */
         $user = auth()->user();
         Session::query()->where('user_id', $user->id)->delete();
         $user->tokens->each(function ($token, $key) {
@@ -65,18 +66,20 @@ class ProfileController extends Controller
     public function UploadImage(Request $request)
     {
         $uploadImg = new ProfileService();
-        return $uploadImg->uploadImageServ($request);
+        $uploadImg->uploadImageServ($request);
+        return true;
     }
 
     public function testBase(Request $request)
     {
         $testBaseS = new ProfileService();
-        return $testBaseS->testBaseServ($request);
+        return $testBaseS->testBaseServ();
 
     }
 
     public function portfolio(Portfolio $portfolio)
     {
+        /** @var User $user */
         $user = Auth::user();
 
         $isDelete = false;
@@ -94,18 +97,18 @@ class ProfileController extends Controller
         $item = $service->profileData($user);
 
         return view('profile.profile',
-        [
-            'categories' => $item->categories,
-            'top_users' => $item->top_users,
-            'user' => $user,
-            'portfolios' => $item->portfolios,
-            'review_good' => $item->review_good,
-            'review_bad' =>$item->review_bad,
-            'task' => $item->task,
-            'review_rating' => $item->review_rating,
-            'goodReviews' => $item->goodReviews,
-            'badReviews' =>$item->badReviews,
-        ]);
+            [
+                'categories' => $item->categories,
+                'top_users' => $item->top_users,
+                'user' => $user,
+                'portfolios' => $item->portfolios,
+                'review_good' => $item->review_good,
+                'review_bad' => $item->review_bad,
+                'task' => $item->task,
+                'review_rating' => $item->review_rating,
+                'goodReviews' => $item->goodReviews,
+                'badReviews' => $item->badReviews,
+            ]);
     }
 
     //profile Cash
@@ -113,18 +116,18 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         $service = new ProfileService();
-        $item = $service->profileCash( $user);
+        $item = $service->profileCash($user);
         return view('profile.cash',
-        [
-            'balance' => $item->balance,
-            'task' => $item->task,
-            'top_users' => $item->top_users,
-            'transactions' => $item->transactions,
-            'user' => $item->user,
-            'review_good' => $item->review_good,
-            'review_bad' =>$item->review_bad,
-            'review_rating' => $item->review_rating,
-        ]);
+            [
+                'balance' => $item->balance,
+                'task' => $item->task,
+                'top_users' => $item->top_users,
+                'transactions' => $item->transactions,
+                'user' => $item->user,
+                'review_good' => $item->review_good,
+                'review_bad' => $item->review_bad,
+                'review_rating' => $item->review_rating,
+            ]);
     }
 
 //settings
@@ -141,7 +144,7 @@ class ProfileController extends Controller
         $data = $request->validated();
         $profile = new ProfileService();
         $updatedData = $profile->settingsUpdate($data);
-        Auth::user()->update($updatedData);
+        Auth::user()->update((array)$updatedData);
         Alert::success(__('Настройки успешно сохранены'));
         return redirect()->route('profile.editData');
     }
@@ -158,6 +161,7 @@ class ProfileController extends Controller
         $request->validate([
             'category' => 'required'
         ]);
+        /** @var User $user */
         $user = Auth::user();
         $user->role_id = 2;
         $checkbox = implode(",", $request->get('category'));
@@ -178,9 +182,9 @@ class ProfileController extends Controller
         $request->validate([
             'district' => 'required',
         ]);
-
+        /** @var User $user */
         $user = Auth::user();
-        $user->district = $request->district;
+        $user->district = $request->get('district');
         $user->save();
         return redirect()->back();
     }
@@ -197,6 +201,7 @@ class ProfileController extends Controller
     public function change_password(UserPasswordRequest $request)
     {
         $data = $request->validated();
+        /** @var User $user */
         $user = auth()->user();
         if (!$data || (!isset($data['old_password']) && $user->password)) {
             Alert::error(__('Введите старый пароль'));
@@ -219,7 +224,7 @@ class ProfileController extends Controller
 
     //personal info Ijrochi uchun
 
-    public function verificationIndex(Request $request)
+    public function verificationIndex()
     {
         return view('verification.verification');
     }
@@ -232,6 +237,7 @@ class ProfileController extends Controller
     public function verificationInfoStore(PerformerCreateRequest $request)
     {
         $data = $request->validated();
+        /** @var User $user */
         $user = auth()->user();
         $user->update($data);
         return redirect()->route('profile.verificationContact');
@@ -245,6 +251,7 @@ class ProfileController extends Controller
     public function verificationContactStore(PersonalInfoRequest $request)
     {
         $data = $request->validated();
+        /** @var User $user */
         $user = auth()->user();
         $user->update($data);
 
@@ -258,6 +265,7 @@ class ProfileController extends Controller
 
     public function verificationPhotoStore(Request $request)
     {
+        /** @var User $user */
         $user = Auth::user();
         if (!$user->avatar) {
             $request->validate([
@@ -271,9 +279,9 @@ class ProfileController extends Controller
                 File::delete($destination);
             }
             $filename = $request->file('avatar');
-            $imagename = "user-avatar/" . $filename->getClientOriginalName();
-            $filename->move(public_path() . '/storage/user-avatar/', $imagename);
-            $data['avatar'] = $imagename;
+            $imageName = "user-avatar/" . $filename->getClientOriginalName();
+            $filename->move(public_path() . '/storage/user-avatar/', $imageName);
+            $data['avatar'] = $imageName;
         }
         $user->update($data);
         return redirect()->route('profile.verificationCategory');
@@ -282,30 +290,26 @@ class ProfileController extends Controller
     public function verificationCategory()
     {
         $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->get();
-        $categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
-        return view('personalinfo.personalcategoriya', compact('categories','categories2'));
+        $categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
+        return view('personalinfo.personalcategoriya', compact('categories', 'categories2'));
     }
 
     public function createPortfolio(PortfolioRequest $request)
     {
         $data = $request->validated();
-
-        $data['user_id'] = auth()->user()->id;
-
+        $data['user_id'] = auth()->id();
         $data['image'] = session()->has('images') ? session('images') : '[]';
 
         session()->forget('images');
-        Portfolio::create($data);
+        Portfolio::query()->create($data);
         return redirect()->route('profile.profileData');
-
-
     }
 
     public function deleteImage(Request $request, Portfolio $portfolio)
     {
         portfolioGuard($portfolio);
         $image = $request->get('image');
-        File::delete(public_path() . '/portfolio/'. $image);
+        File::delete(public_path() . '/portfolio/' . $image);
         $images = json_decode($portfolio->image);
         $updatedImages = array_diff($images, [$image]);
         $portfolio->image = json_encode(array_values($updatedImages));
@@ -345,9 +349,11 @@ class ProfileController extends Controller
             echo json_encode(['status' => 0, 'msg' => 'failed']);
         }
     }
+
     public function youtube_link(Request $request)
     {
-        $user = User::find(auth()->user()->id);
+        /** @var User $user */
+        $user = User::query()->find(auth()->id());
         $validator = Validator::make($request->all(), [
             'youtube_link' => 'required|url'
         ]);
@@ -359,12 +365,15 @@ class ProfileController extends Controller
         if (!str_starts_with($link, 'https://www.youtube.com/')) {
             Alert::error(__('Отправить действующую ссылку на Youtube'));
         }
-        $user->youtube_link = str_replace('watch?v=','embed/',$request->youtube_link);
+        $user->youtube_link = str_replace('watch?v=', 'embed/', $request->get('youtube_link'));
         $user->save();
         return redirect()->back();
     }
-    public function youtube_link_delete(){
-        $user = User::find(auth()->user()->id);
+
+    public function youtube_link_delete()
+    {
+        /** @var User $user */
+        $user = User::query()->find(auth()->id());
         $user->youtube_link = null;
         $user->save();
         return redirect()->back();

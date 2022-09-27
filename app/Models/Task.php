@@ -18,12 +18,15 @@ use Elastic\ScoutDriverPlus\Searchable;
  * @property $id
  * @property $name
  * @property $reviews_count
+ * @property $responses_count
  * @property $status
+ * @property $remote
  * @property $budget
  * @property $oplata
  * @property $addresses
  * @property $photos
  * @property $user_id
+ * @property $category_id
  * @property $phone
  * @property $views
  * @property $start_date

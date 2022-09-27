@@ -10,7 +10,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Retrieve next step with additional fields
  * objects, relations
  * @property $text
+ * @property $id
  * @property $name
+ * @property $compliance_type_id
+ * @property $user_id
+ * @property $task_id
  */
 class Compliance extends Model
 {

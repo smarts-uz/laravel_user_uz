@@ -11,18 +11,17 @@ use TCG\Voyager\Models\Category;
 
 class ControllerService
 {
-
     /**
      *
      * Function  home
      * @link https://user.uz/
      * @return  ControllerItem
      */
-    public function home($id)
+    public function home()
     {
         $item = new ControllerItem();
         $item -> categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->get();
-        $item -> tasks  =  Task::where('status', 1)->orWhere('status',2)->orderBy('id', 'desc')->take(20)->get();
+        $item -> tasks  =  Task::query()->where('status', 1)->orWhere('status',2)->orderBy('id', 'desc')->take(20)->get();
         $item -> child_categories = Category::withTranslations(['ru', 'uz'])->where('parent_id','!=',null)->get();
         return $item;
 
@@ -31,7 +30,7 @@ class ControllerService
      *
      * Function  category
      * Mazkur metod barcha kategoriyalarni chiqarib beradi
-     * @param $id  Object
+     * @param $id
      * @return  SearchServiceTaskItem
      */
     public function category($id){
@@ -54,8 +53,8 @@ class ControllerService
         $item->user = auth()->user();
         $item->tasks = $item->user->tasks()->whereIn('status', [1, 2, 3, 4, 5 ,6])->orderBy('created_at', 'desc')->get();
         $item->perform_tasks = $item->user->performer_tasks()->orderBy('created_at', 'desc')->get();
-        $item->categories = Category::where('parent_id', null)->select('id', 'name', 'slug')->get();
-        $item->categories2 = Category::where('parent_id', '<>', null)->select('id', 'parent_id', 'name','ico')->get();
+        $item->categories = Category::query()->where('parent_id', null)->select('id', 'name', 'slug')->get();
+        $item->categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name','ico')->get();
         return $item;
     }
 }

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\PortfolioRequest;
 use App\Http\Requests\Api\ProfileAvatarRequest;
-use App\Http\Requests\Api\ProfileDistrictRequest;
 use App\Http\Requests\Api\ProfilePasswordRequest;
 use App\Http\Requests\Api\ProfilePhoneRequest;
 use App\Http\Requests\Api\ProfileSettingsRequest;
@@ -14,7 +13,6 @@ use App\Http\Resources\PortfolioIndexResource;
 use App\Http\Resources\ReviewIndexResource;
 use App\Http\Resources\UserIndexResource;
 use App\Models\Portfolio;
-use App\Models\Session;
 use App\Models\User;
 use App\Services\Profile\ProfileService;
 use Illuminate\Http\Request;
@@ -22,7 +20,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfileAPIController extends Controller
 {
-    protected $profileService;
+    protected ProfileService $profileService;
 
     public function __construct()
     {
@@ -82,6 +80,7 @@ class ProfileAPIController extends Controller
      */
     public function portfolios()
     {
+        /** @var User $user */
         $user = auth()->user();
         return response()->json([
             'success' => true,
@@ -301,6 +300,7 @@ class ProfileAPIController extends Controller
      * )
      */
     public function videoDelete(){
+        /** @var User $user */
         $user = auth()->user();
         $user->youtube_link = null;
         $user->save();
@@ -402,6 +402,7 @@ class ProfileAPIController extends Controller
      */
     public function phoneEdit()
     {
+        /** @var User $user */
         $user = auth()->user();
         return response()->json([
             'data' => [
@@ -660,123 +661,6 @@ class ProfileAPIController extends Controller
             'data' => $data
         ]);
     }
-
-
-    /**
-     * @OA\Post(
-     *     path="/api/profile/sessions/clear",
-     *     tags={"ProfileAPI"},
-     *     summary="Session clear",
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
-    public function clearSessions()
-    {
-        Session::query()->where('user_id', auth()->user()->id)->delete();
-
-        $message = trans('trans.Sessions deleted successfully.');
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'message' => $message
-            ]
-        ]);
-    }
-
-
-    /**
-     * @OA\DELETE(
-     *     path="/api/profile/delete",
-     *     tags={"ProfileAPI"},
-     *     summary="Delete User",
-     *     @OA\Response(
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
-    public function deleteUser()
-    {
-        auth()->user()->delete();
-
-        $message = trans('trans.User deleted successfully.');
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'message' => $message
-            ]
-        ]);
-    }
-
-
-    /**
-     * @OA\Post(
-     *     path="/api/profile/store/district",
-     *     tags={"ProfileAPI"},
-     *     summary="Profile district",
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="district",
-     *                    type="string",
-     *                 ),
-     *             ),
-     *         ),
-     *     ),
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
-    public function storeDistrict(ProfileDistrictRequest $request)
-    {
-        $validated = $request->validated();
-        $user = Auth::user();
-        $user->district = $validated['district'];
-        $user->save();
-        return new UserIndexResource($user);
-    }
-
 
     /**
      * @OA\Post(

@@ -11,12 +11,11 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ResponseController extends Controller
 {
-    private $service;
+    private ResponseService $service;
 
     public function __construct()
     {
         $this->service = new ResponseService();
-
     }
 
     public function store(Request $request, Task $task)
@@ -27,14 +26,11 @@ class ResponseController extends Controller
         else
             Alert::success($response['message']);
         return back();
-
     }
-
 
     public function selectPerformer(TaskResponse $response)
     {
         $response = $this->service->selectPerformer($response);
         return back()->with($response);
     }
-
 }

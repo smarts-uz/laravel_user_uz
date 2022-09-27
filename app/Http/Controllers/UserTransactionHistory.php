@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -14,6 +15,7 @@ class UserTransactionHistory extends Controller
      */
     public function getTransactions (): JsonResponse
     {
+        /** @var User $user */
         $user = auth()->user();
         $payment = strtolower($_GET['method']);
         if(in_array($payment, Transaction::METHODS) ||  $payment === 'task') {
@@ -29,19 +31,12 @@ class UserTransactionHistory extends Controller
         }
 
         if (array_key_exists('period', $_GET)){
-            switch ($_GET['period']) {
-                case 'month':
-                    $filter = now()->subMonth();
-                    break;
-                case 'week':
-                    $filter = now()->subWeek();
-                    break;
-                case 'year':
-                    $filter = now()->subYear();
-                    break;
-                default:
-                    $filter = now();
-            }
+            $filter = match ($_GET['period']) {
+                'month' => now()->subMonth(),
+                'week' => now()->subWeek(),
+                'year' => now()->subYear(),
+                default => now(),
+            };
             $transactions = $transactionMethod->where('created_at', '>', $filter)->get();
         } else {
             $from = $_GET['from_date'];

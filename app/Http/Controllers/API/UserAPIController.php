@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ResetPasswordRequest;
+use App\Http\Requests\Api\UserUpdateRequest;
 use App\Http\Requests\PhoneNumberRequest;
 use App\Http\Requests\Api\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
@@ -248,22 +249,13 @@ class UserAPIController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(UserUpdateRequest $request, $id)
     {
-        try {
-            $request->validate([
-                'name' => 'required|min:5|max:255',
-                'email' => 'required|email|unique:users',
-                'password' => 'required|min:8|max:16',
-            ]);
+        $data = $request->validated();
+        $user = User::query()->where('id', $id)->firstOrFail();
+        $user->update($data);
 
-            $user = User::query()->where('id', $id)->firstOrFail();
-            $user->update($request->all());
-
-            return response()->json(['status' => true, 'message' => 'User data updated!']);
-        } catch (ValidationException $e) {
-            return response()->json(array_values($e->errors()));
-        }
+        return response()->json(['status' => true, 'message' => 'User data updated!']);
     }
 
     /**
@@ -290,6 +282,7 @@ class UserAPIController extends Controller
      */
     public function logout(Request $request)
     {
+        /** @var User $user */
         $user = auth()->user();
         $user->tokens->each(function ($token, $key) {
             $token->delete();

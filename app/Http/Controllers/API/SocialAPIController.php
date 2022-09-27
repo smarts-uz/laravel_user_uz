@@ -15,13 +15,6 @@ use Laravel\Socialite\Facades\Socialite;
 
 class SocialAPIController extends Controller
 {
-    //login with facebook
-    public function facebookRedirect()
-    {
-        return Socialite::driver('facebook')->redirect();
-    }
-
-
     /**
      * @OA\Post(
      *     path="/api/social-login",
@@ -74,7 +67,7 @@ class SocialAPIController extends Controller
                 ->first();
             // if there is no record with these data, create a new user
             if ($user === null) {
-                $user = User::create([
+                $user = User::query()->create([
                     $provider . '_id' => $providerUser->id,
                     'name' => $providerUser->name,
                     'email' => $providerUser->email,
@@ -116,16 +109,6 @@ class SocialAPIController extends Controller
     }
 
 
-    private static function get_avatar($avatar, $id)
-    {
-        $fileContents = file_get_contents($avatar);
-        File::put(public_path() . '/storage/users-avatar/' . $id . ".jpg", $fileContents);
-        $picture = 'users-avatar/' . $id . ".jpg";
-
-        return $picture;
-    }
-
-
     public function handleProviderCallback(Request $request, $provider)
     {
         $user = Socialite::driver($provider)->user();
@@ -137,7 +120,7 @@ class SocialAPIController extends Controller
 
     public function findOrCreateUser($user, $provider)
     {
-        $authUser = User::where('email', $user->email)->first();
+        $authUser = User::query()->where('email', $user->email)->first();
 
         if ($authUser) {
             return $authUser;
@@ -145,7 +128,7 @@ class SocialAPIController extends Controller
 
         $name = explode(' ', $user->name);
 
-        return User::create([
+        return User::query()->create([
             'first_name' => $name[0],
             'last_name' => $name[1] ?? '',
             'email' => $user->email,

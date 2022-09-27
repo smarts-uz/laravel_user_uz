@@ -34,7 +34,7 @@ use Teamprodev\LaravelPayment\PayUz;
 */
 
 #region performers
-Route::get('/for_del_new_task/{task}', [CreateController::class, 'deletetask']); // javoxir
+Route::get('/for_del_new_task/{task}', [CreateController::class, 'deleteTask']); // javoxir
 Route::group(['middleware' => 'auth'], function () {
     Route::delete('/fordelnotif/{notification}/', [PerformersController::class, 'deleteNotification'])->name('performers.deleteNotification'); // javoxir
 });
@@ -87,7 +87,7 @@ Route::post('ajax-request', [SearchTaskController::class, 'task_response']); // 
 Route::delete('delete-task/{task}', [SearchTaskController::class, 'delete_task'])->name('searchTask.delete_task'); // javoxir
 Route::get('delete-task/{task}', [SearchTaskController::class, 'delete_task'])->name('searchTask.delete_task.get'); // javoxir
 Route::get('/detailed-tasks/{task}', [SearchTaskController::class, 'task'])->name("searchTask.task"); // javoxir
-Route::post('/detailed-tasks', [SearchTaskController::class, 'comlianse_save'])->name("searchTask.comlianse_save");
+Route::post('/detailed-tasks', [SearchTaskController::class, 'compliance_save'])->name("searchTask.comlianse_save");
 Route::get('/change-task/{task}', [SearchTaskController::class, 'changeTask'])->name("searchTask.changetask")->middleware('auth'); // javoxir
 Route::put('/change-task/{task}', [UpdateController::class, 'change'])->name("update.__invoke")->middleware('auth'); // javoxir
 Route::post('/change-task/{task}/delete-image', [UpdateController::class, 'deleteImage'])->name('task.deleteImage');

@@ -10,8 +10,8 @@ class ReportController extends Controller
 {
     public function request(Request $request)
     {
-        Cache::put('date',$request->date);
-        Cache::put('date_1',$request->date_1);
+        Cache::put('date', $request->get('date'));
+        Cache::put('date_1', $request->get('date_1'));
         return redirect()->back();
     }
 
@@ -19,6 +19,7 @@ class ReportController extends Controller
     {
         return view('vendor.voyager.report.report');
     }
+
     public function report()
     {
 
@@ -27,11 +28,12 @@ class ReportController extends Controller
         return $service->report();
     }
 
-public function index_sub($id)
-{
-    Cache::put('child',$id);
-    return view('vendor.voyager.report.childreport');
-}
+    public function index_sub($id)
+    {
+        Cache::put('child', $id);
+        return view('vendor.voyager.report.childreport');
+    }
+
     public function report_sub()
     {
         $id = Cache::get('child');
@@ -39,6 +41,4 @@ public function index_sub($id)
 
         return $service->child_report($id);
     }
-
-
 }

@@ -32,6 +32,8 @@ use Laravel\Passport\HasApiTokens;
  * @property $firebase_token
  * @property $sms_notification
  * @property $email_notification
+ * @property $system_notification
+ * @property $news_notification
  * @property $email
  * @property $name
  * @property $last_name
@@ -40,11 +42,16 @@ use Laravel\Passport\HasApiTokens;
  * @property $dark_mode
  * @property $password
  * @property $avatar
+ * @property $description
+ * @property $district
  * @property $role_id
+ * @property $google_id
+ * @property $facebook_id
  * @property $api_token
  * @property $remember_token
  * @property $map
  * @property $reviews
+ * @property $tokens
  * @property $reviewsObj
  * @property $tasks
  * @return array //Value Returned

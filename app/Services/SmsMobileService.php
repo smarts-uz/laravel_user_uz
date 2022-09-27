@@ -19,20 +19,17 @@ class SmsMobileService
      */
     public static function sms_packages($phone_number, $message): void
     {
+        $phone = preg_replace('/[+]+/', '', $phone_number);
 
-        $phone =preg_replace('/[+]+/', '', $phone_number);
-        switch(env('SMS_PROVIDER')) {
+        switch (env('SMS_PROVIDER')) {
             case('eskiz_sms'):
                 try {
                     Sms::send($phone, $message);
-                } catch (\Exception $e) {
-
-                }
+                } catch (\Exception) {}
                 break;
             case('playmobile_sms'):
                 (new SmsService())->send($phone, $message);
                 break;
         }
-
     }
 }

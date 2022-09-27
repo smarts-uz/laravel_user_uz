@@ -123,19 +123,17 @@ class CreateTaskService
      */
     public function remote_store($data): array
     {
+        /** @var Task $task */
         $task = Task::query()->findOrFail($data['task_id']);
         switch ($data['radio'] ){
             case CustomField::ROUTE_ADDRESS :
                 return $this->get_address($task);
-                break;
             case CustomField::ROUTE_REMOTE :
                 $task->remote = 1;
                 $task->save();
                 return $this->get_date($task);
-                break;
             default :
                 return [];
-                break;
         }
 
     }

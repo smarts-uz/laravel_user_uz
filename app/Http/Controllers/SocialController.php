@@ -21,19 +21,18 @@ class SocialController extends Controller
     public function loginWithFacebook()
     {
         $user = Socialite::driver('facebook')->setScopes(['email'])->user();
-        $findUser = User::where('email', $user->email)->first();
+        /** @var User $findUser */
+        $findUser = User::query()->where('email', $user->email)->first();
 
         if (!$user->email) {
-            $findUser = User::where('facebook_id', $user->id)->first();
+            $findUser = User::query()->where('facebook_id', $user->id)->first();
         }
-
 
         if ($findUser) {
             $findUser->facebook_id = $user->id;
             $findUser->save();
             Alert::success(__('Успешно'), __('Вы успешно связали свой аккаунт Facebook'));
             Auth::login($findUser);
-            return redirect()->route('profile.profileData');
         } else {
             $new_user = new User();
             $new_user->name = $user->name;
@@ -47,8 +46,8 @@ class SocialController extends Controller
             $wallBal->user_id = $new_user->id;
             $wallBal->save();
             Auth::login($new_user);
-            return redirect()->route('profile.profileData');
         }
+        return redirect()->route('profile.profileData');
     }
 
 
@@ -63,23 +62,18 @@ class SocialController extends Controller
     {
         $fileContents = file_get_contents($user->getAvatar());
         File::put(public_path() . '/storage/users-avatar/' . $user->getId() . ".jpg", $fileContents);
-        $picture = 'users-avatar/' . $user->getId() . ".jpg";
-
-        return $picture;
+        return 'users-avatar/' . $user->getId() . ".jpg";
     }
 
     public function loginWithGoogle()
     {
-
         try {
             $user = Socialite::driver('google')->setScopes(['openid', 'email'])->user();
-
-
-            $findUser = User::where('email', $user->email)->first();
+            /** @var User $findUser */
+            $findUser = User::query()->where('email', $user->email)->first();
 
             if (!$user->email) {
-                $findUser = User::where('google_id', $user->id)->first();
-
+                $findUser = User::query()->where('google_id', $user->id)->first();
             }
 
             if ($findUser) {
@@ -87,7 +81,6 @@ class SocialController extends Controller
                 $findUser->save();
                 Auth::login($findUser);
                 Alert::success(__('Успешно'), __('Вы успешно связали свой аккаунт Google'));
-                return redirect()->route('profile.profileData');
             } else {
                 $new_user = new User();
                 $new_user->name = $user->name;
@@ -101,10 +94,11 @@ class SocialController extends Controller
                 $wallBal->user_id = $new_user->id;
                 $wallBal->save();
                 Auth::login($new_user);
-                return redirect()->route('profile.profileData');
             }
-        } catch (Exception $e) {
-            dd($e);
+            return redirect()->route('profile.profileData');
+        } catch (Exception) {
+            // Log to File
         }
+        return false;
     }
 }

@@ -8,7 +8,6 @@ use App\Http\Requests\BecomePerformerRequest;
 use App\Http\Requests\GiveTaskRequest;
 use App\Http\Resources\NotificationResource;
 use App\Http\Resources\PerformerIndexResource;
-use App\Http\Resources\PerformerPaginateResource;
 use App\Http\Resources\ReviewIndexResource;
 use App\Models\Notification;
 use App\Models\Review;
@@ -50,14 +49,7 @@ class PerformerAPIController extends Controller
             $date = Carbon::now()->subMinutes(2)->toDateTimeString();
             $performers = $performers->where('role_id', 2)->where('last_seen', ">=",$date);
         }
-        return PerformerIndexResource::collection($performers->paginate($request->per_page));
-    }
-
-    public function online_performers()
-    {
-        $date = Carbon::now()->subMinutes(2)->toDateTimeString();
-        $performers = User::where('role_id', 2)->where('last_seen', ">=",$date)->paginate();
-        return new PerformerPaginateResource($performers);
+        return PerformerIndexResource::collection($performers->paginate($request->get('per_page')));
     }
 
     /**
@@ -136,7 +128,8 @@ class PerformerAPIController extends Controller
     public function give_task(GiveTaskRequest $request)
     {
         $data = $request->validated();
-        $task = Task::where('id', $data['task_id'])->first();
+        /** @var Task $task */
+        $task = Task::query()->where('id', $data['task_id'])->first();
         /** @var User $performer */
         $performer = User::query()->findOrFail($data['performer_id']);
         $locale = cacheLang($performer->id);
@@ -262,6 +255,7 @@ class PerformerAPIController extends Controller
     public function becomePerformerEmailPhone(BecomePerformerEmailPhone $request)
     {
         $data = $request->validated();
+        /** @var User $user */
         $user = auth()->user();
         if ($data['phone_number'] !== $user->phone_number) {
             $user->phone_number = $data['phone_number'];
@@ -396,7 +390,7 @@ class PerformerAPIController extends Controller
     {
         $reviews = Review::query()
             ->whereHas('task')->whereHas('user')
-            ->where('user_id',auth()->user()->id)
+            ->where('user_id',auth()->id())
             ->fromUserType($request->get('from'))
             ->type($request->get('type'))
             ->get();

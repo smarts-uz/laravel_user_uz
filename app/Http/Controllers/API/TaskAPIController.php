@@ -1487,12 +1487,15 @@ class TaskAPIController extends Controller
     public function complain(TaskComplaintRequest $request, Task $task): JsonResponse
     {
         $data = $request->validated();
+        /** @var User $user */
+        $user = auth()->user();
         $data['task_id'] = $task->id;
-        $data['user_id'] = auth()->id();
+        $data['user_id'] = $user->id;
+        /** @var Compliance $compliant */
         $compliant = Compliance::query()->create($data);
         $data['id'] = $compliant->id;
         $data['complaint'] = $compliant->text;
-        $data['user_name'] = auth()->user()->name;
+        $data['user_name'] = $user->name;
         $data['task_name'] = $task->name;
         if (setting('site.bot_token') && setting('site.channel_username'))
             (new TelegramService())->sendMessage($data);

@@ -15,7 +15,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class UpdateController extends Controller
 {
-    protected $service;
+    protected CreateService $service;
 
     public function __construct()
     {

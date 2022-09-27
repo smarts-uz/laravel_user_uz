@@ -15,4 +15,5 @@ class ProfileCashItem
     public $top_users;
     public $review_good;
     public $review_bad;
+    public $review_rating;
 }

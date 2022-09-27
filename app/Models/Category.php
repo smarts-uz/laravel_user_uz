@@ -10,7 +10,7 @@ class Category extends Model
 {
     use HasFactory;
     use Translatable;
-    protected $translatable = ['name'];
+    protected array $translatable = ['name'];
 
     protected $table = "categories";
     protected $withCount = ['tasks'];

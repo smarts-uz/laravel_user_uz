@@ -90,7 +90,7 @@ class FilterTaskService
         $dist = acos($dist);
         $dist = $dist * 180/ pi();
         $dist = $dist * 60 * 1.1515;
-        return $dist = $dist * 1.609344;
+        return $dist * 1.609344;
     }
 
 }

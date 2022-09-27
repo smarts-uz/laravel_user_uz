@@ -32,11 +32,9 @@ class UpdateAPIController extends Controller
         $data = getAddress($data);
         $task->update($data);
         $this->service->syncCustomFields($task);
+
         Alert::success('Success');
-
-        return response()->json(['message' => 'Success']); //redirect()->route('searchTask.task', $task->id);
-
-
+        return response()->json(['message' => 'Success']);
     }
 
 
@@ -160,7 +158,7 @@ class UpdateAPIController extends Controller
 
         try {
             ReviewService::sendReview($task, $request);
-        } catch (Exception $e) {
+        } catch (Exception) {
             DB::rollBack();
             return response()->json(['success' => false, 'message' => "fail"]);  //back();
         }

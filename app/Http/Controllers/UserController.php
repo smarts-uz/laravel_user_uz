@@ -52,8 +52,8 @@ class UserController extends Controller
         $user->verify_code = $code;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
-        $phone_number=$user->phone_number;
-        $message ="USer.Uz ". __("Код подтверждения") . ' ' . $code;
+        $phone_number = $user->phone_number;
+        $message = "USer.Uz " . __("Код подтверждения") . ' ' . $code;
         SmsMobileService::sms_packages($phone_number, $message);
 
         session()->put('verifications', ['key' => 'phone_number', 'value' => $data['phone_number']]);
@@ -67,6 +67,7 @@ class UserController extends Controller
         $data = $request->validate([
             'email' => 'required|email|exists:users'
         ]);
+        /** @var User $user */
         $user = User::query()->where('email', $data['email'])->first();
         if (!$user) {
             return back()->with([
@@ -79,7 +80,7 @@ class UserController extends Controller
         $user->save();
         session()->put('verifications', ['key' => 'email', 'value' => $data['email']]);
 
-        Mail::to($user->email)->send(new MessageEmail($sms_otp, $user));
+        Mail::to($user->email)->send(new MessageEmail($sms_otp));
         Alert::success(__('Поздравляю'), __('Ваш проверочный код успешно отправлен на') . $user->email);
 
         return redirect()->route('user.reset_code_view_email');
@@ -91,7 +92,7 @@ class UserController extends Controller
             'code' => 'required|numeric|min:6'
         ]);
         $verifications = $request->session()->get('verifications');
-
+        /** @var User $user */
         $user = User::query()->where($verifications['key'], $verifications['value'])->first();
 
         if ($data['code'] === $user->verify_code) {
@@ -105,14 +106,12 @@ class UserController extends Controller
         }
     }
 
-
     public function reset_code_view()
     {
-
         return view('auth.code');
     }
 
-    public function reset_password(Request $request)
+    public function reset_password()
     {
         return view('auth.confirm_password');
     }
@@ -133,35 +132,34 @@ class UserController extends Controller
 
     public function verifyProfil(Request $request, User $user)
     {
+        /** @var Task $task */
         $task = Task::query()->find($request->get('for_ver_func'));
         $request->validate(
             ['sms_otp' => 'required'],
             ['sms_otp.required' => 'Требуется заполнение!']
         );
 
-        if ($request->sms_otp === $user->verify_code) {
+        if ($request->get('sms_otp') === $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-               if($task->phone === null && $user->phone_number !== $task->phone && $user->is_phone_number_verified === 0){
+                if ($task->phone === null && $user->phone_number !== $task->phone && $user->is_phone_number_verified === 0) {
                     $user->update(['is_phone_number_verified' => 0]);
-               }
-               else{
+                } else {
                     $user->update(['is_phone_number_verified' => 1]);
-               }
-               if($task->phone === null){
-                    Task::findOrFail($request->for_ver_func)->update(['status' => 1, 'user_id' => $user->id,'phone'=>$user->phone_number]);
-                    auth()->login($user);
-               }
-               else{
-                    Task::findOrFail($request->for_ver_func)->update(['status' => 1, 'user_id' => $user->id,]);
-                    auth()->login($user);
+                }
+                if ($task->phone === null) {
+                    Task::query()->findOrFail($request->get('for_ver_func'))->update([
+                        'status' => 1, 'user_id' => $user->id, 'phone' => $user->phone_number
+                    ]);
+                } else {
+                    Task::query()->findOrFail($request->get('for_ver_func'))->update(['status' => 1, 'user_id' => $user->id,]);
 
-               }
-
+                }
+                auth()->login($user);
 
                 // send notification
                 NotificationService::sendTaskNotification($task, $user->id);
 
-                return redirect()->route('searchTask.task', $request->for_ver_func);
+                return redirect()->route('searchTask.task', $request->get('for_ver_func'));
             } else {
                 auth()->logout();
                 return back()->with('expired_message', __('Срок действия номера истек'));

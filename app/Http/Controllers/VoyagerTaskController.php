@@ -12,14 +12,14 @@ use Illuminate\Http\Request;
 
 class VoyagerTaskController extends Controller
 {
-    protected $service;
+    protected CreateService $service;
 
     public function __construct()
     {
         $this->service = new CreateService();
     }
 
-    public function reported_tasks(Request $request)
+    public function reported_tasks()
     {
         abort_if(!auth()->user()->hasPermission('reported_task_view'),403);
         $tasks = Task::query()->where('status',Task::STATUS_NOT_COMPLETED)->with(['reviews','user','performer'])
@@ -31,7 +31,7 @@ class VoyagerTaskController extends Controller
     }
 
 
-    public function complete_task(Request $request, Task $task)
+    public function complete_task(Task $task)
     {
         abort_if(!auth()->user()->hasPermission('reported_task_complete'),403);
         $task->status = Task::STATUS_COMPLETE;

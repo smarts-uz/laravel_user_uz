@@ -17,14 +17,6 @@ use Illuminate\Support\Facades\Auth;
 
 class PerformersController extends Controller
 {
-
-    /**
-     *
-     * Function  service
-     * @param User $user
-     * @param Request $request
-     * @return  \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
     public function service()
     {
         $authId = Auth::id();
@@ -73,7 +65,8 @@ class PerformersController extends Controller
         $task_id = $request->input('task_id');
 
         if (isset($task_id)) {
-            $task_name = Task::where('id', $task_id)->first();
+            /** @var Task $task_name */
+            $task_name = Task::query()->where('id', $task_id)->first();
             $users_id = $request->session()->pull('given_id');
             /** @var User $performer */
             $performer = User::query()->find($users_id);
@@ -83,6 +76,7 @@ class PerformersController extends Controller
             ]);
             $phone_number=$performer->phone_number;
             SmsMobileService::sms_packages($phone_number, $message);
+            /** @var Notification $notification */
             $notification = Notification::query()->create([
                 'user_id' => $task_name->user_id,
                 'performer_id' => $users_id,
@@ -131,7 +125,7 @@ class PerformersController extends Controller
     public function ajaxAP()
     {
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
-        $activePerformers = User::where([['role_id', 2], ['last_seen', ">=", $date]])
+        $activePerformers = User::query()->where([['role_id', 2], ['last_seen', ">=", $date]])
             ->select('id')
             ->get();
 
@@ -146,7 +140,7 @@ class PerformersController extends Controller
 
     public function del_all_notif()
     {
-        Notification::where('user_id', Auth::id())->delete();
+        Notification::query()->where('user_id', Auth::id())->delete();
         return response()->json(['success']);
     }
 

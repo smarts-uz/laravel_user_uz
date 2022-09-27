@@ -22,8 +22,8 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class CreateController extends Controller
 {
-    protected $service;
-    protected $custom_field_service;
+    protected CreateService $service;
+    protected CustomFieldService $custom_field_service;
 
 
     public function __construct()
@@ -44,7 +44,8 @@ class CreateController extends Controller
             'name' => 'required|string|max:255',
             'category_id' => 'required'
         ]);
-        $task = Task::create($data);
+        /** @var Task $task */
+        $task = Task::query()->create($data);
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_NAME, $request);
 
         return redirect()->route("task.create.custom.get", $task->id);
@@ -140,7 +141,7 @@ class CreateController extends Controller
 
     public function budget(Task $task)
     {
-        $category = Category::findOrFail($task->category_id);
+        $category = Category::query()->findOrFail($task->category_id);
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET);
 
         return view('create.budget', compact('task', 'category', 'custom_fields'));
@@ -148,7 +149,7 @@ class CreateController extends Controller
 
     public function budget_store(Task $task, BudgetRequest $request)
     {
-        $task->budget = $request->amount2;
+        $task->budget = $request->get('amount2');
         $task->save();
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET, $request);
 
@@ -231,7 +232,8 @@ class CreateController extends Controller
     {
         $data = $request->validated();
         $data['password'] = Hash::make('login123');
-        $user = User::create($data);
+        /** @var User $user */
+        $user = User::query()->create($data);
         VerificationService::send_verification('phone', $user, $user->phone_number);
         return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
 
@@ -240,7 +242,8 @@ class CreateController extends Controller
     public function contact_login(Task $task, UserPhoneRequest $request)
     {
         $request->validated();
-        $user = User::query()->where('phone_number', $request->phone_number)->first();
+        /** @var User $user */
+        $user = User::query()->where('phone_number', $request->get('phone_number'))->first();
         VerificationService::send_verification('phone', $user, $user->phone_number);
         return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id])->with(['not-show', 'true']);
 
@@ -251,10 +254,10 @@ class CreateController extends Controller
         return view('create.verify', compact('task', 'user'));
     }
 
-    public function deletetask(Task $task)
+    public function deleteTask(Task $task)
     {
         $task->delete();
-        CustomFieldsValue::where('task_id', $task)->delete();
+        CustomFieldsValue::query()->where('task_id', $task)->delete();
     }
 
     public function deleteAllImages(Task $task)
