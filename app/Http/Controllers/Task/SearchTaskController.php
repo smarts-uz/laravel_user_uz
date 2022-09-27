@@ -117,8 +117,8 @@ class SearchTaskController extends VoyagerBaseController
 
     public function delete_task(Task $task)
     {
-        taskGuard($task);
-        $this->create_service->delete($task);
+        $task->status = Task::STATUS_CANCELLED;
+        $task->save();
         return redirect()->back();
     }
 
@@ -128,7 +128,6 @@ class SearchTaskController extends VoyagerBaseController
         if ($task->responses_count)
             abort(403,"No Permission");
         $addresses = $task->addresses;
-        //        dd($task);
         return view('task.changetask', compact('task', 'addresses'));
     }
     public function search_new(){

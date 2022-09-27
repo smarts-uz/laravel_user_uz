@@ -2,7 +2,7 @@
     <div class="w-full text-center">
         @auth
             @if(getAuthUserBalance() >= setting('admin.pullik_otklik'))
-                @if($task->user_id != auth()->id() && $task->status < 3 && !$auth_response)
+                @if($task->user_id !== auth()->id() && $task->status < 3 && !$auth_response)
                     <button
                         class="sm:w-4/5 w-full font-sans text-lg pay font-semibold bg-green-500 text-white hover:bg-green-600 px-8 pt-1 pb-2 mt-6 rounded-lg transition-all duration-300"
                         id="btn1"
@@ -25,7 +25,7 @@
                     </button>
                 @endif
             @elseif(getAuthUserBalance() < setting('admin.pullik_otklik') )
-                @if($task->user_id != auth()->id() && $task->status < 3 && !$auth_response)
+                @if($task->user_id !== auth()->id() && $task->status < 3 && !$auth_response)
                     <a class="open-modal"
                        data-modal="#modal1">
                         <button
@@ -57,7 +57,7 @@
             </a>
         @endauth
         @auth
-            @if($task->status == 3 && $task->user_id == auth()->user()->id)
+            @if($task->status === 3 && $task->user_id === auth()->user()->id)
                 <div class="flex sm:flex-row flex-col w-11/12 mx-auto">
                     <button onclick="toggleModal4()"
                         class="text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-10 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"
@@ -72,7 +72,7 @@
                 </div>
             @endif
 
-            @if($task->status == 4 && $task->performer_id == auth()->user()->id && !$task->performer_review)
+            @if($task->status === 4 && $task->performer_id === auth()->user()->id && !$task->performer_review)
                 <div class="flex sm:flex-row flex-col w-11/12 mx-auto">
                     <button onclick="toggleModal4()"
                         class="text-lg font-semibold bg-green-500 text-white hover:bg-green-400 px-10 ml-6 pt-2 pb-3 rounded-lg transition-all duration-300 m-2"

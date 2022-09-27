@@ -23,7 +23,7 @@
                             @endif
                         </span>
                     @auth()
-                        @if($task->user_id === auth()->user()->id && !$task->responses_count)
+                        @if($task->user_id === auth()->user()->id && !$task->responses_count && $task->status < 3)
                             <a href="{{ route('searchTask.changetask', $task->id) }}"
                                class="py-2 px-2 text-gray-500 hover:text-red-500">
                                 <i class="fas fa-pencil-alt"></i>
