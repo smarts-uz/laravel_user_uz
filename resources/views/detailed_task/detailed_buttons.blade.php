@@ -50,8 +50,7 @@
             @endif
         @else
             <a href="/login">
-                <button
-                    class="sm:w-4/5 w-full mx-auto font-sans mt-8 text-lg  font-semibold bg-yellow-500 text-white hover:bg-orange-500 px-10 py-4 rounded-lg">
+                <button class="sm:w-4/5 w-full mx-auto font-sans mt-8 text-lg  font-semibold bg-yellow-500 text-white hover:bg-orange-500 px-10 py-4 rounded-lg">
                     {{__('Откликнуться на это задание')}}
                 </button>
             </a>

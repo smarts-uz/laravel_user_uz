@@ -14,26 +14,14 @@
             {{-----------------------------------------------------------------------------------}}
 
             <div class="lg:col-span-1 col-span-3 px-8">
-                @if (Auth::check())
-                    <a href="/verification" class="flex flex-row shadow-lg rounded-lg mb-8">
-                        <div class="w-1/2 h-24 bg-contain bg-no-repeat bg-center"
-                             style="background-image: url({{asset('images/like.png')}});">
-                        </div>
-                        <div class="font-bold text-xs text-gray-700 text-left my-auto">
-                            {!!__('Станьте исполнителем <br> USer.Uz. И начните  <br> зарабатывать')!!}
-                        </div>
-                    </a>
-                @else
-                    <a href="/login" class="flex flex-row shadow-lg rounded-lg mb-8">
-                        <div class="w-1/2 h-24 bg-contain bg-no-repeat bg-center"
-                             style="background-image: url({{asset('images/like.png')}});">
-                        </div>
-                        <div class="font-bold text-xs text-gray-700 text-left my-auto">
-                            {!!__('Станьте исполнителем <br> USer.Uz. И начните  <br> зарабатывать')!!}
-                        </div>
-                    </a>
-                @endif
-
+                <a href="/verification" class="flex flex-row shadow-lg rounded-lg mb-8">
+                    <div class="w-1/2 h-24 bg-contain bg-no-repeat bg-center"
+                         style="background-image: url({{asset('images/like.png')}});">
+                    </div>
+                    <div class="font-bold text-xs text-gray-700 text-left my-auto">
+                        {!!__('Станьте исполнителем <br> USer.Uz. И начните  <br> зарабатывать')!!}
+                    </div>
+                </a>
                 <div>
                     <div class="max-w-md mx-left">
                         @foreach ($categories as $category)
