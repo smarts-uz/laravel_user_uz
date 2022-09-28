@@ -77,8 +77,10 @@
 
                     <div class="w-full my-3">
                         <p> <input type="checkbox" name="" id="checkbox1" class="w-4 h-4 mr-2"> {!!__('Нажимая «Зарегистрироваться», <br> вы соглашаетесь с ')!!}
-                            <a class="text-blue-600 hover:text-red-500 cursor-pointer"
-                            href="/terms">{{__('Правилами сайта')}}</a></p>
+                            <a class="text-blue-600 hover:text-red-500 cursor-pointer" href="/terms">
+                                {{__('Правилами сайта')}}
+                            </a>
+                        </p>
                     </div>
 
                     <button disabled type="button" id="btn11"
