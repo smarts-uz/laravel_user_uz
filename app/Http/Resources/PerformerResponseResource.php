@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\TaskResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PerformerResponseResource extends JsonResource

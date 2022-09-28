@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Notification;
 use App\Services\NotificationService;
 use Illuminate\Http\Resources\Json\JsonResource;
 
