@@ -17,31 +17,31 @@
 
 <script >
     var link = document.location.href.split('/');
-    if(link[3] == 'geotaskshint'){
+    if(link[3] === 'geotaskshint'){
         $(".geotaskshint").removeClass("text-blue-600");
         $(".geotaskshint").addClass("text-red-400");
     }
-    else if(link[3] == 'security'){
+    else if(link[3] === 'security'){
         $(".security").removeClass("text-blue-600");
         $(".security").addClass("text-red-400");
     }
-    else if(link[3] == 'badges'){
+    else if(link[3] === 'badges'){
         $(".badges").removeClass("text-blue-600");
         $(".badges").addClass("text-red-400");
     }
-    else if(link[3] == 'reviews'){
+    else if(link[3] === 'reviews'){
         $(".reviews").removeClass("text-blue-600");
         $(".reviews").addClass("text-red-400");
     }
-    else if(link[3] == 'author-reviews'){
+    else if(link[3] === 'author-reviews'){
         $(".authors").removeClass("text-blue-600");
         $(".authors").addClass("text-red-400");
     }
-    else if(link[3] == 'press'){
+    else if(link[3] === 'press'){
         $(".press").removeClass("text-blue-600");
         $(".press").addClass("text-red-400");
     }
-    else if(link[3] == 'paynet_oplata'){
+    else if(link[3] === 'paynet_oplata'){
         $(".paynet").removeClass("text-blue-600");
         $(".paynet").addClass("text-red-400");
     }

@@ -2,12 +2,11 @@
 <div class="ml-4 md:ml-12 flex flex-row my-4">
     <h1 class="font-bold h-auto w-48">{{__('Место')}}</h1>
     @if(count($addresses))
-        <p class=" h-auto w-96">
+        <ul class="h-auto w-96 list-decimal">
             @foreach($addresses as $address)
-                {{$address->location}}
-                <br>
+                <li>{{$address->location}}</li>
             @endforeach
-        </p>
+        </ul>
     @else
         {{__('Виртуальное задание')}}
     @endif
