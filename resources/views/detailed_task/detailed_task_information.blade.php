@@ -12,10 +12,10 @@
     @endif
 </div>
 <div class="ml-4 md:ml-12 flex flex-row mt-8">
-    @if($task->date_type == 1)
+    @if($task->date_type === 1)
         <h1 class="font-bold h-auto w-48">{{__('Начать работу')}}</h1>
         {{ $start    }}
-    @elseif($task->date_type == 2)
+    @elseif($task->date_type === 2)
         <h1 class="font-bold h-auto w-48">{{__('Закончить работу')}}</h1>
         {{ $end   }}
     @else
@@ -27,7 +27,7 @@
 <div class="ml-4 md:ml-12 flex flex-row mt-8">
     <h1 class="font-bold h-auto w-48">{{__('Бюджет')}}</h1>
     <p class=" h-auto w-96">
-        @if (session('lang') == 'uz')
+        @if (session('lang') === 'uz')
             {{ number_format($task->budget) }} {{__('сум')}}
         @else
             {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
@@ -55,7 +55,7 @@
     <h1 class="font-bold h-auto w-48">{{__('Способ оплаты')}}</h1>
     <div class=" h-auto w-96">
         <p class="text-blue-400">
-            @if($task->oplata == 1)
+            @if($task->oplata === 1)
                 {{__(' Оплата наличными')}}
             @else
                 {{__('Оплата через карту')}}
@@ -84,7 +84,7 @@
     @endforeach
 </div>
 @foreach($task->custom_field_values as $value)
-    @if($value->value &&  $value->custom_field && $value->value != "[null]")
+    @if($value->value &&  $value->custom_field && $value->value !== "[null]")
         @switch($value->custom_field->type)
             @case('input')
                 @php $input_values[] = $value->custom_field->getTranslatedAttribute('label') . ': ' . json_decode($value->value)[0] @endphp
@@ -142,7 +142,7 @@
     </div>
 @endif
 
-@if($task->docs == 1)
+@if($task->docs === 1)
     <div class="ml-4 md:ml-12 flex flex-row mt-8">
         <h1 class="font-bold h-auto w-48">{{__('Необходимо предоставить личные документы')}}</h1>
     </div>

@@ -6,7 +6,7 @@
                     class="px-3 py-3 border border-3 ml-4 rounded-md border-gray-500 hover:border-gray-400">
                 <i class="fas fa-share-alt"></i>
             </button>
-            @if (Auth::check())
+            @if (Auth::check() && Auth::user()->id !== $task->user?->id)
                 <button onclick="toggleModal88()"
                         class="px-3 py-3 border border-3 ml-4 rounded-md border-gray-500 hover:border-gray-400">
                     <i class="far fa-flag"></i>
@@ -23,12 +23,12 @@
     <div class="flex flex-col mt-4">
         <div class="mb-4">
             <img class="border-2 border-radius-500 border-gray-400 w-32 h-32 rounded-lg" alt="#"
-                 src="@if ($task->user?->avatar == ''){{ asset("storage/images/default.jpg") }}
+                 src="@if ($task->user?->avatar === ''){{ asset("storage/images/default.jpg") }}
                  @else{{asset("storage/{$task->user->avatar}") }}" @endif
             >
         </div>
         <div class="">
-            @if (Auth::check() && Auth::user()->id == $task->user?->id)
+            @if (Auth::check() && Auth::user()->id === $task->user?->id)
                 <a href="/profile"
                    class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
                 </a>
@@ -46,9 +46,9 @@
                 @if( $age>0)
                     <p class="inline-block mr-2">
                         {{ $age}}
-                        @if( $age%10==1)
+                        @if( $age%10===1)
                             {{('год')}}
-                        @elseif ( $age%10==2 ||  $age%10==3 ||  $age%10==4)
+                        @elseif ( $age%10===2 ||  $age%10===3 ||  $age%10===4)
                             {{('года')}}
                         @else
                             {{__('лет')}}
