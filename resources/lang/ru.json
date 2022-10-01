@@ -40,7 +40,7 @@
     "lang.setting_alert": "Настройки успешно сохранены",
     "login.email.email": "Введите адрес электронной почты",
     "login.email.required": "Требуется заполнение!",
-    "login.email.unique": "Этот электрониий почта зарегистрирован",
+    "login.email.unique": "Данная электронная почта уже зарегистрирована",
     "login.emailError": "login.emailError",
     "login.name.required": "Требуется заполнение!",
     "login.name.unique": "login.name.unique",
