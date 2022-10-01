@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Api;
+namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ProfileAvatarRequest extends FormRequest
+class ChatMessageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,14 +24,9 @@ class ProfileAvatarRequest extends FormRequest
     public function rules()
     {
         return [
-            'avatar' => 'required|image'
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'avatar.*' => trans('trans.Send a photo.'),
+            'id' => 'required',
+            'message' => '',
+            'file' => 'file'
         ];
     }
 }

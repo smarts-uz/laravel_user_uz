@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Api;
+namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class TaskComplaintRequest extends FormRequest
+class GetInfoClickRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,16 +26,17 @@ class TaskComplaintRequest extends FormRequest
     public function rules()
     {
         return [
-            'compliance_type_id' => 'required|int',
-            'text' => 'required|string'
+            'action' => 'required',
+            'service_id' => 'required',
+            'params.user_id' => 'required'
         ];
     }
 
-    public function messages()
+    public function failedValidation(Validator $validator)
     {
-        return [
-            'compliance_type_id.*' => trans('trans.Choose the type.'),
-            'text.*' => trans('trans.Enter the text.')
-        ];
+        throw new HttpResponseException(response()->json([
+            'error' => -8,
+            'error_note' => "Ошибка в запросе от CLICK"
+        ]));
     }
 }

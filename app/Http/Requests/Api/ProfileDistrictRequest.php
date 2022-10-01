@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class TaskComplaintRequest extends FormRequest
+class ProfileDistrictRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,16 +26,14 @@ class TaskComplaintRequest extends FormRequest
     public function rules()
     {
         return [
-            'compliance_type_id' => 'required|int',
-            'text' => 'required|string'
+            'district' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'compliance_type_id.*' => trans('trans.Choose the type.'),
-            'text.*' => trans('trans.Enter the text.')
+            'district.*' => trans('trans.Enter your district.'),
         ];
     }
 }

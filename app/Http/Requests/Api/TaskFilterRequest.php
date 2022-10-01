@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests\Api;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ProfileVideoRequest extends FormRequest
+class TaskFilterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,15 +24,15 @@ class ProfileVideoRequest extends FormRequest
     public function rules()
     {
         return [
-            'link' => 'required|url'
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'link.required' => trans('trans.Enter link.'),
-            'link.url' => trans('trans.Link should be type of url.'),
+            'categories' => 'nullable',
+            'child_categories' => 'nullable',
+            'lat' => 'nullable|numeric',
+            'long' => 'nullable|numeric',
+            'budget' => 'nullable|int',
+            'is_remote' => 'nullable|boolean',
+            'without_response' => 'nullable',
+            'difference' => 'nullable|int',
+            's' => 'nullable|string',
         ];
     }
 }

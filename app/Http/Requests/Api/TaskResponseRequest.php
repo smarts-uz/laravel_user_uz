@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests\Api;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
-class TaskComplaintRequest extends FormRequest
+class TaskResponseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,16 +24,21 @@ class TaskComplaintRequest extends FormRequest
     public function rules()
     {
         return [
-            'compliance_type_id' => 'required|int',
-            'text' => 'required|string'
+            'description' => 'required|string',
+            'price' => 'int|required',
+            'notificate' => 'nullable',
+            'not_free' => 'nullable|int'
         ];
     }
+
 
     public function messages()
     {
         return [
-            'compliance_type_id.*' => trans('trans.Choose the type.'),
-            'text.*' => trans('trans.Enter the text.')
+            'description.required' => __('login.name.required'),
+            'price.required' => __('login.name.required'),
+            'price.int' => __('login.name.int'),
+            'not_free.int' => __('login.name.int'),
         ];
     }
 }
