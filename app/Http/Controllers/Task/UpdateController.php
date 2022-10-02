@@ -27,7 +27,7 @@ class UpdateController extends Controller
         taskGuard($task);
         if ($task->responses_count)
             abort(403, "No Permission");
-        if (!$task->remote === 1) {
+        if (!(int)$task->remote === 1) {
             $request->validate([
                 'location0' => 'required',
                 'coordinates0' => 'required',

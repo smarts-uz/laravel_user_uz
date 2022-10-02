@@ -53,7 +53,7 @@ class ResponseService
         $balance = WalletBalance::query()->where('user_id', $auth_user->id)->first();
         if ($balance) {
             $freeResponsesCount = TaskResponse::query()->where(['performer_id' => $data['performer_id'], 'not_free' => 0])->get()->count();
-            if ($request->get('not_free') === 1) {
+            if ((int)$request->get('not_free') === 1) {
                 $balanceSufficient = $balance->balance < setting('admin.pullik_otklik') + $freeResponsesCount * setting('admin.bepul_otklik');
             } else {
                 $balanceSufficient = $balance->balance < setting('admin.bepul_otklik') + $freeResponsesCount * setting('admin.bepul_otklik');
@@ -68,7 +68,7 @@ class ResponseService
                 $success = true;
                 $message = __('Выполнено успешно');
                 TaskResponse::query()->create($data);
-                if ($request->get('not_free') === 1) {
+                if ((int)$request->get('not_free') === 1) {
                     $balance->balance = $balance->balance - setting('admin.pullik_otklik');
                     $balance->save();
                     UserExpense::query()->create([
@@ -154,7 +154,7 @@ class ResponseService
             'body' => NotificationService::descriptions($notification, $locale)
         ], 'notification', new NotificationResource($notification));
         $taskResponse = TaskResponse::query()->where(['task_id' => $task->id])->where(['performer_id' => $performer->id])->first();
-        if ($taskResponse->not_free === 0) {
+        if ((int)$taskResponse->not_free === 0) {
             /** @var WalletBalance $balance */
             $balance = WalletBalance::query()->where('user_id', $performer->id)->first();
             $balance->balance = $balance->balance - setting('admin.bepul_otklik');

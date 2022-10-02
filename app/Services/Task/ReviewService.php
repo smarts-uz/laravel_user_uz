@@ -19,7 +19,7 @@ class ReviewService
         ChMessage::query()->where('from_id', $task->user_id)->where('to_id', $task->performer_id)->delete();
         ChMessage::query()->where('to_id', $task->user_id)->where('from_id', $task->performer_id)->delete();
         $performer = User::query()->find($task->performer_id);
-        if ($request->good == 1) {
+        if ((int)$request->good === 1) {
             $performer->increment('review_good');
         } else {
             $performer->increment('review_bad');
@@ -72,7 +72,7 @@ class ReviewService
             'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
         ]);
         $user = User::query()->find($task->user_id);
-        if ($request->good == 1) {
+        if ((int)$request->good === 1) {
             $user->increment('review_good');
         } else {
             $user->increment('review_bad');

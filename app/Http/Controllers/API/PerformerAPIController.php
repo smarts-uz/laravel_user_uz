@@ -84,7 +84,7 @@ class PerformerAPIController extends Controller
     {
         setView($performer);
 
-        return $performer->role_id === 5 ? new PerformerIndexResource($performer) : abort(404);
+        return (int)$performer->role_id === 5 ? new PerformerIndexResource($performer) : abort(404);
     }
 
     /**

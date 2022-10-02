@@ -136,7 +136,7 @@ class CreateService
             $coordinates = Arr::get($requestAll, 'coordinates' . $i, '');
 
             if ($coordinates) {
-                if ($i === 0) {
+                if ((int)$i === 0) {
                     $data_inner['default'] = 1;
                 }
                 $data_inner['location'] = $location;

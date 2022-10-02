@@ -172,7 +172,7 @@ class CreateTaskService
                 'latitude' => $data['points'][$i]['latitude'],
                 'longitude' => $data['points'][$i]['longitude']
             ];
-            if ($i === 0) {
+            if ((int)$i === 0) {
                 $address['default'] = 1;
             }
             Address::query()->create($address);

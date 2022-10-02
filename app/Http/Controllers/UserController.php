@@ -141,7 +141,7 @@ class UserController extends Controller
 
         if ($request->get('sms_otp') === $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-                if ($task->phone === null && $user->phone_number !== $task->phone && $user->is_phone_number_verified === 0) {
+                if ($task->phone === null && $user->phone_number !== $task->phone && (int)$user->is_phone_number_verified === 0) {
                     $user->update(['is_phone_number_verified' => 0]);
                 } else {
                     $user->update(['is_phone_number_verified' => 1]);
