@@ -17,12 +17,12 @@ class LoginAPIController extends Controller
         $column = $data['type'];
         $verified = 'is_' . $column . '_verified';
         if (!User::query()
-            ->where($column, $data['type'] === 'phone_number' ? "+" . $data['data'] : $data['data'])
+            ->where($column, $data['type'] === 'phone_number' ? correctPhoneNumber($data['data']) : $data['data'])
             ->where($verified, 1)->exists()
         ) {
             /** @var User $user */
             $user = auth()->user();
-            $user->$column = $data['type'] === 'phone_number' ? "+" . $data['data'] : $data['data'];
+            $user->$column = $data['type'] === 'phone_number' ? correctPhoneNumber($data['data']) : $data['data'];
             $user->$verified = 0;
             $user->save();
             if ($data['type'] === 'phone_number') {
