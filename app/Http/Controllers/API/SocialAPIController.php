@@ -55,7 +55,7 @@ class SocialAPIController extends Controller
     {
         try {
             $data = $request->validated();
-            if ($data['type'] === 0) {
+            if ((int)$data['type'] === 0) {
                 $provider = 'google';
             } else {
                 $provider = 'facebook';
@@ -65,6 +65,7 @@ class SocialAPIController extends Controller
                 ->where($provider . '_id', $providerUser->id)
                 ->orWhere('email', $providerUser->email)
                 ->first();
+
             // if there is no record with these data, create a new user
             if ($user === null) {
                 $user = User::query()->create([
