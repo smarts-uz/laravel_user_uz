@@ -40,7 +40,7 @@
                             <p class="text-green-400 font-normal md:border-r-2 border-gray-400 pr-2">{{__('В исполнении')}}</p>
                             @break
                         @case($task->status === 4)
-                            <p class="text-green-400 font-normal md:border-r-2 border-gray-400 pr-2">{{__('Закрыто')}}</p>
+                            <p class="text-green-400 font-normal md:border-r-2 border-red-400 pr-2">{{__('Закрыто')}}</p>
                             @break
                         @case($task->status === 5)
                             <p class="text-red-400 font-normal md:border-r-2 border-gray-400 pr-2">{{__('Не выполнено')}}</p>

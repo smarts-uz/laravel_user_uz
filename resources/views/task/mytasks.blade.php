@@ -52,7 +52,7 @@
                                                 <p class="text-green-400 font-normal">{{__('В исполнении')}}</p>
                                                 @break
                                             @case($task->status === 4)
-                                                <p class="text-green-400 font-normal">{{__('Закрыто')}}</p>
+                                                <p class="text-red-400 font-normal">{{__('Закрыто')}}</p>
                                                 @break
                                             @case($task->status === 5)
                                                 <p class="text-red-400 font-normal">{{__('Не выполнено')}}</p>
@@ -122,7 +122,7 @@
                                                 <p class="text-green-400 font-normal">{{__('В исполнении')}}</p>
                                                 @break
                                             @case($task->status === 4)
-                                                <p class="text-green-400 font-normal">{{__('Закрыто')}}</p>
+                                                <p class="text-red-400 font-normal">{{__('Закрыто')}}</p>
                                                 @break
                                             @case($task->status === 5)
                                                 <p class="text-red-400 font-normal">{{__('Не выполнено')}}</p>
