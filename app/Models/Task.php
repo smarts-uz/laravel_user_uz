@@ -30,7 +30,7 @@ use Elastic\ScoutDriverPlus\Searchable;
  * @property $phone
  * @property $views
  * @property $start_date
- * @property $end_date
+ * @property $end_date End Date
  * @property $verify_code
  * @property $verify_expiration
  * @property $performer_id
