@@ -181,7 +181,7 @@ class User extends \TCG\Voyager\Models\User
 
     public function isActive()
     {
-        if ($this->is_active == 1) {
+        if ((int)$this->is_active === 1) {
             return true;
         }
         return false;
