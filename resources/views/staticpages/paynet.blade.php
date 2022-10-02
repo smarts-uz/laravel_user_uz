@@ -17,7 +17,7 @@
                         <h4 class="text-2xl font-medium mb-2">
                             1-{{__('этап')}}
                         </h4>
-                        <p>{{__('Для начала вам надо скачать программу Paynet.uz  и зарегистироваться .')}}</p>
+                        <p>{{__('Для начала вам надо скачать программу Paynet.uz  и зарегистироваться.')}}</p>
                     </div>
                     <div class="lg:w-1/2 w-full">
                         <img src="{{asset('images/icons/1.jpg')}}" class="mx-auto w-80 h-64 border-2 rounded-lg border-gray-300"/>
@@ -66,12 +66,12 @@
                     </div>
                     <div class="lg:w-1/2 w-full text-center ml-4 mt-4 lg:block hidden">
                         <h4 class="text-2xl font-medium mb-2">5-{{__('этап')}}</h4>
-                        <p>{{__('Введите свой ID который вы скопировали и гапишите сумму .')}}</p>
+                        <p>{{__('Введите свой ID который вы скопировали и гапишите сумму.')}}</p>
                     </div>
 
                     <div class="lg:w-1/2 w-full text-center ml-4 mt-4 lg:hidden block">
                         <h4 class="text-2xl font-medium mb-2">5-{{__('этап')}}</h4>
-                        <p class="mb-8">{{__('Введите свой ID который вы скопировали и гапишите сумму .')}}</p>
+                        <p class="mb-8">{{__('Введите свой ID который вы скопировали и гапишите сумму.')}}</p>
                     </div>
                     <div class="lg:w-1/2 w-full lg:hidden block">
                         <img src="{{asset('images/icons/4.jpg')}}" class="mx-auto w-80 h-full border-2 rounded-lg border-gray-300"/>
@@ -93,12 +93,12 @@
                         <img src="{{asset('images/icons/6.jpg')}}" class="mx-auto w-80 h-full border-2 rounded-lg border-gray-300"/>
                     </div>
                     <div class="lg:w-1/2 w-full text-center ml-4 mt-4 lg:block hidden">
-                        <h4 class="text-2xl font-medium mb-2">{{__('Поздравляем ')}}</h4>
+                        <h4 class="text-2xl font-medium mb-2">{{__('Поздравляем')}}</h4>
                         <p>{{__('Вы пополнили свой счет.')}}</p>
                     </div>
 
                     <div class="lg:w-1/2 w-full text-center ml-4 mt-4 lg:hidden block">
-                        <h4 class="text-2xl font-medium mb-2">{{__('Поздравляем ')}}</h4>
+                        <h4 class="text-2xl font-medium mb-2">{{__('Поздравляем')}}</h4>
                         <p class="mb-8">{{__('Вы пополнили свой счет.')}}</p>
                     </div>
                     <div class="lg:w-1/2 w-full lg:hidden block">
