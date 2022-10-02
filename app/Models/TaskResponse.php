@@ -8,8 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @property $task
+ * @property $id
+ * @property $description
+ * @property $user_id
+ * @property $task_id
+ * @property $notificate
+ * @property $price
+ * @property $performer_id
+ * @property $not_free
+ * @property $created_at
+ * @return array //Value Returned
  */
+
 class TaskResponse extends Model
 {
     use HasFactory, SoftDeletes;

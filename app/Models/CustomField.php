@@ -7,6 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use TCG\Voyager\Traits\Translatable;
 
+/**
+ * @property $id
+ * @property $name
+ * @property $title
+ * @property $type
+ * @property $options
+ * @property $values
+ * @property $category_id
+ * @property $route
+ * @property $order
+ * @property $description
+ * @property $placeholder
+ * @property $label
+ * @property $options_ru
+ * @property $created_at
+ */
+
 class CustomField extends Model
 {
     use HasFactory, SoftDeletes;

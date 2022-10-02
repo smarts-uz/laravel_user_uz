@@ -143,8 +143,9 @@
                                                         name="location">
                                                         <option value="">{{__('Выберите город')}}</option>
                                                         @foreach($regions as $region)
-                                                            <option
-                                                                value="{{$region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}" {{$region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') == $user->location??old('location') ? 'selected' : null}}>{{$region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}</option>
+                                                            <option value="{{$region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}" {{$region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') === $user->location??old('location') ? 'selected' : null}}>
+                                                                {{$region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}
+                                                            </option>
                                                         @endforeach
 
                                                     </select>

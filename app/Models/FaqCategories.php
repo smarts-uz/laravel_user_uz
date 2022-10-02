@@ -6,6 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use TCG\Voyager\Traits\Translatable;
 
+/**
+ * @property $id
+ * @property $title
+ * @property $description
+ * @property $cat_author
+ * @property $num_quest
+ * @property $logo
+ * @property $created_at
+ */
+
 class FaqCategories extends Model
 {
     use HasFactory;
@@ -19,3 +29,5 @@ class FaqCategories extends Model
     }
 
 }
+
+

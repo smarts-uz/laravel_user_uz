@@ -6,6 +6,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use TCG\Voyager\Traits\Translatable;
 
+/**
+ * @property $parent_id
+ * @property $order
+ * @property $name
+ * @property $custom_route_title
+ * @property $max
+ * @property $min
+ * @property $slug
+ * @property $ico
+ * @property $double_address
+ * @property $remote
+ * @property $created_at
+ * @return array //Value Returned
+ */
+
 class Category extends Model
 {
     use HasFactory;
@@ -23,7 +38,7 @@ class Category extends Model
 
     public function getIcoAttribute($value)
     {
-        if($value==null){
+        if($value === null){
             $parentCategory = Category::find($this->parent_id);
             return $parentCategory->ico;
         }
