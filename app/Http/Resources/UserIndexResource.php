@@ -109,6 +109,7 @@ class UserIndexResource extends JsonResource
             $lastSeen = $seenDate->diffForHumans();
         }
         $age = Carbon::parse($this->born_date)->age;
+        $born_date = Carbon::parse($this->born_date)->format('Y-m-d');
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -132,7 +133,7 @@ class UserIndexResource extends JsonResource
             'phone_verified' => boolval($this->is_phone_number_verified),
             'google_id' => $this->google_id,
             'facebook_id' => $this->facebook_id,
-            'born_date' => $this->born_date,
+            'born_date' => $born_date,
             'created_tasks' => Task::query()->where(['user_id' => $this->id])->whereIn('status', [1, 2, 3, 4, 5, 6])->get()->count(),
             'performed_tasks' => Task::query()->where(['performer_id' => $this->id])->where('status', Task::STATUS_COMPLETE)->get()->count(),
             'reviews' => [
