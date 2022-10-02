@@ -41,7 +41,6 @@ class Task extends Model
 {
 
     use HasFactory, SoftDeletes;
-    use Searchable;
 
     public function toSearchableArray()
     {

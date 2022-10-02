@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Task;
 
+use App\Models\TaskElastic;
 use App\Models\TaskResponse;
 use App\Models\Task;
 use Elastic\ScoutDriverPlus\Support\Query;
@@ -35,7 +36,7 @@ class SearchTaskController extends VoyagerBaseController
         $query = Query::wildcard()
             ->field('name')
             ->value('*' . $name . '*');
-        $searchResult = Task::searchQuery($query)->execute();
+        $searchResult = TaskElastic::searchQuery($query)->execute();
         $tasks = $searchResult->models();
         $options = "";
         foreach ($tasks as $task) {
