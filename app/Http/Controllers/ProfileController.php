@@ -40,7 +40,7 @@ class ProfileController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-        Session::query()->where('user_id', $user->id)->delete();
+        Session::query()->where('user_id', $user->id)->whereNot('id', session()->getId())->delete();
         $user->tokens->each(function ($token, $key) {
             $token->delete();
         });

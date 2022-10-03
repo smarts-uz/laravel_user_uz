@@ -20,7 +20,9 @@ class SessionController extends Controller
         $user = auth()->user();
         Session::query()->where('user_id', $user->id)->delete();
         $user->tokens->each(function ($token, $key) {
-            $token->delete();
+            if ($token->id != request()->bearerToken()) {
+                $token->delete();
+            }
         });
         return $this->success('', 'Successfully deleted');
     }
