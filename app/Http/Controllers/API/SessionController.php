@@ -19,8 +19,8 @@ class SessionController extends Controller
         /** @var User $user */
         $user = auth()->user();
         Session::query()->where('user_id', $user->id)->delete();
-        $user->tokens->each(function ($token, $key) {
-            if ($token->id != request()->bearerToken()) {
+        $user->tokens->each(function ($token, $key) use ($user) {
+            if ($token->id != $user->token()->id) {
                 $token->delete();
             }
         });
