@@ -11,49 +11,40 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
 /**
- * @property $is_phone_number_verified
- * @property $is_email_verified
- * @property $born_date
+ * @property $is_phone_number_verified user raqamini tasdiqlash, 1 bo'lsa tasdiqlangan, null bo'lsa tasdiqlanmagan
+ * @property $is_email_verified user emailini tasdiqlash, 1 bo'lsa tasdiqlangan, null bo'lsa tasdiqlanmagan
+ * @property $born_date user tug'ilgan kunini kiritadi
  * @property $verify_expiration
- * @property $verify_code
- * @property $phone_number
- * @property $phone_number_old
- * @property $id
- * @property $oplata
- * @property $photos
- * @property $user_id
- * @property $is_active
- * @property $review_rating
- * @property $review_good
- * @property $review_bad
- * @property $reviewer_id
- * @property $youtube_link
- * @property $phone
- * @property $firebase_token
- * @property $sms_notification
- * @property $email_notification
- * @property $system_notification
- * @property $news_notification
- * @property $email
- * @property $name
- * @property $last_name
- * @property $location
- * @property $gender
+ * @property $verify_code tasdiqlash kodi
+ * @property $phone_number userning telefon raqami
+ * @property $phone_number_old userning avvalgi telefon raqami
+ * @property $id user id
+ * @property $is_active profil faol yoki faolmasligini bildiradi, 1 bo'lsa faol yoki aksincha.
+ * @property $review_rating sayt bo'yicha o'rtacha bahosi
+ * @property $review_good saytda olgan ijobiy izohlari
+ * @property $review_bad saytda olgan salbiy izohlari
+ * @property $youtube_link userning youtobedan joylagan linki
+ * @property $firebase_token  firebase token
+ * @property $sms_notification  sms orqali keladigan bildirishnomalar yoqilgan(1) yoki yoqilmaganligini(null yoki 0) bildiradi
+ * @property $email_notification email orqali keladigan bildirishnomalar yoqilgan(1) yoki yoqilmaganligini(null yoki 0) bildiradi
+ * @property $news_notification yangiliklar haqidagi bildirishnomalar yoqilgan(1) yoki yoqilmaganligini(null yoki 0) bildiradi
+ * @property $email userning emaili
+ * @property $name userning nomi
+ * @property $last_name userning familyasi
+ * @property $location userning joylashuvi
+ * @property $gender userning jinsi
  * @property $dark_mode
- * @property $password
- * @property $avatar
- * @property $description
+ * @property $password userning passwordi
+ * @property $avatar userning profilidagi rasmi
+ * @property $description userning profilida o'zi haqida qoldirgan izohi
  * @property $district
- * @property $role_id
- * @property $google_id
- * @property $facebook_id
- * @property $api_token
+ * @property $role_id userning role_idsi, (1-admin, 2-performer, 5-user)
+ * @property $google_id google akkountdan kirgandagi id
+ * @property $facebook_id facebook akkountdan kirgandagi id
+ * @property $api_token api token
  * @property $remember_token
- * @property $map
- * @property $reviews
+ * @property $reviews userga qoldirilgan izohlari soni
  * @property $tokens
- * @property $reviewsObj
- * @property $tasks
  * @return array //Value Returned
  */
 class User extends \TCG\Voyager\Models\User

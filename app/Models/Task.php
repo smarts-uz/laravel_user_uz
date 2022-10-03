@@ -14,7 +14,6 @@ use Elastic\ScoutDriverPlus\Searchable;
  * @property $performer
  * @property $reviews
  * @property object $category
- *
  * @property $id
  * @property $name
  * @property $reviews_count

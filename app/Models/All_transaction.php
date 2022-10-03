@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property int $id
- * @property int $user_id
- * @property int $amount
- * @property string $method
+ * @property int $id To'lov IDsi
+ * @property int $user_id To'lov qilayotgan userning IDsi
+ * @property int $amount To'lov qiymati ya'ni qanchaligi
+ * @property string $method To'lov turi
  */
 class All_transaction extends Model
 {
