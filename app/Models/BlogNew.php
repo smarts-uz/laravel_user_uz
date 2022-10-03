@@ -13,7 +13,6 @@ use TCG\Voyager\Traits\Translatable;
  * @property $text  Kiritilgan yangilik matni
  * @property $img  Kiritilgan yangilik rasmi
  * @property $created_at Yangilik kiritilgan vaqti
- * @return array //Value Returned
  */
 
 class BlogNew extends Model

@@ -7,10 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use TCG\Voyager\Traits\Translatable;
 
 /**
- * @property $id
- * @property $name
- * @property $created_at
- * @return array //Value Returned
+ * @property $id shikoyat turi idsi
+ * @property $name shikoyat turining nomi
+ * @property $created_at shikoyat turi kiritligan vaqti
  */
 
 class ComplianceType extends Model

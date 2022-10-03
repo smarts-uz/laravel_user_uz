@@ -9,12 +9,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Retrieve next step with additional fields
  * objects, relations
- * @property $text
- * @property $id
- * @property $name
- * @property $compliance_type_id
- * @property $user_id
- * @property $task_id
+ * @property $text qoldirilgan shikoyat matni
+ * @property $id shikoyat idsi
+ * @property $compliance_type_id shikoyat turining idsi,bu compliance_type tablega bog'langan
+ * @property $user_id shikoyat qoldirgan foydalanuvchi idsi
+ * @property $task_id shikoyat qoldirilgan vazifa
  */
 class Compliance extends Model
 {

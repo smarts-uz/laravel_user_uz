@@ -7,18 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 use TCG\Voyager\Traits\Translatable;
 
 /**
- * @property $parent_id
- * @property $order
- * @property $name
- * @property $custom_route_title
- * @property $max
- * @property $min
- * @property $slug
- * @property $ico
- * @property $double_address
- * @property $remote
- * @property $created_at
- * @return array //Value Returned
+ * @property $parent_id kategoriyaning qaysi ota-ona guruhiga mansubligini bildiradi
+ * @property $order kategoriyanng har bir guruh bo'yicha tartib bilan berilgan idlari
+ * @property $name kategoriyaning nomi
+ * @property $custom_route_title Custom fielddan qo'shilgan routening sarlavhasi
+ * @property $max Kategoriya bo'yicha kiritiladigan maxsimal narx,buni saytda teng beshga bo'lib ko'rsatiladi
+ * @property $slug kategoriyalarning o'zbekcha yozuvi, qo'shimchalar uchun
+ * @property $ico Kategoriyaning belgisi
+ * @property $double_address ikkita adress kiritiladigan kategoriyalar
+ * @property $remote masofadan ishlasa bo'ladigan kategoriyalar
+ * @property $created_at Kategoriya kiritilgan vaqti
  */
 
 class Category extends Model
@@ -38,7 +36,7 @@ class Category extends Model
 
     public function getIcoAttribute($value)
     {
-        if($value === null){
+        if($value == null){
             $parentCategory = Category::find($this->parent_id);
             return $parentCategory->ico;
         }
