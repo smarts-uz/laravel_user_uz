@@ -57,17 +57,12 @@ class SocialAPIController extends Controller
             $data = $request->validated();
             if ((int)$data['type'] === 0) {
                 $provider = 'google';
-            } else {
+            } elseif((int)$data['type'] === 1) {
                 $provider = 'facebook';
+            } else {
+                $provider = 'apple';
             }
             $providerUser = Socialite::driver($provider)->userFromToken($data['access_token']);
-
-            /*
-                        return response()->json([
-                            'success' => false,
-                            'message' => var_export($providerUser, true)
-                        ]);
-            */
 
             $query = User::query()
                 ->where($provider . '_id', $providerUser->id);
