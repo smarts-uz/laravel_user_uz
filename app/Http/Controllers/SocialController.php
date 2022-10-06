@@ -57,6 +57,49 @@ class SocialController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
+    // login with apple
+    public function appleRedirect()
+    {
+        return Socialite::driver('apple')->redirect();
+    }
+
+    public function loginWithApple()
+    {
+        try {
+            $user = Socialite::driver('apple')->setScopes(['name', 'email'])->user();
+            /** @var User $findUser */
+            $findUser = User::query()->where('email', $user->email)->first();
+
+            if (!$user->email) {
+                $findUser = User::query()->where('apple_id', $user->id)->first();
+            }
+
+            if ($findUser) {
+                $findUser->apple_id = $user->id;
+                $findUser->save();
+                Auth::login($findUser);
+                Alert::success(__('Успешно'), __('Вы успешно связали свой аккаунт Google'));
+            } else {
+                $new_user = new User();
+                $new_user->name = $user->name;
+                $new_user->email = $user->email;
+                $new_user->apple_id = $user->id;
+                $new_user->avatar = self::get_avatar($user);
+                $new_user->is_email_verified = 1;
+                $new_user->save();
+                $wallBal = new WalletBalance();
+                $wallBal->balance = setting('admin.bonus');
+                $wallBal->user_id = $new_user->id;
+                $wallBal->save();
+                Auth::login($new_user);
+            }
+            return redirect()->route('profile.profileData');
+        } catch (Exception) {
+            // Log to File
+        }
+        return false;
+    }
+
 
     private static function get_avatar($user)
     {

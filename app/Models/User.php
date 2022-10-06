@@ -41,6 +41,7 @@ use Laravel\Passport\HasApiTokens;
  * @property $role_id userning role_idsi, (1-admin, 2-performer, 5-user)
  * @property $google_id google akkountdan kirgandagi id
  * @property $facebook_id facebook akkountdan kirgandagi id
+ * @property $apple_id apple akkountdan kirgandagi id
  * @property $api_token api token
  * @property $remember_token
  * @property $reviews userga qoldirilgan izohlari soni

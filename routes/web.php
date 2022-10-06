@@ -222,6 +222,8 @@ Route::get('login/facebook', [SocialController::class, 'facebookRedirect'])->nam
 Route::get('login/facebook/callback', [SocialController::class, 'loginWithFacebook']);
 Route::get('login/google', [SocialController::class, 'googleRedirect'])->name('social.googleRedirect');
 Route::get('login/google/callback', [SocialController::class, 'loginWithGoogle']);
+Route::get('login/apple', [SocialController::class, 'appleRedirect'])->name('social.appleRedirect');
+Route::get('login/apple/callback', [SocialController::class, 'loginWithApple']);
 Route::get('/login', [LoginController::class, 'login'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'loginPost'])->name('login.loginPost')->middleware('guest');
 Route::get('/register', [UserController::class, 'signup'])->name('user.signup')->middleware('guest');

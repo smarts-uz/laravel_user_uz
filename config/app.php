@@ -183,8 +183,9 @@ return [
 
         \Laravel\Scout\ScoutServiceProvider::class,
         \Elastic\ScoutDriver\ServiceProvider::class,
-        \Elastic\Client\ServiceProvider::class
+        \Elastic\Client\ServiceProvider::class,
 
+        \SocialiteProviders\Manager\ServiceProvider::class,
     ],
 
     /*
