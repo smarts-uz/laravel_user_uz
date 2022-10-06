@@ -30,6 +30,7 @@
         "munafio/chatify": "^1.3",
         "napaeduhub/eskiz-sms-client": "^1.0",
         "realrashid/sweet-alert": "^5.1.0",
+        "socialiteproviders/apple": "^5.3",
         "tcg/voyager": "^1.6.x-dev",
         "teamprodev/laravel-payment": "^2.0.1",
         "teamprodev/playmobile-sms": "^1.0",
