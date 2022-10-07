@@ -1,4 +1,3 @@
-
 <footer class=" w-full mx-auto mt-32" style="background-color: #242325;">
     <div class="flex md:flex-row flex-col w-4/5 mx-auto rounded-xl relative bottom-20" style="background-color: #F9FAFB">
         <div class="m-5 md:w-2/3 w-11/12">
@@ -88,11 +87,13 @@
     <div class="text-center h-12" style="background-color: #1B1B1C">
             <h1 class="text-center text-sm py-4" style="color: #857F7F">© 2022 Universal Services (USer.Uz)</h1>
     </div>
+
     <div class="w-full md:block hidden">
         <div class="scroll-up-btn">
             <span><i class="fas fa-angle-up"></i></span>
         </div>
     </div>
+    @include('components.message')
     <link rel="stylesheet" href="{{asset('css/scroll.css')}}">
     <script src="{{ asset('js/components/footer.js') }}"></script>
 </footer>
