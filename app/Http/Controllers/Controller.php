@@ -104,8 +104,13 @@ class Controller extends BaseController
 
     public function news()
     {
-        $news = BlogNew::orderBy('created_at', 'desc')->get();
+        $news = BlogNew::latest()->get();
         return view('/staticpages/news',compact('news'));
+    }
+
+    public function news_page(BlogNew $id){
+        $new = BlogNew::find($id);
+        return view('staticpages.blog_new', ['new' => $new]);
     }
 
     public function policy(){

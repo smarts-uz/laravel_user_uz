@@ -20,5 +20,5 @@ class BlogNew extends Model
     use HasApiTokens, HasFactory, Notifiable, Translatable;
     protected $table = "blog_new";
 
-    protected $translatable = ['title','text'];
+    protected $translatable = ['title','text','desc'];
 }

@@ -126,6 +126,7 @@ Route::get('/geotaskshint', [Controller::class, 'geotaskshint'])->name('geotasks
 Route::get('/security', [Controller::class, 'security'])->name('security'); // javoxir
 Route::get('/badges', [Controller::class, 'badges'])->name('badges'); // javoxir
 Route::get('/news', [Controller::class, 'news'])->name('news'); // javoxir
+Route::get('/news/{id}', [Controller::class, 'news_page'])->name('news.page');
 Route::get('/privacy', [Controller::class, 'policy'])->name('privacy'); // javoxir
 #endregion
 
