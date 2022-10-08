@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Laravel\Socialite\Facades\Socialite;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -67,8 +68,15 @@ class SocialController extends Controller
     public function loginWithApple(Request $request)
     {
         try {
+            $response = Http::post('https://appleid.apple.com/auth/token', [
+                'grant_type' => 'authorization_code',
+                'code' => $request->code,
+                'redirect_uri' => env('APPLE_REDIRECT_URI'),
+                'client_id' => env('APPLE_CLIENT_ID'),
+                'client_secret' => env('APPLE_CLIENT_SECRET'),
+            ]);
+            dd($response);
             $user = Socialite::driver('apple')->userFromToken($request->state);
-            dd($request->all(), $user);
             /** @var User $findUser */
             $findUser = User::query()->where('email', $user->email)->first();
 
