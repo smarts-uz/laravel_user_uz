@@ -260,9 +260,16 @@ class UserAPIController extends Controller
 
     public function getSupportId()
     {
+        /** @var User $user */
+        $user = User::query()->findOrFail(setting('site.moderator_id'));
         return response()->json([
             'success' => true,
-            'data' => setting('site.moderator_id')
+            'data' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'avatar' => url('/storage') . '/' . $user->avatar,
+                'last_seen' => $user->last_seen
+            ]
         ]);
     }
 

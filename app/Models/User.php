@@ -36,6 +36,7 @@ use Laravel\Passport\HasApiTokens;
  * @property $dark_mode
  * @property $password userning passwordi
  * @property $avatar userning profilidagi rasmi
+ * @property $last_seen userning oxirgi aktiv vaqti
  * @property $description userning profilida o'zi haqida qoldirgan izohi
  * @property $district
  * @property $role_id userning role_idsi, (1-admin, 2-performer, 5-user)
