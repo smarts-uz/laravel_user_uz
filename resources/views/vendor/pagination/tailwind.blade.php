@@ -43,7 +43,7 @@
                                         <button class="w-10 h-10 text-white transition-colors duration-150 bg-green-600 border border-r-0 border-green-600 rounded-full focus:shadow-outline">{{ $page }}</button>
                                     </span>
                                 @else
-                                    <a href="{{ $url }}" class="w-10 h-10 text-green-600 transition-colors duration-150 rounded-full focus:shadow-outline hover:bg-green-100" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
+                                    <a href="{{ $url }}" class="w-10 h-10 text-green-600 transition-colors duration-150 rounded-full focus:shadow-outline relative top-2 left-2" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
                                         {{ $page }}
                                     </a>
                                 @endif

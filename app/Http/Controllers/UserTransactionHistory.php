@@ -26,7 +26,7 @@ class UserTransactionHistory extends Controller
             Alert::error(__('Неопределенный способ оплаты'));
             return response()->json([
                 'success' => false,
-                'message' => 'Undefined payment method'
+                'message' => __('Неопределенный способ оплаты')
             ]);
         }
 

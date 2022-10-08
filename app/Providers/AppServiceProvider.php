@@ -4,10 +4,9 @@ namespace App\Providers;
 
 use App\Models\Review;
 use App\Observers\ReviewObserver;
-use App\Services\User\Active;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
 use TCG\Voyager\Facades\Voyager;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -34,5 +33,6 @@ class AppServiceProvider extends ServiceProvider
         foreach (glob(__DIR__.'/../Helpers/*.php') as $filename) {
             require_once $filename;
         }
+        Paginator::useBootstrap();
     }
 }
