@@ -94,8 +94,8 @@ class SocialController extends Controller
                 Auth::login($new_user);
             }
             return redirect()->route('profile.profileData');
-        } catch (Exception) {
-            // Log to File
+        } catch (Exception $e) {
+            dd($e);
         }
         return false;
     }
