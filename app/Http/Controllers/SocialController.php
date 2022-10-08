@@ -69,7 +69,6 @@ class SocialController extends Controller
     {
         try {
             $user = Socialite::driver('apple')->setScopes(['name', 'email'])->user();
-            dd($user);
             /** @var User $findUser */
             $findUser = User::query()->where('email', $user->email)->first();
 
