@@ -80,9 +80,9 @@
                                                     <input
                                                         class="focus:outline-none focus:border-yellow-500  rounded-xl border py-2 px-3 w-full text-grey-900"
                                                         type="email" name="email" id="email"
-                                                        value="{{ $user->is_email_verified?$user->email??old('email'):$user->email_old}}">
+                                                        value="{{$user->email}}">
                                                     @error('email')
-                                                    <p class="text-red-500">{{ $message }}</p>
+                                                        <p class="text-red-500">{{ $message }}</p>
                                                     @enderror
                                                 </div>
                                                 <div class="w-full block w-full mb-4">
