@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SocialController;
 use App\Http\Requests\Api\SocialRequest;
 use App\Http\Resources\PerformerIndexResource;
 use App\Models\User;
@@ -79,6 +80,7 @@ class SocialAPIController extends Controller
                     'name' => $providerUser->name,
                     'email' => $providerUser->email,
                     'is_email_verified' => 1,
+                    'avatar' => self::get_avatar($providerUser)
                 ]);
                 $wallBal = new WalletBalance();
                 $wallBal->balance = setting('admin.bonus');
@@ -143,5 +145,13 @@ class SocialAPIController extends Controller
             'provider_id' => $user->id,
             'avatar' => $user->avatar
         ]);
+    }
+
+    private static function get_avatar($user)
+    {
+        $fileContents = file_get_contents($user->getAvatar());
+        File::put(public_path() . '/storage/users-avatar/' . $user->getId() . ".jpg", $fileContents);
+        $picture = 'users-avatar/' . $user->getId() . ".jpg";
+        return $picture;
     }
 }

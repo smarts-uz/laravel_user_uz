@@ -96,7 +96,7 @@
                                                             value="{{$user->is_phone_number_verified?$user->phone_number:$user->phone_number_old}}"
                                                         @endif >
                                                     @error('phone_number')
-                                                    <p class="text-red-500">{{ $message }}</p>
+                                                        <p class="text-red-500">{{ $message }}</p>
                                                     @enderror
                                                 </div>
                                                 <div class="w-full block w-full mb-4">
@@ -120,6 +120,9 @@
                                                             </a>
                                                         </div>
                                                     </div>
+                                                    @error('born_date')
+                                                        <p class="text-red-500">{{ $message }}</p>
+                                                    @enderror
                                                 </div>
                                                 <div class="w-full block w-full mb-6 mt-2 flex gap-x-5">
                                                     <div class="flex items-center gap-x-2">
@@ -134,6 +137,9 @@
                                                         <label for="fermale"
                                                                class="text-gray-800 text-lg cursor-pointer">{{__('Женской')}}</label>
                                                     </div>
+                                                    @error('gender')
+                                                        <p class="text-red-500">{{ $message }}</p>
+                                                    @enderror
                                                 </div>
                                                 <div class="w-full block w-full mb-4">
                                                     <label class="mb-2 text-md md:block text-gray-400"
@@ -151,7 +157,7 @@
                                                     </select>
 
                                                     @error('location')
-                                                    <p class="text-red-500">{{ $message }}</p>
+                                                        <p class="text-red-500">{{ $message }}</p>
                                                     @enderror
 
                                                 </div>

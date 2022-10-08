@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\WalletBalance;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Laravel\Socialite\Facades\Socialite;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -63,10 +65,19 @@ class SocialController extends Controller
         return Socialite::driver('apple')->redirect();
     }
 
-    public function loginWithApple()
+    public function loginWithApple(Request $request)
     {
         try {
-            $user = Socialite::driver('apple')->setScopes(['name', 'email'])->user();
+            dd($request->all());
+            $response = Http::post('https://appleid.apple.com/auth/token', [
+                'grant_type' => 'authorization_code',
+                'code' => $request->code,
+                'redirect_uri' => env('APPLE_REDIRECT_URI'),
+                'client_id' => env('APPLE_CLIENT_ID'),
+                'client_secret' => env('APPLE_CLIENT_SECRET'),
+            ]);
+            dd($response);
+            $user = Socialite::driver('apple')->userFromToken($request->state);
             /** @var User $findUser */
             $findUser = User::query()->where('email', $user->email)->first();
 
@@ -94,8 +105,8 @@ class SocialController extends Controller
                 Auth::login($new_user);
             }
             return redirect()->route('profile.profileData');
-        } catch (Exception) {
-            // Log to File
+        } catch (Exception $e) {
+            dd($e);
         }
         return false;
     }
