@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\WalletBalance;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Laravel\Socialite\Facades\Socialite;
@@ -63,9 +64,10 @@ class SocialController extends Controller
         return Socialite::driver('apple')->redirect();
     }
 
-    public function loginWithApple()
+    public function loginWithApple(Request $request)
     {
         try {
+            dd($request);
             $user = Socialite::driver('apple')->setScopes(['name', 'email'])->user();
             /** @var User $findUser */
             $findUser = User::query()->where('email', $user->email)->first();
