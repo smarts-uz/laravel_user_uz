@@ -67,8 +67,8 @@ class SocialController extends Controller
     public function loginWithApple(Request $request)
     {
         try {
-            $user = Socialite::driver('apple')->userFromToken($request->code);
-            dd($user);
+            $user = Socialite::driver('apple')->userFromToken($request->state);
+            dd($request->all(), $user);
             /** @var User $findUser */
             $findUser = User::query()->where('email', $user->email)->first();
 
