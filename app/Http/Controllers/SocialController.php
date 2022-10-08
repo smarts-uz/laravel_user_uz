@@ -105,7 +105,8 @@ class SocialController extends Controller
     {
         $fileContents = file_get_contents($user->getAvatar());
         File::put(public_path() . '/storage/users-avatar/' . $user->getId() . ".jpg", $fileContents);
-        return 'users-avatar/' . $user->getId() . ".jpg";
+        $picture = 'users-avatar/' . $user->getId() . ".jpg";
+        return $picture;
     }
 
     public function loginWithGoogle()
