@@ -36,7 +36,7 @@
                     </div>
             </div>
             <div class="flex flex-row items-start">
-                @if (auth()->user()->is_email_verified && auth()->user()->is_phone_number_verified)
+                @if (auth()->user()->is_phone_number_verified)
                     <div data-tooltip-target="tooltip-animation-verified"
                          class="mx-1 tooltip-1">
                         <img
@@ -209,7 +209,7 @@
                     </div>
                 </div>
                 <div class="flex flex-row items-start">
-                    @if ($selected->performer->is_email_verified && $selected->performer->is_phone_number_verified)
+                    @if ($selected->performer->is_phone_number_verified)
                         <div data-tooltip-target="tooltip-animation-verified"
                              class="mx-1 tooltip-1">
                             <img
@@ -384,7 +384,7 @@
                     </div>
                 </div>
                 <div class="flex flex-row items-start">
-                    @if ($response->performer->is_email_verified && $response->performer->is_phone_number_verified)
+                    @if ($response->performer->is_phone_number_verified)
                         <div data-tooltip-target="tooltip-animation-verified"
                              class="mx-1 tooltip-1">
                             <img
