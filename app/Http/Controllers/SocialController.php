@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\WalletBalance;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Laravel\Socialite\Facades\Socialite;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -63,7 +65,7 @@ class SocialController extends Controller
         return Socialite::driver('apple')->redirect();
     }
 
-    public function loginWithApple()
+    public function loginWithApple(Request $request)
     {
         try {
             $user = Socialite::driver('apple')->setScopes(['name', 'email'])->user();
@@ -84,7 +86,7 @@ class SocialController extends Controller
                 $new_user->name = $user->name;
                 $new_user->email = $user->email;
                 $new_user->apple_id = $user->id;
-                $new_user->avatar = self::get_avatar($user);
+//                $new_user->avatar = self::get_avatar($user);
                 $new_user->is_email_verified = 1;
                 $new_user->save();
                 $wallBal = new WalletBalance();
@@ -94,8 +96,8 @@ class SocialController extends Controller
                 Auth::login($new_user);
             }
             return redirect()->route('profile.profileData');
-        } catch (Exception) {
-            // Log to File
+        } catch (Exception $e) {
+            dd($e);
         }
         return false;
     }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use TCG\Voyager\Traits\Translatable;
 
 /**
+ * @property $id
  * @property $user_id
  * @property $task_id
  * @property $name_task

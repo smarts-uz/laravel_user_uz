@@ -17,6 +17,7 @@ class VerifyCsrfToken extends Middleware
         '/paynet',
         '/payment/payme',
         '/payment/click',
-        '/payment/click/user-balance'
+        '/payment/click/user-balance',
+        '/login/apple/callback'
     ];
 }
