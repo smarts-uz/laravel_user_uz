@@ -134,6 +134,10 @@ class ProfileService
     {
         /** @var User $user */
         $user = auth()->user();
+        if ($data['email'] !== $user->email) {
+            $data['is_email_verified'] = 0;
+            $data['email_old'] = $user->email;
+        }
         if ($data['phone_number'] !== $user->phone_number) {
             $data['is_phone_number_verified'] = 0;
             $data['phone_number_old'] = $user->phone_number;

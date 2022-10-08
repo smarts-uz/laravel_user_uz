@@ -761,7 +761,9 @@
     "Пополнить <br> через Paynet": "Paynet orqali <br> to'ldirish",
     "Пополнить <br> через Payme": "Payme orqali <br> to'ldirish",
     "Пополнить <br> через Click": "Click orqali <br> to'ldirish",
-    "У вас на данный момент нет никаких уведомлений": "Sizda hozircha hech qanday bildirishnoma yo‘q"
+    "У вас на данный момент нет никаких уведомлений": "Sizda hozircha hech qanday bildirishnoma yo‘q",
+    "Проверяемое поле может быть нулевым.": "Tekshirilayotgan maydon null bo'lishi mumkin.",
+    "Проверяемое поле должно быть целым числом.": "Tekshirilayotgan maydon butun son bo'lishi kerak."
 
 
 }
