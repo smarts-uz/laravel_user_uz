@@ -109,8 +109,8 @@ class Controller extends BaseController
     }
 
     public function news_page(BlogNew $id){
-        $new = BlogNew::find($id);
-        return view('staticpages.blog_new', ['new' => $new]);
+        $news = BlogNew::find($id);
+        return view('staticpages.blog_new', compact('news'));
     }
 
     public function policy(){

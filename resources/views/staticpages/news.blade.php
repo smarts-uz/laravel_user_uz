@@ -12,7 +12,7 @@
                     </a>
                 </div>
                 <div class="lg:w-1/2 w-full lg:mt-0 mt-4">
-                    <a href="/news/{{$new->id}}" class="text-left text-3xl hover:text-red-500">{{$new->getTranslatedAttribute('title',Session::get('lang') , 'fallbackLocale')}}</a>
+                    <a href="/news/{{$new->id}}" class="text-left text-3xl font-semibold hover:text-red-500">{{$new->getTranslatedAttribute('title',Session::get('lang') , 'fallbackLocale')}}</a>
                     <p class="text-left text-xl mt-3">{{$new->getTranslatedAttribute('desc',Session::get('lang') , 'fallbackLocale')}}</p>
                 </div>
             </div>
