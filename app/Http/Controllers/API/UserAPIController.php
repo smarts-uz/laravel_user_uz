@@ -255,7 +255,15 @@ class UserAPIController extends Controller
         $user = User::query()->where('id', $id)->firstOrFail();
         $user->update($data);
 
-        return response()->json(['status' => true, 'message' => 'User data updated!']);
+        return response()->json(['success' => true, 'message' => 'User data updated!']);
+    }
+
+    public function getSupportId()
+    {
+        return response()->json([
+            'success' => true,
+            'data' => setting('site.moderator_id')
+        ]);
     }
 
     /**
