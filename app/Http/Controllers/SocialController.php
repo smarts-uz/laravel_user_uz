@@ -86,7 +86,7 @@ class SocialController extends Controller
                 $new_user->name = $user->name;
                 $new_user->email = $user->email;
                 $new_user->apple_id = $user->id;
-                $new_user->avatar = self::get_avatar($user);
+//                $new_user->avatar = self::get_avatar($user);
                 $new_user->is_email_verified = 1;
                 $new_user->save();
                 $wallBal = new WalletBalance();
