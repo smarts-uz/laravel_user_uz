@@ -68,6 +68,7 @@ class SocialController extends Controller
     public function loginWithApple(Request $request)
     {
         try {
+            dd($request->all());
             $response = Http::post('https://appleid.apple.com/auth/token', [
                 'grant_type' => 'authorization_code',
                 'code' => $request->code,
