@@ -31,23 +31,30 @@ class NotificationService
             ->where(function ($query) use ($user, $web) {
                 $query->where(function ($query) use ($user) {
                     $query->where('performer_id', '=', $user->id)
-                        ->whereIn('type', [4, 6, 7, 10, 11, 12]);
+                        ->whereIn('type', [
+                            Notification::GIVE_TASK, Notification::SEND_REVIEW, Notification::SELECT_PERFORMER,
+                            Notification::CANCELLED_TASK, Notification::ADMIN_COMPLETE_TASK, Notification::ADMIN_CANCEL_TASK
+                        ]);
                 })
                     ->orWhere(function ($query) use ($user) {
                         $query->where('user_id', '=', $user->id)
-                            ->whereIn('type', [5, 8, 9, 10, 11, 12]);
+                            ->whereIn('type', [
+                                Notification::RESPONSE_TO_TASK, Notification::SEND_REVIEW_PERFORMER,
+                                Notification::RESPONSE_TO_TASK_FOR_USER, Notification::CANCELLED_TASK,
+                                Notification::ADMIN_COMPLETE_TASK, Notification::ADMIN_CANCEL_TASK
+                            ]);
                     });
                 if ($user->role_id == 2 && $web)
                     $query->orWhere(function ($query) use ($user) {
-                        $query->where('performer_id', '=', $user->id)->where('type', '=', 1);
+                        $query->where('performer_id', '=', $user->id)->where('type', '=', Notification::TASK_CREATED);
                     });
                 if ($user->system_notification)
                     $query->orWhere(function ($query) use ($user) {
-                        $query->where('user_id', '=', $user->id)->where('type', '=', 2);
+                        $query->where('user_id', '=', $user->id)->where('type', '=', Notification::NEWS_NOTIFICATION);
                     });
                 if ($user->news_notification)
                     $query->orWhere(function ($query) use ($user) {
-                        $query->where('user_id', '=', $user->id)->where('type', '=', 3);
+                        $query->where('user_id', '=', $user->id)->where('type', '=', Notification::SYSTEM_NOTIFICATION);
                     });
             })
             ->orderByDesc('created_at')
@@ -241,7 +248,7 @@ class NotificationService
      * @param $type // for notification or chat. Values - e.g. "chat", "notification"
      * @param $model // data for handling in mobile
      */
-    public static function pushNotification($user, $notification, $type, $model)
+    public static function pushNotification($user, $notification, $type, $model): void
     {
         foreach ($user->sessions as $session) {
             Http::withHeaders([

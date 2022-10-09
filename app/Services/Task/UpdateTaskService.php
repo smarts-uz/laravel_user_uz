@@ -37,6 +37,15 @@ class UpdateTaskService
         $this->custom_field_service = new CustomFieldService();
     }
 
+    public function updateName($task, $data): array
+    {
+        updateCache('task_update_' . $task->id, 'name', $data['name']);
+        updateCache('task_update_' . $task->id, 'category_id', $data['category_id']);
+
+        return $this->get_custom($task);
+    }
+
+    #[ArrayShape([])]
     public function get_custom($task): array
     {
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM);
@@ -47,41 +56,6 @@ class UpdateTaskService
             return $this->get_address($task);
         }
         return ['route' => 'custom', 'task_id' => $task->id, 'steps' => 6, 'custom_fields' => $custom_fields];
-    }
-
-    #[ArrayShape([])]
-    public function get_remote($task): array
-    {
-        return [
-            'route' => 'remote', 'task_id' => $task->id, 'steps' => 5,
-            'custom_fields' => []
-        ];
-    }
-
-    #[ArrayShape([])]
-    public function get_address($task): array
-    {
-        if ($task->category->parent->double_address) {
-            return ['route' => 'address', 'address' => 2, 'steps' => 4, 'custom_fields' => []];
-        }
-        return ['route' => 'address', 'address' => 1, 'steps' => 4, 'custom_fields' => []];
-    }
-
-    #[ArrayShape([])]
-    public function get_date($task): array
-    {
-        return [
-            'route' => 'date', 'task_id' => $task->id, 'steps' => 3,
-            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_DATE)
-        ];
-    }
-
-    public function updateName($task, $data): array
-    {
-        updateCache('task_update_' . $task->id, 'name', $data['name']);
-        updateCache('task_update_' . $task->id, 'category_id', $data['category_id']);
-
-        return $this->get_custom($task);
     }
 
     public function updateCustom($task, $request): array
@@ -101,6 +75,16 @@ class UpdateTaskService
         return $this->get_address($task);
     }
 
+
+    #[ArrayShape([])]
+    public function get_remote($task): array
+    {
+        return [
+            'route' => 'remote', 'task_id' => $task->id, 'steps' => 5,
+            'custom_fields' => []
+        ];
+    }
+
     public function updateRemote($task, $data): array
     {
         return match ($data['radio']) {
@@ -108,6 +92,16 @@ class UpdateTaskService
             CustomField::ROUTE_REMOTE => $this->get_date($task),
             default => ['success' => false, 'message' => 'Incorrect value']
         };
+    }
+
+
+    #[ArrayShape([])]
+    public function get_address($task): array
+    {
+        if ($task->category->parent->double_address) {
+            return ['route' => 'address', 'address' => 2, 'steps' => 4, 'custom_fields' => []];
+        }
+        return ['route' => 'address', 'address' => 1, 'steps' => 4, 'custom_fields' => []];
     }
 
     public function updateAddress($task, $data): array
@@ -133,12 +127,23 @@ class UpdateTaskService
 
     }
 
+
+    #[ArrayShape([])]
+    public function get_date($task): array
+    {
+        return [
+            'route' => 'date', 'task_id' => $task->id, 'steps' => 3,
+            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_DATE)
+        ];
+    }
+
     public function updateDate($task, $data): array
     {
         unset($data['task_id']);
         updateCache('task_update_' . $task->id, 'date', $data);
         return $this->get_budget($task);
     }
+
 
     #[ArrayShape([])]
     public function get_budget($task): array
@@ -155,6 +160,7 @@ class UpdateTaskService
         updateCache('task_update_' . $task->id, 'oplata', $data['budget_type']);
         return $this->get_note($task);
     }
+
 
     #[ArrayShape([])]
     public function get_note($task): array
@@ -179,6 +185,48 @@ class UpdateTaskService
         ];
     }
 
+    public function updateContact($task, $data): array
+    {
+        /** @var User $user */
+        $user = auth()->user();
+        unset($data['task_id']);
+
+        if (!$user->is_phone_number_verified && $user->phone_number != correctPhoneNumber($data['phone_number'])) {
+            // in this case user phone number will be changed to new phone number
+            $data['is_phone_number_verified'] = 0;
+            $data['phone_number'] = correctPhoneNumber($data['phone_number']);
+            $user->update($data);
+            VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
+            return $this->get_verify($task, $user);
+        }
+        elseif (!$user->is_phone_number_verified && $user->phone_number == correctPhoneNumber($data['phone_number'])) {
+            VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
+            return $this->get_verify($task, $user);
+        }
+        elseif ($user->is_phone_number_verified && $user->phone_number != correctPhoneNumber($data['phone_number'])) {
+            // in this case task's phone number already verified in create task process, that's why it doesn't need verification
+            $task->status = Task::STATUS_OPEN;
+            $task->user_id = $user->id;
+            $task->phone = correctPhoneNumber($data['phone_number']);
+            $task->save();
+        } else {
+            $task->status = Task::STATUS_OPEN;
+            $task->user_id = $user->id;
+            $task->phone = correctPhoneNumber($user->phone_number);
+            $task->save();
+        }
+
+
+        $this->updateTask($task, $user);
+
+        return [
+            'task_id' => $task->id,
+            'route' => 'end',
+        ];
+    }
+
+
+    // Update Image
     public function updateImage($task, $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
@@ -209,37 +257,21 @@ class UpdateTaskService
         ]);
     }
 
-    public function updateContact($task, $data): array
+    // Delete Image
+    public function deleteImage($request, $task): JsonResponse
     {
-        /** @var User $user */
-        $user = auth()->user();
-        unset($data['task_id']);
-        if (!$user->is_phone_number_verified && $user->phone_number !== $data['phone_number']) {
-            $data['is_phone_number_verified'] = 0;
-            $data['phone_number'] = correctPhoneNumber($data['phone_number']);
-            $user->update($data);
-            VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
-            return $this->get_verify($task, $user);
-        } elseif ($user->phone_number !== $data['phone_number']) {
-            LoginController::send_verification_for_task_phone($task, correctPhoneNumber($data['phone_number']));
-            return $this->get_verify($task, $user);
-        } elseif (!$user->is_phone_number_verified) {
-            VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
-            return $this->get_verify($task, $user);
-        }
-
-        $task->status = Task::STATUS_OPEN;
-        $task->user_id = $user->id;
-        $task->phone = $user->phone_number;
+        $image = $request->get('image');
+        File::delete(public_path() . '/storage/uploads/' . $image);
+        $images = json_decode($task->photos);
+        $updatedImages = array_diff($images, [$image]);
+        $task->photos = json_encode(array_values($updatedImages));
         $task->save();
-
-        $this->updateTask($task, $user);
-
-        return [
-            'task_id' => $task->id,
-            'route' => 'end',
-        ];
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully deleted'
+        ]);
     }
+
 
     #[ArrayShape([])]
     public function get_verify($task, $user): array
@@ -250,7 +282,10 @@ class UpdateTaskService
     public function verification($task, $data): JsonResponse
     {
         /** @var User $user */
-        $user = User::query()->where('phone_number', correctPhoneNumber($data['phone_number']))->firstOrFail();
+        $user = User::query()->where('phone_number', correctPhoneNumber($data['phone_number']))->first();
+        if (!$user) {
+            $task = Task::query()->where('phone', correctPhoneNumber($data['phone_number']))->first();
+        }
         if ($data['sms_otp'] === $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
                 $user->update(['is_phone_number_verified' => 1]);
@@ -266,26 +301,14 @@ class UpdateTaskService
                     'sms_otp' => ['expired_message']
                 ],  __('Срок действия номера истек'));
             }
-        } else {
+        }
+        else {
             return $this->fail([
                 'sms_otp' => ['incorrect_message']
             ],  __('Неправильный код!'));
         }
     }
 
-    public function deleteImage($request, $task): JsonResponse
-    {
-        $image = $request->get('image');
-        File::delete(public_path() . '/storage/uploads/' . $image);
-        $images = json_decode($task->photos);
-        $updatedImages = array_diff($images, [$image]);
-        $task->photos = json_encode(array_values($updatedImages));
-        $task->save();
-        return response()->json([
-            'success' => true,
-            'message' => 'Successfully deleted'
-        ]);
-    }
 
 
     private function updateTask($task, $user): void
@@ -328,3 +351,4 @@ class UpdateTaskService
         cache()->forget('task_update_' . $task->id);
     }
 }
+
