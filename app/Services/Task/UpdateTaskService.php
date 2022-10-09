@@ -203,7 +203,11 @@ class UpdateTaskService
             VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
             return $this->get_verify($task, $user);
         }
-        elseif ($user->is_phone_number_verified && $user->phone_number != correctPhoneNumber($data['phone_number'])) {
+        elseif ($user->phone_number != correctPhoneNumber($data['phone_number']) && $task->phone != correctPhoneNumber($data['phone_number'])) {
+            VerificationService::send_verification_for_task_phone($task, correctPhoneNumber($data['phone_number']));
+            return $this->get_verify($task, $user);
+        }
+        elseif ($user->is_phone_number_verified && $task->phone == correctPhoneNumber($data['phone_number'])) {
             // in this case task's phone number already verified in create task process, that's why it doesn't need verification
             $task->status = Task::STATUS_OPEN;
             $task->user_id = $user->id;
