@@ -54,6 +54,10 @@ class User extends \TCG\Voyager\Models\User
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
+    const ROLE_ADMIN = 1;
+    const ROLE_PERFORMER = 2;
+    const ROLE_USER = 5;
+
     protected $table = 'users';
 
     protected $guarded = [];

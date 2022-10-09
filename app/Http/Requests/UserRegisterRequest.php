@@ -27,7 +27,7 @@ class UserRegisterRequest extends FormRequest
         return [
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'phone_number' =>  'numeric|unique:users|min:13',
+            'phone_number' =>  'numeric|min:13',
             'password' => 'required|confirmed|min:8'
         ];
     }
@@ -42,7 +42,6 @@ class UserRegisterRequest extends FormRequest
             'password.required' => trans('login.password.required'),
             'password.min' => trans('login.password.min'),
             'password.confirmed' => trans('login.password.confirmed'),
-            'phone_number.unique' => trans('login.phone_number.unique')
         ];
     }
     public function getValidatorInstance()

@@ -25,19 +25,19 @@ class PerformersService
     {
         $item = new PerformerServiceItem();
         $item->tasks = Task::query()->where('user_id', $authId)
-            ->whereIn('status', [1, 2])->orderBy('created_at', 'DESC')
+            ->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE])->orderBy('created_at', 'DESC')
             ->get();
         $item->categories = Category::query()->where('parent_id', null)
             ->select('id', 'name', 'slug')->get();
         $item->categories2 = Category::query()->where('parent_id', '<>', null)
             ->select('id', 'parent_id', 'name')->get();
         $item->users = User::query()
-            ->where('role_id', 2)
+            ->where('role_id', User::ROLE_PERFORMER)
             ->orderByDesc('review_rating')
             ->orderbyRaw('(review_good - review_bad) DESC')->paginate(50);
         $item->top_users = User::query()
             ->where('review_rating', '!=', 0)
-            ->where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
+            ->where('role_id', User::ROLE_PERFORMER)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(20)->pluck('id')->toArray();
         return $item;
     }
@@ -55,7 +55,7 @@ class PerformersService
         $item = new PerformerUserItem();
         $item->top_users = User::query()
             ->where('review_rating', '!=', 0)
-            ->where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
+            ->where('role_id', User::ROLE_PERFORMER)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(20)->pluck('id')->toArray();
         $item->portfolios = $user->portfolios()->where('image', '!=', null)->get();
         $item->review_good = $user->review_good;
@@ -64,7 +64,7 @@ class PerformersService
         $item->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->latest()->get();
         $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->latest()->get();
         $item->task_count = Task::query()->where('user_id', Auth::id())
-            ->whereIn('status', [1, 2, 3, 4, 5, 6])->get();
+            ->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->get();
         return $item;
     }
 
@@ -91,10 +91,10 @@ class PerformersService
             ->orderbyRaw('(review_good - review_bad) DESC')->paginate(50);
         $item->top_users = User::query()
             ->where('review_rating', '!=', 0)
-            ->where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
+            ->where('role_id', User::ROLE_PERFORMER)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(20)->pluck('id')->toArray();
         $item->tasks = Task::query()->where('user_id', $authId)
-            ->whereIn('status', [1, 2])->orderBy('created_at', 'DESC')->get();
+            ->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE])->orderBy('created_at', 'DESC')->get();
         return $item;
     }
 }

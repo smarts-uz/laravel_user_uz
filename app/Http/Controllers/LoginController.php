@@ -68,6 +68,8 @@ class LoginController extends Controller
         unset($data['password_confirmation']);
         /** @var User $user */
         $user = User::query()->create($data);
+        $user->phone_number = $data['phone_number'] . '_' . $user->id;
+        $user->save();
         $wallBal = new WalletBalance();
         $wallBal->balance = setting('admin.bonus');
         $wallBal->user_id = $user->id;
