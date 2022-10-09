@@ -764,7 +764,8 @@
     "Пополнить <br> через Click": "Click orqali <br> to'ldirish",
     "У вас на данный момент нет никаких уведомлений": "Sizda hozircha hech qanday bildirishnoma yo‘q",
     "Проверяемое поле может быть нулевым.": "Tekshirilayotgan maydon null bo'lishi mumkin.",
-    "Проверяемое поле должно быть целым числом.": "Tekshirilayotgan maydon butun son bo'lishi kerak."
-
+    "Проверяемое поле должно быть целым числом.": "Tekshirilayotgan maydon butun son bo'lishi kerak.",
+    "Вы еще не исполнитель":"Siz hali ijrochi emassiz",
+    "Вы еще не являетесь руководителем Universal Services. Присоединяйтесь к списку исполнителей.":"Siz hali Universal Servicesda ijrochi bo'lmagansiz. Iltimos ijrochilar ro'yxatiga qo'shiling."
 
 }
