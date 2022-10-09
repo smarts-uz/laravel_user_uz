@@ -94,7 +94,7 @@ class LoginController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-        VerificationService::send_verification('phone', $user, $user->phone_number);
+        VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
         return redirect()->back()->with([
             'code' => __('Код отправлен!')
         ]);
@@ -113,7 +113,7 @@ class LoginController extends Controller
                 $user->save();
                 $result = true;
                 if ($needle !== 'is_phone_number_verified' && !$user->is_phone_number_verified)
-                    VerificationService::send_verification('phone', $user, $user->phone_number);
+                    VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
             }
         } else {
             abort(419);
@@ -176,7 +176,7 @@ class LoginController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-        if ($request->get('phone_number') === $user->phone_number) {
+        if ($request->get('phone_number') === correctPhoneNumber($user->phone_number)) {
             return back()->with([
                 'email-message' => 'Your phone',
                 'email' => $request->get('email')
@@ -186,7 +186,7 @@ class LoginController extends Controller
 
             $user->phone_number = $request->get('phone_number');
             $user->save();
-            VerificationService::send_verification('phone', $user, $user->phone_number);
+            VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
 
             return redirect()->back()->with([
                 'code' => __('Код отправлен!')

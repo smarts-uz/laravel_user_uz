@@ -37,7 +37,7 @@
                                     {{__('Подтвердите номер телефона')}}
                                 </div>
                                 <p class="my-8 text-gray-700 ">
-                                    {{__('На ваш телефонный номер')}}  <strong>{{auth()->user()->phone_number}}  </strong>
+                                    {{__('На ваш телефонный номер')}}  <strong>{{correctPhoneNumber(auth()->user()->phone_number)}}</strong>
                                       {{__('было отправлено письмо со кодом для подтверждения вашего аккаунта на Universal Services.')}}
                                 </p>
                                 <p class="my-8 text-gray-700 ">

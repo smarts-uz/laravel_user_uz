@@ -24,7 +24,7 @@
             <div class="ml-3 col-span-3">
                 <h5 class="font-bold text-gray-700 block">{{__('Телефон')}}</h5>
                 @if ($user->phone_number != '')
-                    <p class="text-gray-600 block ">{{ $user->phone_number }}</p>
+                    <p class="text-gray-600 block ">{{ correctPhoneNumber($user->phone_number) }}</p>
                 @else
                     {{__('нет номера')}}
                 @endif
