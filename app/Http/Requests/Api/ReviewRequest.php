@@ -17,9 +17,9 @@ class ReviewRequest extends BaseRequest
     public function messages()
     {
         return [
-            'comment.required' => 'Требуется заполнение!',
-            'good.required' => 'Требуется заполнение!',
-            'status.required' => 'Требуется заполнение!'
+            'comment.required' => __('Требуется заполнение!'),
+            'good.required' => __('Требуется заполнение!'),
+            'status.required' => __('Требуется заполнение!'),
         ];
     }
 }

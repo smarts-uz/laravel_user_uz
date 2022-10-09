@@ -16,9 +16,9 @@ class BlogNewsResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'text' => $this->text,
-            'desc' => $this->desc,
+            'title' => $this->getTranslatedAttribute('title'),
+            'text' => $this->getTranslatedAttribute('text'),
+            'desc' => $this->getTranslatedAttribute('desc'),
             'img' => asset('storage/'. $this->img),
             'created_at' => $this->created_at
         ];
