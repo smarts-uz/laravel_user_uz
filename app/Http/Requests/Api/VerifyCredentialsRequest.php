@@ -8,7 +8,7 @@ class VerifyCredentialsRequest extends BaseRequest
     {
         return [
             'type' => 'required|in:phone_number,email',
-            'data' => 'required'
+            'data' => $this->get('type') == 'email' ? 'required|email' : 'required'
         ];
     }
 }

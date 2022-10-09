@@ -65,7 +65,7 @@ class SocialController extends Controller
         return Socialite::driver('apple')->redirect();
     }
 
-    public function loginWithApple(Request $request)
+    public function loginWithApple()
     {
         try {
             $user = Socialite::driver('apple')->setScopes(['name', 'email'])->user();
