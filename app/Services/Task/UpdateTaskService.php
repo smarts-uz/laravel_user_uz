@@ -181,6 +181,7 @@ class UpdateTaskService
     {
         return [
             'route' => 'contact', 'task_id' => $task->id, 'steps' => 0,
+            'task_phone' => $task->phone ? correctPhoneNumber($task->phone) : null,
             'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CONTACTS)
         ];
     }
