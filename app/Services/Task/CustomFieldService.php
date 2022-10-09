@@ -38,6 +38,8 @@ class CustomFieldService
         $item['type'] = $custom_field->type;
         $item['options'] = $this->setOption($custom_field, $task);
         $item['values'] = $custom_field->values;
+        $item['required'] = $custom_field->required;
+        $item['data_type'] = $custom_field->data_type;
         $item['order'] = $custom_field->order;
         $item['name'] = $custom_field->name;
         $item['task_value'] = ($custom_field->type === 'input' or $custom_field->type === 'number') ? count($values[$custom_field->id]) ? (string)$values[$custom_field->id][0] : '' : '';

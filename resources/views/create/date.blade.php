@@ -14,7 +14,7 @@
             <div class="grid grid-cols-3 gap-x-20">
                 <div class="lg:col-span-2 col-span-3">
                     <div class="w-full text-center text-2xl">
-                        @if(session('lang')=='uz')
+                        @if(session('lang') === 'uz')
                             "{{$task->name}}" {{__('Ищем исполнителя для задания')}}
                         @else
                             {{__('Ищем исполнителя для задания')}} "{{$task->name}}"
@@ -119,8 +119,6 @@
                                              name="">{{__('Далее')}}
                                         </button>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
@@ -141,7 +139,7 @@
                 minDate: "today",
                 dateFormat: "Y-m-d H:i",
                 altFormat: "Y-m-d H:i",
-                @if(session('lang')=='ru')
+                @if(session('lang') === 'ru')
                     locale: 'ru',
                 @else
                     locale: {
