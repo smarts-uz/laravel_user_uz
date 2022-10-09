@@ -18,6 +18,7 @@ class LoginAPIController extends Controller
         $verified = 'is_' . $column . '_verified';
         if (!User::query()
             ->where($column, $data['type'] === 'phone_number' ? correctPhoneNumber($data['data']) : $data['data'])
+            ->whereNot('id', auth()->id())
             ->exists()
         ) {
             /** @var User $user */
