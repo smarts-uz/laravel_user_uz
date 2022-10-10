@@ -327,14 +327,23 @@ class ProfileService
         $user = auth()->user();
         $validated = $request->validated();
         $link = $validated['link'];
-        if (!str_starts_with($link, 'https://www.youtube.com/')) {
-            $message = trans('trans.Link should be from YouTube.');
-            $success = false;
-        } else {
-            $user->youtube_link = str_replace('watch?v=', 'embed/', $link);
-            $user->save();
-            $message = trans('trans.Video added successfully.');
-            $success = true;
+        switch (true){
+            case str_starts_with($link, 'https://youtu.be/') :
+                $user->youtube_link =  str_replace('https://youtu.be', 'https://www.youtube.com/embed', $link);
+                $user->save();
+                $message = trans('trans.Video added successfully.');
+                $success = true;
+                break;
+            case str_starts_with($link, 'https://www.youtube.com/') :
+                $user->youtube_link = str_replace('watch?v=', 'embed/', $link);
+                $user->save();
+                $message = trans('trans.Video added successfully.');
+                $success = true;
+                break;
+            default :
+                $message = trans('trans.Link should be from YouTube.');
+                $success = false;
+                break;
         }
 
         return [
