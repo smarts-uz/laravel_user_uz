@@ -362,11 +362,19 @@ class ProfileController extends Controller
         }
         $validated = $validator->validated();
         $link = $validated['youtube_link'];
-        if (!str_starts_with($link, 'https://www.youtube.com/')) {
-            Alert::error(__('Отправить действующую ссылку на Youtube'));
+        switch (true){
+            case str_starts_with($link, 'https://youtu.be/') :
+                $user->youtube_link =  str_replace('https://youtu.be', 'https://www.youtube.com/embed', $request->get('youtube_link'));
+                $user->save();
+                break;
+            case str_starts_with($link, 'https://www.youtube.com/') :
+                $user->youtube_link = str_replace('watch?v=', 'embed/', $request->get('youtube_link'));
+                $user->save();
+                break;
+            default :
+                Alert::error(__('Отправить действующую ссылку на Youtube'));
+                break;
         }
-        $user->youtube_link = str_replace('watch?v=', 'embed/', $request->get('youtube_link'));
-        $user->save();
         return redirect()->back();
     }
 
