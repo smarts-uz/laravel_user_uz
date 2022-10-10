@@ -46,6 +46,7 @@ use Laravel\Passport\HasApiTokens;
  * @property $remember_token
  * @property $reviews userga qoldirilgan izohlari soni
  * @property $tokens
+ * @property $map
  * @return array //Value Returned
  */
 class User extends \TCG\Voyager\Models\User
