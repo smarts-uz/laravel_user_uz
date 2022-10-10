@@ -92,6 +92,9 @@ class SocialAPIController extends Controller
                     'message' => __('Аккаунт отключен'),
                 ]);
             }
+
+            $user->update([$provider . '_id' => $providerUser->id]);
+
             // create a token for the user, so they can login
             Auth::login($user);
             $accessToken = $user->createToken('authToken')->accessToken;
