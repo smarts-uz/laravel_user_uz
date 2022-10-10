@@ -33,7 +33,7 @@ class CustomField extends Model
         'options' => 'array',
         'options_ru' => 'array'
     ];
-    protected $translatable = ['title','description','placeholder','label'];
+    protected $translatable = ['title','description','placeholder','label','error_message'];
 
 
     const ROUTE_NAME = 'name';

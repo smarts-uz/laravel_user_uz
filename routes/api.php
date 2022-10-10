@@ -136,8 +136,11 @@ Route::post('/reset', [UserAPIController::class, 'reset_submit']); //end +
 Route::post('/reset/password', [UserAPIController::class, 'reset_password_save'])->name('user.reset_password_save'); //end +
 Route::post('/code', [UserAPIController::class, 'reset_code'])->name('user.reset_code'); //end +
 
+Route::get('/support-admin', [UserAPIController::class, "getSupportId"]);
+
 //News
 Route::get('/blog-news', [BlogController::class, 'index']); // used
+Route::get('/blog-news/{blogNew}', [BlogController::class, 'show']); // used
 
 //Tasks
 Route::get('task/{task}', [TaskAPIController::class, 'task']); // used

@@ -173,6 +173,8 @@ function correctPhoneNumber($phone)
 {
     if (strlen($phone) == 12) {
         return '+' . $phone;
+    }elseif (strlen($phone) == 17){
+        return substr($phone, 0, 13);
     }
     return $phone;
 }
@@ -181,3 +183,4 @@ function cacheLang($id)
 {
     return cache()->get('lang' . $id);
 }
+

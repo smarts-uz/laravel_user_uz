@@ -13,14 +13,14 @@ class SearchAPIController extends Controller
         if ($task->user_id !== auth()->id()){
             return response()->json([
                 'success' => false,
-                "message" => "No Permission"
+                "message" => __("Отсутствует разрешение")
             ], 403);
         }
         $task->status = Task::STATUS_CANCELLED;
         $task->save();
         return response()->json([
             'success' => true,
-            'message' => "Successfully cancelled"
+            'message' => __('Успешно отменено')
         ]);
     }
 
@@ -59,13 +59,13 @@ class SearchAPIController extends Controller
         if ($task->user_id !== auth()->id()){
             return response()->json([
                 'success' => false,
-                "message" => "No Permission"
+                "message" => __("Отсутствует разрешение")
             ], 403);
         }
         $task->delete();
         return response()->json([
             'success' => true,
-            'message' => "Successfully deleted"
+            'message' => __('Успешно удалено')
         ]);
     }
 

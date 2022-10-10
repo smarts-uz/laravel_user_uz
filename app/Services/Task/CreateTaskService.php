@@ -2,7 +2,6 @@
 
 namespace App\Services\Task;
 
-use App\Http\Controllers\LoginController;
 use App\Models\Address;
 use App\Models\Category;
 use App\Models\CustomField;
@@ -351,7 +350,7 @@ class CreateTaskService
             VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
             return $this->get_verify($task, $user);
         } elseif ($user->phone_number !== $data['phone_number']) {
-            LoginController::send_verification_for_task_phone($task, correctPhoneNumber($data['phone_number']));
+            VerificationService::send_verification_for_task_phone($task, correctPhoneNumber($data['phone_number']));
             return $this->get_verify($task, $user);
         } elseif (!$user->is_phone_number_verified) {
             VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));

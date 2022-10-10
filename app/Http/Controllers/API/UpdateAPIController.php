@@ -160,10 +160,10 @@ class UpdateAPIController extends Controller
             ReviewService::sendReview($task, $request);
         } catch (Exception) {
             DB::rollBack();
-            return response()->json(['success' => false, 'message' => "fail"]);  //back();
+            return response()->json(['success' => false, 'message' => __('Не удалось отправить')]);  //back();
         }
         DB::commit();
-        return response()->json(['success' => true, 'message' => " success"]);  //back();
+        return response()->json(['success' => true, 'message' => __('Успешно отправлено')]);  //back();
     }
 
 

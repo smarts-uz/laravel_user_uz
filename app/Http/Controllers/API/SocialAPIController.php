@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\SocialController;
 use App\Http\Requests\Api\SocialRequest;
 use App\Http\Resources\PerformerIndexResource;
 use App\Models\User;

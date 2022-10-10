@@ -44,7 +44,7 @@ class UserIndexResource extends JsonResource
         $achievements = [];
 
         // check verify part
-        if ($this->is_email_verified && $this->is_phone_number_verified) {
+        if ($this->is_phone_number_verified) {
             $email_phone_photo = asset('images/verify.png');
             $message = __('Номер телефона и Е-mail пользователя подтверждены');
         }

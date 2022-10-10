@@ -139,13 +139,10 @@
         <div class="mb-4">
             <div id="formulario" class="flex flex-col gap-y-4">
                 {{ $data->getTranslatedAttribute('label') }}
-                <input
-                    placeholder="{{ $data->getTranslatedAttribute('placeholder') }}"
-                    id="car_{{ $data['order'] }}" name="{{$data->name}}[]" type="text"
+                <input placeholder="{{ $data->getTranslatedAttribute('placeholder') }}"
+                    id="car_{{ $data['order'] }}" name="{{$data->name}}[]" type="text" required
                     value="{{App\Services\Task\CustomFieldService::setInputValue($task, $data->id)}}"
-                    class="shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500"
-                    required
-                >
+                    class="shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500">
             </div>
         </div>
     </div>

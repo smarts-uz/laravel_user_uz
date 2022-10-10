@@ -136,7 +136,7 @@ class CreateService
             $coordinates = Arr::get($requestAll, 'coordinates' . $i, '');
 
             if ($coordinates) {
-                if ((int)$i === 0) {
+                if ($i === 0) {
                     $data_inner['default'] = 1;
                 }
                 $data_inner['location'] = $location;
@@ -156,7 +156,8 @@ class CreateService
      * @param $task $user
      * @param $user
      */
-    public function perform_notification($task,$user){
+    public function perform_notification($task,$user): void
+    {
         $performer_id = Session::get('performer_id_for_task');
         if ($performer_id) {
             /** @var User $performer */

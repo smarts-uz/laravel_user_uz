@@ -9,14 +9,14 @@
                 </h3>
             </div>
             <div class="mt-4 flex flex-row justify-center">
-                <a class="border-2 py-2 px-12 mx-2 rounded-lg bg-red-500" href="{{route('social.googleRedirect')}}">
+                <a class="border-2 py-2 px-8 mx-2 rounded-lg bg-red-500" href="{{route('social.googleRedirect')}}">
                     <i class="fab fa-google text-2xl text-white"> </i>
                 </a>
                 <a class="border-2 py-2 px-4 mx-2 rounded-lg hidden" href="{{ route('one.auth') }}">ONE ID</a>
-               <a class="border-2 py-2 px-12 mx-2 rounded-lg bg-blue-700" href="{{route('social.facebookRedirect')}}">
+               <a class="border-2 py-2 px-8 mx-2 rounded-lg bg-blue-700" href="{{route('social.facebookRedirect')}}">
                    <i class="fab fa-facebook text-2xl text-white"></i>
                </a>
-               <a class="border-2 py-2 px-12 mx-2 rounded-lg bg-black" href="{{route('social.appleRedirect')}}">
+               <a class="border-2 py-2 px-8 mx-2 rounded-lg bg-black" href="{{route('social.appleRedirect')}}">
                    <i class="fab fa-apple text-2xl text-white"></i>
                </a>
             </div>

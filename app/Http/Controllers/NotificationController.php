@@ -43,7 +43,7 @@ class NotificationController extends VoyagerBaseController
      *     },
      * )
      */
-    public function getNotifications()
+    public function getNotifications(): JsonResponse
     {
         return $this->success(
             NotificationResource::collection(NotificationService::getNotifications(auth()->user(), false))

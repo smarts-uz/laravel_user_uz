@@ -11,6 +11,7 @@ use TCG\Voyager\Models\Category;
 
 class ControllerService
 {
+    public const MAX_HOMEPAGE_TASK = 20;
     /**
      *
      * Function  home
@@ -21,7 +22,7 @@ class ControllerService
     {
         $item = new ControllerItem();
         $item -> categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->get();
-        $item -> tasks  =  Task::query()->where('status', 1)->orWhere('status',2)->orderBy('id', 'desc')->take(20)->get();
+        $item -> tasks  =  Task::query()->where('status', Task::STATUS_OPEN)->orWhere('status',Task::STATUS_RESPONSE)->orderBy('id', 'desc')->take(self::MAX_HOMEPAGE_TASK)->get();
         $item -> child_categories = Category::withTranslations(['ru', 'uz'])->where('parent_id','!=',null)->get();
         return $item;
 
@@ -51,7 +52,7 @@ class ControllerService
     public function my_tasks(){
         $item = new MyTaskItem();
         $item->user = auth()->user();
-        $item->tasks = $item->user->tasks()->whereIn('status', [1, 2, 3, 4, 5 ,6])->orderBy('created_at', 'desc')->get();
+        $item->tasks = $item->user->tasks()->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->orderBy('created_at', 'desc')->get();
         $item->perform_tasks = $item->user->performer_tasks()->orderBy('created_at', 'desc')->get();
         $item->categories = Category::query()->where('parent_id', null)->select('id', 'name', 'slug')->get();
         $item->categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name','ico')->get();
