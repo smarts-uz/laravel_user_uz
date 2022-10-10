@@ -46,7 +46,7 @@ class TaskAPIController extends Controller
     private FilterTaskService $filter_service;
     private CreateTaskService $create_task_service;
     private UpdateTaskService $update_task_service;
-
+    public const SOME_TASK_LIMIT = 10;
     public function __construct()
     {
         $this->service = new CreateService();
@@ -86,7 +86,7 @@ class TaskAPIController extends Controller
     public function same_tasks(Task $task): AnonymousResourceCollection
     {
         $tasks = $task->category->tasks()->where('id', '!=', $task->id);
-        $tasks = $tasks->where('status', Task::STATUS_OPEN)->take(10)->orderByDesc('created_at')->get();
+        $tasks = $tasks->where('status', Task::STATUS_OPEN)->take(self::SOME_TASK_LIMIT)->orderByDesc('created_at')->get();
         return SameTaskResource::collection($tasks);
     }
 
@@ -201,7 +201,7 @@ class TaskAPIController extends Controller
 
         if ($task->user_id === $user->id) {
             return $this->fail([], trans('trans.your task'));
-        } elseif ($user->role_id !== 2) {
+        } elseif ($user->role_id !== User::ROLE_PERFORMER) {
             return $this->fail([], trans('trans.not performer'));
         } elseif (!$user->is_phone_number_verified) {
             return $this->fail([], trans('trans.verify phone'));
@@ -217,7 +217,7 @@ class TaskAPIController extends Controller
         if (!$response->task) {
             return response()->json([
                 'success' => false,
-                'message' => "Task not found"
+                'message' => __('Задача не найдена')
             ]);
         }
         $this->response_service->selectPerformer($response);

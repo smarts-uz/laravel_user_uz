@@ -766,6 +766,18 @@
     "Проверяемое поле может быть нулевым.": "Tekshirilayotgan maydon null bo'lishi mumkin.",
     "Проверяемое поле должно быть целым числом.": "Tekshirilayotgan maydon butun son bo'lishi kerak.",
     "Вы еще не исполнитель":"Siz hali ijrochi emassiz",
-    "Вы еще не являетесь руководителем Universal Services. Присоединяйтесь к списку исполнителей.":"Siz hali Universal Servicesda ijrochi bo'lmagansiz. Iltimos ijrochilar ro'yxatiga qo'shiling."
+    "Вы еще не являетесь руководителем Universal Services. Присоединяйтесь к списку исполнителей.":"Siz hali Universal Servicesda ijrochi bo'lmagansiz. Iltimos ijrochilar ro'yxatiga qo'shiling.",
+    "СМС-код отправлен!": "SMS kodi yuborildi!",
+    "Пароль был изменен": "Parol o'zgartirildi",
+    "Введите новый пароль": "Yangi parolni kiriting",
+    "Данные пользователя обновлены!": "Foydalanuvchi maʼlumotlari yangilandi!",
+    "Успешно вышел из системы": "Hisobdan muvaffaqiyatli chiqdi",
+    "Не удалось отправить": "Muvaffaqiyatsiz yuborildi",
+    "Успешно отправлен": "Muvaffaqiyatli yuborildi",
+    "Задача не найдена": "Vazifa topilmadi",
+    "Успешно удалено": "Muvaffaqiyatli oʻchirib tashlandi",
+    "Отсутствует разрешение": "Ruxsat yo'q",
+    "Успешно отменено": "Muvaffaqiyatli bekor qilindi",
+    "Успешно обновлено": "Muvaffaqiyatli yangilandi"
 
 }

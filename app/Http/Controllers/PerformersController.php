@@ -125,7 +125,7 @@ class PerformersController extends Controller
     public function ajaxAP()
     {
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
-        $activePerformers = User::query()->where([['role_id', 2], ['last_seen', ">=", $date]])
+        $activePerformers = User::query()->where([['role_id', User::ROLE_PERFORMER], ['last_seen', ">=", $date]])
             ->select('id')
             ->get();
 

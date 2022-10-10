@@ -26,7 +26,7 @@ class ContactService
 
         // get moderators
         foreach (User::query()
-                     ->whereIn('role_id', [1, 6])
+                     ->whereIn('role_id', [User::ROLE_ADMIN, User::ROLE_MODERATOR])
                      ->whereNotIn('id', $userIdsList)
                      ->distinct()->pluck('id') as $moderator_id) {
             $userIdsList[] = $moderator_id;

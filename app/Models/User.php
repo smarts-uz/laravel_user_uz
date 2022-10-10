@@ -57,6 +57,7 @@ class User extends \TCG\Voyager\Models\User
     const ROLE_ADMIN = 1;
     const ROLE_PERFORMER = 2;
     const ROLE_USER = 5;
+    const ROLE_MODERATOR = 6;
 
     protected $table = 'users';
 

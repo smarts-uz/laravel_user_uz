@@ -151,7 +151,7 @@ class UserController extends Controller
                         'status' => 1, 'user_id' => $user->id, 'phone' => $user->phone_number
                     ]);
                 } else {
-                    Task::query()->findOrFail($request->get('for_ver_func'))->update(['status' => 1, 'user_id' => $user->id,]);
+                    Task::query()->findOrFail($request->get('for_ver_func'))->update(['status' => Task::STATUS_OPEN, 'user_id' => $user->id,]);
 
                 }
                 auth()->login($user);

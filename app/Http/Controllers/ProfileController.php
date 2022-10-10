@@ -163,7 +163,7 @@ class ProfileController extends Controller
         ]);
         /** @var User $user */
         $user = Auth::user();
-        $user->role_id = 2;
+        $user->role_id = User::ROLE_PERFORMER;
         $checkbox = implode(",", $request->get('category'));
         $smsNotification = 0;
         $emailNotification = 0;

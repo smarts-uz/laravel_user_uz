@@ -44,7 +44,7 @@ class NotificationService
                                 Notification::ADMIN_COMPLETE_TASK, Notification::ADMIN_CANCEL_TASK
                             ]);
                     });
-                if ($user->role_id == 2 && $web)
+                if ((int)$user->role_id === User::ROLE_PERFORMER && $web)
                     $query->orWhere(function ($query) use ($user) {
                         $query->where('performer_id', '=', $user->id)->where('type', '=', Notification::TASK_CREATED);
                     });
@@ -70,7 +70,7 @@ class NotificationService
      */
     public static function sendTaskNotification($task, $user_id): void
     {
-        $performers = User::query()->where('role_id', 2)->select('id', 'email', 'category_id', 'firebase_token', 'sms_notification', 'email_notification', 'phone_number')->get();
+        $performers = User::query()->where('role_id', User::ROLE_PERFORMER)->select('id', 'email', 'category_id', 'firebase_token', 'sms_notification', 'email_notification', 'phone_number')->get();
         $performer_ids = [];
         foreach ($performers as $performer) {
             $user_cat_ids = explode(",", $performer->category_id);

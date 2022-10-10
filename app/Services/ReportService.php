@@ -35,7 +35,7 @@ class ReportService
                     ->toDateTimeString();
                 $cat = Category::query()->where('parent_id', $app->id)->pluck('id')->toarray();
                 $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])
-                    ->where('category_id', $cat)->where('status', 1)->get();
+                    ->where('category_id', $cat)->where('status', Task::STATUS_OPEN)->get();
                 return count($application);
             })
             ->addColumn('open_sum', function ($app) {
@@ -48,7 +48,7 @@ class ReportService
                     ->toDateTimeString();
                 $cat = Category::query()->where('parent_id', $app->id)->pluck('id')->toarray();
                 $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])
-                    ->where('category_id', $cat)->where('status', 1)->pluck('budget')->toArray();
+                    ->where('category_id', $cat)->where('status', Task::STATUS_OPEN)->pluck('budget')->toArray();
                 return array_sum($application);
             })
             ->addColumn('process_count', function ($app) {
@@ -61,7 +61,7 @@ class ReportService
                     ->toDateTimeString();
                 $cat = Category::query()->where('parent_id', $app->id)->pluck('id')->toarray();
                 $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])
-                    ->where('category_id', $cat)->where('status', 3)->get();
+                    ->where('category_id', $cat)->where('status', Task::STATUS_IN_PROGRESS)->get();
                 return count($application);
             })
             ->addColumn('process_sum', function ($app) {
@@ -74,7 +74,7 @@ class ReportService
                     ->toDateTimeString();
                 $cat = Category::query()->where('parent_id', $app->id)->pluck('id')->toarray();
                 $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])
-                    ->where('category_id', $cat)->where('status', 3)->pluck('budget')
+                    ->where('category_id', $cat)->where('status', Task::STATUS_IN_PROGRESS)->pluck('budget')
                     ->toArray();
                 return array_sum($application);
             })
@@ -88,7 +88,7 @@ class ReportService
                     ->toDateTimeString();
                 $cat = Category::query()->where('parent_id', $app->id)->pluck('id')->toarray();
                 $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])
-                    ->where('category_id', $cat)->where('status', 4)->get();
+                    ->where('category_id', $cat)->where('status', Task::STATUS_COMPLETE)->get();
                 return count($application);
             })
             ->addColumn('finished_sum', function ($app) {
@@ -99,7 +99,7 @@ class ReportService
 
                 $cat = Category::query()->where('parent_id', $app->id)->pluck('id')->toarray();
                 $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])
-                    ->where('category_id', $cat)->where('status', 4)->pluck('budget')->toArray();
+                    ->where('category_id', $cat)->where('status', Task::STATUS_COMPLETE)->pluck('budget')->toArray();
                 return array_sum($application);
             })
             ->addColumn('open_count', function ($app) {
@@ -110,7 +110,7 @@ class ReportService
 
                 $cat = Category::query()->where('parent_id', $app->id)->pluck('id')->toarray();
                 $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])
-                    ->where('category_id', $cat)->where('status', 1)->get();
+                    ->where('category_id', $cat)->where('status', Task::STATUS_OPEN)->get();
                 return count($application);
             })
             ->addColumn('open_sum', function ($app) {
@@ -121,7 +121,7 @@ class ReportService
 
                 $cat = Category::query()->where('parent_id', $app->id)->pluck('id')->toarray();
                 $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])
-                    ->where('category_id', $cat)->where('status', 1)->pluck('budget')->toArray();
+                    ->where('category_id', $cat)->where('status', Task::STATUS_OPEN)->pluck('budget')->toArray();
                 return array_sum($application);
             })
             ->addColumn('cencelled_count', function ($app) {
@@ -132,7 +132,7 @@ class ReportService
 
                 $cat = Category::query()->where('parent_id', $app->id)->pluck('id')->toarray();
                 $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])
-                    ->where('category_id', $cat)->where('status', 6)->get();
+                    ->where('category_id', $cat)->where('status', Task::STATUS_CANCELLED)->get();
                 return count($application);
             })
             ->addColumn('cencelled_sum', function ($app) {
@@ -142,7 +142,7 @@ class ReportService
                 $end_date = Carbon::parse("{$date_1}-31")->toDateTimeString();
 
                 $cat = Category::query()->where('parent_id', $app->id)->pluck('id')->toarray();
-                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', 6)->pluck('budget')->toArray();
+                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', Task::STATUS_CANCELLED)->pluck('budget')->toArray();
                 return array_sum($application);
             })
             ->addColumn('total_count', function ($app) {
@@ -194,7 +194,7 @@ class ReportService
                 $end_date = Carbon::parse("$date_1-31")
                     ->toDateTimeString();
                 $cat = Category::query()->where('id', $app->id)->pluck('id')->toarray();
-                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', 1)->get();
+                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', Task::STATUS_OPEN)->get();
                 return count($application);
             })
             ->addColumn('open_sum', function ($app) {
@@ -206,7 +206,7 @@ class ReportService
                 $end_date = Carbon::parse("$date_1-31")
                     ->toDateTimeString();
                 $cat = Category::query()->where('id', $app->id)->pluck('id')->toarray();
-                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', 1)->pluck('budget')->toArray();
+                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', Task::STATUS_OPEN)->pluck('budget')->toArray();
                 return array_sum($application);
             })
             ->addColumn('process_count', function ($app) {
@@ -218,7 +218,7 @@ class ReportService
                 $end_date = Carbon::parse("$date_1-31")
                     ->toDateTimeString();
                 $cat = Category::query()->where('id', $app->id)->pluck('id')->toarray();
-                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', 3)->get();
+                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', Task::STATUS_IN_PROGRESS)->get();
                 return count($application);
             })
             ->addColumn('process_sum', function ($app) {
@@ -230,7 +230,7 @@ class ReportService
                 $end_date = Carbon::parse("$date_1-31")
                     ->toDateTimeString();
                 $cat = Category::query()->where('id', $app->id)->pluck('id')->toarray();
-                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', 3)->pluck('budget')->toArray();
+                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', Task::STATUS_IN_PROGRESS)->pluck('budget')->toArray();
                 return array_sum($application);
             })
             ->addColumn('finished_count', function ($app) {
@@ -242,7 +242,7 @@ class ReportService
                 $end_date = Carbon::parse("$date_1-31")
                     ->toDateTimeString();
                 $cat = Category::query()->where('id', $app->id)->pluck('id')->toarray();
-                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', 4)->get();
+                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', Task::STATUS_COMPLETE)->get();
                 return count($application);
             })
             ->addColumn('finished_sum', function ($app) {
@@ -254,7 +254,7 @@ class ReportService
                 $end_date = Carbon::parse("$date_1-31")
                     ->toDateTimeString();
                 $cat = Category::query()->where('id', $app->id)->pluck('id')->toarray();
-                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', 4)->pluck('budget')->toArray();
+                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', Task::STATUS_COMPLETE)->pluck('budget')->toArray();
                 return array_sum($application);
             })
             ->addColumn('open_count', function ($app) {
@@ -266,7 +266,7 @@ class ReportService
                 $end_date = Carbon::parse("$date_1-31")
                     ->toDateTimeString();
                 $cat = Category::query()->where('id', $app->id)->pluck('id')->toarray();
-                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', 1)->get();
+                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', Task::STATUS_OPEN)->get();
                 return count($application);
             })
             ->addColumn('open_sum', function ($app) {
@@ -278,7 +278,7 @@ class ReportService
                 $end_date = Carbon::parse("$date_1-31")
                     ->toDateTimeString();
                 $cat = Category::query()->where('id', $app->id)->pluck('id')->toarray();
-                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', 1)->pluck('budget')->toArray();
+                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', Task::STATUS_OPEN)->pluck('budget')->toArray();
                 return array_sum($application);
             })
             ->addColumn('cencelled_count', function ($app) {
@@ -290,7 +290,7 @@ class ReportService
                 $end_date = Carbon::parse("$date_1-31")
                     ->toDateTimeString();
                 $cat = Category::query()->where('id', $app->id)->pluck('id')->toarray();
-                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', 6)->get();
+                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', Task::STATUS_CANCELLED)->get();
                 return count($application);
             })
             ->addColumn('cencelled_sum', function ($app) {
@@ -302,7 +302,7 @@ class ReportService
                 $end_date = Carbon::parse("$date_1-31")
                     ->toDateTimeString();
                 $cat = Category::query()->where('id', $app->id)->pluck('id')->toarray();
-                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', 6)->pluck('budget')->toArray();
+                $application = Task::query()->whereBetween('created_at', [$start_date, $end_date])->where('category_id', $cat)->where('status', Task::STATUS_CANCELLED)->pluck('budget')->toArray();
                 return array_sum($application);
             })
             ->addColumn('total_count', function ($app) {

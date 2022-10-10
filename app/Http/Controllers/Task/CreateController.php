@@ -217,7 +217,7 @@ class CreateController extends Controller
             return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
         }
 
-        $task->status = 1;
+        $task->status = Task::STATUS_OPEN;
         $task->user_id = $user->id;
         $task->phone = $data['phone_number'];
 
