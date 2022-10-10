@@ -17,6 +17,8 @@ use Carbon\Carbon;
 
 class SearchService
 {
+    public const MAX_SEARCH_TASK = 20;
+    public const REMOTE_TASK = 1;
     /**
      *
      * Function  comlianse_saveS
@@ -57,12 +59,12 @@ class SearchService
         $item->selected = $task->responses()->where('performer_id', $task->performer_id)->first();
         $item->responses = $item->selected ? $task->responses()->where('id', '!=', $item->selected->id) : $task->responses();
         $item->auth_response = $auth_response ? $task->responses()->where('performer_id', $userId)->with('user')->first() : null;
-        $item->same_tasks = $task->category->tasks()->where('id', '!=', $task->id)->where('status', [1, 2])->orderBy('created_at', 'desc')->get();
+        $item->same_tasks = $task->category->tasks()->where('id', '!=', $task->id)->where('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE])->orderBy('created_at', 'desc')->get();
         $item->addresses = $task->addresses;
         $item->top_users = User::query()
             ->where('review_rating', '!=', 0)
-            ->where('role_id', 2)->orderbyRaw('(review_good - review_bad) DESC')
-            ->limit(20)->pluck('id')->toArray();
+            ->where('role_id', User::ROLE_PERFORMER)->orderbyRaw('(review_good - review_bad) DESC')
+            ->limit(Review::TOP_USER)->pluck('id')->toArray();
         $item->respons_reviews = Review::all();
         return $item;
     }
@@ -98,7 +100,7 @@ class SearchService
         }
 
         $tasks = Task::query()
-            ->whereIn('status', [1, 2])
+            ->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE])
             ->when(count($relatedAdress), function ($query) use ($relatedAdress) {
                 $query->whereIn('id', $relatedAdress);
             })
@@ -112,10 +114,10 @@ class SearchService
                 $query->whereIn('category_id', $arr_check);
             })
             ->when($remjob, function ($query) {
-                $query->where('remote', 1);
+                $query->where('remote', self::REMOTE_TASK);
             })
             ->when($noresp, function ($query) {
-                $query->whereIn('status', [1]);
+                $query->whereIn('status', [Task::STATUS_OPEN]);
             })
             ->when($filterByStartDate, function ($query) {
                 $query->orderBy('start_date', 'desc');
@@ -123,7 +125,7 @@ class SearchService
             ->when(!$filterByStartDate, function ($query) {
                 $query->latest();
             })
-            ->paginate(20);
+            ->paginate(self::MAX_SEARCH_TASK);
 
 
         $tasks->transform(function ($task) use ($users, $adresses, $categories) {

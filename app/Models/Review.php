@@ -24,6 +24,7 @@ class Review extends Model
     protected $fillable = ['user_id','description','good_bad','reviewer_id','task_id', 'as_performer'];
     protected $with = ['user', 'reviewer','task'];
 
+    const TOP_USER = 20;
 
     public function user()
     {

@@ -48,7 +48,11 @@ class UserController extends Controller
                 'message' => __("Этот номер телефона не зарегистрирован!")
             ]);
         }
-        $code = rand(100000, 999999);
+        if(!($user->verify_code)){
+            $code = rand(100000, 999999);
+        }else{
+            $code = $user->verify_code;
+        }
         $user->verify_code = $code;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
@@ -151,7 +155,7 @@ class UserController extends Controller
                         'status' => 1, 'user_id' => $user->id, 'phone' => $user->phone_number
                     ]);
                 } else {
-                    Task::query()->findOrFail($request->get('for_ver_func'))->update(['status' => 1, 'user_id' => $user->id,]);
+                    Task::query()->findOrFail($request->get('for_ver_func'))->update(['status' => Task::STATUS_OPEN, 'user_id' => $user->id,]);
 
                 }
                 auth()->login($user);

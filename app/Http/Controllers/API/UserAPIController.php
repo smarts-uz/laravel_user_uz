@@ -99,7 +99,11 @@ class UserAPIController extends Controller
         $data = $request->validated();
         /** @var User $user */
         $user = User::query()->where('phone_number', '+' . $data['phone_number'])->firstOrFail();
-        $message = rand(100000, 999999);
+        if(!($user->verify_code)){
+            $message = rand(100000, 999999);
+        }else{
+            $message = $user->verify_code;
+        }
         $user->verify_code = $message;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
@@ -108,7 +112,7 @@ class UserAPIController extends Controller
         SmsMobileService::sms_packages($phone_number,$message);
         session(['phone' => $data['phone_number']]);
 
-        return response()->json(['success' => true, 'message' => "SMS Code is send!"]);
+        return response()->json(['success' => true, 'message' => __('СМС-код отправлен!')]);
     }
 
 
@@ -162,7 +166,7 @@ class UserAPIController extends Controller
         $user->save();
         return response()->json([
             'success' => true,
-            'message' => 'Password was changed'
+            'message' => __('Пароль был изменен')
         ]);
 
     }
@@ -214,12 +218,12 @@ class UserAPIController extends Controller
 
         if ($data['code'] === $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-                return response()->json(['success' => true, 'message' => 'Enter a new password']);
+                return response()->json(['success' => true, 'message' => __('Введите новый пароль')]);
             } else {
                 abort(419);
             }
         } else {
-            return response()->json(['success' => false, 'message' => 'Error Code']);
+            return response()->json(['success' => false, 'message' => __('Код ошибки')]);
         }
     }
 
@@ -255,7 +259,7 @@ class UserAPIController extends Controller
         $user = User::query()->where('id', $id)->firstOrFail();
         $user->update($data);
 
-        return response()->json(['success' => true, 'message' => 'User data updated!']);
+        return response()->json(['success' => true, 'message' => __('Данные пользователя обновлены!')]);
     }
 
     public function getSupportId()
@@ -310,7 +314,7 @@ class UserAPIController extends Controller
         }
         return response()->json([
             'success' => true,
-            'message' => 'Successfully logged out'
+            'message' => __('Успешно вышел из системы')
         ]);
     }
 }

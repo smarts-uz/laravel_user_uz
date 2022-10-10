@@ -210,7 +210,7 @@ class PerformerAPIController extends Controller
         $data['born_date'] = Carbon::parse($data['born_date'])->format('Y-m-d');
         $user->update($data);
 
-        return response()->json(['success' => 'true', 'message' => 'Successfully updated']);
+        return response()->json(['success' => 'true', 'message' => __('Успешно обновлено')]);
     }
 
     /**
@@ -266,7 +266,7 @@ class PerformerAPIController extends Controller
             $user->is_email_verified = 0;
         }
         $user->save();
-        return response()->json(['success' => 'true', 'message' => 'Successfully updated']);
+        return response()->json(['success' => 'true', 'message' => __('Успешно обновлено')]);
     }
 
     /**
@@ -359,7 +359,7 @@ class PerformerAPIController extends Controller
 
         auth()->user()->update($data);
 
-        return response()->json(['success' => true, "message" => 'successfully updated']);
+        return response()->json(['success' => true, "message" => __('Успешно обновлено')]);
 
     }
 

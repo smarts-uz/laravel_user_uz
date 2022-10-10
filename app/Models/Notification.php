@@ -21,7 +21,7 @@ class Notification extends Model
     use HasFactory;
     use Translatable;
 
-    protected $translatable = ['description'];
+    protected array $translatable = ['description'];
     protected $fillable = ['user_id', 'performer_id', 'service_id', 'task_id', 'cat_id', 'description', 'name_task', 'type', 'is_read'];
 
     public const TASK_CREATED = 1;

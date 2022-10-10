@@ -28,6 +28,7 @@ use UAParser\Parser;
 
 class ProfileService
 {
+    public const MAX_TRANSACTIONS = 15;
     /**
      *
      * Function  commentServ
@@ -101,14 +102,14 @@ class ProfileService
         $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->select('id', 'name')->get();
         $categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
         $regions = Region::withTranslations(['ru', 'uz'])->get();
-        $top_users = User::query()->where('role_id', 2)->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
-            ->limit(20)->pluck('id')->toArray();
+        $top_users = User::query()->where('role_id', User::ROLE_PERFORMER)->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
+            ->limit(Review::TOP_USER)->pluck('id')->toArray();
         $sessions = Session::query()->where('user_id', $user->id)->get();
         $parser = Parser::create();
         $review_good = $user->review_good;
         $review_bad = $user->review_bad;
         $review_rating = $user->review_rating;
-        $task = Task::query()->where('user_id', Auth::id())->whereIn('status', [1, 2, 3, 4, 5, 6])->get();
+        $task = Task::query()->where('user_id', Auth::id())->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->get();
         return array(
             'user' => $user,
             'categories' => $categories,
@@ -134,10 +135,6 @@ class ProfileService
     {
         /** @var User $user */
         $user = auth()->user();
-        if ($data['email'] !== $user->email) {
-            $data['is_email_verified'] = 0;
-            $data['email_old'] = $user->email;
-        }
         if ($data['phone_number'] !== $user->phone_number) {
             $data['is_phone_number_verified'] = 0;
             $data['phone_number_old'] = $user->phone_number;
@@ -207,11 +204,11 @@ class ProfileService
         $item = new ProfileCashItem();
         $item->user = Auth()->user()->load('transactions');
         $item->balance = $item->user->walletBalance;
-        $item->task = Task::query()->where('user_id', Auth::id())->whereIn('status', [1, 2, 3, 4, 5, 6])->get();
-        $item->transactions = $item->user->transactions()->paginate(15);
-        $item->top_users = User::query()->where('role_id', 2)
+        $item->task = Task::query()->where('user_id', Auth::id())->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->get();
+        $item->transactions = $item->user->transactions()->paginate(self::MAX_TRANSACTIONS);
+        $item->top_users = User::query()->where('role_id', User::ROLE_PERFORMER)
             ->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
-            ->limit(20)->pluck('id')->toArray();
+            ->limit(Review::TOP_USER)->pluck('id')->toArray();
         $item->review_rating = $user->review_rating;
         $item->review_good = $user->review_good;
         $item->review_bad = $user->review_bad;
@@ -228,11 +225,11 @@ class ProfileService
     public function profileData($user)
     {
         $item = new ProfileDataItem();
-        $item->task = Task::query()->where('user_id', Auth::id())->whereIn('status', [1, 2, 3, 4, 5, 6])->get();
+        $item->task = Task::query()->where('user_id', Auth::id())->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->get();
         $item->portfolios = $user->portfolios()->where('image', '!=', null)->get();
-        $item->top_users = User::query()->where('role_id', 2)
+        $item->top_users = User::query()->where('role_id', User::ROLE_PERFORMER)
             ->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
-            ->limit(20)->pluck('id')->toArray();
+            ->limit(Review::TOP_USER)->pluck('id')->toArray();
         $item->categories = Category::withTranslations(['ru', 'uz'])->get();
         $item->review_good = $user->review_good;
         $item->review_bad = $user->review_bad;
@@ -330,14 +327,23 @@ class ProfileService
         $user = auth()->user();
         $validated = $request->validated();
         $link = $validated['link'];
-        if (!str_starts_with($link, 'https://www.youtube.com/')) {
-            $message = trans('trans.Link should be from YouTube.');
-            $success = false;
-        } else {
-            $user->youtube_link = str_replace('watch?v=', 'embed/', $link);
-            $user->save();
-            $message = trans('trans.Video added successfully.');
-            $success = true;
+        switch (true){
+            case str_starts_with($link, 'https://youtu.be/') :
+                $user->youtube_link =  str_replace('https://youtu.be', 'https://www.youtube.com/embed', $link);
+                $user->save();
+                $message = trans('trans.Video added successfully.');
+                $success = true;
+                break;
+            case str_starts_with($link, 'https://www.youtube.com/') :
+                $user->youtube_link = str_replace('watch?v=', 'embed/', $link);
+                $user->save();
+                $message = trans('trans.Video added successfully.');
+                $success = true;
+                break;
+            default :
+                $message = trans('trans.Link should be from YouTube.');
+                $success = false;
+                break;
         }
 
         return [
@@ -387,7 +393,7 @@ class ProfileService
         }
         return [
             'balance' => $balance,
-            'transaction' => TransactionHistoryCollection::collection($transactions->orderByDesc('created_at')->paginate(15))->response()->getData(true)
+            'transaction' => TransactionHistoryCollection::collection($transactions->orderByDesc('created_at')->paginate(self::MAX_TRANSACTIONS))->response()->getData(true)
         ];
     }
 
@@ -413,7 +419,11 @@ class ProfileService
             $user->phone_number_old = $user->phone_number;
             $user->phone_number = $phoneNumber;
             $user->is_phone_number_verified = 0;
-            $message = rand(100000, 999999);
+            if(!($user->verify_code)){
+                $message = rand(100000, 999999);
+            }else{
+                $message = $user->verify_code;
+            }
             $phone_number = $user->phone_number;
             $user->verify_code = $message;
             $user->save();

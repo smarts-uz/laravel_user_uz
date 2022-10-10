@@ -7,7 +7,6 @@ use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
 use App\Models\User;
 use App\Models\WalletBalance;
-use App\Services\SmsMobileService;
 use App\Services\VerificationService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;

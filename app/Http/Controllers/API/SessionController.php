@@ -24,6 +24,6 @@ class SessionController extends Controller
                 $token->delete();
             }
         });
-        return $this->success('', 'Successfully deleted');
+        return $this->success('', __('Успешно удалено'));
     }
 }

@@ -22,7 +22,11 @@ class VerificationService
                 Mail::to($user->email)->send(new VerifyEmail($data, $user, $email));
             }
         } else {
-            $message = rand(100000, 999999);
+            if(!($user->verify_code)){
+                $message = rand(100000, 999999);
+            }else{
+                $message = $user->verify_code;
+            }
             SmsMobileService::sms_packages($phone_number,"USer.Uz ". __("Код подтверждения") . ' ' . $message);
         }
         $user->verify_code = $message;
@@ -33,8 +37,11 @@ class VerificationService
 
     public static function send_verification_for_task_phone($task, $phone_number): void
     {
-        $message = rand(100000, 999999);
-
+        if(!($task->verify_code)){
+            $message = rand(100000, 999999);
+        }else{
+            $message = $task->verify_code;
+        }
         $task->phone = $phone_number;
         $task->verify_code = $message;
         $task->verify_expiration = Carbon::now()->addMinutes(2);
