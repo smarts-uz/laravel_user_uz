@@ -2,20 +2,16 @@
 
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\BlogController;
-use App\Http\Controllers\API\CategoriesAPIController;
-use App\Http\Controllers\API\LoginAPIController;
-use App\Http\Controllers\API\PerformerAPIController;
-use App\Http\Controllers\API\ProfileAPIController;
-use App\Http\Controllers\API\SessionController;
-use App\Http\Controllers\API\SocialAPIController;
-use App\Http\Controllers\API\TaskAPIController;
-use App\Http\Controllers\API\UpdateAPIController;
-use App\Http\Controllers\API\UserAPIController;
-use App\Http\Controllers\API\SearchAPIController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\PortfolioAPIController;
-use App\Http\Controllers\vendor\Chatify\Api\MessagesController;
+use App\Http\Controllers\API\{
+    BlogController, PerformerAPIController, ProfileAPIController,
+    CategoriesAPIController, LoginAPIController, SessionController,
+    SocialAPIController, TaskAPIController, UpdateAPIController,
+    UserAPIController, SearchAPIController
+};
+use App\Http\Controllers\{
+    NotificationController, PortfolioAPIController,
+    vendor\Chatify\Api\MessagesController
+};
 
 
 /*

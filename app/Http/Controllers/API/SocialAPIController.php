@@ -80,7 +80,7 @@ class SocialAPIController extends Controller
                     'name' => $providerUser->name,
                     'email' => $providerUser->email,
                     'is_email_verified' => 1,
-                    'avatar' => self::get_avatar($providerUser)
+                    'avatar' => $provider != 'apple' ? self::get_avatar($providerUser) : null
                 ]);
                 $wallBal = new WalletBalance();
                 $wallBal->balance = setting('admin.bonus');
