@@ -13,6 +13,7 @@ use App\Models\CustomField;
 use App\Models\CustomFieldsValue;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\WalletBalance;
 use App\Services\Task\CreateService;
 use App\Services\Task\CustomFieldService;
 use App\Services\VerificationService;
@@ -231,12 +232,18 @@ class CreateController extends Controller
     public function contact_register(Task $task, UserRequest $request)
     {
         $data = $request->validated();
-        $data['password'] = Hash::make('login123');
+        $data['password'] = Hash::make($request->get('password'));
+        unset($data['password_confirmation']);
         /** @var User $user */
         $user = User::query()->create($data);
+        $user->phone_number = $data['phone_number'] . '_' . $user->id;
+        $user->save();
+        $wallBal = new WalletBalance();
+        $wallBal->balance = setting('admin.bonus');
+        $wallBal->user_id = $user->id;
+        $wallBal->save();
         VerificationService::send_verification('phone', $user, $user->phone_number);
         return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
-
     }
 
     public function contact_login(Task $task, UserPhoneRequest $request)

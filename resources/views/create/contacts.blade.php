@@ -81,19 +81,15 @@
                                                 <div class="mb-3 xl:w-full">
 
                                                     @auth()
-                                                        <form
-                                                            action="{{route('task.create.contact.store.phone', $task->id)}}"
-                                                            method="post">
+                                                        <form action="{{route('task.create.contact.store.phone', $task->id)}}" method="post">
                                                             @csrf
-
                                                             <label class="text-sm text-gray-500 mb-2"
                                                                    for="phone">{{__('Номер телефона')}}</label>
                                                             <input type="text"  autofocus="autofocus" name="phone_number"
-                                                                   value="{{auth()->user()->phone_number}}"
-                                                                   placeholder="+998(00)000-00-00" id="phone"
+                                                                   value="{{auth()->user()->phone_number}}" placeholder="+998(00)000-00-00" id="phone"
                                                                    class="shadow appearance-none border phone  phone-1 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500"/>
                                                             @error('phone_number')
-                                                            <p>{{$message}}</p>
+                                                                <p>{{$message}}</p>
                                                             @enderror
 
                                                             <div class="mt-4">
@@ -114,8 +110,6 @@
                                                                         class="bg-yellow-500 hover:bg-yellow-600 m-4 cursor-pointer text-white font-normal text-xl py-3 sm:px-14 px-8 rounded-2xl "
                                                                         name="" value="{{__('Отправить')}}">
                                                                 </div>
-
-
                                                             </div>
                                                         </form>
                                                     @endauth
@@ -123,60 +117,61 @@
 
                                                     @guest
 
-                                                        <form
-                                                            action="{{route("task.create.contact.store.register", $task->id)}}"
-                                                            method="post">
+                                                        <form action="{{route("task.create.contact.store.register", $task->id)}}" method="post">
                                                             @csrf
-
-                                                            <label class="text-sm text-gray-500 mb-2"
-                                                                   for="name">{{__('Имя')}}</label>
+                                                            <label class="text-sm text-gray-500 mb-2" for="name">
+                                                                {{__('Имя')}}
+                                                            </label>
 
                                                             <input type="text" name="name" autofocus="autofocus"
-                                                                   placeholder="{{__('Имя')}}"
-                                                                   value="{{old('name')}}"
+                                                                   placeholder="{{__('Имя')}}" value="{{old('name')}}"
                                                                    class="mb-5 shadow appearance-none border   focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500 "/>
                                                             @error('name')
-                                                            <p class="text-red-500">{{$message}}</p>
+                                                                <p class="text-red-500">{{$message}}</p>
                                                             @enderror
                                                             <label class="text-sm text-gray-500 mb-2"
                                                                    for="email">E-mail</label>
                                                             <input type="email" name="email" placeholder="E-mail"
                                                                    value="{!! old('email') !!}"
-                                                                   class="mb-5 shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500"
-                                                            />
+                                                                   class="mb-5 shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500"/>
                                                             @error('email')
-                                                            <p class="text-red-500">{{$message}}</p>
+                                                                <p class="text-red-500">{{$message}}</p>
                                                             @enderror
                                                             <label class="text-sm text-gray-500 mb-2"
                                                                    for="phone">{{__('Номер телефона')}}</label>
-                                                            <input type="text"  name="phone_number"
-                                                                   value="{{old('phone_number')}}" id="phone"
-                                                                   class="shadow appearance-none border phone focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500 "/>
-
+                                                            <input type="text"  name="phone_number" value="{{old('phone_number')}}" id="phone"
+                                                                   class="mb-5 shadow appearance-none border phone focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500 "/>
                                                             @error('phone_number')
-                                                            <p class="text-red-500">{{$message}}</p>
+                                                                <p class="text-red-500">{{$message}}</p>
+                                                            @enderror
+                                                            <label class="text-sm text-gray-500 mb-2" for="password">{{__('Пароль')}}</label>
+                                                            <input type="password"  name="password" value="{{old('password')}}" id="password" placeholder="{{__('Пароль')}}"
+                                                                   class="mb-5 shadow appearance-none border phone focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500 "/>
+                                                            @error('password')
+                                                                <p class="text-red-500">{{$message}}</p>
+                                                            @enderror
+                                                            <label class="text-sm text-gray-500 mb-2" for="password">{{__('Подтвердите пароль')}}</label>
+                                                            <input type="password"  name="password_confirmation" value="{{old('password')}}" id="password_confirmation" placeholder="{{__('Подтвердите пароль')}}"
+                                                                   class="mb-5 shadow appearance-none border phone focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500 "/>
+                                                            @error('password_confirmation')
+                                                                <p class="text-red-500">{{$message}}</p>
                                                             @enderror
 
                                                             <div class="mt-4">
                                                                 <div class="flex w-full mt-4">
                                                                     <a onclick="myFunction()"
-                                                                    class="bg-white my-4 cursor-pointer hover:border-yellow-500 text-gray-600 hover:text-yellow-500 transition duration-300 font-normal text-base py-3 sm:px-6 px-2 rounded-2xl border border-2">
-                                                                        <!-- <button type="button"> -->
-                                                                    {{__('Назад')}}
-                                                                    <!-- </button> -->
+                                                                       class="bg-white my-4 cursor-pointer hover:border-yellow-500 text-gray-600 hover:text-yellow-500 transition duration-300 font-normal text-base py-3 sm:px-8 px-6 rounded-2xl  border border-2">
+                                                                        {{__('Назад')}}
                                                                         <script>
                                                                             function myFunction() {
                                                                                 window.history.back();
                                                                             }
                                                                         </script>
                                                                     </a>
-                                                                    <input type="submit"
-                                                                        style="background: linear-gradient(164.22deg, #FDC4A5 4.2%, #FE6D1D 87.72%);"
+                                                                    <input type="submit" style="background: linear-gradient(164.22deg, #FDC4A5 4.2%, #FE6D1D 87.72%);"
                                                                         class="bg-yellow-500 hover:bg-yellow-600 m-4 cursor-pointer text-white font-normal text-2xl py-3 sm:px-14 px-8 rounded-2xl "
                                                                         name="" value="{{__('Отправить')}}">
                                                                 </div>
-
-
                                                             </div>
                                                         </form>
                                                     @endguest
@@ -190,9 +185,7 @@
                             </div>
                             @guest()
                                 <div class="tab-pane fade   @if(session()->has('phone') ) error @endif "
-                                     id="tabs-profile3" role="tabpanel"
-
-                                     aria-labelledby="tabs-profile-tab3">
+                                     id="tabs-profile3" role="tabpanel" aria-labelledby="tabs-profile-tab3">
                                     <form action="{{route('task.create.contact.store.login', $task->id)}}"
                                           method="POST">
                                         @csrf
@@ -209,8 +202,6 @@
                                         @error('phone_number')
                                         <p class="text-red-500">{{ $message }}</p>
                                         @enderror
-
-
 
 
                                         <div class="mt-4">

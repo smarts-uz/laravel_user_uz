@@ -27,7 +27,7 @@ class VerificationService
             }else{
                 $message = $user->verify_code;
             }
-            SmsMobileService::sms_packages($phone_number,"USer.Uz ". __("Код подтверждения") . ' ' . $message);
+            SmsMobileService::sms_packages( correctPhoneNumber($phone_number),"USer.Uz ". __("Код подтверждения") . ' ' . $message);
         }
         $user->verify_code = $message;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
