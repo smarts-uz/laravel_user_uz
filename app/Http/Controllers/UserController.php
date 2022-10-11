@@ -148,10 +148,9 @@ class UserController extends Controller
                 if ($task->phone === null && $user->phone_number !== $task->phone && (int)$user->is_phone_number_verified === 0) {
                     $user->update(['is_phone_number_verified' => 0]);
                 } else {
-                    $user->update([
-                        'is_phone_number_verified' => 1,
-                        'phone_number'=> correctPhoneNumber($user->phone_number)
-                    ]);
+                    $user->update(['is_phone_number_verified' => 1]);
+                    $user->phone_number = correctPhoneNumber($user->phone_number);
+                    $user->save();
                 }
                 if ($task->phone === null) {
                     Task::query()->findOrFail($request->get('for_ver_func'))->update([
