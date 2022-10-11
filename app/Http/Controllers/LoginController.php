@@ -136,6 +136,8 @@ class LoginController extends Controller
             'code' => 'required'
         ]);
         if (self::verifyColum('phone_number', auth()->user(), $request->code)) {
+            auth()->user()->phone_number = correctPhoneNumber(auth()->user()->phone_number);
+            auth()->user()->save();
             Alert::success(__('Поздравляю'), __('Ваш телефон успешно подтвержден'));
             return redirect()->route('profile.profileData');
         } else {
