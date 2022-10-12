@@ -109,7 +109,7 @@ class UserAPIController extends Controller
         $user->save();
         $message = "USer.Uz ". __("Код подтверждения") . ' ' . $message;
         $phone_number = $user->phone_number;
-        SmsMobileService::sms_packages($phone_number,$message);
+        SmsMobileService::sms_packages(correctPhoneNumber($phone_number),$message);
         session(['phone' => $data['phone_number']]);
 
         return response()->json(['success' => true, 'message' => __('СМС-код отправлен!')]);

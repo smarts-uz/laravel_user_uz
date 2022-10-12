@@ -75,7 +75,7 @@ class PerformersController extends Controller
                 'task_name' => $text_url, 'task_id' => $task_id, 'task_user' => $task_name->user?->name
             ]);
             $phone_number=$performer->phone_number;
-            SmsMobileService::sms_packages($phone_number, $message);
+            SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
             /** @var Notification $notification */
             $notification = Notification::query()->create([
                 'user_id' => $task_name->user_id,
