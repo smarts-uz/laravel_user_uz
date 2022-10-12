@@ -31,7 +31,7 @@ class MessageResource extends JsonResource
             'message' => $this->body,
             'attachment' => $attachment,
             'seen' => $this->seen,
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
         ];
     }
 }
