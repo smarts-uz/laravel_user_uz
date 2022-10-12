@@ -73,8 +73,10 @@ class Review extends Model
             $user = $review->user;
             if ($review->good_bad == 1 && $user->review_good > 0) {
                 $review->user->decrement('review_good');
+                $review->user->decrement('reviews');
             } elseif ($user->review_bad > 0) {
                 $review->user->decrement('review_bad');
+                $review->user->decrement('reviews');
             }
         });
     }
