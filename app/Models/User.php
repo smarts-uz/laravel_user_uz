@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Models\Chat\ChMessage;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -47,6 +48,9 @@ use Laravel\Passport\HasApiTokens;
  * @property $remember_token
  * @property $reviews userga qoldirilgan izohlari soni
  * @property $tokens
+ * @property $tasks
+ * @property $taskResponses
+ * @property $reviewsObj
  * @property $map
  * @return array //Value Returned
  */
@@ -111,17 +115,17 @@ class User extends \TCG\Voyager\Models\User
         return $this->hasMany(Review::class, 'user_id', 'id')->where('good_bad', 0)->whereHas('task');
     }
 
-    public function views()
+    public function views(): HasMany
     {
         return $this->hasMany(UserView::class, 'user_id');
     }
 
-    public function performer_views()
+    public function performer_views(): HasMany
     {
         return $this->hasMany(UserView::class, 'performer_id');
     }
 
-    public function performer_tasks()
+    public function performer_tasks(): HasMany
     {
         return $this->hasMany(Task::class, 'performer_id');
     }
@@ -137,12 +141,17 @@ class User extends \TCG\Voyager\Models\User
     }
 
 
-    public function closedResponses()
+    public function closedResponses(): HasMany
     {
         return $this->hasMany(Task::class, 'performer_id')->where('status', Task::STATUS_COMPLETE);
     }
 
-    public function tasks()
+    public function taskResponses(): HasMany
+    {
+        return $this->hasMany(TaskResponse::class, 'performer_id');
+    }
+
+    public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);
     }
@@ -157,17 +166,17 @@ class User extends \TCG\Voyager\Models\User
         return Carbon::parse($this->attributes['last_seen'])->locale(app()->getLocale() . '-' . app()->getLocale())->diffForHumans();
     }
 
-    public function portfolios()
+    public function portfolios(): HasMany
     {
         return $this->hasMany(Portfolio::class);
     }
 
-    public function sessions()
+    public function sessions(): HasMany
     {
         return $this->hasMany(Session::class);
     }
 
-    public function messages()
+    public function messages(): HasMany
     {
 
         return $this->hasMany(\App\Models\Chat\ChMessage::class, '');
@@ -186,7 +195,7 @@ class User extends \TCG\Voyager\Models\User
         return false;
     }
 
-    public function compliances()
+    public function compliances(): HasMany
     {
         return $this->hasMany(Compliance::class);
     }
@@ -203,12 +212,14 @@ class User extends \TCG\Voyager\Models\User
             foreach ($user->reviewsObj as $review) {
                 $review->delete();
             }
+            foreach ($user->taskResponses as $response) {
+                $response->delete();
+            }
 
             $user->portfolios()->delete();
             $user->compliances()->delete();
 
             ChMessage::query()->where('from_id', $user->id)->orWhere('to_id', $user->id)->delete();
-            TaskResponse::query()->where('user_id', $user->id)->orWhere('performer_id', $user->id)->delete();
             Notification::query()->where('user_id', $user->id)->orWhere('performer_id', $user->id)->delete();
 
             $user->walletBalance()->delete();

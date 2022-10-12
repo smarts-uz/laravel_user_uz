@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -17,7 +18,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property $performer_id
  * @property $not_free
  * @property $created_at
- * @return array //Value Returned
+ *
+ * @property $task
+ * @property $user
+ * @property $performer
  */
 
 class TaskResponse extends Model
@@ -29,17 +33,17 @@ class TaskResponse extends Model
 
     protected $with = ['user', 'task'];
 
-    public function task()
+    public function task(): BelongsTo
     {
         return $this->belongsTo(Task::class);
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function performer()
+    public function performer(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -54,4 +58,16 @@ class TaskResponse extends Model
     }
 
 
+    public static function boot ()
+    {
+        parent::boot();
+
+        self::deleting(function (TaskResponse $response) {
+            /** @var Task $task */
+            $task = $response->task;
+            if ($task->status == Task::STATUS_IN_PROGRESS) {
+                $task->update(['status' => Task::STATUS_CANCELLED]);
+            }
+        });
+    }
 }
