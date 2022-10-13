@@ -169,7 +169,7 @@ function updateCache($key, $property, $value)
     return $data;
 }
 
-function correctPhoneNumber($phone): string
+function correctPhoneNumber($phone)
 {
     return match (true) {
         strlen($phone) == 12 => '+' . $phone,
