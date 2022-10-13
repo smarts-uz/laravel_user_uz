@@ -27,7 +27,7 @@ class PerformerIndexResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'avatar' => $this->avatar ? asset('storage/'.$this->avatar) : null,
-            'phone_number' => $this->phone_number,
+            'phone_number' => correctPhoneNumber($this->phone_number),
             'location' => $this->location,
             'last_seen' => $lastSeen,
             'likes' => $this->review_good,
