@@ -73,15 +73,17 @@ class Review extends Model
         parent::boot();
         self::deleting(function (Review $review) {
             $user = $review->user;
-            switch (true){
-                case (int)$review->good_bad === 1 && $user->review_good > 0 :
-                    $review->user->decrement('review_good');
-                    $review->user->decrement('reviews');
-                    break;
-                case $user->review_bad > 0 :
-                    $review->user->decrement('review_bad');
-                    $review->user->decrement('reviews');
-                    break;
+            if ($user) {
+                switch (true){
+                    case (int)$review->good_bad === 1 && $user->review_good > 0 :
+                        $user->decrement('review_good');
+                        $user->decrement('reviews');
+                        break;
+                    case $user->review_bad > 0 :
+                        $user->decrement('review_bad');
+                        $user->decrement('reviews');
+                        break;
+                }
             }
         });
     }
