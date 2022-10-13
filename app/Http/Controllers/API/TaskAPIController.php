@@ -120,15 +120,20 @@ class TaskAPIController extends Controller
     public function responses(Request $request, Task $task): AnonymousResourceCollection
     {
         if ($task->user_id === auth()->id()) {
-            if ($request->get('filter') === 'rating') {
-                $responses = TaskResponse::query()->select('task_responses.*')->join('users', 'task_responses.performer_id', '=', 'users.id')
-                    ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating');
-            } elseif ($request->get('filter') === 'date') {
-                $responses = $task->responses()->orderByDesc('created_at');
-            } elseif ($request->get('filter') === 'price') {
-                $responses = $task->responses()->orderBy('price');
-            } else {
-                $responses = $task->responses();
+            switch ($request->get('filter')){
+                case 'rating' :
+                    $responses = TaskResponse::query()->select('task_responses.*')->join('users', 'task_responses.performer_id', '=', 'users.id')
+                        ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating');
+                    break;
+                case 'date' :
+                    $responses = $task->responses()->orderByDesc('created_at');
+                    break;
+                case 'price' :
+                    $responses = $task->responses()->orderBy('price');
+                    break;
+                default :
+                    $responses = $task->responses();
+                    break;
             }
         } else {
             $responses = $task->responses()->where('performer_id', auth()->id());
@@ -199,12 +204,13 @@ class TaskAPIController extends Controller
         /** @var User $user */
         $user = auth()->user();
 
-        if ($task->user_id === $user->id) {
-            return $this->fail([], trans('trans.your task'));
-        } elseif ($user->role_id !== User::ROLE_PERFORMER) {
-            return $this->fail([], trans('trans.not performer'));
-        } elseif (!$user->is_phone_number_verified) {
-            return $this->fail([], trans('trans.verify phone'));
+        switch (true){
+            case ($task->user_id === $user->id) :
+                return $this->fail([], trans('trans.your task'));
+            case ($user->role_id !== User::ROLE_PERFORMER) :
+                return $this->fail([], trans('trans.not performer'));
+            case (!$user->is_phone_number_verified) :
+                return $this->fail([], trans('trans.verify phone'));
         }
 
         $response = $this->response_service->store($request, $task);

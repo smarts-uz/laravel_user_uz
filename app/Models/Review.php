@@ -48,21 +48,23 @@ class Review extends Model
 
     public function scopeFromUserType($query, $type)
     {
-        if ($type == 'user') {
-            return $query->where('as_performer', 0);
-        } elseif ($type == 'performer') {
-            return $query->where('as_performer', 1);
+        switch ($type){
+            case 'user' :
+                return $query->where('as_performer', 0);
+            case 'performer' :
+                return $query->where('as_performer', 1);
         }
     }
 
     public function scopeType($query, $type)
     {
-        if ($type == 'good') {
-            return $query->where('good_bad', 1);
-        } elseif ($type == 'bad') {
-            return $query->where('good_bad', 0);
-        } elseif ($type == 'all') {
-            return $query;
+        switch ($type){
+            case 'good' :
+                return $query->where('good_bad', 1);
+            case 'bad' :
+                return $query->where('good_bad', 0);
+            case  'all' :
+                return $query;
         }
     }
 
@@ -71,12 +73,15 @@ class Review extends Model
         parent::boot();
         self::deleting(function (Review $review) {
             $user = $review->user;
-            if ($review->good_bad == 1 && $user->review_good > 0) {
-                $review->user->decrement('review_good');
-                $review->user->decrement('reviews');
-            } elseif ($user->review_bad > 0) {
-                $review->user->decrement('review_bad');
-                $review->user->decrement('reviews');
+            switch (true){
+                case (int)$review->good_bad === 1 && $user->review_good > 0 :
+                    $review->user->decrement('review_good');
+                    $review->user->decrement('reviews');
+                    break;
+                case $user->review_bad > 0 :
+                    $review->user->decrement('review_bad');
+                    $review->user->decrement('reviews');
+                    break;
             }
         });
     }

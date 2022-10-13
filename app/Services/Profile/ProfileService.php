@@ -252,10 +252,13 @@ class ProfileService
         if (isset($performer)) {
             $reviews->where(['as_performer' => $performer]);
         }
-        if ($request->get('review') === 'good') {
-            $reviews->where(['good_bad' => 1]);
-        } elseif ($request->get('review') === 'bad') {
-            $reviews->where(['good_bad' => 0]);
+        switch ($request->get('review')){
+            case 'good' :
+                $reviews->where(['good_bad' => 1]);
+                break;
+            case 'bad' :
+                $reviews->where(['good_bad' => 0]);
+                break;
         }
         return $reviews->orderByDesc('created_at')->get();
     }
@@ -375,10 +378,13 @@ class ProfileService
         $from = $request->get('from');
         $to = $request->get('to');
         $type = $request->get('type');
-        if ($type === 'in') {
-            $transactions = $transactions->whereIn('payment_system', Transaction::METHODS);
-        } elseif ($type === 'out') {
-            $transactions = $transactions->where('payment_system', '=', 'Task');
+        switch ($type){
+            case 'in' :
+                $transactions = $transactions->whereIn('payment_system', Transaction::METHODS);
+                break;
+            case 'out' :
+                $transactions = $transactions->where('payment_system', '=', 'Task');
+                break;
         }
         $now = Carbon::now();
         if ($period) {
@@ -528,14 +534,17 @@ class ProfileService
         $notification = $request->get('notification');
         /** @var User $user */
         $user = auth()->user();
-        if ($notification === 1) {
-            $user->system_notification = 1;
-            $user->news_notification = 1;
-            $message = trans('trans.Notifications turned on.');
-        } elseif ($notification === 0) {
-            $user->system_notification = 0;
-            $user->news_notification = 0;
-            $message = trans('trans.Notifications turned off.');
+        switch ($notification){
+            case 1 :
+                $user->system_notification = 1;
+                $user->news_notification = 1;
+                $message = trans('trans.Notifications turned on.');
+                break;
+            case 0 :
+                $user->system_notification = 0;
+                $user->news_notification = 0;
+                $message = trans('trans.Notifications turned off.');
+                break;
         }
         $user->save();
         return $message ?? 'Success';

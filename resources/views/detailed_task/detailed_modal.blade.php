@@ -73,14 +73,12 @@
 {{-- podelitsa modal end --}}
 
 {{-- share modal start --}}
-<div class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none        justify-center items-center"
+<div class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
     style="background-color:rgba(0,0,0,0.5)" id="modal-id44">
     <div class="relative w-full my-32 mx-auto max-w-3xl" id="modal44">
-        <div
-            class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none">
+        <div class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none">
             <div class=" text-center p-6  rounded-t">
-                <button type="submit" onclick="toggleModal44()"
-                        class="rounded-md w-100 h-16 absolute top-1 right-4 focus:outline-none">
+                <button type="submit" onclick="toggleModal44()" class="rounded-md w-100 h-16 absolute top-1 right-4 focus:outline-none">
                     <i class="fas fa-times text-xl w-full"></i>
                 </button>
                 <h1 class="font-bold text-3xl block mt-6">
@@ -113,7 +111,7 @@
 {{-- share modal end --}}
 
 {{-- review modal --}}
-<div class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none        justify-center items-center"
+<div class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
     style="background-color:rgba(0,0,0,0.5)" id="modal-id4">
     <div class="relative w-full my-32 mx-auto max-w-3xl" id="modal4">
         <div

@@ -171,10 +171,11 @@ function updateCache($key, $property, $value)
 
 function correctPhoneNumber($phone)
 {
-    if (strlen($phone) == 12) {
-        return '+' . $phone;
-    }elseif (strlen($phone) == 17){
-        return substr($phone, 0, 13);
+    switch (strlen($phone)){
+        case 12 :
+            return '+' . $phone;
+        case 17 :
+            return substr($phone, 0, 13);
     }
     return $phone;
 }
