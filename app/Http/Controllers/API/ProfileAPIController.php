@@ -653,7 +653,7 @@ class ProfileAPIController extends Controller
             'location' => $user->location,
             'date_of_birth' => $user->born_date,
             'email' => $user->email,
-            'phone' => $user->phone_number,
+            'phone' => correctPhoneNumber($user->phone_number),
             'gender' => $user->gender,
         ];
         return response()->json([
