@@ -235,6 +235,7 @@ class UserAPIController extends Controller
             unset($data['password_confirmation']);
             /** @var User $user */
             $user = User::query()->create($data);
+            $user->update(['phone_number' => $data['phone_number'] . '_' . $user->id]);
             $wallBal = new WalletBalance();
             $wallBal->balance = setting('admin.bonus');
             $wallBal->user_id = $user->id;

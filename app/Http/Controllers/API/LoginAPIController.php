@@ -88,6 +88,7 @@ class LoginAPIController extends Controller
 
         if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
             if ($request->get('code') === $user->verify_code || $request->get('code') === setting('admin.CONFIRM_CODE')) {
+                $user->phone_number = correctPhoneNumber($user->phone_number);
                 $user->is_phone_number_verified = 1;
                 $user->save();
                 return response()->json([

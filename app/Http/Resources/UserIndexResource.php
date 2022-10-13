@@ -120,7 +120,7 @@ class UserIndexResource extends JsonResource
             'video' => $this->youtube_link,
             'tasks_count' => $performed_tasks_count,
             'achievements' => $achievements,
-            'phone_number' => $this->phone_number,
+            'phone_number' => correctPhoneNumber($this->phone_number),
             'location' => $this->location,
             'district' => $this->district,
             'age' => $age,

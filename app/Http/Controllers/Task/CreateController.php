@@ -231,10 +231,10 @@ class CreateController extends Controller
     public function contact_register(Task $task, UserRequest $request)
     {
         $data = $request->validated();
-        $data['password'] = Hash::make('login123');
         /** @var User $user */
         $user = User::query()->create($data);
         VerificationService::send_verification('phone', $user, $user->phone_number);
+        $user->update(['phone_number' => $data['phone_number'] . '_' . $user->id]);
         return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
 
     }
