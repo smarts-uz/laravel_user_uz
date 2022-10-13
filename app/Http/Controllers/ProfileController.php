@@ -203,12 +203,13 @@ class ProfileController extends Controller
         $data = $request->validated();
         /** @var User $user */
         $user = auth()->user();
-        if (!$data || (!isset($data['old_password']) && $user->password)) {
-            Alert::error(__('Введите старый пароль'));
-            return redirect()->back();
-        } elseif (isset($data['old_password']) && !Hash::check($data['old_password'], $user->password)) {
-            Alert::error(__('Неверный старый пароль'));
-            return redirect()->back();
+        switch (true){
+            case !$data || (!isset($data['old_password']) && $user->password) :
+                Alert::error(__('Введите старый пароль'));
+                return redirect()->back();
+            case isset($data['old_password']) && !Hash::check($data['old_password'], $user->password) :
+                Alert::error(__('Неверный старый пароль'));
+                return redirect()->back();
         }
 
         $data['password'] = Hash::make($data['password']);
