@@ -28,13 +28,16 @@
             @if( $age>0)
                 <p class="inline-block mr-2">
                     {{ $age}}
-                    @if( $age%10==1)
-                        {{('год')}}
-                    @elseif ( $age%10==2 ||  $age%10==3 ||  $age%10==4)
-                        {{('года')}}
-                    @else
-                        {{__('лет')}}
-                    @endif
+                    @switch(true)
+                        @case ($age%10 === 1)
+                            {{('год')}}
+                            @break
+                        @case($age%10 === 2 ||  $age%10 === 3 ||  $age%10 === 4)
+                            {{('года')}}
+                            @break
+                        @default
+                            {{__('лет')}}
+                    @endswitch
                 </p>
             @endif
             <span class="inline-block">

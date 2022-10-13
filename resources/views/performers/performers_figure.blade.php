@@ -1,7 +1,7 @@
 <div class="difficultTask score scores{{$user->id}} w-12/12 m-5 h-[200px] flex md:flex-none overflow-hidden md:overflow-visible mb-10 "
      id="{{$user->id}}">
     <div class=" float-left mr-4">
-        <img class="rounded-lg w-24 h-24 bg-black mb-2"
+        <img class="rounded-lg w-24 h-24 border-2 mb-2"
              @if ($user->avatar === null) src='{{asset("storage/images/default.jpg")}}'
              @else src="{{asset("storage/{$user->avatar}")}}" @endif alt="avatar">
         <div class="flex sm:flex-row items-center text-sm">
@@ -117,24 +117,28 @@
         </div>
         <div class="mt-6">
             @auth
-                @if($tasks->where('status', '<=', 2)->count() > 0 && Auth::user()->id != $user->id)
-                    <a id="open{{$user->id}}">
-                        <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
-                            onclick="$('#performer_id').val({{$user->id}}); $('#performer_id_task').val({{$user->id}});">
+                @switch(true)
+                    @case ($tasks->where('status', '<=', 2)->count() > 0 && Auth::user()->id !== $user->id)
+                        <a id="open{{$user->id}}">
+                            <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
+                                    onclick="$('#performer_id').val({{$user->id}}); $('#performer_id_task').val({{$user->id}});">
+                                {{__('Предложить задание')}}
+                            </button>
+                        </a>
+                        @break
+                    @case ($tasks->where('status', '<=', 2)->count() >= 0 && Auth::user()->id === $user->id)
+                        <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-gray-500 transition duration-300 text-white mt-3">
                             {{__('Предложить задание')}}
                         </button>
-                    </a>
-                @elseif ($tasks->where('status', '<=', 2)->count() > 0 && Auth::user()->id == $user->id)
-                    <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-gray-500 transition duration-300 text-white mt-3">
-                        {{__('Предложить задание')}}
-                    </button>
-                @else
-                    <a onclick="toggleModal12('modal-id12')" class="">
-                        <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
-                            {{__('Предложить задание')}}
-                        </button>
-                    </a>
-                @endif
+                        @break
+                    @default
+                        <a onclick="toggleModal12('modal-id12')" class="">
+                            <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
+                                {{__('Предложить задание')}}
+                            </button>
+                        </a>
+                        @break
+                @endswitch
                 <input type="hidden" id="performer_id" value="">
             @endauth
         </div>

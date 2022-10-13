@@ -28,13 +28,16 @@
                 @if( $age>0)
                     <p class="inline-block mr-2">
                         {{ $age}}
-                        @if( $age%10==1)
-                            {{('год')}}
-                        @elseif ( $age%10==2 ||  $age%10==3 ||  $age%10==4)
-                            {{('года')}}
-                        @else
-                            {{__('лет')}}
-                        @endif
+                        @switch(true)
+                            @case ($age%10 === 1)
+                                {{('год')}}
+                                @break
+                            @case($age%10 === 2 ||  $age%10 === 3 ||  $age%10 === 4)
+                                {{('года')}}
+                                @break
+                            @default
+                                {{__('лет')}}
+                        @endswitch
                     </p>
                 @endif
                 <span class="inline-block">
@@ -48,7 +51,7 @@
                 </span>
             </div>
             <div class="text-gray-500 text-base mt-2">
-                @if ( session('lang') == 'uz' )
+                @if ( session('lang') === 'uz' )
                     <p class="mt-2">
                         <span>{{count($task_count??[])}}</span> {{__('задание')}}
                         {{__('Создал')}}
@@ -58,7 +61,7 @@
                         <span>{{count($task_count??[])}}</span> {{__('задание')}}
                     </p>
                 @endif
-                @if(session('lang')=='uz')
+                @if(session('lang') === 'uz')
                     {{$user->reviews}} {{__('ta sharh oldim')}}
                 @else
                     @switch($user->reviews)
