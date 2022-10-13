@@ -171,7 +171,7 @@ class CreateTaskService
                 'latitude' => $data['points'][$i]['latitude'],
                 'longitude' => $data['points'][$i]['longitude']
             ];
-            if ((int)$i === 0) {
+            if ($i === 0) {
                 $address['default'] = 1;
             }
             Address::query()->create($address);
@@ -424,11 +424,12 @@ class CreateTaskService
     }
 
 
-
-    ///
-    /// custom values store for API
-    ///
-
+    /**
+     * Custom values store for API
+     * @param $task
+     * @param $routeName
+     * @param $request
+     */
     protected function attachCustomFieldsByRoute($task, $routeName, $request): void
     {
         foreach ($task->category->custom_fields()->where('route',$routeName)->get() as $data) {

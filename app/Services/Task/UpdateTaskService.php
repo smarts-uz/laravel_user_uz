@@ -191,33 +191,33 @@ class UpdateTaskService
         $user = auth()->user();
         unset($data['task_id']);
 
-        if (!$user->is_phone_number_verified && $user->phone_number != correctPhoneNumber($data['phone_number'])) {
-            // in this case user phone number will be changed to new phone number
-            $data['is_phone_number_verified'] = 0;
-            $data['phone_number'] = correctPhoneNumber($data['phone_number']);
-            $user->update($data);
-            VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
-            return $this->get_verify($task, $user);
-        }
-        elseif (!$user->is_phone_number_verified && $user->phone_number == correctPhoneNumber($data['phone_number'])) {
-            VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
-            return $this->get_verify($task, $user);
-        }
-        elseif ($user->phone_number != correctPhoneNumber($data['phone_number']) && $task->phone != correctPhoneNumber($data['phone_number'])) {
-            VerificationService::send_verification_for_task_phone($task, correctPhoneNumber($data['phone_number']));
-            return $this->get_verify($task, $user);
-        }
-        elseif ($user->is_phone_number_verified && $task->phone == correctPhoneNumber($data['phone_number'])) {
-            // in this case task's phone number already verified in create task process, that's why it doesn't need verification
-            $task->status = Task::STATUS_OPEN;
-            $task->user_id = $user->id;
-            $task->phone = correctPhoneNumber($data['phone_number']);
-            $task->save();
-        } else {
-            $task->status = Task::STATUS_OPEN;
-            $task->user_id = $user->id;
-            $task->phone = correctPhoneNumber($user->phone_number);
-            $task->save();
+        switch (true) {
+            case (!$user->is_phone_number_verified && $user->phone_number !== correctPhoneNumber($data['phone_number'])):
+                // in this case user phone number will be changed to new phone number
+                $data['is_phone_number_verified'] = 0;
+                $data['phone_number'] = correctPhoneNumber($data['phone_number']);
+                $user->update($data);
+                VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
+                return $this->get_verify($task, $user);
+            case (!$user->is_phone_number_verified && $user->phone_number === correctPhoneNumber($data['phone_number'])):
+                VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
+                return $this->get_verify($task, $user);
+            case ($user->phone_number !== correctPhoneNumber($data['phone_number']) && $task->phone !== correctPhoneNumber($data['phone_number'])):
+                VerificationService::send_verification_for_task_phone($task, correctPhoneNumber($data['phone_number']));
+                return $this->get_verify($task, $user);
+            case ($user->is_phone_number_verified && $task->phone === correctPhoneNumber($data['phone_number'])):
+                // in this case task's phone number already verified in create task process, that's why it doesn't need verification
+                $task->status = Task::STATUS_OPEN;
+                $task->user_id = $user->id;
+                $task->phone = correctPhoneNumber($data['phone_number']);
+                $task->save();
+                break;
+            default:
+                $task->status = Task::STATUS_OPEN;
+                $task->user_id = $user->id;
+                $task->phone = correctPhoneNumber($user->phone_number);
+                $task->save();
+                break;
         }
 
 
