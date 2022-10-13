@@ -16,10 +16,12 @@ class TaskNotificationService extends NotificationService
      */
     public static function sendNotificationForCancelledTask($task)
     {
-        if ($task->performer_id) { // Send notification to selected performer
+        if ($task->performer_id) {
+            // Send notification to selected performer
             UserNotificationService::sendNotificationToPerformer($task);
         }
-        elseif ($task->task_responses()->count() > 0) { // Send notification to responses performers
+        elseif ($task->task_responses()->count() > 0) {
+            // Send notification to responses performers
             $responses = $task->task_responses()
                 ->without('user', 'task')
                 ->with('performer:id,name,firebase_token')

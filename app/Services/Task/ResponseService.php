@@ -58,38 +58,40 @@ class ResponseService
             } else {
                 $balanceSufficient = $balance->balance < setting('admin.bepul_otklik') + $freeResponsesCount * setting('admin.bepul_otklik');
             }
-            if ($balanceSufficient) {
-                $success = false;
-                $message = __('Недостаточно баланса');
-            }else if($task->responses()->where('performer_id', $auth_user->id)->first()){
-                $success = false;
-                $message = __('Уже было');
-            } else {
-                $success = true;
-                $message = __('Выполнено успешно');
-                TaskResponse::query()->create($data);
-                if ((int)$request->get('not_free') === 1) {
-                    $balance->balance = $balance->balance - setting('admin.pullik_otklik');
-                    $balance->save();
-                    UserExpense::query()->create([
-                        'user_id' => $data['performer_id'],
-                        'task_id' => $data['task_id'],
-                        'client_id' => $data['user_id'],
-                        'amount' => setting('admin.pullik_otklik')
-                    ]);
-                    Transaction::query()->create([
-                        'payment_system' => Transaction::DRIVER_TASK,
-                        'amount' => setting('admin.pullik_otklik'),
-                        'system_transaction_id' => rand(10000000000, 99999999999),
-                        'currency_code' => 860,
-                        'state' => Transaction::STATE_COMPLETED,
-                        'transactionable_type' => User::class,
-                        'transactionable_id' => $data['performer_id'],
-                    ]);
-                }
-
-
-                NotificationService::sendResponseToTaskNotification($task);
+            switch (true){
+                case $balanceSufficient :
+                    $success = false;
+                    $message = __('Недостаточно баланса');
+                    break;
+                case $task->responses()->where('performer_id', $auth_user->id)->first() :
+                    $success = false;
+                    $message = __('Уже было');
+                    break;
+                default :
+                    $success = true;
+                    $message = __('Выполнено успешно');
+                    TaskResponse::query()->create($data);
+                    if ((int)$request->get('not_free') === 1) {
+                        $balance->balance = $balance->balance - setting('admin.pullik_otklik');
+                        $balance->save();
+                        UserExpense::query()->create([
+                            'user_id' => $data['performer_id'],
+                            'task_id' => $data['task_id'],
+                            'client_id' => $data['user_id'],
+                            'amount' => setting('admin.pullik_otklik')
+                        ]);
+                        Transaction::query()->create([
+                            'payment_system' => Transaction::DRIVER_TASK,
+                            'amount' => setting('admin.pullik_otklik'),
+                            'system_transaction_id' => rand(10000000000, 99999999999),
+                            'currency_code' => 860,
+                            'state' => Transaction::STATE_COMPLETED,
+                            'transactionable_type' => User::class,
+                            'transactionable_id' => $data['performer_id'],
+                        ]);
+                    }
+                    NotificationService::sendResponseToTaskNotification($task);
+                    break;
             }
         } else {
             $success = false;
