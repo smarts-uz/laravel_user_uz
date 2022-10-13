@@ -169,15 +169,13 @@ function updateCache($key, $property, $value)
     return $data;
 }
 
-function correctPhoneNumber($phone)
+function correctPhoneNumber($phone): string
 {
-    switch (strlen($phone)){
-        case 12 :
-            return '+' . $phone;
-        case 17 :
-            return substr($phone, 0, 13);
-    }
-    return $phone;
+    return match (true) {
+        strlen($phone) == 12 => '+' . $phone,
+        strlen($phone) > 13 => substr($phone, 0, 13),
+        default => $phone,
+    };
 }
 
 function cacheLang($id)
