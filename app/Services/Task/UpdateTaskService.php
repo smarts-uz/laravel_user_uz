@@ -288,6 +288,7 @@ class UpdateTaskService
         /** @var User $user */
         $user = User::query()->where('phone_number', correctPhoneNumber($data['phone_number']))->first();
         if (!$user) {
+            /** @var Task $task */
             $task = Task::query()->where('phone', correctPhoneNumber($data['phone_number']))->first();
         }
         if ($data['sms_otp'] === $user->verify_code) {
