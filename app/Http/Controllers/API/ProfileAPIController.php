@@ -406,7 +406,7 @@ class ProfileAPIController extends Controller
         $user = auth()->user();
         return response()->json([
             'data' => [
-                'phone_number' => $user->phone_number
+                'phone_number' => correctPhoneNumber($user->phone_number)
             ]
         ]);
     }
