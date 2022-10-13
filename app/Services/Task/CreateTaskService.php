@@ -343,18 +343,22 @@ class CreateTaskService
         /** @var Task $task */
         $task = Task::query()->findOrFail($data['task_id']);
         unset($data['task_id']);
-        if (!$user->is_phone_number_verified && $user->phone_number !== $data['phone_number']) {
-            $data['is_phone_number_verified'] = 0;
-            $data['phone_number'] = correctPhoneNumber($data['phone_number']);
-            $user->update($data);
-            VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
-            return $this->get_verify($task, $user);
-        } elseif ($user->phone_number !== $data['phone_number']) {
-            VerificationService::send_verification_for_task_phone($task, correctPhoneNumber($data['phone_number']));
-            return $this->get_verify($task, $user);
-        } elseif (!$user->is_phone_number_verified) {
-            VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
-            return $this->get_verify($task, $user);
+        switch (true){
+            case (!$user->is_phone_number_verified && $user->phone_number !== $data['phone_number']):
+                $data['is_phone_number_verified'] = 0;
+                $data['phone_number'] = correctPhoneNumber($data['phone_number']);
+                $user->update($data);
+                VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
+                return $this->get_verify($task, $user);
+                break;
+            case ($user->phone_number !== $data['phone_number']) :
+                VerificationService::send_verification_for_task_phone($task, correctPhoneNumber($data['phone_number']));
+                return $this->get_verify($task, $user);
+                break;
+            case (!$user->is_phone_number_verified) :
+                VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
+                return $this->get_verify($task, $user);
+                break;
         }
 
         $task->status = 1;
@@ -383,47 +387,49 @@ class CreateTaskService
         /** @var User $user */
         $user = auth()->user();
 
-        if (!$user->is_phone_number_verified && $data['sms_otp'] === $user->verify_code) {
-            if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-                $user->update(['is_phone_number_verified' => 1]);
-                $task->update(['status' => 1, 'user_id' => $user->id, 'phone' => $user->phone_number]);
+        switch (true){
+            case !$user->is_phone_number_verified && $data['sms_otp'] === $user->verify_code :
+                if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
+                    $user->update(['is_phone_number_verified' => 1]);
+                    $task->update(['status' => 1, 'user_id' => $user->id, 'phone' => $user->phone_number]);
 
-                // send notification
-                NotificationService::sendTaskNotification($task, $user->id);
+                    // send notification
+                    NotificationService::sendTaskNotification($task, $user->id);
 
-                return $this->success([
-                    'task_id' => $task->id,
-                    'route' => 'end',
-                ], 'Successfully verified');
-            } else {
+                    return $this->success([
+                        'task_id' => $task->id,
+                        'route' => 'end',
+                    ], 'Successfully verified');
+                } else {
+                    return $this->fail([
+                        'sms_otp' => ['expired_message']
+                    ], 'Validation errors');
+                }
+                break;
+            case $data['sms_otp'] === $task->verify_code :
+                if (strtotime($task->verify_expiration) >= strtotime(Carbon::now())) {
+                    $task->update(['status' => 1, 'user_id' => $user->id]);
+
+                    // send notification
+                    NotificationService::sendTaskNotification($task, $user->id);
+
+                    return $this->success([
+                        'task_id' => $task->id,
+                        'route' => 'end',
+                    ], 'Successfully verified');
+                } else {
+                    return $this->fail([
+                        'sms_otp' => ['expired_message']
+                    ], 'Validation errors');
+                }
+                break;
+            default :
                 return $this->fail([
-                    'sms_otp' => ['expired_message']
+                    'sms_otp' => ['incorrect_message']
                 ], 'Validation errors');
-            }
-        } elseif ($data['sms_otp'] == $task->verify_code) {
-            if (strtotime($task->verify_expiration) >= strtotime(Carbon::now())) {
-                $task->update(['status' => 1, 'user_id' => $user->id]);
-
-                // send notification
-                NotificationService::sendTaskNotification($task, $user->id);
-
-                return $this->success([
-                    'task_id' => $task->id,
-                    'route' => 'end',
-                ], 'Successfully verified');
-            } else {
-                return $this->fail([
-                    'sms_otp' => ['expired_message']
-                ], 'Validation errors');
-            }
-        } else {
-            return $this->fail([
-                'sms_otp' => ['incorrect_message']
-            ], 'Validation errors');
+                break;
         }
     }
-
-
 
     ///
     /// custom values store for API
