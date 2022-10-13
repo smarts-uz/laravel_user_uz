@@ -350,15 +350,12 @@ class CreateTaskService
                 $user->update($data);
                 VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
                 return $this->get_verify($task, $user);
-                break;
             case ($user->phone_number !== $data['phone_number']) :
                 VerificationService::send_verification_for_task_phone($task, correctPhoneNumber($data['phone_number']));
                 return $this->get_verify($task, $user);
-                break;
             case (!$user->is_phone_number_verified) :
                 VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
                 return $this->get_verify($task, $user);
-                break;
         }
 
         $task->status = 1;
@@ -405,7 +402,6 @@ class CreateTaskService
                         'sms_otp' => ['expired_message']
                     ], 'Validation errors');
                 }
-                break;
             case $data['sms_otp'] === $task->verify_code :
                 if (strtotime($task->verify_expiration) >= strtotime(Carbon::now())) {
                     $task->update(['status' => 1, 'user_id' => $user->id]);
@@ -422,12 +418,10 @@ class CreateTaskService
                         'sms_otp' => ['expired_message']
                     ], 'Validation errors');
                 }
-                break;
             default :
                 return $this->fail([
                     'sms_otp' => ['incorrect_message']
                 ], 'Validation errors');
-                break;
         }
     }
 

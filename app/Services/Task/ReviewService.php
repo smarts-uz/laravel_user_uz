@@ -86,24 +86,26 @@ class ReviewService
 
     public static function sendReview($task, $request, $status = false): void
     {
-        if ($task->user_id === auth()->id()) {
-            // user review to performer
-            $locale = cacheLang($task->performer_id);
-            if ($status) {
-                $request['status'] = 1;
-            }
-            $notification = ReviewService::userReview($task, $request);
-            NotificationService::pushNotification($task->performer, [
-                'title' => __('Новый отзыв', [], $locale), 'body' => __('О вас оставлен новый отзыв', [], $locale) . " \"$task->name\" №$task->id"
-            ], 'notification', new NotificationResource($notification));
-
-        } elseif ($task->performer_id === auth()->id()) {
-            // performer review to user
-            $locale = cacheLang($task->user_id);
-            $notification = ReviewService::performerReview($task, $request);
-            NotificationService::pushNotification($task->user, [
-                'title' => __('Новый отзыв', [], $locale), 'body' => __('О вас оставлен новый отзыв', [], $locale) . " \"$task->name\" №$task->id"
-            ], 'notification', new NotificationResource($notification));
+        switch (true){
+            case $task->user_id === auth()->id() :
+                // user review to performer
+                $locale = cacheLang($task->performer_id);
+                if ($status) {
+                    $request['status'] = 1;
+                }
+                $notification = ReviewService::userReview($task, $request);
+                NotificationService::pushNotification($task->performer, [
+                    'title' => __('Новый отзыв', [], $locale), 'body' => __('О вас оставлен новый отзыв', [], $locale) . " \"$task->name\" №$task->id"
+                ], 'notification', new NotificationResource($notification));
+                break;
+            case $task->performer_id === auth()->id() :
+                // performer review to user
+                $locale = cacheLang($task->user_id);
+                $notification = ReviewService::performerReview($task, $request);
+                NotificationService::pushNotification($task->user, [
+                    'title' => __('Новый отзыв', [], $locale), 'body' => __('О вас оставлен новый отзыв', [], $locale) . " \"$task->name\" №$task->id"
+                ], 'notification', new NotificationResource($notification));
+                break;
         }
     }
 }
