@@ -17,7 +17,6 @@
                 <div class="mb-4">
                     <label class="block text-gray-500 text-sm" for="phone_number">
                         {{__('Телефон немер')}}
-                        </span>
                     </label>
                     <input type="number"
                            id="phone_number" name="code"

@@ -58,7 +58,7 @@ class UserController extends Controller
         $user->save();
         $phone_number = $user->phone_number;
         $message = "USer.Uz " . __("Код подтверждения") . ' ' . $code;
-        SmsMobileService::sms_packages($phone_number, $message);
+        SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
 
         session()->put('verifications', ['key' => 'phone_number', 'value' => $data['phone_number']]);
 
@@ -149,14 +149,15 @@ class UserController extends Controller
                     $user->update(['is_phone_number_verified' => 0]);
                 } else {
                     $user->update(['is_phone_number_verified' => 1]);
+                    $user->phone_number = correctPhoneNumber($user->phone_number);
+                    $user->save();
                 }
                 if ($task->phone === null) {
                     Task::query()->findOrFail($request->get('for_ver_func'))->update([
-                        'status' => 1, 'user_id' => $user->id, 'phone' => $user->phone_number
+                        'status' => 1, 'user_id' => $user->id, 'phone' => correctPhoneNumber($user->phone_number)
                     ]);
                 } else {
                     Task::query()->findOrFail($request->get('for_ver_func'))->update(['status' => Task::STATUS_OPEN, 'user_id' => $user->id,]);
-
                 }
                 auth()->login($user);
 

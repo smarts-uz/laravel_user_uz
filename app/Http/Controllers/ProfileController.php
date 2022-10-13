@@ -254,6 +254,10 @@ class ProfileController extends Controller
         /** @var User $user */
         $user = auth()->user();
         $user->update($data);
+        if((int)$user->is_phone_number_verified !== 1){
+            $user->phone_number = $data['phone_number'] . '_' . $user->id;
+            $user->save();
+        }
 
         return redirect()->route('profile.verificationPhoto');
     }

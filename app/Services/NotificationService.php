@@ -100,7 +100,7 @@ class NotificationService
                     ], $locale);
                 if ($performer->sms_notification) {
                     $phone_number = $performer->phone_number;
-                    SmsMobileService::sms_packages($phone_number, $message);
+                    SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
                 }
                 info(json_encode($performer));
                 if ($performer->email_notification) {
@@ -236,7 +236,7 @@ class NotificationService
             'amount' => $amount, 'payment_system' => $payment_system, 'transaction_id' => $transaction_id, 'user_id' => $user_id
         ], cacheLang($user_id));
         $phone_number = $user->phone_number;
-        SmsMobileService::sms_packages($phone_number, $message);
+        SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
         Mail::to($user->email)->send(new MessageEmail($message));
     }
 

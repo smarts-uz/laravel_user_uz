@@ -168,7 +168,7 @@ class CreateService
                 'task_name' => $text_url, 'task_id' => $task->id, 'task_user' => $user->name
             ], $locale);
             $phone_number=$performer->phone_number;
-            SmsMobileService::sms_packages($phone_number, $message);
+            SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
 
             /** @var Notification $notification */
             $notification = Notification::query()->create([

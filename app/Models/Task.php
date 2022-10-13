@@ -59,9 +59,6 @@ class Task extends Model
         ]
     ];
 
-    //use Translatable;
-
-    const STATUS_NEW = 0;
     const STATUS_OPEN = 1;
     const STATUS_RESPONSE = 2;
     const STATUS_IN_PROGRESS = 3;
@@ -155,16 +152,22 @@ class Task extends Model
 
     public function getStatusTextAttribute()
     {
-        if ($this->status == Task::STATUS_IN_PROGRESS) {
-            return __('В исполнении');
-        } elseif ($this->status < Task::STATUS_IN_PROGRESS) {
-            return __('Открыто');
-        } elseif ($this->status == Task::STATUS_NOT_COMPLETED) {
-            return __('Не выполнено');
-        } elseif ($this->status == Task::STATUS_CANCELLED) {
-            return __('Отменен');
-        } else {
-            return __('Закрыто');
+        switch (true){
+            case (int)$this->status === Task::STATUS_IN_PROGRESS :
+                return __('В исполнении');
+                break;
+            case $this->status < Task::STATUS_IN_PROGRESS  :
+                return __('Открыто');
+                break;
+            case (int)$this->status === Task::STATUS_NOT_COMPLETED :
+                return __('Не выполнено');
+                break;
+            case (int)$this->status === Task::STATUS_CANCELLED :
+                return __('Отменен');
+                break;
+            default :
+                return __('Закрыто');
+                break;
         }
     }
 }
