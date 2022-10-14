@@ -369,7 +369,7 @@ class ProfileService
         $user = auth()->user();
         /** @var WalletBalance $balance */
         $balance = WalletBalance::query()->where('user_id', $user->id)->first();
-        if ($balance != null)
+        if ($balance !== null)
             $balance = $balance->balance;
         else
             $balance = 0;
@@ -387,15 +387,18 @@ class ProfileService
                 break;
         }
         $now = Carbon::now();
-        if ($period) {
-            $transactions = match ($period) {
-                'month' => $transactions->where('created_at', '>', $now->subMonth()),
-                'week' => $transactions->where('created_at', '>', $now->subWeek()),
-                'year' => $transactions->where('created_at', '>', $now->subYear()),
-            };
-        } elseif ($from && $to) {
-            $transactions = $transactions->where('created_at', '>', $from)
-                ->where('created_at', '<', $to);
+        switch (true){
+            case $period :
+                $transactions = match ($period) {
+                    'month' => $transactions->where('created_at', '>', $now->subMonth()),
+                    'week' => $transactions->where('created_at', '>', $now->subWeek()),
+                    'year' => $transactions->where('created_at', '>', $now->subYear()),
+                };
+                break;
+            case $from && $to :
+                $transactions = $transactions->where('created_at', '>', $from)
+                    ->where('created_at', '<', $to);
+                break;
         }
         return [
             'balance' => $balance,

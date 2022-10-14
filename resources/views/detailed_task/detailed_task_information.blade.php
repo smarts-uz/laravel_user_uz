@@ -12,17 +12,19 @@
     @endif
 </div>
 <div class="ml-4 md:ml-12 flex flex-row mt-8">
-    @if($task->date_type === 1)
-        <h1 class="font-bold h-auto w-48">{{__('Начать работу')}}</h1>
-        {{ $start    }}
-    @elseif($task->date_type === 2)
-        <h1 class="font-bold h-auto w-48">{{__('Закончить работу')}}</h1>
-        {{ $end   }}
-    @else
-        <h1 class="font-bold h-auto w-48">{{__('Указать период')}}</h1>
-        <p class=" h-auto w-96">{{ $start }} - {{ $end     }}  </p>
-
-    @endif
+    @switch($task->date_type)
+        @case (1)
+            <h1 class="font-bold h-auto w-48">{{__('Начать работу')}}</h1>
+            {{ $start }}
+            @break
+        @case (2)
+            <h1 class="font-bold h-auto w-48">{{__('Закончить работу')}}</h1>
+            {{ $end }}
+        @default
+            <h1 class="font-bold h-auto w-48">{{__('Указать период')}}</h1>
+            <p class="h-auto w-96">{{ $start }} - {{ $end }} </p>
+            @break
+    @endswitch
 </div>
 <div class="ml-4 md:ml-12 flex flex-row mt-8">
     <h1 class="font-bold h-auto w-48">{{__('Бюджет')}}</h1>

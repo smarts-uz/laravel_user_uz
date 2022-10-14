@@ -2,12 +2,16 @@
 
 $data = array(json_decode($transaction, true))[0];
 
-if ($data['payment_system'] == 'payme') {
-    $amount = (int)$data['amount'];
-} elseif ($data['payment_system'] == 'paynet' or $data['payment_system'] == 'Paynet') {
-    $amount = (int)( $data['amount'] / 100 );
-} else {
-    $amount = (int)$data['amount'];
+switch ($data['payment_system']){
+    case 'payme' :
+        $amount = (int)$data['amount'];
+        break;
+    case 'paynet' or 'Paynet' :
+        $amount = (int)( $data['amount'] / 100 );
+        break;
+    default :
+        $amount = (int)$data['amount'];
+        break;
 }
 
 $user_id = $data['transactionable_id'];
