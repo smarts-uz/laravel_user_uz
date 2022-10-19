@@ -971,6 +971,7 @@ class ProfileAPIController extends Controller
             VerificationService::send_verification('phone', $user, $user->phone_number);
             return response()->json([
                 'success' => true,
+                'phone_number' => correctPhoneNumber($user->phone_number),
                 'message' => __('СМС-код отправлен!')
             ]);
         } else {
