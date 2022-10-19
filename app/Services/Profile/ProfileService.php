@@ -34,7 +34,7 @@ class ProfileService
      * Function  commentServ
      * Mazkur metod user portfolioda qoldirilgan commentni saqlaydi
      * @param $request
-     * @return mixed
+     * @return
      */
     public function commentServ($request)
     {
@@ -54,7 +54,7 @@ class ProfileService
      * Mazkur metod user portfolioda rasmlarni saqlaydi
      * @param Request $request Object
      */
-    public function uploadImageServ(Request $request)
+    public function uploadImageServ(Request $request): void
     {
         /** @var User $user */
         $user = auth()->user();
@@ -95,7 +95,7 @@ class ProfileService
      * Function  settingsEdit
      * Mazkur metod sozlamalar bo'limida ma'lumotlarni chiqarib beradi
      */
-    public function settingsEdit()
+    public function settingsEdit(): array
     {
         /** @var User $user */
         $user = Auth::user();
@@ -148,7 +148,7 @@ class ProfileService
      * Mazkur metod user profilidagi rasmni tahrirlaydi
      * @param Request $request Object
      */
-    public function storeProfilePhoto(Request $request)
+    public function storeProfilePhoto(Request $request): array|bool|string|null
     {
         if ($request->hasFile('image')) {
             $files = $request->file('image');
@@ -169,7 +169,7 @@ class ProfileService
      * Mazkur metod user qoldirgan tavsifni tahrirlayi
      * @param Request $request Object
      */
-    public function editDescription(Request $request)
+    public function editDescription(Request $request): void
     {
         /** @var User $user */
         $user = Auth::user();
@@ -183,7 +183,7 @@ class ProfileService
      * Mazkur metod setting bo'limidagi system va news notification
      * @param Request $request Object
      */
-    public function userNotifications(Request $request)
+    public function userNotifications(Request $request): void
     {
         /** @var User $user */
         $user = auth()->user();
@@ -199,7 +199,7 @@ class ProfileService
      * @param $user
      * @return ProfileCashItem
      */
-    public function profileCash($user)
+    public function profileCash($user): ProfileCashItem
     {
         $item = new ProfileCashItem();
         $item->user = Auth()->user()->load('transactions');
@@ -222,7 +222,7 @@ class ProfileService
      * @param $user
      * @return ProfileDataItem
      */
-    public function profileData($user)
+    public function profileData($user): ProfileDataItem
     {
         $item = new ProfileDataItem();
         $item->task = Task::query()->where('user_id', Auth::id())->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->get();
@@ -268,7 +268,7 @@ class ProfileService
      * Function  createPortfolio
      * Mazkur metod portfolio tablega rasmlarni saqlash
      * @param $request
-     * @return mixed
+     * @return
      */
     public function createPortfolio($request)
     {
@@ -296,7 +296,7 @@ class ProfileService
      * @param $portfolio
      * @return mixed
      */
-    public function updatePortfolio($request, $portfolio)
+    public function updatePortfolio($request, $portfolio): mixed
     {
         $user = $portfolio->user;
         $imgData = $portfolio->image ? json_decode($portfolio->image) : [];
@@ -324,7 +324,7 @@ class ProfileService
      * @return array
      */
     #[ArrayShape([])]
-    public function videoStore($request)
+    public function videoStore($request): array
     {
         /** @var User $user */
         $user = auth()->user();
@@ -363,7 +363,7 @@ class ProfileService
      * @return array
      */
     #[ArrayShape([])]
-    public function balance($request)
+    public function balance($request): array
     {
         /** @var User $user */
         $user = auth()->user();
@@ -414,7 +414,7 @@ class ProfileService
      * @return array
      */
     #[ArrayShape([])]
-    public function phoneUpdate($request)
+    public function phoneUpdate($request): array
     {
         $phoneNumber = $request->get('phone_number');
         /** @var User $userPhone */
@@ -455,7 +455,7 @@ class ProfileService
      * @param $data
      * @return JsonResponse
      */
-    public function changePassword($data)
+    public function changePassword($data): JsonResponse
     {
         /** @var User $user */
         $user = auth()->user();
@@ -488,7 +488,7 @@ class ProfileService
      * Mazkur metod profilda rasm tahrirlash
      * @param $request
      */
-    public function changeAvatar($request)
+    public function changeAvatar($request): void
     {
         /** @var User $user */
         $user = auth()->user();
@@ -509,7 +509,7 @@ class ProfileService
      * Mazkur metod settingni tahrirlash
      * @param $request
      */
-    public function updateSettings($request)
+    public function updateSettings($request): void
     {
         $validated = $request->validated();
         unset($validated['age']);
@@ -532,7 +532,7 @@ class ProfileService
      * @param $request
      * @return array|string
      */
-    public function notifications($request)
+    public function notifications($request): array|string
     {
         $notification = $request->get('notification');
         /** @var User $user */
@@ -560,7 +560,7 @@ class ProfileService
      * @param $request
      * @return array
      */
-    public function subscribeToCategory($request)
+    public function subscribeToCategory($request): array
     {
         /** @var User $user */
         $user = auth()->user();
