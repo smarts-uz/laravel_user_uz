@@ -54,33 +54,33 @@
             <a class="text-gray-300 hover:text-yellow-400 text-lg my-2" href="/geotaskshint">{{__('Как это работает')}}</a>
             <a class="text-gray-300 hover:text-yellow-400 text-lg my-2" href="/author-reviews">{{__('Отзывы заказчиков')}}</a>
             @if(Auth::check())
-                <a class="text-gray-300 hover:text-yellow-400 text-lg my-2 chat" href="">{{__('Служба поддержки')}}</a>
+               <a class="text-gray-300 hover:text-yellow-400 text-lg my-2 chat" href="">{{__('Служба поддержки')}}</a>
+               <script>
+                   const chatPanel = (event) => {
+                       jsPanel.create({
+                           content: `<iframe src="{{url('/chat/' . setting('site.moderator_id'))}}" frameborder="0" style="width: 100%; height: 100%"></iframe>`,
+                           theme: 'primary',
+                           position: 'center',
+                           closeOnEscape: true,
+                           headerTitle: 'Universal Services',
+                           headerControls: {
+                               size: 'md',
+                           },
+                           borderRadius: '1rem',
+                           panelSize: {
+                               width: '80vw',
+                               height: '90vh'
+                           },
+                           contentSize: '80vw 90vh',
+                       });
+                       event.preventDefault();
+                   }
+                   const chat = document.querySelector('.chat');
+                   chat.addEventListener('click', chatPanel);
+               </script>
             @else
                <a href="/badges" class="text-gray-300 hover:text-yellow-400 text-lg my-2">{{__('Награды и рейтинг')}}</a>
             @endif
-           <script>
-               const chatPanel = (event) => {
-                   jsPanel.create({
-                       content: `<iframe src="{{url('/chat/' . setting('site.moderator_id'))}}" frameborder="0" style="width: 100%; height: 100%"></iframe>`,
-                       theme: 'primary',
-                       position: 'center',
-                       closeOnEscape: true,
-                       headerTitle: 'Universal Services',
-                       headerControls: {
-                           size: 'md',
-                       },
-                       borderRadius: '1rem',
-                       panelSize: {
-                           width: '80vw',
-                           height: '90vh'
-                       },
-                       contentSize: '80vw 90vh',
-                   });
-                   event.preventDefault();
-               }
-               const chat = document.querySelector('.chat');
-               chat.addEventListener('click', chatPanel);
-           </script>
        </div>
    </div>
 
