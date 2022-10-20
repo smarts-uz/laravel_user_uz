@@ -1,10 +1,10 @@
-<div class="mx-auto w-11/12 xl:w-9/12 my-8 md:block hidden">
+<div class="mx-auto w-11/12 xl:w-9/12 my-8">
     <form id="search_form" method="post" action="{{route('searchTask.ajax_tasks')}}"  autocomplete="off">
-        <div class="grid grid-cols-5 container mx-auto gap-x-2">
+        <div class="grid md:grid-cols-5 grid-cols-3 container mx-auto gap-x-2">
             {{-- left start --}}
             <div class="col-span-3">
                     <div class="w-full bg-yellow-100 my-5 rounded-md  text-sm">
-                        <div class="px-5 py-5 hidden md:block">
+                        <div class="px-5 py-5">
                             <div class="grid grid-cols-4 gap-4 mb-3">
                                 <div class="sm:inline-flex block w-full col-span-4 relative">
                                     <input id="filter" name="filter" type="text"
@@ -115,7 +115,7 @@
 
 
             {{-- right start --}}
-            <div class="col-span-2 ml-8 mt-2">
+            <div class="col-span-2 ml-8 mt-2 md:block hidden">
                 <div class="small-map static">
                     {{--Map2 show --}}
                 </div>
