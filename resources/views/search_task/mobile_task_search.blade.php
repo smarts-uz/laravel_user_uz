@@ -5,6 +5,7 @@
 <script src="https://api-maps.yandex.ru/2.1/?apikey=f4b34baa-cbd1-432b-865b-9562afa3fcdb&lang={{__('ru_RU')}}"
     type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+
     <div class="w-11/12 mx-auto my-5 rounded-md">
         <form id="search_form" method="post" action="{{route('searchTask.ajax_tasks')}}"  autocomplete="off">
             <div class="flex flex-col block w-full gap-4">
@@ -166,8 +167,6 @@
             </div>
         </form>
     </div>
-
-
 
     <style>
         [class*="copyrights-pane"]

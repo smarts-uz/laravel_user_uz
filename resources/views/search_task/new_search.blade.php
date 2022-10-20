@@ -10,7 +10,6 @@
     type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
-{{--<script src="js/search_tasks.js"></script>--}}
 @include('search_task.script')
 
 @endsection
