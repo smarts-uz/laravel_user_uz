@@ -15,7 +15,7 @@
     </div>
     <div class='start-chat'>
         <div class="flex z-10 overflow-y-auto h-96 bg-gray-50">
-            <iframe src="https://chat.teampro.uz/question" frameborder="0" width="100%"></iframe>
+            <iframe src="{{setting('site.support_chat_url')}}" frameborder="0" width="100%"></iframe>
         </div>
     </div>
     <div id='get-number'></div><a class='close-chat cursor-pointer'>×</a>
