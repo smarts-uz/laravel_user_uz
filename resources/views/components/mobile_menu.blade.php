@@ -180,6 +180,28 @@
                             <a href="{{ route('user.signup') }}"
                                class="delete-task border-b border-black border-dotted hover:text-yellow-500 hover:border-yellow-500">{{__('Регистрация')}}</a>
                         </div>
+                            <!-- language blog -->
+                            <div class="text-gray-500 mt-2">
+                                <div class="flex">
+                                    @if (session('lang') === 'uz')
+                                        <a href="{{route('lang', ['lang'=>'uz'])}}" class="text-red-500 hover:text-gray-500 mr-2">
+                                            O'Z
+                                        </a>
+                                        I
+                                        <a href="{{route('lang', ['lang'=>'ru'])}}" class="hover:text-red-500 ml-2">
+                                            RU
+                                        </a>
+                                    @else
+                                        <a href="{{route('lang', ['lang'=>'uz'])}}" class="hover:text-red-500 mr-2">
+                                            UZ
+                                        </a>
+                                        I
+                                        <a href="{{route('lang', ['lang'=>'ru'])}}" class="text-red-500 hover:text-gray-500-500 ml-2">
+                                            RU
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
             @endauth
             @endif
         </div>
