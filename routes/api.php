@@ -101,7 +101,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
         Route::post('/video', [ProfileAPIController::class, 'videoStore']); // used
         Route::delete('/video/delete', [ProfileAPIController::class, 'videoDelete']); //end
         Route::get('/self-delete', [ProfileAPIController::class, 'selfDelete']); //end
-        Route::delete('/confirmation-self-delete', [ProfileAPIController::class, 'confirmationSelfDelete']); //end
+        Route::post('/confirmation-self-delete', [ProfileAPIController::class, 'confirmationSelfDelete']); //end
         Route::get('/balance', [ProfileAPIController::class, 'balance']); // used
         Route::post('/description/edit', [ProfileAPIController::class, 'editDesctiption']); // used
         Route::post('/categories-subscribe', [ProfileAPIController::class, 'subscribeToCategory']); // used
