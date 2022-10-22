@@ -205,12 +205,12 @@ class TaskAPIController extends Controller
         $user = auth()->user();
 
         switch (true){
-            case ($task->user_id === $user->id) :
-                return $this->fail([], trans('trans.your task'));
-            case ($user->role_id !== User::ROLE_PERFORMER) :
-                return $this->fail([], trans('trans.not performer'));
+            case ((int)$task->user_id === $user->id) :
+                return $this->fail(null, trans('trans.your task'));
+            case ((int)$user->role_id !== User::ROLE_PERFORMER) :
+                return $this->fail(1, trans('trans.not performer')); // 1 -> for open become performer page in app
             case (!$user->is_phone_number_verified) :
-                return $this->fail([], trans('trans.verify phone'));
+                return $this->fail(null, trans('trans.verify phone'));
         }
 
         $response = $this->response_service->store($request, $task);
