@@ -187,8 +187,8 @@
                             $("#amount2").val("{{__('до ')}}" + maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
                         @endif
                     }else if(Math.floor(ui.value) === 0) {
-                        $("#amount").val("{{__('до')}}" + " UZS");
-                        $("#amount2").val("{{__('до')}}" + " UZS");
+                        $("#amount").val(0  + " UZS");
+                        $("#amount2").val(0  + " UZS");
                     }
                     else {
                         var round   = Math.floor(ui.value);
