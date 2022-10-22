@@ -12,7 +12,7 @@
             <div class="grid md:grid-cols-3 lg:gap-x-20 md:gap-x-14">
                 <div class="lg:col-span-2 col-span-3">
                     <div class="w-full text-center text-2xl">
-                        @if(session('lang')=='uz')
+                        @if(session('lang') === 'uz')
                             "{{$task->name}}" {{__('Ищем исполнителя для задания')}}
                         @else
                             {{__('Ищем исполнителя для задания')}} "{{$task->name}}"
@@ -40,7 +40,7 @@
                                             <label for="exampleFormControlTextarea1"
                                                    class="form-label inline-block mb-2 text-gray-700">
                                                 {{__('Описание')}}</label>
-                                            <textarea name="description" autofocus="autofocus"
+                                            <textarea name="description" autofocus="autofocus" required
                                                       class="form-control block resize-none w-full h-36  px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none focus:border-yellow-500"
                                                       placeholder="{{__('Например')}}{{$task->category->placeholder}}"
                                             ></textarea>
