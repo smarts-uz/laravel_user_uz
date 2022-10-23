@@ -7,11 +7,13 @@ use App\Http\Requests\Api\VerifyCredentialsRequest;
 use App\Models\User;
 use App\Services\VerificationService;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class LoginAPIController extends Controller
 {
-    public function verifyCredentials(VerifyCredentialsRequest $request)
+    public function verifyCredentials(VerifyCredentialsRequest $request): JsonResponse
     {
         $data = $request->validated();
         $column = $data['type'];
@@ -23,9 +25,10 @@ class LoginAPIController extends Controller
         ) {
             /** @var User $user */
             $user = auth()->user();
-            $user->$column = $data['type'] === 'phone_number' ? correctPhoneNumber($data['data']) : $data['data'];
-            $user->$verified = 0;
-            $user->save();
+            Cache::put($user->id . 'user_' . $column , $data['type'] === 'phone_number' ? correctPhoneNumber($data['data']) : $data['data']);
+//            $user->$column = $data['type'] === 'phone_number' ? correctPhoneNumber($data['data']) : $data['data'];
+//            $user->$verified = 0;
+//            $user->save();
             if ($data['type'] === 'phone_number') {
                 VerificationService::send_verification($data['type'], $user, phone_number: $data['data']);
             } else {
@@ -78,7 +81,7 @@ class LoginAPIController extends Controller
      *     },
      * )
      */
-    public function verify_phone(Request $request)
+    public function verify_phone(Request $request): JsonResponse
     {
         $request->validate([
             'code' => 'required'
@@ -88,9 +91,10 @@ class LoginAPIController extends Controller
 
         if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
             if ($request->get('code') === $user->verify_code || $request->get('code') === setting('admin.CONFIRM_CODE')) {
-                $user->phone_number = correctPhoneNumber($user->phone_number);
+                $user->phone_number = correctPhoneNumber(Cache::get($user->id . 'user_phone_number'));
                 $user->is_phone_number_verified = 1;
                 $user->save();
+                Cache::forget($user->id . 'user_phone_number');
                 return response()->json([
                     'success' => true,
                     'message' => __('Ваш телефон успешно подтвержден')
