@@ -1438,7 +1438,7 @@ class TaskAPIController extends Controller
         return $this->update_task_service->verification($task, $request->validated());
     }
 
-    public function deleteImage(Request $request, Task $task)
+    public function deleteImage(Request $request, Task $task): JsonResponse
     {
         return $this->update_task_service->deleteImage($request, $task);
     }

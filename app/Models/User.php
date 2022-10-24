@@ -91,7 +91,7 @@ class User extends \TCG\Voyager\Models\User
         return ! empty($this->attributes['password']);
     }
 
-    public function Socials()
+    public function Socials(): HasMany
     {
         return $this->hasMany(Social::class);
     }
@@ -101,7 +101,7 @@ class User extends \TCG\Voyager\Models\User
         return $query->whereId($id)->increment('views', 1);
     }
 
-    public function reviewsObj()
+    public function reviewsObj(): HasMany
     {
         return $this->hasMany(Review::class, 'reviewer_id', 'id');
     }
@@ -131,12 +131,12 @@ class User extends \TCG\Voyager\Models\User
         return $this->hasMany(Task::class, 'performer_id');
     }
 
-    public function transactions()
+    public function transactions(): HasMany
     {
         return $this->hasMany(All_transaction::class)->orderBy('created_at', "DESC");
     }
 
-    public function alerts()
+    public function alerts(): HasMany
     {
         return $this->hasMany(Notification::class);
     }
@@ -162,7 +162,7 @@ class User extends \TCG\Voyager\Models\User
         return $this->hasOne(WalletBalance::class);
     }
 
-    public function getLastSeenAtAttribute()
+    public function getLastSeenAtAttribute(): string
     {
         return Carbon::parse($this->attributes['last_seen'])->locale(app()->getLocale() . '-' . app()->getLocale())->diffForHumans();
     }
