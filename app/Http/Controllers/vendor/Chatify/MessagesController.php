@@ -5,6 +5,7 @@ namespace App\Http\Controllers\vendor\Chatify;
 
 use App\Models\Chat\ChMessage;
 use App\Models\Chat\ChFavorite;
+use App\Models\ChFavorite as Favorite;
 use App\Services\Chat\ContactService;
 use App\Services\NotificationService;
 use Illuminate\Http\JsonResponse;
@@ -279,6 +280,30 @@ class MessagesController extends Controller
             'contacts' => $contacts,
             'total' => 1,
             'last_page' => 1,
+        ]);
+    }
+
+    /**
+     * Get favorites list
+     *
+     * @param Request $request
+     * @return JsonResponse|void
+     */
+    public function getFavorites(Request $request)
+    {
+        $favoritesList = null;
+        $favorites = Favorite::where('user_id', Auth::user()->id);
+        foreach ($favorites->get() as $favorite) {
+            // get user data
+            $user = User::where('id', $favorite->favorite_id)->first();
+            $favoritesList .= view('Chatify::layouts.favorite', [
+                'user' => $user,
+            ]);
+        }
+        // send the response
+        return Response::json([
+            'count' => 0,
+            'favorites' => 0,
         ]);
     }
 
