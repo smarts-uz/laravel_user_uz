@@ -290,15 +290,6 @@ class MessagesController extends Controller
      */
     public function getFavorites(Request $request)
     {
-        $favoritesList = null;
-        $favorites = ChFavorite::where('user_id', Auth::user()->id);
-        foreach ($favorites->get() as $favorite) {
-            // get user data
-            $user = User::where('id', $favorite->favorite_id)->first();
-            $favoritesList .= view('Chatify::layouts.favorite', [
-                'user' => $user,
-            ]);
-        }
         // send the response
         return Response::json([
             'count' => 0,
