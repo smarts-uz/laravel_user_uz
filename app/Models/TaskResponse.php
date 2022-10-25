@@ -65,8 +65,10 @@ class TaskResponse extends Model
         self::deleting(function (TaskResponse $response) {
             /** @var Task $task */
             $task = $response->task;
-            if ($task->status == Task::STATUS_IN_PROGRESS) {
-                $task->update(['status' => Task::STATUS_CANCELLED]);
+            if ($task !== null){
+                if ((int)$task->status === Task::STATUS_IN_PROGRESS) {
+                    $task->update(['status' => Task::STATUS_CANCELLED]);
+                }
             }
         });
     }
