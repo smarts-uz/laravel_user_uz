@@ -11,7 +11,8 @@ return [
     "name" => [
         "required" => "To'ldirish talab qilinadi!",
         "unique" => "Ushbu ismli foydalanuvchi allaqachon mavjud!",
-        "int"=>"Format noto'g'ri"
+        "int"=>"Format noto'g'ri",
+        "string"=>"Matn maydoni qator bo'lishi kerak."
     ],
     "password" => [
         "confirmed" => "Parol bir xil emas",

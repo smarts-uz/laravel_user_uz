@@ -183,7 +183,12 @@ class CreateController extends Controller
         $data = $request->validate([
             'description' => 'required|string',
             'oplata' => 'required',
-        ]);
+        ],
+            [
+                'description.required' =>  __('Требуется заполнение!'),
+                'description.string' =>  __('login.name.string'),
+            ]
+        );
         if ($request['docs'] === "on") {
             $data['docs'] = 1;
         } else {

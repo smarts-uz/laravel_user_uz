@@ -42,8 +42,11 @@
                                                 {{__('Описание')}}</label>
                                             <textarea name="description" autofocus="autofocus" required
                                                       class="form-control block resize-none w-full h-36  px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none focus:border-yellow-500"
-                                                      placeholder="{{__('Например')}}{{$task->category->placeholder}}"
-                                            ></textarea>
+                                                      placeholder="{{__('Например')}}{{$task->category->placeholder}}">
+                                            </textarea>
+                                            @error('description')
+                                                <p class="text-lg text-red-500 ">{{ $message }}</p>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
