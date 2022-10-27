@@ -261,8 +261,10 @@ class NotificationService
                     "data" => [
                         "type" => $type,
                         "data" => $model,
-                        "click_action" => "FLUTTER_NOTIFICATION_CLICK"
+                        "click_action" => "FLUTTER_NOTIFICATION_CLICK",
+                        "sound"=> "default",
                     ],
+                    "sound"=> "default",
                     "click_action" => "FLUTTER_NOTIFICATION_CLICK"
                 ]
             )->body();
