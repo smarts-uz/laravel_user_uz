@@ -788,5 +788,6 @@
     "Showing": "показано с",
     "to": "по",
     "of": "из",
-    "results": "результатов"
+    "results": "результатов",
+    "voyager::generic.contains": "Contains"
 }

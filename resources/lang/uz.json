@@ -783,6 +783,7 @@
     "Showing": "koʻrsatilmoqda",
     "to": "dan",
     "of": "gacha",
-    "results": "ta natijadan"
+    "results": "ta natijadan",
+    "voyager::generic.contains": "Contains"
 
 }
