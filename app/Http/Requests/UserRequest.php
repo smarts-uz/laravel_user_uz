@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use JetBrains\PhpStorm\ArrayShape;
 
 class UserRequest extends FormRequest
 {
@@ -21,6 +22,7 @@ class UserRequest extends FormRequest
      *
      * @return array
      */
+    #[ArrayShape([])]
     public function rules()
     {
         session()->flash('phone_another');

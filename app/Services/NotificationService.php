@@ -250,6 +250,7 @@ class NotificationService
      */
     public static function pushNotification($user, $notification, $type, $model): void
     {
+        $notification['sound'] = "default";
         foreach ($user->sessions as $session) {
             Http::withHeaders([
                 'Content-Type' => 'application/json',
