@@ -165,6 +165,7 @@ return [
         Jenssegers\Agent\AgentServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Yajra\DataTables\ButtonsServiceProvider::class,
+        Nwidart\Modules\LaravelModulesServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -244,6 +245,7 @@ return [
         'Chatify' => Chatify\Facades\ChatifyMessenger::class,
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'Module' => Nwidart\Modules\Facades\Module::class,
     ],
 
     'bot_token' => env('BOT_TOKEN'),
