@@ -29,6 +29,7 @@
         "laravel/tinker": "^2.5",
         "munafio/chatify": "^1.5",
         "napaeduhub/eskiz-sms-client": "^1.0",
+        "nutgram/nutgram": "^3.7",
         "nwidart/laravel-modules": "^9.0",
         "pusher/pusher-php-server": "7.0.2",
         "realrashid/sweet-alert": "^5.1.0",

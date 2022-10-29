@@ -21,6 +21,7 @@
         }
     },
     "require": {
-        "munafio/chatify": "^1.5"
+        "munafio/chatify": "^1.5",
+        "nutgram/nutgram": "^3.7"
     }
 }
