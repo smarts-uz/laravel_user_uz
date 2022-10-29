@@ -1,228 +1,78 @@
-.whatsapp-name {
-    font-size: 16px;
-    font-weight: 600;
-    padding-bottom: 0;
-    margin-bottom: 0;
-    line-height: 0.5;
-}
-
-#whatsapp-chat {
-    box-sizing: border-box !important;
-    margin-bottom: 20px;
-    outline: none !important;
+.fabs {
+    bottom: 0;
     position: fixed;
-    width: 350px;
-    border-radius: 10px;
-    box-shadow: 0 1px 15px rgba(32, 33, 36, 0.28);
-    bottom: 90px;
-    right: 30px;
-    overflow: hidden;
-    z-index: 99;
-    animation-name: showchat;
-    animation-duration: 1s;
-    transform: scale(1);
+    margin: 1em;
+    right: 0;
+    z-index: 998;
 }
-a.blantershow-chat svg {
-    transform: scale(1.2);
-    margin: 0 10px 0 0;
-}
-.header-chat {
-    background: #009688;
-    background: #095e54;
-    color: #fff;
-    padding: 20px;
-}
-.header-chat h3 {
-    margin: 0 0 10px;
-}
-.header-chat p {
-    font-size: 14px;
-    line-height: 1.7;
-    margin: 0;
-}
-.info-avatar {
-    position: relative;
-}
-.info-avatar img {
-    border-radius: 100%;
-    width: 50px;
-    float: left;
-    margin: 0 10px 0 0;
-}
-.info-chat span {
+.fab_prime {
     display: block;
-}
-#get-label,
-#get-nama {
-    color: #fff;
-}
-a.close-chat {
-    position: absolute;
-    top: 5px;
-    right: 15px;
-    color: #fff;
-    font-size: 30px;
-}
-
-@keyframes ZpjSY{
-    0% {
-        background-color: rgb(182, 181, 186);
-    }
-    15% {
-        background-color: rgb(17, 17, 17);
-    }
-    25% {
-        background-color: rgb(182, 181, 186);
-    }
-}
-
-@keyframes hPhMsj {
-    15% {
-        background-color: rgb(182, 181, 186);
-    }
-    25% {
-        background-color: rgb(17, 17, 17);
-    }
-    35% {
-        background-color: rgb(182, 181, 186);
-    }
-}
-
-@keyframes iUMejp {
-    25% {
-        background-color: rgb(182, 181, 186);
-    }
-    35% {
-        background-color: rgb(17, 17, 17);
-    }
-    45% {
-        background-color: rgb(182, 181, 186);
-    }
-}
-
-
-@keyframes showhide {
-    from {
-        transform: scale(0.5);
-        opacity: 0;
-    }
-}
-@keyframes showchat {
-    from {
-        transform: scale(0);
-        opacity: 0;
-    }
-}
-@media screen and (max-width: 480px) {
-    #whatsapp-chat {
-        width: auto;
-        left: 5%;
-        right: 5%;
-        font-size: 80%;
-    }
-}
-.hide {
-    display: none;
-    animation-name: showhide;
-    animation-duration: 0.5s;
-    transform: scale(1);
-    opacity: 1;
-}
-.eJJEeC {
-    background-color: rgb(255, 255, 255);
-    width: 52.5px;
-    height: 32px;
-    border-radius: 16px;
-    display: flex;
-    -moz-box-pack: center;
-    justify-content: center;
-    -moz-box-align: center;
-    align-items: center;
-    margin-left: 10px;
-    opacity: 0;
-    transition: all 0.1s ease 0s;
-    z-index: 1;
-    box-shadow: rgba(0, 0, 0, 0.13) 0px 1px 0.5px;
-}
-
-.hFENyl {
-    position: relative;
-    display: flex;
-}
-
-.ixsrax {
-    height: 5px;
-    width: 5px;
-    margin: 0px 2px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
-    display: inline-block;
+    text-align: center;
+    color: #263238;
+    margin: 25px auto 0;
+    box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
+    cursor: pointer;
+    -webkit-transition: all .1s ease-out;
+    -moz-transition: all .1s ease-out;
+    -o-transition: all .1s ease-out;
+    transition: all .1s ease-out;
     position: relative;
-    animation-duration: 1.2s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-    top: 0px;
-    background-color: rgb(158, 157, 162);
-    animation-name: ZpjSY;
+    z-index: 998;
+    overflow: hidden;
 }
-
-.dRvxoz {
-    height: 5px;
-    width: 5px;
-    margin: 0px 2px;
-    background-color: rgb(182, 181, 186);
-    border-radius: 50%;
-    display: inline-block;
-    position: relative;
-    animation-duration: 1.2s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-    top: 0px;
-    animation-name: hPhMsj;
+.fab_prime > i {
+    font-size: 2em;
+    line-height: 55px;
+    -webkit-transition: all .2s ease-out;
+    -moz-transition: all .2s ease-out;
+    -o-transition: all .2s ease-out;
+    transition: all .2s ease-in-out;
 }
-
-.kAZgZq {
-    padding: 7px 14px 6px;
-    background-color: rgb(255, 255, 255);
-    border-radius: 0px 8px 8px;
-    position: relative;
-    transition: all 0.3s ease 0s;
-    opacity: 0;
-    transform-origin: center top 0px;
-    z-index: 2;
-    box-shadow: rgba(0, 0, 0, 0.13) 0px 1px 0.5px;
-    margin-top: 4px;
-    margin-left: -54px;
-    max-width: calc(100% - 66px);
-}
-
-.bMIBDo {
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 18px;
-    color: rgba(0, 0, 0, 0.4);
-}
-
-.iSpIQi {
-    font-size: 14px;
-    line-height: 19px;
-    margin-top: 4px;
-    color: rgb(17, 17, 17);
-}
-
-.iSpIQi {
-    font-size: 14px;
-    line-height: 19px;
-    margin-top: 4px;
-    color: rgb(17, 17, 17);
-}
-
-.cqCDVm {
-    text-align: right;
-    margin-top: 4px;
+.chat {
+    position: fixed;
+    right: 85px;
+    bottom: 0;
+    width: 400px;
     font-size: 12px;
-    line-height: 16px;
-    color:
-        rgba(17, 17, 17, 0.5);
-    margin-right: -8px;
-    margin-bottom: -4px;
+    line-height: 22px;
+    font-family: 'Roboto';
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+    opacity: 0;
+    box-shadow: 0 1.5px 4px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
+    border-radius: 12px;
+    -webkit-transition: all .2s ease-out;
+    -moz-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+.chat.is-visible {
+    opacity: 1;
+    -webkit-animation: zoomIn .2s cubic-bezier(.42, 0, .58, 1);
+    -moz-animation: zoomIn .2s cubic-bezier(.42, 0, .58, 1);
+    -o-animation: zoomIn .2s cubic-bezier(.42, 0, .58, 1);
+    animation: zoomIn .2s cubic-bezier(.42, 0, .58, 1);
+}
+.is-active {
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+    -o-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+}
+@keyframes zoomIn {
+    0% {
+        transform: scale(0.5);
+        opacity: 0.0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
