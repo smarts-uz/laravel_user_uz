@@ -93,7 +93,7 @@
             <span><i class="fas fa-angle-up"></i></span>
         </div>
     </div>
-{{--    @include('components.message')--}}
+    @include('components.message')
     <link rel="stylesheet" href="{{asset('css/scroll.css')}}">
     <script src="{{ asset('js/components/footer.js') }}"></script>
 </footer>

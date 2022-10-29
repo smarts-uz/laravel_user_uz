@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use Modules\SupportChat\Http\Controllers\SupportChatController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,6 +13,7 @@
 |
 */
 
+
 Route::prefix('supportchat')->group(function() {
-    Route::get('/', 'SupportChatController@index');
+    Route::get('/',[SupportChatController::class,'index']);
 });
