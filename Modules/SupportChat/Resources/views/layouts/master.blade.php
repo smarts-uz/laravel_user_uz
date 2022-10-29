@@ -4,16 +4,13 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Module SupportChat</title>
-
-       {{-- Laravel Vite - CSS File --}}
-       {{-- {{ module_vite('build-supportchat', 'Resources/assets/sass/app.scss') }} --}}
-
+        <title>Universal Services</title>
+        <link rel="stylesheet" href="{{ mix('css/blog.css') }}">
     </head>
     <body>
+
         @yield('content')
 
-        {{-- Laravel Vite - JS File --}}
-        {{-- {{ module_vite('build-supportchat', 'Resources/assets/js/app.js') }} --}}
+        <script src="{{ mix('js/blog.js') }}"></script>
     </body>
 </html>

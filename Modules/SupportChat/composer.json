@@ -19,5 +19,8 @@
         "psr-4": {
             "Modules\\SupportChat\\": ""
         }
+    },
+    "require": {
+        "munafio/chatify": "^1.5"
     }
 }
