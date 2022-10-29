@@ -1,0 +1,11 @@
+{
+    "name": "SupportChat",
+    "alias": "supportchat",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\SupportChat\\Providers\\SupportChatServiceProvider"
+    ],
+    "files": []
+}
