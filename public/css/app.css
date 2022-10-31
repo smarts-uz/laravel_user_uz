@@ -7,11 +7,6 @@
 }
 .fab_prime {
     display: block;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    color: #263238;
-    margin: 25px auto 0;
     box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
     cursor: pointer;
     transition: all .1s ease-out;
@@ -20,8 +15,6 @@
     overflow: hidden;
 }
 .fab_prime > i {
-    font-size: 2em;
-    line-height: 55px;
     -webkit-transition: all .2s ease-out;
     -moz-transition: all .2s ease-out;
     -o-transition: all .2s ease-out;

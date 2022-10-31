@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="{{asset('css/app.css')}}">
-<link rel="stylesheet" href="https://zavoloklom.github.io/material-design-iconic-font/css/docs.md-iconic-font.min.css">
 <!--  CHAT  -->
 <div class="fabs">
     <div class="chat">
@@ -17,7 +16,9 @@
         </div>
     </div>
 
-    <a id="prime" class="fab_prime bg-green-500"><i class="prime zmdi zmdi-comments text-white"></i></a>
+    <a id="prime" class="fab_prime bg-green-500 w-16 h-16 rounded-full">
+        <i class="prime fas fa-comment text-white text-4xl relative top-3 left-3"></i>
+    </a>
 </div>
 
 <script>
@@ -26,8 +27,8 @@
     });
 
     function toggleFab() {
-        $('.prime').toggleClass('zmdi-comments');
-        $('.prime').toggleClass('zmdi-close');
+        $('.prime').toggleClass('fa-comment');
+        $('.prime').toggleClass('fa-times left-5');
         $('.prime').toggleClass('is-active');
         $('.chat').toggleClass('is-visible');
         $('.fab').toggleClass('is-visible');
