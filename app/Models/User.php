@@ -101,6 +101,15 @@ class User extends \TCG\Voyager\Models\User
         return $query->whereId($id)->increment('views', 1);
     }
 
+    public function scopeWithoutReportedPerformers($query, $user_id)
+    {
+        if ($user_id) {
+            $reportedUsers = ReportedUser::query()->where('user_id', $user_id)->pluck('reported_user_id');
+            return $query->whereNotIn('id', $reportedUsers);
+        }
+        return $query;
+    }
+
     public function reviewsObj(): HasMany
     {
         return $this->hasMany(Review::class, 'reviewer_id', 'id');

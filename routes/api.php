@@ -108,6 +108,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
         Route::post('/firebase-token', [NotificationController::class, 'setToken']); //used
         Route::get('/sessions', [SessionController::class, 'index']); // used
         Route::post('/clear-sessions', [SessionController::class, 'clearSessions']);
+        Route::post('/report-user', [ProfileAPIController::class, 'report']);
         Route::prefix('/settings')->group(function () {
             Route::get('/', [ProfileAPIController::class, 'editData']); // used
             Route::post('/update', [ProfileAPIController::class, 'updateData']); // used
