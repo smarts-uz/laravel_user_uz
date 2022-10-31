@@ -965,6 +965,28 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/profile/self-delete",
+     *     tags={"Profile"},
+     *     summary="Self delete",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function selfDelete(): JsonResponse
     {
         /** @var User $user */
@@ -984,6 +1006,41 @@ class ProfileAPIController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/profile/confirmation-self-delete",
+     *     tags={"Profile"},
+     *     summary="Confirmation self delete",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="code",
+     *                    description="confirmation code",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function confirmationSelfDelete(Request $request): JsonResponse
     {
         /** @var User $user */
@@ -1009,6 +1066,46 @@ class ProfileAPIController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/profile/report-user",
+     *     tags={"Profile"},
+     *     summary="Report user",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="user_id",
+     *                    description="Current user",
+     *                    type="string",
+     *                 ),
+     *                @OA\Property (
+     *                    property="reported_user_id",
+     *                    description="Reported user id",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function report(UserReportRequest $request)
     {
         $data = $request->validated();

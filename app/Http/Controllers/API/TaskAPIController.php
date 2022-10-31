@@ -218,6 +218,41 @@ class TaskAPIController extends Controller
         return response()->json($response);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/select-performer/{response}",
+     *     tags={"Task"},
+     *     summary="Select performer",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="response",
+     *                    description="Task response id",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function selectPerformer(TaskResponse $response): JsonResponse
     {
         if (!$response->task) {
@@ -983,6 +1018,41 @@ class TaskAPIController extends Controller
         return $this->success($this->update_task_service->updateName($task, $request->validated()));
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/update-task/{task}/custom",
+     *     tags={"Task"},
+     *     summary="Update task custom fields",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="custom_field_id",
+     *                    description="Current session id",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function updateCustom(Request $request, Task $task): JsonResponse
     {
         return $this->success($this->update_task_service->updateCustom($task, $request));
