@@ -1,6 +1,6 @@
-<link rel="stylesheet" href="{{asset('css/app.css')}}">
+<!-- <link rel="stylesheet" href="{{asset('css/app.css')}}"> -->
 <!--  CHAT  -->
-<div class="fabs">
+<!-- <div class="fabs">
     <div class="chat">
         <div class='bg-green-600 rounded-t-lg px-4 py-2 flex flex-row items-center'>
             <div class='w-16 m-1 rounded-full bg-white p-2'><img src='{{asset('images/logo_image.png')}}'/></div>
@@ -26,4 +26,4 @@
         $('.chat').toggleClass('is-visible');
         $('.fab').toggleClass('is-visible');
     });
-</script>
+</script> -->

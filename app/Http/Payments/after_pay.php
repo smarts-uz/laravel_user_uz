@@ -3,13 +3,12 @@
 $data = array(json_decode($transaction, true))[0];
 
 switch ($data['payment_system']){
-    case 'payme' :
-        $amount = (int)$data['amount'];
-        break;
-    case 'paynet' or 'Paynet' :
+    case 'Paynet':
+    case 'paynet':
         $amount = (int)( $data['amount'] / 100 );
         break;
-    default :
+
+    default:
         $amount = (int)$data['amount'];
         break;
 }
