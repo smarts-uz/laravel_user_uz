@@ -16,8 +16,8 @@
         </div>
     </div>
 
-    <a id="prime" class="fab_prime bg-green-500 w-16 h-16 rounded-full">
-        <i class="prime fas fa-comment text-white text-4xl relative top-3 left-3"></i>
+    <a id="prime" class="fab_prime bg-green-500 rounded-full p-3">
+        <i class="fas fa-comment text-white text-4xl"></i>
     </a>
 </div>
 
@@ -27,9 +27,7 @@
     });
 
     function toggleFab() {
-        $('.prime').toggleClass('fa-comment');
-        $('.prime').toggleClass('fa-times left-5');
-        $('.prime').toggleClass('is-active');
+
         $('.chat').toggleClass('is-visible');
         $('.fab').toggleClass('is-visible');
     }

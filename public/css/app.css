@@ -14,12 +14,7 @@
     z-index: 998;
     overflow: hidden;
 }
-.fab_prime > i {
-    -webkit-transition: all .2s ease-out;
-    -moz-transition: all .2s ease-out;
-    -o-transition: all .2s ease-out;
-    transition: all .2s ease-in-out;
-}
+
 .chat {
     position: fixed;
     right: 4px;
@@ -36,15 +31,6 @@
     -moz-animation: zoomIn .2s cubic-bezier(.42, 0, .58, 1);
     -o-animation: zoomIn .2s cubic-bezier(.42, 0, .58, 1);
     animation: zoomIn .2s cubic-bezier(.42, 0, .58, 1);
-}
-.is-active {
-    -moz-transform: rotate(180deg);
-    -ms-transform: rotate(180deg);
-    -webkit-transform: rotate(180deg);
-    transform: rotate(180deg);
-    -o-transition: all 1s ease-in-out;
-    -moz-transition: all 1s ease-in-out;
-    transition: all 1s ease-in-out;
 }
 @keyframes zoomIn {
     0% {
