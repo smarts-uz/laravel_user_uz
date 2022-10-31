@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\SupportChat\Http\Controllers\Telegram\MessagesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,3 +16,4 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('supportchat')->group(function() {
     Route::get('/', 'SupportChatController@index');
 });
+Route::match(['post', 'get'], '/webhook', [MessagesController::class, 'webhook']);

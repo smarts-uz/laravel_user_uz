@@ -16,19 +16,14 @@
         </div>
     </div>
 
-    <a id="prime" class="fab_prime bg-green-500 rounded-full p-3">
+    <a id="prime" class="fab_prime bg-green-500 rounded-full px-4 py-3">
         <i class="fas fa-comment text-white text-4xl"></i>
     </a>
 </div>
 
 <script>
     $('#prime').click(function() {
-        toggleFab();
-    });
-
-    function toggleFab() {
-
         $('.chat').toggleClass('is-visible');
         $('.fab').toggleClass('is-visible');
-    }
+    });
 </script>
