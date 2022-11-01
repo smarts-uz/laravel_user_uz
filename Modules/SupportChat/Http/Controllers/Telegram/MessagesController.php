@@ -67,24 +67,24 @@ class MessagesController extends Chatify
 
             $message = ChMessage::where('id', $messageID)->first();
             $user = User::where('id', $message->from_id)->first();
-            $bot = new Nutgram(setting('site.TELEGRAM_TOKEN'));
+            $bot = new Nutgram(setting('chat.TELEGRAM_TOKEN'));
 
             if ($request->file('file')) {
                 switch (true) {
                     case strlen($message->body) == 0:
                         $fl = fopen('storage/attachments/' . $attachment, 'r+');
-                        $bot->sendDocument($fl, ['chat_id' => setting('site.CHAT_ID'), 'reply_to_message_id' => $user->message_id]);
+                        $bot->sendDocument($fl, ['chat_id' => setting('chat.CHAT_ID'), 'reply_to_message_id' => $user->message_id]);
                         break;
                     case strlen($message->body) != 0:
                         $fl = fopen('storage/attachments/' . $attachment, 'r+');
-                        $bot->sendDocument($fl, ['chat_id' => setting('site.CHAT_ID'), 'caption' => $message->body, 'reply_to_message_id' => $user->message_id]);
+                        $bot->sendDocument($fl, ['chat_id' => setting('chat.CHAT_ID'), 'caption' => $message->body, 'reply_to_message_id' => $user->message_id]);
                         break;
                     default :
                         echo 'hello';
                         break;
                 }
             } else {
-                $bot->sendMessage($message->body, ['chat_id' => setting('site.CHAT_ID'), 'reply_to_message_id' => $user->message_id]);
+                $bot->sendMessage($message->body, ['chat_id' => setting('chat.CHAT_ID'), 'reply_to_message_id' => $user->message_id]);
             }
 
 
@@ -113,7 +113,7 @@ class MessagesController extends Chatify
 
         $bot->onMessageType(MessageTypes::DOCUMENT, function (Nutgram $bot) {
             if($bot->message()->reply_to_message){
-                if ($bot->message()->reply_to_message->sender_chat->id == setting('site.CHANNEL_ID')) {
+                if ($bot->message()->reply_to_message->sender_chat->id == setting('chat.CHANNEL_ID')) {
                     $bot->getFile($bot->message()->document->file_id)->save('storage/attachments/' . $bot->message()->document->file_name);
                     $message = $bot->message()->reply_to_message->text;
                     $list = explode(' ', $message);
@@ -121,7 +121,7 @@ class MessagesController extends Chatify
                     Chatify::newMessage([
                         'id' => mt_rand(9, 999999999) + time(),
                         'type' => 'user',
-                        'from_id' => setting("site.admin_id"),
+                        'from_id' => setting("chat.admin_id"),
                         'to_id' => $user->id,
                         'body' => $bot->message()->text,
                         'seen' => 0,
@@ -148,7 +148,7 @@ class MessagesController extends Chatify
 
             switch (true) {
                 case $bot->message()->sender_chat:
-                    if ($bot->message()->sender_chat->id == setting('site.CHANNEL_ID')) {
+                    if ($bot->message()->sender_chat->id == setting('chat.CHANNEL_ID')) {
                         $list = explode(' ', $bot->message()->text);
                         $user = User::where('phone_number', $list[count($list) - 1])->first();
                         $user->update(['message_id' => $bot->message()->message_id]);
@@ -156,14 +156,14 @@ class MessagesController extends Chatify
                     break;
                 case $bot->message()->reply_to_message:
                     if ($bot->message()->reply_to_message->entities) {
-                        if ($bot->message()->reply_to_message->sender_chat->id == setting('site.CHANNEL_ID')) {
+                        if ($bot->message()->reply_to_message->sender_chat->id == setting('chat.CHANNEL_ID')) {
                             $message = $bot->message()->reply_to_message->text;
                             $list = explode(' ', $message);
                             $user = User::where('phone_number', $list[count($list) - 1])->first();
                             ChMessage::create([
                                 'id' => mt_rand(9, 999999999) + time(),
                                 'type' => 'user',
-                                'from_id' => setting("site.admin_id"),
+                                'from_id' => setting("chat.admin_id"),
                                 'to_id' => $user->id,
                                 'body' => $bot->message()->text,
                                 'seen' => 0,

@@ -16,7 +16,7 @@ class TelegramController extends Controller
     {
         $bot->onMessage(function (Nutgram $bot) {
             if ($bot->message()->sender_chat) {
-                if ($bot->message()->sender_chat->id == setting('site.CHANNEL_ID')) {
+                if ($bot->message()->sender_chat->id == setting('chat.CHANNEL_ID')) {
                     if (is_array(explode(' ', $bot->message()->text))) {
                         $list = explode(' ', $bot->message()->text);
                         $user = User::where('phone_number', $list[count($list) - 1])->first();
@@ -27,7 +27,7 @@ class TelegramController extends Controller
 
             if ($bot->message()->reply_to_message) {
                 if($bot->message()->reply_to_message->entities){
-                    if ($bot->message()->reply_to_message->sender_chat->id == setting('site.CHANNEL_ID')) {
+                    if ($bot->message()->reply_to_message->sender_chat->id == setting('chat.CHANNEL_ID')) {
                         $message = $bot->message()->reply_to_message->text;
                         $list = explode(' ', $message);
                         $user = User::where('phone_number', $list[count($list) - 1])->first();
@@ -36,7 +36,7 @@ class TelegramController extends Controller
                         ChMessage::create([
                             'id' => $messageID,
                             'type' => 'user',
-                            'from_id' => setting("site.admin_id"),
+                            'from_id' => setting("chat.admin_id"),
                             'to_id' => $user->id,
                             'body' => $bot->message()->text,
                             'seen' => 0,
