@@ -3,9 +3,9 @@
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
 
-    var pusher = new Pusher("{{ config('chatify.pusher.key') }}", {
+    var pusher = new Pusher("{{ config('supportchat.pusher.key') }}", {
         encrypted: true,
-        cluster: "{{ config('chatify.pusher.options.cluster') }}",
+        cluster: "{{ config('supportchat.pusher.options.cluster') }}",
         authEndpoint: '{{route("pusher.auth")}}',
         auth: {
             headers: {
@@ -15,8 +15,8 @@
     });
 
     // Bellow are all the methods/variables that using php to assign globally.
-    const allowedImages = {!! json_encode(config('chatify.attachments.allowed_images')) !!} || [];
-    const allowedFiles = {!! json_encode(config('chatify.attachments.allowed_files')) !!} || [];
+    const allowedImages = {!! json_encode(config('supportchat.attachments.allowed_images')) !!} || [];
+    const allowedFiles = {!! json_encode(config('supportchat.attachments.allowed_files')) !!} || [];
     const getAllowedExtensions = [...allowedImages, ...allowedFiles];
     const getMaxUploadSize = {{ Chatify::getMaxUploadSize() }};
 </script>

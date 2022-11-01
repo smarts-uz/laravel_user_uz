@@ -6,7 +6,7 @@ use Carbon\Carbon;
 
 class VerificationService
 {
-    public static function send_verification($needle, $user, $phone_number = null, $email = null): void
+    public static function send_verification($needle, $user, $phone_number, $email = null): void
     {
         if(!($user->verify_code)){
             $message = rand(100000, 999999);

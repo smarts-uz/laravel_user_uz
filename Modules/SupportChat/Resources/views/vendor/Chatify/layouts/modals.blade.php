@@ -54,7 +54,7 @@
                       <p class="divider"></p>
                       {{-- <p class="app-modal-header">Change {{ config('chatify.name') }} Color</p> --}}
                       <div class="update-messengerColor">
-                      @foreach (config('chatify.colors') as $color)
+                      @foreach (config('supportchat.colors') as $color)
                         <span style="background-color: {{ $color}}" data-color="{{$color}}" class="color-btn"></span>
                         @if (($loop->index + 1) % 5 == 0)
                             <br/>
