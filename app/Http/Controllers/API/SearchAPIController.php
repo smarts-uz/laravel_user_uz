@@ -61,7 +61,7 @@ class SearchAPIController extends Controller
     }
 
     /**
-     * @OA\DELETE(
+     * @OA\Delete(
      *     path="/api/delete-task/{task}",
      *     tags={"Task"},
      *     summary="Delete Task",
