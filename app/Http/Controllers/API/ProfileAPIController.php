@@ -283,7 +283,7 @@ class ProfileAPIController extends Controller
 
 
     /**
-     * @OA\DELETE(
+     * @OA\Delete(
      *     path="/api/video/delete",
      *     tags={"Profile"},
      *     summary="Profile video delete",
