@@ -11,10 +11,15 @@
         </div>
         <div class='start-chat'>
             <div class="flex z-10 overflow-y-auto h-96 bg-gray-50">
-                <iframe src="htt" frameborder="0" width="100%"></iframe>
+                <iframe src="{{setting('chat.support_chat_url')}}" frameborder="0" width="100%"></iframe>
             </div>
         </div>
     </div>
+
+    <a id="prime" class="fab_prime bg-green-500 rounded-full px-4 py-3">
+        <i class="fas fa-comment text-white text-4xl"></i>
+    </a>
+</div>
 
 <script>
     $('#prime').click(function() {
