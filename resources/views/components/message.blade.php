@@ -1,6 +1,6 @@
-<!-- <link rel="stylesheet" href="{{asset('css/app.css')}}"> -->
+<link rel="stylesheet" href="{{asset('css/app.css')}}">
 <!--  CHAT  -->
-<!-- <div class="fabs">
+<div class="fabs">
     <div class="chat">
         <div class='bg-green-600 rounded-t-lg px-4 py-2 flex flex-row items-center'>
             <div class='w-16 m-1 rounded-full bg-white p-2'><img src='/storage/{!!str_replace("\\","/",setting('site.image'))!!}'/></div>
@@ -11,19 +11,14 @@
         </div>
         <div class='start-chat'>
             <div class="flex z-10 overflow-y-auto h-96 bg-gray-50">
-                <iframe src="/supportchat" frameborder="0" width="100%"></iframe>
+                <iframe src="htt" frameborder="0" width="100%"></iframe>
             </div>
         </div>
     </div>
-
-    <a id="prime" class="fab_prime bg-green-500 rounded-full px-4 py-3">
-        <i class="fas fa-comment text-white text-4xl"></i>
-    </a>
-</div>
 
 <script>
     $('#prime').click(function() {
         $('.chat').toggleClass('is-visible');
         $('.fab').toggleClass('is-visible');
     });
-</script> -->
+</script>
