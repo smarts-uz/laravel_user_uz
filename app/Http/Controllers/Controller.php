@@ -130,7 +130,7 @@ class Controller extends BaseController
 
     public function user_info($user){
 
-        return view('user_managment.info');
+        return view('user_managment.info',compact('user'));
     }
 
     public function routing($request)
