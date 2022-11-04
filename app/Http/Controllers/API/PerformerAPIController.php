@@ -45,7 +45,7 @@ class PerformerAPIController extends Controller
     {
         $performers = User::query()
             ->where('role_id', 2)
-            ->withoutReportedPerformers(auth()->id())
+            ->withoutBlockedPerformers(auth()->id())
             ->orderByDesc('review_rating')
             ->orderByRaw('(review_good - review_bad) DESC');
         if (isset($request->online))

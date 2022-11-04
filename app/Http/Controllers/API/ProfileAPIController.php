@@ -10,9 +10,11 @@ use App\Http\Requests\Api\ProfilePhoneRequest;
 use App\Http\Requests\Api\ProfileSettingsRequest;
 use App\Http\Requests\Api\ProfileVideoRequest;
 use App\Http\Requests\Api\UserReportRequest;
+use App\Http\Requests\UserBlockRequest;
 use App\Http\Resources\PortfolioIndexResource;
 use App\Http\Resources\ReviewIndexResource;
 use App\Http\Resources\UserIndexResource;
+use App\Models\BlockedUser;
 use App\Models\Portfolio;
 use App\Models\ReportedUser;
 use App\Models\User;
@@ -1077,13 +1079,13 @@ class ProfileAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
-     *                    property="user_id",
-     *                    description="Current user",
+     *                    property="reported_user_id",
+     *                    description="Reported user id",
      *                    type="string",
      *                 ),
      *                @OA\Property (
-     *                    property="reported_user_id",
-     *                    description="Reported user id",
+     *                    property="message",
+     *                    description="Report message",
      *                    type="string",
      *                 ),
      *             ),
@@ -1114,6 +1116,54 @@ class ProfileAPIController extends Controller
             'reported_user_id' => $data['reported_user_id'],
         ], [
             'message' => $data['message']
+        ]);
+        return response()->json([
+            'success' => true,
+            'message' => __('Сохранено')
+        ]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/block-user",
+     *     tags={"Profile"},
+     *     summary="Block user",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="blocked_user_id",
+     *                    description="Blocked user id",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function block(UserBlockRequest $request)
+    {
+        $data = $request->validated();
+        BlockedUser::query()->updateOrCreate([
+            'user_id' => \auth()->id(),
+            'blocked_user_id' => $data['blocked_user_id'],
         ]);
         return response()->json([
             'success' => true,
