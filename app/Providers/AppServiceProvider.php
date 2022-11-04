@@ -30,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
 	    Review::observe(ReviewObserver::class);
         Voyager::addAction(\App\Actions\ActiveAction::class);
         Voyager::addAction(\App\Actions\CancelAction::class);
+        Voyager::addAction(\App\Actions\InfoAction::class);
         foreach (glob(__DIR__.'/../Helpers/*.php') as $filename) {
             require_once $filename;
         }

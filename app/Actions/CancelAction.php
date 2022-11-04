@@ -34,7 +34,7 @@ class CancelAction extends AbstractAction
 
     public function shouldActionDisplayOnDataType()
     {
-        return $this->dataType->slug == 'tasks' ;
+        return $this->dataType->slug === 'tasks' ;
     }
 
     public function shouldActionDisplayOnRow($row){
