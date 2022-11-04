@@ -128,6 +128,11 @@ class Controller extends BaseController
         return view('staticpages.paynet');
     }
 
+    public function user_info($user){
+
+        return view('user_managment.info');
+    }
+
     public function routing($request)
     {
         $routeName = $request->route;

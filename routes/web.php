@@ -1,6 +1,5 @@
 <?php
 
-use Elastic\ScoutDriverPlus\Support\Query;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\TaskAPIController;
 use App\Http\Controllers\Controller;
@@ -20,6 +19,7 @@ use App\Http\Controllers\PerformersController;
 use App\Http\Controllers\Task\SearchTaskController;
 use App\Http\Controllers\admin\VoyagerUserController;
 use App\Http\Controllers\Task\CreateController;
+use TCG\Voyager\Facades\Voyager;
 use Teamprodev\LaravelPayment\PayUz;
 
 /*
@@ -216,6 +216,7 @@ Route::get('/paynet_oplata',[Controller::class,'paynet_oplata']);
 Route::get('/show-notification/{notification}', [NotificationController::class, 'show_notification'])->name('show_notification');
 Route::get('/show-notification-user/{notification}', [NotificationController::class, 'show_notification_user'])->name('show_notification_user');
 Route::get('/read-notification/{notification}', [NotificationController::class, 'read_notification'])->name('read_notification');
+Route::get('/info/{user}',[Controller::class,'user_info'])->name('user.info');
 #endregion
 
 #region registration

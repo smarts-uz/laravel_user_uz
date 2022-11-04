@@ -3,15 +3,15 @@
 namespace App\Actions;
 use TCG\Voyager\Actions\AbstractAction;
 
-class InfoAction extends AbstractAction
+class PasswordResetAction extends AbstractAction
 {
     public function getTitle()
     {
-        return 'User Info';
+        return 'Reset Password';
     }
 
     public function getIcon(){
-        return 'voyager-info-circled';
+        return 'voyager-tools';
     }
     public function getPolicy(){
         return 'read';
@@ -20,12 +20,12 @@ class InfoAction extends AbstractAction
     public function getAttributes()
     {
         return [
-            'class' => 'btn btn-sm btn-primary pull-right',
+            'class' => 'btn btn-sm btn-danger pull-right',
         ];
     }
     public function getDefaultRoute()
     {
-        return route('user.info', ['user' => $this->data->id]);
+//        return route('voyagerUser.activity', ['user' => $this->data->id]);
     }
 
     public function shouldActionDisplayOnDataType()
