@@ -9,7 +9,6 @@
     <title>Universal services</title>
 </head>
 <body>
-
 <h1 class="text-center mt-4 text-3xl font-bold">Users info</h1>
 <div class="w-11/12 mx-auto mt-4 grid grid-cols-4">
     <!-- Tabs -->
@@ -54,25 +53,35 @@
     <!-- Tab Contents -->
     <div id="tab-contents" class="w-full col-span-3 border-2 rounded-xl mt-2">
         <div id="first" class="p-4">
-            First tab
+            @foreach($tasks as $task)
+                <a target="_blank" href="/detailed-tasks/{{$task->id}}">{{$task->name}}</a> <br>
+            @endforeach
         </div>
         <div id="second" class="hidden p-4">
-            Second tab
+            @foreach($performer_tasks as $performer_task)
+                <a target="_blank" href="/detailed-tasks/{{$performer_task->id}}">{{$performer_task->name}}</a> <br>
+            @endforeach
         </div>
         <div id="third" class="hidden p-4">
-            Third tab
+            @foreach($user_reviews as $user_review)
+                <a target="_blank" href="">{{$user_review->description}}</a> <br>
+            @endforeach
         </div>
         <div id="fourth" class="hidden p-4">
-            Fourth tab
+            @foreach($performer_reviews as $performer_review)
+                <a target="_blank" href="">{{$performer_review->description}}</a> <br>
+            @endforeach
         </div>
         <div id="five" class="hidden p-4">
-            five tab
+            @foreach($task_responses as $task_response)
+                <a target="_blank" href="">{{$task_response->description}}</a> <br>
+            @endforeach
         </div>
         <div id="six" class="hidden p-4">
-            six tab
+            Portfolio
         </div>
         <div id="seven" class="hidden p-4">
-            seven tab
+            {{$user->youtube_link}}
         </div>
     </div>
 </div>
