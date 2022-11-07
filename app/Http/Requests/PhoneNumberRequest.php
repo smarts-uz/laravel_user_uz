@@ -12,4 +12,13 @@ class PhoneNumberRequest extends BaseRequest
             'phone_number' => 'required|numeric'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'phone_number.required' =>  __('login.phone_number.required'),
+            'phone_number.numeric' => __('login.phone_number.numeric'),
+        ];
+
+    }
 }
