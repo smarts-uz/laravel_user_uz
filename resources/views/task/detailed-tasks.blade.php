@@ -16,7 +16,7 @@
                 <h1 class="text-3xl font-bold mb-2">{{$task->name}}</h1>
                 <div class="md:flex flex-row">
                         <span class="text-black rounded-lg bg-yellow-400 p-2">
-                            @if ( session('lang') == 'uz' )
+                            @if ( session('lang') === 'uz' )
                                 {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
                             @else
                                 {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}

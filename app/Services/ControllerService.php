@@ -76,8 +76,8 @@ class ControllerService
         $item = new UserInfoItem();
         $item->tasks = Task::query()->where('user_id', $user)->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->latest()->get();
         $item->performer_tasks = Task::query()->where('performer_id', $user)->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->latest()->get();
-        $item->user_reviews = Review::query()->where('user_id', $user)->latest()->get();
-        $item->performer_reviews = Review::query()->where('reviewer_id', $user)->latest()->get();
+        $item->user_reviews = Review::query()->where('reviewer_id', $user)->latest()->get();
+        $item->performer_reviews = Review::query()->where('user_id', $user)->latest()->get();
         $item->task_responses = TaskResponse::query()->where('performer_id', $user)->latest()->get();
         $item->portfolios =  Portfolio::query()->where('user_id', $user)->latest()->get();
         $item->user = User::where('id', $user)->first();

@@ -6,6 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/fonts/fonts.css') }}">
     <title>Universal services</title>
 </head>
@@ -173,12 +174,58 @@
         </div>
         <div id="third" class="hidden p-4">
             @foreach($user_reviews as $user_review)
-                <a target="_blank" href="">{{$user_review->description}}</a> <br>
+                <div class="my-6">
+                    <div class="flex flex-row gap-x-2 my-4 items-start">
+                        <img src="{{ asset('storage/') }}" alt="#"
+                             class="w-12 h-12 border-2 rounded-lg border-gray-500">
+                        <a href="{{ route('performers.performer',$user_review->reviewer_id ) }}"
+                           class="text-blue-500 hover:text-red-500 text-xl">{{ $user_review->reviewer_name }}</a> <br>
+                        @if ($user_review->as_performer === 0)
+                            <i class="far fa-thumbs-up text-gray-400"></i>
+                            <p> - Заказчик</p>
+                        @elseif ($user_review->as_performer === 1)
+                            <i class="far fa-thumbs-up text-gray-400"></i>
+                            <p> - Исполнитель</p>
+                        @endif
+                    </div>
+                    <div class="w-full p-3 bg-yellow-50 rounded-xl">
+                        <p>{{__('Задание')}}
+                            <a href="{{ route('searchTask.task',$user_review->task_id) }}" class="hover:text-red-400 border-b border-gray-300 hover:border-red-400">
+{{--                                "{{ $user_review->task->name }}"--}}
+                            </a>
+                            {{__('выполнено')}}
+                        </p>
+                        <p class="border-t-2 border-gray-300 my-3 pt-3">{{ $user_review->description }}</p>
+                        <p class="text-right">{{ $user_review->created }}</p>
+                    </div>
+                </div>
             @endforeach
         </div>
         <div id="fourth" class="hidden p-4">
             @foreach($performer_reviews as $performer_review)
-                <a target="_blank" href="">{{$performer_review->description}}</a> <br>
+                <div class="my-6">
+                    <div class="flex flex-row gap-x-2 my-4 items-start">
+                        <img src="{{ asset('storage/') }}" alt="#"
+                             class="w-12 h-12 border-2 rounded-lg border-gray-500">
+                        <a href="{{ route('performers.performer',$performer_review->reviewer_id ) }}"
+                           class="text-blue-500 hover:text-red-500 text-xl">{{ $performer_review->reviewer_name }}</a>
+                        @if ($performer_review->as_performer === 0)
+                            <p> - Заказчик</p>
+                        @elseif ($performer_review->as_performer === 1)
+                            <p> - Исполнитель</p>
+                        @endif
+                    </div>
+                    <div class="w-full p-3 bg-yellow-50 rounded-xl">
+                        <p>{{__('Задание')}}
+                            <a href="{{ route('searchTask.task',$performer_review->task_id) }}" class="hover:text-red-400 border-b border-gray-300 hover:border-red-400">
+{{--                                "{{ $performer_review->task->name }}"--}}
+                            </a>
+                            {{__('выполнено')}}
+                        </p>
+                        <p class="border-t-2 border-gray-300 my-3 pt-3">{{ $performer_review->description }}</p>
+                        <p class="text-right">{{ $performer_review->created }}</p>
+                    </div>
+                </div>
             @endforeach
         </div>
         <div id="five" class="hidden p-4">
