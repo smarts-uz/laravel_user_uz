@@ -13,11 +13,11 @@ class ProfilePasswordRequest extends BaseRequest
         if (isset(auth()->user()->password)) {
             $rules = [
                 'old_password' => 'required',
-                'password' => 'required|confirmed|min:6',
+                'password' => 'required|confirmed|min:8',
             ];
         } else {
             $rules = [
-                'password' => 'required|confirmed|min:6',
+                'password' => 'required|confirmed|min:8',
             ];
         }
         return $rules;
@@ -29,7 +29,7 @@ class ProfilePasswordRequest extends BaseRequest
             'old_password.required' => trans('trans.Enter old password.'),
             'password.required' => trans('trans.Enter new password.'),
             'password.confirmed' => trans('trans.Confirm new password.'),
-            'password.min' => trans('trans.Password length should be more than 6.'),
+            'password.min' => trans('trans.Password length should be more than 8.'),
         ];
     }
 }

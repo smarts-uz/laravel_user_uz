@@ -20,7 +20,7 @@ return [
     'Enter old password.' => 'Введите старый пароль.',
     'Enter new password.' => 'Введите новый пароль.',
     'Confirm new password.' => 'Подтвердите новый пароль.',
-    'Password length should be more than 6.' => 'Пароль должен содержать более 6 символов.',
+    'Password length should be more than 8.' => 'Пароль должен содержать более 8 символов.',
     'Password updated successfully.' => 'Пароль изменен успешно.',
     'Incorrect old password.' => 'Неверный старый пароль.',
     'Send a photo.' => 'Отправьте фото.',

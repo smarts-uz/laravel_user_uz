@@ -20,7 +20,7 @@ return [
     'Enter old password.' => 'Eski parolni kiriting.',
     'Enter new password.' => 'Yangi parolni kiriting.',
     'Confirm new password.' => 'Yangi parolni tasdiqlang.',
-    'Password length should be more than 6.' => 'Parolni uzunligi 6dan k\'oproq bo\'lishi kerak.',
+    'Password length should be more than 6.' => 'Parolni uzunligi 8dan k\'oproq bo\'lishi kerak.',
     'Password updated successfully.' => 'Parol muvaffaqiyatli o\'zgardi.',
     'Incorrect old password.' => 'Eski parol noto\'g\'ri kiritilgan.',
     'Send a photo.' => 'Rasm yuboring.',
