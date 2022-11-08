@@ -27,7 +27,7 @@ class PasswordResetAction extends AbstractAction
     }
     public function getDefaultRoute()
     {
-//        return route('voyagerUser.activity', ['user' => $this->data->id]);
+
     }
 
     public function shouldActionDisplayOnDataType()
