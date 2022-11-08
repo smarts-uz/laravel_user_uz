@@ -187,8 +187,7 @@
             @foreach($user_reviews as $user_review)
                 <div class="my-6">
                     <div class="flex flex-row gap-x-2 my-4 items-start">
-                        <img src="@if ($user_review->reviewer?->avatar === ''){{ asset("storage/images/default.png") }}
-                                        @else{{asset("storage/{$user_review->reviewer->avatar}") }}" @endif alt="#"
+                        <img src="{{asset("storage/{$user_review->reviewer?->avatar}") }}" alt="#"
                              class="w-12 h-12 border-2 rounded-lg border-gray-500">
                         <div class="flex flex-col">
                             <a target="_blank" href="{{ route('performers.performer',$user_review->reviewer_id ) }}"
@@ -224,8 +223,7 @@
             @foreach($performer_reviews as $performer_review)
                 <div class="my-6">
                     <div class="flex flex-row gap-x-2 my-4 items-start">
-                        <img src="@if ($user_review->reviewer?->avatar === ''){{ asset("storage/images/default.png") }}
-                                        @else{{asset("storage/{$user_review->reviewer->avatar}") }}" @endif alt="#"
+                        <img src="{{asset("storage/{$performer_review->reviewer?->avatar}") }}" alt="#"
                              class="w-12 h-12 border-2 rounded-lg border-gray-500">
                         <div class="flex flex-col">
                             <a target="_blank" href="{{ route('performers.performer',$performer_review->reviewer_id ) }}"
