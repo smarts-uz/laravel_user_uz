@@ -5,7 +5,6 @@
 @section('content')
     <link rel="stylesheet" href="{{asset('css/budget_library.css')}}">
     <link rel="stylesheet" href="{{asset('css/budjet.css')}}">
-
     <form class="" action="{{route('task.create.budget.store', $task->id)}}" method="post">
         @csrf
         <div class="mx-auto sm:w-9/12 w-11/12 my-16">
@@ -88,10 +87,26 @@
                                 <div class="w-[100px]  md:w-[200px] md:hidden text-center">
                                     <select name="amount" class="border md:ml-14 bg-yellow-400  text-white font-semibold rounded-lg text-lg md:text-2xl my-4 py-3 px-10 hover:bg-yellow-600"
                                     onchange="$('#amount2').val(this.value)">
-                                        @if(session('lang') === 'ru')
                                             <option value="0">
                                                 {{__('Выберите бюджет')}}
                                             </option>
+                                        @if(session('lang') === 'uz')
+                                            <option value="{{round($category->max/5)}}">
+                                                {{round($category->max/5)}}  So'm{{__('до')}}
+                                            </option>
+                                            <option value="{{round($category->max/5 * 2)}}">
+                                                {{round($category->max/5 * 2)}} So'm{{__('до')}}
+                                            </option>
+                                            <option value="{{round($category->max/5 * 3)}}">
+                                                {{round($category->max/5 * 3)}} So'm{{__('до')}}
+                                            </option>
+                                            <option value="{{round($category->max/5 * 4)}}">
+                                                {{round($category->max/5 * 4)}} So'm{{__('до')}}
+                                            </option>
+                                            <option value="до {{round($category->max)}} UZS">
+                                                {{round($category->max)}} So'm{{__('до')}}
+                                            </option>
+                                        @else
                                             <option value="{{round($category->max/5)}}">
                                                 {{__('до')}} {{round($category->max/5)}} UZS
                                             </option>
@@ -106,25 +121,6 @@
                                             </option>
                                             <option value="до {{round($category->max)}} UZS">
                                                 {{__('до')}} {{round($category->max)}} UZS
-                                            </option>
-                                        @else
-                                            <option value="0">
-                                                {{__('Выберите бюджет')}}
-                                            </option>
-                                            <option value="{{round($category->max/5)}}">
-                                                 {{round($category->max/5)}}  So'm{{__('до')}}
-                                            </option>
-                                            <option value="{{round($category->max/5 * 2)}}">
-                                                 {{round($category->max/5 * 2)}} So'm{{__('до')}}
-                                            </option>
-                                            <option value="{{round($category->max/5 * 3)}}">
-                                                 {{round($category->max/5 * 3)}} So'm{{__('до')}}
-                                            </option>
-                                            <option value="{{round($category->max/5 * 4)}}">
-                                                 {{round($category->max/5 * 4)}} So'm{{__('до')}}
-                                            </option>
-                                            <option value="до {{round($category->max)}} UZS">
-                                                 {{round($category->max)}} So'm{{__('до')}}
                                             </option>
                                         @endif
 
