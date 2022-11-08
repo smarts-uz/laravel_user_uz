@@ -789,10 +789,14 @@
     "Пользователь ответил на задачи": " Foydalanuvchi javob qoldirgan vazifalar",
     "Комментарии, оставленные пользователем": "Foydalanuvchi qoldirgan izohlari",
     "Комментарии оставленные пользователю": "Foydalanuvchiga qoldirilgan izohlar",
-    "Откликы оставленные пользователю": "Foydalanuvchiga qoldirilgan javoblar",
+    "Откликы оставленные пользователю": "Foydalanuvchi qoldirgan javoblari",
     "Заказчик": "Mijoz",
     "Информация о пользователе": "Foydalanuvchi ma'lumotlari",
     "Task id": "Vazifa IDsi",
     "Task name": "Vazifa nomi",
-    "Комментарий": "Izoh"
+    "Комментарий": "Izoh",
+    "Этот пользователь не создал никаких задач": "Bu foydalanuvchi hech qanday vazifa yaratmagan",
+    "Этот пользователь не ответил на задание": "Bu foydalanuvchi vazifaga javob bermagan",
+    "Комментариев не осталось": "Hech qanday izoh qoldirilmagan",
+    "Пользователь не оставил ответов": "Foydalanuvchi hech qanday javob qoldirmagan"
 }
