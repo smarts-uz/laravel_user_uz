@@ -111,7 +111,7 @@
                                     0
                                 @endif
                             </span>
-                            <p class="text-sm sm:mt-1 mt-0">{{ $task->category->name }}</p>
+                            <p class="text-sm sm:mt-1 mt-0">{{ $task->category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</p>
                             @if (Auth::check() && Auth::user()->id === $task->user_id)
                                 <a href="/profile" target="_blank"
                                    class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $task->user->name }}</a>
@@ -170,7 +170,7 @@
                                     0
                                 @endif
                             </span>
-                            <p class="text-sm sm:mt-1 mt-0">{{ $performer_task->category->name }}</p>
+                            <p class="text-sm sm:mt-1 mt-0">{{ $performer_task->category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</p>
                             @if (Auth::check() && Auth::user()->id === $performer_task->user_id)
                                 <a href="/profile" target="_blank"
                                    class="text-sm sm:mt-1 mt-0 hover:text-red-500 border-b-2 border-gray-500 hover:border-red-500">{{ $performer_task->user->name }}</a>
@@ -261,23 +261,24 @@
             @foreach($task_responses as $task_response)
                 <div class="bg-gray-100 rounded-lg p-4 my-4">
                     <div class="ml-0">
-                        <div class="text-gray-500 font-semibold">
-                            {{__('Task id')}} : {{ $task_response->task_id }}
+                        <div class="text-gray-500 flex flex-row gap-x-2">
+                            <p class="font-semibold">{{__('Task id')}} : </p>
+                            <span>{{ $task_response->task_id }}</span>
                         </div>
-                        <div class="text-gray-500 font-semibold my-2">
-                            {{__('Task name')}} :
+                        <div class="text-gray-500 my-2 flex flex-row gap-x-2">
+                            <p class="font-semibold">{{__('Task name')}} : </p>
                             <a target="_blank" class="text-blue-500 hover:text-red-500" href="/detailed-tasks/{{$task_response->task_id}}">
                                 {{ $task_response->task->name }}
                             </a>
                         </div>
-                        <div class="text-gray-500 font-semibold my-2">
-                            {{__('Стоимость')}} {{ number_format($task_response->price) }} UZS
+                        <div class="text-gray-500 my-2 flex flex-row gap-x-2">
+                            <p class="font-semibold">{{__('Стоимость')}}</p> : {{ number_format($task_response->price) }} UZS
                         </div>
-                        <div class="text-[17px] text-gray-500 my-2">
-                            {{ $task_response->description }}
+                        <div class="text-gray-500 my-2 flex flex-row gap-x-2">
+                            <p class="font-semibold">{{__('Комментарий ')}}</p> : {{ $task_response->description }}
                         </div>
-                        <div class="text-gray-500 font-semibold my-2">
-                            {{__('Телефон исполнителя:')}} {{ $task_response->user->phone_number }}
+                        <div class="text-gray-500 my-2 flex flex-row gap-x-2">
+                            <p class="font-semibold">{{__('Телефон исполнителя:')}}</p> {{ $task_response->user->phone_number }}
                         </div>
                     </div>
                 </div>

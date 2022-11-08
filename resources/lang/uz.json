@@ -572,7 +572,7 @@
     "Сумма пополнения, минимум — ": "To'ldirish miqdori, kamida ",
     "Счет": "Hisob raqamim",
     "Телефон": "Telefon",
-    "Телефон исполнителя:": "ijrochining telefoni:",
+    "Телефон исполнителя:": "Ijrochining telefoni :",
     "Телефон немер": "Telefon NEMER",
     "Телефонный номер": "Telefon raqami",
     "Тестировщик мобильных приложений": "Mobil ilovalar sinovchisi",
@@ -791,5 +791,8 @@
     "Комментарии оставленные пользователю": "Foydalanuvchiga qoldirilgan izohlar",
     "Откликы оставленные пользователю": "Foydalanuvchiga qoldirilgan javoblar",
     "Заказчик": "Mijoz",
-    "Информация о пользователе": "Foydalanuvchi ma'lumotlari"
+    "Информация о пользователе": "Foydalanuvchi ma'lumotlari",
+    "Task id": "Vazifa IDsi",
+    "Task name": "Vazifa nomi",
+    "Комментарий": "Izoh"
 }
