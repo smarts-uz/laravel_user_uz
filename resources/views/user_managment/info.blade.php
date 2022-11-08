@@ -11,49 +11,60 @@
     <title>Universal services</title>
 </head>
 <body>
-<h1 class="text-center mt-4 text-3xl font-bold">Users info</h1>
+<div class="w-11/12 mx-auto text-gray-500 mt-4">
+    <div class="flex">
+        @if(session('lang') === 'ru')
+            <a href="{{route('lang', ['lang'=>'uz'])}}" class="hover:text-red-500 mr-2">
+                UZ
+            </a>
+            I
+            <a href="{{route('lang', ['lang'=>'ru'])}}" class="hover:text-red-500 text-red-500 ml-2">
+                RU
+            </a>
+        @else
+            <a href="{{route('lang', ['lang'=>'uz'])}}" class="hover:text-red-500 text-red-500 mr-2">
+                UZ
+            </a>
+            I
+            <a href="{{route('lang', ['lang'=>'ru'])}}" class="hover:text-red-500 ml-2">
+                RU
+            </a>
+        @endif
+    </div>
+</div>
+<h1 class="text-center mt-4 text-3xl font-bold">{{__('Информация о пользователе')}}</h1>
 <div class="w-11/12 mx-auto mt-4 grid grid-cols-4">
     <!-- Tabs -->
-    <div id="tabs" class="col-span-1 flex flex-col pt-2 px-1 w-full">
+    <div id="tabs" class="md:col-span-1 col-span-4 flex flex-col pt-2 px-1 w-full">
         <div class="bg-blue-500 text-white text-center border border-gray-300 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
             <a id="default-tab" href="#first">
-                user yaratgan tasklari
+                {{__('Задания, созданные пользователем')}}
             </a>
         </div>
         <div class="text-center border border-gray-300 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
             <a href="#second">
-                user otklik tashlagan tasklar
+                {{__('Пользователь ответил на задачи')}}
             </a>
         </div>
        <div class="text-center border border-gray-300 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
            <a href="#third">
-               user qoldirgan izohlari
+               {{__('Комментарии, оставленные пользователем')}}
            </a>
        </div>
         <div class="text-center border border-gray-300 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
             <a href="#fourth">
-                userga qoldirilgan izohlar
+                {{__('Комментарии оставленные пользователю')}}
             </a>
         </div>
         <div class="text-center border border-gray-300 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
             <a href="#five">
-                user qoldirgan okliklari
-            </a>
-        </div>
-        <div class="text-center border border-gray-300 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
-            <a href="#six">
-                user yuklagan rasmlari
-            </a>
-        </div>
-        <div class="text-center border border-gray-300 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
-            <a href="#seven">
-                user yuklagan youtube link
+                {{__('Откликы оставленные пользователю')}}
             </a>
         </div>
     </div>
 
     <!-- Tab Contents -->
-    <div id="tab-contents" class="w-full col-span-3 border-2 rounded-xl mt-2">
+    <div id="tab-contents" class="w-full md:col-span-3 col-span-4 border-2 rounded-xl mt-2">
         <div id="first" class="p-4">
             @foreach($tasks as $task)
                 <div class="border-2 border-gray-500 rounded-xl bg-gray-50 hover:bg-blue-100 h-auto my-3 bg-gray-100">
@@ -176,22 +187,30 @@
             @foreach($user_reviews as $user_review)
                 <div class="my-6">
                     <div class="flex flex-row gap-x-2 my-4 items-start">
-                        <img src="{{ asset('storage/') }}" alt="#"
+                        <img src="@if ($user_review->reviewer?->avatar === ''){{ asset("storage/images/default.png") }}
+                                        @else{{asset("storage/{$user_review->reviewer->avatar}") }}" @endif alt="#"
                              class="w-12 h-12 border-2 rounded-lg border-gray-500">
-                        <a href="{{ route('performers.performer',$user_review->reviewer_id ) }}"
-                           class="text-blue-500 hover:text-red-500 text-xl">{{ $user_review->reviewer_name }}</a> <br>
-                        @if ($user_review->as_performer === 0)
-                            <i class="far fa-thumbs-up text-gray-400"></i>
-                            <p> - Заказчик</p>
-                        @elseif ($user_review->as_performer === 1)
-                            <i class="far fa-thumbs-up text-gray-400"></i>
-                            <p> - Исполнитель</p>
-                        @endif
+                        <div class="flex flex-col">
+                            <a target="_blank" href="{{ route('performers.performer',$user_review->reviewer_id ) }}"
+                               class="text-blue-500 hover:text-red-500 text-xl">{{ $user_review->reviewer_name }}</a>
+                            <div class="flex flex-row items-center">
+                                @if ($user_review->good_bad === 1)
+                                    <i class="far fa-thumbs-up text-gray-400"></i>
+                                @else
+                                    <i class="far fa-thumbs-down text-gray-400"></i>
+                                @endif
+                                @if ($user_review->as_performer === 0)
+                                    <p> - {{__('Заказчик')}}</p>
+                                @elseif ($user_review->as_performer === 1)
+                                    <p> - {{__('Исполнитель')}}</p>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                     <div class="w-full p-3 bg-yellow-50 rounded-xl">
                         <p>{{__('Задание')}}
-                            <a href="{{ route('searchTask.task',$user_review->task_id) }}" class="hover:text-red-400 border-b border-gray-300 hover:border-red-400">
-{{--                                "{{ $user_review->task->name }}"--}}
+                            <a  target="_blank" href="{{ route('searchTask.task',$user_review->task_id) }}" class="hover:text-red-400 border-b border-gray-300 hover:border-red-400">
+                                "{{ $user_review->task?->name }}"
                             </a>
                             {{__('выполнено')}}
                         </p>
@@ -205,20 +224,30 @@
             @foreach($performer_reviews as $performer_review)
                 <div class="my-6">
                     <div class="flex flex-row gap-x-2 my-4 items-start">
-                        <img src="{{ asset('storage/') }}" alt="#"
+                        <img src="@if ($user_review->reviewer?->avatar === ''){{ asset("storage/images/default.png") }}
+                                        @else{{asset("storage/{$user_review->reviewer->avatar}") }}" @endif alt="#"
                              class="w-12 h-12 border-2 rounded-lg border-gray-500">
-                        <a href="{{ route('performers.performer',$performer_review->reviewer_id ) }}"
-                           class="text-blue-500 hover:text-red-500 text-xl">{{ $performer_review->reviewer_name }}</a>
-                        @if ($performer_review->as_performer === 0)
-                            <p> - Заказчик</p>
-                        @elseif ($performer_review->as_performer === 1)
-                            <p> - Исполнитель</p>
-                        @endif
+                        <div class="flex flex-col">
+                            <a target="_blank" href="{{ route('performers.performer',$performer_review->reviewer_id ) }}"
+                               class="text-blue-500 hover:text-red-500 text-xl">{{ $performer_review->reviewer_name }}</a>
+                            <div class="flex flex-row items-center">
+                                @if ($performer_review->good_bad === 1)
+                                    <i class="far fa-thumbs-up text-gray-400"></i>
+                                @else
+                                    <i class="far fa-thumbs-down text-gray-400"></i>
+                                @endif
+                                @if ($performer_review->as_performer === 0)
+                                    <p> - {{__('Заказчик')}}</p>
+                                @elseif ($performer_review->as_performer === 1)
+                                    <p> - {{__('Исполнитель')}}</p>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                     <div class="w-full p-3 bg-yellow-50 rounded-xl">
                         <p>{{__('Задание')}}
-                            <a href="{{ route('searchTask.task',$performer_review->task_id) }}" class="hover:text-red-400 border-b border-gray-300 hover:border-red-400">
-{{--                                "{{ $performer_review->task->name }}"--}}
+                            <a target="_blank" href="{{ route('searchTask.task',$performer_review->task_id) }}" class="hover:text-red-400 border-b border-gray-300 hover:border-red-400">
+                                "{{ $performer_review->task?->name }}"
                             </a>
                             {{__('выполнено')}}
                         </p>
@@ -230,18 +259,29 @@
         </div>
         <div id="five" class="hidden p-4">
             @foreach($task_responses as $task_response)
-                <a target="_blank" href="">{{$task_response->description}}</a> <br>
+                <div class="bg-gray-100 rounded-lg p-4 my-4">
+                    <div class="ml-0">
+                        <div class="text-gray-500 font-semibold">
+                            {{__('Task id')}} : {{ $task_response->task_id }}
+                        </div>
+                        <div class="text-gray-500 font-semibold my-2">
+                            {{__('Task name')}} :
+                            <a target="_blank" class="text-blue-500 hover:text-red-500" href="/detailed-tasks/{{$task_response->task_id}}">
+                                {{ $task_response->task->name }}
+                            </a>
+                        </div>
+                        <div class="text-gray-500 font-semibold my-2">
+                            {{__('Стоимость')}} {{ number_format($task_response->price) }} UZS
+                        </div>
+                        <div class="text-[17px] text-gray-500 my-2">
+                            {{ $task_response->description }}
+                        </div>
+                        <div class="text-gray-500 font-semibold my-2">
+                            {{__('Телефон исполнителя:')}} {{ $task_response->user->phone_number }}
+                        </div>
+                    </div>
+                </div>
             @endforeach
-        </div>
-        <div id="six" class="hidden p-4">
-            Portfolio
-        </div>
-        <div id="seven" class="hidden p-4">
-            @if($user->youtube_link)
-                <iframe class="my-4 sm:w-full w-5/6 rounded-lg" width="644" height="500" id="iframe" src="{{$user->youtube_link}}" frameborder="0"></iframe>
-            @else
-                <p>Youtube link yuklanmagan</p>
-            @endif
         </div>
     </div>
 </div>

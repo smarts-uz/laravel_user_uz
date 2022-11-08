@@ -18,6 +18,4 @@ class UserInfoItem
     public $user_reviews;
     public $performer_reviews;
     public $task_responses;
-    public $portfolios;
-    public $user;
 }

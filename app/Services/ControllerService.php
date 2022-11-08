@@ -79,8 +79,6 @@ class ControllerService
         $item->user_reviews = Review::query()->where('reviewer_id', $user)->latest()->get();
         $item->performer_reviews = Review::query()->where('user_id', $user)->latest()->get();
         $item->task_responses = TaskResponse::query()->where('performer_id', $user)->latest()->get();
-        $item->portfolios =  Portfolio::query()->where('user_id', $user)->latest()->get();
-        $item->user = User::where('id', $user)->first();
         return $item;
     }
 }

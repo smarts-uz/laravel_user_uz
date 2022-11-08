@@ -784,6 +784,12 @@
     "to": "dan",
     "of": "gacha",
     "results": "ta natijadan",
-    "voyager::generic.contains": "Contains"
-
+    "voyager::generic.contains": "Contains",
+    "Задания, созданные пользователем" : "Foydalanuvchi yaratgan vazifalar",
+    "Пользователь ответил на задачи": " Foydalanuvchi javob qoldirgan vazifalar",
+    "Комментарии, оставленные пользователем": "Foydalanuvchi qoldirgan izohlari",
+    "Комментарии оставленные пользователю": "Foydalanuvchiga qoldirilgan izohlar",
+    "Откликы оставленные пользователю": "Foydalanuvchiga qoldirilgan javoblar",
+    "Заказчик": "Mijoz",
+    "Информация о пользователе": "Foydalanuvchi ma'lumotlari"
 }

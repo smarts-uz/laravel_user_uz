@@ -144,8 +144,6 @@ class Controller extends BaseController
                 'user_reviews' => $item->user_reviews,
                 'performer_reviews' => $item->performer_reviews,
                 'task_responses' => $item->task_responses,
-                'portfolios' => $item->portfolios,
-                'user' => $item->user,
             ]
         );
     }
