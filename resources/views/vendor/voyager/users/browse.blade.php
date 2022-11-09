@@ -337,8 +337,8 @@
                         </form>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success">Generate Password</button>
-                            <button type="button" class="btn btn-warning">
+                            <button type="button" class="btn btn-success generate_password">Generate Password</button>
+                            <button type="button" class="btn btn-warning new_password">
                                 <i class="fas fa-copy"></i>
                                 <span>Copy new password</span>
                             </button>
@@ -348,6 +348,32 @@
             </div>
         </div>
     </div>
+    <style>
+        .new_password{
+            background-color: #f0ad4e;
+            box-shadow: 0 6px #473317;
+        }
+        .new_password:hover{
+            box-shadow: 0 4px #473317;
+            top: 2px;
+        }
+        .new_password:active{
+            box-shadow: 0 0 #473317;
+            top: 6px;
+        }
+        .generate_password{
+            background-color: #5cb85c;
+            box-shadow: 0 6px #1B371C;
+        }
+        .generate_password:hover{
+            box-shadow: 0 4px #1B371C;
+            top: 2px;
+        }
+        .generate_password:active{
+            box-shadow: 0 0 #1B371C;
+            top: 6px;
+        }
+    </style>
 @stop
 
 @section('css')
