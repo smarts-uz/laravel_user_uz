@@ -311,24 +311,6 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    {{--  Reset password modal start --}}
-    <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Foydalanuvchi parolini o'zgartirish</h5>
-                </div>
-                <div class="modal-body">
-                    Siz foydalanuvchi parolini o'zgartirmoqchimisiz?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#exampleModalCenter">Ha</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Yo'q</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{--  Reset password modal end --}}
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -340,9 +322,9 @@
                 <div class="modal-body">
                         <div class="form-group">
                             <label for="exampleInputPassword1">Mavjud parol</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" autocomplete="off" placeholder="Existing Password" value="{{$date}}">
+                            <input type="password" class="form-control" id="exampleInputPassword1" autocomplete="off" placeholder="Existing Password" value="">
                         </div>
-                        <form action="{{route('user.changepassword')}}" method="post">
+                        <form action="" method="post">
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Yangi Parol</label>
                                 <input type="text" class="form-control" id="exampleInputPassword1" name="password" autocomplete="off" placeholder="New Password">

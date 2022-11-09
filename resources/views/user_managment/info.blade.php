@@ -12,21 +12,24 @@
 </head>
 <body>
 <div class="w-11/12 mx-auto text-gray-500 mt-4">
-    <div class="flex">
-        @if(session('lang') === 'ru')
-            <a href="{{route('lang', ['lang'=>'uz'])}}" class="hover:text-red-500 mr-2">
-                UZ
-            </a>
-            I
-            <a href="{{route('lang', ['lang'=>'ru'])}}" class="hover:text-red-500 text-red-500 ml-2">
-                RU
-            </a>
-        @else
+    <div class="flex items-center">
+        <a href="/admin/users" class="text-lg text-blue-500 hover:text-red-500 cursor-pointer mr-12">
+            <i class="fas fa-arrow-left"></i> {{__('Вернитесь назад')}}
+        </a>
+        @if(session('lang') === 'uz')
             <a href="{{route('lang', ['lang'=>'uz'])}}" class="hover:text-red-500 text-red-500 mr-2">
                 UZ
             </a>
             I
             <a href="{{route('lang', ['lang'=>'ru'])}}" class="hover:text-red-500 ml-2">
+                RU
+            </a>
+        @else
+            <a href="{{route('lang', ['lang'=>'uz'])}}" class="hover:text-red-500 mr-2">
+                UZ
+            </a>
+            I
+            <a href="{{route('lang', ['lang'=>'ru'])}}" class="hover:text-red-500 text-red-500 ml-2">
                 RU
             </a>
         @endif
