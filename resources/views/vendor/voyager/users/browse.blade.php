@@ -338,29 +338,30 @@
                     <h5 class="modal-title" id="exampleModalLongTitle">Foydalanuvchi parolini o'zgartirish</h5>
                 </div>
                 <div class="modal-body">
-                    <form>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Mavjud parol</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" autocomplete="off" placeholder="Existing Password">
+                            <input type="password" class="form-control" id="exampleInputPassword1" autocomplete="off" placeholder="Existing Password" value="{{$date}}">
                         </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Yangi Parol</label>
-                            <input type="text" class="form-control" id="exampleInputPassword1" autocomplete="off" placeholder="New Password">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Yangi parolni tasdiqlang</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" autocomplete="off" placeholder="Confirm New Password">
-                        </div>
+                        <form action="{{route('user.changepassword')}}" method="post">
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Yangi Parol</label>
+                                <input type="text" class="form-control" id="exampleInputPassword1" name="password" autocomplete="off" placeholder="New Password">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Yangi parolni tasdiqlang</label>
+                                <input type="password" class="form-control" id="exampleInputPassword1" autocomplete="off" placeholder="Confirm New Password">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success">Generate Password</button>
                             <button type="button" class="btn btn-warning">
                                 <i class="fas fa-copy"></i>
                                 <span>Copy new password</span>
                             </button>
-                            <button type="submit" class="btn btn-primary">Save</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
-                    </form>
                 </div>
             </div>
         </div>
