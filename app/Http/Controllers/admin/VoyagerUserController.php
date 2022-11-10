@@ -23,12 +23,12 @@ class VoyagerUserController extends BaseVoyagerUserController
         return view('vendor.voyager.users.resetPassword',compact('user'));
     }
 
-    public function resetPassword_store(AdminPasswordResetRequest $request){
-        dd($request);
+    public function resetPassword_store(AdminPasswordResetRequest $request, User $user){
+
         $data = $request->validated();
-        /** @var User $user */
-        $user->password = Hash::make($data['password']);
         unset($data['password_confirmation']);
+        $user->update($data);
+        $user->password = Hash::make($data['password']);
         $user->updated_password_at = Carbon::now();
         $user->updated_password_by = Auth::id();
         $user->save();
