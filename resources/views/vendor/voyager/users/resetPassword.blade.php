@@ -20,11 +20,11 @@
                                     @csrf
                                     <div class="form-group">
                                         <label>Yangi Parol</label>
-                                        <input type="text" required class="form-control" name="password" placeholder="New Password">
+                                        <input type="text" value="" id="reset_password" required class="form-control" name="password" placeholder="New Password">
                                     </div>
                                     <div class="form-group">
                                         <label>Yangi parolni takrorlang</label>
-                                        <input type="password" required class="form-control" name="password_confirmation" placeholder="Confirm New Password">
+                                        <input type="password" id="password_confirmation" required class="form-control" name="password_confirmation" placeholder="Confirm New Password">
                                     </div>
                                     @error('password')
                                         <p class="text-danger">{{ $message }}</p>
@@ -33,8 +33,8 @@
                                 </form>
 
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-success generate_password">Generate Password</button>
-                                    <button type="button" class="btn btn-warning new_password">
+                                    <button type="button" onClick="randomPassword(10);" class="btn btn-success generate_password">Generate Password</button>
+                                    <button onclick="new_password()" type="button" class="btn btn-warning new_password">
                                         <i class="fas fa-copy"></i>
                                         <span>Copy new password</span>
                                     </button>
@@ -46,7 +46,24 @@
             </div>
         </div>
     </div>
-
+    <script>
+        function new_password() {
+            var copyText = document.getElementById("reset_password");
+            copyText.select();
+            document.execCommand("copy");
+            alert("Yangi paroldan nusxa olindi: " + copyText.value);
+        }
+        function randomPassword(length) {
+            var chars = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+<>ABCDEFGHIJKLMNOPQRSTU1234567890";
+            var pass = "";
+            for (var x = 0; x < length; x++) {
+                var i = Math.floor(Math.random() * chars.length);
+                pass += chars.charAt(i);
+            }
+            document.getElementById('reset_password').value = pass;
+            document.getElementById('password_confirmation').value = pass;
+        }
+    </script>
     <style>
         .new_password{
             background-color: #f0ad4e;
