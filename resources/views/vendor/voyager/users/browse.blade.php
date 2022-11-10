@@ -309,28 +309,6 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
-    {{--  Reset password modal start --}}
-    <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Foydalanuvchi parolini o'zgartirish</h5>
-                </div>
-                <div class="modal-body">
-                    Siz foydalanuvchi parolini o'zgartirmoqchimisiz?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="resetAdminPassword" class="btn btn-primary">Ha</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Yo'q</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{--  Reset password modal end --}}
-    <script>
-
-    </script>
 @stop
 
 @section('css')

@@ -14,17 +14,21 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Mavjud parol</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1" autocomplete="off" placeholder="Existing Password" value="">
+                                    <input type="text" class="form-control" id="exampleInputPassword1" autocomplete="off" placeholder="Existing Password" value="{{Hash::make($user->password)}}">
                                 </div>
-                                <form action="" method="post">
+                                <form action="{{route('voyager.reset.password.store',['user'=>$user->id])}}" method="POST">
+                                    @csrf
                                     <div class="form-group">
-                                        <label for="exampleInputPassword1">Yangi Parol</label>
-                                        <input type="text" class="form-control" id="exampleInputPassword1" name="password" autocomplete="off" placeholder="New Password">
+                                        <label>Yangi Parol</label>
+                                        <input type="text" required class="form-control" name="password" placeholder="New Password">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputPassword1">Yangi parolni tasdiqlang</label>
-                                        <input type="password" class="form-control" id="exampleInputPassword1" autocomplete="off" placeholder="Confirm New Password">
+                                        <label>Yangi parolni takrorlang</label>
+                                        <input type="password" required class="form-control" name="password_confirmation" placeholder="Confirm New Password">
                                     </div>
+                                    @error('password')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
                                     <button type="submit" class="btn btn-primary">Save</button>
                                 </form>
 

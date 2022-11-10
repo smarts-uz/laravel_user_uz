@@ -16,7 +16,7 @@ return [
     ],
     "password" => [
         "confirmed" => "Parol bir xil emas",
-        "min" => "Parollar kamida 6 ta belgidan iborat bo'lishi kerak",
+        "min" => "Parollar kamida 8 ta belgidan iborat bo'lishi kerak",
         "required" => "To'ldirish talab qilinadi!"
     ],
     "phone_number" => [

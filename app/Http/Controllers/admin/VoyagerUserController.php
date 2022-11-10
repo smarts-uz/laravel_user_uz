@@ -4,20 +4,36 @@ namespace App\Http\Controllers\admin;
 
 use App\Models\Session;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use TCG\Voyager\Events\BreadDataAdded;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Http\Controllers\VoyagerUserController as BaseVoyagerUserController;
 use TCG\Voyager\Models\DataRow;
+use App\Http\Requests\AdminPasswordResetRequest;
 
 class VoyagerUserController extends BaseVoyagerUserController
 {
-    public function resetPassword($userId){
+    public function resetPassword(User $user){
 
-        return view('vendor.voyager.users.resetPassword');
+        return view('vendor.voyager.users.resetPassword',compact('user'));
+    }
+
+    public function resetPassword_store(AdminPasswordResetRequest $request){
+        dd($request);
+        $data = $request->validated();
+        /** @var User $user */
+        $user->password = Hash::make($data['password']);
+        unset($data['password_confirmation']);
+        $user->updated_password_at = Carbon::now();
+        $user->updated_password_by = Auth::id();
+        $user->save();
+        return redirect('/admin/users');
+
     }
 
     public function store(Request $request)

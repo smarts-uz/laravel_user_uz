@@ -45,7 +45,7 @@
     "login.name.required": "Требуется заполнение!",
     "login.name.unique": "login.name.unique",
     "login.password.confirmed": "Введите пароль еще раз",
-    "login.password.min": "Пароль должен быть больше 7 символов",
+    "login.password.min": "Пароль должен быть не менее 8 символов",
     "login.password.required": "Требуется заполнение!",
     "login.phone_number.int": "login.phone_number.int",
     "login.phone_number.min": "login.phone_number.min",

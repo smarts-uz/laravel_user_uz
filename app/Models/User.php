@@ -52,6 +52,8 @@ use Laravel\Passport\HasApiTokens;
  * @property $tasks
  * @property $taskResponses
  * @property $reviewsObj
+ * @property $updated_password_at
+ * @property $updated_password_by
  * @property $map
  * @return array //Value Returned
  */

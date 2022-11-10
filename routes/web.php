@@ -73,7 +73,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('report/{id}', [ReportController::class, "index_sub"])->name("index_sub");
     Route::get("users/activitiy/{user}", [VoyagerUserController::class, "activity"])->name("voyagerUser.activity");
     Route::get("tasks/cancel/{task}", [VoyagerTaskController::class, "cancelTask"])->name("voyagerTask.cancel");
-    Route::get('/resetPassword/{userId}',[VoyagerUserController::class,'resetPassword'])->name('voyager.reset.password');
+    Route::get('/resetPassword/{user}',[VoyagerUserController::class,'resetPassword'])->name('voyager.reset.password');
+    Route::post('/resetPassword/store/{user}',[VoyagerUserController::class,'resetPassword_store'])->name('voyager.reset.password.store');
 });
 #endregion
 
@@ -239,7 +240,8 @@ Route::get('account/verification/email', [LoginController::class, 'send_email_ve
 Route::get('account/verification/phone', [LoginController::class, 'send_phone_verification'])->name('login.send_phone_verification')->middleware('auth');
 Route::post('account/verification/phone', [LoginController::class, 'verify_phone'])->name('login.verify_phone')->middleware('auth');
 Route::post("account/change/email", [LoginController::class, 'change_email'])->name('login.change_email')->middleware('auth');
-Route::post("account/change/phone", [LoginController::class, 'change_phone_number'])->name('login.change_phone_number')->middleware('auth');Route::post('/reset', [UserController::class, 'reset_submit'])->name('user.reset_submit');
+Route::post("account/change/phone", [LoginController::class, 'change_phone_number'])->name('login.change_phone_number')->middleware('auth');
+Route::post('/reset', [UserController::class, 'reset_submit'])->name('user.reset_submit');
 Route::post('/reset-by-email', [UserController::class, 'reset_by_email'])->name('user.reset_submit_email');
 Route::get('/reset/password', [UserController::class, 'reset_password'])->name('user.reset_password');
 Route::post('/reset/password', [UserController::class, 'reset_password_save'])->name('user.reset_password_save');

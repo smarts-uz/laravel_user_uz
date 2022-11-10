@@ -21,14 +21,11 @@ class PasswordResetAction extends AbstractAction
     {
         return [
             'class' => 'btn btn-sm btn-danger pull-right',
-            'data-toggle' => "modal",
-            'data-target' => "#resetModal",
-            'onclick' => "$('#exampleInputPassword1').val({{$this->data->id}})"
         ];
     }
     public function getDefaultRoute()
     {
-
+        return route('voyager.reset.password', ['user' => $this->data->id]);
     }
 
     public function shouldActionDisplayOnDataType()
