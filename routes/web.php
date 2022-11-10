@@ -73,6 +73,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('report/{id}', [ReportController::class, "index_sub"])->name("index_sub");
     Route::get("users/activitiy/{user}", [VoyagerUserController::class, "activity"])->name("voyagerUser.activity");
     Route::get("tasks/cancel/{task}", [VoyagerTaskController::class, "cancelTask"])->name("voyagerTask.cancel");
+    Route::get('/resetPassword/{userId}',[VoyagerUserController::class,'resetPassword'])->name('voyager.reset.password');
 });
 #endregion
 

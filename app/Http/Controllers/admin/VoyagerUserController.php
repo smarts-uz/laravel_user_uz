@@ -15,6 +15,11 @@ use TCG\Voyager\Models\DataRow;
 
 class VoyagerUserController extends BaseVoyagerUserController
 {
+    public function resetPassword($userId){
+
+        return view('vendor.voyager.users.resetPassword');
+    }
+
     public function store(Request $request)
     {
         $slug = $this->getSlug($request);
