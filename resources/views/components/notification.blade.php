@@ -86,13 +86,13 @@
         let channel = pusher.subscribe('user-notification-send-' + {{auth()->id()}});
         channel.bind('server-user', function (data) {
             data = JSON.parse(data.data)
-            console.log(data)
+            // console.log(data)
 
             let element = $('#content_count');
             let count = element.text();
             count = isNumeric(String(count)) ? parseInt(count) : 0;
             count += 1
-            element.text(count)
+            element.text(String(count))
             $('#notifications').prepend(`
             <li class="border-b-2 border-gray-500 flex gap-x-2 p-3 text-gray-800">
                 <div class="flex flex-col w-full">
