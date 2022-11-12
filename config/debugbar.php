@@ -20,10 +20,10 @@ return [
         'horizon*',
         'chat/*',
         'api/chat/*',
-        'click',
-        'payme',
-        'paynet',
-        'click/user-balance'
+        'payment/click',
+        'payment/payme',
+        'payment/click/user-balance',
+        'paynet'
     ],
 
     /*
