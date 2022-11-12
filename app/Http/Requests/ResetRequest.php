@@ -30,10 +30,10 @@ class ResetRequest extends FormRequest
     public function messages()
     {
         return [
+            'phone_number.integer' => __('login.phone_number.integer'),
             'phone_number.required' =>  __('login.phone_number.required'),
-            'phone_number.unique' => __('login.phone_number.unique'),
             'phone_number.exists' => __('login.phone_number.exists'),
-            'phone_number.numeric' => __('login.phone_number.numeric'),
+            'phone_number.min' => __('login.phone_number.min'),
         ];
 
     }

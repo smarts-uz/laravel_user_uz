@@ -70,6 +70,10 @@ class UserController extends Controller
 
         $data = $request->validate([
             'email' => 'required|email|exists:users'
+        ],[
+            'email.required' => trans('login.email.required'),
+            'email.email' => trans('login.email.email'),
+            'email.exists' => trans('login.email.exists'),
         ]);
         /** @var User $user */
         $user = User::query()->where('email', $data['email'])->first();
@@ -94,6 +98,11 @@ class UserController extends Controller
     {
         $data = $request->validate([
             'code' => 'required|numeric|min:6'
+        ],
+        [
+            'code.required' => __('Требуется заполнение!'),
+            'code.numeric' =>  __('Поле должно быть числом'),
+            'code.min' => __('Поле должно содержать не менее 6 символов')
         ]);
         $verifications = $request->session()->get('verifications');
         /** @var User $user */

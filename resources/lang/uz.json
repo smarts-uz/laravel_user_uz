@@ -41,6 +41,7 @@
     "login.email.email": "Emailingizni kiriting",
     "login.email.required": "To'ldirish talab qilinadi!",
     "login.email.unique": "Bu pochta ro'yxatdan o'tgan",
+    "login.email.exists": "Bu qiymat yaroqsiz",
     "login.emailError": "Login.Memeroror",
     "login.name.required": "To'ldirish talab qilinadi!",
     "login.name.unique": "Login.name.unik",
@@ -51,6 +52,7 @@
     "login.phone_number.min": "Kirish.fhe_Number.min",
     "login.phone_number.regex": "Kirish.phone_Number.Regex",
     "login.phone_number.required": "To'ldirish talab qilinadi!",
+    "login.phone_number.integer": "Maydoni qiymati butun son bo'lishi kerak.",
     "Этот номер зарегистрирован": "Bu raqam ro'yxatdan o'tgan",
     "not_enough_balance": "Balansda mablag 'yetarli emas",
     "ru": "ru",
@@ -799,5 +801,7 @@
     "Этот пользователь не ответил на задание": "Bu foydalanuvchi vazifaga javob bermagan",
     "Комментариев не осталось": "Hech qanday izoh qoldirilmagan",
     "Пользователь не оставил ответов": "Foydalanuvchi hech qanday javob qoldirmagan",
-    "Вернитесь назад": "Orqaga qaytish"
+    "Вернитесь назад": "Orqaga qaytish",
+    "Поле должно быть числом": "Maydon raqam bo'lishi kerak",
+    "Поле должно содержать не менее 6 символов": "Maydon kamida 6 ta belgidan iborat bo'lishi kerak"
 }
