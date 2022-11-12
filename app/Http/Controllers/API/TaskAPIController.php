@@ -47,6 +47,7 @@ class TaskAPIController extends Controller
     private CreateTaskService $create_task_service;
     private UpdateTaskService $update_task_service;
     public const SOME_TASK_LIMIT = 10;
+
     public function __construct()
     {
         $this->service = new CreateService();
@@ -120,7 +121,7 @@ class TaskAPIController extends Controller
     public function responses(Request $request, Task $task): AnonymousResourceCollection
     {
         if ($task->user_id === auth()->id()) {
-            switch ($request->get('filter')){
+            switch ($request->get('filter')) {
                 case 'rating' :
                     $responses = TaskResponse::query()->select('task_responses.*')->join('users', 'task_responses.performer_id', '=', 'users.id')
                         ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating');
@@ -204,7 +205,7 @@ class TaskAPIController extends Controller
         /** @var User $user */
         $user = auth()->user();
 
-        switch (true){
+        switch (true) {
             case ((int)$task->user_id === $user->id) :
                 return $this->fail(null, trans('trans.your task'));
             case ((int)$user->role_id !== User::ROLE_PERFORMER) :
@@ -383,11 +384,11 @@ class TaskAPIController extends Controller
     {
         if (auth()->guard('api')->check()) {
             $user_id = auth()->guard('api')->id();
-            $viewed_tasks = Cache::get('user_viewed_tasks'. $user_id) ?? [];
+            $viewed_tasks = Cache::get('user_viewed_tasks' . $user_id) ?? [];
             if (!in_array($task->id, $viewed_tasks)) {
                 $viewed_tasks[] = $task->id;
             }
-            Cache::put('user_viewed_tasks'. $user_id, $viewed_tasks);
+            Cache::put('user_viewed_tasks' . $user_id, $viewed_tasks);
             $task->increment('views');
         }
         return new TaskIndexResource($task);
@@ -641,18 +642,16 @@ class TaskAPIController extends Controller
      *                    property="task_id",
      *                    type="integer",
      *                 ),
-     *                 @OA\Property (
-     *                    property="location",
-     *                    type="string",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="latitude",
-     *                    type="number",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="longitude",
-     *                    type="number",
-     *                 ),
+     *                  @OA\Property (
+     *                    property="points[]",
+     *                    type="array",
+     *                    @OA\Items(
+     *                      type="object",
+     *                      @OA\Property(property="location", type="string"),
+     *                      @OA\Property(property="latitude", type="number"),
+     *                      @OA\Property(property="longitude", type="number"),
+     *                   ),
+     *                 )
      *             ),
      *         ),
      *     ),
