@@ -60,6 +60,7 @@ class SocialController extends Controller
     // login with apple
     public function appleRedirect()
     {
+
         return Socialite::driver('apple')->redirect();
     }
 
@@ -67,6 +68,7 @@ class SocialController extends Controller
     {
         try {
             $user = Socialite::driver('apple')->setScopes(['name', 'email'])->user();
+            
             /** @var User $findUser */
             $findUser = User::query()->where('email', $user->email)->first();
 
@@ -95,7 +97,7 @@ class SocialController extends Controller
             }
             return redirect()->route('profile.profileData');
         } catch (Exception $e) {
-            dd($e);
+            dd($e, 11);
         }
         return false;
     }
