@@ -94,8 +94,19 @@
             count += 1
             element.text(count)
             $('#notifications').prepend(`
-            <li>
-                <a href=${data['url']} class="text-sm font-bold hover:bg-gray-100 text-gray-700 block px-4 py-2">${data['name']}</a>
+            <li class="border-b-2 border-gray-500 flex gap-x-2 p-3 text-gray-800">
+                <div class="flex flex-col w-full">
+                    <p class="text-right text-sm">${data['created_date']}</p>
+                    <div class="w-full flex flex-row gap-x-4">
+                        <i class="fas fa-bell text-yellow-500 text-xl"></i>
+                        <div>
+                            <p>${data['title']}</p>
+                            <a class="hover:text-red-500" href=${data['url']}>
+                                ${data['description']}
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </li>
             `)
         });

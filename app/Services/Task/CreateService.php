@@ -75,7 +75,7 @@ class CreateService
     {
         $task->status = Task::STATUS_CANCELLED;
         $task->save();
-
+        /** @var Notification $notification */
         $notification = Notification::query()->create([
             'user_id' => $task->user_id,
             'description' => $task->desciption ?? 'task description',
@@ -86,8 +86,14 @@ class CreateService
         ]);
 
         NotificationService::sendNotificationRequest([$task->user_id], [
-            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+            'created_date' => $notification->created_at->format('d M'),
+            'title' => NotificationService::titles($notification->type),
+            'url' => route('show_notification', [$notification]),
+            'description' => NotificationService::descriptions($notification)
         ]);
+//        NotificationService::sendNotificationRequest([$task->user_id], [
+//            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+//        ]);
         $locale = cacheLang($task->user_id);
         NotificationService::pushNotification($task->user, [
             'title' => __('3адание отменено', [], $locale),
@@ -181,8 +187,14 @@ class CreateService
             ]);
 
             NotificationService::sendNotificationRequest([$performer_id], [
-                'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+                'created_date' => $notification->created_at->format('d M'),
+                'title' => NotificationService::titles($notification->type),
+                'url' => route('show_notification', [$notification]),
+                'description' => NotificationService::descriptions($notification)
             ]);
+//            NotificationService::sendNotificationRequest([$performer_id], [
+//                'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+//            ]);
 
             NotificationService::pushNotification($performer, [
                 'title' => __('Предложение', [], $locale), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [

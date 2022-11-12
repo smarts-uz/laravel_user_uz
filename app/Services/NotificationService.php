@@ -91,6 +91,13 @@ class NotificationService
                     'task_name' => $task->name, 'task_id' => $task->id, 'budget' => $price], $locale)
             ], 'notification', new NotificationResource($notification));
 
+            self::sendNotificationRequest([$performer->id], [
+                'created_date' => $notification->created_at->format('d M'),
+                'title' => self::titles($notification->type),
+                'url' => route('show_notification', [$notification]),
+                'description' => self::descriptions($notification)
+            ]);
+
             if (in_array($task->category_id, $user_cat_ids)) {
                 $performer_ids[] = $performer->id;
 
@@ -109,9 +116,10 @@ class NotificationService
             }
         }
 
-        self::sendNotificationRequest($performer_ids, [
-            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
-        ]);
+//        self::sendNotificationRequest($performer_ids, [
+//            'url' => route('show_notification', [$notification]),
+//            'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+//        ]);
     }
 
 
@@ -127,6 +135,7 @@ class NotificationService
         /** @var User $users */
         $users = User::query()->with('sessions')->where('news_notification', 1)->select('id')->get();
         foreach ($users as $user) {
+            /** @var Notification $notification */
             $notification = Notification::query()->create([
                 'user_id' => $user->id,
                 'description' => $not->message ?? 'description',
@@ -138,11 +147,17 @@ class NotificationService
                 'title' => __('Новости', [], $locale),
                 'body' => __('Важные новости и объявления для вас', [], $locale)
             ], 'notification', new NotificationResource($notification));
+            self::sendNotificationRequest([$user->id], [
+                'created_date' => $notification->created_at->format('d M'),
+                'title' => self::titles($notification->type),
+                'url' => route('show_notification', [$notification]),
+                'description' => self::descriptions($notification)
+            ]);
         }
 
-        self::sendNotificationRequest($users->map->id->toArray(), [
-            'url' => $slug . '/' . $not->id, 'name' => $not->title, 'time' => 'recently'
-        ]);
+//        self::sendNotificationRequest($users->map->id->toArray(), [
+//            'url' => $slug . '/' . $not->id, 'name' => $not->title, 'time' => 'recently'
+//        ]);
     }
 
     /**
@@ -184,8 +199,14 @@ class NotificationService
         ]);
 
         self::sendNotificationRequest([$user->id], [
-            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+            'created_date' => $notification->created_at->format('d M'),
+            'title' => self::titles($notification->type),
+            'url' => route('show_notification', [$notification]),
+            'description' => self::descriptions($notification)
         ]);
+//        self::sendNotificationRequest([$user->id], [
+//            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+//        ]);
 
         self::pushNotification($user, [
             'title' => self::titles($notification->type, $locale),
@@ -207,8 +228,14 @@ class NotificationService
         $locale = cacheLang($task->user_id);
 
         self::sendNotificationRequest([$task->user_id], [
-            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+            'created_date' => $notification->created_at->format('d M'),
+            'title' => self::titles($notification->type),
+            'url' => route('show_notification', [$notification]),
+            'description' => self::descriptions($notification)
         ]);
+//        self::sendNotificationRequest([$task->user_id], [
+//            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+//        ]);
 
         self::pushNotification($task->user, [
             'title' => self::titles($notification->type, $locale),

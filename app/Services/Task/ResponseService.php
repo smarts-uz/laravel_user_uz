@@ -149,8 +149,14 @@ class ResponseService
             'type' => Notification::SELECT_PERFORMER,
         ]);
         NotificationService::sendNotificationRequest([$performer->id], [
-            'url' => 'detailed-tasks' . '/' . $response->task_id, 'name' => $task->name, 'time' => 'recently'
+            'created_date' => $notification->created_at->format('d M'),
+            'title' => NotificationService::titles($notification->type),
+            'url' => route('show_notification', [$notification]),
+            'description' => NotificationService::descriptions($notification)
         ]);
+//        NotificationService::sendNotificationRequest([$performer->id], [
+//            'url' => 'detailed-tasks' . '/' . $response->task_id, 'name' => $task->name, 'time' => 'recently'
+//        ]);
         NotificationService::pushNotification($performer, [
             'title' => NotificationService::titles($notification->type, $locale),
             'body' => NotificationService::descriptions($notification, $locale)

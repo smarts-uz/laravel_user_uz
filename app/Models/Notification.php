@@ -14,6 +14,7 @@ use TCG\Voyager\Traits\Translatable;
  * @property $name_task
  * @property $user
  * @property $type
+ * @property $created_at
  *
  */
 class Notification extends Model
