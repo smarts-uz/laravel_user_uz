@@ -154,9 +154,6 @@ class ResponseService
             'url' => route('show_notification', [$notification]),
             'description' => NotificationService::descriptions($notification)
         ]);
-//        NotificationService::sendNotificationRequest([$performer->id], [
-//            'url' => 'detailed-tasks' . '/' . $response->task_id, 'name' => $task->name, 'time' => 'recently'
-//        ]);
         NotificationService::pushNotification($performer, [
             'title' => NotificationService::titles($notification->type, $locale),
             'body' => NotificationService::descriptions($notification, $locale)
@@ -173,12 +170,14 @@ class ResponseService
                 'client_id' => $response_user->id,
                 'amount' => setting('admin.bepul_otklik')
             ]);
-            All_transaction::query()->create([
-                'user_id' => $performer->id,
-                'method' => All_transaction::METHODS['Task'],
+            Transaction::query()->create([
+                'payment_system' => Transaction::DRIVER_TASK,
                 'amount' => setting('admin.bepul_otklik'),
-                'status' => 0,
-                'state' => 1
+                'system_transaction_id' => rand(10000000000, 99999999999),
+                'currency_code' => 860,
+                'state' => Transaction::STATE_COMPLETED,
+                'transactionable_type' => User::class,
+                'transactionable_id' => $performer->id,
             ]);
         }
         TaskResponse::query()->where(['task_id' => $task->id, 'not_free' => 0])->where('performer_id', '!=', $performer->id)->delete();
