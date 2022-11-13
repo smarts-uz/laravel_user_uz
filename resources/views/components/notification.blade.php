@@ -3,7 +3,7 @@
     $count = $notifications->count();
 @endphp
 @if($count > 0)
-    <div id="content_count"
+    <div id="all_notification_count"
          class="w-4 h-4 absolute rounded-full bg-red-500 ml-3 text-white text-xs text-center">{{$count}}</div>
 @endif
 <button class="focus:outline-none" type="button" data-dropdown-toggle="dropdown">
@@ -88,11 +88,16 @@
             data = JSON.parse(data.data)
             // console.log(data)
 
-            let element = $('#content_count');
+            let element = $('#all_notification_count');
+            let element2 = $('#content_count');
             let count = element.text();
+            let count2 = element.text();
             count = isNumeric(String(count)) ? parseInt(count) : 0;
+            count2 = isNumeric(String(count)) ? parseInt(count) : 0;
             count += 1
+            count2 += 1
             element.text(String(count))
+            element2.text(String(count2))
             $('#notifications').prepend(`
             <li class="border-b-2 border-gray-500 flex gap-x-2 p-3 text-gray-800">
                 <div class="flex flex-col w-full">
