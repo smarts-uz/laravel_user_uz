@@ -91,9 +91,9 @@
             let element = $('#all_notification_count');
             let element2 = $('#content_count');
             let count = element.text();
-            let count2 = element.text();
+            let count2 = element2.text();
             count = isNumeric(String(count)) ? parseInt(count) : 0;
-            count2 = isNumeric(String(count)) ? parseInt(count) : 0;
+            count2 = isNumeric(String(count2)) ? parseInt(count2) : 0;
             count += 1
             count2 += 1
             element.text(String(count))
