@@ -3,18 +3,15 @@
 namespace App\Http\Controllers\vendor\Chatify;
 
 
-use App\Models\Chat\ChMessage;
-use App\Models\Chat\ChFavorite;
+use App\Models\Chat\ChatifyMessenger as Chatify;
+use App\Models\ChMessage;
+use App\Models\User;
 use App\Services\Chat\ContactService;
 use App\Services\NotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Response;
-use App\Models\Chat\ChatifyMessenger as Chatify;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request as FacadesRequest;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
 
 class MessagesController extends \Chatify\Http\Controllers\MessagesController

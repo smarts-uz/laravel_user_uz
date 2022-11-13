@@ -3,7 +3,6 @@
 namespace App\Models;
 
 
-use App\Models\Chat\ChMessage;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -191,7 +190,7 @@ class User extends \TCG\Voyager\Models\User
     public function messages(): HasMany
     {
 
-        return $this->hasMany(\App\Models\Chat\ChMessage::class, '');
+        return $this->hasMany(\App\Models\ChMessage::class, '');
     }
 
     public function getBalanceAttribute()

@@ -3,7 +3,7 @@
 namespace App\Services\Task;
 
 use App\Http\Resources\NotificationResource;
-use App\Models\Chat\ChMessage;
+use App\Models\ChMessage;
 use App\Models\Notification;
 use App\Models\Review;
 use App\Models\Task;

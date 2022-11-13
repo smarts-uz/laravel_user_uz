@@ -3,13 +3,6 @@
 namespace App\Models\Chat;
 
 use App\Http\Resources\MessageResource;
-use App\Models\Chat\ChMessage as Message;
-use App\Models\Chat\ChFavorite as Favorite;
-use Pusher\Pusher;
-use Illuminate\Support\Facades\Auth;
-use Exception;
-use Illuminate\Support\Facades\File;
-use Pusher\PusherException;
 
 class ChatifyMessenger extends \Chatify\ChatifyMessenger
 {
