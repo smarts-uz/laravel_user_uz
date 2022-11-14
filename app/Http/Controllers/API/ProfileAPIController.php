@@ -875,7 +875,7 @@ class ProfileAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/categories-subscribe",
+     *     path="/api/profile/categories-subscribe",
      *     tags={"Profile"},
      *     summary="Category subscribe",
      *     @OA\RequestBody (
