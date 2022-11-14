@@ -19,8 +19,8 @@ class ChatifyMessenger extends \Chatify\ChatifyMessenger
      *
      * @param string $channelName
      * @param string $socket_id
-     * @param array $data
-     * @return void
+     * @param null $data
+     * @return mixed
      */
     public function pusherAuth($channelName, $socket_id, $data = null)
     {

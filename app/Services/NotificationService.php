@@ -74,7 +74,8 @@ class NotificationService
         $performer_ids = [];
         foreach ($performers as $performer) {
             $user_cat_ids = explode(",", $performer->category_id);
-            $notification = new Notification([
+            /** @var Notification $notification */
+            $notification = Notification::query()->create([
                 'user_id' => $user_id,
                 'performer_id' => $performer->id,
                 'description' => 'description',
