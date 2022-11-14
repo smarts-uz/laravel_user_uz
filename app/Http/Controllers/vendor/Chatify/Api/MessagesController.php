@@ -9,16 +9,24 @@ use App\Services\Chat\ContactService;
 use App\Services\NotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
-use Chatify\Facades\ChatifyMessenger as Chatify;
+use App\Models\Chat\ChatifyMessenger as Chatify;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 
-class MessagesController extends Controller
+class MessagesController extends \Chatify\Http\Controllers\Api\MessagesController
 {
+    /**
+     * @var Chatify
+     */
+    private Chatify $chatify;
+
+    public function __construct()
+    {
+        $this->chatify = new Chatify();
+    }
     protected $perPage = 30;
 
 
@@ -26,12 +34,12 @@ class MessagesController extends Controller
     {
         $path = storage_path() . '/app/public/' . config('chatify.attachments.folder') . '/' . $fileName;
         if (file_exists($path)) {
-            return response()->json([
+            return Response::json([
                 'file_name' => $fileName,
                 'download_path' => $path
-            ], 200);
+            ]);
         } else {
-            return response()->json([
+            return Response::json([
                 'message'=>"Sorry, File does not exist in our server or may have been deleted!"
             ], 404);
         }
@@ -47,19 +55,19 @@ class MessagesController extends Controller
         ];
         $attachment = null;
         $attachment_title = null;
-        $chatMessenger = new ChatifyMessenger();
+        $chatMessenger = new Chatify();
         /** @var User $auth_user */
         $auth_user = Auth::user();
         // if there is attachment [file]
         if ($request->hasFile('file')) {
             // allowed extensions
-            $allowed_images = ChatifyMessenger::getAllowedImages();
-            $allowed_files  = ChatifyMessenger::getAllowedFiles();
+            $allowed_images = $chatMessenger->getAllowedImages();
+            $allowed_files  = $chatMessenger->getAllowedFiles();
             $allowed        = array_merge($allowed_images, $allowed_files);
 
             $file = $request->file('file');
             // check file size
-            if ($file->getSize() < ChatifyMessenger::getMaxUploadSize()) {
+            if ($file->getSize() < $chatMessenger->getMaxUploadSize()) {
                 if (in_array($file->getClientOriginalExtension(), $allowed)) {
                     // get attachment name
                     $attachment_title = $file->getClientOriginalName();
@@ -79,7 +87,7 @@ class MessagesController extends Controller
         if (!$error->status) {
             // send to database
             $messageID = mt_rand(9, 999999999) + time();
-            ChatifyMessenger::newMessage([
+            $this->chatify->newMessage([
                 'id' => $messageID,
                 'type' => 'user', //$request['type'],
                 'from_id' => $auth_user->id,
@@ -128,9 +136,9 @@ class MessagesController extends Controller
      */
     public function fetch(Request $request): JsonResponse
     {
-        $query = ChatifyMessenger::fetchMessagesQuery($request['id']);
+        $query = $this->chatify->fetchMessagesQuery($request['id']);
         $messages = $query->latest()->get();
-        ChatifyMessenger::makeSeen($request['id']);
+        $this->chatify->makeSeen($request['id']);
 
         $messages = MessageResource::collection($messages);
         return Response::json([
@@ -143,7 +151,7 @@ class MessagesController extends Controller
     public function seen(Request $request)
     {
         // make as seen
-        $seen = Chatify::makeSeen($request['id']);
+        $this->chatify->makeSeen($request['id']);
         // send the response
         return Response::json([
             'success' => true,
@@ -151,7 +159,7 @@ class MessagesController extends Controller
         ]);
     }
 
-    public function getContacts(): JsonResponse
+    public function getContacts(Request $request): JsonResponse
     {
         $userIdsList = ContactService::contactsList(Auth::user());
 
@@ -192,111 +200,6 @@ class MessagesController extends Controller
             'success' => true,
             'data' => UserInSearchChatResource::collection($records),
             'message' => 'Success'
-        ]);
-    }
-
-
-    public function sharedPhotos(Request $request)
-    {
-        $images = Chatify::getSharedPhotos($request['user_id']);
-
-        foreach ($images as $image) {
-            $image = asset('storage/attachments/' . $image);
-        }
-        // send the response
-        return Response::json([
-            'shared' => $images ?? [],
-        ]);
-    }
-
-    /**
-     * Delete conversation
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function deleteConversation(Request $request)
-    {
-        // delete
-        $delete = Chatify::deleteConversation($request['id']);
-
-        // send the response
-        return Response::json([
-            'deleted' => $delete ? 1 : 0,
-        ], 200);
-    }
-
-    public function updateSettings(Request $request)
-    {
-        $msg = null;
-        $error = $success = 0;
-
-        // dark mode
-        if ($request['dark_mode']) {
-            $request['dark_mode'] == "dark"
-                ? User::where('id', Auth::id())->update(['dark_mode' => 1])  // Make Dark
-                : User::where('id', Auth::id())->update(['dark_mode' => 0]); // Make Light
-        }
-
-        // If messenger color selected
-        if ($request['messengerColor']) {
-            $messenger_color = trim(filter_var($request['messengerColor'], FILTER_SANITIZE_STRING));
-            User::where('id', Auth::id())
-                ->update(['messenger_color' => $messenger_color]);
-        }
-        // if there is a [file]
-        if ($request->hasFile('avatar')) {
-            // allowed extensions
-            $allowed_images = Chatify::getAllowedImages();
-
-            $file = $request->file('avatar');
-            // check file size
-            if ($file->getSize() < Chatify::getMaxUploadSize()) {
-                if (in_array($file->getClientOriginalExtension(), $allowed_images)) {
-                    // delete the older one
-                    if (Auth::user()->avatar != config('chatify.user_avatar.default')) {
-                        $path = storage_path('app/public/' . config('chatify.user_avatar.folder') . '/' . Auth::user()->avatar);
-                        if (file_exists($path)) {
-                            @unlink($path);
-                        }
-                    }
-                    // upload
-                    $avatar = Str::uuid() . "." . $file->getClientOriginalExtension();
-                    $update = User::where('id', Auth::id())->update(['avatar' => $avatar]);
-                    $file->storeAs("public/" . config('chatify.user_avatar.folder'), $avatar);
-                    $success = $update ? 1 : 0;
-                } else {
-                    $msg = "File extension not allowed!";
-                    $error = 1;
-                }
-            } else {
-                $msg = "File size you are trying to upload is too large!";
-                $error = 1;
-            }
-        }
-
-        // send the response
-        return Response::json([
-            'status' => $success ? 1 : 0,
-            'error' => $error ? 1 : 0,
-            'message' => $error ? $msg : 0,
-        ]);
-    }
-
-    /**
-     * Set user's active status
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function setActiveStatus(Request $request)
-    {
-        $update = $request['status'] > 0
-            ? User::query()->where('id', $request['user_id'])->update(['active_status' => 1])
-            : User::query()->where('id', $request['user_id'])->update(['active_status' => 0]);
-        // send the response
-        return Response::json([
-            'status' => $update,
         ]);
     }
 }

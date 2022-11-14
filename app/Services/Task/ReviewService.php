@@ -3,7 +3,7 @@
 namespace App\Services\Task;
 
 use App\Http\Resources\NotificationResource;
-use App\Models\Chat\ChMessage;
+use App\Models\ChMessage;
 use App\Models\Notification;
 use App\Models\Review;
 use App\Models\Task;
@@ -42,8 +42,14 @@ class ReviewService
             'type' => Notification::SEND_REVIEW
         ]);
         NotificationService::sendNotificationRequest([$task->performer_id], [
-            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+            'created_date' => $notification->created_at->format('d M'),
+            'title' => NotificationService::titles($notification->type),
+            'url' => route('show_notification', [$notification]),
+            'description' => NotificationService::descriptions($notification)
         ]);
+//        NotificationService::sendNotificationRequest([$task->performer_id], [
+//            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+//        ]);
 
         return $notification;
     }
@@ -69,8 +75,14 @@ class ReviewService
             'type' => Notification::SEND_REVIEW_PERFORMER
         ]);
         NotificationService::sendNotificationRequest([$task->user_id], [
-            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+            'created_date' => $notification->created_at->format('d M'),
+            'title' => NotificationService::titles($notification->type),
+            'url' => route('show_notification', [$notification]),
+            'description' => NotificationService::descriptions($notification)
         ]);
+//        NotificationService::sendNotificationRequest([$task->user_id], [
+//            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
+//        ]);
         $user = User::query()->find($task->user_id);
         if ((int)$request->good === 1) {
             $user->increment('review_good');

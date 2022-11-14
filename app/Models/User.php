@@ -3,7 +3,6 @@
 namespace App\Models;
 
 
-use App\Models\Chat\ChMessage;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -144,7 +143,7 @@ class User extends \TCG\Voyager\Models\User
 
     public function transactions(): HasMany
     {
-        return $this->hasMany(All_transaction::class)->orderBy('created_at', "DESC");
+        return $this->hasMany(Transaction::class, 'transactionable_id')->orderBy('created_at', "DESC");
     }
 
     public function alerts(): HasMany
@@ -191,7 +190,7 @@ class User extends \TCG\Voyager\Models\User
     public function messages(): HasMany
     {
 
-        return $this->hasMany(\App\Models\Chat\ChMessage::class, '');
+        return $this->hasMany(\App\Models\ChMessage::class, '');
     }
 
     public function getBalanceAttribute()

@@ -2,7 +2,7 @@
 
 namespace App\Services\Chat;
 
-use App\Models\Chat\ChMessage;
+use App\Models\ChMessage;
 use App\Models\Task;
 use App\Models\User;
 
