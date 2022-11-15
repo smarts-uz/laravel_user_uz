@@ -42,6 +42,10 @@ class PerformersController extends Controller
         $service = new PerformersService();
         $item = $service->performer($user);
 
+        $value = Carbon::parse($user->created_at)->locale(getLocale());
+        $day = $value == now()->toDateTimeString() ? "Bugun" : "$value->day-$value->monthName";
+        $created = "$day  $value->year";
+
         return view('performers/executors-courier',
             [
                 'top_users' => $item->top_users,
@@ -52,7 +56,8 @@ class PerformersController extends Controller
                 'review_good' => $item->review_good,
                 'review_bad' =>$item->review_bad,
                 'review_rating' => $item->review_rating,
-                'task_count'=> $item->task_count
+                'task_count' => $item->task_count,
+                'created' => $created
             ]);
     }
 

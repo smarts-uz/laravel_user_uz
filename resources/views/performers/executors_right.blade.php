@@ -2,7 +2,7 @@
     <div class="mt-16 border p-8 rounded-lg border-gray-300">
         <div>
             <h1 class="font-medium text-2xl">{{__('Исполнитель')}}</h1>
-            <p class="text-gray-400">{{__('на Universal Services с ')}} {{date('d-m-Y', strtotime($user->created_at))}}</p>
+            <p class="text-gray-400">{{__('на Universal Services с ')}} {{$created}} {{__('г')}}</p>
         </div>
         <div class="">
             <div class="flex w-full mt-4">

@@ -34,19 +34,19 @@
             </div>
         </div>
         <div class="w-full md:col-span-1  col-span-2 mt-10 lg:block hidden">
-            <div class="w-96 h-48 rounded-xl" style="background: url({{getContentImage('home', 'post_section_img1')}});">
-                <div class="w-full text-center">
-                    <p class="text-2xl font-bold text-yellow-400 pt-16">
-                        {!!__('Как стать <br/> исполнителем ')!!}
-                    </p>
-                </div>
-            </div>
-            <div class="w-96 h-48 rounded-xl my-8" style="background: url({{getContentImage('home', 'post_section_img2')}});">
-                <div class="w-full text-center">
-                    <p class="text-2xl font-bold text-yellow-400 pt-12">
-                        {!!__('Безопасность и <br/> гарантии')!!}</p>
-                </div>
-            </div>
+{{--            <div class="w-96 h-48 rounded-xl" style="background: url({{getContentImage('home', 'post_section_img1')}});">--}}
+{{--                <div class="w-full text-center">--}}
+{{--                    <p class="text-2xl font-bold text-yellow-400 pt-16">--}}
+{{--                        {!!__('Как стать <br/> исполнителем ')!!}--}}
+{{--                    </p>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <div class="w-96 h-48 rounded-xl my-8" style="background: url({{getContentImage('home', 'post_section_img2')}});">--}}
+{{--                <div class="w-full text-center">--}}
+{{--                    <p class="text-2xl font-bold text-yellow-400 pt-12">--}}
+{{--                        {!!__('Безопасность и <br/> гарантии')!!}</p>--}}
+{{--                </div>--}}
+{{--            </div>--}}
             <a href="{{route('performers.service')}}">
                 <div class="w-96 h-48 rounded-xl" style="background: url({{getContentImage('home', 'post_section_img3')}});">
                     <div class="w-full text-center">
