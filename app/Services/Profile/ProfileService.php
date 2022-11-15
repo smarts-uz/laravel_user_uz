@@ -428,11 +428,7 @@ class ProfileService
             $user->phone_number_old = $user->phone_number;
             $user->phone_number = $phoneNumber;
             $user->is_phone_number_verified = 0;
-            if(!($user->verify_code)){
-                $message = rand(100000, 999999);
-            }else{
-                $message = $user->verify_code;
-            }
+            $message = rand(100000, 999999);
             $phone_number = $user->phone_number;
             $user->verify_code = $message;
             $user->save();
