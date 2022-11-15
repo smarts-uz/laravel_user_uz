@@ -9,11 +9,11 @@
 
         @include('homepage.categories')
 
-        @include('homepage.blogs')
+{{--        @include('homepage.blogs')--}}
 
-        @include('homepage.home_economy')
+{{--        @include('homepage.home_economy')--}}
 
-        @include('homepage.advantages')
+{{--        @include('homepage.advantages')--}}
 
         @include('homepage.posts_section')
 

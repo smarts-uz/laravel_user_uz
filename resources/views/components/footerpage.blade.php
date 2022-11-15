@@ -11,7 +11,7 @@
     </ul>
     <ul class="mb-5">
         <li><a  href="/paynet_oplata" class="paynet hover:text-red-500 text-md text-blue-600 cursor-pointer">{{__('Оплата через пайнет')}}</a></li>
-        <li><a  href="/press" class="press hover:text-red-500 text-md text-blue-600 cursor-pointer">{{__('СМИ о нас')}}</a></li>
+{{--        <li><a  href="/press" class="press hover:text-red-500 text-md text-blue-600 cursor-pointer">{{__('СМИ о нас')}}</a></li>--}}
     </ul>
 </div>
 
