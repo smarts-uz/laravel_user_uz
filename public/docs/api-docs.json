@@ -1,17 +1,17 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Laravel",
+        "title": "Main",
         "description": "Joy VoyagerApi module adds REST Api end points to Voyager with Passport and Swagger support https:\/\/github.com\/rxcod9\/joy-voyager-api.",
         "version": "1.0.0"
     },
     "servers": [
         {
-            "url": "http:\/\/127.0.0.1:8000",
+            "url": "https:\/\/user.uz",
             "description": "Primary API Server"
         },
         {
-            "url": "https:\/\/user.uz",
+            "url": "http:\/\/servboxvoyager",
             "description": "Another API Server"
         }
     ],
@@ -3398,6 +3398,126 @@
                 ]
             }
         },
+        "\/api\/chat\/download\/{fileName}": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "",
+                "operationId": "a42d273862b6ed06fc8eda5d5c46fee8",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "\/api\/chat\/sendMessage": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "",
+                "operationId": "6d158f296101e86e16ec71247600a663",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "\/api\/chat\/fetchMessages": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "",
+                "operationId": "bf77389bd76fc7884effb535b28e2615",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "\/api\/chat\/makeSeen": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "",
+                "operationId": "c078d17b4efaa29b1b8617a5600b8b52",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "\/api\/chat\/getContacts": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "",
+                "operationId": "6fc0b9c90459b92cf96fc08bd002d613",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "\/api\/chat\/search": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "",
+                "operationId": "09e094d028e9e617684e2ad093d9153b",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
         "\/api\/login": {
             "post": {
                 "tags": [
@@ -3698,6 +3818,8 @@
                                 "review_bad",
                                 "review_rating",
                                 "apple_id",
+                                "updated_password_by",
+                                "updated_password_at",
                                 "user_belongsto_role_relationship"
                             ],
                             "type": "string"
@@ -5474,7 +5596,6 @@
                             "type": "string",
                             "nullable": true,
                             "enum": [
-                                "id",
                                 "parent_id",
                                 "name",
                                 "custom_route_title",
@@ -5497,7 +5618,6 @@
                             "items": {
                                 "type": "string",
                                 "enum": [
-                                    "id",
                                     "parent_id",
                                     "name",
                                     "custom_route_title",
@@ -15431,1211 +15551,6 @@
                 ]
             }
         },
-        "\/api\/ch-favorites": {
-            "get": {
-                "tags": [
-                    "Core | ch-favorites"
-                ],
-                "summary": "ch_favorites index",
-                "operationId": "ch_favorites_index",
-                "parameters": [
-                    {
-                        "name": "q",
-                        "in": "query",
-                        "description": "Global search",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "length",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "order_by",
-                        "in": "query",
-                        "description": "Sort by column",
-                        "required": false,
-                        "schema": {
-                            "enum": [
-                                "id",
-                                "user_id",
-                                "favorite_id",
-                                "created_at",
-                                "updated_at"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "sort_order",
-                        "in": "query",
-                        "description": "Sort by direction",
-                        "required": false,
-                        "schema": {
-                            "enum": [
-                                "asc",
-                                "desc"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[user_id]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[favorite_id]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[created_at]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#\/components\/schemas\/VoyagerChFavoritesBrowseResource"
-                                            }
-                                        },
-                                        "links": {
-                                            "$ref": "#\/components\/schemas\/Links"
-                                        },
-                                        "meta": {
-                                            "$ref": "#\/components\/schemas\/Meta"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            },
-            "post": {
-                "tags": [
-                    "Core | ch-favorites"
-                ],
-                "summary": "ch-favorites store",
-                "operationId": "ch-favorites_store",
-                "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerChFavoritesStoreRequest"
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerChFavoritesReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/ch-favorites\/create": {
-            "get": {
-                "tags": [
-                    "Core | ch-favorites"
-                ],
-                "summary": "ch_favorites create",
-                "operationId": "ch_favorites_create",
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": []
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/ch-favorites\/{id}": {
-            "get": {
-                "tags": [
-                    "Core | ch-favorites"
-                ],
-                "summary": "ch-favorites show",
-                "operationId": "ch-favorites_show",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerChFavoritesReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            },
-            "put": {
-                "tags": [
-                    "Core | ch-favorites"
-                ],
-                "summary": "ch-favorites update",
-                "operationId": "ch-favorites_update",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerChFavoritesUpdateRequest"
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerChFavoritesReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": [
-                    "Core | ch-favorites"
-                ],
-                "summary": "ch-favorites delete",
-                "operationId": "ch-favorites_delete",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/ch-favorites\/{id}\/single\/{field}": {
-            "put": {
-                "tags": [
-                    "Core | ch-favorites"
-                ],
-                "summary": "ch-favorites single update",
-                "operationId": "ch-favorites_single_update",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "field",
-                        "in": "path",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "nullable": true,
-                            "enum": [
-                                "user_id",
-                                "favorite_id",
-                                "created_at"
-                            ]
-                        }
-                    },
-                    {
-                        "name": "fields[]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string",
-                                "enum": [
-                                    "user_id",
-                                    "favorite_id",
-                                    "created_at"
-                                ]
-                            }
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerChFavoritesSingleUpdateRequest"
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerChFavoritesReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/ch-favorites\/{id}\/edit": {
-            "get": {
-                "tags": [
-                    "Core | ch-favorites"
-                ],
-                "summary": "ch-favorites edit",
-                "operationId": "ch-favorites_edit",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerChFavoritesReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/ch-favorites\/relation": {
-            "get": {
-                "tags": [
-                    "Core | ch-favorites"
-                ],
-                "summary": "ch-favorites relation",
-                "operationId": "ch-favorites_relation",
-                "parameters": [
-                    {
-                        "name": "type",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "method",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "required",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "boolean"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": []
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/ch-favorites\/{id}\/restore": {
-            "get": {
-                "tags": [
-                    "Core | ch-favorites"
-                ],
-                "summary": "ch-favorites restore",
-                "operationId": "ch-favorites_restore",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/ch-messages": {
-            "get": {
-                "tags": [
-                    "Core | ch-messages"
-                ],
-                "summary": "ch_messages index",
-                "operationId": "ch_messages_index",
-                "parameters": [
-                    {
-                        "name": "q",
-                        "in": "query",
-                        "description": "Global search",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "length",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "order_by",
-                        "in": "query",
-                        "description": "Sort by column",
-                        "required": false,
-                        "schema": {
-                            "enum": [
-                                "id",
-                                "type",
-                                "from_id",
-                                "to_id",
-                                "body",
-                                "attachment",
-                                "seen",
-                                "created_at",
-                                "updated_at",
-                                "deleted_at"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "sort_order",
-                        "in": "query",
-                        "description": "Sort by direction",
-                        "required": false,
-                        "schema": {
-                            "enum": [
-                                "asc",
-                                "desc"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "showSoftDeleted",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "boolean"
-                        }
-                    },
-                    {
-                        "name": "filters[type]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[from_id]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[to_id]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[body]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[attachment]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[seen]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[created_at]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#\/components\/schemas\/VoyagerChMessagesBrowseResource"
-                                            }
-                                        },
-                                        "links": {
-                                            "$ref": "#\/components\/schemas\/Links"
-                                        },
-                                        "meta": {
-                                            "$ref": "#\/components\/schemas\/Meta"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            },
-            "post": {
-                "tags": [
-                    "Core | ch-messages"
-                ],
-                "summary": "ch-messages store",
-                "operationId": "ch-messages_store",
-                "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerChMessagesStoreRequest"
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerChMessagesReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/ch-messages\/create": {
-            "get": {
-                "tags": [
-                    "Core | ch-messages"
-                ],
-                "summary": "ch_messages create",
-                "operationId": "ch_messages_create",
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": []
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/ch-messages\/{id}": {
-            "get": {
-                "tags": [
-                    "Core | ch-messages"
-                ],
-                "summary": "ch-messages show",
-                "operationId": "ch-messages_show",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerChMessagesReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            },
-            "put": {
-                "tags": [
-                    "Core | ch-messages"
-                ],
-                "summary": "ch-messages update",
-                "operationId": "ch-messages_update",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerChMessagesUpdateRequest"
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerChMessagesReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": [
-                    "Core | ch-messages"
-                ],
-                "summary": "ch-messages delete",
-                "operationId": "ch-messages_delete",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/ch-messages\/{id}\/single\/{field}": {
-            "put": {
-                "tags": [
-                    "Core | ch-messages"
-                ],
-                "summary": "ch-messages single update",
-                "operationId": "ch-messages_single_update",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "field",
-                        "in": "path",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "nullable": true,
-                            "enum": [
-                                "type",
-                                "from_id",
-                                "to_id",
-                                "body",
-                                "attachment",
-                                "seen",
-                                "created_at"
-                            ]
-                        }
-                    },
-                    {
-                        "name": "fields[]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string",
-                                "enum": [
-                                    "type",
-                                    "from_id",
-                                    "to_id",
-                                    "body",
-                                    "attachment",
-                                    "seen",
-                                    "created_at"
-                                ]
-                            }
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerChMessagesSingleUpdateRequest"
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerChMessagesReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/ch-messages\/{id}\/edit": {
-            "get": {
-                "tags": [
-                    "Core | ch-messages"
-                ],
-                "summary": "ch-messages edit",
-                "operationId": "ch-messages_edit",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerChMessagesReadResource"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/ch-messages\/relation": {
-            "get": {
-                "tags": [
-                    "Core | ch-messages"
-                ],
-                "summary": "ch-messages relation",
-                "operationId": "ch-messages_relation",
-                "parameters": [
-                    {
-                        "name": "type",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "method",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "required",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "boolean"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": []
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/ch-messages\/{id}\/restore": {
-            "get": {
-                "tags": [
-                    "Core | ch-messages"
-                ],
-                "summary": "ch-messages restore",
-                "operationId": "ch-messages_restore",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
         "\/api\/compliances": {
             "get": {
                 "tags": [
@@ -23773,14 +22688,6 @@
                         }
                     },
                     {
-                        "name": "filters[id]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "name": "filters[name]",
                         "in": "query",
                         "required": false,
@@ -24106,7 +23013,6 @@
                             "type": "string",
                             "nullable": true,
                             "enum": [
-                                "id",
                                 "name",
                                 "text",
                                 "image",
@@ -24124,7 +23030,6 @@
                             "items": {
                                 "type": "string",
                                 "enum": [
-                                    "id",
                                     "name",
                                     "text",
                                     "image",
@@ -24544,10 +23449,6 @@
             "VoyagerCategoriesBrowseResource": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "description": "ID"
-                    },
                     "name": {
                         "type": "string",
                         "description": "Name"
@@ -24578,10 +23479,6 @@
             "VoyagerCategoriesReadResource": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "description": "ID"
-                    },
                     "parent_id": {
                         "enum": [
                             ""
@@ -25812,114 +24709,6 @@
                     }
                 }
             },
-            "VoyagerChFavoritesBrowseResource": {
-                "type": "object",
-                "properties": {
-                    "user_id": {
-                        "type": "string",
-                        "description": "User Id"
-                    },
-                    "favorite_id": {
-                        "type": "string",
-                        "description": "Favorite Id"
-                    },
-                    "created_at": {
-                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                        "type": "date-time",
-                        "description": "Created At",
-                        "example": "2021-05-17 00:00"
-                    }
-                }
-            },
-            "VoyagerChFavoritesReadResource": {
-                "type": "object",
-                "properties": {
-                    "user_id": {
-                        "type": "string",
-                        "description": "User Id"
-                    },
-                    "favorite_id": {
-                        "type": "string",
-                        "description": "Favorite Id"
-                    },
-                    "created_at": {
-                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                        "type": "date-time",
-                        "description": "Created At",
-                        "example": "2021-05-17 00:00"
-                    }
-                }
-            },
-            "VoyagerChMessagesBrowseResource": {
-                "type": "object",
-                "properties": {
-                    "type": {
-                        "type": "string",
-                        "description": "Type"
-                    },
-                    "from_id": {
-                        "type": "string",
-                        "description": "From Id"
-                    },
-                    "to_id": {
-                        "type": "string",
-                        "description": "To Id"
-                    },
-                    "body": {
-                        "type": "string",
-                        "description": "Body"
-                    },
-                    "attachment": {
-                        "type": "string",
-                        "description": "Attachment"
-                    },
-                    "seen": {
-                        "type": "string",
-                        "description": "Seen"
-                    },
-                    "created_at": {
-                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                        "type": "date-time",
-                        "description": "Created At",
-                        "example": "2021-05-17 00:00"
-                    }
-                }
-            },
-            "VoyagerChMessagesReadResource": {
-                "type": "object",
-                "properties": {
-                    "type": {
-                        "type": "string",
-                        "description": "Type"
-                    },
-                    "from_id": {
-                        "type": "string",
-                        "description": "From Id"
-                    },
-                    "to_id": {
-                        "type": "string",
-                        "description": "To Id"
-                    },
-                    "body": {
-                        "type": "string",
-                        "description": "Body"
-                    },
-                    "attachment": {
-                        "type": "string",
-                        "description": "Attachment"
-                    },
-                    "seen": {
-                        "type": "string",
-                        "description": "Seen"
-                    },
-                    "created_at": {
-                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                        "type": "date-time",
-                        "description": "Created At",
-                        "example": "2021-05-17 00:00"
-                    }
-                }
-            },
             "VoyagerCompliancesBrowseResource": {
                 "type": "object",
                 "properties": {
@@ -26647,10 +25436,6 @@
             "VoyagerFooterReviewBrowseResource": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "string",
-                        "description": "Id"
-                    },
                     "name": {
                         "type": "string",
                         "description": "Name"
@@ -26683,10 +25468,6 @@
             "VoyagerFooterReviewReadResource": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "string",
-                        "description": "Id"
-                    },
                     "name": {
                         "type": "string",
                         "description": "Name"
@@ -27045,10 +25826,6 @@
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
                                 },
-                                "id": {
-                                    "type": "integer",
-                                    "description": "ID"
-                                },
                                 "parent_id": {
                                     "enum": [
                                         ""
@@ -27109,10 +25886,6 @@
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
                                 },
-                                "id": {
-                                    "type": "integer",
-                                    "description": "ID"
-                                },
                                 "parent_id": {
                                     "enum": [
                                         ""
@@ -27172,10 +25945,6 @@
                                 "dry-run": {
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
-                                },
-                                "id": {
-                                    "type": "integer",
-                                    "description": "ID"
                                 },
                                 "parent_id": {
                                     "enum": [
@@ -29334,222 +28103,6 @@
                 },
                 "required": true
             },
-            "VoyagerChFavoritesStoreRequest": {
-                "content": {
-                    "application\/x-www-form-urlencoded": {
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "dry-run": {
-                                    "type": "boolean",
-                                    "description": "Use dry-run only to validate"
-                                },
-                                "user_id": {
-                                    "type": "string",
-                                    "description": "User Id"
-                                },
-                                "favorite_id": {
-                                    "type": "string",
-                                    "description": "Favorite Id"
-                                }
-                            }
-                        }
-                    }
-                },
-                "required": true
-            },
-            "VoyagerChFavoritesUpdateRequest": {
-                "content": {
-                    "application\/x-www-form-urlencoded": {
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "dry-run": {
-                                    "type": "boolean",
-                                    "description": "Use dry-run only to validate"
-                                },
-                                "user_id": {
-                                    "type": "string",
-                                    "description": "User Id"
-                                },
-                                "favorite_id": {
-                                    "type": "string",
-                                    "description": "Favorite Id"
-                                },
-                                "created_at": {
-                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                                    "type": "date-time",
-                                    "description": "Created At",
-                                    "example": "2021-05-17 00:00"
-                                }
-                            }
-                        }
-                    }
-                },
-                "required": true
-            },
-            "VoyagerChFavoritesSingleUpdateRequest": {
-                "content": {
-                    "application\/x-www-form-urlencoded": {
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "dry-run": {
-                                    "type": "boolean",
-                                    "description": "Use dry-run only to validate"
-                                },
-                                "user_id": {
-                                    "type": "string",
-                                    "description": "User Id"
-                                },
-                                "favorite_id": {
-                                    "type": "string",
-                                    "description": "Favorite Id"
-                                },
-                                "created_at": {
-                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                                    "type": "date-time",
-                                    "description": "Created At",
-                                    "example": "2021-05-17 00:00"
-                                }
-                            }
-                        }
-                    }
-                },
-                "required": true
-            },
-            "VoyagerChMessagesStoreRequest": {
-                "content": {
-                    "application\/x-www-form-urlencoded": {
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "dry-run": {
-                                    "type": "boolean",
-                                    "description": "Use dry-run only to validate"
-                                },
-                                "type": {
-                                    "type": "string",
-                                    "description": "Type"
-                                },
-                                "from_id": {
-                                    "type": "string",
-                                    "description": "From Id"
-                                },
-                                "to_id": {
-                                    "type": "string",
-                                    "description": "To Id"
-                                },
-                                "body": {
-                                    "type": "string",
-                                    "description": "Body"
-                                },
-                                "attachment": {
-                                    "type": "string",
-                                    "description": "Attachment"
-                                },
-                                "seen": {
-                                    "type": "string",
-                                    "description": "Seen"
-                                }
-                            }
-                        }
-                    }
-                },
-                "required": true
-            },
-            "VoyagerChMessagesUpdateRequest": {
-                "content": {
-                    "application\/x-www-form-urlencoded": {
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "dry-run": {
-                                    "type": "boolean",
-                                    "description": "Use dry-run only to validate"
-                                },
-                                "type": {
-                                    "type": "string",
-                                    "description": "Type"
-                                },
-                                "from_id": {
-                                    "type": "string",
-                                    "description": "From Id"
-                                },
-                                "to_id": {
-                                    "type": "string",
-                                    "description": "To Id"
-                                },
-                                "body": {
-                                    "type": "string",
-                                    "description": "Body"
-                                },
-                                "attachment": {
-                                    "type": "string",
-                                    "description": "Attachment"
-                                },
-                                "seen": {
-                                    "type": "string",
-                                    "description": "Seen"
-                                },
-                                "created_at": {
-                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                                    "type": "date-time",
-                                    "description": "Created At",
-                                    "example": "2021-05-17 00:00"
-                                }
-                            }
-                        }
-                    }
-                },
-                "required": true
-            },
-            "VoyagerChMessagesSingleUpdateRequest": {
-                "content": {
-                    "application\/x-www-form-urlencoded": {
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "dry-run": {
-                                    "type": "boolean",
-                                    "description": "Use dry-run only to validate"
-                                },
-                                "type": {
-                                    "type": "string",
-                                    "description": "Type"
-                                },
-                                "from_id": {
-                                    "type": "string",
-                                    "description": "From Id"
-                                },
-                                "to_id": {
-                                    "type": "string",
-                                    "description": "To Id"
-                                },
-                                "body": {
-                                    "type": "string",
-                                    "description": "Body"
-                                },
-                                "attachment": {
-                                    "type": "string",
-                                    "description": "Attachment"
-                                },
-                                "seen": {
-                                    "type": "string",
-                                    "description": "Seen"
-                                },
-                                "created_at": {
-                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                                    "type": "date-time",
-                                    "description": "Created At",
-                                    "example": "2021-05-17 00:00"
-                                }
-                            }
-                        }
-                    }
-                },
-                "required": true
-            },
             "VoyagerCompliancesStoreRequest": {
                 "content": {
                     "application\/x-www-form-urlencoded": {
@@ -30976,10 +29529,6 @@
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
                                 },
-                                "id": {
-                                    "type": "string",
-                                    "description": "Id"
-                                },
                                 "name": {
                                     "type": "string",
                                     "description": "Name"
@@ -31016,10 +29565,6 @@
                                 "dry-run": {
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
-                                },
-                                "id": {
-                                    "type": "string",
-                                    "description": "Id"
                                 },
                                 "name": {
                                     "type": "string",
@@ -31063,10 +29608,6 @@
                                 "dry-run": {
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
-                                },
-                                "id": {
-                                    "type": "string",
-                                    "description": "Id"
                                 },
                                 "name": {
                                     "type": "string",

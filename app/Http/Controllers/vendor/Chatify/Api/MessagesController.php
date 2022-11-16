@@ -29,7 +29,25 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
     }
     protected $perPage = 30;
 
-
+    /**
+     * @OA\Get(
+     *     path="/api/chat/download/{fileName}",
+     *     tags={"Chat"},
+     *     summary="",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     )
+     * )
+     */
     public function download($fileName)
     {
         $path = storage_path() . '/app/public/' . config('chatify.attachments.folder') . '/' . $fileName;
@@ -44,8 +62,25 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
             ], 404);
         }
     }
-
-
+    /**
+     * @OA\Post(
+     *     path="/api/chat/sendMessage",
+     *     tags={"Chat"},
+     *     summary="",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     )
+     * )
+     */
     public function send(Request $request): JsonResponse
     {
         // default variables
@@ -129,10 +164,23 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
     }
 
     /**
-     * fetch [user/group] messages from database
-     *
-     * @param Request $request
-     * @return JsonResponse response
+     * @OA\Post(
+     *     path="/api/chat/fetchMessages",
+     *     tags={"Chat"},
+     *     summary="",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     )
+     * )
      */
     public function fetch(Request $request): JsonResponse
     {
@@ -147,7 +195,25 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
             'message' => 'Success'
         ]);
     }
-
+    /**
+     * @OA\Post(
+     *     path="/api/chat/makeSeen",
+     *     tags={"Chat"},
+     *     summary="",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     )
+     * )
+     */
     public function seen(Request $request)
     {
         // make as seen
@@ -158,7 +224,25 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
             'message' => 'Success',
         ]);
     }
-
+    /**
+     * @OA\Get(
+     *     path="/api/chat/getContacts",
+     *     tags={"Chat"},
+     *     summary="",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     )
+     * )
+     */
     public function getContacts(Request $request): JsonResponse
     {
         $userIdsList = ContactService::contactsList(Auth::user());
@@ -183,7 +267,25 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
         ]);
     }
 
-
+    /**
+     * @OA\Get(
+     *     path="/api/chat/search",
+     *     tags={"Chat"},
+     *     summary="",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     )
+     * )
+     */
     public function search(Request $request): JsonResponse
     {
         $input = trim(filter_var($request['name'], FILTER_SANITIZE_STRING));
