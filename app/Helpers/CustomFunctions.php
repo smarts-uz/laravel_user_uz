@@ -74,15 +74,13 @@ function setView($user)
 
 function categories()
 {
-
-
-    $datas = Category::with('translations')->get();
+    $datas = Category::with('translations')->orderBy("order", "asc")->get();
 
     $child_categories = [];
     $parent_categories = [];
 
     foreach ($datas as $data) {
-        if ($data->parent_id == null) {
+        if ($data->parent_id === null) {
             $parent_categories[] = $data;
         } else {
             $child_categories[] = $data;

@@ -29,9 +29,9 @@ class PerformersService
             ->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE])->orderBy('created_at', 'DESC')
             ->get();
         $item->categories = Category::query()->where('parent_id', null)
-            ->select('id', 'name', 'slug')->get();
+            ->select('id', 'name', 'slug')->orderBy("order", "asc")->get();
         $item->categories2 = Category::query()->where('parent_id', '<>', null)
-            ->select('id', 'parent_id', 'name')->get();
+            ->select('id', 'parent_id', 'name')->orderBy("order", "asc")->get();
         $item->users = User::query()
             ->where('role_id', User::ROLE_PERFORMER)
             ->orderByDesc('review_rating')
@@ -81,9 +81,9 @@ class PerformersService
     {
         $item = new PerformerPrefItem();
         $item->categories = Category::query()->where('parent_id', null)
-            ->select('id', 'name', 'slug')->get();
+            ->select('id', 'name', 'slug')->orderBy("order", "asc")->get();
         $item->categories2 = Category::query()->where('parent_id', '<>', null)
-            ->select('id', 'parent_id', 'name')->get();
+            ->select('id', 'parent_id', 'name')->orderBy("order", "asc")->get();
         $item->cur_cat = Category::query()->where('id', $cf_id)->get();
         $item->child_categories = Category::all();
         $item->users = User::query()
