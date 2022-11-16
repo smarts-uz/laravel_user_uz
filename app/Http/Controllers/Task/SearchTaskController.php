@@ -133,8 +133,8 @@ class SearchTaskController extends VoyagerBaseController
     public function search_new()
     {
         $agent = new Agent();
-        $categories = Category::query()->where('parent_id', null)->select('id', 'name')->get();
-        $categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
+        $categories = Category::query()->where('parent_id', null)->select('id', 'name')->orderBy("order", "asc")->get();
+        $categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->orderBy("order", "asc")->get();
         if ($agent->isMobile()) {
             return view('search_task.mobile_task_search', compact('categories', 'categories2'));
         } else {
