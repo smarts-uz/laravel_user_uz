@@ -39,7 +39,7 @@ class CategoriesAPIController extends Controller
      */
     public function index()
     {
-        $categories = Category::query()->select('id', 'parent_id', 'name', 'ico')->withTranslation(app()->getLocale())->whereNull('parent_id')->get();
+        $categories = Category::query()->select('id', 'parent_id', 'name', 'ico')->withTranslation(app()->getLocale())->whereNull('parent_id')->orderBy("order", "asc")->get();
         return CategoryIndexResource::collection($categories);
     }
 
@@ -91,7 +91,7 @@ class CategoriesAPIController extends Controller
     {
         $parentId = $request->get('parent_id');
         $name = $request->get('name');
-        $categories = Category::query()->whereNotNull('parent_id');
+        $categories = Category::query()->whereNotNull('parent_id')->orderBy("order", "asc");
         if ($parentId)
             $categories
             ->where('parent_id', $parentId);
@@ -120,7 +120,7 @@ class CategoriesAPIController extends Controller
      * )
      */
     public function parents(){
-        $categories = Category::query()->whereNull('parent_id')->get();
+        $categories = Category::query()->whereNull('parent_id')->orderBy("order", "asc")->get();
         return CategoryIndexResource::collection($categories);
 
     }
