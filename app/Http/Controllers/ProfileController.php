@@ -294,8 +294,8 @@ class ProfileController extends Controller
 
     public function verificationCategory()
     {
-        $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->get();
-        $categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
+        $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->orderBy("order", "asc")->get();
+        $categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->orderBy("order", "asc")->get();
         return view('personalinfo.personalcategoriya', compact('categories', 'categories2'));
     }
 

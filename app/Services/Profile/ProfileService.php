@@ -99,8 +99,8 @@ class ProfileService
     {
         /** @var User $user */
         $user = Auth::user();
-        $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->select('id', 'name')->get();
-        $categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->get();
+        $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->select('id', 'name')->orderBy("order", "asc")->get();
+        $categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->orderBy("order", "asc")->get();
         $regions = Region::withTranslations(['ru', 'uz'])->get();
         $top_users = User::query()->where('role_id', User::ROLE_PERFORMER)->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(Review::TOP_USER)->pluck('id')->toArray();

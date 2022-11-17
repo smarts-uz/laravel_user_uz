@@ -110,7 +110,7 @@ return [
     "size" => [
         "array" => "valyation.size.array",
         "file" => "valyation.size.file",
-        "numeric" => "valyation.size.nemeric",
+        "numeric" => "valyation.size.numeric",
         "string" => "valyation.size.string"
     ],
     "starts_with" => "valyation.starts_with",
