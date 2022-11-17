@@ -43,13 +43,13 @@ class BecomePerformerEmailPhone extends FormRequest
     public function messages()
     {
         return [
-            'email.required' => __('login.email.required'),
-            'email.email' => __('login.email.email'),
-            'email.uniques' => __('login.email.unique'),
-            'phone_number.required' => __('login.phone_number.unique'),
-            'phone_number.numeric' => __('login.phone_number.numeric'),
-            'phone_number.min' => __('login.phone_number.min'),
-            'phone_number.unique' => __('login.phone_number.unique'),
+            'email.required' => __('Требуется заполнение!'),
+            'email.email' => __('Введите адрес электронной почты в правильном формате!'),
+            'email.unique' => __('Пользователь с такой почтой уже существует!'),
+            'phone_number.required' => __('Требуется заполнение!'),
+            'phone_number.numeric' => __('Поле должно быть числом'),
+            'phone_number.min' => __('Неверный формат номера телефона!'),
+            'phone_number.unique' => __('Этот номер есть в системе!'),
         ];
     }
 }

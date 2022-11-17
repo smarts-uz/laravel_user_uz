@@ -803,5 +803,8 @@
     "Пользователь не оставил ответов": "Foydalanuvchi hech qanday javob qoldirmagan",
     "Вернитесь назад": "Orqaga qaytish",
     "Поле должно быть числом": "Maydon raqam bo'lishi kerak",
-    "Поле должно содержать не менее 6 символов": "Maydon kamida 6 ta belgidan iborat bo'lishi kerak"
+    "Поле должно содержать не менее 6 символов": "Maydon kamida 6 ta belgidan iborat bo'lishi kerak",
+    "Введите адрес электронной почты в правильном формате!": "Iltimos, elektron pochta manzilingizni to'g'ri formatda kiriting!",
+    "Неверный формат номера телефона!": "Telefon raqami formati noto'g'ri!",
+    "Этот номер есть в системе!": "Bu raqam tizimda!"
 }
