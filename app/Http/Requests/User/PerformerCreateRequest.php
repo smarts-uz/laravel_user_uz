@@ -34,10 +34,10 @@ class PerformerCreateRequest extends FormRequest
     public function messages()
     {
         return [
-            'location.required' => __('login.location.required'),
-            'name.required' => __('login.name.required'),
-            'last_name.required' => __('login.name.required'),
-            'born_date.required' => __('login.name.required'),
+            'location.required' => __('Требуется заполнение!'),
+            'name.required' => __('Требуется заполнение!'),
+            'last_name.required' => __('Требуется заполнение!'),
+            'born_date.required' => __('Требуется заполнение!'),
         ];
     }
 }

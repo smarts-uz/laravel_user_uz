@@ -806,5 +806,9 @@
     "Поле должно содержать не менее 6 символов": "Maydon kamida 6 ta belgidan iborat bo'lishi kerak",
     "Введите адрес электронной почты в правильном формате!": "Iltimos, elektron pochta manzilingizni to'g'ri formatda kiriting!",
     "Неверный формат номера телефона!": "Telefon raqami formati noto'g'ri!",
-    "Этот номер есть в системе!": "Bu raqam tizimda!"
+    "Этот номер есть в системе!": "Bu raqam tizimda!",
+    "Значение поля не соответствует проверке": "Maydon qiymati tasdiqqa mos kelmadi",
+    "Введите e-mail в правильном формате!": "Emailni to'g'ri formatda kiriting!",
+    "Проверяемое поле должно иметь минимальное значение.": "Tekshiruv ostidagi maydon minimal qiymatga ega bo'lishi kerak.",
+    "Проверяемое поле должно быть меньше или равно максимальному значению.":"Tekshirilayotgan maydon maksimal qiymatdan kichik yoki unga teng bo'lishi kerak."
 }

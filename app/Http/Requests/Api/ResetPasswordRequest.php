@@ -16,9 +16,9 @@ class ResetPasswordRequest extends BaseRequest
     public function messages()
     {
         return [
-            'phone_number.required' => __('login.phone_number.required'),
-            'password.required' => __('login.password.required'),
-            'password.confirmed' => __('login.password.confirmed'),
+            'phone_number.required' => __('Требуется заполнение!'),
+            'password.required' => __('Требуется заполнение!'),
+            'password.confirmed' => __('Значение поля не соответствует проверке'),
         ];
     }
 }

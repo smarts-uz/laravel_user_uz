@@ -15,8 +15,8 @@ class UserReportRequest extends BaseRequest
     public function messages()
     {
         return [
-            'reported_user_id.required' => __('login.name.required'),
-            'message.required' => __('login.name.required'),
+            'reported_user_id.required' => __('Требуется заполнение!'),
+            'message.required' => __('Требуется заполнение!'),
         ];
     }
 }

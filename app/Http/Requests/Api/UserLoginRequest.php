@@ -2,17 +2,10 @@
 
 namespace App\Http\Requests\Api;
 
-use App\Http\Controllers\LoginController;
-use App\Http\Requests\Api\BaseRequest;
 use App\Models\User;
 use App\Services\VerificationService;
-use Faker\Provider\Base;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Validation\ValidationException;
 
 class UserLoginRequest extends BaseRequest
 {
@@ -56,17 +49,8 @@ class UserLoginRequest extends BaseRequest
     public function messages()
     {
         return [
-                'name.required' => __('login.name.required'),
-                'name.unique' => __('login.name.unique'),
-                'phone_number.required' => __('login.phone_number.required'),
-                'phone_number.regex' => __('login.phone_number.regex'),
-                'phone_number.unique' => __('Этот номер зарегистрирован'),
-                'email.required' => __('login.email.required'),
-                'email.email' => __('login.email.email'),
-                'email.unique' => __('login.email.unique'),
-                'password.required' => __('login.password.required'),
-                'password.min' => __('login.password.min'),
-                'password.confirmed' => __('login.password.confirmed'),
+                'email.required' => __('Требуется заполнение!'),
+                'password.required' => __('Требуется заполнение!'),
             ];
     }
 }
