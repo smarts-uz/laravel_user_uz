@@ -52,9 +52,16 @@
                     <div class="font-bold text-2xl mx-8 py-4">
                         <p>{{__('Все исполнители')}}</p>
                     </div>
+                    <div class="font-sans text-black flex ml-6 mb-3">
+                        <div class="border rounded overflow-hidden flex">
+                            <input type="search" class="px-4 py-2 focus:outline-none" placeholder="Search...">
+                            <button class="flex items-center justify-center px-4 border-l bg-blue-400 text-white">
+                                <svg class="h-4 w-4 text-grey-dark" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"/></svg>
+                            </button>
+                        </div>
+                    </div>
                     <div class="form-check flex flex-row mx-8 pb-4">
-                        <input
-                            class="focus:outline-none  form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-black-600 checked:border-black-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                        <input class="focus:outline-none  form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-black-600 checked:border-black-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                             type="checkbox" id="online">
                         <label class="form-check-label inline-block text-gray-800 cursor-pointer" for="online">
                             {{__('Сейчас на сайте')}}
