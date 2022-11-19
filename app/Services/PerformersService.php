@@ -22,7 +22,7 @@ class PerformersService
      * @param $authId
      * @return  PerformerServiceItem
      */
-    public function service($authId)
+    public function service($authId,$search)
     {
         $item = new PerformerServiceItem();
         $item->tasks = Task::query()->where('user_id', $authId)
@@ -34,6 +34,7 @@ class PerformersService
             ->select('id', 'parent_id', 'name')->orderBy("order", "asc")->get();
         $item->users = User::query()
             ->where('role_id', User::ROLE_PERFORMER)
+            ->where('name', 'LIKE', "%{$search}%")
             ->orderByDesc('review_rating')
             ->orderbyRaw('(review_good - review_bad) DESC')->paginate(50);
         $item->top_users = User::query()
@@ -77,7 +78,7 @@ class PerformersService
      * @param $authId
      * @return PerformerPrefItem
      */
-    public function perf_ajax($cf_id, $authId)
+    public function perf_ajax($cf_id, $authId,$search)
     {
         $item = new PerformerPrefItem();
         $item->categories = Category::query()->where('parent_id', null)
@@ -88,6 +89,7 @@ class PerformersService
         $item->child_categories = Category::all();
         $item->users = User::query()
             ->where('role_id', User::ROLE_PERFORMER)
+            ->where('name', 'LIKE', "%{$search}%")
             ->orderByDesc('review_rating')
             ->orderbyRaw('(review_good - review_bad) DESC')->paginate(50);
         $item->top_users = User::query()

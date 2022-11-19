@@ -39,12 +39,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/fordelnotif/{notification}/', [PerformersController::class, 'deleteNotification'])->name('performers.deleteNotification'); // javoxir
 });
 Route::post('del-notif', [PerformersController::class, 'del_all_notif']); // javoxir
-Route::get('perf-ajax/{id}', [PerformersController::class, 'perf_ajax']); // javoxir
+Route::get('perf-ajax/{id}', [PerformersController::class, 'perf_ajax'])->name('perf.ajax'); // javoxir
 Route::get('active-performers', [PerformersController::class, 'ajaxAP'])->name('performers.active_performers'); // Shuxrat78
 Route::post('give-task', [PerformersController::class, 'give_task']); // javoxir
 Route::get('/performers_portfolio/{portfolio}',[PerformersController::class,'performers_portfolio'])->name('performers.performers_portfolio');
 Route::group(['prefix' => 'performers'], function () {
-    Route::post('/', [PerformersController::class, 'service']); // javoxir
     Route::get('/', [PerformersController::class, 'service'])->name('performers.service'); // javoxir
     Route::get('/{user}', [PerformersController::class, 'performer'])->name('performers.performer'); // javoxir
 });

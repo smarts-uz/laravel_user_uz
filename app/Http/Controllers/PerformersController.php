@@ -17,12 +17,13 @@ use Illuminate\Support\Facades\Auth;
 
 class PerformersController extends Controller
 {
-    public function service()
+    public function service(Request $request)
     {
-        $authId = Auth::id();
+        $search = $request->input('search');
 
+        $authId = Auth::id();
         $service = new PerformersService();
-        $item = $service->service($authId);
+        $item = $service->service($authId,$search);
 
        return view('performers/performers',
            [
@@ -113,11 +114,12 @@ class PerformersController extends Controller
     }
 
 
-    public function perf_ajax($cf_id, User $user)
+    public function perf_ajax($cf_id, User $user, Request $request)
     {
         $authId = Auth::id();
+        $search = $request->input('search');
         $service = new PerformersService();
-        $item = $service->perf_ajax($cf_id, $authId);
+        $item = $service->perf_ajax($cf_id, $authId,$search);
         return view('performers/performers_cat',
         [
             'child_categories' => $item->child_categories,
@@ -157,5 +159,16 @@ class PerformersController extends Controller
 
     public function performers_portfolio(User $user,Portfolio $portfolio){
         return view('performers.performer_portfolio',compact('portfolio','user'));
+    }
+
+    public function search(Request $request){
+
+        $search = $request->input('search');
+
+        $users = User::query()
+            ->where('name', 'LIKE', "%{$search}%")
+            ->get();
+
+        return view('performers.performers', compact('users'));
     }
 }
