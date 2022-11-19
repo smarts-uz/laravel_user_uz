@@ -4,17 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\CustomField;
 use App\Models\FooterReview;
-use App\Models\Portfolio;
-use App\Models\Review;
-use App\Models\TaskResponse;
-use App\Models\User;
 use App\Services\Response;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Models\Task;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use TCG\Voyager\Models\Category;
 use App\Models\Massmedia;
