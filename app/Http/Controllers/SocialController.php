@@ -39,7 +39,7 @@ class SocialController extends Controller
             $new_user->email = $user->email;
             $new_user->facebook_id = $user->id;
             $new_user->avatar = self::get_avatar($user);
-            $new_user->password = encrypt('123456');
+//            $new_user->password = encrypt('123456');
             $new_user->save();
             $wallBal = new WalletBalance();
             $wallBal->balance = setting('admin.bonus');
@@ -68,7 +68,7 @@ class SocialController extends Controller
     {
         try {
             $user = Socialite::driver('apple')->setScopes(['name', 'email'])->user();
-            
+
             /** @var User $findUser */
             $findUser = User::query()->where('email', $user->email)->first();
 
