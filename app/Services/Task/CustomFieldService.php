@@ -39,7 +39,9 @@ class CustomFieldService
         $item['options'] = $this->setOption($custom_field, $task);
         $item['values'] = $custom_field->values;
         $item['required'] = $custom_field->required;
-        $item['validator'] = $custom_field->validator;
+        $item['regex'] = $custom_field->regex;
+        $item['min'] = $custom_field->min;
+        $item['max'] = $custom_field->max;
         $item['data_type'] = $custom_field->data_type;
         $item['order'] = $custom_field->order;
         $item['name'] = $custom_field->name;
