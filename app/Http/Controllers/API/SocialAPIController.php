@@ -108,7 +108,7 @@ class SocialAPIController extends Controller
             $accessToken = $user->createToken('authToken')->accessToken;
             if (!($user->password)){
                 /** @var Notification $notification */
-                Notification::query()->create([
+                $notification = Notification::query()->create([
                     'user_id' => $user->id,
                     'description' => 'password',
                     'type' => Notification::NEW_PASSWORD,
