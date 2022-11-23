@@ -47,7 +47,7 @@ class SocialController extends Controller
             $wallBal->save();
             Auth::login($new_user);
         }
-        if ($findUser->password===null){
+        if (!($findUser->password)){
             /** @var Notification $notification */
             Notification::query()->create([
                 'user_id' => $findUser->id,

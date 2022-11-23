@@ -106,7 +106,7 @@ class SocialAPIController extends Controller
             // create a token for the user, so they can login
             Auth::login($user);
             $accessToken = $user->createToken('authToken')->accessToken;
-            if ($user->password===null){
+            if (!($user->password)){
                 /** @var Notification $notification */
                 Notification::query()->create([
                     'user_id' => $user->id,
