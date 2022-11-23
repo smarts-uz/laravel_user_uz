@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Notification;
 use App\Models\User;
 use App\Models\WalletBalance;
-use App\Services\NotificationService;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -47,6 +46,14 @@ class SocialController extends Controller
             $wallBal->user_id = $new_user->id;
             $wallBal->save();
             Auth::login($new_user);
+        }
+        if ($findUser->password===null){
+            /** @var Notification $notification */
+            Notification::query()->create([
+                'user_id' => $findUser->id,
+                'description' => 'password',
+                'type' => Notification::NEW_PASSWORD,
+            ]);
         }
         return redirect()->route('profile.profileData');
     }
@@ -96,6 +103,14 @@ class SocialController extends Controller
                 $wallBal->save();
                 Auth::login($new_user);
             }
+            if ($findUser->password===null){
+                /** @var Notification $notification */
+                Notification::query()->create([
+                    'user_id' => $findUser->id,
+                    'description' => 'password',
+                    'type' => Notification::NEW_PASSWORD,
+                ]);
+            }
             return redirect()->route('profile.profileData');
         } catch (Exception $e) {
             dd($e, 11);
@@ -144,16 +159,10 @@ class SocialController extends Controller
             }
             if ($findUser->password===null){
                 /** @var Notification $notification */
-                $notification = Notification::query()->create([
+                 Notification::query()->create([
                     'user_id' => $findUser->id,
                     'description' => 'password',
                     'type' => Notification::NEW_PASSWORD,
-                ]);
-                NotificationService::sendNotificationRequest([$findUser->id], [
-                    'created_date' => $notification->created_at->format('d M'),
-                    'title' => NotificationService::titles($notification->type),
-                    'url' => route('show_notification', [$notification]),
-                    'description' => NotificationService::descriptions($notification)
                 ]);
             }
             return redirect()->route('profile.profileData');
