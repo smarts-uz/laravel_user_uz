@@ -339,7 +339,7 @@ class NotificationService
             Notification::ADMIN_CANCEL_TASK => __('3адание task_name №task_id было отменено администрацией', [
                 'task_name' => $notification->name_task, 'task_id' => $notification->task_id,
             ], $locale),
-            Notification::NEW_PASSWORD => __('Чтобы не потерять доступ к вашему аккаунту, рекомендуем вам установить пароль. Сделать это можно в профиле, раздел "Настройки".', $locale),
+            Notification::NEW_PASSWORD => __('Чтобы не потерять доступ к вашему аккаунту, рекомендуем вам установить пароль. Сделать это можно в профиле, раздел "Настройки".',[], $locale),
             default => 'Description',
         };
     }
