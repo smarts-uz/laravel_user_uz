@@ -91,9 +91,7 @@ class CreateService
             'url' => route('show_notification', [$notification]),
             'description' => NotificationService::descriptions($notification)
         ]);
-//        NotificationService::sendNotificationRequest([$task->user_id], [
-//            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
-//        ]);
+
         $locale = cacheLang($task->user_id);
         NotificationService::pushNotification($task->user, [
             'title' => __('3адание отменено', [], $locale),

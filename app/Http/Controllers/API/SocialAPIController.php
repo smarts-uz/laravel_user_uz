@@ -4,9 +4,12 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\SocialRequest;
+use App\Http\Resources\NotificationResource;
 use App\Http\Resources\PerformerIndexResource;
+use App\Models\Notification;
 use App\Models\User;
 use App\Models\WalletBalance;
+use App\Services\NotificationService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -103,6 +106,19 @@ class SocialAPIController extends Controller
             // create a token for the user, so they can login
             Auth::login($user);
             $accessToken = $user->createToken('authToken')->accessToken;
+            if ($user->password===null){
+                /** @var Notification $notification */
+                Notification::query()->create([
+                    'user_id' => $user->id,
+                    'description' => 'password',
+                    'type' => Notification::NEW_PASSWORD,
+                ]);
+                $locale = cacheLang($user->id);
+                NotificationService::pushNotification($user, [
+                    'title' => __('Установить пароль', [], $locale),
+                    'body' => __('Чтобы не потерять доступ к вашему аккаунту, рекомендуем вам установить пароль. Сделать это можно в профиле, раздел "Настройки".', [], $locale)
+                ], 'notification', new NotificationResource($notification));
+            }
             // return the token for usage
             return response()->json([
                 'user' => new PerformerIndexResource(auth()->user()),
