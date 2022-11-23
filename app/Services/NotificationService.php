@@ -41,7 +41,8 @@ class NotificationService
                             ->whereIn('type', [
                                 Notification::RESPONSE_TO_TASK, Notification::SEND_REVIEW_PERFORMER,
                                 Notification::RESPONSE_TO_TASK_FOR_USER, Notification::CANCELLED_TASK,
-                                Notification::ADMIN_COMPLETE_TASK, Notification::ADMIN_CANCEL_TASK
+                                Notification::ADMIN_COMPLETE_TASK, Notification::ADMIN_CANCEL_TASK,
+                                Notification::NEW_PASSWORD
                             ]);
                     });
                 if ((int)$user->role_id === User::ROLE_PERFORMER && $web)
@@ -117,10 +118,6 @@ class NotificationService
             }
         }
 
-//        self::sendNotificationRequest($performer_ids, [
-//            'url' => route('show_notification', [$notification]),
-//            'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
-//        ]);
     }
 
 
@@ -156,9 +153,6 @@ class NotificationService
             ]);
         }
 
-//        self::sendNotificationRequest($users->map->id->toArray(), [
-//            'url' => $slug . '/' . $not->id, 'name' => $not->title, 'time' => 'recently'
-//        ]);
     }
 
     /**
@@ -205,9 +199,6 @@ class NotificationService
             'url' => route('show_notification', [$notification]),
             'description' => self::descriptions($notification)
         ]);
-//        self::sendNotificationRequest([$user->id], [
-//            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
-//        ]);
 
         self::pushNotification($user, [
             'title' => self::titles($notification->type, $locale),
@@ -234,9 +225,6 @@ class NotificationService
             'url' => route('show_notification', [$notification]),
             'description' => self::descriptions($notification)
         ]);
-//        self::sendNotificationRequest([$task->user_id], [
-//            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
-//        ]);
 
         self::pushNotification($task->user, [
             'title' => self::titles($notification->type, $locale),
@@ -313,6 +301,7 @@ class NotificationService
             Notification::RESPONSE_TO_TASK_FOR_USER => __('Новый отклик', [], $locale),
             Notification::CANCELLED_TASK, Notification::ADMIN_CANCEL_TASK => __('3адание отменено', [], $locale),
             Notification::ADMIN_COMPLETE_TASK => __('Задания завершено', [], $locale),
+            Notification::NEW_PASSWORD => __('Установить пароль', [], $locale),
             default => 'Title',
         };
     }
@@ -350,6 +339,7 @@ class NotificationService
             Notification::ADMIN_CANCEL_TASK => __('3адание task_name №task_id было отменено администрацией', [
                 'task_name' => $notification->name_task, 'task_id' => $notification->task_id,
             ], $locale),
+            Notification::NEW_PASSWORD => __('Чтобы не потерять доступ к вашему аккаунту, рекомендуем вам установить пароль. Сделать это можно в профиле, раздел "Настройки".', $locale),
             default => 'Description',
         };
     }

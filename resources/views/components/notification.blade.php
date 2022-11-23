@@ -40,10 +40,8 @@
 </div>
 {{-- modal notification --}}
 
-<div
-    class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
-    id="modal-id121"
-    style="background-color:rgba(0,0,0,0.5)">
+<div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
+    id="modal-id121" style="background-color:rgba(0,0,0,0.5)">
     <div class="relative w-auto my-6 mx-auto max-w-3xl" id="modal-id121">
         <div
             class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
