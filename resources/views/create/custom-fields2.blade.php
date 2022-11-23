@@ -1,7 +1,7 @@
 @if(isset($custom_fields))
 
     @foreach($custom_fields as $custom_field)
-
+{{--        @dd($custom_field)--}}
         @if($custom_field['type'] == 'select')
             @if($custom_field['title'])
                 <div class="py-4 mx-auto px-auto text-center text-3xl texl-bold">
@@ -15,7 +15,7 @@
             @endif
             @if(($custom_field['options']))
 
-                <div class="py-4 mx-auto  text-left ">
+                <div class="py-4 mx-auto text-left">
                     <div class="mb-4">
                         <div id="formulario" class="flex flex-col gap-y-4">
 
@@ -141,9 +141,19 @@
                     <div id="formulario" class="flex flex-col gap-y-4">
                         <label for="car_{{ $custom_field['order'] }}">{{$custom_field['label']}}</label>
 
-                        <input placeholder="{{ $custom_field['placeholder'] }}" required
-                            id="car_{{ $custom_field['order'] }}" name="{{$custom_field['name']}}[]" type="text" value="{{ $custom_field['task_value'] }}"
-                            class="shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500" onkeypress='validate(event)'>
+                        <input placeholder="{{ $custom_field['placeholder'] }}"
+                               @if($custom_field['required'] === 1)
+                                   required
+                               @endif
+                               @if($custom_field['data_type'] === 'int')
+                                   min="{{$custom_field['min']}}" max="{{$custom_field['max']}}" type="number"
+                               @elseif($custom_field['data_type'] === 'string')
+                                   minlength="{{$custom_field['min']}}" maxlength="{{$custom_field['max']}}" type="text" onkeypress='validate(event)'
+                               @elseif($custom_field['data_type'] === 'double')
+                                   min="{{$custom_field['min']}}" max="{{$custom_field['max']}}" type="number"
+                               @endif
+                            id="car_{{ $custom_field['order'] }}" name="{{$custom_field['name']}}[]" value="{{ $custom_field['task_value'] }}"
+                            class="shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500" >
                     </div>
                 </div>
             </div>
@@ -167,10 +177,19 @@
                     <div id="formulario" class="flex flex-col gap-y-4">
                         <label for="car_{{ $custom_field['order'] }}">{{$custom_field['label']}}</label>
 
-                        <input min="0" placeholder="{{ $custom_field['placeholder'] }}" required
-                            id="car_{{ $custom_field['order'] }}" name="{{$custom_field['name']}}[]" type="number" value="{{ $custom_field['task_value'] }}"
+                        <input min="0" placeholder="{{ $custom_field['placeholder'] }}"
+                               @if($custom_field['required'] === 1)
+                                   required
+                               @endif
+                               @if($custom_field['data_type'] === 'int')
+                                   min="{{$custom_field['min']}}" max="{{$custom_field['max']}}" type="number"
+                               @elseif($custom_field['data_type'] === 'string')
+                                   minlength="{{$custom_field['min']}}" maxlength="{{$custom_field['max']}}" type="text" onkeypress='validate(event)'
+                               @elseif($custom_field['data_type'] === 'double')
+                                   min="{{$custom_field['min']}}" max="{{$custom_field['max']}}" type="number"
+                               @endif
+                            id="car_{{ $custom_field['order'] }}" name="{{$custom_field['name']}}[]" value="{{ $custom_field['task_value'] }}"
                             class="shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500" onkeypress='validate(event)'>
-
                     </div>
                 </div>
             </div>
@@ -187,7 +206,6 @@
             margin: 0;
         }
     </style>
-    <script src="{{asset('js/custom.js')}}"></script>
 @endif
 
 

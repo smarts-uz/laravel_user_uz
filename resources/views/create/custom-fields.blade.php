@@ -18,16 +18,14 @@
                     {{ $data->getTranslatedAttribute('label') }}
                     <select id="where" name="{{$data->name}}[]"
                             class="shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
-                            required
-                    >
+                            required>
                         @php $options = app()->getLocale() == 'ru' ? $data->options_ru['options'] : $data->options['options'] @endphp
                         @foreach($options as $key => $option)
                             <option
                                 @if(in_array($key, json_decode($task->custom_field_values()->where('custom_field_id', $data->id)->first()->value)))
                                     selected
                                 @endif
-                                value="{{ $key }}"
-                            >
+                                value="{{ $key }}">
                                 {{ __($option) }}
                             </option>
                         @endforeach
@@ -140,7 +138,17 @@
             <div id="formulario" class="flex flex-col gap-y-4">
                 {{ $data->getTranslatedAttribute('label') }}
                 <input placeholder="{{ $data->getTranslatedAttribute('placeholder') }}"
-                    id="car_{{ $data['order'] }}" name="{{$data->name}}[]" type="text" required
+                    id="car_{{ $data['order'] }}" name="{{$data->name}}[]"
+                       @if($custom_field['required'] === 1)
+                           required
+                       @endif
+                       @if($custom_field['data_type'] === 'int')
+                           min="{{$custom_field['min']}}" max="{{$custom_field['max']}}" type="number"
+                       @elseif($custom_field['data_type'] === 'string')
+                           minlength="{{$custom_field['min']}}" maxlength="{{$custom_field['max']}}" type="text" onkeypress='validate(event)'
+                       @elseif($custom_field['data_type'] === 'double')
+                           min="{{$custom_field['min']}}" max="{{$custom_field['max']}}" type="number"
+                       @endif
                     value="{{App\Services\Task\CustomFieldService::setInputValue($task, $data->id)}}"
                     class="shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500">
             </div>
