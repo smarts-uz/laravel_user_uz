@@ -3,8 +3,6 @@
 namespace App\Item;
 
 
-use TCG\Voyager\Models\Category;
-
 class CategoryItem
 {
     public $choosed_category;

@@ -4,7 +4,7 @@
 namespace App\Services;
 
 use App\Item\ControllerItem;
-use App\Item\SearchServiceTaskItem;
+use App\Item\CategoryItem;
 use App\Item\MyTaskItem;
 use App\Models\Review;
 use App\Models\Task;
@@ -35,10 +35,10 @@ class ControllerService
      * Function  category
      * Mazkur metod barcha kategoriyalarni chiqarib beradi
      * @param $id
-     * @return  SearchServiceTaskItem
+     * @return  CategoryItem
      */
     public function category($id){
-        $item = new SearchServiceTaskItem();
+        $item = new CategoryItem();
         $item -> categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->get();
         $item -> choosed_category = Category::withTranslations(['ru', 'uz'])->where('id', $id)->orderBy("order", "asc")->get();
         $item -> child_categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', $id)->orderBy("order", "asc")->get();
