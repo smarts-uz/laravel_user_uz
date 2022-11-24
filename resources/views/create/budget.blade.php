@@ -11,10 +11,10 @@
             <div class="grid grid-cols-3 gap-x-20">
                 <div class="lg:col-span-2 col-span-3">
                     <div class="w-full text-center text-2xl">
-                        @if(session('lang') === 'uz')
-                            "{{$task->name}}" {{__('Ищем исполнителя для задания')}}
+                        @if(session('lang') === 'ru')
+                            {{__('Ищем исполнителя для задания')}} "{{$task->name}}"
                         @else
-                          {{__('Ищем исполнителя для задания')}} "{{$task->name}}"
+                            "{{$task->name}}" {{__('Ищем исполнителя для задания')}}
                         @endif
                     </div>
                     <div class="w-full text-center my-4 text-gray-400">
@@ -90,23 +90,7 @@
                                             <option value="0">
                                                 {{__('Выберите бюджет')}}
                                             </option>
-                                        @if(session('lang') === 'uz')
-                                            <option value="{{round($category->max/5)}}">
-                                                {{round($category->max/5)}}  So'm{{__('до')}}
-                                            </option>
-                                            <option value="{{round($category->max/5 * 2)}}">
-                                                {{round($category->max/5 * 2)}} So'm{{__('до')}}
-                                            </option>
-                                            <option value="{{round($category->max/5 * 3)}}">
-                                                {{round($category->max/5 * 3)}} So'm{{__('до')}}
-                                            </option>
-                                            <option value="{{round($category->max/5 * 4)}}">
-                                                {{round($category->max/5 * 4)}} So'm{{__('до')}}
-                                            </option>
-                                            <option value="до {{round($category->max)}} UZS">
-                                                {{round($category->max)}} So'm{{__('до')}}
-                                            </option>
-                                        @else
+                                        @if(session('lang') === 'ru')
                                             <option value="{{round($category->max/5)}}">
                                                 {{__('до')}} {{round($category->max/5)}} UZS
                                             </option>
@@ -121,6 +105,22 @@
                                             </option>
                                             <option value="до {{round($category->max)}} UZS">
                                                 {{__('до')}} {{round($category->max)}} UZS
+                                            </option>
+                                        @else
+                                            <option value="{{round($category->max/5)}}">
+                                                {{round($category->max/5)}}  So'm{{__('до')}}
+                                            </option>
+                                            <option value="{{round($category->max/5 * 2)}}">
+                                                {{round($category->max/5 * 2)}} So'm{{__('до')}}
+                                            </option>
+                                            <option value="{{round($category->max/5 * 3)}}">
+                                                {{round($category->max/5 * 3)}} So'm{{__('до')}}
+                                            </option>
+                                            <option value="{{round($category->max/5 * 4)}}">
+                                                {{round($category->max/5 * 4)}} So'm{{__('до')}}
+                                            </option>
+                                            <option value="до {{round($category->max)}} UZS">
+                                                {{round($category->max)}} So'm{{__('до')}}
                                             </option>
                                         @endif
 
@@ -175,12 +175,12 @@
 
                     var maximum = {{$category->max}};
                     if (maximum === Math.floor(ui.value)) {
-                        @if(session('lang') === 'uz')
-                            $("#amount").val(maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " So'm" + "{{__('до')}}");
-                            $("#amount2").val(maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " So'm" + "{{__('до')}}");
-                        @else
+                        @if(session('lang') === 'ru')
                             $("#amount").val("{{__('до ')}}" + maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
                             $("#amount2").val("{{__('до ')}}" + maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
+                        @else
+                            $("#amount").val(maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " So'm" + "{{__('до')}}");
+                            $("#amount2").val(maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " So'm" + "{{__('до')}}");
                         @endif
                     }else if(Math.floor(ui.value) === 0) {
                         $("#amount").val(0  + " UZS");
@@ -188,12 +188,12 @@
                     }
                     else {
                         var round   = Math.floor(ui.value);
-                        @if(session('lang') === 'uz')
-                            $("#amount").val(round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " So'm" + "{{__('до')}}");
-                            $("#amount2").val(round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " So'm" + "{{__('до')}}");
-                        @else
+                        @if(session('lang') === 'ru')
                             $("#amount").val("{{__('до ')}}" + round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
                             $("#amount2").val("{{__('до ')}}" + round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
+                        @else
+                            $("#amount").val(round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " So'm" + "{{__('до')}}");
+                            $("#amount2").val(round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " So'm" + "{{__('до')}}");
                         @endif
                     }
 

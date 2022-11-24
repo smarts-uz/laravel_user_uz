@@ -35,10 +35,10 @@
         </div>
         <div class="sm:col-span-2 col-span-5 sm:text-right text-left sm:ml-0 ml-16">
             <p class="sm:text-lg text-sm font-semibold text-gray-700">
-                @if ( session('lang') == 'uz' )
-                {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
+                @if ( session('lang') === 'ru' )
+                    {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
                 @else
-                {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
+                    {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
                 @endif
             </p>
             <span class="text-sm sm:mt-5 sm:mt-1 mt-0">{{__('Откликов')}} -

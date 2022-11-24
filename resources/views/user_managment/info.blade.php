@@ -16,20 +16,20 @@
         <a href="/admin/users" class="text-lg text-blue-500 hover:text-red-500 cursor-pointer mr-12">
             <i class="fas fa-arrow-left"></i> {{__('Вернитесь назад')}}
         </a>
-        @if(session('lang') === 'uz')
-            <a href="{{route('lang', ['lang'=>'uz'])}}" class="hover:text-red-500 text-red-500 mr-2">
-                UZ
-            </a>
-            I
-            <a href="{{route('lang', ['lang'=>'ru'])}}" class="hover:text-red-500 ml-2">
-                RU
-            </a>
-        @else
+        @if(session('lang') === 'ru')
             <a href="{{route('lang', ['lang'=>'uz'])}}" class="hover:text-red-500 mr-2">
                 UZ
             </a>
             I
             <a href="{{route('lang', ['lang'=>'ru'])}}" class="hover:text-red-500 text-red-500 ml-2">
+                RU
+            </a>
+        @else
+            <a href="{{route('lang', ['lang'=>'uz'])}}" class="hover:text-red-500 text-red-500 mr-2">
+                UZ
+            </a>
+            I
+            <a href="{{route('lang', ['lang'=>'ru'])}}" class="hover:text-red-500 ml-2">
                 RU
             </a>
         @endif
@@ -104,10 +104,10 @@
                             </div>
                             <div class="sm:col-span-2 col-span-5 sm:text-right text-left sm:ml-0 ml-16">
                                 <p class="sm:text-lg text-sm font-semibold text-gray-700">
-                                    @if ( session('lang') === 'uz' )
-                                        {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
-                                    @else
+                                    @if ( session('lang') === 'ru' )
                                         {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
+                                    @else
+                                        {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
                                     @endif
                                 </p>
                                 <span class="text-sm sm:mt-5 sm:mt-1 mt-0">{{__('Откликов')}} -
@@ -167,10 +167,10 @@
                             </div>
                             <div class="sm:col-span-2 col-span-5 sm:text-right text-left sm:ml-0 ml-16">
                                 <p class="sm:text-lg text-sm font-semibold text-gray-700">
-                                    @if ( session('lang') === 'uz' )
-                                        {{ number_format($performer_task->budget) }} {{__('сум')}}{{__('до')}}
-                                    @else
+                                    @if ( session('lang') === 'ru' )
                                         {{__('до')}} {{ number_format($performer_task->budget) }} {{__('сум')}}
+                                    @else
+                                        {{ number_format($performer_task->budget) }} {{__('сум')}}{{__('до')}}
                                     @endif
                                 </p>
                                 <span class="text-sm sm:mt-5 sm:mt-1 mt-0">{{__('Откликов')}} -

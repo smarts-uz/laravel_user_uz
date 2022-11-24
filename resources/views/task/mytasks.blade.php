@@ -64,10 +64,10 @@
                                     </div>
                                     <div class="col-span-3 md:text-right categoryid">
                                         <p class="text-xl font-medium text-gray-600">
-                                            @if ( session('lang') === 'uz' )
-                                                {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
-                                            @else
+                                            @if ( session('lang') === 'ru' )
                                                 {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
+                                            @else
+                                                {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
                                             @endif
                                         </p>
                                         @foreach ($categories2 as $category2)
@@ -133,10 +133,10 @@
                                     </div>
                                     <div class="col-span-3 md:text-right categoryid">
                                         <p class="text-xl font-medium text-gray-600">
-                                            @if ( session('lang') === 'uz')
-                                                {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
-                                            @else
+                                            @if ( session('lang') === 'ru')
                                                 {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
+                                            @else
+                                                {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
                                             @endif
                                         </p>
                                         @foreach ($categories2 as $category2)

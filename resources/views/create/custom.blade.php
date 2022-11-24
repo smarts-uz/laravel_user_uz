@@ -12,10 +12,10 @@
             <div class="grid grid-cols-3 gap-x-20">
                 <div class="lg:col-span-2 col-span-3">
                     <div class="w-full text-center text-2xl">
-                        @if(session('lang')=='uz')
-                            "{{$task->name}}" {{__('Ищем исполнителя для задания')}}
-                        @else
+                        @if(session('lang') === 'ru')
                             {{__('Ищем исполнителя для задания')}} "{{$task->name}}"
+                        @else
+                            "{{$task->name}}" {{__('Ищем исполнителя для задания')}}
                         @endif
                     </div>
                     <div class="w-full text-center my-4 text-gray-400">

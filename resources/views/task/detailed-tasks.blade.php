@@ -16,10 +16,10 @@
                 <h1 class="text-3xl font-bold mb-2">{{$task->name}}</h1>
                 <div class="md:flex flex-row">
                         <span class="text-black rounded-lg bg-yellow-400 p-2">
-                            @if ( session('lang') === 'uz' )
-                                {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
-                            @else
+                            @if ( session('lang') === 'ru' )
                                 {{__('до')}} {{ number_format($task->budget) }} {{__('сум')}}
+                            @else
+                                {{ number_format($task->budget) }} {{__('сум')}}{{__('до')}}
                             @endif
                         </span>
                     @auth()
@@ -227,10 +227,10 @@
                                             </div>
                                             <div class="sm:col-span-2 col-span-5 sm:text-right text-left sm:ml-0 ml-16">
                                                 <p class="sm:text-lg text-sm font-semibold text-gray-700">
-                                                    @if ( session('lang') === 'uz' )
-                                                        {{ number_format($item->budget) }} {{__('сум')}}{{__('до')}}
-                                                    @else
+                                                    @if ( session('lang') === 'ru' )
                                                         {{__('до')}} {{ number_format($item->budget) }} {{__('сум')}}
+                                                    @else
+                                                        {{ number_format($item->budget) }} {{__('сум')}}{{__('до')}}
                                                     @endif
                                                 </p>
                                                 <span class="text-sm sm:mt-5 sm:mt-1 mt-0">{{__('Откликов')}} -

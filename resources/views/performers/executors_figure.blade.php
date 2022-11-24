@@ -51,19 +51,18 @@
                 </span>
             </div>
             <div class="text-gray-500 text-base mt-2">
-                @if ( session('lang') === 'uz' )
+                @if ( session('lang') === 'ru' )
+                    <p class="mt-2">{{__('Создал')}}
+                        <span>{{count($task_count??[])}}</span> {{__('задание')}}
+                    </p>
+                @else
                     <p class="mt-2">
                         <span>{{count($task_count??[])}}</span> {{__('задание')}}
                         {{__('Создал')}}
                     </p>
-                @else
-                    <p class="mt-2">{{__('Создал')}}
-                        <span>{{count($task_count??[])}}</span> {{__('задание')}}
-                    </p>
                 @endif
-                @if(session('lang') === 'uz')
-                    {{$user->reviews}} {{__('ta sharh oldim')}}
-                @else
+
+                @if(session('lang') === 'ru')
                     @switch($user->reviews)
                         @case(0)
                             <span>{{__('Отзывов нет')}}</span>
@@ -77,6 +76,8 @@
                         @default
                             <span>{{__('Получил')}} {{$user->reviews}} {{__('Отзывов')}}</span>
                     @endswitch
+                @else
+                    {{$user->reviews}} {{__('ta sharh oldim')}}
                 @endif
             </div>
             <div class="flex flex-row items-center mt-3" id="str1">

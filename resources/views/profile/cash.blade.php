@@ -190,10 +190,10 @@
                 serverSide: false,
                 paging: true,
                 language:{
-                    @if(session('lang')=='uz')
-                        url: "//cdn.datatables.net/plug-ins/1.12.1/i18n/uz.json"
-                    @else
+                    @if(session('lang') === 'ru')
                         url: "//cdn.datatables.net/plug-ins/1.12.1/i18n/ru.json"
+                    @else
+                        url: "//cdn.datatables.net/plug-ins/1.12.1/i18n/uz.json"
                     @endif
                 },
                 ajax: {
