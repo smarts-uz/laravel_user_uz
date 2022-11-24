@@ -15,12 +15,12 @@
                 @foreach($customer_reviews as $customer_review)
                     <div class="border border-solid border-2 rounded-md bg-pink-50 my-3">
                         <div class="px-8 py-6">
-                            <a href="#" target="_blank" class="block float-left align-top w-16 h-16 overflow-hidden rounded-full shadow-lg border-b-0 mr-4">
+                            <div class="block float-left align-top w-16 h-16 overflow-hidden rounded-full shadow-lg border-b-0 mr-4">
                                 <img class="rounded-full" src="{{ asset('storage/'.$customer_review->image) }}">
-                            </a>
-                            <a href="#" target="_blank" class="font-semibold">
+                            </div>
+                            <div class="font-semibold">
                                 {{$customer_review->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}
-                            </a>
+                            </div>
                             <p class="text-base">
                                 {{$customer_review->getTranslatedAttribute('text',Session::get('lang') , 'fallbackLocale')}}
                             </p>
