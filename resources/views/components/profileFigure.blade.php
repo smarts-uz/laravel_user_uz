@@ -51,23 +51,21 @@
                 </p>
             </span>
             <div class="text-gray-500 text-base mt-2">
-                @if ( session('lang') == 'uz' )
+                @if ( session('lang') === 'ru' )
+                    <p class="mt-2">{{__('Создал')}}
+                        <a href="{{route('searchTask.mytasks')}}" class="text-blue-500 hover:text-red-600">
+                            <span>{{count($task??[])}}</span> {{__('задание')}}
+                        </a>
+                    </p>
+                @else
                     <p class="mt-2">
                         <a href="{{route('searchTask.mytasks')}}" class="text-blue-500 hover:text-red-600">
                             <span>{{count($task??[])}}</span> {{__('задание')}}
                         </a>
                         {{__('Создал')}}
                     </p>
-                @else
-                    <p class="mt-2">{{__('Создал')}}
-                        <a href="{{route('searchTask.mytasks')}}" class="text-blue-500 hover:text-red-600">
-                            <span>{{count($task??[])}}</span> {{__('задание')}}
-                        </a>
-                    </p>
                 @endif
-                @if(session('lang')=='uz')
-                    {{$user->reviews}} {{__('ta sharh oldim')}}
-                @else
+                @if(session('lang')==='ru')
                     @switch($user->reviews)
                         @case(0)
                             <span>{{__('Отзывов нет')}}</span>
@@ -81,6 +79,8 @@
                         @default
                             <span>{{__('Получил')}} {{$user->reviews}} {{__('Отзывов')}}</span>
                     @endswitch
+                @else
+                    {{$user->reviews}} {{__('ta sharh oldim')}}
                 @endif
             </div>
             <div class="flex flex-row items-center mt-3" id="str1">

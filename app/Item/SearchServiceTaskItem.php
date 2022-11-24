@@ -26,4 +26,9 @@ class SearchServiceTaskItem
     public $top_users;
     public $respons_reviews;
     public $review_description;
+    public $categories;
+    public $choosed_category;
+    public $child_categories;
+    public $idR;
+
 }

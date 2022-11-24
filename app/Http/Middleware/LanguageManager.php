@@ -1,10 +1,10 @@
 <?php
-  
+
 namespace App\Http\Middleware;
-  
+
 use Closure;
-use App;
-  
+use Illuminate\Support\Facades\App;
+
 class LanguageManager
 {
     /**
@@ -19,7 +19,11 @@ class LanguageManager
         if (session()->has('lang')) {
             App::setLocale(session()->get('lang'));
         }
-          
+        else
+        {
+            App::setLocale(config('app.locale'));
+        }
+
         return $next($request);
     }
 }
