@@ -53,7 +53,7 @@ class SocialController extends Controller
                 ]);
             }
         }
-        if (!($findUser->password)){
+        if (!($findUser->password) || !($new_user->password)){
             /** @var Notification $notification */
             Notification::query()->create([
                 'user_id' => $findUser->id,

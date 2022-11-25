@@ -65,6 +65,9 @@ class NotificationController extends VoyagerBaseController
         if ((int)$notification->type === Notification::NEW_PASSWORD ){
             return redirect('/profile/settings');
         }
+        if ((int)$notification->type === Notification::WALLET_BALANCE ){
+            return redirect('/profile/cash');
+        }
         return redirect('/detailed-tasks/' . $notification->task_id);
     }
 
