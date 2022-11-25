@@ -52,7 +52,12 @@ class SocialController extends Controller
             $wallBal->balance = setting('admin.bonus');
             $wallBal->user_id = $new_user->id;
             $wallBal->save();
-            Auth::login($new_user);
+            /** @var Notification $notification */
+            Notification::query()->create([
+                'user_id' => $new_user->id,
+                'description' => 'password',
+                'type' => Notification::NEW_PASSWORD,
+            ]);
             if(setting('admin.bonus')>0){
                 Notification::query()->create([
                     'user_id' => $new_user->id,
@@ -60,12 +65,7 @@ class SocialController extends Controller
                     'type' => Notification::WALLET_BALANCE,
                 ]);
             }
-            /** @var Notification $notification */
-            Notification::query()->create([
-                'user_id' => $new_user->id,
-                'description' => 'password',
-                'type' => Notification::NEW_PASSWORD,
-            ]);
+            Auth::login($new_user);
         }
 
         return redirect()->route('profile.profileData');
@@ -120,7 +120,12 @@ class SocialController extends Controller
                 $wallBal->balance = setting('admin.bonus');
                 $wallBal->user_id = $new_user->id;
                 $wallBal->save();
-                Auth::login($new_user);
+                /** @var Notification $notification */
+                Notification::query()->create([
+                    'user_id' => $new_user->id,
+                    'description' => 'password',
+                    'type' => Notification::NEW_PASSWORD,
+                ]);
                 if(setting('admin.bonus')>0){
                     Notification::query()->create([
                         'user_id' => $new_user->id,
@@ -128,12 +133,7 @@ class SocialController extends Controller
                         'type' => Notification::WALLET_BALANCE,
                     ]);
                 }
-                /** @var Notification $notification */
-                Notification::query()->create([
-                    'user_id' => $new_user->id,
-                    'description' => 'password',
-                    'type' => Notification::NEW_PASSWORD,
-                ]);
+                Auth::login($new_user);
             }
 
             return redirect()->route('profile.profileData');
@@ -187,7 +187,12 @@ class SocialController extends Controller
                 $wallBal->balance = setting('admin.bonus');
                 $wallBal->user_id = $new_user->id;
                 $wallBal->save();
-                Auth::login($new_user);
+                /** @var Notification $notification */
+                Notification::query()->create([
+                    'user_id' => $new_user->id,
+                    'description' => 'password',
+                    'type' => Notification::NEW_PASSWORD,
+                ]);
                 if(setting('admin.bonus')>0){
                     Notification::query()->create([
                         'user_id' => $new_user->id,
@@ -195,12 +200,7 @@ class SocialController extends Controller
                         'type' => Notification::WALLET_BALANCE,
                     ]);
                 }
-                /** @var Notification $notification */
-                Notification::query()->create([
-                    'user_id' => $new_user->id,
-                    'description' => 'password',
-                    'type' => Notification::NEW_PASSWORD,
-                ]);
+                Auth::login($new_user);
             }
 
             return redirect()->route('profile.profileData');
