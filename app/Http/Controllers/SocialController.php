@@ -62,7 +62,7 @@ class SocialController extends Controller
             }
             /** @var Notification $notification */
             Notification::query()->create([
-                'user_id' => $findUser->id,
+                'user_id' => $new_user->id,
                 'description' => 'password',
                 'type' => Notification::NEW_PASSWORD,
             ]);
@@ -130,7 +130,7 @@ class SocialController extends Controller
                 }
                 /** @var Notification $notification */
                 Notification::query()->create([
-                    'user_id' => $findUser->id,
+                    'user_id' => $new_user->id,
                     'description' => 'password',
                     'type' => Notification::NEW_PASSWORD,
                 ]);
@@ -197,7 +197,7 @@ class SocialController extends Controller
                 }
                 /** @var Notification $notification */
                 Notification::query()->create([
-                    'user_id' => $findUser->id,
+                    'user_id' => $new_user->id,
                     'description' => 'password',
                     'type' => Notification::NEW_PASSWORD,
                 ]);
