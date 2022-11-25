@@ -38,6 +38,7 @@ class Notification extends Model
     public const ADMIN_COMPLETE_TASK = 11;
     public const ADMIN_CANCEL_TASK = 12;
     public const NEW_PASSWORD = 13;
+    public const WALLET_BALANCE = 14;
 
     public function user(): BelongsTo
     {

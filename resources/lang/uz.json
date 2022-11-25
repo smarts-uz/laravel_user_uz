@@ -249,6 +249,7 @@
     "3адание task_name №task_id было отменено": "\":task_name\" №:task_id vazifan bekor qilindi",
     "3адание task_name №task_id было завершено администрацией": "\":task_name\" №:task_id vazifa administratsiya tomonidan tugatildi",
     "3адание task_name №task_id было отменено администрацией": "\":task_name\" №:task_id vazifa administratsiya tomonidan bekor qilindi",
+    "USer.Uz предоставил вам бонус в размере default сумов.": "USer.Uz tomonidan sizga \":default\" sum miqdorida bonus taqdim etildi.",
     "Чтобы не потерять доступ к вашему аккаунту, рекомендуем вам установить пароль. Сделать это можно в профиле, раздел \"Настройки\".": "Hisobingizga kirishni yo'qotmaslik uchun parol o'rnatishingizni tavsiya qilamiz. Buni profilingizning \"Sozlamalar\" bo'limida qilishingiz mumkin.",
     "Задание не выполнено": "Vazifa tugallanmagan",
     "Установить пароль": "Parol o'rnating",
@@ -816,5 +817,6 @@
     "Проверяемое поле должно быть строкой.": "Tekshiruv ostidagi maydon satr bo'lishi kerak.",
     "Значение поля должно быть числом": "Maydon qiymati raqam bo'lishi kerak",
     "Значение поля должно быть массивом": "Maydon qiymati massiv bo'lishi kerak",
-    "Проверяемое поле должно быть меньше или равно максимальному значению": "Tekshirilayotgan maydon maksimal qiymatdan kichik yoki unga teng bo'lishi kerak"
+    "Проверяемое поле должно быть меньше или равно максимальному значению": "Tekshirilayotgan maydon maksimal qiymatdan kichik yoki unga teng bo'lishi kerak",
+    "Дополнительный бонус": "Qo'shimcha bonus"
 }

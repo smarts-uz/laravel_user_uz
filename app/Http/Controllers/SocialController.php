@@ -49,6 +49,13 @@ class SocialController extends Controller
             $wallBal->user_id = $new_user->id;
             $wallBal->save();
             Auth::login($new_user);
+            if(setting('admin.bonus')>0){
+                Notification::query()->create([
+                    'user_id' => $new_user->id,
+                    'description' => 'wallet',
+                    'type' => Notification::WALLET_BALANCE,
+                ]);
+            }
         }
         if (!($findUser->password)){
             /** @var Notification $notification */
@@ -108,6 +115,13 @@ class SocialController extends Controller
                 $wallBal->user_id = $new_user->id;
                 $wallBal->save();
                 Auth::login($new_user);
+                if(setting('admin.bonus')>0){
+                    Notification::query()->create([
+                        'user_id' => $new_user->id,
+                        'description' => 'wallet',
+                        'type' => Notification::WALLET_BALANCE,
+                    ]);
+                }
             }
 
             if ($findUser->password===null){
@@ -166,6 +180,13 @@ class SocialController extends Controller
                 $wallBal->user_id = $new_user->id;
                 $wallBal->save();
                 Auth::login($new_user);
+                if(setting('admin.bonus')>0){
+                    Notification::query()->create([
+                        'user_id' => $new_user->id,
+                        'description' => 'wallet',
+                        'type' => Notification::WALLET_BALANCE,
+                    ]);
+                }
             }
 
             if ($findUser->password===null){

@@ -42,7 +42,7 @@ class NotificationService
                                 Notification::RESPONSE_TO_TASK, Notification::SEND_REVIEW_PERFORMER,
                                 Notification::RESPONSE_TO_TASK_FOR_USER, Notification::CANCELLED_TASK,
                                 Notification::ADMIN_COMPLETE_TASK, Notification::ADMIN_CANCEL_TASK,
-                                Notification::NEW_PASSWORD
+                                Notification::NEW_PASSWORD,Notification::WALLET_BALANCE
                             ]);
                     });
                 if ((int)$user->role_id === User::ROLE_PERFORMER && $web)
@@ -302,6 +302,7 @@ class NotificationService
             Notification::CANCELLED_TASK, Notification::ADMIN_CANCEL_TASK => __('3адание отменено', [], $locale),
             Notification::ADMIN_COMPLETE_TASK => __('Задания завершено', [], $locale),
             Notification::NEW_PASSWORD => __('Установить пароль', [], $locale),
+            Notification::WALLET_BALANCE => __('Дополнительный бонус', [], $locale),
             default => 'Title',
         };
     }
@@ -340,6 +341,9 @@ class NotificationService
                 'task_name' => $notification->name_task, 'task_id' => $notification->task_id,
             ], $locale),
             Notification::NEW_PASSWORD => __('Чтобы не потерять доступ к вашему аккаунту, рекомендуем вам установить пароль. Сделать это можно в профиле, раздел "Настройки".',[], $locale),
+            Notification::WALLET_BALANCE => __('USer.Uz предоставил вам бонус в размере default сумов.',[
+                'default'=>setting('admin.bonus')
+            ], $locale),
             default => 'Description',
         };
     }

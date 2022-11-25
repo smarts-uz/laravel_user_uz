@@ -11,6 +11,7 @@ use App\Http\Requests\UserRequest;
 use App\Models\Category;
 use App\Models\CustomField;
 use App\Models\CustomFieldsValue;
+use App\Models\Notification;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\WalletBalance;
@@ -239,16 +240,23 @@ class CreateController extends Controller
         $data = $request->validated();
         $data['password'] = Hash::make($request->get('password'));
         unset($data['password_confirmation']);
+        $task->phone = $data['phone_number'];
+        $task->save();
         /** @var User $user */
         $user = User::query()->create($data);
         $user->phone_number = $data['phone_number'] . '_' . $user->id;
         $user->save();
-        $task->phone = $data['phone_number'];
-        $task->save();
         $wallBal = new WalletBalance();
         $wallBal->balance = setting('admin.bonus');
         $wallBal->user_id = $user->id;
         $wallBal->save();
+        if(setting('admin.bonus')>0){
+            Notification::query()->create([
+                'user_id' => $user->id,
+                'description' => 'wallet',
+                'type' => Notification::WALLET_BALANCE,
+            ]);
+        }
         VerificationService::send_verification('phone', $user, $user->phone_number);
         return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
     }

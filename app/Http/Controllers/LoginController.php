@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ModalNumberRequest;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
+use App\Models\Notification;
 use App\Models\User;
 use App\Models\WalletBalance;
 use App\Services\VerificationService;
@@ -73,6 +74,14 @@ class LoginController extends Controller
         $wallBal->balance = setting('admin.bonus');
         $wallBal->user_id = $user->id;
         $wallBal->save();
+        /** @var Notification $notification */
+        if(setting('admin.bonus')>0){
+            Notification::query()->create([
+                'user_id' => $user->id,
+                'description' => 'wallet',
+                'type' => Notification::WALLET_BALANCE,
+            ]);
+        }
         auth()->login($user);
 
         VerificationService::send_verification('email', auth()->user());
