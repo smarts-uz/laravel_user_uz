@@ -812,5 +812,9 @@
     "Значение поля не соответствует проверке": "Maydon qiymati tasdiqqa mos kelmadi",
     "Введите e-mail в правильном формате!": "Emailni to'g'ri formatda kiriting!",
     "Проверяемое поле должно иметь минимальное значение.": "Tekshiruv ostidagi maydon minimal qiymatga ega bo'lishi kerak.",
-    "Проверяемое поле должно быть меньше или равно максимальному значению.":"Tekshirilayotgan maydon maksimal qiymatdan kichik yoki unga teng bo'lishi kerak."
+    "Проверяемое поле должно быть меньше или равно максимальному значению.":"Tekshirilayotgan maydon maksimal qiymatdan kichik yoki unga teng bo'lishi kerak.",
+    "Проверяемое поле должно быть строкой.": "Tekshiruv ostidagi maydon satr bo'lishi kerak.",
+    "Значение поля должно быть числом": "Maydon qiymati raqam bo'lishi kerak",
+    "Значение поля должно быть массивом": "Maydon qiymati massiv bo'lishi kerak",
+    "Проверяемое поле должно быть меньше или равно максимальному значению": "Tekshirilayotgan maydon maksimal qiymatdan kichik yoki unga teng bo'lishi kerak"
 }
