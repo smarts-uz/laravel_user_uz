@@ -33,6 +33,14 @@ class SocialController extends Controller
             $findUser->save();
             Alert::success(__('Успешно'), __('Вы успешно связали свой аккаунт Facebook'));
             Auth::login($findUser);
+            if (!($findUser->password)){
+                /** @var Notification $notification */
+                Notification::query()->create([
+                    'user_id' => $findUser->id,
+                    'description' => 'password',
+                    'type' => Notification::NEW_PASSWORD,
+                ]);
+            }
         } else {
             $new_user = new User();
             $new_user->name = $user->name;
@@ -52,8 +60,6 @@ class SocialController extends Controller
                     'type' => Notification::WALLET_BALANCE,
                 ]);
             }
-        }
-        if (!($findUser->password) || !($new_user->password)){
             /** @var Notification $notification */
             Notification::query()->create([
                 'user_id' => $findUser->id,
@@ -61,6 +67,7 @@ class SocialController extends Controller
                 'type' => Notification::NEW_PASSWORD,
             ]);
         }
+
         return redirect()->route('profile.profileData');
     }
 
@@ -93,13 +100,20 @@ class SocialController extends Controller
                 $findUser->apple_id = $user->id;
                 $findUser->save();
                 Auth::login($findUser);
+                if (!($findUser->password)){
+                    /** @var Notification $notification */
+                    Notification::query()->create([
+                        'user_id' => $findUser->id,
+                        'description' => 'password',
+                        'type' => Notification::NEW_PASSWORD,
+                    ]);
+                }
                 Alert::success(__('Успешно'), __('Вы успешно связали свой аккаунт Google'));
             } else {
                 $new_user = new User();
                 $new_user->name = $user->name;
                 $new_user->email = $user->email;
                 $new_user->apple_id = $user->id;
-//                $new_user->avatar = self::get_avatar($user);
                 $new_user->is_email_verified = 1;
                 $new_user->save();
                 $wallBal = new WalletBalance();
@@ -114,9 +128,6 @@ class SocialController extends Controller
                         'type' => Notification::WALLET_BALANCE,
                     ]);
                 }
-            }
-
-            if ($findUser->password===null){
                 /** @var Notification $notification */
                 Notification::query()->create([
                     'user_id' => $findUser->id,
@@ -124,6 +135,7 @@ class SocialController extends Controller
                     'type' => Notification::NEW_PASSWORD,
                 ]);
             }
+
             return redirect()->route('profile.profileData');
         } catch (Exception $e) {
             dd($e, 11);
@@ -154,6 +166,14 @@ class SocialController extends Controller
                 $findUser->google_id = $user->id;
                 $findUser->save();
                 Auth::login($findUser);
+                if (!($findUser->password)){
+                    /** @var Notification $notification */
+                    Notification::query()->create([
+                        'user_id' => $findUser->id,
+                        'description' => 'password',
+                        'type' => Notification::NEW_PASSWORD,
+                    ]);
+                }
                 Alert::success(__('Успешно'), __('Вы успешно связали свой аккаунт Google'));
             } else {
                 $new_user = new User();
@@ -175,18 +195,16 @@ class SocialController extends Controller
                         'type' => Notification::WALLET_BALANCE,
                     ]);
                 }
-            }
-
-            if ($findUser->password===null){
                 /** @var Notification $notification */
-                 Notification::query()->create([
+                Notification::query()->create([
                     'user_id' => $findUser->id,
                     'description' => 'password',
                     'type' => Notification::NEW_PASSWORD,
                 ]);
             }
+
             return redirect()->route('profile.profileData');
-        } catch (Exception) {
+        } catch (Exception $e) {
             // Log to File
         }
         return false;
