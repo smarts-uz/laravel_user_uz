@@ -28,10 +28,6 @@ class SocialController extends Controller
         if (!$user->email) {
             $findUser = User::query()->where('facebook_id', $user->id)->first();
         }
-        if (!$findUser->isActive()) {
-            Alert::error(__('Аккаунт отключен'));
-            return back();
-        }
         if ($findUser) {
             $findUser->facebook_id = $user->id;
             $findUser->save();
@@ -89,10 +85,6 @@ class SocialController extends Controller
 
             /** @var User $findUser */
             $findUser = User::query()->where('email', $user->email)->first();
-            if (!$findUser->isActive()) {
-                Alert::error(__('Аккаунт отключен'));
-                return back();
-            }
             if (!$user->email) {
                 $findUser = User::query()->where('apple_id', $user->id)->first();
             }
@@ -157,10 +149,6 @@ class SocialController extends Controller
 
             if (!$user->email) {
                 $findUser = User::query()->where('google_id', $user->id)->first();
-            }
-            if (!$findUser->isActive()) {
-                Alert::error(__('Аккаунт отключен'));
-                return back();
             }
             if ($findUser) {
                 $findUser->google_id = $user->id;
