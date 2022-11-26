@@ -9,5 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class BlockedUser extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $table = 'blocked_users';
     protected $guarded = [];
 }

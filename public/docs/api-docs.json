@@ -1431,13 +1431,13 @@
                 ]
             }
         },
-        "\/api\/profile\/block-user-list": {
+        "\/api\/block-user-list": {
             "get": {
                 "tags": [
                     "Profile"
                 ],
                 "summary": "Block user list",
-                "operationId": "d7e103dcdbc5cc19f9c19caee50813eb",
+                "operationId": "f2f70fcbd46277a8841827a9ceb04130",
                 "responses": {
                     "200": {
                         "description": "Successful operation"
