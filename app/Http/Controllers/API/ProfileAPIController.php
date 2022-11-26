@@ -1188,6 +1188,9 @@ class ProfileAPIController extends Controller
      *          response=403,
      *          description="Forbidden"
      *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
      * )
      */
     public function block_user_list(){
