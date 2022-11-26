@@ -11,6 +11,7 @@ use App\Http\Requests\Api\ProfileSettingsRequest;
 use App\Http\Requests\Api\ProfileVideoRequest;
 use App\Http\Requests\Api\UserReportRequest;
 use App\Http\Requests\UserBlockRequest;
+use App\Http\Resources\BlockUserResource;
 use App\Http\Resources\PortfolioIndexResource;
 use App\Http\Resources\ReviewIndexResource;
 use App\Http\Resources\UserIndexResource;
@@ -1168,6 +1169,31 @@ class ProfileAPIController extends Controller
         return response()->json([
             'success' => true,
             'message' => __('Сохранено')
+        ]);
+    }
+    /**
+     * @OA\Get(
+     *     path="/api/profile/block-user-list",
+     *     tags={"Profile"},
+     *     summary="Block user list",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     * )
+     */
+    public function block_user_list(){
+        return response()->json([
+            'success' => true,
+            'data' => BlockUserResource::collection(BlockedUser::query()->latest()->get())
         ]);
     }
 }
