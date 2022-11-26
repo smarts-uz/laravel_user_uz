@@ -87,7 +87,10 @@
    </div>
 
     <div class="text-center h-12" style="background-color: #1B1B1C">
-            <h1 class="text-center text-sm py-4" style="color: #857F7F">© 2022 Universal Services (USer.Uz)</h1>
+            <h1 class="text-center text-sm py-4" style="color: #857F7F">
+                © 2022 Universal Services (USer.Uz)
+                <a href="/terms">{{__('Правила сервиса')}}</a>
+            </h1>
     </div>
 
     <div class="w-full md:block hidden">

@@ -2,7 +2,7 @@
      id="{{$user->id}}">
     <div class=" float-left mr-4">
         <img class="rounded-lg w-24 h-24 border-2 mb-2"
-             @if ($user->avatar === null) src='{{asset("storage/images/default.jpg")}}'
+             @if ((!$user->avatar)) src='{{asset("storage/images/default.jpg")}}'
              @else src="{{asset("storage/{$user->avatar}")}}" @endif alt="avatar">
         <div class="flex sm:flex-row items-center text-sm">
             <p class="text-black ">{{__('Отзывы:')}}</p>

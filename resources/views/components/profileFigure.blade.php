@@ -7,7 +7,7 @@
     <div class="flex sm:flex-row flex-col mt-6">
         <div class="sm:w-1/3 pb-10 w-full">
             <img class="border border-3 border-gray-400 h-44 w-44"
-                 @if ($user->avatar == Null)
+                 @if (!($user->avatar))
                      src='{{asset("images/pofilevector.png")}}'
                  @else
                      src="{{asset('storage/'.$user->avatar)}}"
