@@ -240,7 +240,7 @@
     <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/index.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
-    <script src='https://unpkg.com/imask'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/imask/6.4.3/imask.min.js'></script>
     <script>
         if ($('.tab-content').children(".error").length) {
             $('.tab-content').children('.tab-pane').removeClass('show active')

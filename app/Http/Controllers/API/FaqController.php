@@ -12,8 +12,8 @@ class FaqController extends Controller
     /**
      * @OA\Get(
      *     path="/api/faq",
-     *     tags={"Faq"},
-     *     summary="Faqs",
+     *     tags={"FAQ"},
+     *     summary="faqs",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"

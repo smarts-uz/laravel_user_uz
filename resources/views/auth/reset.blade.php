@@ -120,7 +120,7 @@
         })
         //tab content script end
     </script>
-    <script src='https://unpkg.com/imask'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/imask/6.4.3/imask.min.js'></script>
     <script>
         //phone number js
         var element = document.getElementById('phone_number');
