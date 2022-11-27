@@ -38,8 +38,11 @@
                                     focus:border-yellow-500 "
                                     id="username" type="text" autofocus="autofocus"
                                     placeholder="{{__('Например, ')}} {{ $current_category->getTranslatedAttribute('name') }}"
-                                    required name="name" value="{{session('neym')}}">
+                                    name="name" value="{{session('neym')}}">
                             </div>
+                            @error('name')
+                                <p class="text-red-500">{{ $message }}</p>
+                            @enderror
                             <div class="hidden" id="naprimer">{{__('Например, ')}} </div>
                             <p class="text-base text-gray-700 mt-10">{{__('Если хотите выбрать другую категорию')}}</p>
                             <div id="categories">

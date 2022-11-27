@@ -45,6 +45,12 @@ class CreateController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required'
+        ],
+        [
+            'name.required'=>__('Требуется заполнение!'),
+            'name.string'=>__('Требуется заполнение!'),
+            'name.max'=>__('Требуется заполнение!'),
+            'category_id.required'=>__('Требуется заполнение!')
         ]);
         /** @var Task $task */
         $task = Task::query()->create($data);
