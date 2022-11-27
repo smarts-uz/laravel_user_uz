@@ -20,6 +20,7 @@ class FaqCategories extends Model
 {
     use HasFactory;
     use Translatable;
+    protected $table = 'faq_categories';
     protected $translatable = ['title','description', 'cat_author'];
 
     protected $with = ['faqs'];

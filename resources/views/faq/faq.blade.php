@@ -42,7 +42,7 @@
     @foreach($fc as $faq)
         <section class="mt-7">
             <div class=" lg:w-10/12 md:w-8/12 sm:w-8/12 flex mx-auto md:flex sm:flex items-center bg-white py-5 px-8 rounded-md shadow-lg shadow-indigo-300/40">
-                <img src="{{asset('images/faq-chat-png.png')}}" alt="" class="lg:h-20 md:h-16 sm:h-14 h-8">
+                <img src="{{asset('storage/'.$faq->logo)}}" alt="" class="lg:h-20 md:h-16 sm:h-14 h-8">
                 <div class="px-6 py-3">
                     <a href="/questions/{{$faq->id}}"><h4 class="lg:text-[18px] md:text-[16px] sm:text-[14px] text-gray-500 mb-1 text-[12px]">{{$faq->getTranslatedAttribute('title',Session::get('lang') , 'fallbackLocale')}}</h4></a>
                     <p class="lg:text-[16px] md:text-[14px] sm:text-[12px] text-[9px] leading-6 text-gray-400 mb-3 pr-3 ">{{$faq->getTranslatedAttribute('description', Session::get('lang'), 'fallbackLocale')}}</p>

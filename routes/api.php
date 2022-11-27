@@ -6,7 +6,7 @@ use App\Http\Controllers\API\{
     BlogController, PerformerAPIController, ProfileAPIController,
     CategoriesAPIController, LoginAPIController, SessionController,
     SocialAPIController, TaskAPIController, UpdateAPIController,
-    UserAPIController, SearchAPIController
+    UserAPIController, SearchAPIController,FaqController
 };
 use App\Http\Controllers\{
     NotificationController, PortfolioAPIController,
@@ -162,4 +162,7 @@ Route::get('/performers/{performer}', [PerformerAPIController::class, 'performer
 
 #Social
 Route::post('/social-login', [SocialAPIController::class, 'login']); // used
+
+#faq
+Route::get('/faq', [FaqController::class, 'index']);
 

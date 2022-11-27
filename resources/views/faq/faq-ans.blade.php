@@ -41,7 +41,7 @@
      <section class="mt-7">
         <div class="lg:w-10/12 md:w-8/12 mx-auto md:flex flex flex-col justify-start bg-slate-100 py-5 px-8 rounded-md shadow-lg">
             <div class="md:flex flex flex-row">
-                <img src="{{asset('images/faq-chat-png.png')}}" alt="" class="lg:h-20 md:h-16 sm:h-14 h-10 md:m-5 mx-auto lg:mt-8 md:mt-10 mt-10">
+                <img src="{{asset('storage/'.$fc->logo)}}" alt="" class="lg:h-20 md:h-16 sm:h-14 h-10 md:m-5 mx-auto lg:mt-8 md:mt-10 mt-10">
                     <div class="px-6 py-3">
                         <h4 class="text-gray-500 mb-1">{{$fc->getTranslatedAttribute('title',Session::get('lang') , 'fallbackLocale')}}</h4>
                         <p class=" text-gray-400 mb-3 pr-3">{{$fc->getTranslatedAttribute('description',Session::get('lang') , 'fallbackLocale')}} </p>
