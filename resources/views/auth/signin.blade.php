@@ -30,7 +30,7 @@
                 <form method="POST" action="{{ route('login.loginPost') }}" class="flex flex-col justify-items-center justify-items-center">
                     @csrf
                     <div class="mb-4">
-                        <input type="text" name="email" placeholder="{{__('Электронная почта или телефон')}}" id="name" value="{{  old('email') }}"
+                        <input type="text" name="email" placeholder="{{__('Электронная почта или телефон')}}" id="name"  value="{{ old('email') }}"
                                class="shadow focus:outline-none  focus:border-yellow-500 appearance-none border border-slate-300 rounded
                         sm:w-80 w-64 py-2 px-3 text-gray-700 mb-3 leading-tight hover:border-amber-500"
                                autofocus>
@@ -42,19 +42,17 @@
                     </div>
 
                     <div class="mb-6">
-                        <input   type="password" maxlength="20" name="password" placeholder="{{__('Пароль')}}" id="password"
+                        <input type="password" maxlength="20" name="password" placeholder="{{__('Пароль')}}" id="password"
                                  class="ml-6 shadow focus:outline-none  focus:border-yellow-500 appearance-none border border-slate-300 rounded sm:w-80 w-64 py-2 px-3
                         text-gray-700 mb-3 leading-tight hover:border-amber-500">
                         <i class="fas fa-eye-slash text-gray-500 relative -left-10" id="eye"></i>
                     </div>
                     <div>
-                        <button type="submit"
-                                class="sm:w-80 w-64 h-12 rounded-lg bg-green-500 text-white uppercase
+                        <button type="submit" class="sm:w-80 w-64 h-12 rounded-lg bg-green-500 text-white uppercase
                         font-semibold hover:bg-green-500 transition mb-4">
                             {{__('Войти')}}
                         </button>
                     </div>
-
                 </form>
 
                 <p class="mb-4">

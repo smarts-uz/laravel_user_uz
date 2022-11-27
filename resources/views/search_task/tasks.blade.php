@@ -64,7 +64,7 @@
     <div class="text-center">
         <p class="text-center">{{__('Показано')}}
             {{$tasks->currentPage()*$tasks->perPage()<=$tasks->total()?$tasks->currentPage()*$tasks->perPage():$tasks->total()}}
-            из
+            {{__('из')}}
             <span>{{ $tasks->total()}}</span>
         </p>
         @if($tasks->currentPage()*$tasks->perPage()<$tasks->total())
@@ -81,8 +81,8 @@
         <div class=" w-3/5 h-3/5 mx-auto">
             <img src="images/notlikes.png" class="w-full h-full">
             <div class="text-center w-full h-full">
-                <p className="text-4xl"><b>{{__('Задания не найдены')}}</b></p>
-                <p className="text-xl">{{__('Попробуйте уточнить запрос или выбрать другие категории')}}</p>
+                <p class="text-4xl"><b>{{__('Задания не найдены')}}</b></p>
+                <p class="text-xl">{{__('Попробуйте уточнить запрос или выбрать другие категории')}}</p>
             </div>
         </div>
     </div>

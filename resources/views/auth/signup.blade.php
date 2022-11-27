@@ -48,10 +48,11 @@
                     </div>
 
                     <div class="my-3">
-                        <input type="text" name="phone_number" id="phone_number" class=" focus:outline-none focus:border-yellow-500 shadow appearance-none border border-slate-300 rounded sm:w-80 w-64 py-2 px-3 text-gray-700 leading-tight hover:border-amber-500">
+                        <input type="text" name="phone_number" id="phone_number"  value="{{ request()->input('phone_number', old('phone_number')) }}"
+                               class=" focus:outline-none focus:border-yellow-500 shadow appearance-none border border-slate-300 rounded sm:w-80 w-64 py-2 px-3 text-gray-700 leading-tight hover:border-amber-500">
                         <br>
                         @error('phone_number')
-                        <p class="text-red-500">{{ $message }}</p>
+                            <p class="text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
 
@@ -59,7 +60,7 @@
 
                     <div class="my-3">
                         <input type="password" name="password" placeholder="{{__('Пароль')}}"
-                               id="password" maxlength="20"
+                               id="password" maxlength="20" value="{{ request()->input('password', old('password')) }}"
                                class=" focus:outline-none focus:border-yellow-500 ml-6 shadow appearance-none border border-slate-300 rounded sm:w-80 w-64 py-2 px-3 text-gray-700 leading-tight hover:border-amber-500"
                                required>
                         <i class="fas fa-eye-slash text-gray-500 relative -left-10" id="eye"></i>
