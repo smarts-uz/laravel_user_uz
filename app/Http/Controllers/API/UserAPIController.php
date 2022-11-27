@@ -304,6 +304,9 @@ class UserAPIController extends Controller
         $user->tokens->each(function ($token, $key) {
             $token->delete();
         });
+        $user->firebase_token->each(function ($firebase_token, $key) {
+            $firebase_token->delete();
+        });
         if ($request->get('device_id')) {
             Session::query()
                 ->where('user_id', $user->id)
