@@ -8,9 +8,12 @@ use App\Http\Requests\Api\UserUpdateRequest;
 use App\Http\Requests\PhoneNumberRequest;
 use App\Http\Requests\Api\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
+use App\Http\Resources\NotificationResource;
+use App\Models\Notification;
 use App\Models\Session;
 use App\Models\User;
 use App\Models\WalletBalance;
+use App\Services\NotificationService;
 use App\Services\SmsMobileService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -238,12 +241,25 @@ class UserAPIController extends Controller
             $wallBal->save();
             $user->api_token = Str::random(60);
             $user->remember_token = Str::random(60);
-
             $user->save();
             Auth::login($user);
             $accessToken = auth()->user()->createToken('authToken')->accessToken;
             $auth_user = auth()->user();
             $auth_user['phone_number'] = correctPhoneNumber($auth_user['phone_number']);
+            if(setting('admin.bonus')>0){
+                $locale = cacheLang($user->id);
+                $notification = Notification::query()->create([
+                    'user_id' => $user->id,
+                    'description' => 'wallet',
+                    'type' => Notification::WALLET_BALANCE,
+                ]);
+                NotificationService::pushNotification($user, [
+                    'title' => __('Дополнительный бонус', [], $locale),
+                    'body' => __('USer.Uz предоставил вам бонус в размере default сумов', [
+                        'default'=>setting('admin.bonus')
+                    ], $locale)
+                ], 'notification', new NotificationResource($notification));
+            }
             return response()->json(['user' => $auth_user, 'access_token' => $accessToken, 'socialpas' => $user->has_password]);
         } catch (ValidationException $e) {
             return response()->json(array_values($e->errors()));
