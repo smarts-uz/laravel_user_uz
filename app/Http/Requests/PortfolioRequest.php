@@ -31,8 +31,8 @@ class PortfolioRequest extends FormRequest
     public function messages()
     {
         return [
-            'comment.required' => "Comment is required",
-            'description.required' => "description is required",
+            'comment.required' => __('Требуется заполнение!'),
+            'description.required' => __('Требуется заполнение!'),
         ];
     }
 }

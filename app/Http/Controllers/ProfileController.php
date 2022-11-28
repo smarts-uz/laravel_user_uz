@@ -299,14 +299,14 @@ class ProfileController extends Controller
         return view('personalinfo.personalcategoriya', compact('categories', 'categories2'));
     }
 
-    public function createPortfolio(PortfolioRequest $request)
+    public function createPortfolio(PortfolioRequest $request,Portfolio $portfolio)
     {
         $data = $request->validated();
         $data['user_id'] = auth()->id();
         $data['image'] = session()->has('images') ? session('images') : '[]';
 
         session()->forget('images');
-        Portfolio::query()->create($data);
+        $portfolio->create($data);
         return redirect()->route('profile.profileData');
     }
 
