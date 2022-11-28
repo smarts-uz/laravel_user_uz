@@ -17,7 +17,7 @@
         z-index: 50;
     }
 </style>
-<div class="h-auto pb-8" style="background: #FFF5E5">
+<div class="h-auto" style="background: #FFF5E5">
     <div class="w-xl">
         <main class="w-11/12 mx-auto grid grid-cols-2 gap-2">
             <div class="col-span-1 lg:block hidden">

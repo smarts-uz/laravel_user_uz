@@ -30,11 +30,11 @@
                         <span class="flex w-full flex-wrap content-center items-center">
                             <img src=" {{ asset('storage/'.$category->ico) }}" alt="" class="h-8 w-8">
                             @if ($category->id == $idR)
-                                <a class="text-yellow-500 text-sm p-3" href="{{route('categories',['id'=>$category->id])}}">
+                                <a class="text-yellow-500 text-sm p-1" href="{{route('categories',['id'=>$category->id])}}">
                                     {{$category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}
                                 </a>
                             @else
-                                <a class="text-sm p-3" href="{{route('categories',['id'=>$category->id])}}">
+                                <a class="text-sm p-1" href="{{route('categories',['id'=>$category->id])}}">
                                     {{$category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}
                                 </a>
                             @endif
