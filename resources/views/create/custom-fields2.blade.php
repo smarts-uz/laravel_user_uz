@@ -1,7 +1,7 @@
 @if(isset($custom_fields))
 
     @foreach($custom_fields as $custom_field)
-{{--        @dd($custom_field)--}}
+
         @if($custom_field['type'] == 'select')
             @if($custom_field['title'])
                 <div class="py-4 mx-auto px-auto text-center text-3xl texl-bold">
@@ -67,9 +67,6 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <div>
-                                <!-- <span class="underline hover:text-gray-400 decoration-dotted cursor-pointer float-right">Приватная информация</span> -->
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -101,7 +98,7 @@
                                 <div name="glassSht" class="mb-3 xl:w-full">
                                     @foreach($custom_field['options'] as $key => $option)
 
-                                        <input type="radio"
+                                        <input type="radio" @if($custom_field['required'] === 1) required @endif
                                                id="radio_{{$key}}" name="{{$custom_field['name']}}[]"
                                                value="{{$option['id']}}" {{ $option['selected']? 'checked':'' }}>
                                         <label for="radio_{{$key}}">{{$option['value']}}</label>
@@ -109,10 +106,6 @@
                                         <br>
                                     @endforeach
                                 </div>
-                            </div>
-
-                            <div>
-                                <!-- <span class="underline hover:text-gray-400 decoration-dotted cursor-pointer float-right">Приватная информация</span> -->
                             </div>
 
                         </div>
