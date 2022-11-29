@@ -270,18 +270,23 @@ class TaskAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/task-status-update/{task}",
+     *     path="/api/task-status-update/{task}",
      *     tags={"Task"},
-     *     summary="Get Task By ID",
-     *     @OA\Parameter(
-     *          in="path",
-     *          name="task",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          ),
+     *     summary="Cancel Status Open",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    description="Task id",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
      *     ),
-     *     @OA\Response(
+     *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
      *     ),
@@ -292,19 +297,23 @@ class TaskAPIController extends Controller
      *     @OA\Response(
      *          response=403,
      *          description="Forbidden"
-     *     )
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
      * )
      */
 
-    public function taskStatusUpdate($task): JsonResponse
+    public function taskStatusUpdate(Task $task)
     {
-        if (!$task->id) {
+        if ($task->user_id !== auth()->id()){
             return response()->json([
                 'success' => false,
-                'message' => __('Задача не найдена')
-            ]);
+                "message" => __('Задача не найдена')
+            ], 403);
         }
-        $this->response_service->taskStatusUpdate($task);
+        $task->status = Task::STATUS_OPEN;
+        $task->save();
         return response()->json([
             'success' => true,
             'message' => __('Создано успешно')
