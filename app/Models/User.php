@@ -29,7 +29,6 @@ use Laravel\Passport\HasApiTokens;
  * @property $email_notification email orqali keladigan bildirishnomalar yoqilgan(1) yoki yoqilmaganligini(null yoki 0) bildiradi
  * @property $news_notification yangiliklar haqidagi bildirishnomalar yoqilgan(1) yoki yoqilmaganligini(null yoki 0) bildiradi
  * @property $system_notification tizim haqidagi bildirishnomalar yoqilgan(1) yoki yoqilmaganligini(null yoki 0) bildiradi
- * @property $notification
  * @property $email userning emaili
  * @property $name userning nomi
  * @property $last_name userning familyasi

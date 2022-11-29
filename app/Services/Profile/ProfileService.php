@@ -535,11 +535,11 @@ class ProfileService
         $user = auth()->user();
         switch ($notification){
             case 1 :
-                $user->notification = 1;
+                $user->news_notification = 1;
                 $message = trans('trans.Notifications turned on.');
                 break;
             case 0 :
-                $user->notification = 0;
+                $user->news_notification = 0;
                 $message = trans('trans.Notifications turned off.');
                 break;
         }
