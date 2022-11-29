@@ -9,6 +9,7 @@ use App\Services\VerificationService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class LoginAPIController extends Controller
@@ -30,6 +31,9 @@ class LoginAPIController extends Controller
             if ($data['type'] === 'phone_number') {
                 VerificationService::send_verification($data['type'], $user, phone_number: $data['data']);
             } else {
+                $user = Auth::user();
+                $user->email = $data['data'];
+                $user->save();
                 VerificationService::send_verification($data['type'], $user, email: $data['data']);
             }
 
