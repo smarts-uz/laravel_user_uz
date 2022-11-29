@@ -77,6 +77,8 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::get('/complain/types', [TaskAPIController::class, 'complainTypes']); // used
     Route::post('/task/{task}/complain', [TaskAPIController::class, 'complain']); // used
     Route::post('/select-performer/{response}', [TaskAPIController::class, 'selectPerformer']); // used
+    Route::post('/task-status-update/{task}', [TaskAPIController::class, 'taskStatusUpdate']); // used
+
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); //end +
     Route::post('/tasks/{task}/not-complete', [UpdateAPIController::class, 'not_completed'])->name('update.not_completed'); // used
     Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); // used

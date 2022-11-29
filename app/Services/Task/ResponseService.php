@@ -183,7 +183,9 @@ class ResponseService
         return ['success' => true,'message' => __('Выполнено успешно'), 'data' => $data];
     }
 
-
-
-
+    public function taskStatusUpdate($task) {
+        $tasks = Task::find($task);
+        $task->status = 1;
+        $task->save();
+    }
 }

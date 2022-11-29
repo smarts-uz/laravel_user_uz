@@ -269,6 +269,49 @@ class TaskAPIController extends Controller
     }
 
     /**
+     * @OA\Post(
+     *     path="/task-status-update/{task}",
+     *     tags={"Task"},
+     *     summary="Get Task By ID",
+     *     @OA\Parameter(
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
+     *     ),
+     *     @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     )
+     * )
+     */
+
+    public function taskStatusUpdate($task): JsonResponse
+    {
+        if (!$task->id) {
+            return response()->json([
+                'success' => false,
+                'message' => __('Задача не найдена')
+            ]);
+        }
+        $this->response_service->taskStatusUpdate($task);
+        return response()->json([
+            'success' => true,
+            'message' => __('Создано успешно')
+        ]);
+    }
+
+    /**
      * @OA\Get(
      *     path="/api/tasks-filter",
      *     tags={"Task"},

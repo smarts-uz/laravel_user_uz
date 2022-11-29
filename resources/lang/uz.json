@@ -819,5 +819,6 @@
     "Значение поля должно быть числом": "Maydon qiymati raqam bo'lishi kerak",
     "Значение поля должно быть массивом": "Maydon qiymati massiv bo'lishi kerak",
     "Проверяемое поле должно быть меньше или равно максимальному значению": "Tekshirilayotgan maydon maksimal qiymatdan kichik yoki unga teng bo'lishi kerak",
-    "Дополнительный бонус": "Qo'shimcha bonus"
+    "Дополнительный бонус": "Qo'shimcha bonus",
+    "Создано успешно": "Muvaffaqiyatli yaratildi"
 }
