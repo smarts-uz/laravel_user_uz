@@ -26,9 +26,7 @@ class LoginAPIController extends Controller
             /** @var User $user */
             $user = auth()->user();
             Cache::put($user->id . 'user_' . $column , $data['type'] === 'phone_number' ? correctPhoneNumber($data['data']) : $data['data']);
-//            $user->$column = $data['type'] === 'phone_number' ? correctPhoneNumber($data['data']) : $data['data'];
-//            $user->$verified = 0;
-//            $user->save();
+
             if ($data['type'] === 'phone_number') {
                 VerificationService::send_verification($data['type'], $user, phone_number: $data['data']);
             } else {

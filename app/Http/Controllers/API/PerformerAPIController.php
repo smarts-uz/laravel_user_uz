@@ -17,6 +17,7 @@ use App\Services\NotificationService;
 use App\Services\SmsMobileService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class PerformerAPIController extends Controller
@@ -368,7 +369,10 @@ class PerformerAPIController extends Controller
         $data = $request->validate(['category_id' => 'required|string']);
 
         auth()->user()->update($data);
-
+        /** @var User $user */
+        $user = Auth::user();
+        $user->role_id = User::ROLE_PERFORMER;
+        $user->save();
         return response()->json(['success' => true, "message" => __('Успешно обновлено')]);
 
     }
