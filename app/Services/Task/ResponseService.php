@@ -30,7 +30,7 @@ class ResponseService
     {
         /** @var User $auth_user */
         $auth_user = auth()->user();
-        if ($task->user_id === $auth_user->id)
+        if ((int)$task->user_id === (int)$auth_user->id)
             abort(403,"Bu o'zingizning taskingiz");
         $data = $request->validate([
             'description' => 'required|string',
