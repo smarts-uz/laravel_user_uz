@@ -48,6 +48,8 @@ class Task extends Model
         ];
     }
 
+    protected $table = 'tasks';
+
     protected $mapping = [
         'properties' => [
             'id' => [
