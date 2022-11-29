@@ -14,6 +14,7 @@ use App\Models\Chat\ChatifyMessenger as Chatify;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use OpenApi\Annotations as OA;
 
 
 class MessagesController extends \Chatify\Http\Controllers\Api\MessagesController
@@ -29,6 +30,42 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
     }
 
     protected $perPage = 30;
+
+
+    /**
+     * @OA\Post(
+     *     path="/api/chat/deleteConversation",
+     *     tags={"Chat"},
+     *     summary="Chat Delete Conversation",
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="id",
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     }
+     * )
+     */
+
+    public function deleteConversation(Request $request)
+    {
+        return parent::deleteConversation($request);
+    }
 
 
     /**
@@ -242,7 +279,10 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
      *     @OA\Response(
      *          response=403,
      *          description="Forbidden"
-     *     )
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     }
      * )
      */
     public function getContacts(Request $request): JsonResponse
@@ -282,7 +322,6 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
      *              type="string"
      *          )
      *     ),
-     *
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -295,6 +334,9 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
      *          response=403,
      *          description="Forbidden"
      *     ),
+     *     security={
+     *         {"token": {}}
+     *     }
      * )
      */
 

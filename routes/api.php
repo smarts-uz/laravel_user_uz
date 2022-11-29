@@ -29,11 +29,14 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::post('logout', [UserAPIController::class, 'logout']); // need use
 
     Route::group(['prefix' => 'chat'], function (){
+
         Route::post('/sendMessage', [MessagesController::class, 'send']); // used
         Route::get('/getContacts', [MessagesController::class, 'getContacts']); // used
         Route::get('/search', [MessagesController::class, 'search']); // used
         Route::post('/fetchMessages', [MessagesController::class, 'fetch']); // used
         Route::post('/makeSeen', [MessagesController::class, 'seen']);
+        Route::post('/deleteConversation', [MessagesController::class, 'deleteConversation']);
+
     });
     Route::post('task/create', [TaskAPIController::class, 'create']);
     Route::post('create-task/name', [TaskAPIController::class, 'name']); // used
