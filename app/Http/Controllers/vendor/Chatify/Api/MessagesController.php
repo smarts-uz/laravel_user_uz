@@ -27,6 +27,7 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
     {
         $this->chatify = new Chatify();
     }
+
     protected $perPage = 30;
 
     /**
@@ -56,11 +57,11 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
                 'file_name' => $fileName,
                 'download_path' => $path
             ]);
-        } else {
-            return Response::json([
-                'message'=>"Sorry, File does not exist in our server or may have been deleted!"
-            ], 404);
         }
+
+        return Response::json([
+            'message'=>"Sorry, File does not exist in our server or may have been deleted!"
+        ], 404);
     }
     /**
      * @OA\Post(
@@ -154,13 +155,13 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
                 'data' => $messageData ?? [],
                 'message' => 'Success',
             ]);
-        } else {
-            return Response::json([
-                'success' => false,
-                'data' => $error['message'],
-                'message' => 'Fail',
-            ]);
         }
+
+        return Response::json([
+            'success' => false,
+            'data' => $error['message'],
+            'message' => 'Fail',
+        ]);
     }
 
     /**

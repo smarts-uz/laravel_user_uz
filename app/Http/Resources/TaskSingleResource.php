@@ -22,6 +22,7 @@ class TaskSingleResource extends JsonResource
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
             'budget' => $this->budget,
+            'remote' => $this->remote,
             'oplata' => $this->oplata,
             'category_icon' => asset('storage/'.$this->category->ico),
             'viewed' => in_array(
