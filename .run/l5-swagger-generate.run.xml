@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="l5-swagger-generate" type="PhpLocalRunConfigurationType" factoryName="PHP Console" singleton="false" path="$PROJECT_DIR$/artisan" scriptParameters="joy-voyager-api:l5-swagger:generate">
+    <method v="2" />
+  </configuration>
+</component>

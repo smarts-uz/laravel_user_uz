@@ -30,6 +30,7 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
 
     protected $perPage = 30;
 
+
     /**
      * @OA\Get(
      *     path="/api/chat/download/{fileName}",
@@ -268,11 +269,20 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
         ]);
     }
 
+
     /**
      * @OA\Get(
      *     path="/api/chat/search",
      *     tags={"Chat"},
-     *     summary="",
+     *     summary="Chat search",
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="name",
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -284,9 +294,10 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
      *     @OA\Response(
      *          response=403,
      *          description="Forbidden"
-     *     )
+     *     ),
      * )
      */
+
     public function search(Request $request): JsonResponse
     {
         $input = trim(filter_var($request['name'], FILTER_SANITIZE_STRING));

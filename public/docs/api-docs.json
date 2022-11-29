@@ -4312,8 +4312,17 @@
                 "tags": [
                     "Chat"
                 ],
-                "summary": "",
+                "summary": "Chat search",
                 "operationId": "09e094d028e9e617684e2ad093d9153b",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful operation"
