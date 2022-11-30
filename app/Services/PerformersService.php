@@ -113,12 +113,16 @@ class PerformersService
         if (isset($data['online']))
         {
             $date = Carbon::now()->subMinutes(2)->toDateTimeString();
-            $performers = $performers->where('role_id', 2)->where('last_seen', ">=",$date);
+            $performers = $performers->where('role_id', User::ROLE_PERFORMER)->where('last_seen', ">=",$date);
         }
+//        if (isset($data['alphabet']))
+//        {
+//            $performers = $performers->where('role_id', User::ROLE_PERFORMER)->orderBy('name')->get();
+//        }
         if (isset($data['search']))
         {
             $s = $data['search'];
-            $performers->where('name','like',"%$s%");
+            $performers = $performers->where('name','like',"%$s%");
         }
         return $performers->paginate($data('per_page'));
     }
