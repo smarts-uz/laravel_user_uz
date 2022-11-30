@@ -14,7 +14,6 @@ use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\NotificationService;
-use App\Services\PerformersService;
 use App\Services\SmsMobileService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -24,12 +23,6 @@ use Illuminate\Support\Facades\Storage;
 class PerformerAPIController extends Controller
 {
 
-    private PerformersService $performer_service;
-
-    public function __construct()
-    {
-        $this->performer_service = new PerformersService();
-    }
     /**
      * @OA\Get(
      *     path="/api/performers",
@@ -45,6 +38,13 @@ class PerformerAPIController extends Controller
      *     @OA\Parameter (
      *          in="query",
      *          name="online",
+     *          @OA\Schema (
+     *              type="boolean"
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="alphabet",
      *          @OA\Schema (
      *              type="boolean"
      *          )
@@ -66,8 +66,28 @@ class PerformerAPIController extends Controller
      */
     public function service(Request $request)
     {
-        $performers = $this->performer_service->performer_filter($request->all());
-        return PerformerIndexResource::collection($performers);
+        $performers = User::query()
+            ->where('role_id', User::ROLE_PERFORMER)
+            ->withoutBlockedPerformers(auth()->id())
+            ->orderByDesc('review_rating')
+            ->orderByRaw('(review_good - review_bad) DESC');
+        if (isset($request->online))
+        {
+            $date = Carbon::now()->subMinutes(2)->toDateTimeString();
+            $performers = $performers->where('role_id', User::ROLE_PERFORMER)->where('last_seen', ">=",$date);
+        }
+
+//        if (isset($request->alphabet))
+//        {
+//            $performers = $performers->where('role_id', User::ROLE_PERFORMER)->orderBy('name')->get();
+//        }
+//
+//        if (isset($request->search))
+//        {
+//            $search = $request->search;
+//            $performers = $performers->where('name','like',"%$search%");
+//        }
+        return PerformerIndexResource::collection($performers->paginate($request->get('per_page')));
     }
 
     /**
@@ -427,10 +447,5 @@ class PerformerAPIController extends Controller
         ]);
     }
 
-//    public function performers_count($id){
-//        $users = User::query()
-//            ->where('role_id',User::ROLE_PERFORMER);
-//
-//    }
 
 }

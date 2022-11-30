@@ -162,7 +162,6 @@ Route::get('/category/search', [CategoriesAPIController::class, 'search']); // u
 //Performers
 Route::get('/performers', [PerformerAPIController::class, 'service']); // used
 Route::get('/performers/{performer}', [PerformerAPIController::class, 'performer']); //end +
-Route::get('/performers-count/{id}',[PerformerAPIController::class,'performers_count']);
 
 #Social
 Route::post('/social-login', [SocialAPIController::class, 'login']); // used

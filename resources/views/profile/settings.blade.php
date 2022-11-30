@@ -539,7 +539,6 @@
                 altInput: true,
                 altFormat: "F j, Y",
                 dateFormat: "Y-m-d",
-                minDate: new Date().fp_incr(14),
                 @if(session('lang') === 'ru')
                 locale: 'ru',
                 @else
