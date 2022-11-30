@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CustomField;
 use App\Models\FooterReview;
+use App\Models\Terms;
 use App\Services\Response;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -119,9 +120,9 @@ class Controller extends BaseController
     }
 
     public function terms(){
-        $path= json_decode(setting('site.Правила_сервиса'))[0]->download_link;
-        $filePath = str_replace('\\', '/', $path);
-        return view('auth.terms',compact('filePath'));
+
+        $terms = Terms::query()->first();
+        return view('auth.terms',compact('terms'));
     }
 
     public function paynet_oplata(){
