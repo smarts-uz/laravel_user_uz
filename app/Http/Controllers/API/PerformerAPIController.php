@@ -14,6 +14,7 @@ use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\NotificationService;
+use App\Services\PerformersService;
 use App\Services\SmsMobileService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -22,11 +23,32 @@ use Illuminate\Support\Facades\Storage;
 
 class PerformerAPIController extends Controller
 {
+
+    private PerformersService $performer_service;
+
+    public function __construct()
+    {
+        $this->performer_service = new PerformersService();
+    }
     /**
      * @OA\Get(
      *     path="/api/performers",
      *     tags={"Performers"},
      *     summary="Get All Performers",
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="search",
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="online",
+     *          @OA\Schema (
+     *              type="boolean"
+     *          )
+     *     ),
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -44,17 +66,8 @@ class PerformerAPIController extends Controller
      */
     public function service(Request $request)
     {
-        $performers = User::query()
-            ->where('role_id', 2)
-            ->withoutBlockedPerformers(auth()->id())
-            ->orderByDesc('review_rating')
-            ->orderByRaw('(review_good - review_bad) DESC');
-        if (isset($request->online))
-        {
-            $date = Carbon::now()->subMinutes(2)->toDateTimeString();
-            $performers = $performers->where('role_id', 2)->where('last_seen', ">=",$date);
-        }
-        return PerformerIndexResource::collection($performers->paginate($request->get('per_page')));
+        $performers = $this->performer_service->performer_filter($request->all());
+        return PerformerIndexResource::collection($performers);
     }
 
     /**
@@ -160,9 +173,7 @@ class PerformerAPIController extends Controller
             'url' => route('show_notification', [$notification]),
             'description' => NotificationService::descriptions($notification)
         ]);
-//        NotificationService::sendNotificationRequest([$data['performer_id']], [
-//            'url' => 'detailed-tasks' . '/' . $data['task_id'], 'name' => $task->name, 'time' => 'recently'
-//        ]);
+
         NotificationService::pushNotification($performer, [
             'title' => NotificationService::titles($notification->type, $locale),
             'body' => NotificationService::descriptions($notification, $locale)
@@ -415,5 +426,11 @@ class PerformerAPIController extends Controller
             'message' => 'Success'
         ]);
     }
+
+//    public function performers_count($id){
+//        $users = User::query()
+//            ->where('role_id',User::ROLE_PERFORMER);
+//
+//    }
 
 }

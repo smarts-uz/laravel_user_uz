@@ -377,6 +377,13 @@ class TaskAPIController extends Controller
      *              type="integer"
      *          )
      *     ),
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="s",
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
      *
      *     @OA\Response (
      *          response=200,
