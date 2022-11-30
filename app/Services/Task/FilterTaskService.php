@@ -61,12 +61,12 @@ class FilterTaskService
 
         if (isset($data['is_remote'])) {
             $is_remote = $data['is_remote'];
-            if ((int)$is_remote === 1)
+            if ((string)$is_remote === 'true')
                 $tasks->where('remote', true);
         }
         if (isset($data['without_response'])) {
             $without_response = $data['without_response'];
-            if ((int)$without_response === 1)
+            if ((string)$without_response === 'true')
                 $tasks->whereDoesntHave('responses');
         }
 
