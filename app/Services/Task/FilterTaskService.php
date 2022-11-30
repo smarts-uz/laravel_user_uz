@@ -58,7 +58,8 @@ class FilterTaskService
         if (isset($data['budget'])) {
             $tasks->where('budget', ">=", (int) $data['budget'] )->pluck('id')->toArray();
         }
-        if (isset($data['is_remote']) && !(isset($data['lat']) && !isset($data['long']) && !isset($data['difference']))) {
+
+        if (isset($data['is_remote'])) {
             $is_remote = $data['is_remote'];
             if ((int)$is_remote === 1)
                 $tasks->where('remote', true);
