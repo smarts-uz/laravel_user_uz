@@ -115,7 +115,7 @@ class PerformersService
             $date = Carbon::now()->subMinutes(2)->toDateTimeString();
             $performers = $performers->where('role_id', User::ROLE_PERFORMER)->where('last_seen', ">=",$date);
         }
-        return $performers->paginate($data('per_page'));
+        return $performers->paginate(20);
     }
 
 }
