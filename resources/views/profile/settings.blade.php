@@ -539,6 +539,7 @@
                 altInput: true,
                 altFormat: "F j, Y",
                 dateFormat: "Y-m-d",
+                maxDate: new Date().fp_incr(-6575),
                 @if(session('lang') === 'ru')
                 locale: 'ru',
                 @else
