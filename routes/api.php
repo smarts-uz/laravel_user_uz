@@ -90,7 +90,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::post('/become-performer-avatar', [PerformerAPIController::class, 'becomePerformerAvatar']); //end +
     Route::post('/become-performer-category', [PerformerAPIController::class, 'becomePerformerCategory']); // used
     Route::get('/reviews', [PerformerAPIController::class, 'reviews']); //end
-
+    Route::get('/settings/get-all', [FaqController::class, 'get_all']);
 
     // Profile API
     Route::prefix('/profile')->group(function () {

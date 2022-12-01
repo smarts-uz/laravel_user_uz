@@ -12,6 +12,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Session;
+use Jenssegers\Agent\Agent;
 use TCG\Voyager\Models\Category;
 use App\Models\Massmedia;
 use App\Services\ControllerService;
@@ -120,8 +121,13 @@ class Controller extends BaseController
     }
 
     public function terms(){
+        $agent = new Agent();
+        if ($agent->isMobile()) {
+            return view('auth.terms_mobile');
+        } else {
+            return view('auth.terms');
+        }
 
-        return view('auth.terms');
     }
 
     public function paynet_oplata(){

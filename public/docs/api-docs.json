@@ -186,6 +186,26 @@
                 }
             }
         },
+        "\/api\/settings\/get-all": {
+            "get": {
+                "tags": [
+                    "Setting"
+                ],
+                "summary": "setting",
+                "operationId": "f7ca8adc84c1dcad0668ef47ae66d2c9",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
         "\/api\/account\/verification\/phone": {
             "post": {
                 "tags": [
@@ -4016,6 +4036,15 @@
                         }
                     },
                     {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "10,,20"
+                        }
+                    },
+                    {
                         "name": "filters[name]",
                         "in": "query",
                         "required": false,
@@ -4073,6 +4102,30 @@
                         "schema": {
                             "type": "string",
                             "example": "2020-01-01 00:00,,2021-06-01 00:00"
+                        }
+                    },
+                    {
+                        "name": "filters[apple_id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[updated_password_by]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[updated_password_at]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 ],
@@ -4360,7 +4413,10 @@
                                 "user_belongsto_role_relationship",
                                 "phone_number",
                                 "description",
-                                "born_date"
+                                "born_date",
+                                "apple_id",
+                                "updated_password_by",
+                                "updated_password_at"
                             ]
                         }
                     },
@@ -4381,7 +4437,10 @@
                                     "user_belongsto_role_relationship",
                                     "phone_number",
                                     "description",
-                                    "born_date"
+                                    "born_date",
+                                    "apple_id",
+                                    "updated_password_by",
+                                    "updated_password_at"
                                 ]
                             }
                         }
@@ -4635,6 +4694,15 @@
                                 "desc"
                             ],
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "10,,20"
                         }
                     },
                     {
@@ -6061,6 +6129,15 @@
                         }
                     },
                     {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "10,,20"
+                        }
+                    },
+                    {
                         "name": "filters[title]",
                         "in": "query",
                         "required": false,
@@ -7238,8 +7315,10 @@
                                 "title",
                                 "type",
                                 "required",
-                                "error_message",
                                 "data_type",
+                                "regex",
+                                "min",
+                                "max",
                                 "options",
                                 "values",
                                 "category_id",
@@ -7306,11 +7385,21 @@
                         }
                     },
                     {
-                        "name": "filters[data_type]",
+                        "name": "filters[data_type][]",
                         "in": "query",
+                        "description": "{\n    \"\": \"-- None --\",\n    \"string\": \"string\",\n    \"int\": \"int\",\n    \"double\": \"double\"\n}",
                         "required": false,
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "enum": [
+                                    "",
+                                    "string",
+                                    "int",
+                                    "double"
+                                ],
+                                "type": "string"
+                            }
                         }
                     },
                     {
@@ -7322,7 +7411,7 @@
                         }
                     },
                     {
-                        "name": "filters[error_message]",
+                        "name": "filters[regex]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -7338,7 +7427,23 @@
                         }
                     },
                     {
+                        "name": "filters[min]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "filters[label]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[max]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -7693,9 +7798,11 @@
                                 "data_type",
                                 "required",
                                 "name",
-                                "error_message",
+                                "regex",
                                 "type",
+                                "min",
                                 "label",
+                                "max",
                                 "placeholder",
                                 "options",
                                 "route",
@@ -7721,9 +7828,11 @@
                                     "data_type",
                                     "required",
                                     "name",
-                                    "error_message",
+                                    "regex",
                                     "type",
+                                    "min",
                                     "label",
+                                    "max",
                                     "placeholder",
                                     "options",
                                     "route",
@@ -8158,7 +8267,7 @@
                         }
                     },
                     {
-                        "name": "filters[performer_id]",
+                        "name": "filters[performer_review]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -8166,7 +8275,7 @@
                         }
                     },
                     {
-                        "name": "filters[performer_review]",
+                        "name": "filters[performer_id]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -8534,8 +8643,8 @@
                                 "status",
                                 "phone",
                                 "category_id",
-                                "performer_id",
                                 "performer_review",
+                                "performer_id",
                                 "task_hasmany_custom_field_relationship",
                                 "oplata",
                                 "user_id",
@@ -8571,8 +8680,8 @@
                                     "status",
                                     "phone",
                                     "category_id",
-                                    "performer_id",
                                     "performer_review",
+                                    "performer_id",
                                     "task_hasmany_custom_field_relationship",
                                     "oplata",
                                     "user_id",
@@ -8981,8 +9090,15 @@
                                 "description",
                                 "user_id",
                                 "service_id",
+                                "task_id",
                                 "notification_belongsto_user_relationship",
-                                "notification_hasmany_service_relationship"
+                                "cat_id",
+                                "notification_hasmany_service_relationship",
+                                "name_task",
+                                "type",
+                                "is_read",
+                                "performer_id",
+                                "deleted_at"
                             ]
                         }
                     },
@@ -8998,8 +9114,15 @@
                                     "description",
                                     "user_id",
                                     "service_id",
+                                    "task_id",
                                     "notification_belongsto_user_relationship",
-                                    "notification_hasmany_service_relationship"
+                                    "cat_id",
+                                    "notification_hasmany_service_relationship",
+                                    "name_task",
+                                    "type",
+                                    "is_read",
+                                    "performer_id",
+                                    "deleted_at"
                                 ]
                             }
                         }
@@ -9261,6 +9384,17 @@
                         }
                     },
                     {
+                        "name": "filters[id][]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    {
                         "name": "filters[created_at]",
                         "in": "query",
                         "required": false,
@@ -9270,15 +9404,7 @@
                         }
                     },
                     {
-                        "name": "filters[description]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[address]",
+                        "name": "filters[location]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -9310,22 +9436,11 @@
                         }
                     },
                     {
-                        "name": "filters[user_id]",
+                        "name": "filters[task_id]",
                         "in": "query",
                         "required": false,
                         "schema": {
                             "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[id][]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
-                            }
                         }
                     }
                 ],
@@ -9605,12 +9720,11 @@
                             "type": "string",
                             "nullable": true,
                             "enum": [
-                                "description",
-                                "address",
+                                "location",
                                 "latitude",
                                 "longitude",
                                 "default",
-                                "user_id",
+                                "task_id",
                                 "address_belongsto_user_relationship"
                             ]
                         }
@@ -9624,12 +9738,11 @@
                             "items": {
                                 "type": "string",
                                 "enum": [
-                                    "description",
-                                    "address",
+                                    "location",
                                     "latitude",
                                     "longitude",
                                     "default",
-                                    "user_id",
+                                    "task_id",
                                     "address_belongsto_user_relationship"
                                 ]
                             }
@@ -9895,6 +10008,14 @@
                         "required": false,
                         "schema": {
                             "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     {
@@ -12308,6 +12429,14 @@
                         }
                     },
                     {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "filters[title]",
                         "in": "query",
                         "required": false,
@@ -13524,6 +13653,14 @@
                         }
                     },
                     {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "filters[name]",
                         "in": "query",
                         "required": false,
@@ -14635,6 +14772,14 @@
                         }
                     },
                     {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "filters[title]",
                         "in": "query",
                         "required": false,
@@ -15205,6 +15350,14 @@
                                 "asc",
                                 "desc"
                             ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
                             "type": "string"
                         }
                     },
@@ -15794,6 +15947,14 @@
                         }
                     },
                     {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "filters[compliance_type_id]",
                         "in": "query",
                         "required": false,
@@ -15827,6 +15988,15 @@
                     },
                     {
                         "name": "filters[created_at]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
+                        }
+                    },
+                    {
+                        "name": "filters[deleted_at]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -16115,7 +16285,8 @@
                                 "text",
                                 "user_id",
                                 "task_id",
-                                "created_at"
+                                "created_at",
+                                "deleted_at"
                             ]
                         }
                     },
@@ -16132,7 +16303,8 @@
                                     "text",
                                     "user_id",
                                     "task_id",
-                                    "created_at"
+                                    "created_at",
+                                    "deleted_at"
                                 ]
                             }
                         }
@@ -16400,6 +16572,14 @@
                         }
                     },
                     {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "filters[task_id]",
                         "in": "query",
                         "required": false,
@@ -16425,6 +16605,15 @@
                     },
                     {
                         "name": "filters[created_at]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
+                        }
+                    },
+                    {
+                        "name": "filters[deleted_at]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -16712,7 +16901,8 @@
                                 "task_id",
                                 "custom_field_id",
                                 "value",
-                                "created_at"
+                                "created_at",
+                                "deleted_at"
                             ]
                         }
                     },
@@ -16728,7 +16918,8 @@
                                     "task_id",
                                     "custom_field_id",
                                     "value",
-                                    "created_at"
+                                    "created_at",
+                                    "deleted_at"
                                 ]
                             }
                         }
@@ -17126,8 +17317,11 @@
                                 "description",
                                 "good_bad",
                                 "created_at",
+                                "as_performer",
                                 "reviewer_id",
-                                "task_id"
+                                "task_id",
+                                "reviewer_name",
+                                "deleted_at"
                             ]
                         }
                     },
@@ -17144,8 +17338,11 @@
                                     "description",
                                     "good_bad",
                                     "created_at",
+                                    "as_performer",
                                     "reviewer_id",
-                                    "task_id"
+                                    "task_id",
+                                    "reviewer_name",
+                                    "deleted_at"
                                 ]
                             }
                         }
@@ -17399,6 +17596,14 @@
                                 "asc",
                                 "desc"
                             ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
                             "type": "string"
                         }
                     },
@@ -18288,7 +18493,6 @@
                             "type": "string",
                             "nullable": true,
                             "enum": [
-                                "user_id",
                                 "token",
                                 "created_at",
                                 "sms_otp"
@@ -18304,7 +18508,6 @@
                             "items": {
                                 "type": "string",
                                 "enum": [
-                                    "user_id",
                                     "token",
                                     "created_at",
                                     "sms_otp"
@@ -18560,6 +18763,14 @@
                                 "asc",
                                 "desc"
                             ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
                             "type": "string"
                         }
                     },
@@ -19131,6 +19342,14 @@
                                 "asc",
                                 "desc"
                             ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
                             "type": "string"
                         }
                     },
@@ -19757,6 +19976,14 @@
                         "required": false,
                         "schema": {
                             "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     {
@@ -21330,7 +21557,6 @@
                             "type": "string",
                             "nullable": true,
                             "enum": [
-                                "id",
                                 "created_at",
                                 "updated_at",
                                 "key",
@@ -21350,7 +21576,6 @@
                             "items": {
                                 "type": "string",
                                 "enum": [
-                                    "id",
                                     "created_at",
                                     "updated_at",
                                     "key",
@@ -21619,6 +21844,14 @@
                                 "asc",
                                 "desc"
                             ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
                             "type": "string"
                         }
                     },
@@ -22279,6 +22512,14 @@
                         }
                     },
                     {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "filters[title]",
                         "in": "query",
                         "required": false,
@@ -22853,6 +23094,14 @@
                                 "asc",
                                 "desc"
                             ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
                             "type": "string"
                         }
                     },
@@ -23486,6 +23735,10 @@
             "VoyagerUsersBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID"
+                    },
                     "name": {
                         "type": "string",
                         "description": "Name"
@@ -23520,12 +23773,28 @@
                         "type": "date-time",
                         "description": "Born Date",
                         "example": "2021-05-17 00:00"
+                    },
+                    "apple_id": {
+                        "type": "string",
+                        "description": "Apple Id"
+                    },
+                    "updated_password_by": {
+                        "type": "string",
+                        "description": "Updated Password By"
+                    },
+                    "updated_password_at": {
+                        "type": "string",
+                        "description": "Updated Password At"
                     }
                 }
             },
             "VoyagerUsersReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID"
+                    },
                     "name": {
                         "type": "string",
                         "description": "Name"
@@ -23560,12 +23829,28 @@
                         "type": "date-time",
                         "description": "Born Date",
                         "example": "2021-05-17 00:00"
+                    },
+                    "apple_id": {
+                        "type": "string",
+                        "description": "Apple Id"
+                    },
+                    "updated_password_by": {
+                        "type": "string",
+                        "description": "Updated Password By"
+                    },
+                    "updated_password_at": {
+                        "type": "string",
+                        "description": "Updated Password At"
                     }
                 }
             },
             "VoyagerMenusBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID"
+                    },
                     "name": {
                         "type": "string",
                         "description": "Name"
@@ -23575,6 +23860,10 @@
             "VoyagerMenusReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID"
+                    },
                     "name": {
                         "type": "string",
                         "description": "Name"
@@ -23618,6 +23907,10 @@
             "VoyagerCategoriesBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID"
+                    },
                     "name": {
                         "type": "string",
                         "description": "Name"
@@ -23648,6 +23941,10 @@
             "VoyagerCategoriesReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID"
+                    },
                     "parent_id": {
                         "enum": [
                             ""
@@ -23703,6 +24000,10 @@
             "VoyagerPagesBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID"
+                    },
                     "title": {
                         "type": "string",
                         "description": "Title"
@@ -23731,6 +24032,10 @@
             "VoyagerPagesReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID"
+                    },
                     "title": {
                         "type": "string",
                         "description": "Title"
@@ -23846,24 +24151,38 @@
                         "description": "\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435"
                     },
                     "data_type": {
+                        "enum": [
+                            "",
+                            "string",
+                            "int",
+                            "double"
+                        ],
                         "type": "string",
-                        "description": "Data Type"
+                        "description": "{\n    \"\": \"-- None --\",\n    \"string\": \"string\",\n    \"int\": \"int\",\n    \"double\": \"double\"\n}"
                     },
                     "required": {
                         "type": "string",
                         "description": "Required"
                     },
-                    "error_message": {
+                    "regex": {
                         "type": "string",
-                        "description": "Error Message"
+                        "description": "Regex"
                     },
                     "type": {
                         "type": "string",
                         "description": "Input Type"
                     },
+                    "min": {
+                        "type": "string",
+                        "description": "Min"
+                    },
                     "label": {
                         "type": "string",
                         "description": "Input Label"
+                    },
+                    "max": {
+                        "type": "string",
+                        "description": "Max"
                     },
                     "placeholder": {
                         "type": "string",
@@ -23924,8 +24243,14 @@
                         "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u044f "
                     },
                     "data_type": {
+                        "enum": [
+                            "",
+                            "string",
+                            "int",
+                            "double"
+                        ],
                         "type": "string",
-                        "description": "Data Type"
+                        "description": "{\n    \"\": \"-- None --\",\n    \"string\": \"string\",\n    \"int\": \"int\",\n    \"double\": \"double\"\n}"
                     },
                     "required": {
                         "type": "string",
@@ -23935,17 +24260,25 @@
                         "type": "string",
                         "description": "Input Name"
                     },
-                    "error_message": {
+                    "regex": {
                         "type": "string",
-                        "description": "Error Message"
+                        "description": "Regex"
                     },
                     "type": {
                         "type": "string",
                         "description": "Input Type"
                     },
+                    "min": {
+                        "type": "string",
+                        "description": "Min"
+                    },
                     "label": {
                         "type": "string",
                         "description": "Input Label"
+                    },
+                    "max": {
+                        "type": "string",
+                        "description": "Max"
                     },
                     "placeholder": {
                         "type": "string",
@@ -24059,13 +24392,13 @@
                         "type": "string",
                         "description": "Category Id"
                     },
-                    "performer_id": {
-                        "type": "string",
-                        "description": "Performer Id"
-                    },
                     "performer_review": {
                         "type": "string",
                         "description": "Performer Review"
+                    },
+                    "performer_id": {
+                        "type": "string",
+                        "description": "Performer Id"
                     },
                     "task_hasmany_custom_field_relationship": {
                         "type": "integer",
@@ -24118,6 +24451,10 @@
             "VoyagerTasksReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "created_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
@@ -24184,13 +24521,13 @@
                         "type": "string",
                         "description": "Category Id"
                     },
-                    "performer_id": {
-                        "type": "string",
-                        "description": "Performer Id"
-                    },
                     "performer_review": {
                         "type": "string",
                         "description": "Performer Review"
+                    },
+                    "performer_id": {
+                        "type": "string",
+                        "description": "Performer Id"
                     },
                     "task_hasmany_custom_field_relationship": {
                         "type": "integer",
@@ -24249,6 +24586,10 @@
             "VoyagerNotificationsBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "created_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
@@ -24267,19 +24608,53 @@
                         "type": "string",
                         "description": "Service Id"
                     },
+                    "task_id": {
+                        "type": "string",
+                        "description": "Task Id"
+                    },
                     "notification_belongsto_user_relationship": {
                         "type": "integer",
                         "description": "users"
                     },
+                    "cat_id": {
+                        "type": "string",
+                        "description": "Cat Id"
+                    },
                     "notification_hasmany_service_relationship": {
                         "type": "integer",
                         "description": "services"
+                    },
+                    "name_task": {
+                        "type": "string",
+                        "description": "Name Task"
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Type"
+                    },
+                    "is_read": {
+                        "type": "string",
+                        "description": "Is Read"
+                    },
+                    "performer_id": {
+                        "type": "string",
+                        "description": "Performer Id"
+                    },
+                    "deleted_at": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Deleted At",
+                        "example": "2021-05-17 00:00"
                     }
                 }
             },
             "VoyagerNotificationsReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "created_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
@@ -24298,32 +24673,62 @@
                         "type": "string",
                         "description": "Service Id"
                     },
+                    "task_id": {
+                        "type": "string",
+                        "description": "Task Id"
+                    },
                     "notification_belongsto_user_relationship": {
                         "type": "integer",
                         "description": "users"
                     },
+                    "cat_id": {
+                        "type": "string",
+                        "description": "Cat Id"
+                    },
                     "notification_hasmany_service_relationship": {
                         "type": "integer",
                         "description": "services"
+                    },
+                    "name_task": {
+                        "type": "string",
+                        "description": "Name Task"
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Type"
+                    },
+                    "is_read": {
+                        "type": "string",
+                        "description": "Is Read"
+                    },
+                    "performer_id": {
+                        "type": "string",
+                        "description": "Performer Id"
+                    },
+                    "deleted_at": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Deleted At",
+                        "example": "2021-05-17 00:00"
                     }
                 }
             },
             "VoyagerAddressesBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "created_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
                         "description": "Created At",
                         "example": "2021-05-17 00:00"
                     },
-                    "description": {
+                    "location": {
                         "type": "string",
-                        "description": "Description"
-                    },
-                    "address": {
-                        "type": "string",
-                        "description": "Address"
+                        "description": "Location"
                     },
                     "latitude": {
                         "type": "string",
@@ -24337,9 +24742,9 @@
                         "type": "string",
                         "description": "Default"
                     },
-                    "user_id": {
+                    "task_id": {
                         "type": "string",
-                        "description": "User Id"
+                        "description": "Task Id"
                     },
                     "address_belongsto_user_relationship": {
                         "type": "integer",
@@ -24350,19 +24755,19 @@
             "VoyagerAddressesReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "created_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
                         "description": "Created At",
                         "example": "2021-05-17 00:00"
                     },
-                    "description": {
+                    "location": {
                         "type": "string",
-                        "description": "Description"
-                    },
-                    "address": {
-                        "type": "string",
-                        "description": "Address"
+                        "description": "Location"
                     },
                     "latitude": {
                         "type": "string",
@@ -24376,9 +24781,9 @@
                         "type": "string",
                         "description": "Default"
                     },
-                    "user_id": {
+                    "task_id": {
                         "type": "string",
-                        "description": "User Id"
+                        "description": "Task Id"
                     },
                     "address_belongsto_user_relationship": {
                         "type": "integer",
@@ -24389,6 +24794,10 @@
             "VoyagerWalletBalancesBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "wallet_balance_belongsto_user_relationship": {
                         "type": "integer",
                         "description": "users"
@@ -24418,6 +24827,10 @@
             "VoyagerWalletBalancesReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "wallet_balance_belongsto_user_relationship": {
                         "type": "integer",
                         "description": "users"
@@ -24647,6 +25060,10 @@
             "VoyagerMassmediaBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "title": {
                         "type": "string",
                         "description": "Title"
@@ -24670,6 +25087,10 @@
             "VoyagerMassmediaReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "title": {
                         "type": "string",
                         "description": "Title"
@@ -24767,6 +25188,10 @@
             "VoyagerRegionsBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "name": {
                         "type": "string",
                         "description": "Name"
@@ -24782,6 +25207,10 @@
             "VoyagerRegionsReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "name": {
                         "type": "string",
                         "description": "Name"
@@ -24805,6 +25234,10 @@
             "VoyagerSystemNotificationsBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "title": {
                         "type": "string",
                         "description": "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a"
@@ -24824,6 +25257,10 @@
             "VoyagerSystemNotificationsReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "title": {
                         "type": "string",
                         "description": "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a"
@@ -24843,6 +25280,10 @@
             "VoyagerNewsNotificationsBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "title": {
                         "type": "string",
                         "description": "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a"
@@ -24862,6 +25303,10 @@
             "VoyagerNewsNotificationsReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "title": {
                         "type": "string",
                         "description": "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a"
@@ -24881,6 +25326,10 @@
             "VoyagerCompliancesBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "compliance_type_id": {
                         "type": "string",
                         "description": "Compliance Type Id"
@@ -24901,6 +25350,12 @@
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
                         "description": "Created At",
+                        "example": "2021-05-17 00:00"
+                    },
+                    "deleted_at": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Deleted At",
                         "example": "2021-05-17 00:00"
                     }
                 }
@@ -24908,6 +25363,10 @@
             "VoyagerCompliancesReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "compliance_type_id": {
                         "type": "string",
                         "description": "Compliance Type Id"
@@ -24929,12 +25388,22 @@
                         "type": "date-time",
                         "description": "Created At",
                         "example": "2021-05-17 00:00"
+                    },
+                    "deleted_at": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Deleted At",
+                        "example": "2021-05-17 00:00"
                     }
                 }
             },
             "VoyagerCustomFieldsValuesBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "task_id": {
                         "type": "string",
                         "description": "Task Id"
@@ -24951,6 +25420,12 @@
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
                         "description": "Created At",
+                        "example": "2021-05-17 00:00"
+                    },
+                    "deleted_at": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Deleted At",
                         "example": "2021-05-17 00:00"
                     }
                 }
@@ -24958,6 +25433,10 @@
             "VoyagerCustomFieldsValuesReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "task_id": {
                         "type": "string",
                         "description": "Task Id"
@@ -24975,12 +25454,22 @@
                         "type": "date-time",
                         "description": "Created At",
                         "example": "2021-05-17 00:00"
+                    },
+                    "deleted_at": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Deleted At",
+                        "example": "2021-05-17 00:00"
                     }
                 }
             },
             "VoyagerReviewsBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "user_id": {
                         "type": "string",
                         "description": "User Id"
@@ -24999,6 +25488,10 @@
                         "description": "Created At",
                         "example": "2021-05-17 00:00"
                     },
+                    "as_performer": {
+                        "type": "string",
+                        "description": "As Performer"
+                    },
                     "reviewer_id": {
                         "type": "string",
                         "description": "Reviewer Id"
@@ -25006,12 +25499,26 @@
                     "task_id": {
                         "type": "string",
                         "description": "Task Id"
+                    },
+                    "reviewer_name": {
+                        "type": "string",
+                        "description": "Reviewer Name"
+                    },
+                    "deleted_at": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Deleted At",
+                        "example": "2021-05-17 00:00"
                     }
                 }
             },
             "VoyagerReviewsReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "user_id": {
                         "type": "string",
                         "description": "User Id"
@@ -25030,6 +25537,10 @@
                         "description": "Created At",
                         "example": "2021-05-17 00:00"
                     },
+                    "as_performer": {
+                        "type": "string",
+                        "description": "As Performer"
+                    },
                     "reviewer_id": {
                         "type": "string",
                         "description": "Reviewer Id"
@@ -25037,12 +25548,26 @@
                     "task_id": {
                         "type": "string",
                         "description": "Task Id"
+                    },
+                    "reviewer_name": {
+                        "type": "string",
+                        "description": "Reviewer Name"
+                    },
+                    "deleted_at": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Deleted At",
+                        "example": "2021-05-17 00:00"
                     }
                 }
             },
             "VoyagerUserViewsBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "created_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
@@ -25062,6 +25587,10 @@
             "VoyagerUserViewsReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "created_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
@@ -25127,6 +25656,10 @@
             "VoyagerComplianceTypesBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "name": {
                         "type": "string",
                         "description": "Name"
@@ -25142,6 +25675,10 @@
             "VoyagerComplianceTypesReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "name": {
                         "type": "string",
                         "description": "Name"
@@ -25157,6 +25694,10 @@
             "VoyagerUserExpensesBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "user_id": {
                         "type": "string",
                         "description": "User Id"
@@ -25196,6 +25737,10 @@
             "VoyagerUserExpensesReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "user_id": {
                         "type": "string",
                         "description": "User Id"
@@ -25235,6 +25780,10 @@
             "VoyagerTaskResponsesBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "description": {
                         "type": "string",
                         "description": "Description"
@@ -25280,6 +25829,10 @@
             "VoyagerTaskResponsesReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "description": {
                         "type": "string",
                         "description": "Description"
@@ -25423,10 +25976,6 @@
             "VoyagerContentsReadResource": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "string",
-                        "description": "Id"
-                    },
                     "created_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
@@ -25465,6 +26014,10 @@
             "VoyagerPrepareBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "click_trans_id": {
                         "type": "string",
                         "description": "Click Trans Id"
@@ -25516,6 +26069,10 @@
             "VoyagerPrepareReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "click_trans_id": {
                         "type": "string",
                         "description": "Click Trans Id"
@@ -25567,6 +26124,10 @@
             "VoyagerPrivaciesBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "title": {
                         "type": "string",
                         "description": "Title"
@@ -25586,6 +26147,10 @@
             "VoyagerPrivaciesReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "title": {
                         "type": "string",
                         "description": "Title"
@@ -25605,6 +26170,10 @@
             "VoyagerFooterReviewBrowseResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "name": {
                         "type": "string",
                         "description": "Name"
@@ -25637,6 +26206,10 @@
             "VoyagerFooterReviewReadResource": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id"
+                    },
                     "name": {
                         "type": "string",
                         "description": "Name"
@@ -25724,6 +26297,18 @@
                                     "type": "date-time",
                                     "description": "Born Date",
                                     "example": "2021-05-17 00:00"
+                                },
+                                "apple_id": {
+                                    "type": "string",
+                                    "description": "Apple Id"
+                                },
+                                "updated_password_by": {
+                                    "type": "string",
+                                    "description": "Updated Password By"
+                                },
+                                "updated_password_at": {
+                                    "type": "string",
+                                    "description": "Updated Password At"
                                 }
                             }
                         }
@@ -25779,6 +26364,18 @@
                                     "type": "date-time",
                                     "description": "Born Date",
                                     "example": "2021-05-17 00:00"
+                                },
+                                "apple_id": {
+                                    "type": "string",
+                                    "description": "Apple Id"
+                                },
+                                "updated_password_by": {
+                                    "type": "string",
+                                    "description": "Updated Password By"
+                                },
+                                "updated_password_at": {
+                                    "type": "string",
+                                    "description": "Updated Password At"
                                 }
                             }
                         }
@@ -25834,6 +26431,18 @@
                                     "type": "date-time",
                                     "description": "Born Date",
                                     "example": "2021-05-17 00:00"
+                                },
+                                "apple_id": {
+                                    "type": "string",
+                                    "description": "Apple Id"
+                                },
+                                "updated_password_by": {
+                                    "type": "string",
+                                    "description": "Updated Password By"
+                                },
+                                "updated_password_at": {
+                                    "type": "string",
+                                    "description": "Updated Password At"
                                 }
                             }
                         }
@@ -26459,8 +27068,14 @@
                                     "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u044f "
                                 },
                                 "data_type": {
+                                    "enum": [
+                                        "",
+                                        "string",
+                                        "int",
+                                        "double"
+                                    ],
                                     "type": "string",
-                                    "description": "Data Type"
+                                    "description": "{\n    \"\": \"-- None --\",\n    \"string\": \"string\",\n    \"int\": \"int\",\n    \"double\": \"double\"\n}"
                                 },
                                 "required": {
                                     "type": "string",
@@ -26470,17 +27085,25 @@
                                     "type": "string",
                                     "description": "Input Name"
                                 },
-                                "error_message": {
+                                "regex": {
                                     "type": "string",
-                                    "description": "Error Message"
+                                    "description": "Regex"
                                 },
                                 "type": {
                                     "type": "string",
                                     "description": "Input Type"
                                 },
+                                "min": {
+                                    "type": "string",
+                                    "description": "Min"
+                                },
                                 "label": {
                                     "type": "string",
                                     "description": "Input Label"
+                                },
+                                "max": {
+                                    "type": "string",
+                                    "description": "Max"
                                 },
                                 "placeholder": {
                                     "type": "string",
@@ -26507,13 +27130,13 @@
                                     "type": "integer",
                                     "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
                                 },
-                                "values": {
-                                    "type": "string",
-                                    "description": "In Options Default value"
-                                },
                                 "options_ru": {
                                     "type": "string",
                                     "description": "Options Ru"
+                                },
+                                "values": {
+                                    "type": "string",
+                                    "description": "In Options Default value"
                                 },
                                 "deleted_at": {
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
@@ -26554,8 +27177,14 @@
                                     "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u044f "
                                 },
                                 "data_type": {
+                                    "enum": [
+                                        "",
+                                        "string",
+                                        "int",
+                                        "double"
+                                    ],
                                     "type": "string",
-                                    "description": "Data Type"
+                                    "description": "{\n    \"\": \"-- None --\",\n    \"string\": \"string\",\n    \"int\": \"int\",\n    \"double\": \"double\"\n}"
                                 },
                                 "required": {
                                     "type": "string",
@@ -26565,17 +27194,25 @@
                                     "type": "string",
                                     "description": "Input Name"
                                 },
-                                "error_message": {
+                                "regex": {
                                     "type": "string",
-                                    "description": "Error Message"
+                                    "description": "Regex"
                                 },
                                 "type": {
                                     "type": "string",
                                     "description": "Input Type"
                                 },
+                                "min": {
+                                    "type": "string",
+                                    "description": "Min"
+                                },
                                 "label": {
                                     "type": "string",
                                     "description": "Input Label"
+                                },
+                                "max": {
+                                    "type": "string",
+                                    "description": "Max"
                                 },
                                 "placeholder": {
                                     "type": "string",
@@ -26645,8 +27282,14 @@
                                     "description": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u044f "
                                 },
                                 "data_type": {
+                                    "enum": [
+                                        "",
+                                        "string",
+                                        "int",
+                                        "double"
+                                    ],
                                     "type": "string",
-                                    "description": "Data Type"
+                                    "description": "{\n    \"\": \"-- None --\",\n    \"string\": \"string\",\n    \"int\": \"int\",\n    \"double\": \"double\"\n}"
                                 },
                                 "required": {
                                     "type": "string",
@@ -26656,17 +27299,25 @@
                                     "type": "string",
                                     "description": "Input Name"
                                 },
-                                "error_message": {
+                                "regex": {
                                     "type": "string",
-                                    "description": "Error Message"
+                                    "description": "Regex"
                                 },
                                 "type": {
                                     "type": "string",
                                     "description": "Input Type"
                                 },
+                                "min": {
+                                    "type": "string",
+                                    "description": "Min"
+                                },
                                 "label": {
                                     "type": "string",
                                     "description": "Input Label"
+                                },
+                                "max": {
+                                    "type": "string",
+                                    "description": "Max"
                                 },
                                 "placeholder": {
                                     "type": "string",
@@ -26779,13 +27430,13 @@
                                     "type": "string",
                                     "description": "Category Id"
                                 },
-                                "performer_id": {
-                                    "type": "string",
-                                    "description": "Performer Id"
-                                },
                                 "performer_review": {
                                     "type": "string",
                                     "description": "Performer Review"
+                                },
+                                "performer_id": {
+                                    "type": "string",
+                                    "description": "Performer Id"
                                 },
                                 "task_hasmany_custom_field_relationship": {
                                     "type": "integer",
@@ -26915,13 +27566,13 @@
                                     "type": "string",
                                     "description": "Category Id"
                                 },
-                                "performer_id": {
-                                    "type": "string",
-                                    "description": "Performer Id"
-                                },
                                 "performer_review": {
                                     "type": "string",
                                     "description": "Performer Review"
+                                },
+                                "performer_id": {
+                                    "type": "string",
+                                    "description": "Performer Id"
                                 },
                                 "task_hasmany_custom_field_relationship": {
                                     "type": "integer",
@@ -27051,13 +27702,13 @@
                                     "type": "string",
                                     "description": "Category Id"
                                 },
-                                "performer_id": {
-                                    "type": "string",
-                                    "description": "Performer Id"
-                                },
                                 "performer_review": {
                                     "type": "string",
                                     "description": "Performer Review"
+                                },
+                                "performer_id": {
+                                    "type": "string",
+                                    "description": "Performer Id"
                                 },
                                 "task_hasmany_custom_field_relationship": {
                                     "type": "integer",
@@ -27139,13 +27790,43 @@
                                     "type": "string",
                                     "description": "Service Id"
                                 },
+                                "task_id": {
+                                    "type": "string",
+                                    "description": "Task Id"
+                                },
                                 "notification_belongsto_user_relationship": {
                                     "type": "integer",
                                     "description": "users"
                                 },
+                                "cat_id": {
+                                    "type": "string",
+                                    "description": "Cat Id"
+                                },
                                 "notification_hasmany_service_relationship": {
                                     "type": "integer",
                                     "description": "services"
+                                },
+                                "name_task": {
+                                    "type": "string",
+                                    "description": "Name Task"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "description": "Type"
+                                },
+                                "is_read": {
+                                    "type": "string",
+                                    "description": "Is Read"
+                                },
+                                "performer_id": {
+                                    "type": "string",
+                                    "description": "Performer Id"
+                                },
+                                "deleted_at": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Deleted At",
+                                    "example": "2021-05-17 00:00"
                                 }
                             }
                         }
@@ -27175,13 +27856,43 @@
                                     "type": "string",
                                     "description": "Service Id"
                                 },
+                                "task_id": {
+                                    "type": "string",
+                                    "description": "Task Id"
+                                },
                                 "notification_belongsto_user_relationship": {
                                     "type": "integer",
                                     "description": "users"
                                 },
+                                "cat_id": {
+                                    "type": "string",
+                                    "description": "Cat Id"
+                                },
                                 "notification_hasmany_service_relationship": {
                                     "type": "integer",
                                     "description": "services"
+                                },
+                                "name_task": {
+                                    "type": "string",
+                                    "description": "Name Task"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "description": "Type"
+                                },
+                                "is_read": {
+                                    "type": "string",
+                                    "description": "Is Read"
+                                },
+                                "performer_id": {
+                                    "type": "string",
+                                    "description": "Performer Id"
+                                },
+                                "deleted_at": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Deleted At",
+                                    "example": "2021-05-17 00:00"
                                 }
                             }
                         }
@@ -27211,13 +27922,43 @@
                                     "type": "string",
                                     "description": "Service Id"
                                 },
+                                "task_id": {
+                                    "type": "string",
+                                    "description": "Task Id"
+                                },
                                 "notification_belongsto_user_relationship": {
                                     "type": "integer",
                                     "description": "users"
                                 },
+                                "cat_id": {
+                                    "type": "string",
+                                    "description": "Cat Id"
+                                },
                                 "notification_hasmany_service_relationship": {
                                     "type": "integer",
                                     "description": "services"
+                                },
+                                "name_task": {
+                                    "type": "string",
+                                    "description": "Name Task"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "description": "Type"
+                                },
+                                "is_read": {
+                                    "type": "string",
+                                    "description": "Is Read"
+                                },
+                                "performer_id": {
+                                    "type": "string",
+                                    "description": "Performer Id"
+                                },
+                                "deleted_at": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Deleted At",
+                                    "example": "2021-05-17 00:00"
                                 }
                             }
                         }
@@ -27235,13 +27976,9 @@
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
                                 },
-                                "description": {
+                                "location": {
                                     "type": "string",
-                                    "description": "Description"
-                                },
-                                "address": {
-                                    "type": "string",
-                                    "description": "Address"
+                                    "description": "Location"
                                 },
                                 "latitude": {
                                     "type": "string",
@@ -27255,9 +27992,9 @@
                                     "type": "string",
                                     "description": "Default"
                                 },
-                                "user_id": {
+                                "task_id": {
                                     "type": "string",
-                                    "description": "User Id"
+                                    "description": "Task Id"
                                 },
                                 "address_belongsto_user_relationship": {
                                     "type": "integer",
@@ -27279,13 +28016,9 @@
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
                                 },
-                                "description": {
+                                "location": {
                                     "type": "string",
-                                    "description": "Description"
-                                },
-                                "address": {
-                                    "type": "string",
-                                    "description": "Address"
+                                    "description": "Location"
                                 },
                                 "latitude": {
                                     "type": "string",
@@ -27299,9 +28032,9 @@
                                     "type": "string",
                                     "description": "Default"
                                 },
-                                "user_id": {
+                                "task_id": {
                                     "type": "string",
-                                    "description": "User Id"
+                                    "description": "Task Id"
                                 },
                                 "address_belongsto_user_relationship": {
                                     "type": "integer",
@@ -27323,13 +28056,9 @@
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
                                 },
-                                "description": {
+                                "location": {
                                     "type": "string",
-                                    "description": "Description"
-                                },
-                                "address": {
-                                    "type": "string",
-                                    "description": "Address"
+                                    "description": "Location"
                                 },
                                 "latitude": {
                                     "type": "string",
@@ -27343,9 +28072,9 @@
                                     "type": "string",
                                     "description": "Default"
                                 },
-                                "user_id": {
+                                "task_id": {
                                     "type": "string",
-                                    "description": "User Id"
+                                    "description": "Task Id"
                                 },
                                 "address_belongsto_user_relationship": {
                                     "type": "integer",
@@ -28297,6 +29026,12 @@
                                 "task_id": {
                                     "type": "string",
                                     "description": "Task Id"
+                                },
+                                "deleted_at": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Deleted At",
+                                    "example": "2021-05-17 00:00"
                                 }
                             }
                         }
@@ -28334,6 +29069,12 @@
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                                     "type": "date-time",
                                     "description": "Created At",
+                                    "example": "2021-05-17 00:00"
+                                },
+                                "deleted_at": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Deleted At",
                                     "example": "2021-05-17 00:00"
                                 }
                             }
@@ -28373,6 +29114,12 @@
                                     "type": "date-time",
                                     "description": "Created At",
                                     "example": "2021-05-17 00:00"
+                                },
+                                "deleted_at": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Deleted At",
+                                    "example": "2021-05-17 00:00"
                                 }
                             }
                         }
@@ -28401,6 +29148,12 @@
                                 "value": {
                                     "type": "string",
                                     "description": "Value"
+                                },
+                                "deleted_at": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Deleted At",
+                                    "example": "2021-05-17 00:00"
                                 }
                             }
                         }
@@ -28434,6 +29187,12 @@
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                                     "type": "date-time",
                                     "description": "Created At",
+                                    "example": "2021-05-17 00:00"
+                                },
+                                "deleted_at": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Deleted At",
                                     "example": "2021-05-17 00:00"
                                 }
                             }
@@ -28469,6 +29228,12 @@
                                     "type": "date-time",
                                     "description": "Created At",
                                     "example": "2021-05-17 00:00"
+                                },
+                                "deleted_at": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Deleted At",
+                                    "example": "2021-05-17 00:00"
                                 }
                             }
                         }
@@ -28498,6 +29263,10 @@
                                     "type": "string",
                                     "description": "Good Bad"
                                 },
+                                "as_performer": {
+                                    "type": "string",
+                                    "description": "As Performer"
+                                },
                                 "reviewer_id": {
                                     "type": "string",
                                     "description": "Reviewer Id"
@@ -28505,6 +29274,16 @@
                                 "task_id": {
                                     "type": "string",
                                     "description": "Task Id"
+                                },
+                                "reviewer_name": {
+                                    "type": "string",
+                                    "description": "Reviewer Name"
+                                },
+                                "deleted_at": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Deleted At",
+                                    "example": "2021-05-17 00:00"
                                 }
                             }
                         }
@@ -28540,6 +29319,10 @@
                                     "description": "Created At",
                                     "example": "2021-05-17 00:00"
                                 },
+                                "as_performer": {
+                                    "type": "string",
+                                    "description": "As Performer"
+                                },
                                 "reviewer_id": {
                                     "type": "string",
                                     "description": "Reviewer Id"
@@ -28547,6 +29330,16 @@
                                 "task_id": {
                                     "type": "string",
                                     "description": "Task Id"
+                                },
+                                "reviewer_name": {
+                                    "type": "string",
+                                    "description": "Reviewer Name"
+                                },
+                                "deleted_at": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Deleted At",
+                                    "example": "2021-05-17 00:00"
                                 }
                             }
                         }
@@ -28582,6 +29375,10 @@
                                     "description": "Created At",
                                     "example": "2021-05-17 00:00"
                                 },
+                                "as_performer": {
+                                    "type": "string",
+                                    "description": "As Performer"
+                                },
                                 "reviewer_id": {
                                     "type": "string",
                                     "description": "Reviewer Id"
@@ -28589,6 +29386,16 @@
                                 "task_id": {
                                     "type": "string",
                                     "description": "Task Id"
+                                },
+                                "reviewer_name": {
+                                    "type": "string",
+                                    "description": "Reviewer Name"
+                                },
+                                "deleted_at": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Deleted At",
+                                    "example": "2021-05-17 00:00"
                                 }
                             }
                         }
@@ -28690,10 +29497,6 @@
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
                                 },
-                                "user_id": {
-                                    "type": "string",
-                                    "description": "User Id"
-                                },
                                 "token": {
                                     "type": "string",
                                     "description": "Token"
@@ -28717,10 +29520,6 @@
                                 "dry-run": {
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
-                                },
-                                "user_id": {
-                                    "type": "string",
-                                    "description": "User Id"
                                 },
                                 "token": {
                                     "type": "string",
@@ -28751,10 +29550,6 @@
                                 "dry-run": {
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
-                                },
-                                "user_id": {
-                                    "type": "string",
-                                    "description": "User Id"
                                 },
                                 "token": {
                                     "type": "string",
@@ -29275,10 +30070,6 @@
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
                                 },
-                                "id": {
-                                    "type": "string",
-                                    "description": "Id"
-                                },
                                 "created_at": {
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                                     "type": "date-time",
@@ -29328,10 +30119,6 @@
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
                                 },
-                                "id": {
-                                    "type": "string",
-                                    "description": "Id"
-                                },
                                 "created_at": {
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                                     "type": "date-time",
@@ -29380,10 +30167,6 @@
                                 "dry-run": {
                                     "type": "boolean",
                                     "description": "Use dry-run only to validate"
-                                },
-                                "id": {
-                                    "type": "string",
-                                    "description": "Id"
                                 },
                                 "created_at": {
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
