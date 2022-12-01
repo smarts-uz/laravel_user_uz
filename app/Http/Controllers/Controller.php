@@ -6,10 +6,10 @@ use App\Models\CustomField;
 use App\Models\FooterReview;
 use App\Models\Terms;
 use App\Services\Response;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use App\Models\Task;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Session;
 use TCG\Voyager\Models\Category;
@@ -120,9 +120,23 @@ class Controller extends BaseController
     }
 
     public function terms(){
-
         $terms = Terms::query()->first();
         return view('auth.terms',compact('terms'));
+    }
+    public function terms_view(){
+        $terms = Terms::query()->first();
+        return view('vendor.voyager.terms.browse',compact('terms'));
+    }
+    public function terms_store(Request $request){
+        $data = $request->validate([
+            'text_uz' => 'required',
+            'text_ru' => 'required'
+        ],[
+            'text_uz.required' => trans('login.email.required'),
+            'text_ru.required' => trans('login.email.required'),
+        ]);
+        Terms::query()->update($data);
+        return redirect()->back();
     }
 
     public function paynet_oplata(){
