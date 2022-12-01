@@ -120,23 +120,8 @@ class Controller extends BaseController
     }
 
     public function terms(){
-        $terms = Terms::query()->first();
-        return view('auth.terms',compact('terms'));
-    }
-    public function terms_view(){
-        $terms = Terms::query()->first();
-        return view('vendor.voyager.terms.browse',compact('terms'));
-    }
-    public function terms_store(Request $request){
-        $data = $request->validate([
-            'text_uz' => 'required',
-            'text_ru' => 'required'
-        ],[
-            'text_uz.required' => trans('login.email.required'),
-            'text_ru.required' => trans('login.email.required'),
-        ]);
-        Terms::query()->update($data);
-        return redirect()->back();
+
+        return view('auth.terms');
     }
 
     public function paynet_oplata(){

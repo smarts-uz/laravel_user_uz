@@ -213,8 +213,6 @@ Route::get('/categories/{id}', [Controller::class, 'category'])->name("categorie
 Route::get('/lang/{lang}', [Controller::class, 'lang'])->name('lang'); // javoxir
 Route::get('/', [Controller::class, 'home'])->name('home'); // javoxir
 Route::get('/terms',[Controller::class,'terms']);
-Route::get('/admin/terms',[Controller::class,'terms_view']);
-Route::post('/terms-store',[Controller::class,'terms_store'])->name('terms.store');
 Route::get('/paynet_oplata',[Controller::class,'paynet_oplata']);
 Route::get('/show-notification/{notification}', [NotificationController::class, 'show_notification'])->name('show_notification');
 Route::get('/show-notification-user/{notification}', [NotificationController::class, 'show_notification_user'])->name('show_notification_user');

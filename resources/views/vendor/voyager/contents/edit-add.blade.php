@@ -20,6 +20,7 @@
 @stop
 
 @section('content')
+    <script src="https://cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
     <div class="page-content edit-add container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -136,12 +137,11 @@
     </div>
     <!-- End Delete File Modal -->
 @stop
-<script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
-<script src="/vendor/unisharp/laravel-ckeditor/adapters/jquery.js"></script>
 
 @section('javascript')
     <script>
-        $('#textarea').ckeditor();
+        CKEDITOR.replace( 'text_uz' );
+        CKEDITOR.replace( 'text_ru' );
     </script>
     <script>
         var params = {};
