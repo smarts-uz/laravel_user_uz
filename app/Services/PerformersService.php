@@ -9,8 +9,10 @@ use App\Item\PerformerUserItem;
 use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
+use Carbon\Carbon;
 use TCG\Voyager\Models\Category;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class PerformersService
 {
@@ -98,6 +100,22 @@ class PerformersService
         $item->tasks = Task::query()->where('user_id', $authId)
             ->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE])->orderBy('created_at', 'DESC')->get();
         return $item;
+    }
+
+    public function performer_filter($data): LengthAwarePaginator
+    {
+        $performers = User::query()
+            ->where('role_id', User::ROLE_PERFORMER)
+            ->withoutBlockedPerformers(auth()->id())
+            ->orderByDesc('review_rating')
+            ->orderByRaw('(review_good - review_bad) DESC');
+
+        if (isset($data['online']))
+        {
+            $date = Carbon::now()->subMinutes(2)->toDateTimeString();
+            $performers = $performers->where('role_id', User::ROLE_PERFORMER)->where('last_seen', ">=",$date);
+        }
+        return $performers->paginate($data('per_page'));
     }
 
 }
