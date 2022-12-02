@@ -115,6 +115,12 @@ class PerformersService
             $date = Carbon::now()->subMinutes(2)->toDateTimeString();
             $performers = $performers->where('role_id', User::ROLE_PERFORMER)->where('last_seen', ">=",$date);
         }
+
+        if (isset($data['search']))
+        {
+            $search = $data['search'];
+            $performers = $performers->where('name','like',"%$search%");
+        }
         return $performers->paginate(20);
     }
 
