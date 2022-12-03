@@ -13,6 +13,7 @@ use App\Models\Notification;
 use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\UserCategory;
 use App\Services\NotificationService;
 use App\Services\SmsMobileService;
 use Carbon\Carbon;
@@ -435,5 +436,38 @@ class PerformerAPIController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/performers-count",
+     *     tags={"Performers"},
+     *     summary="Performer count",
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="category_id",
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     * )
+     */
+    public function performers_count($id){
+        $user_category = UserCategory::query()->where('category_id',$id)->count();
+        return response()->json([
+            'success' => true,
+            'data' => $user_category,
+        ]);
+    }
 
 }
