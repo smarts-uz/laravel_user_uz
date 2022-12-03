@@ -438,7 +438,7 @@ class PerformerAPIController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/performers-count/{category_id}",
+     *     path="api/performers-count/{category_id}",
      *     tags={"Performers"},
      *     summary="Performer count",
      *     @OA\Parameter (
