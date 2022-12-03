@@ -12,11 +12,6 @@ if (!function_exists('amount_format')) {
     }
 }
 
-function getMyText()
-{
-    return 'Hello World';
-}
-
 function getAddress($data)
 {
     $array = (new CreateService())->addAdditionalAddress(request());
@@ -30,26 +25,16 @@ function getAddress($data)
 
 function portfolioGuard($portfolio)
 {
-    if ($portfolio->user_id != auth()->user()->id) {
+    if ((int)$portfolio->user_id !== (int)auth()->user()->id) {
         abort(403, "No Permission");
     }
-}
-
-function getAdditionalAddress($data)
-{
-    $address = [];
-    $address['location'] = $data['address'];
-    $address['latitude'] = explode(',', $data['coordinates'])[0];
-    $address['longitude'] = explode(',', $data['coordinates'])[1];
-
-    return $data;
 }
 
 function getLocale()
 {
     $locale = app()->getLocale();
 
-    if ($locale == 'uz') $locale = 'uz_Latn';
+    if ($locale === 'uz') $locale = 'uz_Latn';
     return $locale;
 
 }
@@ -127,28 +112,23 @@ function getAuthUserBalance()
 
 function taskGuard($task)
 {
-    if ($task->user_id != auth()->id() && $task->performer_id != auth()->id()) {
+    if ((int)$task->user_id !== (int)auth()->id() && (int)$task->performer_id !== (int)auth()->id()) {
         abort(403, "No Permission");
     }
 }
 
 function taskGuardApi($task)
 {
-    if ($task->user_id != auth()->id() && $task->performer_id != auth()->id()) {
+    if ((int)$task->user_id !== auth()->id() && (int)$task->performer_id !== auth()->id()) {
         throw new \Illuminate\Http\Exceptions\HttpResponseException(response()->json([
             'success' => false, 'message' => "No Permission"
         ], 403));
     }
 }
 
-function generate_url()
-{
-    return "http://ws.smarts.uz/api/send-notification";
-}
-
 function getContentText($page, $key)
 {
-    $text = app()->getLocale() == 'ru' ? 'text_ru' : 'text_uz';
+    $text = app()->getLocale() === 'ru' ? 'text_ru' : 'text_uz';
     return \App\Models\Content::query()->where('page', $page)->where('key', $key)->first()->$text;
 }
 
