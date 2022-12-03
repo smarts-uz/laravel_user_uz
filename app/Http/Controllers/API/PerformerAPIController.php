@@ -442,7 +442,7 @@ class PerformerAPIController extends Controller
      *     tags={"Performers"},
      *     summary="Performer count",
      *     @OA\Parameter (
-     *          in="query",
+     *          in="path",
      *          name="category_id",
      *          @OA\Schema (
      *              type="integer"
