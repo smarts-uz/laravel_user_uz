@@ -438,7 +438,7 @@ class PerformerAPIController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/performers-count",
+     *     path="/performers-count/{category_id}",
      *     tags={"Performers"},
      *     summary="Performer count",
      *     @OA\Parameter (
@@ -462,8 +462,8 @@ class PerformerAPIController extends Controller
      *     ),
      * )
      */
-    public function performers_count($id){
-        $user_category = UserCategory::query()->where('category_id',$id)->count();
+    public function performers_count($category_id){
+        $user_category = UserCategory::query()->where('category_id',$category_id)->count();
         return response()->json([
             'success' => true,
             'data' => $user_category,
