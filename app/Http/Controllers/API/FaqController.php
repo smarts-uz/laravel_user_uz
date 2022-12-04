@@ -70,7 +70,7 @@ class FaqController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/settings/get-all/{key}",
+     *     path="/api/settings/{key}",
      *     tags={"Setting"},
      *     summary="setting key",
      *     @OA\Parameter (
