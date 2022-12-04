@@ -389,7 +389,8 @@ class CreateTaskService
         $task->user_id = $user->id;
         $task->phone = $user->phone_number;
         $task->save();
-        $user->active_step = 0;
+        $user->active_step = null;
+        $user->active_task = null;
         $user->save();
         NotificationService::sendTaskNotification($task, $user->id);
 
@@ -432,8 +433,8 @@ class CreateTaskService
             case $data['sms_otp'] === $task->verify_code :
                 if (strtotime($task->verify_expiration) >= strtotime(Carbon::now())) {
                     $task->update(['status' => 1, 'user_id' => $user->id]);
-                    $user->active_step = NULL;
-                    $user->active_task = NULL;
+                    $user->active_step = null;
+                    $user->active_task = null;
                     $user->save();
                     // send notification
                     NotificationService::sendTaskNotification($task, $user->id);
