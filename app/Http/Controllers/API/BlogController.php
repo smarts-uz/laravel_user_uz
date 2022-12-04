@@ -41,6 +41,13 @@ class BlogController extends Controller
      *     path="/api/blog-news/{blogNew}",
      *     tags={"Blog News"},
      *     summary="Blogs",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="blogNew",
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *     ),
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
