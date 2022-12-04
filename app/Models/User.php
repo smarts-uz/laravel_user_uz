@@ -54,6 +54,8 @@ use Laravel\Passport\HasApiTokens;
  * @property $updated_password_at
  * @property $updated_password_by
  * @property $map
+ * @property $active_task
+ * @property $active_step
  * @return array //Value Returned
  */
 class User extends \TCG\Voyager\Models\User

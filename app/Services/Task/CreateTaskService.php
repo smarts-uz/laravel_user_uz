@@ -47,6 +47,9 @@ class CreateTaskService
     {
         $data['user_id'] = auth()->id();
         $task = Task::query()->create($data);
+        /** @var User $user */
+        $user->active_task = $task->id;
+        $user->save();
         return $this->get_custom($task);
     }
 
@@ -93,6 +96,9 @@ class CreateTaskService
         $task = Task::query()->findOrFail($data['task_id']);
         $this->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM, $request);
         $category = $task->category;
+        /** @var User $user */
+        $user->active_step = 6;
+        $user->save();
         if ($category->parent->remote) {
             return $this->get_remote($task);
         }
@@ -124,6 +130,9 @@ class CreateTaskService
     {
         /** @var Task $task */
         $task = Task::query()->findOrFail($data['task_id']);
+        /** @var User $user */
+        $user->active_step = 5;
+        $user->save();
         switch ($data['radio'] ){
             case CustomField::ROUTE_ADDRESS :
                 return $this->get_address($task);
@@ -176,7 +185,9 @@ class CreateTaskService
             }
             Address::query()->create($address);
         }
-
+        /** @var User $user */
+        $user->active_step = 4;
+        $user->save();
         $task->update([
             'coordinates' => $data['points'][0]['latitude'] . ',' . $data['points'][0]['longitude']
         ]);
@@ -211,6 +222,9 @@ class CreateTaskService
         $task = Task::query()->findOrFail($data['task_id']);
         unset($data['task_id']);
         $task->update($data);
+        /** @var User $user */
+        $user->active_step = 3;
+        $user->save();
         return $this->get_budget($task);
     }
 
@@ -243,6 +257,9 @@ class CreateTaskService
         $task->budget = $data['amount'];
         $task->oplata = $data['budget_type'];
         $task->save();
+        /** @var User $user */
+        $user->active_step = 2;
+        $user->save();
         return $this->get_note($task);
     }
 
@@ -271,6 +288,9 @@ class CreateTaskService
         $task = Task::query()->findOrFail($data['task_id']);
         unset($data['task_id']);
         $task->update($data);
+        /** @var User $user */
+        $user->active_step = 1;
+        $user->save();
         return $this->get_contact($task);
     }
 
@@ -362,7 +382,9 @@ class CreateTaskService
         $task->user_id = $user->id;
         $task->phone = $user->phone_number;
         $task->save();
-
+        /** @var User $user */
+        $user->active_step = 0;
+        $user->save();
         NotificationService::sendTaskNotification($task, $user->id);
 
         return [

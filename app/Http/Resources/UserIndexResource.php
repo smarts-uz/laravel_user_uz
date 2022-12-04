@@ -118,6 +118,8 @@ class UserIndexResource extends JsonResource
             'email' => $this->email,
             'avatar' => asset('storage/'.$this->avatar),
             'video' => $this->youtube_link,
+            'active_task' => $this->active_task,
+            'active_step' => $this->active_step,
             'tasks_count' => $performed_tasks_count,
             'achievements' => $achievements,
             'phone_number' => correctPhoneNumber($this->phone_number),
