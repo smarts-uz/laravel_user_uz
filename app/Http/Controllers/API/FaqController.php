@@ -42,7 +42,7 @@ class FaqController extends Controller
      * @OA\Get(
      *     path="/api/settings/get-all",
      *     tags={"Setting"},
-     *     summary="setting",
+     *     summary="setting all",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -67,4 +67,43 @@ class FaqController extends Controller
             'data' => SettingResource::collection(Setting::all())
         ]);
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/settings/get-all/{key}",
+     *     tags={"Setting"},
+     *     summary="setting key",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="key",
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function get_key($key)
+    {
+        $setting_key = Setting::query()->where('key',$key)->get();
+        return response()->json([
+            'success' => true,
+            'data' => $setting_key
+        ]);
+    }
+
 }
