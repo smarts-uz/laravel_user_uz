@@ -163,7 +163,6 @@ class ProfileController extends Controller
         ]);
         /** @var User $user */
         $user = Auth::user();
-        $user->role_id = User::ROLE_PERFORMER;
         $checkbox = implode(",", $request->get('category'));
         $smsNotification = 0;
         $emailNotification = 0;
@@ -272,6 +271,7 @@ class ProfileController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
+        $user->role_id = User::ROLE_PERFORMER;
         if (!$user->avatar) {
             $request->validate([
                 'avatar' => 'required|image'
