@@ -142,14 +142,13 @@
                                                     @enderror
                                                 </div>
                                                 <div class="w-full block w-full mb-4">
-                                                    <label class="mb-2 text-md md:block text-gray-400"
-                                                           for="location">{{__('Город')}}</label>
-                                                    <select
-                                                        class="border rounded-xl py-2 px-3 w-full focus:border-yellow-500 text-grey-900 outline-none"
+                                                    <label class="mb-2 text-md md:block text-gray-400" for="location">{{__('Город')}}</label>
+                                                    <select class="border rounded-xl py-2 px-3 w-full focus:border-yellow-500 text-grey-900 outline-none"
                                                         name="location">
                                                         <option value="">{{__('Выберите город')}}</option>
                                                         @foreach($regions as $region)
-                                                            <option value="{{$region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}" {{$region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') === $user->location??old('location') ? 'selected' : null}}>
+                                                            <option value="{{$region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}"
+                                                                 @selected($region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') === $user->location??old('location'))>
                                                                 {{$region->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}
                                                             </option>
                                                         @endforeach
