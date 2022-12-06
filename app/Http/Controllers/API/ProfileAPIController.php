@@ -144,16 +144,16 @@ class ProfileAPIController extends Controller
     }
 
     /**
-     * @OA\Post(
+     * @OA\Delete(
      *     path="/api/profile/portfolio/{portfolio}/delete",
-     *     tags={"Search"},
+     *     tags={"Profile"},
      *     summary="Delete Portfolio",
      *     @OA\Parameter(
      *          in="path",
      *          name="portfolio",
      *          required=true,
      *          @OA\Schema(
-     *              type="string"
+     *              type="integer"
      *          ),
      *     ),
      *     @OA\Response(
