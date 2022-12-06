@@ -11,21 +11,16 @@ class SearchAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/profile/cancel-task/{task}",
+     *     path="/api/cancel-task/{task}",
      *     tags={"Task"},
      *     summary="Cancel task",
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="task_id",
-     *                    description="Task id",
-     *                    type="string",
-     *                 ),
-     *             ),
-     *         ),
+     *     @OA\Parameter(
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          ),
      *     ),
      *     @OA\Response (
      *          response=200,
@@ -73,7 +68,7 @@ class SearchAPIController extends Controller
      *          name="task",
      *          required=true,
      *          @OA\Schema(
-     *              type="string"
+     *              type="integer"
      *          ),
      *     ),
      *     @OA\Response(
