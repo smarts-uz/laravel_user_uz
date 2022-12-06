@@ -910,7 +910,17 @@ class ProfileAPIController extends Controller
      */
     public function subscribeToCategory(Request $request): JsonResponse
     {
-        $response = $this->profileService->subscribeToCategory($request);
+
+
+        /** @var User $user */
+        $user = auth()->user();
+        $categories = $request->get('category');
+
+        $sms_notification = (int)$request->get('sms_notification');
+        $email_notification = (int)$request->get('email_notification');
+
+
+        $response = $this->profileService->subscribeToCategory($categories, $user, $sms_notification, $email_notification);
         return response()->json($response);
     }
 

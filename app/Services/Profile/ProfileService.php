@@ -551,14 +551,15 @@ class ProfileService
      *
      * Function  subscribeToCategory
      * Mazkur metod setting categorylarni tahrirlash
-     * @param $request
+     * @param array $categories
+     * @param User $user
+     * @param int $sms_notification
+     * @param int $email_notification
      * @return array
      */
-    public function subscribeToCategory($request): array
+    public function subscribeToCategory(array $categories, User $user, int $sms_notification, int $email_notification): array
     {
-        /** @var User $user */
-        $user = auth()->user();
-        $categories = $request->get('category');
+
         foreach ($categories as $category) {
             if (!is_int($category)) {
                 return [
@@ -574,15 +575,15 @@ class ProfileService
         $withoutParents = array_diff($categories, $parentCategories->pluck('id')->toArray());
         $allChildCategories = array_unique(array_merge($childCategories, $withoutParents));
         $checkbox = implode(",", $allChildCategories);
-        $smsNotification = 0;
-        $emailNotification = 0;
-        if ($request->get('sms_notification') === 1) {
-            $smsNotification = 1;
-        }
-        if ($request->get('email_notification') === 1) {
-            $emailNotification = 1;
-        }
-        $user->update(['category_id' => $checkbox, 'sms_notification' => $smsNotification, 'email_notification' => $emailNotification]);
+
+        if (!$sms_notification)
+            $sms_notification = null;
+
+        if (!$email_notification)
+            $email_notification = null;
+
+        $user->update(['category_id' => $checkbox, 'sms_notification' => $sms_notification, 'email_notification' => $email_notification]);
+
         return [
             'success' => true,
             'data' => [

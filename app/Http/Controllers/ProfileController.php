@@ -163,7 +163,9 @@ class ProfileController extends Controller
         ]);
         /** @var User $user */
         $user = Auth::user();
+        
         $checkbox = implode(",", $request->get('category'));
+
         $smsNotification = 0;
         $emailNotification = 0;
         if ((int)$request->get('sms_notification') === 1) {
@@ -176,7 +178,7 @@ class ProfileController extends Controller
         return redirect()->route('profile.profileData');
     }
 
-    public function StoreDistrict(Request $request)
+    public function storeDistrict(Request $request)
     {
         $request->validate([
             'district' => 'required',
@@ -188,7 +190,7 @@ class ProfileController extends Controller
         return redirect()->back();
     }
 
-    public function EditDescription(Request $request)
+    public function editDescription(Request $request)
     {
         $profile = new ProfileService();
         $profile->editDescription($request);

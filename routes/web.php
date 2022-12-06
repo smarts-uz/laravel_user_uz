@@ -151,13 +151,13 @@ Route::group(['middleware' => 'auth'], function () {
 
         //added category id
         Route::post('/getcategory', [ProfileController::class, 'getCategory'])->name('profile.getCategory'); // javoxir
-        Route::post('/storeDistrict', [ProfileController::class, 'StoreDistrict'])->name('profile.StoreDistrict'); // javoxir
+        Route::post('/storeDistrict', [ProfileController::class, 'storeDistrict'])->name('profile.StoreDistrict'); // javoxir
         Route::post('/store/profile/image', [ProfileController::class, 'storeProfileImage'])->name('profile.storeProfileImage'); // javoxir
         Route::post('/comment', [ProfileController::class, 'comment'])->name('profile.comment'); // javoxir
         Route::post('/testBase', [ProfileController::class, 'testBase'])->name('profile.testBase'); // javoxir
 
         //description
-        Route::post('/description', [ProfileController::class, 'EditDescription'])->name('profile.EditDescription'); // javoxir
+        Route::post('/description', [ProfileController::class, 'editDescription'])->name('profile.EditDescription'); // javoxir
 
         //create_port
         Route::view('/create', 'profile/create_port');
