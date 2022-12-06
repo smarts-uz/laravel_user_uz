@@ -43,6 +43,15 @@
                 ],
                 "summary": "Blogs",
                 "operationId": "d903254e072b5efc2e7e395a3340c9e8",
+                "parameters": [
+                    {
+                        "name": "blogNew",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -211,13 +220,13 @@
                 ]
             }
         },
-        "\/api\/settings\/get-all\/{key}": {
+        "\/api\/settings\/{key}": {
             "get": {
                 "tags": [
                     "Setting"
                 ],
                 "summary": "setting key",
-                "operationId": "fa8b91b1c1fdc2557b4c0ee4b7be00e3",
+                "operationId": "1d06abedf33b9519a93b56cb564f43df",
                 "parameters": [
                     {
                         "name": "key",

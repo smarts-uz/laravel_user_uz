@@ -46,6 +46,26 @@ class PerformerAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
+     *          name="categories",
+     *          @OA\Schema (
+     *              type="array",
+     *              @OA\Items (
+     *                  type="integer",
+     *              )
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="child_categories",
+     *          @OA\Schema (
+     *              type="array",
+     *              @OA\Items (
+     *                  type="integer",
+     *              )
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="query",
      *          name="online",
      *          @OA\Schema (
      *              type="boolean"
@@ -77,13 +97,6 @@ class PerformerAPIController extends Controller
      *          name="asc",
      *          @OA\Schema (
      *              type="boolean"
-     *          )
-     *     ),
-     *     @OA\Parameter (
-     *          in="query",
-     *          name="per_page",
-     *          @OA\Schema (
-     *              type="integer"
      *          )
      *     ),
      *     @OA\Response (
