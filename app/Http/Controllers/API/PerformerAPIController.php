@@ -58,6 +58,34 @@ class PerformerAPIController extends Controller
      *              type="boolean"
      *          )
      *     ),
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="review",
+     *          @OA\Schema (
+     *              type="boolean"
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="desc",
+     *          @OA\Schema (
+     *              type="boolean"
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="asc",
+     *          @OA\Schema (
+     *              type="boolean"
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="per_page",
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *     ),
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
