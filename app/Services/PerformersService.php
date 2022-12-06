@@ -9,6 +9,7 @@ use App\Item\PerformerUserItem;
 use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\UserCategory;
 use Carbon\Carbon;
 use TCG\Voyager\Models\Category;
 use Illuminate\Support\Facades\Auth;
@@ -104,11 +105,18 @@ class PerformersService
 
     public function performer_filter($data): LengthAwarePaginator
     {
-        $performers = User::query()
-            ->where('role_id', User::ROLE_PERFORMER)
-            ->withoutBlockedPerformers(auth()->id())
-            ->orderByDesc('review_rating')
-            ->orderByRaw('(review_good - review_bad) DESC');
+        $performers = User::query()->where('role_id', User::ROLE_PERFORMER);
+
+        if (isset($data['categories'])) {
+            $categories = is_array($data['categories'])?$data['categories']:json_decode($data['categories']);
+            $childCategories = Category::query()->whereIn('parent_id',$categories)->pluck('id')->toArray();
+            $allCategories = array_unique(array_merge($categories, $childCategories));
+            $performers = UserCategory::query()->where('category_id', $allCategories)->pluck('id')->toArray();
+        }
+        if (isset($data['child_categories'])) {
+            $categories = is_array($data['child_categories'])?$data['child_categories']:json_decode($data['child_categories']);
+            $performers = UserCategory::query()->where('category_id', $categories)->pluck('id')->toArray();
+        }
 
         if (isset($data['online']))
         {
@@ -116,11 +124,38 @@ class PerformersService
             $performers = $performers->where('role_id', User::ROLE_PERFORMER)->where('last_seen', ">=",$date);
         }
 
+        if(isset($data['review']) && isset($data['desc'])){
+            $performers = User::query()
+                ->where('role_id', User::ROLE_PERFORMER)
+                ->withoutBlockedPerformers(auth()->id())
+                ->orderByDesc('review_rating')
+                ->orderByRaw('(review_good - review_bad) DESC');
+        }
+
+        if(isset($data['review']) && isset($data['asc'])){
+            $performers = User::query()
+                ->where('role_id', User::ROLE_PERFORMER)
+                ->withoutBlockedPerformers(auth()->id())
+                ->orderBy('review_rating','asc')
+                ->orderByRaw('(review_good - review_bad) DESC');
+        }
+
+        if (isset($data['alphabet']) && isset($data['desc']))
+        {
+            $performers = $performers->orderBy('name','desc');
+        }
+
+        if (isset($data['alphabet']) && isset($data['asc']))
+        {
+            $performers = $performers->orderBy('name','asc');
+        }
+
         if (isset($data['search']))
         {
             $search = $data['search'];
             $performers = $performers->where('name','like',"%$search%");
         }
+
         return $performers->paginate(20);
     }
 

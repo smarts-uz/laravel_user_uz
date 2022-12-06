@@ -310,6 +310,26 @@
                         }
                     },
                     {
+                        "name": "categories",
+                        "in": "query",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    {
+                        "name": "child_categories",
+                        "in": "query",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    {
                         "name": "online",
                         "in": "query",
                         "schema": {
@@ -318,6 +338,27 @@
                     },
                     {
                         "name": "alphabet",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "review",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "desc",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "asc",
                         "in": "query",
                         "schema": {
                             "type": "boolean"
@@ -728,19 +769,19 @@
             }
         },
         "\/api\/profile\/portfolio\/{portfolio}\/delete": {
-            "post": {
+            "delete": {
                 "tags": [
-                    "Search"
+                    "Profile"
                 ],
                 "summary": "Delete Portfolio",
-                "operationId": "4beaea32f869fca3ce1ebdd28bea741e",
+                "operationId": "3411ccc81d6cb44d1272bb437de49340",
                 "parameters": [
                     {
                         "name": "portfolio",
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -1596,29 +1637,23 @@
                 ]
             }
         },
-        "\/api\/profile\/cancel-task\/{task}": {
+        "\/api\/cancel-task\/{task}": {
             "post": {
                 "tags": [
                     "Task"
                 ],
                 "summary": "Cancel task",
-                "operationId": "944cec1020f1a50a6505c7a95c5ef68a",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart\/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "task_id": {
-                                        "description": "Task id",
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "operationId": "fed267bec0a8895ac584aa2122fa66d1",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -1650,7 +1685,7 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -3179,7 +3214,7 @@
         "\/api\/task\/{task}\/complain": {
             "post": {
                 "tags": [
-                    "Complain"
+                    "Complains"
                 ],
                 "summary": "Task complain",
                 "operationId": "e7c08bf1f346280ffd69969a4a72f3a1",
@@ -3211,6 +3246,31 @@
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/complain\/types": {
+            "get": {
+                "tags": [
+                    "Complains"
+                ],
+                "summary": "Task complains types",
+                "operationId": "29df1bde5fe8cf5904bf08cf7e6701c5",
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -3558,41 +3618,6 @@
                         }
                     }
                 },
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/profile\/delete\/portfolio\/{portfolio}": {
-            "delete": {
-                "tags": [
-                    "PorfolioAPI"
-                ],
-                "summary": "Delete portfolio",
-                "operationId": "d9c1402c8ec34d5cc23dacc089807a1b",
-                "parameters": [
-                    {
-                        "name": "portfolio",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "Successful operation"

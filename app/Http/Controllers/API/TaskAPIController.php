@@ -1575,7 +1575,7 @@ class TaskAPIController extends Controller
     /**
      * @OA\Post(
      *     path="/api/task/{task}/complain",
-     *     tags={"Complain"},
+     *     tags={"Complains"},
      *     summary="Task complain",
      *     @OA\Parameter (
      *          in="path",
@@ -1639,6 +1639,28 @@ class TaskAPIController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Get (
+     *     path="/api/complain/types",
+     *     tags={"Complains"},
+     *     summary="Task complains types",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function complainTypes(): JsonResponse
     {
         return response()->json([
