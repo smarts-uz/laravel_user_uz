@@ -455,6 +455,45 @@ class TaskAPIController extends Controller
 
     /**
      * @OA\Get(
+     *     path="/api/user/{user}",
+     *     tags={"Task"},
+     *     summary="User active task and step null",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="user",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     )
+     * )
+     */
+    public function active_task_null(User $user){
+
+        $user->active_step = null;
+        $user->active_task = null;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => __('Изменено успешно')
+        ]);
+    }
+
+    /**
+     * @OA\Get(
      *     path="/api/my-tasks-count",
      *     tags={"Task"},
      *     summary="Get My Tasks Count",

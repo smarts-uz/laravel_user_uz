@@ -150,6 +150,7 @@ Route::get('/blog-news/{blogNew}', [BlogController::class, 'show']); // used
 
 //Tasks
 Route::get('task/{task}', [TaskAPIController::class, 'task']); // used
+Route::post('user/{user}', [TaskAPIController::class, 'active_task_null']); // used
 Route::get('tasks-filter', [TaskAPIController::class, 'filter']); // used
 Route::get('same-tasks/{task}', [TaskAPIController::class, 'same_tasks']); // used
 
