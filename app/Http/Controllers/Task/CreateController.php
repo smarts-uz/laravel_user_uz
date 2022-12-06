@@ -112,18 +112,16 @@ class CreateController extends Controller
     {
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS);
         return view('create.location', compact('task', 'custom_fields'));
-
     }
 
     public function address_store(Request $request, Task $task)
     {
 
-
         $requestAll = $request->all();
 
-
         $task->update([
-            'coordinates' => $this->service->addAdditionalAddress($task, $requestAll)
+            'coordinates' => $this->service->addAdditionalAddress($task, $requestAll),
+            'go_back'=> $request->get('go_back')
         ]);
 
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS, $request);

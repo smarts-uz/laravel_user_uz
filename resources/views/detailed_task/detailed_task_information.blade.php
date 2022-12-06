@@ -7,6 +7,9 @@
                 <li>{{$address->location}}</li>
             @endforeach
         </ul>
+        @if($task->go_back === 1)
+            {{__('Вернуться в точку А')}}
+        @endif
     @else
         {{__('Виртуальное задание')}}
     @endif
