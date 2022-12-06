@@ -454,7 +454,7 @@ class TaskAPIController extends Controller
     }
 
     /**
-     * @OA\Get(
+     * @OA\Post (
      *     path="/api/user/{user}",
      *     tags={"Task"},
      *     summary="User active task and step null",
