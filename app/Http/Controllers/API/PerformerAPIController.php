@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\CategoryRequest;
 use App\Http\Requests\BecomePerformerEmailPhone;
 use App\Http\Requests\BecomePerformerRequest;
 use App\Http\Requests\GiveTaskRequest;
@@ -15,6 +16,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Models\UserCategory;
 use App\Services\NotificationService;
+use App\Services\Profile\ProfileService;
 use App\Services\SmsMobileService;
 use Carbon\Carbon;
 use App\Services\PerformersService;
@@ -25,11 +27,13 @@ use Illuminate\Support\Facades\Storage;
 class PerformerAPIController extends Controller
 {
 
+    protected ProfileService $profileService;
     private PerformersService $performer_service;
 
     public function __construct()
     {
         $this->performer_service = new PerformersService();
+        $this->profileService = new ProfileService();
     }
 
     /**
@@ -425,16 +429,19 @@ class PerformerAPIController extends Controller
      *     },
      * )
      */
-    public function becomePerformerCategory(Request $request)
+    public function becomePerformerCategory(CategoryRequest $request)
     {
-        $data = $request->validate(['category_id' => 'required|string']);
+        $data = $request->validated();
 
-        auth()->user()->update($data);
         /** @var User $user */
         $user = Auth::user();
         $user->role_id = User::ROLE_PERFORMER;
         $user->save();
-        return response()->json(['success' => true, "message" => __('Успешно обновлено')]);
+        $categories = $data['category'];
+        $sms_notification = (int)$data['sms_notification'];
+        $email_notification = (int)$data['email_notification'];
+        $response = $this->profileService->subscribeToCategory($categories, $user, $sms_notification, $email_notification);
+        return response()->json($response);
 
     }
 

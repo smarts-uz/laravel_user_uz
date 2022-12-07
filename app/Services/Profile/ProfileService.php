@@ -552,24 +552,14 @@ class ProfileService
      * Function  subscribeToCategory
      * Mazkur metod setting categorylarni tahrirlash
      * @param array $categories
-     * @param User $user
+     * @param $user
      * @param int $sms_notification
      * @param int $email_notification
      * @return array
      */
-    public function subscribeToCategory(array $categories, User $user, int $sms_notification, int $email_notification): array
+    public function subscribeToCategory(array $categories, $user, int $sms_notification, int $email_notification): array
     {
 
-        foreach ($categories as $category) {
-            if (!is_int($category)) {
-                return [
-                    'success' => false,
-                    'data' => [
-                        'message' => trans('trans.All values should be int.')
-                    ]
-                ];
-            }
-        }
         $parentCategories = \App\Models\Category::with('childs')->where('parent_id', null)->whereIn('id', $categories)->get();
         $childCategories = $parentCategories->pluck('childs')->flatten()->pluck('id')->toArray();
         $withoutParents = array_diff($categories, $parentCategories->pluck('id')->toArray());

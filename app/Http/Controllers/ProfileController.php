@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Api\CategoryRequest;
 use App\Http\Requests\PersonalInfoRequest;
 use App\Http\Requests\PortfolioRequest;
 use App\Http\Requests\User\PerformerCreateRequest;
@@ -22,12 +23,14 @@ use App\Services\Profile\ProfileService;
 
 class ProfileController extends Controller
 {
-    //portfolio
     public Agent $agent;
+    protected ProfileService $profileService;
+
 
     public function __construct()
     {
         $this->agent = new Agent();
+        $this->profileService = new ProfileService();
     }
 
     public function setSession(Request $request)
@@ -130,7 +133,7 @@ class ProfileController extends Controller
             ]);
     }
 
-//settings
+    //settings
     public function editData()
     {
         $profile = new ProfileService();
@@ -156,25 +159,18 @@ class ProfileController extends Controller
     }
 
     //getCategory
-    public function getCategory(Request $request)
+    public function getCategory(CategoryRequest $request)
     {
-        $request->validate([
-            'category' => 'required'
-        ]);
+        $data = $request->validated();
         /** @var User $user */
-        $user = Auth::user();
-        
-        $checkbox = implode(",", $request->get('category'));
+        $user = auth()->user();
+        $categories = $data['category'];
 
-        $smsNotification = 0;
-        $emailNotification = 0;
-        if ((int)$request->get('sms_notification') === 1) {
-            $smsNotification = 1;
-        }
-        if ((int)$request->get('email_notification') === 1) {
-            $emailNotification = 1;
-        }
-        $user->update(['category_id' => $checkbox, 'sms_notification' => $smsNotification, 'email_notification' => $emailNotification]);
+        $sms_notification = (int)$request->get('sms_notification');
+        $email_notification = (int)$request->get('email_notification');
+
+        $this->profileService->subscribeToCategory($categories, $user, $sms_notification, $email_notification);
+
         return redirect()->route('profile.profileData');
     }
 

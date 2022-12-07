@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\CategoryRequest;
 use App\Http\Requests\Api\PortfolioRequest;
 use App\Http\Requests\Api\ProfileAvatarRequest;
 use App\Http\Requests\Api\ProfilePasswordRequest;
@@ -908,16 +909,17 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function subscribeToCategory(Request $request): JsonResponse
+    public function subscribeToCategory(CategoryRequest $request): JsonResponse
     {
 
+        $data = $request->validated();
 
         /** @var User $user */
         $user = auth()->user();
-        $categories = $request->get('category');
+        $categories = $data['category'];
 
-        $sms_notification = (int)$request->get('sms_notification');
-        $email_notification = (int)$request->get('email_notification');
+        $sms_notification = (int)$data['sms_notification'];
+        $email_notification = (int)$data['email_notification'];
 
 
         $response = $this->profileService->subscribeToCategory($categories, $user, $sms_notification, $email_notification);
