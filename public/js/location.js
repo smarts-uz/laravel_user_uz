@@ -24,7 +24,7 @@ function init() {
     if(document.getElementById("suggest1")){
         var suggestView1 = new ymaps.SuggestView('suggest1',{boundedBy: myMap.getBounds()});
     suggestView1.events.add('select', function () {
-        myMapFunction();    
+        myMapFunction();
     });
     }
     var alp =  ["B", "C", "D", "E", "F","G","H","I","J"];
@@ -271,6 +271,7 @@ function myMapFunction() {
 }
 // end
 
-
-
 ymaps.ready(init);
+
+
+

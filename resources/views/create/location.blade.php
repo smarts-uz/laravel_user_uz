@@ -3,6 +3,13 @@
 @include('layouts.fornewtask')
 
 @section('content')
+    <style>
+        /* Toggle B */
+        input:checked ~ .dot {
+            transform: translateX(100%);
+            background-color: #48bb78;
+        }
+    </style>
     <script>
         let userAddress;
         var myMap;
@@ -76,8 +83,6 @@
                                     </div>
                                     <input name="coordinates0" type="hidden" id="coordinate">
                                     <div id="addinput" class="flex gap-y-2 flex-col">
-
-
                                         @if($task->category->parent->double_address)
                                             <div class="flex items-center gap-x-2">
                                                 <div class="flex items-center rounded-lg border  w-full py-1">
@@ -129,6 +134,25 @@
                                         <i class="fas fa-map-marker-alt text-yellow-500"></i>
                                         <span>{{__('Добавить ещё адрес')}}</span>
                                     </button>
+                                    @if($task->category->parent->double_address)
+                                        <div class="my-3">
+                                            <label for="toggleB" class="flex items-center cursor-pointer">
+                                                <!-- toggle -->
+                                                <div class="relative">
+                                                    <!-- input -->
+                                                    <input type="checkbox" name="go_back" id="toggleB" class="sr-only">
+                                                    <!-- line -->
+                                                    <div class="block bg-gray-600 w-12 h-7 rounded-full"></div>
+                                                    <!-- dot -->
+                                                    <div class="dot absolute left-1 top-1 bg-white w-5 h-5 rounded-full transition"></div>
+                                                </div>
+                                                <!-- label -->
+                                                <div class="ml-3 text-gray-700 font-medium">
+                                                    {{__('Вернуться в точку А')}}
+                                                </div>
+                                            </label>
+                                        </div>
+                                    @endif
                                     <div id="map" class="h-60 mt-4 rounded-lg w-full"></div>
                                         @include('create.custom-fields2')
                                     <div class="flex w-full mt-4">
@@ -149,13 +173,9 @@
                                                class="bg-yellow-500 hover:bg-yellow-600 m-4 cursor-pointer text-white font-normal text-2xl py-3 sm:px-14 px-8 rounded-2xl "
                                                name="" value="{{__('Далее')}}">
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
-
-
                         <input type="number" id="x" value="{{ $task->category->parent->double_address? 2:1 }}"
                                class="hidden">
                     </div>
@@ -164,9 +184,18 @@
             </div>
         </div>
 
-
     </form>
-
+    <script>
+        $(document).ready(function (){
+            $('#toggleB').click(function (){
+                if($('#toggleB').is(":checked")){
+                    $(this).val(1)
+                }else{
+                    $(this).val(0)
+                }
+            })
+        })
+    </script>
     <script src="{{ asset('js/location.js') }}"></script>
 
 @endsection
