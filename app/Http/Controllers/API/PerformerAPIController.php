@@ -429,20 +429,17 @@ class PerformerAPIController extends Controller
      *     },
      * )
      */
-    public function becomePerformerCategory(CategoryRequest $request)
+    public function becomePerformerCategory(Request $request)
     {
-        $data = $request->validated();
-
         /** @var User $user */
         $user = Auth::user();
         $user->role_id = User::ROLE_PERFORMER;
         $user->save();
-        $categories = $data['category'];
+        $categories = $request->get('category');
         $sms_notification = (int)$request->get('sms_notification');
         $email_notification = (int)$request->get('email_notification');
         $response = $this->profileService->subscribeToCategory($categories, $user, $sms_notification, $email_notification);
         return response()->json($response);
-
     }
 
 
