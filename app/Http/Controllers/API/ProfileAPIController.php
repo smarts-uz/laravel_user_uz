@@ -887,7 +887,7 @@ class ProfileAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="category",
-     *                    type="integer",
+     *                    type="string",
      *                 ),
      *             ),
      *         ),
@@ -918,8 +918,8 @@ class ProfileAPIController extends Controller
         $user = auth()->user();
         $categories = $data['category'];
 
-        $sms_notification = (int)$data['sms_notification'];
-        $email_notification = (int)$data['email_notification'];
+        $sms_notification = (int)$request->get('sms_notification');
+        $email_notification = (int)$request->get('email_notification');
 
 
         $response = $this->profileService->subscribeToCategory($categories, $user, $sms_notification, $email_notification);
