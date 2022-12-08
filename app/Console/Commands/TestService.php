@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\User;
+use App\Services\PerformersService;
 use App\Services\Profile\ProfileService;
 use Illuminate\Console\Command;
 
@@ -29,13 +30,8 @@ class TestService extends Command
      */
     public function handle()
     {
-        $categories = [22,23,24,25,26,27,28,29];
-        /** @var User $user */
-        $user = 655;
-        $sms_notification = 1;
-        $email_notification = 0;
-        $subscribeToCategory = new ProfileService();
-        $data = $subscribeToCategory->subscribeToCategory($categories, $user, $sms_notification, $email_notification);
+        $performer_filter = new PerformersService();
+        $data = $performer_filter->performer_filter([]);
         dd($data);
     }
 }

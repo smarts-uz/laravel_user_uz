@@ -210,16 +210,12 @@
                                                         <div
                                                             class="panel overflow-hidden hidden px-[18px] bg-white p-2 bg-yellow-100">
                                                             @foreach ($categories2 as $category2)
-                                                                @if($category2->parent_id == $category->id)
-                                                                    <label
-                                                                        class="block my-1 text-base flex items-center">
+                                                                @if($category2->parent_id === $category->id)
+                                                                    <label class="block my-1 text-base flex items-center">
                                                                         @php
-                                                                            $cat_arr = explode(",",$user->category_id);
-                                                                              $res_c_arr = array_search($category2->id,$cat_arr);
+                                                                            $res_c_arr = array_search($category2->id,$user_categories);
                                                                         @endphp
-                                                                        <input type="checkbox"
-                                                                               @if($res_c_arr !== false) checked
-                                                                               @endif name="category[]"
+                                                                        <input type="checkbox" name="category[]" @if($res_c_arr !== false) checked @endif
                                                                                value="{{$category2->id}}"
                                                                                class="mr-2 required:border-yellow-500 h-4 w-4">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
                                                                     </label>

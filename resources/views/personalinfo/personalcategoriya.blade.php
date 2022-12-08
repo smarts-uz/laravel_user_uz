@@ -24,12 +24,10 @@
                                 <div
                                     class="panel overflow-hidden hidden px-[18px] bg-white p-2">
                                     @foreach ($categories2 as $category2)
-                                        @if($category2->parent_id == $category->id)
+                                        @if($category2->parent_id === $category->id)
                                             <label class="block">
                                                 @php
-                                                    $cat_arr = explode(",",$user->category_id);
-                                                    $res_c_arr = array_search($category2->id,$cat_arr);
-                                                    //dd($res_c_arr);
+                                                    $res_c_arr = array_search($category2->id,$user_categories);
                                                 @endphp
                                                 <input type="checkbox"
                                                     @if($res_c_arr !== false) checked

@@ -2,9 +2,6 @@
 
 namespace App\Item;
 
-use App\Models\User;
-use TCG\Voyager\Models\Category;
-
 class ProfileDataItem
 {
     public $views;

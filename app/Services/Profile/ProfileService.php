@@ -11,6 +11,7 @@ use App\Models\Session;
 use App\Models\Task;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Models\UserCategory;
 use App\Models\WalletBalance;
 use App\Services\SmsMobileService;
 use Carbon\Carbon;
@@ -109,6 +110,7 @@ class ProfileService
         $review_good = $user->review_good;
         $review_bad = $user->review_bad;
         $review_rating = $user->review_rating;
+        $user_categories = UserCategory::query()->where('user_id',$user->id)->pluck('category_id')->toArray();
         $task = Task::query()->where('user_id', Auth::id())->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->get();
         return array(
             'user' => $user,
@@ -121,7 +123,8 @@ class ProfileService
             'review_good' => $review_good,
             'review_bad' => $review_bad,
             'review_rating' => $review_rating,
-            'task' => $task
+            'task' => $task,
+            'user_categories' => $user_categories,
         );
     }
 
@@ -559,12 +562,16 @@ class ProfileService
      */
     public function subscribeToCategory(array $categories, $user, int $sms_notification, int $email_notification): array
     {
-
-        $parentCategories = \App\Models\Category::with('childs')->where('parent_id', null)->whereIn('id', $categories)->get();
-        $childCategories = $parentCategories->pluck('childs')->flatten()->pluck('id')->toArray();
-        $withoutParents = array_diff($categories, $parentCategories->pluck('id')->toArray());
-        $allChildCategories = array_unique(array_merge($childCategories, $withoutParents));
-        $checkbox = implode(",", $allChildCategories);
+        $user_exists = UserCategory::query()->where('user_id',$user->id)->get();
+        if($user_exists){
+            UserCategory::query()->where('user_id',$user->id)->delete();
+        }
+        foreach ($categories as $category) {
+            UserCategory::query()->create([
+                'user_id'=> $user->id,
+                'category_id'=>$category,
+            ]);
+        }
 
         if (!$sms_notification)
             $sms_notification = null;
@@ -572,7 +579,7 @@ class ProfileService
         if (!$email_notification)
             $email_notification = null;
 
-        $user->update(['category_id' => $checkbox, 'sms_notification' => $sms_notification, 'email_notification' => $email_notification]);
+        $user->update(['sms_notification' => $sms_notification, 'email_notification' => $email_notification]);
 
         return [
             'success' => true,

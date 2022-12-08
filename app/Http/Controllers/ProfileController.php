@@ -9,6 +9,7 @@ use App\Http\Requests\User\PerformerCreateRequest;
 use App\Http\Requests\UserPasswordRequest;
 use App\Http\Requests\UserUpdateDataRequest;
 use App\Models\Session;
+use App\Models\UserCategory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Jenssegers\Agent\Agent;
@@ -161,6 +162,7 @@ class ProfileController extends Controller
     //getCategory
     public function getCategory(CategoryRequest $request)
     {
+
         $data = $request->validated();
         /** @var User $user */
         $user = auth()->user();
@@ -292,9 +294,12 @@ class ProfileController extends Controller
 
     public function verificationCategory()
     {
+        /** @var User $user */
+        $user = Auth::user();
         $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->orderBy("order", "asc")->get();
         $categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->orderBy("order", "asc")->get();
-        return view('personalinfo.personalcategoriya', compact('categories', 'categories2'));
+        $user_categories = UserCategory::query()->where('user_id',$user->id)->pluck('category_id')->toArray();
+        return view('personalinfo.personalcategoriya', compact('categories', 'categories2','user_categories'));
     }
 
     public function createPortfolio(PortfolioRequest $request,Portfolio $portfolio)
