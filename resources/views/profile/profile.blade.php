@@ -32,7 +32,7 @@
                     <div class="about-me block" id="tab-profile">
                         <div class="about-a-bit mt-10">
                             <h4 class="inline font-bold text-lg text-gray-700">{{__('Немного о себе')}}</h4>
-                            @if ($user->description == Null)
+                            @if ($user->description === null)
                                 <span class="ml-10">
                                      <i class="fas fa-pencil-alt inline text-gray-700"></i>
                                      <p class="inline text-gray-500 cursor-pointer hover:text-red-500 border-b-2 hover:border-b-2 hover:border-red-500"
@@ -81,7 +81,7 @@
                                 </div>
                             </div>
                         </form>
-                        @if($user->youtube_link != null)
+                        @if($user->youtube_link !== null)
                             <iframe class="my-4 sm:w-full w-5/6" width="644" height="362" id="iframe" src="{{$user->youtube_link}}" frameborder="0"></iframe>
                                 <a href="{{route('youtube_link_delete')}}" class="float-right text-gray-500 hover:text-red-500 mb-3 border-b-2 border-dotted hover:border-red-500 border-gray-500">{{__('Удалить')}}</a>
                         @endif
@@ -119,9 +119,9 @@
                         </p>
                         <div class="my-4">
                             <ul class="pl-10 leading-7">
-                                @foreach(explode(',', $user->category_id) as $user_cat)
+                                @foreach($user_categories as $user_cat)
                                     @foreach($categories as $cat)
-                                        @if($cat->id == $user_cat)
+                                        @if($cat->id === $user_cat)
                                             <li>
                                                 <a href="/categories/{{$cat->parent_id}}" class="underline">
                                                     {{ $cat->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}

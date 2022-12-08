@@ -70,6 +70,7 @@ class PerformersService
         $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->latest()->get();
         $item->task_count = Task::query()->where('user_id', Auth::id())
             ->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->get();
+        $item->user_categories = UserCategory::query()->where('user_id',$user->id)->pluck('category_id')->toArray();
         return $item;
     }
 

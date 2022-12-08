@@ -36,9 +36,9 @@
     <div class="mt-8">
         <h1 class="text-3xl font-medium">{{__('Прикрепленные категории')}}</h1>
         <ul>
-            @foreach(explode(',', $user->category_id) as $user_cat)
+            @foreach($user_categories as $user_cat)
                 @foreach(getAllCategories() as $cat)
-                    @if($cat->id == $user_cat)
+                    @if($cat->id === $user_cat)
                         <li class="mt-2 text-gray-500"><a
                                 class="hover:text-red-500 underline underline-offset-4"
                                 href="{{route('categories',$cat->parent_id)}}">{{ $cat->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</a>

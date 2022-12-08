@@ -239,6 +239,7 @@ class ProfileService
         $item->review_rating = $user->review_rating;
         $item->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->latest()->get();
         $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->latest()->get();
+        $item->user_categories = UserCategory::query()->where('user_id',$user->id)->pluck('category_id')->toArray();
         return $item;
     }
 

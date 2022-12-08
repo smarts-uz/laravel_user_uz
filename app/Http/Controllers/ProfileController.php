@@ -112,6 +112,7 @@ class ProfileController extends Controller
                 'review_rating' => $item->review_rating,
                 'goodReviews' => $item->goodReviews,
                 'badReviews' => $item->badReviews,
+                'user_categories'=>$item->user_categories
             ]);
     }
 

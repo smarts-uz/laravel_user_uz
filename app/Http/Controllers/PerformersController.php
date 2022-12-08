@@ -58,7 +58,8 @@ class PerformersController extends Controller
                 'review_bad' =>$item->review_bad,
                 'review_rating' => $item->review_rating,
                 'task_count' => $item->task_count,
-                'created' => $created
+                'created' => $created,
+                'user_categories'=>$item->user_categories
             ]);
     }
 
