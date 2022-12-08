@@ -432,15 +432,23 @@ class PerformerAPIController extends Controller
      */
     public function becomePerformerCategory(Request $request)
     {
-        $data = $request->validate(['category_id' => 'required|string']);
+        $data = $request->validate([
+            'category_id' => 'required'
+        ],[
+            'category_id.required'=>'Требуется заполнение!',
+        ]);
 
-        auth()->user()->update($data);
         /** @var User $user */
         $user = Auth::user();
         $user->role_id = User::ROLE_PERFORMER;
         $user->save();
-        return response()->json(['success' => true, "message" => __('Успешно обновлено')]);
 
+        $categories = $data['category_id'];
+        $sms_notification = (int)$request->get('sms_notification');
+        $email_notification = (int)$request->get('email_notification');
+
+        $response = $this->profileService->subscribeToCategory($categories, $user, $sms_notification, $email_notification);
+        return response()->json($response);
     }
 
 

@@ -821,5 +821,6 @@
     "Проверяемое поле должно быть меньше или равно максимальному значению": "Tekshirilayotgan maydon maksimal qiymatdan kichik yoki unga teng bo'lishi kerak",
     "Дополнительный бонус": "Qo'shimcha bonus",
     "Создано успешно": "Muvaffaqiyatli yaratildi",
-    "Вернуться в точку А": "A nuqtaga qaytish"
+    "Вернуться в точку А": "A nuqtaga qaytish",
+    "Текстовое поле должно быть строкой.": "Matn maydoni qator bo'lishi kerak."
 }
