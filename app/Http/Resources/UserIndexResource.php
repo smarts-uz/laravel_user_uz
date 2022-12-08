@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\UserCategory;
 use Carbon\Carbon;
 use App\Models\Task;
 use App\Models\Category;
@@ -110,6 +111,7 @@ class UserIndexResource extends JsonResource
         }
         $age = Carbon::parse($this->born_date)->age;
         $born_date = Carbon::parse($this->born_date)->format('Y-m-d');
+        $user_categories = UserCategory::query()->where('user_id',$this->id)->pluck('category_id')->toArray();
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -129,7 +131,7 @@ class UserIndexResource extends JsonResource
             'description' => $this->description,
             'categories' => CategoryIndexResource::collection(Category::query()
                 ->select('id', 'parent_id', 'name', 'ico')
-                ->whereIn('id', explode(',', $this->category_id))
+                ->whereIn('id', $user_categories)
                 ->get()),
             'email_verified' => boolval($this->is_email_verified),
             'phone_verified' => boolval($this->is_phone_number_verified),
