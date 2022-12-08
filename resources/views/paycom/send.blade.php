@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
+@extends('layouts.app2')
+
+@section('content')
+
     <form method="POST" action="https://checkout.paycom.uz">
       <input type="text" hidden name="merchant" value="{{ config('payments.payme.merchant_id') }}"/>
       <input type="text" hidden name="amount" value="{{ $transaction->amount * 100 }}"/>
@@ -16,5 +13,5 @@
       document.getElementById('btn').click();
     }
     </script>
-  </body>
-</html>
+
+@endsection

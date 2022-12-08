@@ -131,7 +131,12 @@ class Controller extends BaseController
     }
 
     public function paynet_oplata(){
-        return view('staticpages.paynet');
+        $agent = new Agent();
+        if ($agent->isMobile()) {
+            return view('staticpages.paynet_mobile');
+        } else {
+            return view('staticpages.paynet');
+        }
     }
 
     public function user_info($user){

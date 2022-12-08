@@ -1,16 +1,7 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/fonts/fonts.css') }}">
-    <title>Universal services</title>
-</head>
-<body>
+@extends('layouts.app2')
+
+@section('content')
+
 <div class="w-11/12 mx-auto text-gray-500 mt-4">
     <div class="flex items-center">
         <a href="/admin/users" class="text-lg text-blue-500 hover:text-red-500 cursor-pointer mr-12">
@@ -328,5 +319,5 @@
         });
     });
 </script>
-</body>
-</html>
+
+@endsection

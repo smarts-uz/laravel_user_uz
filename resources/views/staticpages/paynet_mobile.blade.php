@@ -1,11 +1,9 @@
-@extends("layouts.app")
+@extends('layouts.app2')
 
 @section('content')
 
 <div class="container w-4/5 mx-auto mt-12">
-
     <div class="flex lg:flex-row flex-col justify-center mt-6">
-        @include('components.footerpage')
         <div class="lg:w-4/5 w-full lg:mt-0 mt-4">
             <div class="sm:w-4/5 w-full mx-auto">
                 <h1 class="font-semibold text-4xl text-center">
@@ -107,7 +105,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 @endsection

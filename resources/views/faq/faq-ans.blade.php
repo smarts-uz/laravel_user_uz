@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html lang="{{setting('language','en')}}" dir="ltr">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>F.A.Q </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="{{$app_logo ?? ''}}"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,600" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.css" rel="stylesheet">
-</head>
-<body>
+@extends('layouts.app2')
+
+@section('content')
+
+
     <section class="bg-gray-500 py-8 mb-7">
         <div class="lg:w-8/12 mx-auto w-10/12">
                 <div class="sm:block lg:flex flex-column justify-between ">
@@ -49,4 +41,5 @@
             </div>
         </div>
     </section>
-</body>
+
+@endsection
