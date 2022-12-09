@@ -512,13 +512,13 @@ class ProfileService
     public function updateSettings($request): void
     {
         $validated = $request->validated();
+        unset($validated['age']);
         /** @var User $user */
         $user = auth()->user();
         if ($validated['email'] !== $user->email) {
             $validated['is_email_verified'] = 0;
             $validated['email_old'] = $user->email;
         }
-
         $user->update($validated);
         $user->save();
     }

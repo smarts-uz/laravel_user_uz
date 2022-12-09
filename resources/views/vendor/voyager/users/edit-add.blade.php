@@ -112,7 +112,6 @@
             </div>
         </div>
     </div>
-
     <div class="modal fade modal-danger" id="confirm_delete_modal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -135,6 +134,11 @@
         </div>
     </div>
     <!-- End Delete File Modal -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js'></script>
+    <script>
+        $("input[name='born_date']").mask('0000-00-00');
+    </script>
 @stop
 
 @section('javascript')
