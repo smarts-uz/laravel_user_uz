@@ -582,7 +582,7 @@ class ProfileAPIController extends Controller
      *                 ),
      *                 @OA\Property (
      *                    property="born_date",
-     *                    description="2022-06-03 12:00:0 - manashu formatda kiritiladi",
+     *                    description="2022-06-03 - manashu formatda kiritiladi",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
