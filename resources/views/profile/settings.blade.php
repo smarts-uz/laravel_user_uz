@@ -205,22 +205,19 @@
                                                 <div class="acordion mt-16">
                                                     @foreach ($categories as $category )
 
-                                                        <div
-                                                            class="mb-4 rounded-md border shadow-md py-2 pl-3 bg-yellow-100">
-                                                            <div
-                                                                class="accordion text-gray-700 cursor-pointer w-full text-left text-lg">
+                                                        <div class="mb-4 rounded-md border shadow-md py-2 pl-3 bg-yellow-100">
+                                                            <input type="checkbox">
+                                                            <div class="accordion text-gray-700 cursor-pointer w-full text-left text-lg">
                                                                 {{ $category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
                                                             </div>
-                                                            <div
-                                                                class="panel overflow-hidden hidden px-[18px] bg-white p-2 bg-yellow-100">
+                                                            <div class="panel overflow-hidden hidden bg-white p-2 bg-yellow-100">
                                                                 @foreach ($categories2 as $category2)
                                                                     @if($category2->parent_id === $category->id)
                                                                         <label class="block my-1 text-base flex items-center">
                                                                             @php
                                                                                 $res_c_arr = array_search($category2->id,$user_categories);
                                                                             @endphp
-                                                                            <input type="checkbox" name="category[]" @if($res_c_arr !== false) checked @endif
-                                                                            value="{{$category2->id}}"
+                                                                            <input type="checkbox" name="category[]" @if($res_c_arr !== false) checked @endif value="{{$category2->id}}"
                                                                                    class="mr-2 required:border-yellow-500 h-4 w-4">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
                                                                         </label>
                                                                     @endif

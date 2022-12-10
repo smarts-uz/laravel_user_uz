@@ -103,11 +103,15 @@ class UserIndexResource extends JsonResource
         $lastReview = $goodReviews->get()->last();
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
         if ($this->last_seen >= $date) {
-            $lastSeen = 'online';
+            $lastSeen = __('В сети');
         } else {
             $seenDate = Carbon::parse($this->last_seen);
             $seenDate->locale(app()->getLocale() . '-' . app()->getLocale());
-            $lastSeen = $seenDate->diffForHumans();
+            if(app()->getLocale()==='uz'){
+                $lastSeen = $seenDate->diffForHumans().'saytda edi';
+            }else{
+                $lastSeen = __('Был на сайте'). $seenDate->diffForHumans();
+            }
         }
         $age = Carbon::parse($this->born_date)->age;
         $born_date = Carbon::parse($this->born_date)->format('Y-m-d');
