@@ -11,8 +11,7 @@ class ContactService
     public function contactsList($authUser)
     {
         // get not deleted archive chat user ids
-        $messages = ChMessage::query()->select('from_id', 'to_id', 'created_at','deleted_at')
-            ->where('deleted_at',null)
+        $messages = ChMessage::query()->select('from_id', 'to_id', 'created_at')
             ->where('to_id', $authUser->id)
             ->orWhere('from_id', $authUser->id)
             ->orderByDesc('created_at')->distinct()->get()->toArray();
