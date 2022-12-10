@@ -87,6 +87,7 @@
                                 "verify_expiration",
                                 "is_phone_number_verified",
                                 "born_date",
+                                "age",
                                 "email_old",
                                 "phone_number_old",
                                 "system_notification",
@@ -4233,7 +4234,6 @@
                             "nullable": true,
                             "enum": [
                                 "custom_field_belongsto_category_relationship",
-                                "id",
                                 "title",
                                 "description",
                                 "data_type",
@@ -4263,7 +4263,6 @@
                                 "type": "string",
                                 "enum": [
                                     "custom_field_belongsto_category_relationship",
-                                    "id",
                                     "title",
                                     "description",
                                     "data_type",
@@ -4538,6 +4537,7 @@
                                 "user_id",
                                 "coordinates",
                                 "docs",
+                                "go_back",
                                 "views",
                                 "responses_count",
                                 "is_phone_verified",
@@ -23893,10 +23893,6 @@
                                     "type": "integer",
                                     "description": "Категория"
                                 },
-                                "id": {
-                                    "type": "string",
-                                    "description": "Id"
-                                },
                                 "title": {
                                     "type": "string",
                                     "description": "Название"
@@ -24002,10 +23998,6 @@
                                     "type": "integer",
                                     "description": "Категория"
                                 },
-                                "id": {
-                                    "type": "string",
-                                    "description": "Id"
-                                },
                                 "title": {
                                     "type": "string",
                                     "description": "Название"
@@ -24106,10 +24098,6 @@
                                 "custom_field_belongsto_category_relationship": {
                                     "type": "integer",
                                     "description": "Категория"
-                                },
-                                "id": {
-                                    "type": "string",
-                                    "description": "Id"
                                 },
                                 "title": {
                                     "type": "string",

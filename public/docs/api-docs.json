@@ -1643,7 +1643,7 @@
                                         "type": "integer"
                                     },
                                     "born_date": {
-                                        "description": "2022-06-03 12:00:0 - manashu formatda kiritiladi",
+                                        "description": "2022-06-03 - manashu formatda kiritiladi",
                                         "type": "string"
                                     },
                                     "age": {
@@ -1890,7 +1890,7 @@
                             "schema": {
                                 "properties": {
                                     "category": {
-                                        "type": "integer"
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -2607,6 +2607,36 @@
                         "required": true,
                         "schema": {
                             "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "\/api\/user\/{user}": {
+            "post": {
+                "tags": [
+                    "Task"
+                ],
+                "summary": "User active task and step null",
+                "operationId": "af0b037eafa1da0e41f83607558c4686",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
                 ],
@@ -4819,6 +4849,7 @@
                                 "verify_expiration",
                                 "is_phone_number_verified",
                                 "born_date",
+                                "age",
                                 "email_old",
                                 "phone_number_old",
                                 "system_notification",
@@ -8619,7 +8650,6 @@
                             "nullable": true,
                             "enum": [
                                 "custom_field_belongsto_category_relationship",
-                                "id",
                                 "title",
                                 "description",
                                 "data_type",
@@ -8649,7 +8679,6 @@
                                 "type": "string",
                                 "enum": [
                                     "custom_field_belongsto_category_relationship",
-                                    "id",
                                     "title",
                                     "description",
                                     "data_type",
@@ -8924,6 +8953,7 @@
                                 "user_id",
                                 "coordinates",
                                 "docs",
+                                "go_back",
                                 "views",
                                 "responses_count",
                                 "is_phone_verified",
@@ -27882,10 +27912,6 @@
                                     "type": "integer",
                                     "description": "\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f"
                                 },
-                                "id": {
-                                    "type": "string",
-                                    "description": "Id"
-                                },
                                 "title": {
                                     "type": "string",
                                     "description": "\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435"
@@ -27991,10 +28017,6 @@
                                     "type": "integer",
                                     "description": "\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f"
                                 },
-                                "id": {
-                                    "type": "string",
-                                    "description": "Id"
-                                },
                                 "title": {
                                     "type": "string",
                                     "description": "\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435"
@@ -28095,10 +28117,6 @@
                                 "custom_field_belongsto_category_relationship": {
                                     "type": "integer",
                                     "description": "\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f"
-                                },
-                                "id": {
-                                    "type": "string",
-                                    "description": "Id"
                                 },
                                 "title": {
                                     "type": "string",
