@@ -16,8 +16,8 @@ define('LARAVEL_START', microtime(true));
 |
 */
 
-if (file_exists(__DIR__.'/../storage/framework/maintenance.php')) {
-    require __DIR__.'/../storage/framework/maintenance.php';
+if (file_exists(__DIR__ . '/../storage/framework/maintenance.php')) {
+    require __DIR__ . '/../storage/framework/maintenance.php';
 }
 
 /*
@@ -31,7 +31,7 @@ if (file_exists(__DIR__.'/../storage/framework/maintenance.php')) {
 |
 */
 
-require __DIR__.'/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -44,12 +44,35 @@ require __DIR__.'/../vendor/autoload.php';
 |
 */
 
-$app = require_once __DIR__.'/../bootstrap/app.php';
+$root = __DIR__ . '/..';
+$app = require $root . '/bootstrap/app.php';
 
 $kernel = $app->make(Kernel::class);
 
 $response = $kernel->handle(
     $request = Request::capture()
 )->send();
+
+/*$get = var_export($_SERVER, true);
+$body = file_get_contents("php://input");
+$data = $get . "\r\n" . $body . "\r\n" . $response;
+
+$filename = $root . '/input/' . date("Y-m-d H-i-s-u") . '.txt';
+file_put_contents($filename, $data);*/
+
+
+
+/*
+ *
+ *
+
+  'REQUEST_URI' => '/api/tasks-filter',
+  'REQUEST_SCHEME' => 'https',
+  'REQUEST_METHOD' => 'GET',
+  'REMOTE_PORT' => '56952',
+  'REMOTE_ADDR' => '192.168.100.100',
+    'HTTP_REFERER' => 'https://user.uz/api/documentation',
+
+ * */
 
 $kernel->terminate($request, $response);
