@@ -17,7 +17,7 @@
                 {{-- user ma'lumotlari tugashi --}}
                 <div class="content mt-20 ">
                     <div class="grid grid-cols-10">
-                        <ul class=" md:col-span-9 col-span-10 md:items-left items-center">
+                        <ul class=" md:col-span-8 col-span-10 md:items-left items-center">
                             <li class="inline md:mr-5 mr-1">
                                 <a href="/profile" class="text-lg text-gray-600">{{__('Обо мне')}}</a>
                             </li>
@@ -28,9 +28,10 @@
                                 <a href="/profile/settings" class="text-lg border-b-4 border-green-500 pb-3 text-gray-700" id="settingsText">{{__('Настройки')}}</a>
                             </li>
                         </ul>
-                        <div class="md:col-span-1 md:block hidden ml-4" id="settingsIcon">
-                            <a href="/profile/settings">
-                                <i class="fas fa-cog text-2xl border-b-4 border-green-500 pb-3"></i>
+                        <div class="md:col-span-2 md:block hidden ml-4 pb-2" id="settingsIcon">
+                            <a href="/profile/settings" class="border-b-4 border-green-500 pb-2">
+                                <i class="fas fa-cog text-2xl"></i>
+                                <span class="font-medium ml-2">{{__('Настройки')}}</span>
                             </a>
                         </div>
                     </div>
@@ -50,9 +51,11 @@
                                 <li class="xl:px-4 md:px-2 py-2  tab-name md:ring-0 text-center w-full md:w-inherit font-semibold text-gray-800 opacity-50">
                                     <a href="#second">{{__('Уведомления')}}</a>
                                 </li>
-                                <li class="xl:px-2 md:px-2 py-2 tab-name md:ring-0 text-center w-full md:w-inherit font-semibold text-gray-800 opacity-50">
-                                    <a href="#third">{{__('Подписка на задания')}}</a>
-                                </li>
+                                @if($user->role_id === \App\Models\User::ROLE_PERFORMER)
+                                    <li class="xl:px-2 md:px-2 py-2 tab-name md:ring-0 text-center w-full md:w-inherit font-semibold text-gray-800 opacity-50">
+                                        <a href="#third">{{__('Подписка на задания')}}</a>
+                                    </li>
+                                @endif
                                 <li class="xl:px-4 md:px-2 tab-name py-2 text-center  @if($errors->has('password')) error  @endif  md:ring-0 w-full md:w-inherit font-semibold text-gray-800 opacity-50">
                                     <a href="#fourth">{{__('Безопасность')}}</a>
                                 </li>
@@ -191,82 +194,84 @@
                                     </div>
                                     {{-- settings/ second tab -> enable notification end --}}
                                 </div>
-                                <div id="third" class="hidden tab-pane tab-pane p-4">
-                                    {{-- settings/ third tab start -> subscribe for some tasks --}}
-                                    <div class="sm:w-4/5 w-full mt-10">
-                                        <h3 class="font-bold text-3xl mb-7">1. {{__('Выберите категории')}}</h3>
-                                        {{-- choosing categories --}}
-                                        <form action="{{route('profile.getCategory')}}" method="post">
-                                            @csrf
-                                            <div class="acordion mt-16">
-                                                @foreach ($categories as $category )
+                                @if($user->role_id === \App\Models\User::ROLE_PERFORMER)
+                                    <div id="third" class="hidden tab-pane tab-pane p-4">
+                                        {{-- settings/ third tab start -> subscribe for some tasks --}}
+                                        <div class="sm:w-4/5 w-full mt-10">
+                                            <h3 class="font-bold text-3xl mb-7">1. {{__('Выберите категории')}}</h3>
+                                            {{-- choosing categories --}}
+                                            <form action="{{route('profile.getCategory')}}" method="post">
+                                                @csrf
+                                                <div class="acordion mt-16">
+                                                    @foreach ($categories as $category )
 
-                                                    <div
-                                                        class="mb-4 rounded-md border shadow-md py-2 pl-3 bg-yellow-100">
                                                         <div
-                                                            class="accordion text-gray-700 cursor-pointer w-full text-left text-lg">
-                                                            {{ $category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
+                                                            class="mb-4 rounded-md border shadow-md py-2 pl-3 bg-yellow-100">
+                                                            <div
+                                                                class="accordion text-gray-700 cursor-pointer w-full text-left text-lg">
+                                                                {{ $category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
+                                                            </div>
+                                                            <div
+                                                                class="panel overflow-hidden hidden px-[18px] bg-white p-2 bg-yellow-100">
+                                                                @foreach ($categories2 as $category2)
+                                                                    @if($category2->parent_id === $category->id)
+                                                                        <label class="block my-1 text-base flex items-center">
+                                                                            @php
+                                                                                $res_c_arr = array_search($category2->id,$user_categories);
+                                                                            @endphp
+                                                                            <input type="checkbox" name="category[]" @if($res_c_arr !== false) checked @endif
+                                                                            value="{{$category2->id}}"
+                                                                                   class="mr-2 required:border-yellow-500 h-4 w-4">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
+                                                                        </label>
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
                                                         </div>
-                                                        <div
-                                                            class="panel overflow-hidden hidden px-[18px] bg-white p-2 bg-yellow-100">
-                                                            @foreach ($categories2 as $category2)
-                                                                @if($category2->parent_id === $category->id)
-                                                                    <label class="block my-1 text-base flex items-center">
-                                                                        @php
-                                                                            $res_c_arr = array_search($category2->id,$user_categories);
-                                                                        @endphp
-                                                                        <input type="checkbox" name="category[]" @if($res_c_arr !== false) checked @endif
-                                                                               value="{{$category2->id}}"
-                                                                               class="mr-2 required:border-yellow-500 h-4 w-4">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
-                                                                    </label>
-                                                                @endif
-                                                            @endforeach
-                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                                <p class="font-bold text-xl mb-7"> {{__('Дополнительные типы уведомлений:')}}</p>
+                                                <div class="flex sm:flex-row flex-col itens-center">
+                                                    <div class="items-center mr-8">
+                                                        <input type="checkbox" id="sms" name="sms_notification" value="1"
+                                                               {{$user->sms_notification==1 ? 'checked' : ''}} class="w-5 h-5"/>
+                                                        <label class="cursor-pointer text-2xl" for="sms">
+                                                            <i class="fas fa-mobile text-yellow-600 text-2xl mx-1"></i>{{__('SMS')}}
+                                                        </label>
                                                     </div>
-                                                @endforeach
-                                            </div>
-                                            <p class="font-bold text-xl mb-7"> {{__('Дополнительные типы уведомлений:')}}</p>
-                                            <div class="flex sm:flex-row flex-col itens-center">
-                                                <div class="items-center mr-8">
-                                                    <input type="checkbox" id="sms" name="sms_notification" value="1"
-                                                           {{$user->sms_notification==1 ? 'checked' : ''}} class="w-5 h-5"/>
-                                                    <label class="cursor-pointer text-2xl" for="sms">
-                                                        <i class="fas fa-mobile text-yellow-600 text-2xl mx-1"></i>{{__('SMS')}}
-                                                    </label>
+                                                    <div class="items-center">
+                                                        <input type="checkbox" id="email_notif" name="email_notification"
+                                                               value="1"
+                                                               {{$user->email_notification==1 ? 'checked' : ''}} class="w-5 h-5"/>
+                                                        <label class="cursor-pointer mx-1 text-xl" for="email_notif">
+                                                            <i class="fas fa-envelope text-yellow-600 text-2xl mx-1"></i>{{__('EMAIL')}}
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                                <div class="items-center">
-                                                    <input type="checkbox" id="email_notif" name="email_notification"
-                                                           value="1"
-                                                           {{$user->email_notification==1 ? 'checked' : ''}} class="w-5 h-5"/>
-                                                    <label class="cursor-pointer mx-1 text-xl" for="email_notif">
-                                                        <i class="fas fa-envelope text-yellow-600 text-2xl mx-1"></i>{{__('EMAIL')}}
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <button
-                                                class="block  md:w-1/2 w-full mt-10 bg-green-400 hover:bg-green-600 text-white uppercase p-4 rounded-xl"
-                                                type="submit">{{__('Сохранить')}}</button>
-                                        </form>
-                                        <script>
-                                            var acc = document.getElementsByClassName("accordion");
-                                            var i;
+                                                <button
+                                                    class="block  md:w-1/2 w-full mt-10 bg-green-400 hover:bg-green-600 text-white uppercase p-4 rounded-xl"
+                                                    type="submit">{{__('Сохранить')}}</button>
+                                            </form>
+                                            <script>
+                                                var acc = document.getElementsByClassName("accordion");
+                                                var i;
 
-                                            for (i = 0; i < acc.length; i++) {
-                                                acc[i].addEventListener("click", function () {
-                                                    this.classList.toggle("active");
-                                                    var panel = this.nextElementSibling;
-                                                    if (panel.style.display === "block") {
-                                                        panel.style.display = "none";
-                                                    } else {
-                                                        panel.style.display = "block";
-                                                    }
-                                                });
-                                            }
-                                        </script>
+                                                for (i = 0; i < acc.length; i++) {
+                                                    acc[i].addEventListener("click", function () {
+                                                        this.classList.toggle("active");
+                                                        var panel = this.nextElementSibling;
+                                                        if (panel.style.display === "block") {
+                                                            panel.style.display = "none";
+                                                        } else {
+                                                            panel.style.display = "block";
+                                                        }
+                                                    });
+                                                }
+                                            </script>
 
+                                        </div>
+                                        {{-- settings/ third tab end -> subscribe for some tasks --}}
                                     </div>
-                                    {{-- settings/ third tab end -> subscribe for some tasks --}}
-                                </div>
+                                @endif
                                 <div id="fourth"
                                      class="hidden tab-pane @if($errors->has('password')) error  @endif py-4">
 

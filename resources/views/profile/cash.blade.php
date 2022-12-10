@@ -18,17 +18,23 @@
 
                 <div class="content  mt-20 ">
                     <div class="grid md:grid-cols-10 w-full ">
-                        <ul class="md:col-span-9 col-span-10 items-center w-3/4 md:w-full">
-                            <li class="inline mr-1 md:mr-5"><a href="/profile"
-                                    class="text-lg text-gray-600">{{__('Обо мне')}}</a></li>
-                            <li class="inline mr-1 md:mr-5"><a href="/profile/cash"
-                                    class="text-lg font-bold text-gray-700 border-b-4 border-green-500 pb-1">{{__('Счет')}}</a>
+                        <ul class="md:col-span-8 col-span-10 items-center w-3/4 md:w-full">
+                            <li class="inline mr-1 md:mr-5">
+                                <a href="/profile" class="text-lg text-gray-600">{{__('Обо мне')}}</a>
                             </li>
-                            <li class=" md:mr-5 mr-1 inline-block md:hidden block"><a href="/profile/settings"
-                                    class="text-lg text-gray-600"
-                                    id="settingsText">{{__('Настройки')}}</a></li>
+                            <li class="inline mr-1 md:mr-5">
+                                <a href="/profile/cash" class="text-lg font-bold text-gray-700 border-b-4 border-green-500 pb-1">{{__('Счет')}}</a>
+                            </li>
+                            <li class=" md:mr-5 mr-1 inline-block md:hidden block">
+                                <a href="/profile/settings" class="text-lg text-gray-600" id="settingsText">{{__('Настройки')}}</a>
+                            </li>
                         </ul>
-                        <div class="md:col-span-1 md:block hidden ml-4" id="settingsIcon"><a href="/profile/settings"><i class="fas fa-cog text-2xl"></i></a></div>
+                        <div class="md:col-span-2 md:block hidden text-gray-600 ml-6" id="settingsIcon">
+                            <a href="/profile/settings" class="flex items-center ">
+                                <i class="fas fa-cog text-2xl"></i>
+                                <span class="font-medium ml-2">{{__('Настройки')}}</span>
+                            </a>
+                        </div>
                     </div>
                     <hr>
 
