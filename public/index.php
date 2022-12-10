@@ -47,20 +47,18 @@ require __DIR__ . '/../vendor/autoload.php';
 $root = __DIR__ . '/..';
 $app = require $root . '/bootstrap/app.php';
 
-
 $kernel = $app->make(Kernel::class);
 
 $response = $kernel->handle(
     $request = Request::capture()
 )->send();
 
-
-$get = var_export($_SERVER, true);
+/*$get = var_export($_SERVER, true);
 $body = file_get_contents("php://input");
 $data = $get . "\r\n" . $body . "\r\n" . $response;
 
 $filename = $root . '/input/' . date("Y-m-d H-i-s-u") . '.txt';
-file_put_contents($filename, $data);
+file_put_contents($filename, $data);*/
 
 
 
