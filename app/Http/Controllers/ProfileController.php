@@ -151,7 +151,7 @@ class ProfileController extends Controller
         $updatedData = $profile->settingsUpdate($data);
         Auth::user()->update((array)$updatedData);
         Alert::success(__('Настройки успешно сохранены'));
-        return redirect()->route('profile.editData');
+        return redirect()->back();
     }
 
     public function destroy()
@@ -174,7 +174,7 @@ class ProfileController extends Controller
 
         $this->profileService->subscribeToCategory($categories, $user, $sms_notification, $email_notification);
 
-        return redirect()->route('profile.profileData');
+        return redirect()->back();
     }
 
     public function storeDistrict(Request $request)

@@ -272,9 +272,7 @@
                                         {{-- settings/ third tab end -> subscribe for some tasks --}}
                                     </div>
                                 @endif
-                                <div id="fourth"
-                                     class="hidden tab-pane @if($errors->has('password')) error  @endif py-4">
-
+                                <div id="fourth" class="hidden tab-pane @if($errors->has('password')) error  @endif py-4">
                                     <div class="container max-w-full mx-auto">
                                         <div class="">
                                             <div class="max-w-sm">
@@ -454,7 +452,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
