@@ -20,7 +20,11 @@ class PerformerIndexResource extends JsonResource
         } else {
             $seenDate = Carbon::parse($this->last_seen);
             $seenDate->locale(app()->getLocale() . '-' . app()->getLocale());
-            $lastSeen = $seenDate->diffForHumans();
+            if(app()->getLocale()==='uz'){
+                $lastSeen = $seenDate->diffForHumans().' saytda edi';
+            }else{
+                $lastSeen = __('Был на сайте'). $seenDate->diffForHumans();
+            }
         }
         return [
             'id' => $this->id,

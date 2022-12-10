@@ -108,7 +108,7 @@ class UserIndexResource extends JsonResource
             $seenDate = Carbon::parse($this->last_seen);
             $seenDate->locale(app()->getLocale() . '-' . app()->getLocale());
             if(app()->getLocale()==='uz'){
-                $lastSeen = $seenDate->diffForHumans().'saytda edi';
+                $lastSeen = $seenDate->diffForHumans().' saytda edi';
             }else{
                 $lastSeen = __('Был на сайте'). $seenDate->diffForHumans();
             }

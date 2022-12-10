@@ -32,7 +32,13 @@ class ReviewIndexResource extends JsonResource
         if ($user->last_seen >= $date) {
             $lastSeen = __('В сети');
         } else {
-            $lastSeen = $user->last_seen_at;
+            $seenDate = Carbon::parse($this->last_seen);
+            $seenDate->locale(app()->getLocale() . '-' . app()->getLocale());
+            if(app()->getLocale()==='uz'){
+                $lastSeen = $seenDate->diffForHumans().' saytda edi';
+            }else{
+                $lastSeen = __('Был на сайте'). $seenDate->diffForHumans();
+            }
         }
         return [
             'id' => $this->id,
