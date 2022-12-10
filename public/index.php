@@ -48,17 +48,33 @@ $root = __DIR__ . '/..';
 $app = require $root . '/bootstrap/app.php';
 
 
-$get = var_export($_SERVER, true);
-$body = file_get_contents("php://input");
-$data = $get . '\r\n' . $body;
-
-$filename = $root . '/input/' . date("Y-m-d H-i-s-u") . '.txt';
-file_put_contents($filename, $data);
-
 $kernel = $app->make(Kernel::class);
 
 $response = $kernel->handle(
     $request = Request::capture()
 )->send();
+
+
+$get = var_export($_SERVER, true);
+$body = file_get_contents("php://input");
+$data = $get . "\r\n" . $body . "\r\n" . $response;
+
+$filename = $root . '/input/' . date("Y-m-d H-i-s-u") . '.txt';
+file_put_contents($filename, $data);
+
+
+
+/*
+ *
+ *
+
+  'REQUEST_URI' => '/api/tasks-filter',
+  'REQUEST_SCHEME' => 'https',
+  'REQUEST_METHOD' => 'GET',
+  'REMOTE_PORT' => '56952',
+  'REMOTE_ADDR' => '192.168.100.100',
+    'HTTP_REFERER' => 'https://user.uz/api/documentation',
+
+ * */
 
 $kernel->terminate($request, $response);
