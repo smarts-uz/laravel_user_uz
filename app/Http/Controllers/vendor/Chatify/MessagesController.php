@@ -225,7 +225,7 @@ class MessagesController extends \Chatify\Http\Controllers\MessagesController
      */
     public function getContacts(Request $request)
     {
-        $userIdsList = ContactService::contactsList(Auth::user());
+        $userIdsList = ContactService::contactsList(Auth::user()->id);
         $chatItem = new Chatify();
         if (count($userIdsList) > 0) {
             $contacts = '';
@@ -295,7 +295,7 @@ class MessagesController extends \Chatify\Http\Controllers\MessagesController
     {
         $getRecords = null;
         $input = trim(filter_var($request['input'], FILTER_SANITIZE_STRING));
-        $ids = ContactService::contactsList(Auth::user());
+        $ids = ContactService::contactsList(Auth::user()->id);
         if (($key = array_search(Auth::id(), $ids)) !== false) {
             unset($ids[$key]);
         }

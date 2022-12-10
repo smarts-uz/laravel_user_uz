@@ -287,7 +287,7 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
      */
     public function getContacts(Request $request): JsonResponse
     {
-        $userIdsList = ContactService::contactsList(Auth::user());
+        $userIdsList = ContactService::contactsList(Auth::user()->id);
 
         $chatItem = new ChatifyMessenger();
         if (count($userIdsList) > 0) {
@@ -343,7 +343,7 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
     public function search(Request $request): JsonResponse
     {
         $input = trim(filter_var($request['name'], FILTER_SANITIZE_STRING));
-        $ids = ContactService::contactsList(Auth::user());
+        $ids = ContactService::contactsList(Auth::user()->id);
         if (($key = array_search(Auth::id(), $ids)) !== false) {
             unset($ids[$key]);
         }
