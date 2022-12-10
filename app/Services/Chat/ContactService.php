@@ -8,7 +8,7 @@ use App\Models\User;
 
 class ContactService
 {
-    public function contactsList($authUser)
+    public static function contactsList($authUser)
     {
         // get not deleted archive chat user ids
         $messages = ChMessage::query()->select('from_id', 'to_id', 'created_at')
