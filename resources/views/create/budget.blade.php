@@ -29,7 +29,20 @@
                         <div class="py-4 mx-auto px-auto text-center text-3xl texl-bold">
                             {{__('На какой бюджет вы рассчитываете?')}}
                         </div>
-                        <div class="py-4 mx-auto  text-left ">
+                        <div class="my-2 md:block hidden">
+                            <div class="flex flex-row items-center text-center w-3/4 mx-auto text-yellow-500  text-2xl">
+                                @if(session('lang') === 'ru')
+                                    <p class="text-yellow-500 text-2xl">{{__('до')}}</p>
+                                    <input class="focus:outline-none text-center" type="text" id="amount" maxlength="10" name="amount2">
+                                    <p class="text-yellow-500 text-2xl">UZS</p>
+                                @else
+                                    <input class="focus:outline-none text-center" type="text" id="amount" maxlength="10" name="amount2">
+                                    <p class="text-yellow-500 text-2xl">so'mgacha</p>
+                                @endif
+                            </div>
+                            <hr class="border-yellow-400 w-3/4 mx-auto">
+                        </div>
+                        <div class="py-4 mx-auto text-left">
                             <div class="mb-4">
                                 <div class="content__38cf1 w-8/12 mx-auto">
                                     <div class="">
@@ -49,10 +62,7 @@
                                                         </div>
                                                     </div>
                                                     <div id="tooltip-light" role="tooltip" class="inline-block shadow-xl absolute visible py-2 px-1 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 shadow-sm opacity-100 tooltip" style="z-index: 100;!important;">
-                                                        <input class="focus:outline-none text-center text-yellow-500 text-xl" type="text" id="amount2" name="amount2" readonly >
-                                                    </div>
-                                                    <div class="handle__27597">
-                                                        <input class="focus:outline-none focus:border-yellow-500  mt-8" type="text" id="amount"  readonly >
+                                                        <input class="focus:outline-none text-center text-yellow-500 text-xl" type="text" id="amount2" readonly >
                                                     </div>
                                                     <div class="tickWrapper__6685b" style="width: 16.6667%; left: 0%;">
                                                         <div class="dot__b4c97"></div>
@@ -85,8 +95,8 @@
                                 </div>
                             </div>
                                 <div class="w-[100px]  md:w-[200px] md:hidden text-center">
-                                    <select name="amount" class="border md:ml-14 bg-yellow-400  text-white font-semibold rounded-lg text-lg md:text-2xl my-4 py-3 px-10 hover:bg-yellow-600"
-                                    onchange="$('#amount2').val(this.value)">
+                                    <select class="border md:ml-14 bg-yellow-400  text-white font-semibold rounded-lg text-lg md:text-2xl my-4 py-3 px-10 hover:bg-yellow-600"
+                                    onchange="$('#amount').val(this.value)">
                                             <option value="0">
                                                 {{__('Выберите бюджет')}}
                                             </option>
@@ -103,24 +113,24 @@
                                             <option value="{{round($category->max/5 * 4)}}">
                                                 {{__('до')}} {{round($category->max/5 * 4)}} UZS
                                             </option>
-                                            <option value="до {{round($category->max)}} UZS">
+                                            <option value="{{round($category->max)}}">
                                                 {{__('до')}} {{round($category->max)}} UZS
                                             </option>
                                         @else
                                             <option value="{{round($category->max/5)}}">
-                                                {{round($category->max/5)}}  So'm{{__('до')}}
+                                                {{round($category->max/5)}}  so'm{{__('до')}}
                                             </option>
                                             <option value="{{round($category->max/5 * 2)}}">
-                                                {{round($category->max/5 * 2)}} So'm{{__('до')}}
+                                                {{round($category->max/5 * 2)}} so'm{{__('до')}}
                                             </option>
                                             <option value="{{round($category->max/5 * 3)}}">
-                                                {{round($category->max/5 * 3)}} So'm{{__('до')}}
+                                                {{round($category->max/5 * 3)}} so'm{{__('до')}}
                                             </option>
                                             <option value="{{round($category->max/5 * 4)}}">
-                                                {{round($category->max/5 * 4)}} So'm{{__('до')}}
+                                                {{round($category->max/5 * 4)}} so'm{{__('до')}}
                                             </option>
                                             <option value="до {{round($category->max)}} UZS">
-                                                {{round($category->max)}} So'm{{__('до')}}
+                                                {{round($category->max)}} so'm{{__('до')}}
                                             </option>
                                         @endif
 
@@ -160,7 +170,7 @@
             </div>
         </div>
     </form>
-
+    <script src="{{asset('js/custom.js')}}"></script>
     <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="{{ asset('/js/flowbite.js') }}"></script>
     <script>
@@ -176,24 +186,24 @@
                     var maximum = {{$category->max}};
                     if (maximum === Math.floor(ui.value)) {
                         @if(session('lang') === 'ru')
-                            $("#amount").val("{{__('до ')}}" + maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
+                            $("#amount").val(maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "));
                             $("#amount2").val("{{__('до ')}}" + maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
                         @else
-                            $("#amount").val(maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " So'm" + "{{__('до')}}");
-                            $("#amount2").val(maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " So'm" + "{{__('до')}}");
+                            $("#amount").val(maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "));
+                            $("#amount2").val(maximum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " so'm" + "{{__('до')}}");
                         @endif
                     }else if(Math.floor(ui.value) === 0) {
-                        $("#amount").val(0  + " UZS");
+                        $("#amount").val(0);
                         $("#amount2").val(0  + " UZS");
                     }
                     else {
                         var round   = Math.floor(ui.value);
                         @if(session('lang') === 'ru')
-                            $("#amount").val("{{__('до ')}}" + round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
+                            $("#amount").val(round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "));
                             $("#amount2").val("{{__('до ')}}" + round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " UZS");
                         @else
-                            $("#amount").val(round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " So'm" + "{{__('до')}}");
-                            $("#amount2").val(round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " So'm" + "{{__('до')}}");
+                            $("#amount").val(round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "));
+                            $("#amount2").val(round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " so'm" + "{{__('до')}}");
                         @endif
                     }
 
@@ -206,7 +216,7 @@
             $(".ui-slider-handle").css("display", 'block');
             var delitel = Math.floor($("#slider-range-min").slider("value"));
             var round   = Math.floor(delitel);
-            $("#amount").val(' ' + round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' UZS');
+            $("#amount").val(round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "));
             $("#amount2").val(' ' + round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' UZS');
         });
     </script>

@@ -223,21 +223,6 @@ p {
 .credits a:hover::after {
     width: 103%;
 }
-#amount {
-    position: relative;
-    display: inline-block;
-    text-align: center;
-    font-family: 'Exo', sans-serif;
-    font-weight: 800;
-    font-size: 2rem;
-    color: #ffa200;
-    background: transparent;
-    border: none;
-    left: 18%;
-}
-#amount:focus {
-    outline: none;
-}
 /* base */
 #content {
     -webkit-box-sizing: border-box;
