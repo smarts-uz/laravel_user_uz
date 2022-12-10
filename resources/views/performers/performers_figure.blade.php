@@ -101,7 +101,7 @@
         </div>
         <div>
             @if(Cache::has('user-is-online-' . $user->id))
-                <span id="only" class="text-green-500">Online</span>
+                <span id="only" class="text-green-500">{{__('В сети')}}</span>
             @else
                 <span class="text-gray-500"> {{ $user->last_seen_at }}</span>
             @endif

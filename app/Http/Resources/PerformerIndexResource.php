@@ -16,7 +16,7 @@ class PerformerIndexResource extends JsonResource
     public function toArray($request)
     {
         if ($this->last_seen >= Carbon::now()->subMinutes(2)->toDateTimeString()) {
-            $lastSeen = 'online';
+            $lastSeen = __('В сети');
         } else {
             $seenDate = Carbon::parse($this->last_seen);
             $seenDate->locale(app()->getLocale() . '-' . app()->getLocale());

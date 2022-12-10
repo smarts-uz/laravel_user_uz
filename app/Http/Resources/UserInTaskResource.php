@@ -17,7 +17,7 @@ class UserInTaskResource extends JsonResource
     {
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
         if ($this->last_seen >= $date) {
-            $lastSeen = 'online';
+            $lastSeen = __('В сети');
         } else {
             $seenDate = Carbon::parse($this->last_seen);
             $seenDate->locale(app()->getLocale() . '-' . app()->getLocale());

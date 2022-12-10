@@ -30,7 +30,7 @@ class ReviewIndexResource extends JsonResource
         $task = $this->task;
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
         if ($user->last_seen >= $date) {
-            $lastSeen = 'online';
+            $lastSeen = __('В сети');
         } else {
             $lastSeen = $user->last_seen_at;
         }
