@@ -204,11 +204,13 @@
                                                 @csrf
                                                 <div class="acordion mt-16">
                                                     @foreach ($categories as $category )
-
                                                         <div class="mb-4 rounded-md border shadow-md py-2 pl-3 bg-yellow-100">
-                                                            <input type="checkbox">
-                                                            <div class="accordion text-gray-700 cursor-pointer w-full text-left text-lg">
+                                                            <div class="accordion text-gray-700 cursor-pointer w-full text-left text-lg flex items-center gap-x-2">
+                                                                <input type="checkbox" id="selectall" class="h-4 w-4">
                                                                 {{ $category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
+                                                                <h1 class="text-blue-500">[<span>23</span>]</h1>
+                                                                <i class="fas fa-chevron-down"></i>
+                                                                <i class="fas fa-chevron-up"></i>
                                                             </div>
                                                             <div class="panel overflow-hidden hidden bg-white p-2 bg-yellow-100">
                                                                 @foreach ($categories2 as $category2)
@@ -217,13 +219,33 @@
                                                                             @php
                                                                                 $res_c_arr = array_search($category2->id,$user_categories);
                                                                             @endphp
-                                                                            <input type="checkbox" name="category[]" @if($res_c_arr !== false) checked @endif value="{{$category2->id}}"
+                                                                            <input type="checkbox" id="checkbox{{$category->id}}" name="category[]" @if($res_c_arr !== false) checked @endif value="{{$category2->id}}"
                                                                                    class="mr-2 required:border-yellow-500 h-4 w-4">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
                                                                         </label>
                                                                     @endif
                                                                 @endforeach
                                                             </div>
                                                         </div>
+                                                        <script>
+                                                            $(document).ready(function () {
+                                                                $('#selectall').click(function () {
+                                                                    $('#checkbox{{$category->id}}').prop('checked', this.checked);
+                                                                    var countCheckedCheckboxes = $checkboxes.filter(':checked').length;
+                                                                    $('#count-checked-checkboxes').text(countCheckedCheckboxes);
+                                                                });
+
+                                                                $('.selectedId').change(function () {
+                                                                    var check = ($('.selectedId').filter(":checked").length === $('.selectedId').length);
+                                                                    $('#selectall').prop("checked", check);
+                                                                });
+
+                                                                var $checkboxes = $('#notificationsTableId td input[type="checkbox"]');
+                                                                $checkboxes.change(function(){
+                                                                    var countCheckedCheckboxes = $checkboxes.filter(':checked').length;
+                                                                    $('#count-checked-checkboxes').text(countCheckedCheckboxes);
+                                                                });
+                                                            });
+                                                        </script>
                                                     @endforeach
                                                 </div>
                                                 <p class="font-bold text-xl mb-7"> {{__('Дополнительные типы уведомлений:')}}</p>

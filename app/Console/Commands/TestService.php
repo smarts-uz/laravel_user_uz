@@ -30,7 +30,7 @@ class TestService extends Command
      */
     public function handle()
     {
-        $authUser = 655;
+        $authUser = 725;
         $performer_filter = new ContactService();
         $data = $performer_filter->contactsList($authUser);
         dd($data);
