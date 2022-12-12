@@ -434,9 +434,19 @@ class PerformerAPIController extends Controller
     {
         $data = $request->validate(['category_id' => 'required|string']);
 
-        auth()->user()->update($data);
         /** @var User $user */
         $user = Auth::user();
+        $user_exists = UserCategory::query()->where('user_id',$user->id)->get();
+        if($user_exists){
+            UserCategory::query()->where('user_id',$user->id)->delete();
+        }
+        $categories = $data['category_id'];
+        foreach ($categories as $category) {
+            UserCategory::query()->create([
+                'user_id'=> $user->id,
+                'category_id'=>$category,
+            ]);
+        }
         $user->role_id = User::ROLE_PERFORMER;
         $user->save();
         return response()->json(['success' => true, "message" => __('Успешно обновлено')]);
