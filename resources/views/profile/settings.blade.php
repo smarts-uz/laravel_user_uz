@@ -224,27 +224,6 @@
                                                                 @endforeach
                                                             </div>
                                                         </div>
-                                                        <script>
-                                                            $('#selectall{{$category->id}}').click(function() {
-                                                                if (this.checked === false) {
-                                                                    $(".for_check{{$category->id}} input:checkbox").each(function() {
-                                                                        this.checked = false;
-                                                                    });
-                                                                    $('#count{{$category->id}}').text($('.checkbox{{$category->id}}').filter(":checked").length);
-                                                                } else {
-                                                                    $(".for_check{{$category->id}} input:checkbox").each(function() {
-                                                                        this.checked = true;
-                                                                    });
-                                                                    $('#count{{$category->id}}').text($('.checkbox{{$category->id}}').filter(":checked").length);
-                                                                }
-                                                            });
-                                                            $('.checkbox{{$category->id}}').change(function () {
-                                                                var check = ($('.checkbox{{$category->id}}').filter(":checked").length === $('.checkbox{{$category->id}}').length);
-                                                                $('#selectall{{$category->id}}').prop("checked", check);
-                                                                $('#count{{$category->id}}').text($('.checkbox{{$category->id}}').filter(":checked").length);
-                                                            });
-                                                            $('#count{{$category->id}}').text($('.checkbox{{$category->id}}').filter(":checked").length);
-                                                        </script>
                                                     @endforeach
                                                 </div>
                                                 <p class="font-bold text-xl mb-7"> {{__('Дополнительные типы уведомлений:')}}</p>
@@ -508,6 +487,29 @@
     </div>
     <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id111-backdrop"></div>
     {{-- delete user modal end --}}
+    @foreach($categories as $category)
+        <script>
+            $('#selectall{{$category->id}}').click(function() {
+                if (this.checked === false) {
+                    $(".for_check{{$category->id}} input:checkbox").each(function() {
+                        this.checked = false;
+                    });
+                    $('#count{{$category->id}}').text($('.checkbox{{$category->id}}').filter(":checked").length);
+                } else {
+                    $(".for_check{{$category->id}} input:checkbox").each(function() {
+                        this.checked = true;
+                    });
+                    $('#count{{$category->id}}').text($('.checkbox{{$category->id}}').filter(":checked").length);
+                }
+            });
+            $('.checkbox{{$category->id}}').change(function () {
+                var check = ($('.checkbox{{$category->id}}').filter(":checked").length === $('.checkbox{{$category->id}}').length);
+                $('#selectall{{$category->id}}').prop("checked", check);
+                $('#count{{$category->id}}').text($('.checkbox{{$category->id}}').filter(":checked").length);
+            });
+            $('#count{{$category->id}}').text($('.checkbox{{$category->id}}').filter(":checked").length);
+        </script>
+    @endforeach
     <script>
 
         let notif_11, notif_22;
