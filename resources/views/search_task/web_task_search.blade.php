@@ -147,7 +147,7 @@
                                 </div>
                                 <div x-show="show" class="border-b-0 px-8 py-0">
                                     @foreach ($categories2 as $category2)
-                                        @if($category2->parent_id == $category->id)
+                                        @if($category2->parent_id === $category->id)
                                             <div class="par{{$category->id}}">
                                                 <label class="inline-flex items-center mt-3 hover:cursor-pointer">
                                                     <input type="checkbox"

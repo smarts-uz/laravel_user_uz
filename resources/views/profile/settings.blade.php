@@ -206,45 +206,44 @@
                                                     @foreach ($categories as $category )
                                                         <div class="mb-4 rounded-md border shadow-md py-2 pl-3 bg-yellow-100">
                                                             <div class="accordion text-gray-700 cursor-pointer w-full text-left text-lg flex items-center gap-x-2">
-                                                                <input type="checkbox" id="selectall" class="h-4 w-4">
+                                                                <input type="checkbox" id="selectall{{$category->id}}" class="h-4 w-4">
                                                                 {{ $category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
-                                                                <h1 class="text-blue-500">[<span>23</span>]</h1>
-                                                                <i class="fas fa-chevron-down"></i>
-                                                                <i class="fas fa-chevron-up"></i>
+                                                                <h1 class="text-blue-500">[<span id="count{{$category->id}}">0</span>]</h1>
                                                             </div>
                                                             <div class="panel overflow-hidden hidden bg-white p-2 bg-yellow-100">
                                                                 @foreach ($categories2 as $category2)
                                                                     @if($category2->parent_id === $category->id)
-                                                                        <label class="block my-1 text-base flex items-center">
+                                                                        <label class="for_check{{$category->id}} block my-1 text-base flex items-center">
                                                                             @php
                                                                                 $res_c_arr = array_search($category2->id,$user_categories);
                                                                             @endphp
-                                                                            <input type="checkbox" id="checkbox{{$category->id}}" name="category[]" @if($res_c_arr !== false) checked @endif value="{{$category2->id}}"
-                                                                                   class="mr-2 required:border-yellow-500 h-4 w-4">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
+                                                                            <input type="checkbox" name="category[]" @if($res_c_arr !== false) checked @endif value="{{$category2->id}}"
+                                                                                   class="checkbox{{$category->id}} mr-2 required:border-yellow-500 h-4 w-4">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
                                                                         </label>
                                                                     @endif
                                                                 @endforeach
                                                             </div>
                                                         </div>
                                                         <script>
-                                                            $(document).ready(function () {
-                                                                $('#selectall').click(function () {
-                                                                    $('#checkbox{{$category->id}}').prop('checked', this.checked);
-                                                                    var countCheckedCheckboxes = $checkboxes.filter(':checked').length;
-                                                                    $('#count-checked-checkboxes').text(countCheckedCheckboxes);
-                                                                });
-
-                                                                $('.selectedId').change(function () {
-                                                                    var check = ($('.selectedId').filter(":checked").length === $('.selectedId').length);
-                                                                    $('#selectall').prop("checked", check);
-                                                                });
-
-                                                                var $checkboxes = $('#notificationsTableId td input[type="checkbox"]');
-                                                                $checkboxes.change(function(){
-                                                                    var countCheckedCheckboxes = $checkboxes.filter(':checked').length;
-                                                                    $('#count-checked-checkboxes').text(countCheckedCheckboxes);
-                                                                });
+                                                            $('#selectall{{$category->id}}').click(function() {
+                                                                if (this.checked === false) {
+                                                                    $(".for_check{{$category->id}} input:checkbox").each(function() {
+                                                                        this.checked = false;
+                                                                    });
+                                                                    $('#count{{$category->id}}').text($('.checkbox{{$category->id}}').filter(":checked").length);
+                                                                } else {
+                                                                    $(".for_check{{$category->id}} input:checkbox").each(function() {
+                                                                        this.checked = true;
+                                                                    });
+                                                                    $('#count{{$category->id}}').text($('.checkbox{{$category->id}}').filter(":checked").length);
+                                                                }
                                                             });
+                                                            $('.checkbox{{$category->id}}').change(function () {
+                                                                var check = ($('.checkbox{{$category->id}}').filter(":checked").length === $('.checkbox{{$category->id}}').length);
+                                                                $('#selectall{{$category->id}}').prop("checked", check);
+                                                                $('#count{{$category->id}}').text($('.checkbox{{$category->id}}').filter(":checked").length);
+                                                            });
+                                                            $('#count{{$category->id}}').text($('.checkbox{{$category->id}}').filter(":checked").length);
                                                         </script>
                                                     @endforeach
                                                 </div>
