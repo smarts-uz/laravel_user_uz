@@ -508,6 +508,9 @@
                 $('#count{{$category->id}}').text($('.checkbox{{$category->id}}').filter(":checked").length);
             });
             $('#count{{$category->id}}').text($('.checkbox{{$category->id}}').filter(":checked").length);
+            if ($('.checkbox{{$category->id}}').filter(":checked").length === $('.checkbox{{$category->id}}').length) {
+                $('#selectall{{$category->id}}').prop('checked', true);
+            }
         </script>
     @endforeach
     <script>
