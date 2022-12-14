@@ -202,15 +202,23 @@
                                             {{-- choosing categories --}}
                                             <form action="{{route('profile.getCategory')}}" method="post">
                                                 @csrf
-                                                <div class="acordion mt-16">
+                                                <div class="mt-16">
                                                     @foreach ($categories as $category )
-                                                        <div class="mb-4 rounded-md border shadow-md py-2 pl-3 bg-yellow-100">
-                                                            <div class="accordion text-gray-700 cursor-pointer w-full text-left text-lg flex items-center gap-x-2">
-                                                                <input type="checkbox" id="selectall{{$category->id}}" class="h-4 w-4">
-                                                                {{ $category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
-                                                                <h1 class="text-blue-500">[<span id="count{{$category->id}}">0</span>]</h1>
+                                                        <div x-data={show:false} class="mb-4 rounded-md border shadow-md py-2 pl-3 bg-yellow-100">
+                                                            <div class="text-gray-700 w-full text-left text-lg grid grid-cols-10 items-center p-1">
+                                                                <div class="flex items-center gap-x-2 col-span-8">
+                                                                    <input type="checkbox" id="selectall{{$category->id}}" class="h-4 w-4 cursor-pointer">
+                                                                    <label for="selectall{{$category->id}}" class="cursor-pointer">
+                                                                        <p @click="show=!show">{{ $category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</p>
+                                                                    </label>
+                                                                    <h1 class="text-blue-500">[<span id="count{{$category->id}}">0</span>]</h1>
+                                                                </div>
+                                                                <div class="col-span-2 mr-4 cursor-pointer" @click="show=!show">
+                                                                    <i class="float-right fas fa-chevron-down" x-show="!show"></i>
+                                                                    <i class="float-right fas fa-chevron-up" x-show="show"></i>
+                                                                </div>
                                                             </div>
-                                                            <div class="panel overflow-hidden hidden bg-white p-2 bg-yellow-100">
+                                                            <div x-show="show" class="bg-white p-2 bg-yellow-100">
                                                                 @foreach ($categories2 as $category2)
                                                                     @if($category2->parent_id === $category->id)
                                                                         <label class="for_check{{$category->id}} block my-1 text-base flex items-center">
@@ -244,27 +252,10 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <button
-                                                    class="block  md:w-1/2 w-full mt-10 bg-green-400 hover:bg-green-600 text-white uppercase p-4 rounded-xl"
-                                                    type="submit">{{__('Сохранить')}}</button>
+                                                <button class="block  md:w-1/2 w-full mt-10 bg-green-400 hover:bg-green-600 text-white uppercase p-4 rounded-xl" type="submit">
+                                                    {{__('Сохранить')}}
+                                                </button>
                                             </form>
-                                            <script>
-                                                var acc = document.getElementsByClassName("accordion");
-                                                var i;
-
-                                                for (i = 0; i < acc.length; i++) {
-                                                    acc[i].addEventListener("click", function () {
-                                                        this.classList.toggle("active");
-                                                        var panel = this.nextElementSibling;
-                                                        if (panel.style.display === "block") {
-                                                            panel.style.display = "none";
-                                                        } else {
-                                                            panel.style.display = "block";
-                                                        }
-                                                    });
-                                                }
-                                            </script>
-
                                         </div>
                                         {{-- settings/ third tab end -> subscribe for some tasks --}}
                                     </div>
