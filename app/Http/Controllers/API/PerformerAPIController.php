@@ -436,20 +436,13 @@ class PerformerAPIController extends Controller
 
         /** @var User $user */
         $user = Auth::user();
-        $user_exists = UserCategory::query()->where('user_id',$user->id)->get();
-        if($user_exists){
-            UserCategory::query()->where('user_id',$user->id)->delete();
-        }
-        $categories = explode(",",$data['category_id']);
-        foreach ($categories as $category) {
-            UserCategory::query()->create([
-                'user_id'=> $user->id,
-                'category_id'=>$category,
-            ]);
-        }
         $user->role_id = User::ROLE_PERFORMER;
         $user->save();
-        return response()->json(['success' => true, "message" => __('Успешно обновлено')]);
+        $categories = explode(",",$data['category_id']);
+        $sms_notification = (int)$request->get('sms_notification');
+        $email_notification = (int)$request->get('email_notification');
+        $response = $this->profileService->subscribeToCategory($categories, $user, $sms_notification, $email_notification);
+        return response()->json($response);
 
     }
 
