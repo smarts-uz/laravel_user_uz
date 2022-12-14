@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\CategoryRequest;
+use App\Http\Requests\CategoriesRequest;
 use App\Http\Requests\BecomePerformerEmailPhone;
 use App\Http\Requests\BecomePerformerRequest;
 use App\Http\Requests\GiveTaskRequest;
@@ -430,9 +430,9 @@ class PerformerAPIController extends Controller
      *     },
      * )
      */
-    public function becomePerformerCategory(Request $request)
+    public function becomePerformerCategory(CategoriesRequest $request)
     {
-        $data = $request->validate(['category_id' => 'required|string']);
+        $data = $request->validated();
 
         auth()->user()->update($data);
         /** @var User $user */
