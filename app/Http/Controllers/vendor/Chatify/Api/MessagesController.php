@@ -14,7 +14,6 @@ use App\Models\Chat\ChatifyMessenger as Chatify;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use OpenApi\Annotations as OA;
 
 
 class MessagesController extends \Chatify\Http\Controllers\Api\MessagesController
@@ -28,9 +27,6 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
     {
         $this->chatify = new Chatify();
     }
-
-    protected $perPage = 30;
-
 
     /**
      * @OA\Post(
@@ -106,6 +102,20 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
      *     path="/api/chat/sendMessage",
      *     tags={"Chat"},
      *     summary="",
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="id",
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="msg",
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -206,7 +216,14 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
      * @OA\Post(
      *     path="/api/chat/fetchMessages",
      *     tags={"Chat"},
-     *     summary="",
+     *     summary="Chat Fetch Messages",
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="id",
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *     ),
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -239,6 +256,13 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
      *     path="/api/chat/makeSeen",
      *     tags={"Chat"},
      *     summary="",
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="id",
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *     ),
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
