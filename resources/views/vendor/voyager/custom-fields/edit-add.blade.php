@@ -100,85 +100,75 @@
 
 
                             <div class="form-group">
-                            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                                <label class="control-label" for="name">Опции</label><br>
 
-                                    <label class="control-label" for="name">Опции</label><br>
+                                <div id="idforradiobtn">
+                                    @if($dataTypeContent->id)
+                                        @php $count_for_js = 0; @endphp
+                                        @if($dataTypeContent->options !== null)
+                                            @foreach($dataTypeContent->options['options'] as $key => $option)
+                                                @php $count_for_js++; @endphp
+                                                <div>{{$key}}
+                                                    <input type="text" name="options[options][{{$key}}]" style="width:50%; border:1px solid #e4eaec; padding: 2px 12px;" value="{{$option}}">
+                                                    <input type="text" name="options_ru[options][{{$key}}]" style="width:50%; border:1px solid #e4eaec; padding: 2px 12px;" value="{{$dataTypeContent->options_ru['options'][$key]}}">
+                                                    <input type="button" value="x" style="padding:0 8px 2px 8px; margin-left: 3px;" class="btn btn-danger btnX">
+                                                </div>
+                                            @endforeach
+                                        @endif
+                                        <script>
+                                        var cntele = <?echo $count_for_js;?>;
+                                        </script>
+                                    @else
+                                        <script>
+                                        var cntele = 0;
+                                        </script>
+                                    @endif
+                                </div>
 
-<div id="idforradiobtn">
+                                <script>
+                                    $( "input.btnX" ).click(function(event) {
+                                        $(this).closest("div").remove();
+                                    });
+                                </script>
 
-@if($dataTypeContent->id)
-@php $count_for_js = 0; @endphp
-@if($dataTypeContent->options !== NULL)
-@foreach($dataTypeContent->options['options'] as $key => $option)
-@php $count_for_js++; @endphp
-<div>{{$key}}
-<input type="text" name="options[options][{{$key}}]" style="width:50%; border:1px solid #e4eaec; padding: 2px 12px;" value="{{$option}}">
-<input type="text" name="options_ru[options][{{$key}}]" style="width:50%; border:1px solid #e4eaec; padding: 2px 12px;" value="{{$dataTypeContent->options_ru['options'][$key]}}">
-<input type="button" value="x" style="padding:0 8px 2px 8px; margin-left: 3px;" class="btn btn-danger btnX">
-</div>
-@endforeach
-@endif
+                                <input class="focus:outline-none  btn btn-primary" type="button" id="chutton" value="+">
 
-<script>
-var cntele = <?echo $count_for_js;?>;
-</script>
+                                <script>
+                                    var idradio=document.getElementById('idforradiobtn');
+                                    chutton.addEventListener("click", function(){
+                                        cntele++;
+                                        var roch = document.createElement("div")
+                                        idradio.appendChild(roch);
+                                        roch.insertAdjacentHTML('afterBegin', ''+ cntele +' ');
 
-@else
-<script>
-var cntele = 0;
-</script>
-@endif
+                                        var ninput = document.createElement('INPUT');
+                                        ninput.type = 'text';
+                                        ninput.placeholder = 'UZ';
+                                        ninput.setAttribute("name", "options[options]["+ cntele +"]");
+                                        ninput.setAttribute("style", "width:50%; border:1px solid #e4eaec; padding: 2px 12px;");
+                                        roch.appendChild(ninput);
 
-</div>
+                                        var ruinput = document.createElement('INPUT');
+                                        ruinput.type = 'text';
+                                        ruinput.placeholder = 'RU';
+                                        ruinput.setAttribute("name", "options_ru[options]["+ cntele +"]");
+                                        ruinput.setAttribute("style", "width:50%; border:1px solid #e4eaec; padding: 2px 12px;");
+                                        roch.appendChild(ruinput);
 
-<script>
-    $( "input.btnX" ).click(function(event) {
-     $(this).closest("div").remove();
-});
-</script>
+                                        var ninputdel = document.createElement('INPUT');
+                                        ninputdel.type = 'button';
+                                        ninputdel.value = 'x';
+                                        ninputdel.setAttribute("style", "padding:0 8px 2px 8px; margin-left: 3px;");
+                                        ninputdel.setAttribute("class", "btn btn-danger btnX");
+                                        roch.appendChild(ninputdel);
 
-                                    <input class="focus:outline-none  btn btn-primary" type="button" id="chutton" value="+">
-
-<script>
-    var idradio=document.getElementById('idforradiobtn');
-      chutton.addEventListener("click", function(){
-
-cntele++;
-
-var roch = document.createElement("div")
-idradio.appendChild(roch);
-
-roch.insertAdjacentHTML('afterBegin', ''+ cntele +' ');
-
-var ninput = document.createElement('INPUT');
-ninput.type = 'text';
-ninput.placeholder = 'UZ';
-ninput.setAttribute("name", "options[options]["+ cntele +"]");
-ninput.setAttribute("style", "width:50%; border:1px solid #e4eaec; padding: 2px 12px;");
-roch.appendChild(ninput);
-
-var ruinput = document.createElement('INPUT');
-ruinput.type = 'text';
-ruinput.placeholder = 'RU';
-ruinput.setAttribute("name", "options_ru[options]["+ cntele +"]");
-ruinput.setAttribute("style", "width:50%; border:1px solid #e4eaec; padding: 2px 12px;");
-roch.appendChild(ruinput);
-
-var ninputdel = document.createElement('INPUT');
-ninputdel.type = 'button';
-ninputdel.value = 'x';
-ninputdel.setAttribute("style", "padding:0 8px 2px 8px; margin-left: 3px;");
-ninputdel.setAttribute("class", "btn btn-danger btnX");
-roch.appendChild(ninputdel);
-
-$( "input.btnX" ).click(function(event) {
-     $(this).closest("div").remove();
-});
-
-});
-</script>
+                                        $( "input.btnX" ).click(function(event) {
+                                             $(this).closest("div").remove();
+                                        });
+                                    });
+                                </script>
                             </div>
-
                         </div><!-- panel-body -->
 
                         <div class="panel-footer">
@@ -197,7 +187,6 @@ $( "input.btnX" ).click(function(event) {
                         <input type="hidden" name="type_slug" id="type_slug" value="{{ $dataType->slug }}">
                         {{ csrf_field() }}
                     </form>
-
                 </div>
             </div>
         </div>
