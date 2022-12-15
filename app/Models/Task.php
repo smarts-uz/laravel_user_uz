@@ -157,19 +157,14 @@ class Task extends Model
         switch (true){
             case (int)$this->status === Task::STATUS_IN_PROGRESS :
                 return __('В исполнении');
-                break;
             case $this->status < Task::STATUS_IN_PROGRESS  :
                 return __('Открыто');
-                break;
             case (int)$this->status === Task::STATUS_NOT_COMPLETED :
                 return __('Не выполнено');
-                break;
             case (int)$this->status === Task::STATUS_CANCELLED :
                 return __('Отменен');
-                break;
             default :
                 return __('Закрыто');
-                break;
         }
     }
 }
