@@ -87,7 +87,6 @@
                                 "verify_expiration",
                                 "is_phone_number_verified",
                                 "born_date",
-                                "age",
                                 "email_old",
                                 "phone_number_old",
                                 "system_notification",
@@ -105,6 +104,8 @@
                                 "apple_id",
                                 "updated_password_by",
                                 "updated_password_at",
+                                "deleted_by",
+                                "updated_by",
                                 "user_belongsto_role_relationship"
                             ],
                             "type": "string"
@@ -157,6 +158,22 @@
                         }
                     },
                     {
+                        "name": "filters[active_task]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[active_step]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "filters[avatar]",
                         "in": "query",
                         "required": false,
@@ -196,8 +213,7 @@
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "type": "string",
-                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
+                            "type": "string"
                         }
                     },
                     {
@@ -504,6 +520,8 @@
                                 "name",
                                 "email",
                                 "password",
+                                "active_task",
+                                "active_step",
                                 "avatar",
                                 "role_id",
                                 "user_belongsto_role_relationship",
@@ -528,6 +546,8 @@
                                     "name",
                                     "email",
                                     "password",
+                                    "active_task",
+                                    "active_step",
                                     "avatar",
                                     "role_id",
                                     "user_belongsto_role_relationship",
@@ -1922,7 +1942,10 @@
                                 "updated_at",
                                 "ico",
                                 "double_address",
-                                "remote"
+                                "remote",
+                                "deleted_by",
+                                "updated_by",
+                                "deleted_at"
                             ],
                             "type": "string"
                         }
@@ -3773,6 +3796,8 @@
                                 "label",
                                 "options_ru",
                                 "deleted_at",
+                                "deleted_by",
+                                "updated_by",
                                 "custom_field_belongsto_category_relationship"
                             ],
                             "type": "string"
@@ -4545,6 +4570,8 @@
                                 "verify_expiration",
                                 "deleted_at",
                                 "not_completed_reason",
+                                "deleted_by",
+                                "updated_by",
                                 "task_hasmany_custom_field_relationship",
                                 "task_belongsto_service_relationship",
                                 "task_belongsto_category_relationship"
@@ -6676,6 +6703,8 @@
                                 "created_at",
                                 "updated_at",
                                 "deleted_at",
+                                "deleted_by",
+                                "updated_by",
                                 "wallet_balance_belongsto_user_relationship"
                             ],
                             "type": "string"
@@ -20593,6 +20622,14 @@
                         "type": "string",
                         "description": "Email"
                     },
+                    "active_task": {
+                        "type": "string",
+                        "description": "Active Task"
+                    },
+                    "active_step": {
+                        "type": "string",
+                        "description": "Active Step"
+                    },
                     "avatar": {
                         "type": "string",
                         "description": "jpg,jpeg,png",
@@ -20615,10 +20652,8 @@
                         "description": "Description"
                     },
                     "born_date": {
-                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                        "type": "date-time",
-                        "description": "Born Date",
-                        "example": "2021-05-17 00:00"
+                        "type": "string",
+                        "description": "Born Date"
                     },
                     "apple_id": {
                         "type": "string",
@@ -20649,6 +20684,14 @@
                         "type": "string",
                         "description": "Email"
                     },
+                    "active_task": {
+                        "type": "string",
+                        "description": "Active Task"
+                    },
+                    "active_step": {
+                        "type": "string",
+                        "description": "Active Step"
+                    },
                     "avatar": {
                         "type": "string",
                         "description": "jpg,jpeg,png",
@@ -20671,10 +20714,8 @@
                         "description": "Description"
                     },
                     "born_date": {
-                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                        "type": "date-time",
-                        "description": "Born Date",
-                        "example": "2021-05-17 00:00"
+                        "type": "string",
+                        "description": "Born Date"
                     },
                     "apple_id": {
                         "type": "string",
@@ -23109,6 +23150,14 @@
                                     "type": "password",
                                     "description": "Password"
                                 },
+                                "active_task": {
+                                    "type": "string",
+                                    "description": "Active Task"
+                                },
+                                "active_step": {
+                                    "type": "string",
+                                    "description": "Active Step"
+                                },
                                 "avatar": {
                                     "type": "string",
                                     "description": "jpg,jpeg,png",
@@ -23131,10 +23180,8 @@
                                     "description": "Description"
                                 },
                                 "born_date": {
-                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                                    "type": "date-time",
-                                    "description": "Born Date",
-                                    "example": "2021-05-17 00:00"
+                                    "type": "string",
+                                    "description": "Born Date"
                                 },
                                 "apple_id": {
                                     "type": "string",
@@ -23176,6 +23223,14 @@
                                     "type": "password",
                                     "description": "Password"
                                 },
+                                "active_task": {
+                                    "type": "string",
+                                    "description": "Active Task"
+                                },
+                                "active_step": {
+                                    "type": "string",
+                                    "description": "Active Step"
+                                },
                                 "avatar": {
                                     "type": "string",
                                     "description": "jpg,jpeg,png",
@@ -23198,10 +23253,8 @@
                                     "description": "Description"
                                 },
                                 "born_date": {
-                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                                    "type": "date-time",
-                                    "description": "Born Date",
-                                    "example": "2021-05-17 00:00"
+                                    "type": "string",
+                                    "description": "Born Date"
                                 },
                                 "apple_id": {
                                     "type": "string",
@@ -23243,6 +23296,14 @@
                                     "type": "password",
                                     "description": "Password"
                                 },
+                                "active_task": {
+                                    "type": "string",
+                                    "description": "Active Task"
+                                },
+                                "active_step": {
+                                    "type": "string",
+                                    "description": "Active Step"
+                                },
                                 "avatar": {
                                     "type": "string",
                                     "description": "jpg,jpeg,png",
@@ -23265,10 +23326,8 @@
                                     "description": "Description"
                                 },
                                 "born_date": {
-                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
-                                    "type": "date-time",
-                                    "description": "Born Date",
-                                    "example": "2021-05-17 00:00"
+                                    "type": "string",
+                                    "description": "Born Date"
                                 },
                                 "apple_id": {
                                     "type": "string",
