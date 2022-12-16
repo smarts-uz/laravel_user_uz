@@ -1707,4 +1707,54 @@ class TaskAPIController extends Controller
             'data' => ComplianceTypeResource::collection(ComplianceType::all())
         ]);
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/performer-tasks",
+     *     tags={"Task"},
+     *     summary="Get Performer Tasks",
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="user_id",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          ),
+     *     ),
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="status",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *      {"token": {}},
+     *     },
+     * )
+     */
+    public function performer_tasks(Request $request): TaskPaginationResource
+    {
+
+        $user_id = $request->get('user_id');
+        $status = $request->get('status');
+
+        $tasks = Task::query()->where('user_id', $user_id)->where('status', $status);
+
+        return new TaskPaginationResource($tasks->orderByDesc('created_at')->paginate());
+
+    }
 }
