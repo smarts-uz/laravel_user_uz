@@ -104,15 +104,6 @@ class User extends \TCG\Voyager\Models\User
         return $query->whereId($id)->increment('views', 1);
     }
 
-    public function scopeWithoutBlockedPerformers($query, $user_id)
-    {
-        if ($user_id) {
-            $reportedUsers = BlockedUser::query()->where('user_id', $user_id)->pluck('blocked_user_id');
-            return $query->whereNotIn('id', $reportedUsers);
-        }
-        return $query;
-    }
-
     public function reviewsObj(): HasMany
     {
         return $this->hasMany(Review::class, 'reviewer_id', 'id');

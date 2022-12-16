@@ -116,7 +116,6 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
         Route::post('/clear-sessions', [SessionController::class, 'clearSessions']);
         Route::post('/report-user', [ProfileAPIController::class, 'report']);
         Route::post('/block-user', [ProfileAPIController::class, 'block']);
-        Route::get('/block-user-list', [ProfileAPIController::class, 'block_user_list']);
         Route::prefix('/settings')->group(function () {
             Route::get('/', [ProfileAPIController::class, 'editData']); // used
             Route::post('/update', [ProfileAPIController::class, 'updateData']); // used

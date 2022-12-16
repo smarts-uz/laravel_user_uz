@@ -1174,41 +1174,21 @@ class ProfileAPIController extends Controller
     public function block(UserBlockRequest $request)
     {
         $data = $request->validated();
-        BlockedUser::query()->updateOrCreate([
-            'user_id' => \auth()->id(),
-            'blocked_user_id' => $data['blocked_user_id'],
-        ]);
+
+        $user_exists = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$data['blocked_user_id'])->get();
+        if($user_exists){
+            BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$data['blocked_user_id'])->delete();
+        }else{
+            BlockedUser::query()->create([
+                'user_id' => \auth()->id(),
+                'blocked_user_id' => $data['blocked_user_id'],
+            ]);
+        }
+
         return response()->json([
             'success' => true,
-            'message' => __('Сохранено')
+            'message' => __('Успешно сохранено')
         ]);
     }
-    /**
-     * @OA\Get(
-     *     path="/api/profile/block-user-list",
-     *     tags={"Profile"},
-     *     summary="Block user list",
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
-    public function block_user_list(){
-        return response()->json([
-            'success' => true,
-            'data' => BlockUserResource::collection(BlockedUser::query()->latest()->get())
-        ]);
-    }
+
 }

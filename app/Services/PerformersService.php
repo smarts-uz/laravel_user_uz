@@ -108,7 +108,6 @@ class PerformersService
     {
         $performers = User::query()
             ->where('role_id', User::ROLE_PERFORMER)
-            ->withoutBlockedPerformers(auth()->id())
             ->orderByDesc('review_rating')
             ->orderByRaw('(review_good - review_bad) DESC');
 
