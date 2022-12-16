@@ -37,7 +37,7 @@ class ReviewIndexResource extends JsonResource
             if(app()->getLocale()==='uz'){
                 $lastSeen = $seenDate->diffForHumans().' saytda edi';
             }else{
-                $lastSeen = __('Был на сайте'). $seenDate->diffForHumans();
+                $lastSeen = __('Был онлайн'). $seenDate->diffForHumans();
             }
         }
         return [
