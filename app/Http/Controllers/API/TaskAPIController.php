@@ -321,11 +321,17 @@ class TaskAPIController extends Controller
      *     @OA\Parameter (
      *          in="query",
      *          name="categories",
+     *          description="[2,3,7] - manashu formatda kiritiladi",
      *          @OA\Schema (
-     *              type="array",
-     *              @OA\Items (
-     *                  type="integer",
-     *              )
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="child_categories",
+     *          description="[23,24,25] - manashu formatda kiritiladi",
+     *          @OA\Schema (
+     *              type="string"
      *          )
      *     ),
      *     @OA\Parameter (
@@ -1113,19 +1119,14 @@ class TaskAPIController extends Controller
      *     path="/api/update-task/{task}/custom",
      *     tags={"Task"},
      *     summary="Update task custom fields",
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="custom_field_id",
-     *                    description="Current session id",
-     *                    type="string",
-     *                 ),
-     *             ),
-     *         ),
-     *     ),
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *      ),
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
