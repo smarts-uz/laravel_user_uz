@@ -25,6 +25,7 @@ use App\Services\VerificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use function React\Promise\all;
 
 class ProfileAPIController extends Controller
@@ -199,7 +200,7 @@ class ProfileAPIController extends Controller
      *          name="portfolio",
      *          required=true,
      *          @OA\Schema(
-     *              type="string"
+     *              type="integer"
      *          ),
      *     ),
      *     @OA\RequestBody (
@@ -214,6 +215,10 @@ class ProfileAPIController extends Controller
      *                 @OA\Property (
      *                    property="description",
      *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="image",
+     *                    type="json",
      *                 ),
      *             ),
      *         ),
@@ -887,7 +892,7 @@ class ProfileAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="category",
-     *                    type="string",
+     *                    type="json",
      *                 ),
      *             ),
      *         ),
@@ -1187,6 +1192,54 @@ class ProfileAPIController extends Controller
         return response()->json([
             'success' => true,
             'message' => __('Успешно сохранено')
+        ]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/portfolio/{portfolio}/delete-image",
+     *     tags={"Profile"},
+     *     summary="Profile delete image",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="portfolio",
+     *                    type="file",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function deleteImage(Request $request, Portfolio $portfolio)
+    {
+        $image = $request->get('image');
+        File::delete(public_path() . '/portfolio/'. $image);
+        $images = json_decode($portfolio->image);
+        $updatedImages = array_diff($images, [$image]);
+        $portfolio->image = json_encode(array_values($updatedImages));
+        $portfolio->save();
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully deleted'
         ]);
     }
 

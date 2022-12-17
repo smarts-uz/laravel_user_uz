@@ -9,7 +9,7 @@ use App\Http\Controllers\API\{
     UserAPIController, SearchAPIController,FaqController
 };
 use App\Http\Controllers\{
-    NotificationController, PortfolioAPIController,
+    NotificationController,
     vendor\Chatify\Api\MessagesController
 };
 
@@ -102,7 +102,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
         Route::post('/portfolio/create', [ProfileAPIController::class, 'portfolioCreate']); // used
         Route::post('/portfolio/{portfolio}/update', [ProfileAPIController::class, 'portfolioUpdate']); // used
         Route::delete('/portfolio/{portfolio}/delete', [ProfileAPIController::class, 'portfolioDelete']); // used
-        Route::post('/portfolio/{portfolio}/delete-image', [PortfolioAPIController::class, 'deleteImage']);
+        Route::post('/portfolio/{portfolio}/delete-image', [ProfileAPIController::class, 'deleteImage']);
         Route::get('/reviews', [ProfileAPIController::class, 'reviews']); // used
         Route::post('/video', [ProfileAPIController::class, 'videoStore']); // used
         Route::delete('/video/delete', [ProfileAPIController::class, 'videoDelete']); //end

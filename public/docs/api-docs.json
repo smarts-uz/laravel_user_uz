@@ -313,20 +313,14 @@
                         "name": "categories",
                         "in": "query",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
-                            }
+                            "type": "string"
                         }
                     },
                     {
                         "name": "child_categories",
                         "in": "query",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
-                            }
+                            "type": "string"
                         }
                     },
                     {
@@ -816,7 +810,7 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -831,6 +825,9 @@
                                     },
                                     "description": {
                                         "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "json"
                                     }
                                 },
                                 "type": "object"
@@ -1393,7 +1390,7 @@
                             "schema": {
                                 "properties": {
                                     "category": {
-                                        "type": "string"
+                                        "type": "json"
                                     }
                                 },
                                 "type": "object"
@@ -1587,6 +1584,46 @@
                                     "blocked_user_id": {
                                         "description": "Blocked user id",
                                         "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/profile\/portfolio\/{portfolio}\/delete-image": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Profile delete image",
+                "operationId": "c29e7a7f6d2e915b569038d403785376",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "portfolio": {
+                                        "type": "file"
                                     }
                                 },
                                 "type": "object"
@@ -1994,11 +2031,17 @@
                     {
                         "name": "categories",
                         "in": "query",
+                        "description": "[2,3,7] - manashu formatda kiritiladi",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
-                            }
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "child_categories",
+                        "in": "query",
+                        "description": "[23,24,25] - manashu formatda kiritiladi",
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     {
@@ -2724,22 +2767,16 @@
                 ],
                 "summary": "Update task custom fields",
                 "operationId": "6d2ea2ac629840b489e9d8204435961d",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart\/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "custom_field_id": {
-                                        "description": "Current session id",
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -3469,21 +3506,15 @@
                 ],
                 "summary": "Reset password by phone - sending code",
                 "operationId": "56a1d9813d571e101444350e67d6dd7d",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart\/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "phone_number": {
-                                        "type": "integer"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "parameters": [
+                    {
+                        "name": "phone_number",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -3504,29 +3535,29 @@
                 ],
                 "summary": "Enter a New password",
                 "operationId": "235c0c336670eb4e95abc202257cb924",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart\/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "phone_number": {
-                                        "type": "number"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password"
-                                    },
-                                    "password_confirmation": {
-                                        "type": "string",
-                                        "format": "password"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "parameters": [
+                    {
+                        "name": "phone_number",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password_confirmation",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful operation"
