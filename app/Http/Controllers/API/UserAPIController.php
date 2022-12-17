@@ -70,17 +70,12 @@ class UserAPIController extends Controller
      *     path="/api/reset",
      *     tags={"Reset Password"},
      *     summary="Reset password by phone - sending code",
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema (
-     *                 @OA\Property (
-     *                     property="phone_number",
-     *                     type="integer",
-     *                 ),
-     *             ),
-     *         ),
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="phone_number",
+     *          @OA\Schema (
+     *              type="string"
+     *          )
      *     ),
      *     @OA\Response (
      *          response=200,
@@ -120,27 +115,26 @@ class UserAPIController extends Controller
      *     path="/api/reset/password",
      *     tags={"Reset Password"},
      *     summary="Enter a New password",
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema (
-     *                 @OA\Property (
-     *                     property="phone_number",
-     *                     type="number",
-     *                 ),
-     *                 @OA\Property (
-     *                     property="password",
-     *                     type="string",
-     *                     format="password",
-     *                 ),
-     *                 @OA\Property (
-     *                     property="password_confirmation",
-     *                     type="string",
-     *                     format="password",
-     *                 ),
-     *             ),
-     *         ),
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="phone_number",
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="password",
+     *          @OA\Schema (
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="password_confirmation",
+     *          @OA\Schema (
+     *              type="string"
+     *          )
      *     ),
      *     @OA\Response (
      *          response=200,
