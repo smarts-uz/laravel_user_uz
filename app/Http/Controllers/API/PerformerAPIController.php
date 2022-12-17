@@ -53,20 +53,14 @@ class PerformerAPIController extends Controller
      *          in="query",
      *          name="categories",
      *          @OA\Schema (
-     *              type="array",
-     *              @OA\Items (
-     *                  type="integer",
-     *              )
+     *              type="string"
      *          )
      *     ),
      *     @OA\Parameter (
      *          in="query",
      *          name="child_categories",
      *          @OA\Schema (
-     *              type="array",
-     *              @OA\Items (
-     *                  type="integer",
-     *              )
+     *              type="string"
      *          )
      *     ),
      *     @OA\Parameter (
