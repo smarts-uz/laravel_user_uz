@@ -116,6 +116,9 @@ class TaskAPIController extends Controller
      *          response=403,
      *          description="Forbidden"
      *     )
+     *     security={
+     *         {"token": {}}
+     *     },
      * )
      */
     public function responses(Request $request, Task $task): AnonymousResourceCollection
