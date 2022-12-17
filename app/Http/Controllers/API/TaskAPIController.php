@@ -227,18 +227,13 @@ class TaskAPIController extends Controller
      *     path="/api/select-performer/{response}",
      *     tags={"Task"},
      *     summary="Select performer",
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="response",
-     *                    description="Task response id",
-     *                    type="string",
-     *                 ),
-     *             ),
-     *         ),
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="response",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
      *     ),
      *     @OA\Response (
      *          response=200,
@@ -276,18 +271,13 @@ class TaskAPIController extends Controller
      *     path="/api/task-status-update/{task}",
      *     tags={"Task"},
      *     summary="Cancel Status Open",
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="task_id",
-     *                    description="Task id",
-     *                    type="string",
-     *                 ),
-     *             ),
-     *         ),
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
      *     ),
      *     @OA\Response (
      *          response=200,

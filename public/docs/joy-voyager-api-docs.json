@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.2",
     "info": {
-        "title": "UserUz",
+        "title": "Main",
         "description": "Joy VoyagerApi module adds REST Api end points to Voyager with Passport and Swagger support https:\/\/github.com\/rxcod9\/joy-voyager-api.",
         "version": "1.0.0"
     },
@@ -15,7 +15,7 @@
         "\/api\/users": {
             "get": {
                 "tags": [
-                    "users"
+                    "Core | users"
                 ],
                 "summary": "users index",
                 "operationId": "users_index",
@@ -281,7 +281,7 @@
             },
             "post": {
                 "tags": [
-                    "users"
+                    "Core | users"
                 ],
                 "summary": "users store",
                 "operationId": "users_store",
@@ -321,7 +321,7 @@
         "\/api\/users\/create": {
             "get": {
                 "tags": [
-                    "users"
+                    "Core | users"
                 ],
                 "summary": "users create",
                 "operationId": "users_create",
@@ -356,7 +356,7 @@
         "\/api\/users\/{id}": {
             "get": {
                 "tags": [
-                    "users"
+                    "Core | users"
                 ],
                 "summary": "users show",
                 "operationId": "users_show",
@@ -401,7 +401,7 @@
             },
             "post": {
                 "tags": [
-                    "users"
+                    "Core | users"
                 ],
                 "summary": "users update",
                 "operationId": "users_update",
@@ -449,7 +449,7 @@
             },
             "delete": {
                 "tags": [
-                    "users"
+                    "Core | users"
                 ],
                 "summary": "users delete",
                 "operationId": "users_delete",
@@ -496,7 +496,7 @@
         "\/api\/users\/{id}\/single\/{field}": {
             "post": {
                 "tags": [
-                    "users"
+                    "Core | users"
                 ],
                 "summary": "users single update",
                 "operationId": "users_single_update",
@@ -598,7 +598,7 @@
         "\/api\/users\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "users"
+                    "Core | users"
                 ],
                 "summary": "users edit",
                 "operationId": "users_edit",
@@ -645,7 +645,7 @@
         "\/api\/users\/relation": {
             "get": {
                 "tags": [
-                    "users"
+                    "Core | users"
                 ],
                 "summary": "users relation",
                 "operationId": "users_relation",
@@ -707,7 +707,7 @@
         "\/api\/users\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "users"
+                    "Core | users"
                 ],
                 "summary": "users restore",
                 "operationId": "users_restore",
@@ -754,7 +754,7 @@
         "\/api\/menus": {
             "get": {
                 "tags": [
-                    "menus"
+                    "Core | menus"
                 ],
                 "summary": "menus index",
                 "operationId": "menus_index",
@@ -870,7 +870,7 @@
             },
             "post": {
                 "tags": [
-                    "menus"
+                    "Core | menus"
                 ],
                 "summary": "menus store",
                 "operationId": "menus_store",
@@ -910,7 +910,7 @@
         "\/api\/menus\/create": {
             "get": {
                 "tags": [
-                    "menus"
+                    "Core | menus"
                 ],
                 "summary": "menus create",
                 "operationId": "menus_create",
@@ -945,7 +945,7 @@
         "\/api\/menus\/{id}": {
             "get": {
                 "tags": [
-                    "menus"
+                    "Core | menus"
                 ],
                 "summary": "menus show",
                 "operationId": "menus_show",
@@ -990,7 +990,7 @@
             },
             "put": {
                 "tags": [
-                    "menus"
+                    "Core | menus"
                 ],
                 "summary": "menus update",
                 "operationId": "menus_update",
@@ -1038,7 +1038,7 @@
             },
             "delete": {
                 "tags": [
-                    "menus"
+                    "Core | menus"
                 ],
                 "summary": "menus delete",
                 "operationId": "menus_delete",
@@ -1085,7 +1085,7 @@
         "\/api\/menus\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "menus"
+                    "Core | menus"
                 ],
                 "summary": "menus single update",
                 "operationId": "menus_single_update",
@@ -1161,7 +1161,7 @@
         "\/api\/menus\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "menus"
+                    "Core | menus"
                 ],
                 "summary": "menus edit",
                 "operationId": "menus_edit",
@@ -1208,7 +1208,7 @@
         "\/api\/menus\/relation": {
             "get": {
                 "tags": [
-                    "menus"
+                    "Core | menus"
                 ],
                 "summary": "menus relation",
                 "operationId": "menus_relation",
@@ -1270,7 +1270,7 @@
         "\/api\/menus\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "menus"
+                    "Core | menus"
                 ],
                 "summary": "menus restore",
                 "operationId": "menus_restore",
@@ -1317,7 +1317,7 @@
         "\/api\/roles": {
             "get": {
                 "tags": [
-                    "roles"
+                    "Core | roles"
                 ],
                 "summary": "roles index",
                 "operationId": "roles_index",
@@ -1442,7 +1442,7 @@
             },
             "post": {
                 "tags": [
-                    "roles"
+                    "Core | roles"
                 ],
                 "summary": "roles store",
                 "operationId": "roles_store",
@@ -1482,7 +1482,7 @@
         "\/api\/roles\/create": {
             "get": {
                 "tags": [
-                    "roles"
+                    "Core | roles"
                 ],
                 "summary": "roles create",
                 "operationId": "roles_create",
@@ -1517,7 +1517,7 @@
         "\/api\/roles\/{id}": {
             "get": {
                 "tags": [
-                    "roles"
+                    "Core | roles"
                 ],
                 "summary": "roles show",
                 "operationId": "roles_show",
@@ -1562,7 +1562,7 @@
             },
             "put": {
                 "tags": [
-                    "roles"
+                    "Core | roles"
                 ],
                 "summary": "roles update",
                 "operationId": "roles_update",
@@ -1610,7 +1610,7 @@
             },
             "delete": {
                 "tags": [
-                    "roles"
+                    "Core | roles"
                 ],
                 "summary": "roles delete",
                 "operationId": "roles_delete",
@@ -1657,7 +1657,7 @@
         "\/api\/roles\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "roles"
+                    "Core | roles"
                 ],
                 "summary": "roles single update",
                 "operationId": "roles_single_update",
@@ -1737,7 +1737,7 @@
         "\/api\/roles\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "roles"
+                    "Core | roles"
                 ],
                 "summary": "roles edit",
                 "operationId": "roles_edit",
@@ -1784,7 +1784,7 @@
         "\/api\/roles\/relation": {
             "get": {
                 "tags": [
-                    "roles"
+                    "Core | roles"
                 ],
                 "summary": "roles relation",
                 "operationId": "roles_relation",
@@ -1846,7 +1846,7 @@
         "\/api\/roles\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "roles"
+                    "Core | roles"
                 ],
                 "summary": "roles restore",
                 "operationId": "roles_restore",
@@ -1893,7 +1893,7 @@
         "\/api\/categories": {
             "get": {
                 "tags": [
-                    "categories"
+                    "Core | categories"
                 ],
                 "summary": "categories index",
                 "operationId": "categories_index",
@@ -2062,7 +2062,7 @@
             },
             "post": {
                 "tags": [
-                    "categories"
+                    "Core | categories"
                 ],
                 "summary": "categories store",
                 "operationId": "categories_store",
@@ -2102,7 +2102,7 @@
         "\/api\/categories\/create": {
             "get": {
                 "tags": [
-                    "categories"
+                    "Core | categories"
                 ],
                 "summary": "categories create",
                 "operationId": "categories_create",
@@ -2137,7 +2137,7 @@
         "\/api\/categories\/{id}": {
             "get": {
                 "tags": [
-                    "categories"
+                    "Core | categories"
                 ],
                 "summary": "categories show",
                 "operationId": "categories_show",
@@ -2182,7 +2182,7 @@
             },
             "post": {
                 "tags": [
-                    "categories"
+                    "Core | categories"
                 ],
                 "summary": "categories update",
                 "operationId": "categories_update",
@@ -2230,7 +2230,7 @@
             },
             "delete": {
                 "tags": [
-                    "categories"
+                    "Core | categories"
                 ],
                 "summary": "categories delete",
                 "operationId": "categories_delete",
@@ -2277,7 +2277,7 @@
         "\/api\/categories\/{id}\/single\/{field}": {
             "post": {
                 "tags": [
-                    "categories"
+                    "Core | categories"
                 ],
                 "summary": "categories single update",
                 "operationId": "categories_single_update",
@@ -2371,7 +2371,7 @@
         "\/api\/categories\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "categories"
+                    "Core | categories"
                 ],
                 "summary": "categories edit",
                 "operationId": "categories_edit",
@@ -2418,7 +2418,7 @@
         "\/api\/categories\/relation": {
             "get": {
                 "tags": [
-                    "categories"
+                    "Core | categories"
                 ],
                 "summary": "categories relation",
                 "operationId": "categories_relation",
@@ -2480,7 +2480,7 @@
         "\/api\/categories\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "categories"
+                    "Core | categories"
                 ],
                 "summary": "categories restore",
                 "operationId": "categories_restore",
@@ -2527,7 +2527,7 @@
         "\/api\/pages": {
             "get": {
                 "tags": [
-                    "pages"
+                    "Core | pages"
                 ],
                 "summary": "pages index",
                 "operationId": "pages_index",
@@ -2684,7 +2684,7 @@
             },
             "post": {
                 "tags": [
-                    "pages"
+                    "Core | pages"
                 ],
                 "summary": "pages store",
                 "operationId": "pages_store",
@@ -2724,7 +2724,7 @@
         "\/api\/pages\/create": {
             "get": {
                 "tags": [
-                    "pages"
+                    "Core | pages"
                 ],
                 "summary": "pages create",
                 "operationId": "pages_create",
@@ -2759,7 +2759,7 @@
         "\/api\/pages\/{id}": {
             "get": {
                 "tags": [
-                    "pages"
+                    "Core | pages"
                 ],
                 "summary": "pages show",
                 "operationId": "pages_show",
@@ -2804,7 +2804,7 @@
             },
             "post": {
                 "tags": [
-                    "pages"
+                    "Core | pages"
                 ],
                 "summary": "pages update",
                 "operationId": "pages_update",
@@ -2852,7 +2852,7 @@
             },
             "delete": {
                 "tags": [
-                    "pages"
+                    "Core | pages"
                 ],
                 "summary": "pages delete",
                 "operationId": "pages_delete",
@@ -2899,7 +2899,7 @@
         "\/api\/pages\/{id}\/single\/{field}": {
             "post": {
                 "tags": [
-                    "pages"
+                    "Core | pages"
                 ],
                 "summary": "pages single update",
                 "operationId": "pages_single_update",
@@ -2989,7 +2989,7 @@
         "\/api\/pages\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "pages"
+                    "Core | pages"
                 ],
                 "summary": "pages edit",
                 "operationId": "pages_edit",
@@ -3036,7 +3036,7 @@
         "\/api\/pages\/relation": {
             "get": {
                 "tags": [
-                    "pages"
+                    "Core | pages"
                 ],
                 "summary": "pages relation",
                 "operationId": "pages_relation",
@@ -3098,7 +3098,7 @@
         "\/api\/pages\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "pages"
+                    "Core | pages"
                 ],
                 "summary": "pages restore",
                 "operationId": "pages_restore",
@@ -3145,7 +3145,7 @@
         "\/api\/socials": {
             "get": {
                 "tags": [
-                    "socials"
+                    "Core | socials"
                 ],
                 "summary": "socials index",
                 "operationId": "socials_index",
@@ -3283,7 +3283,7 @@
             },
             "post": {
                 "tags": [
-                    "socials"
+                    "Core | socials"
                 ],
                 "summary": "socials store",
                 "operationId": "socials_store",
@@ -3323,7 +3323,7 @@
         "\/api\/socials\/create": {
             "get": {
                 "tags": [
-                    "socials"
+                    "Core | socials"
                 ],
                 "summary": "socials create",
                 "operationId": "socials_create",
@@ -3358,7 +3358,7 @@
         "\/api\/socials\/{id}": {
             "get": {
                 "tags": [
-                    "socials"
+                    "Core | socials"
                 ],
                 "summary": "socials show",
                 "operationId": "socials_show",
@@ -3403,7 +3403,7 @@
             },
             "put": {
                 "tags": [
-                    "socials"
+                    "Core | socials"
                 ],
                 "summary": "socials update",
                 "operationId": "socials_update",
@@ -3451,7 +3451,7 @@
             },
             "delete": {
                 "tags": [
-                    "socials"
+                    "Core | socials"
                 ],
                 "summary": "socials delete",
                 "operationId": "socials_delete",
@@ -3498,7 +3498,7 @@
         "\/api\/socials\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "socials"
+                    "Core | socials"
                 ],
                 "summary": "socials single update",
                 "operationId": "socials_single_update",
@@ -3582,7 +3582,7 @@
         "\/api\/socials\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "socials"
+                    "Core | socials"
                 ],
                 "summary": "socials edit",
                 "operationId": "socials_edit",
@@ -3629,7 +3629,7 @@
         "\/api\/socials\/relation": {
             "get": {
                 "tags": [
-                    "socials"
+                    "Core | socials"
                 ],
                 "summary": "socials relation",
                 "operationId": "socials_relation",
@@ -3691,7 +3691,7 @@
         "\/api\/socials\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "socials"
+                    "Core | socials"
                 ],
                 "summary": "socials restore",
                 "operationId": "socials_restore",
@@ -3738,7 +3738,7 @@
         "\/api\/custom-fields": {
             "get": {
                 "tags": [
-                    "custom-fields"
+                    "Core | custom-fields"
                 ],
                 "summary": "custom_fields index",
                 "operationId": "custom_fields_index",
@@ -4022,7 +4022,7 @@
             },
             "post": {
                 "tags": [
-                    "custom-fields"
+                    "Core | custom-fields"
                 ],
                 "summary": "custom-fields store",
                 "operationId": "custom-fields_store",
@@ -4062,7 +4062,7 @@
         "\/api\/custom-fields\/create": {
             "get": {
                 "tags": [
-                    "custom-fields"
+                    "Core | custom-fields"
                 ],
                 "summary": "custom_fields create",
                 "operationId": "custom_fields_create",
@@ -4097,7 +4097,7 @@
         "\/api\/custom-fields\/{id}": {
             "get": {
                 "tags": [
-                    "custom-fields"
+                    "Core | custom-fields"
                 ],
                 "summary": "custom-fields show",
                 "operationId": "custom-fields_show",
@@ -4142,7 +4142,7 @@
             },
             "put": {
                 "tags": [
-                    "custom-fields"
+                    "Core | custom-fields"
                 ],
                 "summary": "custom-fields update",
                 "operationId": "custom-fields_update",
@@ -4190,7 +4190,7 @@
             },
             "delete": {
                 "tags": [
-                    "custom-fields"
+                    "Core | custom-fields"
                 ],
                 "summary": "custom-fields delete",
                 "operationId": "custom-fields_delete",
@@ -4237,7 +4237,7 @@
         "\/api\/custom-fields\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "custom-fields"
+                    "Core | custom-fields"
                 ],
                 "summary": "custom-fields single update",
                 "operationId": "custom-fields_single_update",
@@ -4345,7 +4345,7 @@
         "\/api\/custom-fields\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "custom-fields"
+                    "Core | custom-fields"
                 ],
                 "summary": "custom-fields edit",
                 "operationId": "custom-fields_edit",
@@ -4392,7 +4392,7 @@
         "\/api\/custom-fields\/relation": {
             "get": {
                 "tags": [
-                    "custom-fields"
+                    "Core | custom-fields"
                 ],
                 "summary": "custom-fields relation",
                 "operationId": "custom-fields_relation",
@@ -4454,7 +4454,7 @@
         "\/api\/custom-fields\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "custom-fields"
+                    "Core | custom-fields"
                 ],
                 "summary": "custom-fields restore",
                 "operationId": "custom-fields_restore",
@@ -4501,7 +4501,7 @@
         "\/api\/tasks": {
             "get": {
                 "tags": [
-                    "tasks"
+                    "Core | tasks"
                 ],
                 "summary": "tasks index",
                 "operationId": "tasks_index",
@@ -4864,7 +4864,7 @@
             },
             "post": {
                 "tags": [
-                    "tasks"
+                    "Core | tasks"
                 ],
                 "summary": "tasks store",
                 "operationId": "tasks_store",
@@ -4904,7 +4904,7 @@
         "\/api\/tasks\/create": {
             "get": {
                 "tags": [
-                    "tasks"
+                    "Core | tasks"
                 ],
                 "summary": "tasks create",
                 "operationId": "tasks_create",
@@ -4939,7 +4939,7 @@
         "\/api\/tasks\/{id}": {
             "get": {
                 "tags": [
-                    "tasks"
+                    "Core | tasks"
                 ],
                 "summary": "tasks show",
                 "operationId": "tasks_show",
@@ -4984,7 +4984,7 @@
             },
             "put": {
                 "tags": [
-                    "tasks"
+                    "Core | tasks"
                 ],
                 "summary": "tasks update",
                 "operationId": "tasks_update",
@@ -5032,7 +5032,7 @@
             },
             "delete": {
                 "tags": [
-                    "tasks"
+                    "Core | tasks"
                 ],
                 "summary": "tasks delete",
                 "operationId": "tasks_delete",
@@ -5079,7 +5079,7 @@
         "\/api\/tasks\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "tasks"
+                    "Core | tasks"
                 ],
                 "summary": "tasks single update",
                 "operationId": "tasks_single_update",
@@ -5203,7 +5203,7 @@
         "\/api\/tasks\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "tasks"
+                    "Core | tasks"
                 ],
                 "summary": "tasks edit",
                 "operationId": "tasks_edit",
@@ -5250,7 +5250,7 @@
         "\/api\/tasks\/relation": {
             "get": {
                 "tags": [
-                    "tasks"
+                    "Core | tasks"
                 ],
                 "summary": "tasks relation",
                 "operationId": "tasks_relation",
@@ -5312,7 +5312,7 @@
         "\/api\/tasks\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "tasks"
+                    "Core | tasks"
                 ],
                 "summary": "tasks restore",
                 "operationId": "tasks_restore",
@@ -5359,7 +5359,7 @@
         "\/api\/notifications": {
             "get": {
                 "tags": [
-                    "notifications"
+                    "Core | notifications"
                 ],
                 "summary": "notifications index",
                 "operationId": "notifications_index",
@@ -5570,7 +5570,7 @@
             },
             "post": {
                 "tags": [
-                    "notifications"
+                    "Core | notifications"
                 ],
                 "summary": "notifications store",
                 "operationId": "notifications_store",
@@ -5610,7 +5610,7 @@
         "\/api\/notifications\/create": {
             "get": {
                 "tags": [
-                    "notifications"
+                    "Core | notifications"
                 ],
                 "summary": "notifications create",
                 "operationId": "notifications_create",
@@ -5645,7 +5645,7 @@
         "\/api\/notifications\/{id}": {
             "get": {
                 "tags": [
-                    "notifications"
+                    "Core | notifications"
                 ],
                 "summary": "notifications show",
                 "operationId": "notifications_show",
@@ -5690,7 +5690,7 @@
             },
             "put": {
                 "tags": [
-                    "notifications"
+                    "Core | notifications"
                 ],
                 "summary": "notifications update",
                 "operationId": "notifications_update",
@@ -5738,7 +5738,7 @@
             },
             "delete": {
                 "tags": [
-                    "notifications"
+                    "Core | notifications"
                 ],
                 "summary": "notifications delete",
                 "operationId": "notifications_delete",
@@ -5785,7 +5785,7 @@
         "\/api\/notifications\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "notifications"
+                    "Core | notifications"
                 ],
                 "summary": "notifications single update",
                 "operationId": "notifications_single_update",
@@ -5883,7 +5883,7 @@
         "\/api\/notifications\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "notifications"
+                    "Core | notifications"
                 ],
                 "summary": "notifications edit",
                 "operationId": "notifications_edit",
@@ -5930,7 +5930,7 @@
         "\/api\/notifications\/relation": {
             "get": {
                 "tags": [
-                    "notifications"
+                    "Core | notifications"
                 ],
                 "summary": "notifications relation",
                 "operationId": "notifications_relation",
@@ -5992,7 +5992,7 @@
         "\/api\/notifications\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "notifications"
+                    "Core | notifications"
                 ],
                 "summary": "notifications restore",
                 "operationId": "notifications_restore",
@@ -6039,7 +6039,7 @@
         "\/api\/addresses": {
             "get": {
                 "tags": [
-                    "addresses"
+                    "Core | addresses"
                 ],
                 "summary": "addresses index",
                 "operationId": "addresses_index",
@@ -6203,7 +6203,7 @@
             },
             "post": {
                 "tags": [
-                    "addresses"
+                    "Core | addresses"
                 ],
                 "summary": "addresses store",
                 "operationId": "addresses_store",
@@ -6243,7 +6243,7 @@
         "\/api\/addresses\/create": {
             "get": {
                 "tags": [
-                    "addresses"
+                    "Core | addresses"
                 ],
                 "summary": "addresses create",
                 "operationId": "addresses_create",
@@ -6278,7 +6278,7 @@
         "\/api\/addresses\/{id}": {
             "get": {
                 "tags": [
-                    "addresses"
+                    "Core | addresses"
                 ],
                 "summary": "addresses show",
                 "operationId": "addresses_show",
@@ -6323,7 +6323,7 @@
             },
             "put": {
                 "tags": [
-                    "addresses"
+                    "Core | addresses"
                 ],
                 "summary": "addresses update",
                 "operationId": "addresses_update",
@@ -6371,7 +6371,7 @@
             },
             "delete": {
                 "tags": [
-                    "addresses"
+                    "Core | addresses"
                 ],
                 "summary": "addresses delete",
                 "operationId": "addresses_delete",
@@ -6418,7 +6418,7 @@
         "\/api\/addresses\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "addresses"
+                    "Core | addresses"
                 ],
                 "summary": "addresses single update",
                 "operationId": "addresses_single_update",
@@ -6504,7 +6504,7 @@
         "\/api\/addresses\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "addresses"
+                    "Core | addresses"
                 ],
                 "summary": "addresses edit",
                 "operationId": "addresses_edit",
@@ -6551,7 +6551,7 @@
         "\/api\/addresses\/relation": {
             "get": {
                 "tags": [
-                    "addresses"
+                    "Core | addresses"
                 ],
                 "summary": "addresses relation",
                 "operationId": "addresses_relation",
@@ -6613,7 +6613,7 @@
         "\/api\/addresses\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "addresses"
+                    "Core | addresses"
                 ],
                 "summary": "addresses restore",
                 "operationId": "addresses_restore",
@@ -6660,7 +6660,7 @@
         "\/api\/wallet-balances": {
             "get": {
                 "tags": [
-                    "wallet-balances"
+                    "Core | wallet-balances"
                 ],
                 "summary": "wallet_balances index",
                 "operationId": "wallet_balances_index",
@@ -6814,7 +6814,7 @@
             },
             "post": {
                 "tags": [
-                    "wallet-balances"
+                    "Core | wallet-balances"
                 ],
                 "summary": "wallet-balances store",
                 "operationId": "wallet-balances_store",
@@ -6854,7 +6854,7 @@
         "\/api\/wallet-balances\/create": {
             "get": {
                 "tags": [
-                    "wallet-balances"
+                    "Core | wallet-balances"
                 ],
                 "summary": "wallet_balances create",
                 "operationId": "wallet_balances_create",
@@ -6889,7 +6889,7 @@
         "\/api\/wallet-balances\/{id}": {
             "get": {
                 "tags": [
-                    "wallet-balances"
+                    "Core | wallet-balances"
                 ],
                 "summary": "wallet-balances show",
                 "operationId": "wallet-balances_show",
@@ -6934,7 +6934,7 @@
             },
             "put": {
                 "tags": [
-                    "wallet-balances"
+                    "Core | wallet-balances"
                 ],
                 "summary": "wallet-balances update",
                 "operationId": "wallet-balances_update",
@@ -6982,7 +6982,7 @@
             },
             "delete": {
                 "tags": [
-                    "wallet-balances"
+                    "Core | wallet-balances"
                 ],
                 "summary": "wallet-balances delete",
                 "operationId": "wallet-balances_delete",
@@ -7029,7 +7029,7 @@
         "\/api\/wallet-balances\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "wallet-balances"
+                    "Core | wallet-balances"
                 ],
                 "summary": "wallet-balances single update",
                 "operationId": "wallet-balances_single_update",
@@ -7111,7 +7111,7 @@
         "\/api\/wallet-balances\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "wallet-balances"
+                    "Core | wallet-balances"
                 ],
                 "summary": "wallet-balances edit",
                 "operationId": "wallet-balances_edit",
@@ -7158,7 +7158,7 @@
         "\/api\/wallet-balances\/relation": {
             "get": {
                 "tags": [
-                    "wallet-balances"
+                    "Core | wallet-balances"
                 ],
                 "summary": "wallet-balances relation",
                 "operationId": "wallet-balances_relation",
@@ -7220,7 +7220,7 @@
         "\/api\/wallet-balances\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "wallet-balances"
+                    "Core | wallet-balances"
                 ],
                 "summary": "wallet-balances restore",
                 "operationId": "wallet-balances_restore",
@@ -7267,7 +7267,7 @@
         "\/api\/permissions": {
             "get": {
                 "tags": [
-                    "permissions"
+                    "Core | permissions"
                 ],
                 "summary": "permissions index",
                 "operationId": "permissions_index",
@@ -7400,7 +7400,7 @@
             },
             "post": {
                 "tags": [
-                    "permissions"
+                    "Core | permissions"
                 ],
                 "summary": "permissions store",
                 "operationId": "permissions_store",
@@ -7440,7 +7440,7 @@
         "\/api\/permissions\/create": {
             "get": {
                 "tags": [
-                    "permissions"
+                    "Core | permissions"
                 ],
                 "summary": "permissions create",
                 "operationId": "permissions_create",
@@ -7475,7 +7475,7 @@
         "\/api\/permissions\/{id}": {
             "get": {
                 "tags": [
-                    "permissions"
+                    "Core | permissions"
                 ],
                 "summary": "permissions show",
                 "operationId": "permissions_show",
@@ -7520,7 +7520,7 @@
             },
             "put": {
                 "tags": [
-                    "permissions"
+                    "Core | permissions"
                 ],
                 "summary": "permissions update",
                 "operationId": "permissions_update",
@@ -7568,7 +7568,7 @@
             },
             "delete": {
                 "tags": [
-                    "permissions"
+                    "Core | permissions"
                 ],
                 "summary": "permissions delete",
                 "operationId": "permissions_delete",
@@ -7615,7 +7615,7 @@
         "\/api\/permissions\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "permissions"
+                    "Core | permissions"
                 ],
                 "summary": "permissions single update",
                 "operationId": "permissions_single_update",
@@ -7693,7 +7693,7 @@
         "\/api\/permissions\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "permissions"
+                    "Core | permissions"
                 ],
                 "summary": "permissions edit",
                 "operationId": "permissions_edit",
@@ -7740,7 +7740,7 @@
         "\/api\/permissions\/relation": {
             "get": {
                 "tags": [
-                    "permissions"
+                    "Core | permissions"
                 ],
                 "summary": "permissions relation",
                 "operationId": "permissions_relation",
@@ -7802,7 +7802,7 @@
         "\/api\/permissions\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "permissions"
+                    "Core | permissions"
                 ],
                 "summary": "permissions restore",
                 "operationId": "permissions_restore",
@@ -7849,7 +7849,7 @@
         "\/api\/faq-categories": {
             "get": {
                 "tags": [
-                    "faq-categories"
+                    "Core | faq-categories"
                 ],
                 "summary": "faq_categories index",
                 "operationId": "faq_categories_index",
@@ -8019,7 +8019,7 @@
             },
             "post": {
                 "tags": [
-                    "faq-categories"
+                    "Core | faq-categories"
                 ],
                 "summary": "faq-categories store",
                 "operationId": "faq-categories_store",
@@ -8059,7 +8059,7 @@
         "\/api\/faq-categories\/create": {
             "get": {
                 "tags": [
-                    "faq-categories"
+                    "Core | faq-categories"
                 ],
                 "summary": "faq_categories create",
                 "operationId": "faq_categories_create",
@@ -8094,7 +8094,7 @@
         "\/api\/faq-categories\/{id}": {
             "get": {
                 "tags": [
-                    "faq-categories"
+                    "Core | faq-categories"
                 ],
                 "summary": "faq-categories show",
                 "operationId": "faq-categories_show",
@@ -8139,7 +8139,7 @@
             },
             "post": {
                 "tags": [
-                    "faq-categories"
+                    "Core | faq-categories"
                 ],
                 "summary": "faq-categories update",
                 "operationId": "faq-categories_update",
@@ -8187,7 +8187,7 @@
             },
             "delete": {
                 "tags": [
-                    "faq-categories"
+                    "Core | faq-categories"
                 ],
                 "summary": "faq-categories delete",
                 "operationId": "faq-categories_delete",
@@ -8234,7 +8234,7 @@
         "\/api\/faq-categories\/{id}\/single\/{field}": {
             "post": {
                 "tags": [
-                    "faq-categories"
+                    "Core | faq-categories"
                 ],
                 "summary": "faq-categories single update",
                 "operationId": "faq-categories_single_update",
@@ -8320,7 +8320,7 @@
         "\/api\/faq-categories\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "faq-categories"
+                    "Core | faq-categories"
                 ],
                 "summary": "faq-categories edit",
                 "operationId": "faq-categories_edit",
@@ -8367,7 +8367,7 @@
         "\/api\/faq-categories\/relation": {
             "get": {
                 "tags": [
-                    "faq-categories"
+                    "Core | faq-categories"
                 ],
                 "summary": "faq-categories relation",
                 "operationId": "faq-categories_relation",
@@ -8429,7 +8429,7 @@
         "\/api\/faq-categories\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "faq-categories"
+                    "Core | faq-categories"
                 ],
                 "summary": "faq-categories restore",
                 "operationId": "faq-categories_restore",
@@ -8476,7 +8476,7 @@
         "\/api\/faqs": {
             "get": {
                 "tags": [
-                    "faqs"
+                    "Core | faqs"
                 ],
                 "summary": "faqs index",
                 "operationId": "faqs_index",
@@ -8632,7 +8632,7 @@
             },
             "post": {
                 "tags": [
-                    "faqs"
+                    "Core | faqs"
                 ],
                 "summary": "faqs store",
                 "operationId": "faqs_store",
@@ -8672,7 +8672,7 @@
         "\/api\/faqs\/create": {
             "get": {
                 "tags": [
-                    "faqs"
+                    "Core | faqs"
                 ],
                 "summary": "faqs create",
                 "operationId": "faqs_create",
@@ -8707,7 +8707,7 @@
         "\/api\/faqs\/{id}": {
             "get": {
                 "tags": [
-                    "faqs"
+                    "Core | faqs"
                 ],
                 "summary": "faqs show",
                 "operationId": "faqs_show",
@@ -8752,7 +8752,7 @@
             },
             "put": {
                 "tags": [
-                    "faqs"
+                    "Core | faqs"
                 ],
                 "summary": "faqs update",
                 "operationId": "faqs_update",
@@ -8800,7 +8800,7 @@
             },
             "delete": {
                 "tags": [
-                    "faqs"
+                    "Core | faqs"
                 ],
                 "summary": "faqs delete",
                 "operationId": "faqs_delete",
@@ -8847,7 +8847,7 @@
         "\/api\/faqs\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "faqs"
+                    "Core | faqs"
                 ],
                 "summary": "faqs single update",
                 "operationId": "faqs_single_update",
@@ -8933,7 +8933,7 @@
         "\/api\/faqs\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "faqs"
+                    "Core | faqs"
                 ],
                 "summary": "faqs edit",
                 "operationId": "faqs_edit",
@@ -8980,7 +8980,7 @@
         "\/api\/faqs\/relation": {
             "get": {
                 "tags": [
-                    "faqs"
+                    "Core | faqs"
                 ],
                 "summary": "faqs relation",
                 "operationId": "faqs_relation",
@@ -9042,7 +9042,7 @@
         "\/api\/faqs\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "faqs"
+                    "Core | faqs"
                 ],
                 "summary": "faqs restore",
                 "operationId": "faqs_restore",
@@ -9089,7 +9089,7 @@
         "\/api\/massmedia": {
             "get": {
                 "tags": [
-                    "massmedia"
+                    "Core | massmedia"
                 ],
                 "summary": "massmedia index",
                 "operationId": "massmedia_index",
@@ -9231,7 +9231,7 @@
             },
             "post": {
                 "tags": [
-                    "massmedia"
+                    "Core | massmedia"
                 ],
                 "summary": "massmedia store",
                 "operationId": "massmedia_store",
@@ -9271,7 +9271,7 @@
         "\/api\/massmedia\/create": {
             "get": {
                 "tags": [
-                    "massmedia"
+                    "Core | massmedia"
                 ],
                 "summary": "massmedia create",
                 "operationId": "massmedia_create",
@@ -9306,7 +9306,7 @@
         "\/api\/massmedia\/{id}": {
             "get": {
                 "tags": [
-                    "massmedia"
+                    "Core | massmedia"
                 ],
                 "summary": "massmedia show",
                 "operationId": "massmedia_show",
@@ -9351,7 +9351,7 @@
             },
             "put": {
                 "tags": [
-                    "massmedia"
+                    "Core | massmedia"
                 ],
                 "summary": "massmedia update",
                 "operationId": "massmedia_update",
@@ -9399,7 +9399,7 @@
             },
             "delete": {
                 "tags": [
-                    "massmedia"
+                    "Core | massmedia"
                 ],
                 "summary": "massmedia delete",
                 "operationId": "massmedia_delete",
@@ -9446,7 +9446,7 @@
         "\/api\/massmedia\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "massmedia"
+                    "Core | massmedia"
                 ],
                 "summary": "massmedia single update",
                 "operationId": "massmedia_single_update",
@@ -9528,7 +9528,7 @@
         "\/api\/massmedia\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "massmedia"
+                    "Core | massmedia"
                 ],
                 "summary": "massmedia edit",
                 "operationId": "massmedia_edit",
@@ -9575,7 +9575,7 @@
         "\/api\/massmedia\/relation": {
             "get": {
                 "tags": [
-                    "massmedia"
+                    "Core | massmedia"
                 ],
                 "summary": "massmedia relation",
                 "operationId": "massmedia_relation",
@@ -9637,7 +9637,7 @@
         "\/api\/massmedia\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "massmedia"
+                    "Core | massmedia"
                 ],
                 "summary": "massmedia restore",
                 "operationId": "massmedia_restore",
@@ -9684,7 +9684,7 @@
         "\/api\/reports": {
             "get": {
                 "tags": [
-                    "reports"
+                    "Core | reports"
                 ],
                 "summary": "reports index",
                 "operationId": "reports_index",
@@ -9856,7 +9856,7 @@
             },
             "post": {
                 "tags": [
-                    "reports"
+                    "Core | reports"
                 ],
                 "summary": "reports store",
                 "operationId": "reports_store",
@@ -9896,7 +9896,7 @@
         "\/api\/reports\/create": {
             "get": {
                 "tags": [
-                    "reports"
+                    "Core | reports"
                 ],
                 "summary": "reports create",
                 "operationId": "reports_create",
@@ -9931,7 +9931,7 @@
         "\/api\/reports\/{id}": {
             "get": {
                 "tags": [
-                    "reports"
+                    "Core | reports"
                 ],
                 "summary": "reports show",
                 "operationId": "reports_show",
@@ -9976,7 +9976,7 @@
             },
             "put": {
                 "tags": [
-                    "reports"
+                    "Core | reports"
                 ],
                 "summary": "reports update",
                 "operationId": "reports_update",
@@ -10024,7 +10024,7 @@
             },
             "delete": {
                 "tags": [
-                    "reports"
+                    "Core | reports"
                 ],
                 "summary": "reports delete",
                 "operationId": "reports_delete",
@@ -10071,7 +10071,7 @@
         "\/api\/reports\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "reports"
+                    "Core | reports"
                 ],
                 "summary": "reports single update",
                 "operationId": "reports_single_update",
@@ -10159,7 +10159,7 @@
         "\/api\/reports\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "reports"
+                    "Core | reports"
                 ],
                 "summary": "reports edit",
                 "operationId": "reports_edit",
@@ -10206,7 +10206,7 @@
         "\/api\/reports\/relation": {
             "get": {
                 "tags": [
-                    "reports"
+                    "Core | reports"
                 ],
                 "summary": "reports relation",
                 "operationId": "reports_relation",
@@ -10268,7 +10268,7 @@
         "\/api\/reports\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "reports"
+                    "Core | reports"
                 ],
                 "summary": "reports restore",
                 "operationId": "reports_restore",
@@ -10315,7 +10315,7 @@
         "\/api\/regions": {
             "get": {
                 "tags": [
-                    "regions"
+                    "Core | regions"
                 ],
                 "summary": "regions index",
                 "operationId": "regions_index",
@@ -10439,7 +10439,7 @@
             },
             "post": {
                 "tags": [
-                    "regions"
+                    "Core | regions"
                 ],
                 "summary": "regions store",
                 "operationId": "regions_store",
@@ -10479,7 +10479,7 @@
         "\/api\/regions\/create": {
             "get": {
                 "tags": [
-                    "regions"
+                    "Core | regions"
                 ],
                 "summary": "regions create",
                 "operationId": "regions_create",
@@ -10514,7 +10514,7 @@
         "\/api\/regions\/{id}": {
             "get": {
                 "tags": [
-                    "regions"
+                    "Core | regions"
                 ],
                 "summary": "regions show",
                 "operationId": "regions_show",
@@ -10559,7 +10559,7 @@
             },
             "put": {
                 "tags": [
-                    "regions"
+                    "Core | regions"
                 ],
                 "summary": "regions update",
                 "operationId": "regions_update",
@@ -10607,7 +10607,7 @@
             },
             "delete": {
                 "tags": [
-                    "regions"
+                    "Core | regions"
                 ],
                 "summary": "regions delete",
                 "operationId": "regions_delete",
@@ -10654,7 +10654,7 @@
         "\/api\/regions\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "regions"
+                    "Core | regions"
                 ],
                 "summary": "regions single update",
                 "operationId": "regions_single_update",
@@ -10732,7 +10732,7 @@
         "\/api\/regions\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "regions"
+                    "Core | regions"
                 ],
                 "summary": "regions edit",
                 "operationId": "regions_edit",
@@ -10779,7 +10779,7 @@
         "\/api\/regions\/relation": {
             "get": {
                 "tags": [
-                    "regions"
+                    "Core | regions"
                 ],
                 "summary": "regions relation",
                 "operationId": "regions_relation",
@@ -10841,7 +10841,7 @@
         "\/api\/regions\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "regions"
+                    "Core | regions"
                 ],
                 "summary": "regions restore",
                 "operationId": "regions_restore",
@@ -10888,7 +10888,7 @@
         "\/api\/compliance": {
             "get": {
                 "tags": [
-                    "compliance"
+                    "Core | compliance"
                 ],
                 "summary": "compliance index",
                 "operationId": "compliance_index",
@@ -10990,7 +10990,7 @@
             },
             "post": {
                 "tags": [
-                    "compliance"
+                    "Core | compliance"
                 ],
                 "summary": "compliance store",
                 "operationId": "compliance_store",
@@ -11030,7 +11030,7 @@
         "\/api\/compliance\/create": {
             "get": {
                 "tags": [
-                    "compliance"
+                    "Core | compliance"
                 ],
                 "summary": "compliance create",
                 "operationId": "compliance_create",
@@ -11065,7 +11065,7 @@
         "\/api\/compliance\/{id}": {
             "get": {
                 "tags": [
-                    "compliance"
+                    "Core | compliance"
                 ],
                 "summary": "compliance show",
                 "operationId": "compliance_show",
@@ -11110,7 +11110,7 @@
             },
             "put": {
                 "tags": [
-                    "compliance"
+                    "Core | compliance"
                 ],
                 "summary": "compliance update",
                 "operationId": "compliance_update",
@@ -11158,7 +11158,7 @@
             },
             "delete": {
                 "tags": [
-                    "compliance"
+                    "Core | compliance"
                 ],
                 "summary": "compliance delete",
                 "operationId": "compliance_delete",
@@ -11205,7 +11205,7 @@
         "\/api\/compliance\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "compliance"
+                    "Core | compliance"
                 ],
                 "summary": "compliance single update",
                 "operationId": "compliance_single_update",
@@ -11277,7 +11277,7 @@
         "\/api\/compliance\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "compliance"
+                    "Core | compliance"
                 ],
                 "summary": "compliance edit",
                 "operationId": "compliance_edit",
@@ -11324,7 +11324,7 @@
         "\/api\/compliance\/relation": {
             "get": {
                 "tags": [
-                    "compliance"
+                    "Core | compliance"
                 ],
                 "summary": "compliance relation",
                 "operationId": "compliance_relation",
@@ -11386,7 +11386,7 @@
         "\/api\/compliance\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "compliance"
+                    "Core | compliance"
                 ],
                 "summary": "compliance restore",
                 "operationId": "compliance_restore",
@@ -11433,7 +11433,7 @@
         "\/api\/system-notifications": {
             "get": {
                 "tags": [
-                    "system-notifications"
+                    "Core | system-notifications"
                 ],
                 "summary": "system_notifications index",
                 "operationId": "system_notifications_index",
@@ -11566,7 +11566,7 @@
             },
             "post": {
                 "tags": [
-                    "system-notifications"
+                    "Core | system-notifications"
                 ],
                 "summary": "system-notifications store",
                 "operationId": "system-notifications_store",
@@ -11606,7 +11606,7 @@
         "\/api\/system-notifications\/create": {
             "get": {
                 "tags": [
-                    "system-notifications"
+                    "Core | system-notifications"
                 ],
                 "summary": "system_notifications create",
                 "operationId": "system_notifications_create",
@@ -11641,7 +11641,7 @@
         "\/api\/system-notifications\/{id}": {
             "get": {
                 "tags": [
-                    "system-notifications"
+                    "Core | system-notifications"
                 ],
                 "summary": "system-notifications show",
                 "operationId": "system-notifications_show",
@@ -11686,7 +11686,7 @@
             },
             "put": {
                 "tags": [
-                    "system-notifications"
+                    "Core | system-notifications"
                 ],
                 "summary": "system-notifications update",
                 "operationId": "system-notifications_update",
@@ -11734,7 +11734,7 @@
             },
             "delete": {
                 "tags": [
-                    "system-notifications"
+                    "Core | system-notifications"
                 ],
                 "summary": "system-notifications delete",
                 "operationId": "system-notifications_delete",
@@ -11781,7 +11781,7 @@
         "\/api\/system-notifications\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "system-notifications"
+                    "Core | system-notifications"
                 ],
                 "summary": "system-notifications single update",
                 "operationId": "system-notifications_single_update",
@@ -11859,7 +11859,7 @@
         "\/api\/system-notifications\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "system-notifications"
+                    "Core | system-notifications"
                 ],
                 "summary": "system-notifications edit",
                 "operationId": "system-notifications_edit",
@@ -11906,7 +11906,7 @@
         "\/api\/system-notifications\/relation": {
             "get": {
                 "tags": [
-                    "system-notifications"
+                    "Core | system-notifications"
                 ],
                 "summary": "system-notifications relation",
                 "operationId": "system-notifications_relation",
@@ -11968,7 +11968,7 @@
         "\/api\/system-notifications\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "system-notifications"
+                    "Core | system-notifications"
                 ],
                 "summary": "system-notifications restore",
                 "operationId": "system-notifications_restore",
@@ -12015,7 +12015,7 @@
         "\/api\/news-notifications": {
             "get": {
                 "tags": [
-                    "news-notifications"
+                    "Core | news-notifications"
                 ],
                 "summary": "news_notifications index",
                 "operationId": "news_notifications_index",
@@ -12148,7 +12148,7 @@
             },
             "post": {
                 "tags": [
-                    "news-notifications"
+                    "Core | news-notifications"
                 ],
                 "summary": "news-notifications store",
                 "operationId": "news-notifications_store",
@@ -12188,7 +12188,7 @@
         "\/api\/news-notifications\/create": {
             "get": {
                 "tags": [
-                    "news-notifications"
+                    "Core | news-notifications"
                 ],
                 "summary": "news_notifications create",
                 "operationId": "news_notifications_create",
@@ -12223,7 +12223,7 @@
         "\/api\/news-notifications\/{id}": {
             "get": {
                 "tags": [
-                    "news-notifications"
+                    "Core | news-notifications"
                 ],
                 "summary": "news-notifications show",
                 "operationId": "news-notifications_show",
@@ -12268,7 +12268,7 @@
             },
             "put": {
                 "tags": [
-                    "news-notifications"
+                    "Core | news-notifications"
                 ],
                 "summary": "news-notifications update",
                 "operationId": "news-notifications_update",
@@ -12316,7 +12316,7 @@
             },
             "delete": {
                 "tags": [
-                    "news-notifications"
+                    "Core | news-notifications"
                 ],
                 "summary": "news-notifications delete",
                 "operationId": "news-notifications_delete",
@@ -12363,7 +12363,7 @@
         "\/api\/news-notifications\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "news-notifications"
+                    "Core | news-notifications"
                 ],
                 "summary": "news-notifications single update",
                 "operationId": "news-notifications_single_update",
@@ -12441,7 +12441,7 @@
         "\/api\/news-notifications\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "news-notifications"
+                    "Core | news-notifications"
                 ],
                 "summary": "news-notifications edit",
                 "operationId": "news-notifications_edit",
@@ -12488,7 +12488,7 @@
         "\/api\/news-notifications\/relation": {
             "get": {
                 "tags": [
-                    "news-notifications"
+                    "Core | news-notifications"
                 ],
                 "summary": "news-notifications relation",
                 "operationId": "news-notifications_relation",
@@ -12550,7 +12550,7 @@
         "\/api\/news-notifications\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "news-notifications"
+                    "Core | news-notifications"
                 ],
                 "summary": "news-notifications restore",
                 "operationId": "news-notifications_restore",
@@ -12597,7 +12597,7 @@
         "\/api\/compliances": {
             "get": {
                 "tags": [
-                    "compliances"
+                    "Core | compliances"
                 ],
                 "summary": "compliances index",
                 "operationId": "compliances_index",
@@ -12766,7 +12766,7 @@
             },
             "post": {
                 "tags": [
-                    "compliances"
+                    "Core | compliances"
                 ],
                 "summary": "compliances store",
                 "operationId": "compliances_store",
@@ -12806,7 +12806,7 @@
         "\/api\/compliances\/create": {
             "get": {
                 "tags": [
-                    "compliances"
+                    "Core | compliances"
                 ],
                 "summary": "compliances create",
                 "operationId": "compliances_create",
@@ -12841,7 +12841,7 @@
         "\/api\/compliances\/{id}": {
             "get": {
                 "tags": [
-                    "compliances"
+                    "Core | compliances"
                 ],
                 "summary": "compliances show",
                 "operationId": "compliances_show",
@@ -12886,7 +12886,7 @@
             },
             "put": {
                 "tags": [
-                    "compliances"
+                    "Core | compliances"
                 ],
                 "summary": "compliances update",
                 "operationId": "compliances_update",
@@ -12934,7 +12934,7 @@
             },
             "delete": {
                 "tags": [
-                    "compliances"
+                    "Core | compliances"
                 ],
                 "summary": "compliances delete",
                 "operationId": "compliances_delete",
@@ -12981,7 +12981,7 @@
         "\/api\/compliances\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "compliances"
+                    "Core | compliances"
                 ],
                 "summary": "compliances single update",
                 "operationId": "compliances_single_update",
@@ -13067,7 +13067,7 @@
         "\/api\/compliances\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "compliances"
+                    "Core | compliances"
                 ],
                 "summary": "compliances edit",
                 "operationId": "compliances_edit",
@@ -13114,7 +13114,7 @@
         "\/api\/compliances\/relation": {
             "get": {
                 "tags": [
-                    "compliances"
+                    "Core | compliances"
                 ],
                 "summary": "compliances relation",
                 "operationId": "compliances_relation",
@@ -13176,7 +13176,7 @@
         "\/api\/compliances\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "compliances"
+                    "Core | compliances"
                 ],
                 "summary": "compliances restore",
                 "operationId": "compliances_restore",
@@ -13223,7 +13223,7 @@
         "\/api\/custom-fields-values": {
             "get": {
                 "tags": [
-                    "custom-fields-values"
+                    "Core | custom-fields-values"
                 ],
                 "summary": "custom_fields_values index",
                 "operationId": "custom_fields_values_index",
@@ -13383,7 +13383,7 @@
             },
             "post": {
                 "tags": [
-                    "custom-fields-values"
+                    "Core | custom-fields-values"
                 ],
                 "summary": "custom-fields-values store",
                 "operationId": "custom-fields-values_store",
@@ -13423,7 +13423,7 @@
         "\/api\/custom-fields-values\/create": {
             "get": {
                 "tags": [
-                    "custom-fields-values"
+                    "Core | custom-fields-values"
                 ],
                 "summary": "custom_fields_values create",
                 "operationId": "custom_fields_values_create",
@@ -13458,7 +13458,7 @@
         "\/api\/custom-fields-values\/{id}": {
             "get": {
                 "tags": [
-                    "custom-fields-values"
+                    "Core | custom-fields-values"
                 ],
                 "summary": "custom-fields-values show",
                 "operationId": "custom-fields-values_show",
@@ -13503,7 +13503,7 @@
             },
             "put": {
                 "tags": [
-                    "custom-fields-values"
+                    "Core | custom-fields-values"
                 ],
                 "summary": "custom-fields-values update",
                 "operationId": "custom-fields-values_update",
@@ -13551,7 +13551,7 @@
             },
             "delete": {
                 "tags": [
-                    "custom-fields-values"
+                    "Core | custom-fields-values"
                 ],
                 "summary": "custom-fields-values delete",
                 "operationId": "custom-fields-values_delete",
@@ -13598,7 +13598,7 @@
         "\/api\/custom-fields-values\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "custom-fields-values"
+                    "Core | custom-fields-values"
                 ],
                 "summary": "custom-fields-values single update",
                 "operationId": "custom-fields-values_single_update",
@@ -13682,7 +13682,7 @@
         "\/api\/custom-fields-values\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "custom-fields-values"
+                    "Core | custom-fields-values"
                 ],
                 "summary": "custom-fields-values edit",
                 "operationId": "custom-fields-values_edit",
@@ -13729,7 +13729,7 @@
         "\/api\/custom-fields-values\/relation": {
             "get": {
                 "tags": [
-                    "custom-fields-values"
+                    "Core | custom-fields-values"
                 ],
                 "summary": "custom-fields-values relation",
                 "operationId": "custom-fields-values_relation",
@@ -13791,7 +13791,7 @@
         "\/api\/custom-fields-values\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "custom-fields-values"
+                    "Core | custom-fields-values"
                 ],
                 "summary": "custom-fields-values restore",
                 "operationId": "custom-fields-values_restore",
@@ -13838,7 +13838,7 @@
         "\/api\/reviews": {
             "get": {
                 "tags": [
-                    "reviews"
+                    "Core | reviews"
                 ],
                 "summary": "reviews index",
                 "operationId": "reviews_index",
@@ -14034,7 +14034,7 @@
             },
             "post": {
                 "tags": [
-                    "reviews"
+                    "Core | reviews"
                 ],
                 "summary": "reviews store",
                 "operationId": "reviews_store",
@@ -14074,7 +14074,7 @@
         "\/api\/reviews\/create": {
             "get": {
                 "tags": [
-                    "reviews"
+                    "Core | reviews"
                 ],
                 "summary": "reviews create",
                 "operationId": "reviews_create",
@@ -14109,7 +14109,7 @@
         "\/api\/reviews\/{id}": {
             "get": {
                 "tags": [
-                    "reviews"
+                    "Core | reviews"
                 ],
                 "summary": "reviews show",
                 "operationId": "reviews_show",
@@ -14154,7 +14154,7 @@
             },
             "put": {
                 "tags": [
-                    "reviews"
+                    "Core | reviews"
                 ],
                 "summary": "reviews update",
                 "operationId": "reviews_update",
@@ -14202,7 +14202,7 @@
             },
             "delete": {
                 "tags": [
-                    "reviews"
+                    "Core | reviews"
                 ],
                 "summary": "reviews delete",
                 "operationId": "reviews_delete",
@@ -14249,7 +14249,7 @@
         "\/api\/reviews\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "reviews"
+                    "Core | reviews"
                 ],
                 "summary": "reviews single update",
                 "operationId": "reviews_single_update",
@@ -14341,7 +14341,7 @@
         "\/api\/reviews\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "reviews"
+                    "Core | reviews"
                 ],
                 "summary": "reviews edit",
                 "operationId": "reviews_edit",
@@ -14388,7 +14388,7 @@
         "\/api\/reviews\/relation": {
             "get": {
                 "tags": [
-                    "reviews"
+                    "Core | reviews"
                 ],
                 "summary": "reviews relation",
                 "operationId": "reviews_relation",
@@ -14450,7 +14450,7 @@
         "\/api\/reviews\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "reviews"
+                    "Core | reviews"
                 ],
                 "summary": "reviews restore",
                 "operationId": "reviews_restore",
@@ -14497,7 +14497,7 @@
         "\/api\/user-views": {
             "get": {
                 "tags": [
-                    "user-views"
+                    "Core | user-views"
                 ],
                 "summary": "user_views index",
                 "operationId": "user_views_index",
@@ -14630,7 +14630,7 @@
             },
             "post": {
                 "tags": [
-                    "user-views"
+                    "Core | user-views"
                 ],
                 "summary": "user-views store",
                 "operationId": "user-views_store",
@@ -14670,7 +14670,7 @@
         "\/api\/user-views\/create": {
             "get": {
                 "tags": [
-                    "user-views"
+                    "Core | user-views"
                 ],
                 "summary": "user_views create",
                 "operationId": "user_views_create",
@@ -14705,7 +14705,7 @@
         "\/api\/user-views\/{id}": {
             "get": {
                 "tags": [
-                    "user-views"
+                    "Core | user-views"
                 ],
                 "summary": "user-views show",
                 "operationId": "user-views_show",
@@ -14750,7 +14750,7 @@
             },
             "put": {
                 "tags": [
-                    "user-views"
+                    "Core | user-views"
                 ],
                 "summary": "user-views update",
                 "operationId": "user-views_update",
@@ -14798,7 +14798,7 @@
             },
             "delete": {
                 "tags": [
-                    "user-views"
+                    "Core | user-views"
                 ],
                 "summary": "user-views delete",
                 "operationId": "user-views_delete",
@@ -14845,7 +14845,7 @@
         "\/api\/user-views\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "user-views"
+                    "Core | user-views"
                 ],
                 "summary": "user-views single update",
                 "operationId": "user-views_single_update",
@@ -14925,7 +14925,7 @@
         "\/api\/user-views\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "user-views"
+                    "Core | user-views"
                 ],
                 "summary": "user-views edit",
                 "operationId": "user-views_edit",
@@ -14972,7 +14972,7 @@
         "\/api\/user-views\/relation": {
             "get": {
                 "tags": [
-                    "user-views"
+                    "Core | user-views"
                 ],
                 "summary": "user-views relation",
                 "operationId": "user-views_relation",
@@ -15034,7 +15034,7 @@
         "\/api\/user-views\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "user-views"
+                    "Core | user-views"
                 ],
                 "summary": "user-views restore",
                 "operationId": "user-views_restore",
@@ -15081,7 +15081,7 @@
         "\/api\/users-verify": {
             "get": {
                 "tags": [
-                    "users-verify"
+                    "Core | users-verify"
                 ],
                 "summary": "users_verify index",
                 "operationId": "users_verify_index",
@@ -15214,7 +15214,7 @@
             },
             "post": {
                 "tags": [
-                    "users-verify"
+                    "Core | users-verify"
                 ],
                 "summary": "users-verify store",
                 "operationId": "users-verify_store",
@@ -15254,7 +15254,7 @@
         "\/api\/users-verify\/create": {
             "get": {
                 "tags": [
-                    "users-verify"
+                    "Core | users-verify"
                 ],
                 "summary": "users_verify create",
                 "operationId": "users_verify_create",
@@ -15289,7 +15289,7 @@
         "\/api\/users-verify\/{id}": {
             "get": {
                 "tags": [
-                    "users-verify"
+                    "Core | users-verify"
                 ],
                 "summary": "users-verify show",
                 "operationId": "users-verify_show",
@@ -15334,7 +15334,7 @@
             },
             "put": {
                 "tags": [
-                    "users-verify"
+                    "Core | users-verify"
                 ],
                 "summary": "users-verify update",
                 "operationId": "users-verify_update",
@@ -15382,7 +15382,7 @@
             },
             "delete": {
                 "tags": [
-                    "users-verify"
+                    "Core | users-verify"
                 ],
                 "summary": "users-verify delete",
                 "operationId": "users-verify_delete",
@@ -15429,7 +15429,7 @@
         "\/api\/users-verify\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "users-verify"
+                    "Core | users-verify"
                 ],
                 "summary": "users-verify single update",
                 "operationId": "users-verify_single_update",
@@ -15509,7 +15509,7 @@
         "\/api\/users-verify\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "users-verify"
+                    "Core | users-verify"
                 ],
                 "summary": "users-verify edit",
                 "operationId": "users-verify_edit",
@@ -15556,7 +15556,7 @@
         "\/api\/users-verify\/relation": {
             "get": {
                 "tags": [
-                    "users-verify"
+                    "Core | users-verify"
                 ],
                 "summary": "users-verify relation",
                 "operationId": "users-verify_relation",
@@ -15618,7 +15618,7 @@
         "\/api\/users-verify\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "users-verify"
+                    "Core | users-verify"
                 ],
                 "summary": "users-verify restore",
                 "operationId": "users-verify_restore",
@@ -15665,7 +15665,7 @@
         "\/api\/compliance-types": {
             "get": {
                 "tags": [
-                    "compliance-types"
+                    "Core | compliance-types"
                 ],
                 "summary": "compliance_types index",
                 "operationId": "compliance_types_index",
@@ -15789,7 +15789,7 @@
             },
             "post": {
                 "tags": [
-                    "compliance-types"
+                    "Core | compliance-types"
                 ],
                 "summary": "compliance-types store",
                 "operationId": "compliance-types_store",
@@ -15829,7 +15829,7 @@
         "\/api\/compliance-types\/create": {
             "get": {
                 "tags": [
-                    "compliance-types"
+                    "Core | compliance-types"
                 ],
                 "summary": "compliance_types create",
                 "operationId": "compliance_types_create",
@@ -15864,7 +15864,7 @@
         "\/api\/compliance-types\/{id}": {
             "get": {
                 "tags": [
-                    "compliance-types"
+                    "Core | compliance-types"
                 ],
                 "summary": "compliance-types show",
                 "operationId": "compliance-types_show",
@@ -15909,7 +15909,7 @@
             },
             "put": {
                 "tags": [
-                    "compliance-types"
+                    "Core | compliance-types"
                 ],
                 "summary": "compliance-types update",
                 "operationId": "compliance-types_update",
@@ -15957,7 +15957,7 @@
             },
             "delete": {
                 "tags": [
-                    "compliance-types"
+                    "Core | compliance-types"
                 ],
                 "summary": "compliance-types delete",
                 "operationId": "compliance-types_delete",
@@ -16004,7 +16004,7 @@
         "\/api\/compliance-types\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "compliance-types"
+                    "Core | compliance-types"
                 ],
                 "summary": "compliance-types single update",
                 "operationId": "compliance-types_single_update",
@@ -16082,7 +16082,7 @@
         "\/api\/compliance-types\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "compliance-types"
+                    "Core | compliance-types"
                 ],
                 "summary": "compliance-types edit",
                 "operationId": "compliance-types_edit",
@@ -16129,7 +16129,7 @@
         "\/api\/compliance-types\/relation": {
             "get": {
                 "tags": [
-                    "compliance-types"
+                    "Core | compliance-types"
                 ],
                 "summary": "compliance-types relation",
                 "operationId": "compliance-types_relation",
@@ -16191,7 +16191,7 @@
         "\/api\/compliance-types\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "compliance-types"
+                    "Core | compliance-types"
                 ],
                 "summary": "compliance-types restore",
                 "operationId": "compliance-types_restore",
@@ -16238,7 +16238,7 @@
         "\/api\/user-expenses": {
             "get": {
                 "tags": [
-                    "user-expenses"
+                    "Core | user-expenses"
                 ],
                 "summary": "user_expenses index",
                 "operationId": "user_expenses_index",
@@ -16401,7 +16401,7 @@
             },
             "post": {
                 "tags": [
-                    "user-expenses"
+                    "Core | user-expenses"
                 ],
                 "summary": "user-expenses store",
                 "operationId": "user-expenses_store",
@@ -16441,7 +16441,7 @@
         "\/api\/user-expenses\/create": {
             "get": {
                 "tags": [
-                    "user-expenses"
+                    "Core | user-expenses"
                 ],
                 "summary": "user_expenses create",
                 "operationId": "user_expenses_create",
@@ -16476,7 +16476,7 @@
         "\/api\/user-expenses\/{id}": {
             "get": {
                 "tags": [
-                    "user-expenses"
+                    "Core | user-expenses"
                 ],
                 "summary": "user-expenses show",
                 "operationId": "user-expenses_show",
@@ -16521,7 +16521,7 @@
             },
             "put": {
                 "tags": [
-                    "user-expenses"
+                    "Core | user-expenses"
                 ],
                 "summary": "user-expenses update",
                 "operationId": "user-expenses_update",
@@ -16569,7 +16569,7 @@
             },
             "delete": {
                 "tags": [
-                    "user-expenses"
+                    "Core | user-expenses"
                 ],
                 "summary": "user-expenses delete",
                 "operationId": "user-expenses_delete",
@@ -16616,7 +16616,7 @@
         "\/api\/user-expenses\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "user-expenses"
+                    "Core | user-expenses"
                 ],
                 "summary": "user-expenses single update",
                 "operationId": "user-expenses_single_update",
@@ -16706,7 +16706,7 @@
         "\/api\/user-expenses\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "user-expenses"
+                    "Core | user-expenses"
                 ],
                 "summary": "user-expenses edit",
                 "operationId": "user-expenses_edit",
@@ -16753,7 +16753,7 @@
         "\/api\/user-expenses\/relation": {
             "get": {
                 "tags": [
-                    "user-expenses"
+                    "Core | user-expenses"
                 ],
                 "summary": "user-expenses relation",
                 "operationId": "user-expenses_relation",
@@ -16815,7 +16815,7 @@
         "\/api\/user-expenses\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "user-expenses"
+                    "Core | user-expenses"
                 ],
                 "summary": "user-expenses restore",
                 "operationId": "user-expenses_restore",
@@ -16862,7 +16862,7 @@
         "\/api\/task-responses": {
             "get": {
                 "tags": [
-                    "task-responses"
+                    "Core | task-responses"
                 ],
                 "summary": "task_responses index",
                 "operationId": "task_responses_index",
@@ -17058,7 +17058,7 @@
             },
             "post": {
                 "tags": [
-                    "task-responses"
+                    "Core | task-responses"
                 ],
                 "summary": "task-responses store",
                 "operationId": "task-responses_store",
@@ -17098,7 +17098,7 @@
         "\/api\/task-responses\/create": {
             "get": {
                 "tags": [
-                    "task-responses"
+                    "Core | task-responses"
                 ],
                 "summary": "task_responses create",
                 "operationId": "task_responses_create",
@@ -17133,7 +17133,7 @@
         "\/api\/task-responses\/{id}": {
             "get": {
                 "tags": [
-                    "task-responses"
+                    "Core | task-responses"
                 ],
                 "summary": "task-responses show",
                 "operationId": "task-responses_show",
@@ -17178,7 +17178,7 @@
             },
             "put": {
                 "tags": [
-                    "task-responses"
+                    "Core | task-responses"
                 ],
                 "summary": "task-responses update",
                 "operationId": "task-responses_update",
@@ -17226,7 +17226,7 @@
             },
             "delete": {
                 "tags": [
-                    "task-responses"
+                    "Core | task-responses"
                 ],
                 "summary": "task-responses delete",
                 "operationId": "task-responses_delete",
@@ -17273,7 +17273,7 @@
         "\/api\/task-responses\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "task-responses"
+                    "Core | task-responses"
                 ],
                 "summary": "task-responses single update",
                 "operationId": "task-responses_single_update",
@@ -17363,7 +17363,7 @@
         "\/api\/task-responses\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "task-responses"
+                    "Core | task-responses"
                 ],
                 "summary": "task-responses edit",
                 "operationId": "task-responses_edit",
@@ -17410,7 +17410,7 @@
         "\/api\/task-responses\/relation": {
             "get": {
                 "tags": [
-                    "task-responses"
+                    "Core | task-responses"
                 ],
                 "summary": "task-responses relation",
                 "operationId": "task-responses_relation",
@@ -17472,7 +17472,7 @@
         "\/api\/task-responses\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "task-responses"
+                    "Core | task-responses"
                 ],
                 "summary": "task-responses restore",
                 "operationId": "task-responses_restore",
@@ -17519,7 +17519,7 @@
         "\/api\/blog-new": {
             "get": {
                 "tags": [
-                    "blog-new"
+                    "Core | blog-new"
                 ],
                 "summary": "blog_new index",
                 "operationId": "blog_new_index",
@@ -17662,7 +17662,7 @@
             },
             "post": {
                 "tags": [
-                    "blog-new"
+                    "Core | blog-new"
                 ],
                 "summary": "blog-new store",
                 "operationId": "blog-new_store",
@@ -17702,7 +17702,7 @@
         "\/api\/blog-new\/create": {
             "get": {
                 "tags": [
-                    "blog-new"
+                    "Core | blog-new"
                 ],
                 "summary": "blog_new create",
                 "operationId": "blog_new_create",
@@ -17737,7 +17737,7 @@
         "\/api\/blog-new\/{id}": {
             "get": {
                 "tags": [
-                    "blog-new"
+                    "Core | blog-new"
                 ],
                 "summary": "blog-new show",
                 "operationId": "blog-new_show",
@@ -17782,7 +17782,7 @@
             },
             "post": {
                 "tags": [
-                    "blog-new"
+                    "Core | blog-new"
                 ],
                 "summary": "blog-new update",
                 "operationId": "blog-new_update",
@@ -17830,7 +17830,7 @@
             },
             "delete": {
                 "tags": [
-                    "blog-new"
+                    "Core | blog-new"
                 ],
                 "summary": "blog-new delete",
                 "operationId": "blog-new_delete",
@@ -17877,7 +17877,7 @@
         "\/api\/blog-new\/{id}\/single\/{field}": {
             "post": {
                 "tags": [
-                    "blog-new"
+                    "Core | blog-new"
                 ],
                 "summary": "blog-new single update",
                 "operationId": "blog-new_single_update",
@@ -17961,7 +17961,7 @@
         "\/api\/blog-new\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "blog-new"
+                    "Core | blog-new"
                 ],
                 "summary": "blog-new edit",
                 "operationId": "blog-new_edit",
@@ -18008,7 +18008,7 @@
         "\/api\/blog-new\/relation": {
             "get": {
                 "tags": [
-                    "blog-new"
+                    "Core | blog-new"
                 ],
                 "summary": "blog-new relation",
                 "operationId": "blog-new_relation",
@@ -18070,7 +18070,7 @@
         "\/api\/blog-new\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "blog-new"
+                    "Core | blog-new"
                 ],
                 "summary": "blog-new restore",
                 "operationId": "blog-new_restore",
@@ -18117,7 +18117,7 @@
         "\/api\/contents": {
             "get": {
                 "tags": [
-                    "contents"
+                    "Core | contents"
                 ],
                 "summary": "contents index",
                 "operationId": "contents_index",
@@ -18278,7 +18278,7 @@
             },
             "post": {
                 "tags": [
-                    "contents"
+                    "Core | contents"
                 ],
                 "summary": "contents store",
                 "operationId": "contents_store",
@@ -18318,7 +18318,7 @@
         "\/api\/contents\/create": {
             "get": {
                 "tags": [
-                    "contents"
+                    "Core | contents"
                 ],
                 "summary": "contents create",
                 "operationId": "contents_create",
@@ -18353,7 +18353,7 @@
         "\/api\/contents\/{id}": {
             "get": {
                 "tags": [
-                    "contents"
+                    "Core | contents"
                 ],
                 "summary": "contents show",
                 "operationId": "contents_show",
@@ -18398,7 +18398,7 @@
             },
             "post": {
                 "tags": [
-                    "contents"
+                    "Core | contents"
                 ],
                 "summary": "contents update",
                 "operationId": "contents_update",
@@ -18446,7 +18446,7 @@
             },
             "delete": {
                 "tags": [
-                    "contents"
+                    "Core | contents"
                 ],
                 "summary": "contents delete",
                 "operationId": "contents_delete",
@@ -18493,7 +18493,7 @@
         "\/api\/contents\/{id}\/single\/{field}": {
             "post": {
                 "tags": [
-                    "contents"
+                    "Core | contents"
                 ],
                 "summary": "contents single update",
                 "operationId": "contents_single_update",
@@ -18581,7 +18581,7 @@
         "\/api\/contents\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "contents"
+                    "Core | contents"
                 ],
                 "summary": "contents edit",
                 "operationId": "contents_edit",
@@ -18628,7 +18628,7 @@
         "\/api\/contents\/relation": {
             "get": {
                 "tags": [
-                    "contents"
+                    "Core | contents"
                 ],
                 "summary": "contents relation",
                 "operationId": "contents_relation",
@@ -18690,7 +18690,7 @@
         "\/api\/contents\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "contents"
+                    "Core | contents"
                 ],
                 "summary": "contents restore",
                 "operationId": "contents_restore",
@@ -18737,7 +18737,7 @@
         "\/api\/prepare": {
             "get": {
                 "tags": [
-                    "prepare"
+                    "Core | prepare"
                 ],
                 "summary": "prepare index",
                 "operationId": "prepare_index",
@@ -18942,7 +18942,7 @@
             },
             "post": {
                 "tags": [
-                    "prepare"
+                    "Core | prepare"
                 ],
                 "summary": "prepare store",
                 "operationId": "prepare_store",
@@ -18982,7 +18982,7 @@
         "\/api\/prepare\/create": {
             "get": {
                 "tags": [
-                    "prepare"
+                    "Core | prepare"
                 ],
                 "summary": "prepare create",
                 "operationId": "prepare_create",
@@ -19017,7 +19017,7 @@
         "\/api\/prepare\/{id}": {
             "get": {
                 "tags": [
-                    "prepare"
+                    "Core | prepare"
                 ],
                 "summary": "prepare show",
                 "operationId": "prepare_show",
@@ -19062,7 +19062,7 @@
             },
             "put": {
                 "tags": [
-                    "prepare"
+                    "Core | prepare"
                 ],
                 "summary": "prepare update",
                 "operationId": "prepare_update",
@@ -19110,7 +19110,7 @@
             },
             "delete": {
                 "tags": [
-                    "prepare"
+                    "Core | prepare"
                 ],
                 "summary": "prepare delete",
                 "operationId": "prepare_delete",
@@ -19157,7 +19157,7 @@
         "\/api\/prepare\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "prepare"
+                    "Core | prepare"
                 ],
                 "summary": "prepare single update",
                 "operationId": "prepare_single_update",
@@ -19253,7 +19253,7 @@
         "\/api\/prepare\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "prepare"
+                    "Core | prepare"
                 ],
                 "summary": "prepare edit",
                 "operationId": "prepare_edit",
@@ -19300,7 +19300,7 @@
         "\/api\/prepare\/relation": {
             "get": {
                 "tags": [
-                    "prepare"
+                    "Core | prepare"
                 ],
                 "summary": "prepare relation",
                 "operationId": "prepare_relation",
@@ -19362,7 +19362,7 @@
         "\/api\/prepare\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "prepare"
+                    "Core | prepare"
                 ],
                 "summary": "prepare restore",
                 "operationId": "prepare_restore",
@@ -19409,7 +19409,7 @@
         "\/api\/privacies": {
             "get": {
                 "tags": [
-                    "privacies"
+                    "Core | privacies"
                 ],
                 "summary": "privacies index",
                 "operationId": "privacies_index",
@@ -19542,7 +19542,7 @@
             },
             "post": {
                 "tags": [
-                    "privacies"
+                    "Core | privacies"
                 ],
                 "summary": "privacies store",
                 "operationId": "privacies_store",
@@ -19582,7 +19582,7 @@
         "\/api\/privacies\/create": {
             "get": {
                 "tags": [
-                    "privacies"
+                    "Core | privacies"
                 ],
                 "summary": "privacies create",
                 "operationId": "privacies_create",
@@ -19617,7 +19617,7 @@
         "\/api\/privacies\/{id}": {
             "get": {
                 "tags": [
-                    "privacies"
+                    "Core | privacies"
                 ],
                 "summary": "privacies show",
                 "operationId": "privacies_show",
@@ -19662,7 +19662,7 @@
             },
             "put": {
                 "tags": [
-                    "privacies"
+                    "Core | privacies"
                 ],
                 "summary": "privacies update",
                 "operationId": "privacies_update",
@@ -19710,7 +19710,7 @@
             },
             "delete": {
                 "tags": [
-                    "privacies"
+                    "Core | privacies"
                 ],
                 "summary": "privacies delete",
                 "operationId": "privacies_delete",
@@ -19757,7 +19757,7 @@
         "\/api\/privacies\/{id}\/single\/{field}": {
             "put": {
                 "tags": [
-                    "privacies"
+                    "Core | privacies"
                 ],
                 "summary": "privacies single update",
                 "operationId": "privacies_single_update",
@@ -19837,7 +19837,7 @@
         "\/api\/privacies\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "privacies"
+                    "Core | privacies"
                 ],
                 "summary": "privacies edit",
                 "operationId": "privacies_edit",
@@ -19884,7 +19884,7 @@
         "\/api\/privacies\/relation": {
             "get": {
                 "tags": [
-                    "privacies"
+                    "Core | privacies"
                 ],
                 "summary": "privacies relation",
                 "operationId": "privacies_relation",
@@ -19946,7 +19946,7 @@
         "\/api\/privacies\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "privacies"
+                    "Core | privacies"
                 ],
                 "summary": "privacies restore",
                 "operationId": "privacies_restore",
@@ -19993,7 +19993,7 @@
         "\/api\/footer-review": {
             "get": {
                 "tags": [
-                    "footer-review"
+                    "Core | footer-review"
                 ],
                 "summary": "footer_review index",
                 "operationId": "footer_review_index",
@@ -20036,7 +20036,8 @@
                                 "image",
                                 "created_at",
                                 "updated_at",
-                                "review_type"
+                                "review_type",
+                                "site_link"
                             ],
                             "type": "string"
                         }
@@ -20110,6 +20111,14 @@
                                 "type": "string"
                             }
                         }
+                    },
+                    {
+                        "name": "filters[site_link]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -20152,7 +20161,7 @@
             },
             "post": {
                 "tags": [
-                    "footer-review"
+                    "Core | footer-review"
                 ],
                 "summary": "footer-review store",
                 "operationId": "footer-review_store",
@@ -20192,7 +20201,7 @@
         "\/api\/footer-review\/create": {
             "get": {
                 "tags": [
-                    "footer-review"
+                    "Core | footer-review"
                 ],
                 "summary": "footer_review create",
                 "operationId": "footer_review_create",
@@ -20227,7 +20236,7 @@
         "\/api\/footer-review\/{id}": {
             "get": {
                 "tags": [
-                    "footer-review"
+                    "Core | footer-review"
                 ],
                 "summary": "footer-review show",
                 "operationId": "footer-review_show",
@@ -20272,7 +20281,7 @@
             },
             "post": {
                 "tags": [
-                    "footer-review"
+                    "Core | footer-review"
                 ],
                 "summary": "footer-review update",
                 "operationId": "footer-review_update",
@@ -20320,7 +20329,7 @@
             },
             "delete": {
                 "tags": [
-                    "footer-review"
+                    "Core | footer-review"
                 ],
                 "summary": "footer-review delete",
                 "operationId": "footer-review_delete",
@@ -20367,7 +20376,7 @@
         "\/api\/footer-review\/{id}\/single\/{field}": {
             "post": {
                 "tags": [
-                    "footer-review"
+                    "Core | footer-review"
                 ],
                 "summary": "footer-review single update",
                 "operationId": "footer-review_single_update",
@@ -20392,7 +20401,8 @@
                                 "text",
                                 "image",
                                 "created_at",
-                                "review_type"
+                                "review_type",
+                                "site_link"
                             ]
                         }
                     },
@@ -20409,7 +20419,8 @@
                                     "text",
                                     "image",
                                     "created_at",
-                                    "review_type"
+                                    "review_type",
+                                    "site_link"
                                 ]
                             }
                         }
@@ -20451,7 +20462,7 @@
         "\/api\/footer-review\/{id}\/edit": {
             "get": {
                 "tags": [
-                    "footer-review"
+                    "Core | footer-review"
                 ],
                 "summary": "footer-review edit",
                 "operationId": "footer-review_edit",
@@ -20498,7 +20509,7 @@
         "\/api\/footer-review\/relation": {
             "get": {
                 "tags": [
-                    "footer-review"
+                    "Core | footer-review"
                 ],
                 "summary": "footer-review relation",
                 "operationId": "footer-review_relation",
@@ -20560,7 +20571,7 @@
         "\/api\/footer-review\/{id}\/restore": {
             "get": {
                 "tags": [
-                    "footer-review"
+                    "Core | footer-review"
                 ],
                 "summary": "footer-review restore",
                 "operationId": "footer-review_restore",
@@ -23087,6 +23098,10 @@
                         ],
                         "type": "string",
                         "description": "{\n    \"1\": \"\\u041e\\u0442\\u0437\\u044b\\u0432\\u044b \\u0437\\u0430\\u043a\\u0430\\u0437\\u0447\\u0438\\u043a\\u043e\\u0432\",\n    \"2\": \"\\u041e\\u0442\\u0437\\u044b\\u0432\\u044b \\u0438\\u0441\\u043f\\u043e\\u043b\\u043d\\u0438\\u0442\\u0435\\u043b\\u0435\\u0439\"\n}"
+                    },
+                    "site_link": {
+                        "type": "string",
+                        "description": "Site Link"
                     }
                 }
             },
@@ -23123,6 +23138,10 @@
                         ],
                         "type": "string",
                         "description": "{\n    \"1\": \"\\u041e\\u0442\\u0437\\u044b\\u0432\\u044b \\u0437\\u0430\\u043a\\u0430\\u0437\\u0447\\u0438\\u043a\\u043e\\u0432\",\n    \"2\": \"\\u041e\\u0442\\u0437\\u044b\\u0432\\u044b \\u0438\\u0441\\u043f\\u043e\\u043b\\u043d\\u0438\\u0442\\u0435\\u043b\\u0435\\u0439\"\n}"
+                    },
+                    "site_link": {
+                        "type": "string",
+                        "description": "Site Link"
                     }
                 }
             }
@@ -27386,6 +27405,10 @@
                                     ],
                                     "type": "string",
                                     "description": "{\n    \"1\": \"\\u041e\\u0442\\u0437\\u044b\\u0432\\u044b \\u0437\\u0430\\u043a\\u0430\\u0437\\u0447\\u0438\\u043a\\u043e\\u0432\",\n    \"2\": \"\\u041e\\u0442\\u0437\\u044b\\u0432\\u044b \\u0438\\u0441\\u043f\\u043e\\u043b\\u043d\\u0438\\u0442\\u0435\\u043b\\u0435\\u0439\"\n}"
+                                },
+                                "site_link": {
+                                    "type": "string",
+                                    "description": "Site Link"
                                 }
                             }
                         }
@@ -27429,6 +27452,10 @@
                                     ],
                                     "type": "string",
                                     "description": "{\n    \"1\": \"\\u041e\\u0442\\u0437\\u044b\\u0432\\u044b \\u0437\\u0430\\u043a\\u0430\\u0437\\u0447\\u0438\\u043a\\u043e\\u0432\",\n    \"2\": \"\\u041e\\u0442\\u0437\\u044b\\u0432\\u044b \\u0438\\u0441\\u043f\\u043e\\u043b\\u043d\\u0438\\u0442\\u0435\\u043b\\u0435\\u0439\"\n}"
+                                },
+                                "site_link": {
+                                    "type": "string",
+                                    "description": "Site Link"
                                 }
                             }
                         }
@@ -27472,6 +27499,10 @@
                                     ],
                                     "type": "string",
                                     "description": "{\n    \"1\": \"\\u041e\\u0442\\u0437\\u044b\\u0432\\u044b \\u0437\\u0430\\u043a\\u0430\\u0437\\u0447\\u0438\\u043a\\u043e\\u0432\",\n    \"2\": \"\\u041e\\u0442\\u0437\\u044b\\u0432\\u044b \\u0438\\u0441\\u043f\\u043e\\u043b\\u043d\\u0438\\u0442\\u0435\\u043b\\u0435\\u0439\"\n}"
+                                },
+                                "site_link": {
+                                    "type": "string",
+                                    "description": "Site Link"
                                 }
                             }
                         }
