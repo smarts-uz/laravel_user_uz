@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\BlockedUser;
 use App\Models\UserCategory;
 use Carbon\Carbon;
 use App\Models\Task;
@@ -116,6 +117,12 @@ class UserIndexResource extends JsonResource
         $age = Carbon::parse($this->born_date)->age;
         $born_date = Carbon::parse($this->born_date)->format('Y-m-d');
         $user_categories = UserCategory::query()->where('user_id',$this->id)->pluck('category_id')->toArray();
+        $user_exists = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$this->id)->exists();
+        if(!$user_exists){
+            $blocked_user = 0;
+        }else{
+            $blocked_user = 1;
+        }
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -161,6 +168,7 @@ class UserIndexResource extends JsonResource
             'directories' => $directories,
             'wallet_balance' => $balance,
             'last_seen' => $lastSeen,
+            'blocked_user'=> $blocked_user,
             'created_at' => $this->created_at
         ];
     }

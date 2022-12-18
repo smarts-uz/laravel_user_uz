@@ -1179,9 +1179,9 @@ class ProfileAPIController extends Controller
     public function block(UserBlockRequest $request)
     {
         $data = $request->validated();
-
-        if((int)$data['blocked_user'] === 1){
-            BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$data['blocked_user_id'])->delete();
+        $blocked_user = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$data['blocked_user_id']);
+        if($blocked_user->exists()){
+            $blocked_user->delete();
         }else{
             BlockedUser::query()->updateOrCreate([
                 'user_id' => \auth()->id(),

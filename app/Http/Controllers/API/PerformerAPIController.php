@@ -161,41 +161,6 @@ class PerformerAPIController extends Controller
     }
 
     /**
-     * @OA\Get(
-     *     path="/api/performers/{performer}",
-     *     tags={"Performers"},
-     *     summary="Get Performer By ID",
-     *     @OA\Parameter(
-     *          in="path",
-     *          name="performer",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          ),
-     *     ),
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     )
-     * )
-     *
-     */
-    public function performer(User $performer)
-    {
-        setView($performer);
-
-        return (int)$performer->role_id === 5 ? new PerformerIndexResource($performer) : abort(404);
-    }
-
-    /**
      * @OA\Post(
      *     path="/api/give-task",
      *     tags={"Task"},

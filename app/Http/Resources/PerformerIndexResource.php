@@ -27,12 +27,6 @@ class PerformerIndexResource extends JsonResource
                 $lastSeen = __('Был онлайн'). $seenDate->diffForHumans();
             }
         }
-        $user_exists = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$this->id)->exists();
-        if(!$user_exists){
-            $blocked_user = 0;
-        }else{
-            $blocked_user = 1;
-        }
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -47,7 +41,6 @@ class PerformerIndexResource extends JsonResource
             'stars' => $this->review_rating,
             'role_id' => $this->role_id,
             'views' => $this->performer_views()->count(),
-            'blocked_user'=> $blocked_user,
         ];
     }
 }
