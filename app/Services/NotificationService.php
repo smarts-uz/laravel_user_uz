@@ -43,7 +43,7 @@ class NotificationService
                                 Notification::RESPONSE_TO_TASK, Notification::SEND_REVIEW_PERFORMER,
                                 Notification::RESPONSE_TO_TASK_FOR_USER, Notification::CANCELLED_TASK,
                                 Notification::ADMIN_COMPLETE_TASK, Notification::ADMIN_CANCEL_TASK,
-                                Notification::NEW_PASSWORD,Notification::WALLET_BALANCE
+                                Notification::NEW_PASSWORD, Notification::WALLET_BALANCE
                             ]);
                     });
                 if ((int)$user->role_id === User::ROLE_PERFORMER && $web)
@@ -75,7 +75,7 @@ class NotificationService
         $performers = User::query()->where('role_id', User::ROLE_PERFORMER)->select('id', 'email', 'firebase_token', 'sms_notification', 'email_notification', 'phone_number')->get();
         $performer_ids = [];
         foreach ($performers as $performer) {
-            $user_cat_ids = UserCategory::query()->where('user_id',$performer->id)->pluck('category_id')->toArray();
+            $user_cat_ids = UserCategory::query()->where('user_id', $performer->id)->pluck('category_id')->toArray();
             /** @var Notification $notification */
             $notification = Notification::query()->create([
                 'user_id' => $user_id,
@@ -257,6 +257,22 @@ class NotificationService
         Mail::to($user->email)->send(new MessageEmail($message));
     }
 
+
+    public static function pushNoti(User $user, $notification)
+    {
+
+        if ((int)$notification->status !== 1) {
+            NotificationService::pushNotification($user, [
+                'title' => $notification->title,
+                'body' => $notification->body
+            ], 'notification', new NotificationResource($notification));
+
+            $notification->status = 1;
+            $notification->save();
+        }
+    }
+
+
     /**
      * Function for use send push(firebase) notifications
      *
@@ -280,9 +296,9 @@ class NotificationService
                         "type" => $type,
                         "data" => $model,
                         "click_action" => "FLUTTER_NOTIFICATION_CLICK",
-                        "sound"=> "default",
+                        "sound" => "default",
                     ],
-                    "sound"=> "default",
+                    "sound" => "default",
                     "click_action" => "FLUTTER_NOTIFICATION_CLICK"
                 ]
             )->body();
@@ -343,9 +359,9 @@ class NotificationService
             Notification::ADMIN_CANCEL_TASK => __('3адание task_name №task_id было отменено администрацией', [
                 'task_name' => $notification->name_task, 'task_id' => $notification->task_id,
             ], $locale),
-            Notification::NEW_PASSWORD => __('Чтобы не потерять доступ к вашему аккаунту, рекомендуем вам установить пароль. Сделать это можно в профиле, раздел "Настройки".',[], $locale),
-            Notification::WALLET_BALANCE => __('USer.Uz предоставил вам бонус в размере default сумов.',[
-                'default'=>setting('admin.bonus')
+            Notification::NEW_PASSWORD => __('Чтобы не потерять доступ к вашему аккаунту, рекомендуем вам установить пароль. Сделать это можно в профиле, раздел "Настройки".', [], $locale),
+            Notification::WALLET_BALANCE => __('USer.Uz предоставил вам бонус в размере default сумов.', [
+                'default' => setting('admin.bonus')
             ], $locale),
             default => 'Description',
         };
