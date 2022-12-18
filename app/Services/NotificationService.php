@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Models\User;
 use App\Mail\MessageEmail;
 use App\Models\Notification;
+use App\Models\UserCategory;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
@@ -71,10 +72,10 @@ class NotificationService
      */
     public static function sendTaskNotification($task, $user_id): void
     {
-        $performers = User::query()->where('role_id', User::ROLE_PERFORMER)->select('id', 'email', 'category_id', 'firebase_token', 'sms_notification', 'email_notification', 'phone_number')->get();
+        $performers = User::query()->where('role_id', User::ROLE_PERFORMER)->select('id', 'email', 'firebase_token', 'sms_notification', 'email_notification', 'phone_number')->get();
         $performer_ids = [];
         foreach ($performers as $performer) {
-            $user_cat_ids = explode(",", $performer->category_id);
+            $user_cat_ids = UserCategory::query()->where('user_id',$performer->id)->pluck('category_id')->toArray();
             /** @var Notification $notification */
             $notification = Notification::query()->create([
                 'user_id' => $user_id,

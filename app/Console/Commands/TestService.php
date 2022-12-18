@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use App\Services\Chat\ContactService;
+use App\Services\PerformersService;
 use App\Services\Profile\ProfileService;
 use Illuminate\Console\Command;
 
@@ -30,9 +31,9 @@ class TestService extends Command
      */
     public function handle()
     {
-        $authUser = 725;
-        $performer_filter = new ContactService();
-        $data = $performer_filter->contactsList($authUser);
+
+        $performer_filter = new PerformersService();
+        $data = $performer_filter->performer_filter([]);
         dd($data);
     }
 }
