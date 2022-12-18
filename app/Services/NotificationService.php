@@ -261,7 +261,7 @@ class NotificationService
     public static function pushNoti(User $user, $notification)
     {
 
-        if ($notification->status !== 1) {
+        if ((int)$notification->status !== 1) {
             NotificationService::pushNotification($user, [
                 'title' => $notification->title,
                 'body' => $notification->body
