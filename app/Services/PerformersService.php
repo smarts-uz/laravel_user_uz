@@ -82,17 +82,18 @@ class PerformersService
      * @param $authId
      * @return PerformerPrefItem
      */
-    public function perf_ajax($authId,$search)
+    public function perf_ajax($authId,$search,$cf_id)
     {
         $item = new PerformerPrefItem();
         $item->categories = Category::query()->where('parent_id', null)
             ->select('id', 'name', 'slug')->orderBy("order", "asc")->get();
         $item->categories2 = Category::query()->where('parent_id', '<>', null)
             ->select('id', 'parent_id', 'name')->orderBy("order", "asc")->get();
-        $item->child_categories = Category::all();
+        $item->user_categories = UserCategory::query()->where('category_id',$cf_id)->pluck('user_id')->toArray();
         $item->users = User::query()
             ->where('role_id', User::ROLE_PERFORMER)
             ->where('name', 'LIKE', "%{$search}%")
+            ->whereIn('id', $item->user_categories)
             ->orderByDesc('review_rating')
             ->orderbyRaw('(review_good - review_bad) DESC')->paginate(50);
         $item->top_users = User::query()

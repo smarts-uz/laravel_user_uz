@@ -71,14 +71,7 @@
                 </div>
 
                 @foreach($users as $user)
-                    @php
-                        $cat_arr = explode(",",$user->category_id);
-                        $res_c_arr = array_search($cf_id,$cat_arr);
-                        //dd($res_c_arr);
-                    @endphp
-                    @if($res_c_arr !== false)
-                        @include('performers.performers_figure')
-                    @endif
+                    @include('performers.performers_figure')
                 @endforeach
                 {{ $users->links('pagination::tailwind') }}
 

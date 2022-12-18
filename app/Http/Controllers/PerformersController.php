@@ -120,10 +120,9 @@ class PerformersController extends Controller
         $authId = Auth::id();
         $search = $request->input('search');
         $service = new PerformersService();
-        $item = $service->perf_ajax($authId,$search);
+        $item = $service->perf_ajax($authId,$search,$cf_id);
         return view('performers/performers_cat',
         [
-            'child_categories' => $item->child_categories,
             'top_users' => $item->top_users,
             'user' => $user,
             'categories' => $item->categories,
