@@ -1746,7 +1746,11 @@ class TaskAPIController extends Controller
         $user_id = $request->get('user_id');
         $status = $request->get('status');
 
-        $tasks = Task::query()->where('user_id', $user_id)->where('status', $status);
+        if((int)$status === 1){
+            $tasks = Task::query()->where('user_id', $user_id)->where('status', Task::STATUS_COMPLETE);
+        }else{
+            $tasks = Task::query()->where('performer_id', $user_id)->where('status', Task::STATUS_COMPLETE);
+        }
 
         return new TaskPaginationResource($tasks->orderByDesc('created_at')->paginate());
 
