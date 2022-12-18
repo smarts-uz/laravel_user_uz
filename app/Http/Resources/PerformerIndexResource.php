@@ -27,11 +27,11 @@ class PerformerIndexResource extends JsonResource
                 $lastSeen = __('Был онлайн'). $seenDate->diffForHumans();
             }
         }
-        $user_exists = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$this->id)->get();
-        if($user_exists){
-            $blocked_user = 1;
-        }else{
+        $user_exists = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$this->id)->exists();
+        if(!$user_exists){
             $blocked_user = 0;
+        }else{
+            $blocked_user = 1;
         }
         return [
             'id' => $this->id,
