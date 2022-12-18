@@ -105,6 +105,13 @@ class PerformersService
         return $item;
     }
 
+    /**
+     *
+     * Function  perf_ajax
+     * Mazkur metod performerlar bo'yicha filter qiladi
+     * @param $data
+     * @return LengthAwarePaginator
+     */
     public function performer_filter($data): LengthAwarePaginator
     {
         $performers = User::query()->where('role_id', User::ROLE_PERFORMER);
