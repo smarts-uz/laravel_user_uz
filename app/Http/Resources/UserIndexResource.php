@@ -120,8 +120,10 @@ class UserIndexResource extends JsonResource
         $user_exists = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$this->id)->exists();
         if(!$user_exists){
             $blocked_user = 0;
+            $user_avarat = asset("images/block-user.jpg");
         }else{
             $blocked_user = 1;
+            $user_avarat = asset('storage/'.$this->avatar);
         }
         return [
             'id' => $this->id,
@@ -129,7 +131,7 @@ class UserIndexResource extends JsonResource
             'social_password'=> $socialPassword,
             'last_name' => $this->last_name,
             'email' => $this->email,
-            'avatar' => asset('storage/'.$this->avatar),
+            'avatar' => $user_avarat,
             'video' => $this->youtube_link,
             'active_task' => $this->active_task,
             'active_step' => $this->active_step,
