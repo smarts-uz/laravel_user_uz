@@ -120,10 +120,10 @@ class UserIndexResource extends JsonResource
         $user_exists = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$this->id)->exists();
         if(!$user_exists){
             $blocked_user = 0;
-            $user_avarat = asset("images/block-user.jpg");
+            $user_avarat = asset('storage/'.$this->avatar);
         }else{
             $blocked_user = 1;
-            $user_avarat = asset('storage/'.$this->avatar);
+            $user_avarat = asset("images/block-user.jpg");
         }
         return [
             'id' => $this->id,
