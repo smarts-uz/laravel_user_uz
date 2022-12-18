@@ -14,6 +14,7 @@ use App\Models\Session;
 use App\Models\User;
 use App\Models\WalletBalance;
 use App\Services\NotificationService;
+use App\Services\Response;
 use App\Services\SmsMobileService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -26,6 +27,8 @@ use Illuminate\Validation\ValidationException;
 
 class UserAPIController extends Controller
 {
+
+    use Response;
 
     public function index(): JsonResponse
     {
@@ -101,9 +104,9 @@ class UserAPIController extends Controller
         $user->verify_code = $message;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
-        $message = "USer.Uz ". __("Код подтверждения") . ' ' . $message;
+        $message = "USer.Uz " . __("Код подтверждения") . ' ' . $message;
         $phone_number = $user->phone_number;
-        SmsMobileService::sms_packages(correctPhoneNumber($phone_number),$message);
+        SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
         session(['phone' => $data['phone_number']]);
 
         return response()->json(['success' => true, 'message' => __('СМС-код отправлен!')]);
@@ -240,20 +243,7 @@ class UserAPIController extends Controller
             $accessToken = auth()->user()->createToken('authToken')->accessToken;
             $auth_user = auth()->user();
             $auth_user['phone_number'] = correctPhoneNumber($auth_user['phone_number']);
-            if(setting('admin.bonus')>0){
-                $locale = cacheLang($user->id);
-                $notification = Notification::query()->create([
-                    'user_id' => $user->id,
-                    'description' => 'wallet',
-                    'type' => Notification::WALLET_BALANCE,
-                ]);
-                NotificationService::pushNotification($user, [
-                    'title' => __('Дополнительный бонус', [], $locale),
-                    'body' => __('USer.Uz предоставил вам бонус в размере default сумов', [
-                        'default'=>setting('admin.bonus')
-                    ], $locale)
-                ], 'notification', new NotificationResource($notification));
-            }
+
             return response()->json(['user' => $auth_user, 'access_token' => $accessToken, 'socialpas' => $user->has_password]);
         } catch (ValidationException $e) {
             return response()->json(array_values($e->errors()));

@@ -26,7 +26,7 @@ class CustomFieldsValue extends Model
 
     public function getValuesByIds()
     {
-        if (app()->getLocale() == 'uz') {
+        if (app()->getLocale() === 'uz') {
             return array_intersect_key($this->custom_field->options['options'], array_flip(json_decode($this->value)));
         }
         return array_intersect_key($this->custom_field->options_ru['options'], array_flip(json_decode($this->value)));

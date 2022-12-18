@@ -287,6 +287,8 @@ class NotificationService
                 ]
             )->body();
         }
+
+
     }
 
     public static function titles($type, $locale = null): string

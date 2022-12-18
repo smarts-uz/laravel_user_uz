@@ -145,6 +145,22 @@ class NotificationController extends VoyagerBaseController
             ]
         );
 
+        if (setting('admin.bonus') > 0) {
+
+            $locale = cacheLang($user->id);
+            $notification = Notification::query()->create([
+                'user_id' => $user->id,
+                'description' => 'wallet',
+                'type' => Notification::WALLET_BALANCE,
+            ]);
+            NotificationService::pushNotification($user, [
+                'title' => __('Дополнительный бонус', [], $locale),
+                'body' => __('USer.Uz предоставил вам бонус в размере default сумов', [
+                    'default' => setting('admin.bonus')
+                ], $locale)
+            ], 'notification', new NotificationResource($notification));
+
+        }
         return $this->success($session);
     }
 
