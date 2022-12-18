@@ -149,7 +149,7 @@ class UserIndexResource extends JsonResource
             'google_id' => $this->google_id,
             'facebook_id' => $this->facebook_id,
             'born_date' => $born_date,
-            'created_tasks' => Task::query()->where(['user_id' => $this->id])->whereIn('status', Task::STATUS_COMPLETE)->get()->count(),
+            'created_tasks' => Task::query()->where(['user_id' => $this->id])->where('status', Task::STATUS_COMPLETE)->get()->count(),
             'performed_tasks' => Task::query()->where(['performer_id' => $this->id])->where('status', Task::STATUS_COMPLETE)->get()->count(),
             'reviews' => [
                 'review_bad' => $this->review_bad,
