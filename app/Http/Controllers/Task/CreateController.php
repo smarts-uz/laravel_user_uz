@@ -155,7 +155,7 @@ class CreateController extends Controller
 
     public function budget_store(Task $task, BudgetRequest $request)
     {
-        dd($request);
+        
         $task->budget = $request->get('amount2');
         $task->save();
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET, $request);
