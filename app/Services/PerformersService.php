@@ -107,15 +107,47 @@ class PerformersService
 
     public function performer_filter($data): LengthAwarePaginator
     {
-        $performers = User::query()
-            ->where('role_id', User::ROLE_PERFORMER)
-            ->orderByDesc('review_rating')
-            ->orderByRaw('(review_good - review_bad) DESC');
+        $performers = User::query()->where('role_id', User::ROLE_PERFORMER);
+
+        if (isset($data['categories'])) {
+            $categories = is_array($data['categories'])?$data['categories']:json_decode($data['categories']);
+            $childCategories = \App\Models\Category::query()->whereIn('parent_id',$categories)->pluck('id')->toArray();
+            $allCategories = array_unique(array_merge($categories, $childCategories));
+            $user_categories = UserCategory::query()->whereIn('category_id',$allCategories)->pluck('user_id')->toArray();
+            $performers = $performers->whereIn('id', $user_categories);
+        }
+        if (isset($data['child_categories'])) {
+            $categories = is_array($data['child_categories'])?$data['child_categories']:json_decode($data['child_categories']);
+            $user_categories = UserCategory::query()->whereIn('category_id',$categories)->pluck('user_id')->toArray();
+            $performers = $performers->whereIn('id', $user_categories);
+        }
 
         if (isset($data['online']))
         {
             $date = Carbon::now()->subMinutes(2)->toDateTimeString();
-            $performers = $performers->where('role_id', User::ROLE_PERFORMER)->where('last_seen', ">=",$date);
+            $performers = $performers->where('last_seen', ">=",$date);
+        }
+
+        if(isset($data['review']) && isset($data['desc'])){
+            $performers = $performers
+                ->orderByDesc('review_rating')
+                ->orderByRaw('(review_good - review_bad) DESC');
+        }
+
+        if(isset($data['review']) && isset($data['asc'])){
+            $performers = $performers
+                ->orderBy('review_rating','asc')
+                ->orderByRaw('(review_good - review_bad) DESC');
+        }
+
+        if (isset($data['alphabet']) && isset($data['desc']))
+        {
+            $performers = $performers->orderBy('name','desc');
+        }
+
+        if (isset($data['alphabet']) && isset($data['asc']))
+        {
+            $performers = $performers->orderBy('name','asc');
         }
 
         if (isset($data['search']))
@@ -123,6 +155,7 @@ class PerformersService
             $search = $data['search'];
             $performers = $performers->where('name','like',"%$search%");
         }
+
         return $performers->paginate(20);
     }
 

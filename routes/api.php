@@ -163,6 +163,7 @@ Route::get('/category/search', [CategoriesAPIController::class, 'search']); // u
 
 //Performers
 Route::get('/performers', [PerformerAPIController::class, 'service']); // used
+Route::get('/performers-filter', [PerformerAPIController::class, 'performer_filter']); // used
 Route::get('/performers/{performer}', [PerformerAPIController::class, 'performer']); //end +
 Route::get('/performers-count/{category_id}', [PerformerAPIController::class, 'performers_count']);
 

@@ -44,6 +44,47 @@ class PerformerAPIController extends Controller
      *     summary="Get All Performers",
      *     @OA\Parameter (
      *          in="query",
+     *          name="online",
+     *          @OA\Schema (
+     *              type="boolean"
+     *          )
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     )
+     * )
+     *
+     */
+    public function service(Request $request)
+    {
+        $performers = User::query()
+            ->where('role_id', User::ROLE_PERFORMER)
+            ->orderByDesc('review_rating')
+            ->orderByRaw('(review_good - review_bad) DESC');
+        if (isset($request->online))
+        {
+            $date = Carbon::now()->subMinutes(2)->toDateTimeString();
+            $performers = $performers->where('role_id', User::ROLE_PERFORMER)->where('last_seen', ">=",$date);
+        }
+        return PerformerIndexResource::collection($performers->paginate($request->get('per_page')));
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/performers-filter",
+     *     tags={"Performers"},
+     *     summary="Performers Filter",
+     *     @OA\Parameter (
+     *          in="query",
      *          name="search",
      *          @OA\Schema (
      *              type="string"
@@ -113,7 +154,7 @@ class PerformerAPIController extends Controller
      * )
      *
      */
-    public function service(Request $request)
+    public function performer_filter(Request $request)
     {
         $performers = $this->performer_service->performer_filter($request->all());
         return PerformerIndexResource::collection($performers);
