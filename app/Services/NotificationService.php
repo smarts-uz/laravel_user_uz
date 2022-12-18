@@ -261,15 +261,15 @@ class NotificationService
     public static function pushNoti(User $user, Notification $notification)
     {
         $locale = cacheLang($user->id);
-        if ((int)$notification->status !== 1) {
-            NotificationService::pushNotification($user, [
-                'title' => self::titles($notification->type, $locale),
-                'body' => self::descriptions($notification, $locale)
-            ], 'notification', new NotificationResource($notification));
 
-            $notification->status = 1;
-            $notification->save();
-        }
+        NotificationService::pushNotification($user, [
+            'title' => self::titles($notification->type, $locale),
+            'body' => self::descriptions($notification, $locale)
+        ], 'notification', new NotificationResource($notification));
+
+        $notification->status = 1;
+        $notification->save();
+
     }
 
 
