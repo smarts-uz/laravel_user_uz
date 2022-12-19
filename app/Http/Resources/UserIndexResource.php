@@ -101,6 +101,11 @@ class UserIndexResource extends JsonResource
             }
         }
         $goodReviews = $this->goodReviews();
+        if((int)$this->gender === 1){
+            $date_gender = __('Был онлайн');
+        }else{
+            $date_gender = __('Была онлайн');
+        }
         $lastReview = $goodReviews->get()->last();
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
         if ($this->last_seen >= $date) {
@@ -111,7 +116,7 @@ class UserIndexResource extends JsonResource
             if(app()->getLocale()==='uz'){
                 $lastSeen = $seenDate->diffForHumans().' onlayn edi';
             }else{
-                $lastSeen = __('Был онлайн'). $seenDate->diffForHumans();
+                $lastSeen = $date_gender. $seenDate->diffForHumans();
             }
         }
         $age = Carbon::parse($this->born_date)->age;
@@ -170,6 +175,7 @@ class UserIndexResource extends JsonResource
             'directories' => $directories,
             'wallet_balance' => $balance,
             'last_seen' => $lastSeen,
+            'gender'=> $this->gender,
             'blocked_user'=> $blocked_user,
             'created_at' => $this->created_at
         ];

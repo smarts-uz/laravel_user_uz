@@ -29,6 +29,11 @@ class ReviewIndexResource extends JsonResource
         $user = $this->reviewer;
         $task = $this->task;
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
+        if((int)$user->gender === 1){
+            $date_gender = __('Был онлайн');
+        }else{
+            $date_gender = __('Была онлайн');
+        }
         if ($user->last_seen >= $date) {
             $lastSeen = __('В сети');
         } else {
@@ -37,7 +42,7 @@ class ReviewIndexResource extends JsonResource
             if(app()->getLocale()==='uz'){
                 $lastSeen = $seenDate->diffForHumans().' saytda edi';
             }else{
-                $lastSeen = __('Был онлайн'). $seenDate->diffForHumans();
+                $lastSeen = $date_gender. $seenDate->diffForHumans();
             }
         }
         return [

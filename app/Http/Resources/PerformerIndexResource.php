@@ -16,6 +16,11 @@ class PerformerIndexResource extends JsonResource
      */
     public function toArray($request)
     {
+        if((int)$this->gender === 1){
+            $date_gender = __('Был онлайн');
+        }else{
+            $date_gender = __('Была онлайн');
+        }
         if ($this->last_seen >= Carbon::now()->subMinutes(2)->toDateTimeString()) {
             $lastSeen = __('В сети');
         } else {
@@ -24,7 +29,7 @@ class PerformerIndexResource extends JsonResource
             if(app()->getLocale()==='uz'){
                 $lastSeen = $seenDate->diffForHumans().' saytda edi';
             }else{
-                $lastSeen = __('Был онлайн'). $seenDate->diffForHumans();
+                $lastSeen = $date_gender. $seenDate->diffForHumans();
             }
         }
         $user_exists = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$this->id)->exists();

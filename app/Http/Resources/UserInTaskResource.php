@@ -15,6 +15,11 @@ class UserInTaskResource extends JsonResource
      */
     public function toArray($request)
     {
+        if((int)$this->gender === 1){
+            $date_gender = __('Был онлайн');
+        }else{
+            $date_gender = __('Была онлайн');
+        }
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
         if ($this->last_seen >= $date) {
             $lastSeen = __('В сети');
@@ -24,7 +29,7 @@ class UserInTaskResource extends JsonResource
             if(app()->getLocale()==='uz'){
                 $lastSeen = $seenDate->diffForHumans().' saytda edi';
             }else{
-                $lastSeen = __('Был онлайн'). $seenDate->diffForHumans();
+                $lastSeen = $date_gender. $seenDate->diffForHumans();
             }
         }
         return [
