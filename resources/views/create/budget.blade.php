@@ -33,10 +33,10 @@
                             <div class="flex flex-row items-center text-center w-3/4 mx-auto text-yellow-500  text-2xl">
                                 @if(session('lang') === 'ru')
                                     <p class="text-yellow-500 text-2xl">{{__('до')}}</p>
-                                    <input class="focus:outline-none text-center" type="text" id="amount" maxlength="10" name="amount2">
+                                    <input class="focus:outline-none text-center" type="text" id="amount" maxlength="15" name="amount2">
                                     <p class="text-yellow-500 text-2xl">UZS</p>
                                 @else
-                                    <input class="focus:outline-none text-center" type="text" id="amount" maxlength="10" name="amount2">
+                                    <input class="focus:outline-none text-center" type="text" id="amount" maxlength="15" name="amount2">
                                     <p class="text-yellow-500 text-2xl">so'mgacha</p>
                                 @endif
                             </div>
@@ -170,7 +170,17 @@
             </div>
         </div>
     </form>
-    <script src="{{asset('js/custom.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/imask/6.4.3/imask.min.js"></script>
+    <script>
+        var numberMask = IMask(
+            document.getElementById('amount'),
+            {
+                mask: Number,
+                min: 0,
+                max: 10000000,
+                thousandsSeparator: ' '
+            });
+    </script>
     <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="{{ asset('/js/flowbite.js') }}"></script>
     <script>
