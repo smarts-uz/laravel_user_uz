@@ -262,7 +262,7 @@ class NotificationService
     {
         $locale = cacheLang($user->id);
 
-        NotificationService::pushNotification($user, [
+        self::pushNotification($user, [
             'title' => self::titles($notification->type, $locale),
             'body' => self::descriptions($notification, $locale)
         ], 'notification', new NotificationResource($notification));

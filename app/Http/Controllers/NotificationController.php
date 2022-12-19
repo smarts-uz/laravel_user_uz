@@ -146,17 +146,34 @@ class NotificationController extends VoyagerBaseController
         );
 
         if (setting('admin.bonus') > 0) {
-
            $push_notif = Notification::query()
                 ->where('user_id',$user->id)
                 ->where('type',Notification::WALLET_BALANCE)
                 ->where('status',1)
                 ->exists();
             if (!$push_notif) {
+                /** @var Notification $notification */
                 $notification = Notification::query()->create([
                     'user_id' => $user->id,
                     'description' => 'wallet',
                     'type' => Notification::WALLET_BALANCE,
+                ]);
+                NotificationService::pushNoti($user, $notification);
+            }
+        }
+
+        if (!($user->password)){
+            $push_notif = Notification::query()
+                ->where('user_id',$user->id)
+                ->where('type',Notification::NEW_PASSWORD)
+                ->where('status',1)
+                ->exists();
+            if(!$push_notif){
+                /** @var Notification $notification */
+                $notification = Notification::query()->create([
+                    'user_id' => $user->id,
+                    'description' => 'password',
+                    'type' => Notification::NEW_PASSWORD,
                 ]);
                 NotificationService::pushNoti($user, $notification);
             }

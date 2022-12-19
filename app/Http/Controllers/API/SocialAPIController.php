@@ -93,20 +93,6 @@ class SocialAPIController extends Controller
                 $wallBal->balance = setting('admin.bonus');
                 $wallBal->user_id = $user->id;
                 $wallBal->save();
-                if(setting('admin.bonus')>0){
-                    $locale = cacheLang($user->id);
-                    $notification = Notification::query()->create([
-                        'user_id' => $user->id,
-                        'description' => 'wallet',
-                        'type' => Notification::WALLET_BALANCE,
-                    ]);
-                    NotificationService::pushNotification($user, [
-                        'title' => __('Дополнительный бонус', [], $locale),
-                        'body' => __('USer.Uz предоставил вам бонус в размере default сумов', [
-                            'default'=>setting('admin.bonus')
-                        ], $locale)
-                    ], 'notification', new NotificationResource($notification));
-                }
             }
             if (!$user->isActive()) {
                 return response()->json([
@@ -120,19 +106,6 @@ class SocialAPIController extends Controller
             // create a token for the user, so they can login
             Auth::login($user);
             $accessToken = $user->createToken('authToken')->accessToken;
-            if (!($user->password)){
-                $locale = cacheLang($user->id);
-                /** @var Notification $notification */
-                $notification = Notification::query()->create([
-                    'user_id' => $user->id,
-                    'description' => 'password',
-                    'type' => Notification::NEW_PASSWORD,
-                ]);
-                NotificationService::pushNotification($user, [
-                    'title' => __('Установить пароль', [], $locale),
-                    'body' => __('Чтобы не потерять доступ к вашему аккаунту, рекомендуем вам установить пароль. Сделать это можно в профиле, раздел "Настройки".', [], $locale)
-                ], 'notification', new NotificationResource($notification));
-            }
             // return the token for usage
             return response()->json([
                 'user' => new PerformerIndexResource(auth()->user()),

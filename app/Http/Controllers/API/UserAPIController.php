@@ -242,8 +242,6 @@ class UserAPIController extends Controller
             Auth::login($user);
             $accessToken = auth()->user()->createToken('authToken')->accessToken;
             $auth_user = auth()->user();
-            $auth_user['phone_number'] = correctPhoneNumber($auth_user['phone_number']);
-
             return response()->json(['user' => $auth_user, 'access_token' => $accessToken, 'socialpas' => $user->has_password]);
         } catch (ValidationException $e) {
             return response()->json(array_values($e->errors()));
