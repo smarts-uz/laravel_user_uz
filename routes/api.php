@@ -65,108 +65,108 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::get('/count/notifications', [NotificationController::class, 'count']); // fix
     Route::post('/read-notification/{notification}', [NotificationController::class, 'read_notification']); // fix
 
-    Route::get('/my-tasks-count', [TaskAPIController::class, 'my_tasks_count']); // used
-    Route::get('/my-tasks', [TaskAPIController::class, 'my_tasks_all']); // used
-    Route::get('/performer-tasks', [TaskAPIController::class, 'performer_tasks']); // used
-    Route::post('/cancel-task/{task}', [SearchAPIController::class, 'cancelTask']); // should use
-    Route::delete('/delete-task/{task}', [SearchAPIController::class, 'delete_task']); // used
+    Route::get('/my-tasks-count', [TaskAPIController::class, 'my_tasks_count']); // fix
+    Route::get('/my-tasks', [TaskAPIController::class, 'my_tasks_all']); // fix
+    Route::get('/performer-tasks', [TaskAPIController::class, 'performer_tasks']); // fix
+    Route::post('/cancel-task/{task}', [SearchAPIController::class, 'cancelTask']); // fix
+    Route::delete('/delete-task/{task}', [SearchAPIController::class, 'delete_task']); // fix
 
-    Route::get('account/verify', [LoginAPIController::class, 'verifyCredentials']); // used
-    Route::post('account/verification/phone', [LoginAPIController::class, 'verify_phone']); // used
+    Route::get('account/verify', [LoginAPIController::class, 'verifyCredentials']); // not fix
+    Route::post('account/verification/phone', [LoginAPIController::class, 'verify_phone']); // fix
 
-    Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']); // used
-    Route::get('/responses/{task}', [TaskAPIController::class, 'responses']); // used
-    Route::get('/complain/types', [TaskAPIController::class, 'complainTypes']); // used
-    Route::post('/task/{task}/complain', [TaskAPIController::class, 'complain']); // used
-    Route::post('/select-performer/{response}', [TaskAPIController::class, 'selectPerformer']); // used
-    Route::post('/task-status-update/{task}', [TaskAPIController::class, 'taskStatusUpdate']); // used
-    Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); //end +
-    Route::post('/tasks/{task}/not-complete', [UpdateAPIController::class, 'not_completed'])->name('update.not_completed'); // used
-    Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); // used
-    Route::post('/give-task', [PerformerAPIController::class, 'give_task']); // used
-    Route::post('/become-performer', [PerformerAPIController::class, 'becomePerformerData']); // used
-    Route::post('/become-performer-phone', [PerformerAPIController::class, 'becomePerformerEmailPhone']); // used
-    Route::post('/become-performer-avatar', [PerformerAPIController::class, 'becomePerformerAvatar']); //end +
-    Route::post('/become-performer-category', [PerformerAPIController::class, 'becomePerformerCategory']); // used
-    Route::get('/reviews', [PerformerAPIController::class, 'reviews']); //end
-    Route::get('/settings/get-all', [FaqController::class, 'get_all']);
-    Route::get('/settings/{key}', [FaqController::class, 'get_key']);
+    Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']); // fix
+    Route::get('/responses/{task}', [TaskAPIController::class, 'responses']); // fix
+    Route::get('/complain/types', [TaskAPIController::class, 'complainTypes']); // fix
+    Route::post('/task/{task}/complain', [TaskAPIController::class, 'complain']); // fix
+    Route::post('/select-performer/{response}', [TaskAPIController::class, 'selectPerformer']); // fix
+    Route::post('/task-status-update/{task}', [TaskAPIController::class, 'taskStatusUpdate']); // fix
+    Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); // fix
+    Route::post('/tasks/{task}/not-complete', [UpdateAPIController::class, 'not_completed'])->name('update.not_completed'); // fix
+    Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); // fix
+    Route::post('/give-task', [PerformerAPIController::class, 'give_task']); // fix
+    Route::post('/become-performer', [PerformerAPIController::class, 'becomePerformerData']); // fix
+    Route::post('/become-performer-phone', [PerformerAPIController::class, 'becomePerformerEmailPhone']); // fix
+    Route::post('/become-performer-avatar', [PerformerAPIController::class, 'becomePerformerAvatar']); // fix
+    Route::post('/become-performer-category', [PerformerAPIController::class, 'becomePerformerCategory']); // fix
+    Route::get('/reviews', [PerformerAPIController::class, 'reviews']); // fix
+    Route::get('/settings/get-all', [FaqController::class, 'get_all']); // fix
+    Route::get('/settings/{key}', [FaqController::class, 'get_key']); // fix
 
     // Profile API
     Route::prefix('/profile')->group(function () {
         // Profile
-        Route::get('/', [ProfileAPIController::class, 'index']); // used
-        Route::get('/portfolios', [ProfileAPIController::class, 'portfolios']); // used
-        Route::post('/portfolio/create', [ProfileAPIController::class, 'portfolioCreate']); // used
-        Route::post('/portfolio/{portfolio}/update', [ProfileAPIController::class, 'portfolioUpdate']); // used
-        Route::delete('/portfolio/{portfolio}/delete', [ProfileAPIController::class, 'portfolioDelete']); // used
-        Route::post('/portfolio/{portfolio}/delete-image', [ProfileAPIController::class, 'deleteImage']);
-        Route::get('/reviews', [ProfileAPIController::class, 'reviews']); // used
-        Route::post('/video', [ProfileAPIController::class, 'videoStore']); // used
-        Route::delete('/video/delete', [ProfileAPIController::class, 'videoDelete']); //end
-        Route::get('/self-delete', [ProfileAPIController::class, 'selfDelete']); //end
-        Route::post('/confirmation-self-delete', [ProfileAPIController::class, 'confirmationSelfDelete']); //end
-        Route::get('/balance', [ProfileAPIController::class, 'balance']); // used
-        Route::post('/description/edit', [ProfileAPIController::class, 'editDesctiption']); // used
-        Route::post('/categories-subscribe', [ProfileAPIController::class, 'subscribeToCategory']); // used
-        Route::post('/firebase-token', [NotificationController::class, 'setToken']); //used
-        Route::get('/sessions', [SessionController::class, 'index']); // used
-        Route::post('/clear-sessions', [SessionController::class, 'clearSessions']);
-        Route::post('/report-user', [ProfileAPIController::class, 'report']);
-        Route::post('/block-user', [ProfileAPIController::class, 'block']);
+        Route::get('/', [ProfileAPIController::class, 'index']); // fix
+        Route::get('/portfolios', [ProfileAPIController::class, 'portfolios']); // fix
+        Route::post('/portfolio/create', [ProfileAPIController::class, 'portfolioCreate']); // fix
+        Route::post('/portfolio/{portfolio}/update', [ProfileAPIController::class, 'portfolioUpdate']); // fix
+        Route::delete('/portfolio/{portfolio}/delete', [ProfileAPIController::class, 'portfolioDelete']); // fix
+        Route::post('/portfolio/{portfolio}/delete-image', [ProfileAPIController::class, 'deleteImage']); // fix
+        Route::get('/reviews', [ProfileAPIController::class, 'reviews']); // fix
+        Route::post('/video', [ProfileAPIController::class, 'videoStore']); // fix
+        Route::delete('/video/delete', [ProfileAPIController::class, 'videoDelete']); // fix
+        Route::get('/self-delete', [ProfileAPIController::class, 'selfDelete']); // fix
+        Route::post('/confirmation-self-delete', [ProfileAPIController::class, 'confirmationSelfDelete']); // fix
+        Route::get('/balance', [ProfileAPIController::class, 'balance']); // fix
+        Route::post('/description/edit', [ProfileAPIController::class, 'editDesctiption']); // fix
+        Route::post('/categories-subscribe', [ProfileAPIController::class, 'subscribeToCategory']); // fix
+        Route::post('/firebase-token', [NotificationController::class, 'setToken']); // fix
+        Route::get('/sessions', [SessionController::class, 'index']); // fix
+        Route::post('/clear-sessions', [SessionController::class, 'clearSessions']); // fix
+        Route::post('/report-user', [ProfileAPIController::class, 'report']); // fix
+        Route::post('/block-user', [ProfileAPIController::class, 'block']); // fix
         Route::prefix('/settings')->group(function () {
-            Route::get('/', [ProfileAPIController::class, 'editData']); // used
-            Route::post('/update', [ProfileAPIController::class, 'updateData']); // used
-            Route::post('/change-avatar', [ProfileAPIController::class, 'avatar']); //end -
-            Route::get('/phone', [ProfileAPIController::class, 'phoneEdit']); //end +
-            Route::post('/phone/edit', [ProfileAPIController::class, 'phoneUpdate']); // used
-            Route::post('/password/change', [ProfileAPIController::class, 'change_password']); // used
-            Route::post('/notifications', [ProfileAPIController::class, 'userNotifications']); // used
+            Route::get('/', [ProfileAPIController::class, 'editData']); // fix
+            Route::post('/update', [ProfileAPIController::class, 'updateData']); // fix
+            Route::post('/change-avatar', [ProfileAPIController::class, 'avatar']); // fix
+            Route::get('/phone', [ProfileAPIController::class, 'phoneEdit']); // fix
+            Route::post('/phone/edit', [ProfileAPIController::class, 'phoneUpdate']); // fix
+            Route::post('/password/change', [ProfileAPIController::class, 'change_password']); // fix
+            Route::post('/notifications', [ProfileAPIController::class, 'userNotifications']); // fix
 
         });
     });
 });
-Route::post('/profile/settings/change-lang', [ProfileAPIController::class, 'changeLanguage']); // used
-Route::get('/profile/{user}', [ProfileAPIController::class, 'userProfile']); // used
-Route::get('/profile/{user}/portfolios', [ProfileAPIController::class, 'userPortfolios']); // used
-Route::get('/profile/{user}/reviews', [ProfileAPIController::class, 'userReviews']); // used
+Route::post('/profile/settings/change-lang', [ProfileAPIController::class, 'changeLanguage']); // fix
+Route::get('/profile/{user}', [ProfileAPIController::class, 'userProfile']); // fix
+Route::get('/profile/{user}/portfolios', [ProfileAPIController::class, 'userPortfolios']); // fix
+Route::get('/profile/{user}/reviews', [ProfileAPIController::class, 'userReviews']); // fix
 
 
 //User Routes
-Route::post('login', [UserAPIController::class, 'login']); //used
-Route::post('register', [UserAPIController::class, 'register']); //used
+Route::post('login', [UserAPIController::class, 'login']); // fix
+Route::post('register', [UserAPIController::class, 'register']); // fix
 
-Route::post('/reset', [UserAPIController::class, 'reset_submit']); //end +
-Route::post('/reset/password', [UserAPIController::class, 'reset_password_save'])->name('user.reset_password_save'); //end +
-Route::post('/code', [UserAPIController::class, 'reset_code'])->name('user.reset_code'); //end +
+Route::post('/reset', [UserAPIController::class, 'reset_submit']); // fix
+Route::post('/reset/password', [UserAPIController::class, 'reset_password_save'])->name('user.reset_password_save'); // fix
+Route::post('/code', [UserAPIController::class, 'reset_code'])->name('user.reset_code'); // fix
 
-Route::get('/support-admin', [UserAPIController::class, "getSupportId"]);
+Route::get('/support-admin', [UserAPIController::class, "getSupportId"]); // not fix
 
 //News
-Route::get('/blog-news', [BlogController::class, 'index']); // used
-Route::get('/blog-news/{blogNew}', [BlogController::class, 'show']); // used
+Route::get('/blog-news', [BlogController::class, 'index']); // fix
+Route::get('/blog-news/{blogNew}', [BlogController::class, 'show']); // fix
 
 //Tasks
-Route::get('task/{task}', [TaskAPIController::class, 'task']); // used
-Route::post('user/{user}', [TaskAPIController::class, 'active_task_null']); // used
-Route::get('tasks-filter', [TaskAPIController::class, 'filter']); // used
-Route::get('same-tasks/{task}', [TaskAPIController::class, 'same_tasks']); // used
+Route::get('task/{task}', [TaskAPIController::class, 'task']); // fix
+Route::post('user/{user}', [TaskAPIController::class, 'active_task_null']); // fix
+Route::get('tasks-filter', [TaskAPIController::class, 'filter']); // fix
+Route::get('same-tasks/{task}', [TaskAPIController::class, 'same_tasks']); // fix
 
 //Categories
-Route::get('/categories', [CategoriesAPIController::class, 'index']); //end -
-Route::get('/popular-categories', [CategoriesAPIController::class, 'popular']); // used
-Route::get('/categories-parent', [CategoriesAPIController::class, 'parents']); //used
-Route::get('/categories/{id}', [CategoriesAPIController::class, 'show']); //end +
-Route::get('/category/search', [CategoriesAPIController::class, 'search']); // used
+Route::get('/categories', [CategoriesAPIController::class, 'index']); // fix
+Route::get('/popular-categories', [CategoriesAPIController::class, 'popular']); // not fix
+Route::get('/categories-parent', [CategoriesAPIController::class, 'parents']); // fix
+Route::get('/categories/{id}', [CategoriesAPIController::class, 'show']); // fix
+Route::get('/category/search', [CategoriesAPIController::class, 'search']); // fix
 
 //Performers
-Route::get('/performers', [PerformerAPIController::class, 'service']); // used
-Route::get('/performers-filter', [PerformerAPIController::class, 'performer_filter']); // used
-Route::get('/performers-count/{category_id}', [PerformerAPIController::class, 'performers_count']);
+Route::get('/performers', [PerformerAPIController::class, 'service']); // fix
+Route::get('/performers-filter', [PerformerAPIController::class, 'performer_filter']); // fix
+Route::get('/performers-count/{category_id}', [PerformerAPIController::class, 'performers_count']); // fix
 
 #Social
-Route::post('/social-login', [SocialAPIController::class, 'login']); // used
+Route::post('/social-login', [SocialAPIController::class, 'login']); // fix
 
 #faq
-Route::get('/faq', [FaqController::class, 'index']);
+Route::get('/faq', [FaqController::class, 'index']); // fix
 
