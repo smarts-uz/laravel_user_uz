@@ -1599,6 +1599,52 @@ class TaskAPIController extends Controller
         return $this->update_task_service->verification($task, $request->validated());
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/update-task/{task}/delete-image",
+     *     tags={"Task Update"},
+     *     summary="Task delete images",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="task_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="images",
+     *                    type="file",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function deleteImage(Request $request, Task $task): JsonResponse
     {
         return $this->update_task_service->deleteImage($request, $task);

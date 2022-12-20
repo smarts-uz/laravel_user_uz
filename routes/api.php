@@ -26,46 +26,44 @@ use App\Http\Controllers\{
 */
 
 Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
-    Route::post('logout', [UserAPIController::class, 'logout']); // need use
+    Route::post('logout', [UserAPIController::class, 'logout']); // fix
 
     Route::group(['prefix' => 'chat'], function (){
 
-        Route::post('/sendMessage', [MessagesController::class, 'send']); // used
-        Route::get('/getContacts', [MessagesController::class, 'getContacts']); // used
-        Route::get('/search', [MessagesController::class, 'search']); // used
-        Route::post('/fetchMessages', [MessagesController::class, 'fetch']); // used
-        Route::post('/makeSeen', [MessagesController::class, 'seen']);
-        Route::post('/deleteConversation', [MessagesController::class, 'deleteConversation']);
+        Route::post('/sendMessage', [MessagesController::class, 'send']); // fix
+        Route::get('/getContacts', [MessagesController::class, 'getContacts']); // fix
+        Route::get('/search', [MessagesController::class, 'search']); // fix
+        Route::post('/fetchMessages', [MessagesController::class, 'fetch']); // fix
+        Route::post('/makeSeen', [MessagesController::class, 'seen']); // fix
+        Route::post('/deleteConversation', [MessagesController::class, 'deleteConversation']); // fix
 
     });
-    Route::post('task/create', [TaskAPIController::class, 'create']);
-    Route::post('create-task/name', [TaskAPIController::class, 'name']); // used
-    Route::post('create-task/custom', [TaskAPIController::class, 'custom']); // used
-    Route::post('create-task/remote', [TaskAPIController::class, 'remote']); // used
-    Route::post('create-task/address', [TaskAPIController::class, 'address']); // used
-    Route::post('create-task/date', [TaskAPIController::class, 'date']); // used
-    Route::post('create-task/budget', [TaskAPIController::class, 'budget']); // used
-    Route::post('create-task/note', [TaskAPIController::class, 'note']); // used
-    Route::post('create-task/images', [TaskAPIController::class, 'uploadImages']); // used
-    Route::post('create-task/contacts', [TaskAPIController::class, 'contacts']); // used
-    Route::post('create-task/verify', [TaskAPIController::class, 'verify']); // used
+    Route::post('create-task/name', [TaskAPIController::class, 'name']); // fix
+    Route::post('create-task/custom', [TaskAPIController::class, 'custom']); // fix
+    Route::post('create-task/remote', [TaskAPIController::class, 'remote']); // fix
+    Route::post('create-task/address', [TaskAPIController::class, 'address']); // fix
+    Route::post('create-task/date', [TaskAPIController::class, 'date']); // fix
+    Route::post('create-task/budget', [TaskAPIController::class, 'budget']); // fix
+    Route::post('create-task/note', [TaskAPIController::class, 'note']); // fix
+    Route::post('create-task/images', [TaskAPIController::class, 'uploadImages']); // fix
+    Route::post('create-task/contacts', [TaskAPIController::class, 'contacts']); // fix
+    Route::post('create-task/verify', [TaskAPIController::class, 'verify']); // fix
 
-    Route::post('update-task/{task}/name', [TaskAPIController::class, 'updateName']); // used
-    Route::post('update-task/{task}/custom', [TaskAPIController::class, 'updateCustom']); // used
-    Route::post('update-task/{task}/remote', [TaskAPIController::class, 'updateRemote']); // used
-    Route::post('update-task/{task}/address', [TaskAPIController::class, 'updateAddress']); // used
-    Route::post('update-task/{task}/date', [TaskAPIController::class, 'updateDate']); // used
-    Route::post('update-task/{task}/budget', [TaskAPIController::class, 'updateBudget']); // used
-    Route::post('update-task/{task}/note', [TaskAPIController::class, 'updateNote']); // used
-    Route::post('update-task/{task}/images', [TaskAPIController::class, 'updateUploadImages']); // used
-    Route::post('update-task/{task}/contacts', [TaskAPIController::class, 'updateContacts']); // used
-    Route::post('update-task/{task}/verify', [TaskAPIController::class, 'updateVerify']); // used
+    Route::post('update-task/{task}/name', [TaskAPIController::class, 'updateName']); // fix
+    Route::post('update-task/{task}/custom', [TaskAPIController::class, 'updateCustom']); // fix
+    Route::post('update-task/{task}/remote', [TaskAPIController::class, 'updateRemote']); // fix
+    Route::post('update-task/{task}/address', [TaskAPIController::class, 'updateAddress']); // fix
+    Route::post('update-task/{task}/date', [TaskAPIController::class, 'updateDate']); // fix
+    Route::post('update-task/{task}/budget', [TaskAPIController::class, 'updateBudget']); // fix
+    Route::post('update-task/{task}/note', [TaskAPIController::class, 'updateNote']); // fix
+    Route::post('update-task/{task}/images', [TaskAPIController::class, 'updateUploadImages']); // fix
+    Route::post('update-task/{task}/contacts', [TaskAPIController::class, 'updateContacts']); // fix
+    Route::post('update-task/{task}/verify', [TaskAPIController::class, 'updateVerify']); // fix
+    Route::post('update-task/{task}/delete-image', [TaskAPIController::class, 'deleteImage']); // fix
 
-    Route::post('update-task/{task}/delete-image', [TaskAPIController::class, 'deleteImage']);
-
-    Route::get('/notifications', [NotificationController::class, 'getNotifications']); //used
-    Route::get('/count/notifications', [NotificationController::class, 'count']);
-    Route::post('/read-notification/{notification}', [NotificationController::class, 'read_notification']); //used
+    Route::get('/notifications', [NotificationController::class, 'getNotifications']); // fix
+    Route::get('/count/notifications', [NotificationController::class, 'count']); // fix
+    Route::post('/read-notification/{notification}', [NotificationController::class, 'read_notification']); // fix
 
     Route::get('/my-tasks-count', [TaskAPIController::class, 'my_tasks_count']); // used
     Route::get('/my-tasks', [TaskAPIController::class, 'my_tasks_all']); // used

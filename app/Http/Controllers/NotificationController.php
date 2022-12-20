@@ -50,6 +50,36 @@ class NotificationController extends VoyagerBaseController
         );
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/read-notification/{notification}",
+     *     tags={"Notifications"},
+     *     summary="Read notifications",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="notification",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function read_notification(Notification $notification): JsonResponse
     {
         $notification->update(['is_read' => 1]);
@@ -214,6 +244,28 @@ class NotificationController extends VoyagerBaseController
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/count/notifications",
+     *     tags={"Notifications"},
+     *     summary="Notifications count",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function count()
     {
         $count = NotificationService::getNotifications(auth()->user())->count();
