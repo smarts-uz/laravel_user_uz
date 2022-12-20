@@ -7,20 +7,23 @@
                 <li>{{$address->location}}</li>
             @endforeach
         </ul>
-        @if($task->go_back === 1)
-            {{__('Вернуться в точку А')}}
-        @endif
     @else
         {{__('Виртуальное задание')}}
     @endif
 </div>
+@if($task->go_back === 1)
+    <div class="ml-4 md:ml-12 my-3 flex flex-row my-4">
+        <div class="h-auto w-40"></div>
+        <h1 class="h-auto w-96 ml-2">{{__('Вернуться в точку А')}}</h1>
+    </div>
+@endif
 <div class="ml-4 md:ml-12 flex flex-row mt-8">
     @if($task->date_type === 1)
         <h1 class="font-bold h-auto w-48">{{__('Начать работу')}}</h1>
-        {{ $start    }}
+        {{ $start }}
     @elseif($task->date_type === 2)
         <h1 class="font-bold h-auto w-48">{{__('Закончить работу')}}</h1>
-        {{ $end   }}
+        {{ $end }}
     @else
         <h1 class="font-bold h-auto w-48">{{__('Указать период')}}</h1>
         <p class=" h-auto w-96">{{ $start }} - {{ $end }}  </p>
