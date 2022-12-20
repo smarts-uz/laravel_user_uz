@@ -179,7 +179,8 @@
                 min: 0,
                 max: 10000000,
                 thousandsSeparator: ' '
-            });
+            }
+        );
     </script>
     <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="{{ asset('/js/flowbite.js') }}"></script>

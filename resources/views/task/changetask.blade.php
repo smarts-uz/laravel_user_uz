@@ -294,7 +294,6 @@
     </form>
 
     <x-laravelUppy route="{{route('task.create.images.store', $task->id)}}"/>
-    <script src="{{asset('js/custom.js')}}"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/imask/6.4.3/imask.min.js'></script>
     <script id="map_api"
             src="https://api-maps.yandex.ru/2.1/?apikey=f4b34baa-cbd1-432b-865b-9562afa3fcdb&lang={{__('ru_RU')}}"
@@ -336,6 +335,16 @@
     </script>
 
     <script>
+        var numberMask = IMask(
+            document.getElementById('car_2'),
+            {
+                mask: Number,
+                min: 0,
+                max: 100000000,
+                thousandsSeparator: ' '
+            }
+        );
+
         var element = document.getElementById('phone_number');
         var maskOptions = {
             mask: '+998(00)000-00-00',

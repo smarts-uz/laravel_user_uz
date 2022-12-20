@@ -251,7 +251,7 @@
                                   name="description"></textarea>
                         <p class="text-base">{{__('Сколько вы предлагаете')}}</p>
                         <label>
-                            <input type="text" required onkeypress='validate(event)' id="car_2"
+                            <input type="text" required onkeypress='validate(event)' id="task_price"
                                    class="border border-gray-300 rounded-md px-2 border-solid focus:outline-none  focus:border-yellow-500 mr-3 mb-2">UZS
                             <input type="hidden" name="price" id="price">
                             <input type="hidden" name="task_user_id"
@@ -331,11 +331,21 @@
            href="/profile/cash">{{__('Пополнить')}}</a>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/imask/6.4.3/imask.min.js"></script>
 <script>
-    $("#car_2").keyup(function () {
+    var numberMask = IMask(
+        document.getElementById('task_price'),
+        {
+            mask: Number,
+            min: 0,
+            max: 100000000,
+            thousandsSeparator: ' '
+        }
+    );
+    $("#task_price").keyup(function () {
         var text = $(this).val()
         text = text.replace(/[^0-9.]/g, "")
         $("#price").val(text)
     })
 </script>
-<script src="{{asset('js/custom.js')}}"></script>
+
