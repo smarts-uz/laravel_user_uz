@@ -244,19 +244,19 @@
                         <select
                             class="border border-gray-300 rounded-md w-full focus:outline-none focus:border-yellow-500 py-2 px-4"
                             name="budget" id="budget">
-                            <option @if($task->budget==round($task->category->max/5)) selected @endif value="{{round($task->category->max/5)}}">
+                            <option @selected($task->budget === round($task->category->max/5)) value="{{round($task->category->max/5)}}">
                                 {{round($task->category->max/5)}} UZS
                             </option>
-                            <option @if($task->budget==round($task->category->max/5*2)) selected @endif value="{{round($task->category->max/5*2)}}">
+                            <option @selected($task->budget === round($task->category->max/5*2)) value="{{round($task->category->max/5*2)}}">
                                 {{round($task->category->max/5*2)}} UZS
                             </option>
-                            <option @if($task->budget==round($task->category->max/5*3)) selected @endif value="{{round($task->category->max/5*3)}}">
+                            <option @selected($task->budget === round($task->category->max/5*3)) value="{{round($task->category->max/5*3)}}">
                                 {{round($task->category->max/5*3)}} UZS
                             </option>
-                            <option @if($task->budget==round($task->category->max/5*4)) selected @endif value="{{round($task->category->max/5*4)}}">
+                            <option @selected($task->budget === round($task->category->max/5*4)) value="{{round($task->category->max/5*4)}}">
                                 {{round($task->category->max/5*4)}} UZS
                             </option>
-                            <option @if($task->budget==$task->category->max) selected @endif value="{{$task->category->max}}">
+                            <option @selected($task->budget === round($task->category->max)) value="{{$task->category->max}}">
                                 {{$task->category->max}} UZS
                             </option>
                         </select>
@@ -295,10 +295,7 @@
 
     <x-laravelUppy route="{{route('task.create.images.store', $task->id)}}"/>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/imask/6.4.3/imask.min.js'></script>
-    <script id="map_api"
-            src="https://api-maps.yandex.ru/2.1/?apikey=f4b34baa-cbd1-432b-865b-9562afa3fcdb&lang={{__('ru_RU')}}"
-            type="text/javascript">
-    </script>
+    <script id="map_api" src="https://api-maps.yandex.ru/2.1/?apikey=f4b34baa-cbd1-432b-865b-9562afa3fcdb&lang={{__('ru_RU')}}" type="text/javascript"></script>
     <script src="{{ asset('js/changetask.js') }}"></script>
     <script>
         function ch_task(){
@@ -333,7 +330,6 @@
         }
         ch_task();
     </script>
-
     <script>
         var numberMask = IMask(
             document.getElementById('car_2'),
@@ -344,7 +340,8 @@
                 thousandsSeparator: ' '
             }
         );
-
+    </script>
+    <script>
         var element = document.getElementById('phone_number');
         var maskOptions = {
             mask: '+998(00)000-00-00',
@@ -382,7 +379,7 @@
                 minDate: "today",
                 dateFormat: "Y-m-d H:i",
                 altFormat: "Y-m-d H:i",
-                @if(session('lang')=='ru')
+                @if(session('lang') === 'ru')
                     locale: 'ru',
                 @else
                     locale: {

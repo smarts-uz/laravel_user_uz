@@ -115,11 +115,6 @@
         $('.child-category1').change(function (){
             window.location.href = "/task/create?category_id=" + $(this).val();
         })
-
-        // $('.parent-category').change(function (){
-        //     console.log($('.child-category-'+$(this).val()).val())
-        // })
-
         $('.child-category-'+parentCategory+'').removeClass('hidden')
 
         $('#username').keyup(function (){
