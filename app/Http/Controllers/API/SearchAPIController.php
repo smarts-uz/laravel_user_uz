@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Task;
+use App\Models\User;
 
 
 class SearchAPIController extends Controller
@@ -94,6 +95,12 @@ class SearchAPIController extends Controller
             ], 403);
         }
         $task->delete();
+
+        /** @var User $user */
+        $user = auth()->user();
+        $user->active_step = null;
+        $user->active_task = null;
+        $user->save();
         return response()->json([
             'success' => true,
             'message' => __('Успешно удалено')
