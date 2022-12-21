@@ -46,10 +46,6 @@ class ShuxratCmd extends Command
     {
         Mail::to('asror.zk@gmail.com')->send(new MessageEmail('Test Email'));
 
-
-        if (PHP_SAPI === 'cli')
-            
-
     }
 
 
