@@ -3745,6 +3745,59 @@
                 ]
             }
         },
+        "\/api\/update-task\/{task}\/delete-image": {
+            "post": {
+                "tags": [
+                    "Task Update"
+                ],
+                "summary": "Task delete images",
+                "operationId": "2a8f5044c4abc87e2b72f0f990604c9f",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "task_id": {
+                                        "type": "integer"
+                                    },
+                                    "images": {
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "\/api\/task\/{task}\/complain": {
             "post": {
                 "tags": [
@@ -4182,6 +4235,7 @@
                                 "task_id",
                                 "cat_id",
                                 "name_task",
+                                "status",
                                 "type",
                                 "is_read",
                                 "performer_id",
@@ -4384,6 +4438,41 @@
                 ]
             }
         },
+        "\/api\/read-notification\/{notification}": {
+            "post": {
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Read notifications",
+                "operationId": "97f7d76ff0f0ea630efedcfc0a2c46ff",
+                "parameters": [
+                    {
+                        "name": "notification",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "\/api\/firebase-token": {
             "post": {
                 "tags": [
@@ -4415,6 +4504,31 @@
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/count\/notifications": {
+            "get": {
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Notifications count",
+                "operationId": "3d76d779c655ce923cba405fca8b544b",
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -4926,6 +5040,7 @@
                                 "verify_expiration",
                                 "is_phone_number_verified",
                                 "born_date",
+                                "work_experience",
                                 "email_old",
                                 "phone_number_old",
                                 "system_notification",
