@@ -2,12 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\Mail\MessageEmail;
 use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\PerformersService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ShuxratCmd extends Command
 {
@@ -42,7 +44,12 @@ class ShuxratCmd extends Command
      */
     public function handle()
     {
-        $this->reviewobserver();
+        Mail::to('asror.zk@gmail.com')->send(new MessageEmail('Test Email'));
+
+
+        if (PHP_SAPI === 'cli')
+            
+
     }
 
 

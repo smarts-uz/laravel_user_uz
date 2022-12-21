@@ -30,6 +30,9 @@ class MessageEmail extends Mailable
      */
     public function build()
     {
-        return $this->from(env("MAIL_USERNAME"))->subject("noreply: Email Data")->view('email.messageEmail', ['data'=>$this->data]);
+        return $this
+        ->from(env("MAIL_USERNAME"))
+        ->subject("noreply: Email Data")
+        ->view('email.messageEmail', ['data'=>$this->data]);
     }
 }
