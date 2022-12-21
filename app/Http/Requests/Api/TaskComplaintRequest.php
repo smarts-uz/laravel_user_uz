@@ -35,7 +35,8 @@ class TaskComplaintRequest extends FormRequest
     {
         return [
             'compliance_type_id.*' => trans('trans.Choose the type.'),
-            'text.*' => trans('trans.Enter the text.')
+            'text.*' => trans('trans.Enter the text.'),
+            'text.required'=>__('Требуется заполнение!')
         ];
     }
 }
