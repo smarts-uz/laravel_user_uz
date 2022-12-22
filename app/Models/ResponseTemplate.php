@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ResponseTemplate extends Model
 {
     use HasFactory;
-    protected $table = 'reviews';
+    protected $table = 'response_template';
     protected $fillable = [
         'user_id',
         'title',

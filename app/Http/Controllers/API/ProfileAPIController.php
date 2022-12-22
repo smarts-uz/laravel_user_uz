@@ -1365,12 +1365,13 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function response_template_edit(ResponseTemplateRequest $request){
+    public function response_template_edit(ResponseTemplateRequest $request,ResponseTemplate $response_template){
 
         $data = $request->validated();
+        /** @var ResponseTemplate $response_template */
         $user_exists = ResponseTemplate::query()->where('user_id',auth()->id())->exists();
         if($user_exists){
-            ResponseTemplate::update($data);
+            $response_template->update($data);
         }else{
             ResponseTemplate::query()->create([
                 'user_id' => auth()->id(),
