@@ -107,6 +107,8 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
         Route::get('/self-delete', [ProfileAPIController::class, 'selfDelete']); // fix
         Route::post('/confirmation-self-delete', [ProfileAPIController::class, 'confirmationSelfDelete']); // fix
         Route::get('/balance', [ProfileAPIController::class, 'balance']); // fix
+        Route::get('/response-template', [ProfileAPIController::class, 'response_template']); // fix
+        Route::post('/response-template/edit', [ProfileAPIController::class, 'response_template_edit']); // fix
         Route::post('/description/edit', [ProfileAPIController::class, 'editDesctiption']); // fix
         Route::post('/work-experience', [ProfileAPIController::class, 'work_experience']); // fix
         Route::post('/categories-subscribe', [ProfileAPIController::class, 'subscribeToCategory']); // fix

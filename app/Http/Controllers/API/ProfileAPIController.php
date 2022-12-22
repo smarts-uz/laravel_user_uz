@@ -10,15 +10,17 @@ use App\Http\Requests\Api\ProfilePasswordRequest;
 use App\Http\Requests\Api\ProfilePhoneRequest;
 use App\Http\Requests\Api\ProfileSettingsRequest;
 use App\Http\Requests\Api\ProfileVideoRequest;
+use App\Http\Requests\Api\ResponseTemplateRequest;
 use App\Http\Requests\Api\UserReportRequest;
 use App\Http\Requests\UserBlockRequest;
-use App\Http\Resources\BlockUserResource;
 use App\Http\Resources\PortfolioIndexResource;
+use App\Http\Resources\ResponseTemplateResource;
 use App\Http\Resources\ReviewIndexResource;
 use App\Http\Resources\UserIndexResource;
 use App\Models\BlockedUser;
 use App\Models\Portfolio;
 use App\Models\ReportedUser;
+use App\Models\ResponseTemplate;
 use App\Models\User;
 use App\Services\Profile\ProfileService;
 use App\Services\VerificationService;
@@ -1289,6 +1291,101 @@ class ProfileAPIController extends Controller
                 'message' => __('Успешно сохранено'),
                 'work_experience' => $request->get('work_experience')
             ]
+        ]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/response-template",
+     *     tags={"Profile"},
+     *     summary="Profile response template",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="work_experience",
+     *                    type="integer",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function response_template(){
+
+        /** @var User $user */
+        $user = Auth::user();
+        $data = ResponseTemplate::query()->where('user_id',$user->id)->get();
+        return response()->json([
+            'success' => true,
+            'data' => new ResponseTemplateResource($data)
+        ]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/response-template/edit",
+     *     tags={"Profile"},
+     *     summary="Profile response template edit",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="work_experience",
+     *                    type="integer",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function response_template_edit(ResponseTemplateRequest $request){
+
+        $data = $request->validated();
+
+        ResponseTemplate::query()->updateOrCreate([
+            'user_id' => auth()->id(),
+            'title' => $data['title'],
+            'text' => $data['text'],
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => __('Успешно сохранено'),
         ]);
     }
 

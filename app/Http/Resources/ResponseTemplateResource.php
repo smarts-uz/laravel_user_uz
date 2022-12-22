@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BlockUserResource extends JsonResource
+class ResponseTemplateResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,8 +16,8 @@ class BlockUserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_id'=>$this->user_id,
-            'blocked_user_id'=>$this->blocked_user_id,
+            'title' => $this->title,
+            'text' => $this->text,
             'created_at' => $this->created_at
         ];
     }
