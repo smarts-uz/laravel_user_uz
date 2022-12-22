@@ -174,6 +174,7 @@ class UserIndexResource extends JsonResource
             'views' => $this->performer_views()->count(),
             'directories' => $directories,
             'wallet_balance' => $balance,
+            'work_experience'=>$this->work_experience,
             'last_seen' => $lastSeen,
             'gender'=> $this->gender,
             'blocked_user'=> $blocked_user,

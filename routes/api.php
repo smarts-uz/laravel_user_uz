@@ -108,6 +108,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
         Route::post('/confirmation-self-delete', [ProfileAPIController::class, 'confirmationSelfDelete']); // fix
         Route::get('/balance', [ProfileAPIController::class, 'balance']); // fix
         Route::post('/description/edit', [ProfileAPIController::class, 'editDesctiption']); // fix
+        Route::post('/work-experience', [ProfileAPIController::class, 'work_experience']); // fix
         Route::post('/categories-subscribe', [ProfileAPIController::class, 'subscribeToCategory']); // fix
         Route::post('/firebase-token', [NotificationController::class, 'setToken']); // fix
         Route::get('/sessions', [SessionController::class, 'index']); // fix

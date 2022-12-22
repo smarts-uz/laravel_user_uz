@@ -56,6 +56,7 @@ use Laravel\Passport\HasApiTokens;
  * @property $map
  * @property $active_task
  * @property $active_step
+ * @property $work_experience
  * @return array //Value Returned
  */
 class User extends \TCG\Voyager\Models\User

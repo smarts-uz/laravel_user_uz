@@ -1239,7 +1239,56 @@ class ProfileAPIController extends Controller
         $portfolio->save();
         return response()->json([
             'success' => true,
-            'message' => 'Successfully deleted'
+            'message' => __('Успешно удалено')
+        ]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/work-experience",
+     *     tags={"Profile"},
+     *     summary="Profile work experience",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="work_experience",
+     *                    type="integer",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function work_experience(Request $request){
+
+        /** @var User $user */
+        $user = Auth::user();
+        $user->work_experience = $request->get('work_experience');
+        $user->save();
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'message' => __('Успешно сохранено'),
+                'work_experience' => $request->get('work_experience')
+            ]
         ]);
     }
 
