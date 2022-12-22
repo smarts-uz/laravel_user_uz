@@ -1295,7 +1295,7 @@ class ProfileAPIController extends Controller
     }
 
     /**
-     * @OA\Post(
+     * @OA\Get(
      *     path="/api/profile/response-template",
      *     tags={"Profile"},
      *     summary="Profile response template",
