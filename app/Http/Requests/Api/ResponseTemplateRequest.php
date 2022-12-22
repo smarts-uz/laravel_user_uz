@@ -23,7 +23,6 @@ class ResponseTemplateRequest extends BaseRequest
     public function rules()
     {
         return [
-            'user_id' => 'required',
             'title' => 'required|string',
             'text' => 'required|string',
         ];
@@ -32,7 +31,6 @@ class ResponseTemplateRequest extends BaseRequest
     public function messages()
     {
         return [
-            'user_id.required' => __('Требуется заполнение!'),
             'title.required' => __('Требуется заполнение!'),
             'title.string' => __('Текстовое поле должно быть строкой.'),
             'text.required' => __('Требуется заполнение!'),

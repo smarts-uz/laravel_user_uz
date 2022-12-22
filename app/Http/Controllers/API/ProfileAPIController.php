@@ -1299,18 +1299,6 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/response-template",
      *     tags={"Profile"},
      *     summary="Profile response template",
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="work_experience",
-     *                    type="integer",
-     *                 ),
-     *             ),
-     *         ),
-     *     ),
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -1350,8 +1338,12 @@ class ProfileAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
-     *                    property="work_experience",
-     *                    type="integer",
+     *                    property="title",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="text",
+     *                    type="string",
      *                 ),
      *             ),
      *         ),
@@ -1376,12 +1368,16 @@ class ProfileAPIController extends Controller
     public function response_template_edit(ResponseTemplateRequest $request){
 
         $data = $request->validated();
-
-        ResponseTemplate::query()->updateOrCreate([
-            'user_id' => auth()->id(),
-            'title' => $data['title'],
-            'text' => $data['text'],
-        ]);
+        $user_exists = ResponseTemplate::query()->where('user_id',auth()->id())->exists();
+        if($user_exists){
+            ResponseTemplate::update($data);
+        }else{
+            ResponseTemplate::query()->create([
+                'user_id' => auth()->id(),
+                'title' => $data['title'],
+                'text' => $data['text'],
+            ]);
+        }
 
         return response()->json([
             'success' => true,
