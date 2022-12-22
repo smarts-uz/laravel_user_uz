@@ -89,12 +89,6 @@ function categories()
 
 }
 
-
-function getAllCategories()
-{
-    return Category::query()->where('parent_id', '!=', 0)->withTranslations()->get();
-}
-
 function getCategoriesByParent($parent)
 {
     return Category::withTranslations(['uz', 'ru'])->where('parent_id', $parent)->get();

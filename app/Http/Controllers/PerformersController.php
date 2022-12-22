@@ -59,7 +59,7 @@ class PerformersController extends Controller
                 'review_rating' => $item->review_rating,
                 'task_count' => $item->task_count,
                 'created' => $created,
-                'user_categories'=>$item->user_categories
+                'user_category'=>$item->user_category
             ]);
     }
 

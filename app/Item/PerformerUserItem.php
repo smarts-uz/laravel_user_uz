@@ -24,6 +24,6 @@ class PerformerUserItem
     public $goodReviews;
     public $badReviews;
     public $task_count;
-    public $user_categories;
+    public $user_category;
 
 }

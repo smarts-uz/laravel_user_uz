@@ -84,7 +84,7 @@
                                 </div>
                             </div>
                         </form>
-                        @if($user->youtube_link !== null)
+                        @if($user->youtube_link)
                             <iframe class="my-4 sm:w-full w-5/6" width="644" height="362" id="iframe" src="{{$user->youtube_link}}" frameborder="0"></iframe>
                                 <a href="{{route('youtube_link_delete')}}" class="float-right text-gray-500 hover:text-red-500 mb-3 border-b-2 border-dotted hover:border-red-500 border-gray-500">{{__('Удалить')}}</a>
                         @endif
@@ -122,16 +122,12 @@
                         </p>
                         <div class="my-4">
                             <ul class="pl-10 leading-7">
-                                @foreach($user_categories as $user_cat)
-                                    @foreach($categories as $cat)
-                                        @if($cat->id === $user_cat)
-                                            <li>
-                                                <a href="/categories/{{$cat->parent_id}}" class="underline">
-                                                    {{ $cat->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
-                                                </a>
-                                            </li>
-                                        @endif
-                                    @endforeach
+                                @foreach($user_category as $user_cat)
+                                    <li>
+                                        <a href="{{route('categories',$user_cat->parent_id)}}" class="underline">
+                                            {{ $user_cat->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
+                                        </a>
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>
@@ -139,7 +135,6 @@
                             @if(!(count($goodReviews) || count($badReviews)))
                                 <h1 class="text-xl font-semibold mt-2">{{__('Отзывов пока нет')}}</h1>
                                 <p class="mt-2">{{__('Отзывы появятся после того, как вы создадите или выполните задание')}}</p>
-
                             @else
                                 <h1 class="text-xl font-semibold mt-2">{{__('Отзывы')}}</h1>
                                 @include('performers.reviews')
