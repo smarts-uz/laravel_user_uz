@@ -368,6 +368,40 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/balance",
      *     tags={"Profile"},
      *     summary="Profile balance",
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="type",
+     *          description="in yoki out kiritiladi",
+     *          @OA\Schema (
+     *              type="string",
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="period",
+     *          description="month, week yoki year kiritiladi",
+     *          @OA\Schema (
+     *              type="string",
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="from",
+     *          description="boshlang'ich vaqti kiritiladi(2022-11-01  shu formatda)",
+     *          @OA\Schema (
+     *              type="string",
+     *              format="date-time"
+     *          )
+     *     ),
+     *     @OA\Parameter (
+     *          in="query",
+     *          name="to",
+     *          description="oxirgi vaqti kiritiladi(2022-12-01  shu formatda)",
+     *          @OA\Schema (
+     *              type="string",
+     *              format="date-time"
+     *          )
+     *     ),
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
