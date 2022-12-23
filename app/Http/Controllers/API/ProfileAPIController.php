@@ -1319,11 +1319,11 @@ class ProfileAPIController extends Controller
     public function response_template(){
 
         /** @var User $user */
-        $user = Auth::user();
-        $data = ResponseTemplate::query()->where('user_id',$user->id)->get();
+        $user = auth()->user();
+        $data = ResponseTemplate::query()->where(['user_id' => $user->id])->get();
         return response()->json([
             'success' => true,
-            'data' => new ResponseTemplateResource($data)
+            'data' => ResponseTemplateResource::collection($data)
         ]);
     }
 
@@ -1365,13 +1365,16 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function response_template_edit(ResponseTemplateRequest $request,ResponseTemplate $response_template){
+    public function response_template_edit(ResponseTemplateRequest $request){
 
         $data = $request->validated();
-        /** @var ResponseTemplate $response_template */
-        $user_exists = ResponseTemplate::query()->where('user_id',auth()->id())->exists();
-        if($user_exists){
-            $response_template->update($data);
+        $user_exists = ResponseTemplate::query()->where('user_id',auth()->id());
+        if($user_exists->exists()){
+            $user_exists->update([
+                'user_id' => auth()->id(),
+                'title' => $data['title'],
+                'text' => $data['text'],
+            ]);
         }else{
             ResponseTemplate::query()->create([
                 'user_id' => auth()->id(),
