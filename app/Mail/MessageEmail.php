@@ -18,9 +18,15 @@ class MessageEmail extends Mailable
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct(string $data, string $subject = null)
     {
         $this->data = $data;
+
+        if (!empty($subject))
+            $this->subject = $subject;
+        else
+            $this->subject = __('Уведомление от ') . config('app.name');
+
     }
 
     /**
@@ -31,8 +37,8 @@ class MessageEmail extends Mailable
     public function build()
     {
         return $this
-        ->from(env("MAIL_USERNAME"))
-        ->subject("noreply: Email Data")
-        ->view('email.messageEmail', ['data'=>$this->data]);
+            ->from(env("MAIL_USERNAME"))
+            ->subject($this->subject)
+            ->view('email.messageEmail', ['data' => $this->data]);
     }
 }

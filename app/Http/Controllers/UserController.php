@@ -77,14 +77,18 @@ class UserController extends Controller
             return back()->with([
                 'message' => __("Этот адрес электронной почты не имеет учетной записи!")
             ]);
+
         }
         $sms_otp = rand(100000, 999999);
+        $message = "USer.Uz " . __("Код подтверждения") . ' ' . $sms_otp;
+
+
         $user->verify_code = $sms_otp;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
         session()->put('verifications', ['key' => 'email', 'value' => $data['email']]);
 
-        Mail::to($user->email)->send(new MessageEmail($sms_otp));
+        Mail::to($user->email)->send(new MessageEmail($message));
         Alert::success(__('Поздравляю'), __('Ваш проверочный код успешно отправлен на') . $user->email);
 
         return redirect()->route('user.reset_code_view_email');

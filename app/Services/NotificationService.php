@@ -105,7 +105,9 @@ class NotificationService
                 $performer_ids[] = $performer->id;
 
                 $notification->save();
-                $message = __('Новая задания', [], $locale) . "\n" . __('task_name  №task_id с бюджетом до task_budget', [
+
+                $subject = __('Новая задания', [], $locale);
+                $message = $subject . "\n" . __('task_name  №task_id с бюджетом до task_budget', [
                         'task_name' => $task->name, 'task_id' => $task->id, 'budget' => $price
                     ], $locale);
                 if ($performer->sms_notification) {
@@ -114,7 +116,7 @@ class NotificationService
                 }
                 info(json_encode($performer));
                 if ($performer->email_notification) {
-                    Mail::to($performer->email)->send(new MessageEmail($message));
+                    Mail::to($performer->email)->send(new MessageEmail($message, $subject));
                 }
             }
         }

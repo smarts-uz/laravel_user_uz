@@ -31,6 +31,9 @@ class VerifyEmail extends Mailable
     public function build()
     {
         $email = $this->email ?? $this->contact->email;
-        return $this->from(env("MAIL_USERNAME"))->to($email)->subject("noreply: Email Verification")->view('email.emailVerificationEmail', ['data'=>$this->email_data]);
+        return $this->from(env("MAIL_USERNAME"))
+        ->to($email)
+        ->subject("Email Verification")
+        ->view('email.emailVerificationEmail', ['data'=>$this->email_data]);
     }
 }
