@@ -95,6 +95,36 @@
                 }
             }
         },
+        "\/api\/popular-categories": {
+            "get": {
+                "tags": [
+                    "CategoryAPI"
+                ],
+                "summary": "Popular categories",
+                "operationId": "1a11cd9bd17ab12cfcd763ebd95993fb",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
         "\/api\/category\/search": {
             "get": {
                 "tags": [
@@ -231,6 +261,51 @@
                     {
                         "name": "key",
                         "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/account\/verify": {
+            "get": {
+                "tags": [
+                    "Verification"
+                ],
+                "summary": "Verify account",
+                "operationId": "8787a513ac7945b24e6123d90215b324",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "email yoki phone_number",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "data",
+                        "in": "query",
+                        "description": "email yoki phone_number qiymati",
+                        "required": true,
                         "schema": {
                             "type": "string"
                         }
@@ -3803,6 +3878,31 @@
                         "description": "Forbidden"
                     }
                 }
+            }
+        },
+        "\/api\/support-admin": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Support admin",
+                "operationId": "07cbce19d91b78bd9872333b4d9ead01",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
             }
         },
         "\/api\/logout": {

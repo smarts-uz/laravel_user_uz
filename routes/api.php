@@ -143,7 +143,7 @@ Route::post('/reset', [UserAPIController::class, 'reset_submit']); // fix
 Route::post('/reset/password', [UserAPIController::class, 'reset_password_save'])->name('user.reset_password_save'); // fix
 Route::post('/code', [UserAPIController::class, 'reset_code'])->name('user.reset_code'); // fix
 
-Route::get('/support-admin', [UserAPIController::class, "getSupportId"]); // not fix
+Route::get('/support-admin', [UserAPIController::class, "getSupportId"]); // fix
 
 //News
 Route::get('/blog-news', [BlogController::class, 'index']); // fix
@@ -157,7 +157,7 @@ Route::get('same-tasks/{task}', [TaskAPIController::class, 'same_tasks']); // fi
 
 //Categories
 Route::get('/categories', [CategoriesAPIController::class, 'index']); // fix
-Route::get('/popular-categories', [CategoriesAPIController::class, 'popular']); // not fix
+Route::get('/popular-categories', [CategoriesAPIController::class, 'popular']); // fix
 Route::get('/categories-parent', [CategoriesAPIController::class, 'parents']); // fix
 Route::get('/categories/{id}', [CategoriesAPIController::class, 'show']); // fix
 Route::get('/category/search', [CategoriesAPIController::class, 'search']); // fix

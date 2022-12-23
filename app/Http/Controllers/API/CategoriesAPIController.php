@@ -43,6 +43,33 @@ class CategoriesAPIController extends Controller
         return CategoryIndexResource::collection($categories);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/popular-categories",
+     *     tags={"CategoryAPI"},
+     *     summary="Popular categories",
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="category",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     )
+     * )
+     */
     public function popular(Request $request)
     {
         $name = $request->get('category');

@@ -14,6 +14,47 @@ use Illuminate\Support\Facades\Cache;
 
 class LoginAPIController extends Controller
 {
+
+    /**
+     * @OA\Get(
+     *     path="/api/account/verify",
+     *     tags={"Verification"},
+     *     summary="Verify account",
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="type",
+     *          required=true,
+     *          description="email yoki phone_number",
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
+     *     ),
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="data",
+     *          required=true,
+     *          description="email yoki phone_number qiymati",
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
     public function verifyCredentials(VerifyCredentialsRequest $request): JsonResponse
     {
         $data = $request->validated();
@@ -39,7 +80,7 @@ class LoginAPIController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => $data['type'] === 'email' ? __('Ваша ссылка для подтверждения успешно отправлена!') : __('Код отправлен!')
+                'message' => $data['type'] === 'email' ? __('Данные пользователя обновлены!') : __('Код отправлен!')
             ]);
         }
         return response()->json([
