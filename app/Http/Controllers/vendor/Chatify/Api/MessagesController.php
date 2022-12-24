@@ -127,7 +127,10 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
      *     @OA\Response(
      *          response=403,
      *          description="Forbidden"
-     *     )
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
      * )
      */
     public function send(Request $request): JsonResponse
