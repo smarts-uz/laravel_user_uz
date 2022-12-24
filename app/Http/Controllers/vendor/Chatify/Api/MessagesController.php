@@ -63,40 +63,6 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
         return parent::deleteConversation($request);
     }
 
-
-    /**
-     * @OA\Get(
-     *     path="/api/chat/download/{fileName}",
-     *     tags={"Chat"},
-     *     summary="",
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     )
-     * )
-     */
-    public function download($fileName)
-    {
-        $path = storage_path() . '/app/public/' . config('chatify.attachments.folder') . '/' . $fileName;
-        if (file_exists($path)) {
-            return Response::json([
-                'file_name' => $fileName,
-                'download_path' => $path
-            ]);
-        }
-
-        return Response::json([
-            'message'=>"Sorry, File does not exist in our server or may have been deleted!"
-        ], 404);
-    }
     /**
      * @OA\Post(
      *     path="/api/chat/sendMessage",
@@ -238,7 +204,10 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
      *     @OA\Response(
      *          response=403,
      *          description="Forbidden"
-     *     )
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
      * )
      */
     public function fetch(Request $request): JsonResponse
@@ -277,7 +246,10 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
      *     @OA\Response(
      *          response=403,
      *          description="Forbidden"
-     *     )
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
      * )
      */
     public function seen(Request $request)
