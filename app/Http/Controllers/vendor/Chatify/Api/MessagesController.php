@@ -291,7 +291,7 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
      * @OA\Get(
      *     path="/api/chat/getContacts",
      *     tags={"Chat"},
-     *     summary="",
+     *     summary="Chat getContacts",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
