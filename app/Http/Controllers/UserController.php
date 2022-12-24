@@ -80,7 +80,7 @@ class UserController extends Controller
 
         }
         $sms_otp = rand(100000, 999999);
-        $message = "USer.Uz " . __("Код подтверждения") . ' ' . $sms_otp;
+        $message = config('app.name').' ' . __("Код подтверждения") . ' ' . $sms_otp;
 
 
         $user->verify_code = $sms_otp;
