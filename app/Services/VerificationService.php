@@ -9,7 +9,7 @@ class VerificationService
     public static function send_verification($needle, $user, $phone_number = null, $email = null): void
     {
         $message = rand(100000, 999999);
-        SmsMobileService::sms_packages( correctPhoneNumber($phone_number),"USer.Uz ". __("Код подтверждения") . ' ' . $message);
+        SmsMobileService::sms_packages( correctPhoneNumber($phone_number),config('app.name').' '. __("Код подтверждения") . ' ' . $message);
         $user->verify_code = $message;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
@@ -24,6 +24,6 @@ class VerificationService
         $task->verify_expiration = Carbon::now()->addMinutes(2);
         $task->save();
 
-        SmsMobileService::sms_packages(correctPhoneNumber($phone_number),"USer.Uz ". __("Код подтверждения") . ' ' . $message);
+        SmsMobileService::sms_packages(correctPhoneNumber($phone_number),config('app.name').' '. __("Код подтверждения") . ' ' . $message);
     }
 }
