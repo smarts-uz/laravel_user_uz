@@ -173,7 +173,7 @@ class ProfileController extends Controller
         $email_notification = (int)$request->get('email_notification');
 
         $this->profileService->subscribeToCategory($categories, $user, $sms_notification, $email_notification);
-
+        Alert::success(__('Настройки успешно сохранены'));
         return redirect()->back();
     }
 

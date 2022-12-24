@@ -233,6 +233,9 @@
                                                             </div>
                                                         </div>
                                                     @endforeach
+                                                    @error('category')
+                                                        <span class="text-red-500" >{{ $message  }}</span>
+                                                    @enderror
                                                 </div>
                                                 <p class="font-bold text-xl mb-7"> {{__('Дополнительные типы уведомлений:')}}</p>
                                                 <div class="flex sm:flex-row flex-col itens-center">
