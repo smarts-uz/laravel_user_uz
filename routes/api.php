@@ -71,7 +71,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::post('/cancel-task/{task}', [SearchAPIController::class, 'cancelTask']); // fix
     Route::delete('/delete-task/{task}', [SearchAPIController::class, 'delete_task']); // fix
 
-    Route::get('account/verify', [LoginAPIController::class, 'verifyCredentials']); // not fix
+    Route::get('account/verify', [LoginAPIController::class, 'verifyCredentials']); // fix
     Route::post('account/verification/phone', [LoginAPIController::class, 'verify_phone']); // fix
 
     Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']); // fix

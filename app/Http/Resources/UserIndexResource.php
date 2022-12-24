@@ -101,12 +101,12 @@ class UserIndexResource extends JsonResource
             }
         }
         $goodReviews = $this->goodReviews();
+        $lastReview = $goodReviews->get()->last();
         if((int)$this->gender === 1){
             $date_gender = __('Был онлайн');
         }else{
             $date_gender = __('Была онлайн');
         }
-        $lastReview = $goodReviews->get()->last();
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
         if ($this->last_seen >= $date) {
             $lastSeen = __('В сети');
