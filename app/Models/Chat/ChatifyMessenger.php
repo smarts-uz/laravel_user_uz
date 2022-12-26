@@ -23,10 +23,10 @@ class ChatifyMessenger extends \Chatify\ChatifyMessenger
      * @param null $data
      * @return mixed
      */
-    public function pusherAuth($channelName, $socket_id, $data = null)
-    {
-        return $this->pusher->socketAuth($channelName, $socket_id, $data);
-    }
+//    public function pusherAuth($channelName, $socket_id, $data = null)
+//    {
+//        return $this->pusher->socketAuth($channelName, $socket_id, $data);
+//    }
 
 
     public function getContactItemApi($user)

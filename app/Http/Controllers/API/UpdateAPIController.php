@@ -88,8 +88,16 @@ class UpdateAPIController extends Controller
     /**
      * @OA\Post(
      *     path="/api/tasks/{task}/not-complete",
-     *     tags={"Profile"},
-     *     summary="Clear sessions without current session",
+     *     tags={"Task"},
+     *     summary="Task status not complete",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *     ),
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -160,11 +168,11 @@ class UpdateAPIController extends Controller
      *                 ),
      *                 @OA\Property (
      *                    property="good",
-     *                    type="boolean",
+     *                    type="integer",
      *                 ),
      *                 @OA\Property (
      *                    property="status",
-     *                    type="boolean",
+     *                    type="integer",
      *                 ),
      *             ),
      *         ),

@@ -157,7 +157,7 @@ class TaskAPIController extends Controller
      *          name="task",
      *          required=true,
      *          @OA\Schema (
-     *              type="string"
+     *              type="integer"
      *          )
      *     ),
      *     @OA\RequestBody (
@@ -1117,7 +1117,7 @@ class TaskAPIController extends Controller
     /**
      * @OA\Post(
      *     path="/api/update-task/{task}/custom",
-     *     tags={"Task"},
+     *     tags={"Task Update"},
      *     summary="Update task custom fields",
      *     @OA\Parameter (
      *          in="path",
