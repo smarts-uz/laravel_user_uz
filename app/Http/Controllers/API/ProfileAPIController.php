@@ -1236,17 +1236,13 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/portfolio/{portfolio}/delete-image",
      *     tags={"Profile"},
      *     summary="Profile delete image",
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="portfolio",
-     *                    type="file",
-     *                 ),
-     *             ),
-     *         ),
+     *     @OA\Parameter(
+     *          in="path",
+     *          name="portfolio",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          ),
      *     ),
      *     @OA\Response (
      *          response=200,

@@ -1726,21 +1726,16 @@
                 ],
                 "summary": "Profile delete image",
                 "operationId": "c29e7a7f6d2e915b569038d403785376",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart\/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "portfolio": {
-                                        "type": "file"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "parameters": [
+                    {
+                        "name": "portfolio",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful operation"
