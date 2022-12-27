@@ -405,12 +405,6 @@ class TaskAPIController extends Controller
         return TaskSingleResource::collection($tasks);
     }
 
-    public function task_map(Task $task)
-    {
-        return $task->addresses;
-    }
-
-
     /**
      * @OA\Get(
      *     path="/api/task/{task}",

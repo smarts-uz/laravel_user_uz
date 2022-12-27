@@ -114,6 +114,11 @@ class SearchTaskController extends VoyagerBaseController
         return redirect()->back();
     }
 
+    public function task_map(Task $task)
+    {
+        return $task->addresses;
+    }
+
     public function delete_task(Task $task)
     {
         $task->status = Task::STATUS_CANCELLED;
