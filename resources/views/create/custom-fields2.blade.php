@@ -2,7 +2,7 @@
 
     @foreach($custom_fields as $custom_field)
 
-        @if($custom_field['type'] == 'select')
+        @if($custom_field['type'] === 'select')
             @if($custom_field['title'])
                 <div class="py-4 mx-auto px-auto text-center text-3xl texl-bold">
                     {{ $custom_field['title']}}
@@ -34,7 +34,7 @@
             <div class="border-b-4"></div>
         @endif
 
-        @if($custom_field['type'] == 'checkbox')
+        @if($custom_field['type'] === 'checkbox')
 
 
             @if($custom_field['title'])
@@ -74,7 +74,7 @@
             <div class="border-b-4"></div>
         @endif
 
-        @if($custom_field['type']  == 'radio')
+        @if($custom_field['type']  === 'radio')
 
 
             @if($custom_field['title'] )
@@ -92,22 +92,17 @@
                 <div class="py-4 mx-auto  text-left ">
                     <div class="mb-4">
                         <div id="formulario" class="flex flex-col gap-y-4">
-
-                            <div>
-
-                                <div name="glassSht" class="mb-3 xl:w-full">
-                                    @foreach($custom_field['options'] as $key => $option)
-
-                                        <input type="radio" @if($custom_field['required'] === 1) required @endif
-                                               id="radio_{{$key}}" name="{{$custom_field['name']}}[]"
-                                               value="{{$option['id']}}" {{ $option['selected']? 'checked':'' }}>
-                                        <label for="radio_{{$key}}">{{$option['value']}}</label>
-                                        <br>
-                                        <br>
-                                    @endforeach
-                                </div>
+                            <div class="mb-3 xl:w-full">
+                                @foreach($custom_field['options'] as $key => $option)
+                                    <input type="radio"
+                                           @if($custom_field['required'] === 1) required @endif
+                                            id="radio_{{$custom_field['name']}}_{{$option['value']}}" name="{{$custom_field['name']}}[]"
+                                           value="{{$option['id']}}" {{ $option['selected']? 'checked':'' }}>
+                                    <label class="cursor-pointer" for="radio_{{$custom_field['name']}}_{{$option['value']}}">{{$option['value']}}</label>
+                                    <br>
+                                    <br>
+                                @endforeach
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -116,7 +111,7 @@
             <div class="border-b-4"></div>
         @endif
 
-        @if($custom_field['type']  == 'input')
+        @if($custom_field['type']  === 'input')
 
             @if($custom_field['title'])
                 <div class="py-4 mx-auto px-auto text-center text-3xl texl-bold">
@@ -152,7 +147,7 @@
             </div>
         @endif
 
-        @if($custom_field['type']  == 'number')
+        @if($custom_field['type']  === 'number')
 
             @if($custom_field['title'])
                 <div class="py-4 mx-auto px-auto text-center text-3xl texl-bold">
