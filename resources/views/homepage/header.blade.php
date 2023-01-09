@@ -1,22 +1,4 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
-<style>
-    .swiper-container{
-        width: 400px;
-        height: auto;
-    }
-    .nextt{
-        position: relative;
-        bottom: 215px;
-        left: 360px;
-        z-index: 50;
-    }
-    .prevv{
-        position: relative;
-        bottom: 265px;
-        right: 3px;
-        z-index: 50;
-    }
-</style>
 <div class="h-auto" style="background: #FFF5E5">
     <div class="w-xl">
         <main class="w-11/12 mx-auto grid grid-cols-2 gap-2">

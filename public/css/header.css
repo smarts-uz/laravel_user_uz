@@ -11,3 +11,19 @@
     border-radius: 5px;
 }
 
+.swiper-container{
+    width: 400px;
+    height: auto;
+}
+.nextt{
+    position: relative;
+    bottom: 215px;
+    left: 360px;
+    z-index: 50;
+}
+.prevv{
+    position: relative;
+    bottom: 265px;
+    right: 3px;
+    z-index: 50;
+}

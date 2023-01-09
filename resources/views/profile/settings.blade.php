@@ -1,10 +1,12 @@
 @extends("layouts.app")
 
 @section("content")
-    <style>.flatpickr-calendar {
+    <style>
+        .flatpickr-calendar {
             max-width: 300px;
             width: 100%;
-        } </style>
+        }
+    </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>

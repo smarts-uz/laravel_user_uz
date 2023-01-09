@@ -187,7 +187,7 @@
         @endforeach
     </div>
     <div class="my-2">
-        @if($user->youtube_link != null)
+        @if($user->youtube_link)
             <iframe class="my-4 sm:w-full w-5/6" width="644" height="362" id="iframe" src="{{$user->youtube_link}}" frameborder="0"></iframe>
         @endif
     </div>

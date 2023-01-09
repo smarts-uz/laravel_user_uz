@@ -38,7 +38,6 @@
         </form>
     </div>
 
-{{--    <script src="{{ asset('js/profile/create_port.js') }}"></script>--}}
     <x-laravelUppy route="{{route('profile.UploadImage')}}"/>
     <script>
         $('.uppy-StatusBar-actions').click(function (){

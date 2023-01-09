@@ -86,7 +86,7 @@ class SearchAPIController extends Controller
      *     )
      * )
      */
-    public function delete_task(Task $task)
+    public function delete_task(Task $task,User $user)
     {
         if ($task->user_id !== auth()->id()){
             return response()->json([
@@ -96,11 +96,10 @@ class SearchAPIController extends Controller
         }
         $task->delete();
 
-        /** @var User $user */
-        $user = auth()->user();
         $user->active_step = null;
         $user->active_task = null;
         $user->save();
+
         return response()->json([
             'success' => true,
             'message' => __('Успешно удалено')
