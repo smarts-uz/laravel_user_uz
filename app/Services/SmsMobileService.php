@@ -3,7 +3,7 @@
 
 namespace App\Services;
 
-use Napa\R19\Sms;
+use Teamprodev\Eskiz\Sms;
 use PlayMobile\SMS\SmsService;
 
 
@@ -25,7 +25,7 @@ class SmsMobileService
             case('eskiz_sms'):
                 try {
                     Sms::send($phone, $message);
-                } catch (\Exception) {}
+                } catch (\Exception $e) {}
                 break;
             case('playmobile_sms'):
                 (new SmsService())->send($phone, $message);
