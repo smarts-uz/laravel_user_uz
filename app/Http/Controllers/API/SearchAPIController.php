@@ -144,7 +144,7 @@ class SearchAPIController extends Controller
      *     )
      * )
      */
-    public function task_cancel(Task $task): \Illuminate\Http\JsonResponse
+    public function task_cancel(Task $task)
     {
         if ($task->user_id !== auth()->id()){
             return response()->json([
@@ -153,12 +153,12 @@ class SearchAPIController extends Controller
             ], 403);
         }
 
-        auth()->user()->active_task = $task;
+        auth()->user()->active_task = $task->id;
         auth()->user()->save();
 
         return response()->json([
             'success' => true,
-            'message' => __('Успешно удалено')
+            'message' => __('Успешно сохранено')
         ]);
     }
 
