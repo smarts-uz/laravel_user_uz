@@ -11,16 +11,21 @@ class MessageEmail extends Mailable
     use Queueable, SerializesModels;
 
     public $data;
+    /**
+     * @var int
+     */
+    private $task_id;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(string $data, string $subject = null)
+    public function __construct(int $task_id, string $data, string $subject = null)
     {
         $this->data = $data;
-        
+        $this->task_id = $task_id;
+
         if (!empty($subject))
             $this->subject = $subject;
         else
@@ -38,6 +43,6 @@ class MessageEmail extends Mailable
         return $this
             ->from(env("MAIL_USERNAME"))
             ->subject($this->subject)
-            ->view('email.messageEmail', ['data' => $this->data]);
+            ->view('email.messageEmail', ['data' => $this->data,'task_id'=>$this->task_id]);
     }
 }

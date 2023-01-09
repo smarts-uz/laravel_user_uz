@@ -1,1 +1,1 @@
-<a href="{{route("searchTask.task",$data->id)}}">{{ $data }}</a>
+<a href="{{route("searchTask.task",$task_id)}}">{{ $data }}</a>
