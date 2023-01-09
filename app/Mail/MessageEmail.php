@@ -17,10 +17,10 @@ class MessageEmail extends Mailable
      *
      * @return void
      */
-    public function __construct(string $data, $task, string $subject = null)
+    public function __construct(string $data, string $subject = null)
     {
         $this->data = $data;
-        $this->task = $task;
+        
         if (!empty($subject))
             $this->subject = $subject;
         else
@@ -38,6 +38,6 @@ class MessageEmail extends Mailable
         return $this
             ->from(env("MAIL_USERNAME"))
             ->subject($this->subject)
-            ->view('email.messageEmail', ['data' => $this->data,'task'=>$this->task->id]);
+            ->view('email.messageEmail', ['data' => $this->data]);
     }
 }
