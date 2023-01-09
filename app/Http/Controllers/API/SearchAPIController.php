@@ -95,10 +95,9 @@ class SearchAPIController extends Controller
             ], 403);
         }
         $task->delete();
-        auth()->user->active_step = null;
-        auth()->user->active_task = null;
-        auth()->user->save();
-
+        auth()->user()->active_step = null;
+        auth()->user()->active_task = null;
+        auth()->user()->save();
         return response()->json([
             'success' => true,
             'message' => __('Успешно удалено')
