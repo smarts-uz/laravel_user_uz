@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ResetRequest;
-use App\Mail\MessageEmail;
+use App\Mail\VerifyEmail;
 use App\Models\User;
 use App\Models\Task;
 use App\Services\NotificationService;
@@ -38,6 +38,9 @@ class UserController extends Controller
         return view('auth.confirm');
     }
 
+    /**
+     * @throws \Exception
+     */
     public function reset_submit(ResetRequest $request)
     {
         $data = $request->validated();
@@ -48,7 +51,7 @@ class UserController extends Controller
                 'message' => __("Этот номер телефона не зарегистрирован!")
             ]);
         }
-        $code = rand(100000, 999999);
+        $code = random_int(100000, 999999);
         $user->verify_code = $code;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
@@ -61,6 +64,9 @@ class UserController extends Controller
         return redirect()->route('user.reset_code_view');
     }
 
+    /**
+     * @throws \Exception
+     */
     public function reset_by_email(Request $request)
     {
 
@@ -79,7 +85,7 @@ class UserController extends Controller
             ]);
 
         }
-        $sms_otp = rand(100000, 999999);
+        $sms_otp = random_int(100000, 999999);
         $message = config('app.name').' ' . __("Код подтверждения") . ' ' . $sms_otp;
 
 
@@ -88,7 +94,7 @@ class UserController extends Controller
         $user->save();
         session()->put('verifications', ['key' => 'email', 'value' => $data['email']]);
 
-        Mail::to($user->email)->send(new MessageEmail($message));
+        Mail::to($user->email)->send(new VerifyEmail($message));
         Alert::success(__('Поздравляю'), __('Ваш проверочный код успешно отправлен на') . $user->email);
 
         return redirect()->route('user.reset_code_view_email');

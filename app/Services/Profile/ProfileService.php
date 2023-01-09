@@ -417,6 +417,7 @@ class ProfileService
      * Mazkur metod telefon raqamni tahrirlaydi
      * @param $request
      * @return array
+     * @throws \Exception
      */
     #[ArrayShape([])]
     public function phoneUpdate($request): array
@@ -433,7 +434,7 @@ class ProfileService
             $user->phone_number_old = $user->phone_number;
             $user->phone_number = $phoneNumber;
             $user->is_phone_number_verified = 0;
-            $message = rand(100000, 999999);
+            $message = random_int(100000, 999999);
             $phone_number = $user->phone_number;
             $user->verify_code = $message;
             $user->save();

@@ -100,7 +100,7 @@ class UserAPIController extends Controller
         $data = $request->validated();
         /** @var User $user */
         $user = User::query()->where('phone_number', '+' . $data['phone_number'])->firstOrFail();
-        $message = rand(100000, 999999);
+        $message = random_int(100000, 999999);
         $user->verify_code = $message;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();

@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\Mail\VerifyEmail;
 use App\Models\User;
 use App\Mail\MessageEmail;
 use App\Models\Notification;
@@ -116,7 +117,7 @@ class NotificationService
                 }
                 info(json_encode($performer));
                 if ($performer->email_notification) {
-                    Mail::to($performer->email)->send(new MessageEmail($message, $subject));
+                    Mail::to($performer->email)->send(new MessageEmail($message, $subject,$task));
                 }
             }
         }
@@ -256,7 +257,7 @@ class NotificationService
         ], cacheLang($user_id));
         $phone_number = $user->phone_number;
         SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
-        Mail::to($user->email)->send(new MessageEmail($message));
+        Mail::to($user->email)->send(new VerifyEmail($message));
     }
 
 

@@ -25,6 +25,7 @@ class ResponseService
      * @param $request
      * @param $task
      * @return array
+     * @throws \Exception
      */
     public function store( $request, $task): array
     {
@@ -79,15 +80,15 @@ class ResponseService
                             'client_id' => $data['user_id'],
                             'amount' => setting('admin.pullik_otklik')
                         ]);
-                        Transaction::query()->create([
+                        Transaction::query()->create(array(
                             'payment_system' => Transaction::DRIVER_TASK,
                             'amount' => setting('admin.pullik_otklik'),
-                            'system_transaction_id' => rand(10000000000, 99999999999),
+                            'system_transaction_id' => random_int(10000000000, 99999999999),
                             'currency_code' => 860,
                             'state' => Transaction::STATE_COMPLETED,
                             'transactionable_type' => User::class,
                             'transactionable_id' => $data['performer_id'],
-                        ]);
+                        ));
                     }
                     NotificationService::sendResponseToTaskNotification($task);
                     break;
@@ -107,6 +108,7 @@ class ResponseService
      * Mazkur metod taskka tashlangan otkliklar orasidan ispolnitelni tanlashda ishlatiladi
      * @param $response
      * @return array
+     * @throws \Exception
      */
     #[ArrayShape(['success' => "bool", 'message' => "mixed", 'data' => "array"])]
     public function selectPerformer($response): array
@@ -172,7 +174,7 @@ class ResponseService
             Transaction::query()->create([
                 'payment_system' => Transaction::DRIVER_TASK,
                 'amount' => setting('admin.bepul_otklik'),
-                'system_transaction_id' => rand(10000000000, 99999999999),
+                'system_transaction_id' => random_int(10000000000, 99999999999),
                 'currency_code' => 860,
                 'state' => Transaction::STATE_COMPLETED,
                 'transactionable_type' => User::class,

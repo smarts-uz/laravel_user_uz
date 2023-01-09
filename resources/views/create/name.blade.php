@@ -71,9 +71,6 @@
 
                                     </div>
                                 </div>
-
-
-
                         </div>
                         <div class="flex  mx-auto" >
                             <input type="submit" id="next" style="background: linear-gradient(164.22deg, #FDC4A5 4.2%, #FE6D1D 87.72%);"
@@ -96,7 +93,7 @@
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('plugins/select2/js/maximize-select2-height.min.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
-
+    <link rel="stylesheet" href="{{asset('css/name.css')}}">
     <script>
         $('.select2').select2({
             //minimumResultsForSearch: Infinity,
@@ -131,39 +128,7 @@
         $('#next').click(function (){
             sessionStorage.clear();
         })
-
-
     </script>
-
-    <style>
-        .select2-selection{
-            height: 40px!important;
-        }
-        .select2-selection__rendered{
-            padding: 5px 30px!important;
-            font-size:16px;
-        }
-        ul.select2-results__options {
-            min-height: 400px;
-        }
-        .select2-selection__arrow{
-            margin: 5px;
-        }
-        .select2-results__option{
-            font-size:16px;
-        }
-        .selectboxit-container .selectboxit, .selectboxit-container .selectboxit-options {
-            width: 600px; /* Width of the dropdown button */
-            border-radius: 0;
-            max-height: 240px;
-        }
-
-        .selectboxit-options .selectboxit-option .selectboxit-option-anchor {
-            white-space: normal;
-            min-height: 30px;
-            height: auto;
-        }
-    </style>
 
 @endsection
 
