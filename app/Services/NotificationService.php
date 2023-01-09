@@ -118,7 +118,7 @@ class NotificationService
                 info(json_encode($performer));
                 if ($performer->email_notification) {
                     $task_id = $task->id;
-                    Mail::to($performer->email)->send(new MessageEmail($message, $subject, $task_id));
+                    Mail::to($performer->email)->send(new MessageEmail($task_id, $message, $subject));
                 }
             }
         }

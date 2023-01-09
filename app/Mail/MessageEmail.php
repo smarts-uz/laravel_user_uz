@@ -11,9 +11,7 @@ class MessageEmail extends Mailable
     use Queueable, SerializesModels;
 
     public $data;
-    /**
-     * @var int
-     */
+
     private $task_id;
 
     /**
@@ -21,7 +19,7 @@ class MessageEmail extends Mailable
      *
      * @return void
      */
-    public function __construct(int $task_id, string $data, string $subject = null)
+    public function __construct($task_id, string $data, string $subject = null)
     {
         $this->data = $data;
         $this->task_id = $task_id;
