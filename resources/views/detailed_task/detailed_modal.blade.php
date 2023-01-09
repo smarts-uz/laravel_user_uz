@@ -1,13 +1,10 @@
 {{-- not_complete modal start --}}
-<div
-    class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none        justify-center items-center"
+<div class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
     style="background-color:rgba(0,0,0,0.5)" id="modal-id45">
     <div class="relative w-full my-6 mx-auto max-w-3xl" id="modal45">
-        <div
-            class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none">
-            <div class=" text-center p-6  rounded-t">
-                <button type="submit" onclick="toggleModal45()"
-                        class="rounded-md w-100 h-16 absolute top-1 right-4 focus:outline-none">
+        <div class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none">
+            <div class="text-center p-6 rounded-t">
+                <button type="submit" onclick="toggleModal45()" class="rounded-md w-100 h-16 absolute top-1 right-4 focus:outline-none">
                     <i class="fas fa-times text-xl w-full"></i>
                 </button>
                 <h1 class="font-medium text-3xl block mt-6">
@@ -35,11 +32,9 @@
 <div class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
     style="background-color:rgba(0,0,0,0.5)" id="modal-id88">
     <div class="relative w-full my-6 mx-auto max-w-3xl" id="modal88">
-        <div
-            class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none">
+        <div class="border-0 rounded-lg shadow-2xl px-10 relative flex mx-auto flex-col sm:w-4/5 w-full bg-white outline-none focus:outline-none">
             <div class=" text-center p-6  rounded-t">
-                <button type="submit" onclick="toggleModal88()"
-                        class="rounded-md w-100 h-16 absolute top-1 right-4 focus:outline-none">
+                <button type="submit" onclick="toggleModal88()" class="rounded-md w-100 h-16 absolute top-1 right-4 focus:outline-none">
                     <i class="fas fa-times text-xl w-full"></i>
                 </button>
                 <h1 class="font-medium text-3xl block mt-6">
@@ -191,7 +186,7 @@
                     <h1 class="text-xl text-gray-900 text-center my-6">{{__('Вы не подтвердили свой номер телефона, пожалуйста, подтвердите свой номер телефона')}}</h1>
                 </main>
             </div>
-        @elseif(Auth::check() && (int)auth()->user()->role_id !== 2)
+        @elseif(Auth::check() && (int)auth()->user()->role_id !== \App\Models\User::ROLE_PERFORMER)
             <div class="bg-white rounded-lg shadow relative dark:bg-gray-700">
                 <div class="flex justify-end p-2">
                     <button type="button"
