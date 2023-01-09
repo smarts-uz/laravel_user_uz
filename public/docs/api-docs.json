@@ -1897,13 +1897,56 @@
                 ]
             }
         },
-        "\/api\/delete-task\/{task}": {
+        "\/api\/delete-task\/{task}\/{user}": {
             "delete": {
                 "tags": [
                     "Task"
                 ],
                 "summary": "Delete Task",
-                "operationId": "769179127b589bbb0f0b9354fa5a4744",
+                "operationId": "74f9f577251b9eb63b150a1dfb7764bd",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/task-cancel\/{task}": {
+            "post": {
+                "tags": [
+                    "Task Cancel"
+                ],
+                "summary": "Task",
+                "operationId": "8b7e63ad7248256f80ed003f7c499fac",
                 "parameters": [
                     {
                         "name": "task",
@@ -6429,7 +6472,10 @@
                                 "max",
                                 "min",
                                 "double_address",
-                                "remote"
+                                "remote",
+                                "deleted_by",
+                                "updated_by",
+                                "deleted_at"
                             ]
                         }
                     },
@@ -6451,7 +6497,10 @@
                                     "max",
                                     "min",
                                     "double_address",
-                                    "remote"
+                                    "remote",
+                                    "deleted_by",
+                                    "updated_by",
+                                    "deleted_at"
                                 ]
                             }
                         }
@@ -7997,14 +8046,6 @@
                         }
                     },
                     {
-                        "name": "filters[type]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "name": "filters[regex]",
                         "in": "query",
                         "required": false,
@@ -8013,7 +8054,7 @@
                         }
                     },
                     {
-                        "name": "filters[label]",
+                        "name": "filters[type]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -8029,7 +8070,7 @@
                         }
                     },
                     {
-                        "name": "filters[placeholder]",
+                        "name": "filters[label]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -8038,6 +8079,14 @@
                     },
                     {
                         "name": "filters[max]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[placeholder]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -8400,12 +8449,12 @@
                                 "data_type",
                                 "required",
                                 "name",
-                                "type",
                                 "regex",
-                                "label",
+                                "type",
                                 "min",
-                                "placeholder",
+                                "label",
                                 "max",
+                                "placeholder",
                                 "options",
                                 "route",
                                 "order",
@@ -8432,12 +8481,12 @@
                                     "data_type",
                                     "required",
                                     "name",
-                                    "type",
                                     "regex",
-                                    "label",
+                                    "type",
                                     "min",
-                                    "placeholder",
+                                    "label",
                                     "max",
+                                    "placeholder",
                                     "options",
                                     "route",
                                     "order",
@@ -8876,7 +8925,7 @@
                         }
                     },
                     {
-                        "name": "filters[performer_id]",
+                        "name": "filters[performer_review]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -8884,7 +8933,7 @@
                         }
                     },
                     {
-                        "name": "filters[performer_review]",
+                        "name": "filters[performer_id]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -9252,8 +9301,8 @@
                                 "status",
                                 "phone",
                                 "category_id",
-                                "performer_id",
                                 "performer_review",
+                                "performer_id",
                                 "task_hasmany_custom_field_relationship",
                                 "oplata",
                                 "user_id",
@@ -9289,8 +9338,8 @@
                                     "status",
                                     "phone",
                                     "category_id",
-                                    "performer_id",
                                     "performer_review",
+                                    "performer_id",
                                     "task_hasmany_custom_field_relationship",
                                     "oplata",
                                     "user_id",
@@ -9699,10 +9748,10 @@
                                 "description",
                                 "user_id",
                                 "service_id",
-                                "notification_belongsto_user_relationship",
                                 "task_id",
-                                "notification_hasmany_service_relationship",
+                                "notification_belongsto_user_relationship",
                                 "cat_id",
+                                "notification_hasmany_service_relationship",
                                 "name_task",
                                 "type",
                                 "is_read",
@@ -9723,10 +9772,10 @@
                                     "description",
                                     "user_id",
                                     "service_id",
-                                    "notification_belongsto_user_relationship",
                                     "task_id",
-                                    "notification_hasmany_service_relationship",
+                                    "notification_belongsto_user_relationship",
                                     "cat_id",
+                                    "notification_hasmany_service_relationship",
                                     "name_task",
                                     "type",
                                     "is_read",
@@ -17928,8 +17977,8 @@
                                 "description",
                                 "good_bad",
                                 "created_at",
-                                "reviewer_id",
                                 "as_performer",
+                                "reviewer_id",
                                 "task_id",
                                 "reviewer_name",
                                 "deleted_at"
@@ -17949,8 +17998,8 @@
                                     "description",
                                     "good_bad",
                                     "created_at",
-                                    "reviewer_id",
                                     "as_performer",
+                                    "reviewer_id",
                                     "task_id",
                                     "reviewer_name",
                                     "deleted_at"
@@ -24569,6 +24618,20 @@
                     "remote": {
                         "type": "string",
                         "description": "Remote"
+                    },
+                    "deleted_by": {
+                        "type": "string",
+                        "description": "Deleted By"
+                    },
+                    "updated_by": {
+                        "type": "string",
+                        "description": "Updated By"
+                    },
+                    "deleted_at": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Deleted At",
+                        "example": "2021-05-17 00:00"
                     }
                 }
             },
@@ -24628,6 +24691,20 @@
                     "remote": {
                         "type": "string",
                         "description": "Remote"
+                    },
+                    "deleted_by": {
+                        "type": "string",
+                        "description": "Deleted By"
+                    },
+                    "updated_by": {
+                        "type": "string",
+                        "description": "Updated By"
+                    },
+                    "deleted_at": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Deleted At",
+                        "example": "2021-05-17 00:00"
                     }
                 }
             },
@@ -24802,29 +24879,29 @@
                         "type": "string",
                         "description": "Required"
                     },
-                    "type": {
-                        "type": "string",
-                        "description": "Input Type"
-                    },
                     "regex": {
                         "type": "string",
                         "description": "Regex"
                     },
-                    "label": {
+                    "type": {
                         "type": "string",
-                        "description": "Input Label"
+                        "description": "Input Type"
                     },
                     "min": {
                         "type": "string",
                         "description": "Min"
                     },
-                    "placeholder": {
+                    "label": {
                         "type": "string",
-                        "description": "Input Placeholder"
+                        "description": "Input Label"
                     },
                     "max": {
                         "type": "string",
                         "description": "Max"
+                    },
+                    "placeholder": {
+                        "type": "string",
+                        "description": "Input Placeholder"
                     },
                     "route": {
                         "enum": [
@@ -24910,29 +24987,29 @@
                         "type": "string",
                         "description": "Input Name"
                     },
-                    "type": {
-                        "type": "string",
-                        "description": "Input Type"
-                    },
                     "regex": {
                         "type": "string",
                         "description": "Regex"
                     },
-                    "label": {
+                    "type": {
                         "type": "string",
-                        "description": "Input Label"
+                        "description": "Input Type"
                     },
                     "min": {
                         "type": "string",
                         "description": "Min"
                     },
-                    "placeholder": {
+                    "label": {
                         "type": "string",
-                        "description": "Input Placeholder"
+                        "description": "Input Label"
                     },
                     "max": {
                         "type": "string",
                         "description": "Max"
+                    },
+                    "placeholder": {
+                        "type": "string",
+                        "description": "Input Placeholder"
                     },
                     "route": {
                         "enum": [
@@ -25050,13 +25127,13 @@
                         "type": "string",
                         "description": "Category Id"
                     },
-                    "performer_id": {
-                        "type": "string",
-                        "description": "Performer Id"
-                    },
                     "performer_review": {
                         "type": "string",
                         "description": "Performer Review"
+                    },
+                    "performer_id": {
+                        "type": "string",
+                        "description": "Performer Id"
                     },
                     "task_hasmany_custom_field_relationship": {
                         "type": "integer",
@@ -25179,13 +25256,13 @@
                         "type": "string",
                         "description": "Category Id"
                     },
-                    "performer_id": {
-                        "type": "string",
-                        "description": "Performer Id"
-                    },
                     "performer_review": {
                         "type": "string",
                         "description": "Performer Review"
+                    },
+                    "performer_id": {
+                        "type": "string",
+                        "description": "Performer Id"
                     },
                     "task_hasmany_custom_field_relationship": {
                         "type": "integer",
@@ -25266,21 +25343,21 @@
                         "type": "string",
                         "description": "Service Id"
                     },
-                    "notification_belongsto_user_relationship": {
-                        "type": "integer",
-                        "description": "users"
-                    },
                     "task_id": {
                         "type": "string",
                         "description": "Task Id"
                     },
-                    "notification_hasmany_service_relationship": {
+                    "notification_belongsto_user_relationship": {
                         "type": "integer",
-                        "description": "services"
+                        "description": "users"
                     },
                     "cat_id": {
                         "type": "string",
                         "description": "Cat Id"
+                    },
+                    "notification_hasmany_service_relationship": {
+                        "type": "integer",
+                        "description": "services"
                     },
                     "name_task": {
                         "type": "string",
@@ -25331,21 +25408,21 @@
                         "type": "string",
                         "description": "Service Id"
                     },
-                    "notification_belongsto_user_relationship": {
-                        "type": "integer",
-                        "description": "users"
-                    },
                     "task_id": {
                         "type": "string",
                         "description": "Task Id"
                     },
-                    "notification_hasmany_service_relationship": {
+                    "notification_belongsto_user_relationship": {
                         "type": "integer",
-                        "description": "services"
+                        "description": "users"
                     },
                     "cat_id": {
                         "type": "string",
                         "description": "Cat Id"
+                    },
+                    "notification_hasmany_service_relationship": {
+                        "type": "integer",
+                        "description": "services"
                     },
                     "name_task": {
                         "type": "string",
@@ -26146,13 +26223,13 @@
                         "description": "Created At",
                         "example": "2021-05-17 00:00"
                     },
-                    "reviewer_id": {
-                        "type": "string",
-                        "description": "Reviewer Id"
-                    },
                     "as_performer": {
                         "type": "string",
                         "description": "As Performer"
+                    },
+                    "reviewer_id": {
+                        "type": "string",
+                        "description": "Reviewer Id"
                     },
                     "task_id": {
                         "type": "string",
@@ -26195,13 +26272,13 @@
                         "description": "Created At",
                         "example": "2021-05-17 00:00"
                     },
-                    "reviewer_id": {
-                        "type": "string",
-                        "description": "Reviewer Id"
-                    },
                     "as_performer": {
                         "type": "string",
                         "description": "As Performer"
+                    },
+                    "reviewer_id": {
+                        "type": "string",
+                        "description": "Reviewer Id"
                     },
                     "task_id": {
                         "type": "string",
@@ -27331,6 +27408,20 @@
                                 "remote": {
                                     "type": "string",
                                     "description": "Remote"
+                                },
+                                "deleted_by": {
+                                    "type": "string",
+                                    "description": "Deleted By"
+                                },
+                                "updated_by": {
+                                    "type": "string",
+                                    "description": "Updated By"
+                                },
+                                "deleted_at": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Deleted At",
+                                    "example": "2021-05-17 00:00"
                                 }
                             }
                         }
@@ -27391,6 +27482,20 @@
                                 "remote": {
                                     "type": "string",
                                     "description": "Remote"
+                                },
+                                "deleted_by": {
+                                    "type": "string",
+                                    "description": "Deleted By"
+                                },
+                                "updated_by": {
+                                    "type": "string",
+                                    "description": "Updated By"
+                                },
+                                "deleted_at": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Deleted At",
+                                    "example": "2021-05-17 00:00"
                                 }
                             }
                         }
@@ -27451,6 +27556,20 @@
                                 "remote": {
                                     "type": "string",
                                     "description": "Remote"
+                                },
+                                "deleted_by": {
+                                    "type": "string",
+                                    "description": "Deleted By"
+                                },
+                                "updated_by": {
+                                    "type": "string",
+                                    "description": "Updated By"
+                                },
+                                "deleted_at": {
+                                    "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                                    "type": "date-time",
+                                    "description": "Deleted At",
+                                    "example": "2021-05-17 00:00"
                                 }
                             }
                         }
@@ -27769,29 +27888,29 @@
                                     "type": "string",
                                     "description": "Input Name"
                                 },
-                                "type": {
-                                    "type": "string",
-                                    "description": "Input Type"
-                                },
                                 "regex": {
                                     "type": "string",
                                     "description": "Regex"
                                 },
-                                "label": {
+                                "type": {
                                     "type": "string",
-                                    "description": "Input Label"
+                                    "description": "Input Type"
                                 },
                                 "min": {
                                     "type": "string",
                                     "description": "Min"
                                 },
-                                "placeholder": {
+                                "label": {
                                     "type": "string",
-                                    "description": "Input Placeholder"
+                                    "description": "Input Label"
                                 },
                                 "max": {
                                     "type": "string",
                                     "description": "Max"
+                                },
+                                "placeholder": {
+                                    "type": "string",
+                                    "description": "Input Placeholder"
                                 },
                                 "options": {
                                     "type": "string",
@@ -27814,13 +27933,13 @@
                                     "type": "integer",
                                     "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
                                 },
-                                "values": {
-                                    "type": "string",
-                                    "description": "In Options Default value"
-                                },
                                 "options_ru": {
                                     "type": "string",
                                     "description": "Options Ru"
+                                },
+                                "values": {
+                                    "type": "string",
+                                    "description": "In Options Default value"
                                 },
                                 "deleted_at": {
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
@@ -27886,29 +28005,29 @@
                                     "type": "string",
                                     "description": "Input Name"
                                 },
-                                "type": {
-                                    "type": "string",
-                                    "description": "Input Type"
-                                },
                                 "regex": {
                                     "type": "string",
                                     "description": "Regex"
                                 },
-                                "label": {
+                                "type": {
                                     "type": "string",
-                                    "description": "Input Label"
+                                    "description": "Input Type"
                                 },
                                 "min": {
                                     "type": "string",
                                     "description": "Min"
                                 },
-                                "placeholder": {
+                                "label": {
                                     "type": "string",
-                                    "description": "Input Placeholder"
+                                    "description": "Input Label"
                                 },
                                 "max": {
                                     "type": "string",
                                     "description": "Max"
+                                },
+                                "placeholder": {
+                                    "type": "string",
+                                    "description": "Input Placeholder"
                                 },
                                 "options": {
                                     "type": "string",
@@ -27999,29 +28118,29 @@
                                     "type": "string",
                                     "description": "Input Name"
                                 },
-                                "type": {
-                                    "type": "string",
-                                    "description": "Input Type"
-                                },
                                 "regex": {
                                     "type": "string",
                                     "description": "Regex"
                                 },
-                                "label": {
+                                "type": {
                                     "type": "string",
-                                    "description": "Input Label"
+                                    "description": "Input Type"
                                 },
                                 "min": {
                                     "type": "string",
                                     "description": "Min"
                                 },
-                                "placeholder": {
+                                "label": {
                                     "type": "string",
-                                    "description": "Input Placeholder"
+                                    "description": "Input Label"
                                 },
                                 "max": {
                                     "type": "string",
                                     "description": "Max"
+                                },
+                                "placeholder": {
+                                    "type": "string",
+                                    "description": "Input Placeholder"
                                 },
                                 "options": {
                                     "type": "string",
@@ -28138,13 +28257,13 @@
                                     "type": "string",
                                     "description": "Category Id"
                                 },
-                                "performer_id": {
-                                    "type": "string",
-                                    "description": "Performer Id"
-                                },
                                 "performer_review": {
                                     "type": "string",
                                     "description": "Performer Review"
+                                },
+                                "performer_id": {
+                                    "type": "string",
+                                    "description": "Performer Id"
                                 },
                                 "task_hasmany_custom_field_relationship": {
                                     "type": "integer",
@@ -28274,13 +28393,13 @@
                                     "type": "string",
                                     "description": "Category Id"
                                 },
-                                "performer_id": {
-                                    "type": "string",
-                                    "description": "Performer Id"
-                                },
                                 "performer_review": {
                                     "type": "string",
                                     "description": "Performer Review"
+                                },
+                                "performer_id": {
+                                    "type": "string",
+                                    "description": "Performer Id"
                                 },
                                 "task_hasmany_custom_field_relationship": {
                                     "type": "integer",
@@ -28410,13 +28529,13 @@
                                     "type": "string",
                                     "description": "Category Id"
                                 },
-                                "performer_id": {
-                                    "type": "string",
-                                    "description": "Performer Id"
-                                },
                                 "performer_review": {
                                     "type": "string",
                                     "description": "Performer Review"
+                                },
+                                "performer_id": {
+                                    "type": "string",
+                                    "description": "Performer Id"
                                 },
                                 "task_hasmany_custom_field_relationship": {
                                     "type": "integer",
@@ -28498,21 +28617,21 @@
                                     "type": "string",
                                     "description": "Service Id"
                                 },
-                                "notification_belongsto_user_relationship": {
-                                    "type": "integer",
-                                    "description": "users"
-                                },
                                 "task_id": {
                                     "type": "string",
                                     "description": "Task Id"
                                 },
-                                "notification_hasmany_service_relationship": {
+                                "notification_belongsto_user_relationship": {
                                     "type": "integer",
-                                    "description": "services"
+                                    "description": "users"
                                 },
                                 "cat_id": {
                                     "type": "string",
                                     "description": "Cat Id"
+                                },
+                                "notification_hasmany_service_relationship": {
+                                    "type": "integer",
+                                    "description": "services"
                                 },
                                 "name_task": {
                                     "type": "string",
@@ -28564,21 +28683,21 @@
                                     "type": "string",
                                     "description": "Service Id"
                                 },
-                                "notification_belongsto_user_relationship": {
-                                    "type": "integer",
-                                    "description": "users"
-                                },
                                 "task_id": {
                                     "type": "string",
                                     "description": "Task Id"
                                 },
-                                "notification_hasmany_service_relationship": {
+                                "notification_belongsto_user_relationship": {
                                     "type": "integer",
-                                    "description": "services"
+                                    "description": "users"
                                 },
                                 "cat_id": {
                                     "type": "string",
                                     "description": "Cat Id"
+                                },
+                                "notification_hasmany_service_relationship": {
+                                    "type": "integer",
+                                    "description": "services"
                                 },
                                 "name_task": {
                                     "type": "string",
@@ -28630,21 +28749,21 @@
                                     "type": "string",
                                     "description": "Service Id"
                                 },
-                                "notification_belongsto_user_relationship": {
-                                    "type": "integer",
-                                    "description": "users"
-                                },
                                 "task_id": {
                                     "type": "string",
                                     "description": "Task Id"
                                 },
-                                "notification_hasmany_service_relationship": {
+                                "notification_belongsto_user_relationship": {
                                     "type": "integer",
-                                    "description": "services"
+                                    "description": "users"
                                 },
                                 "cat_id": {
                                     "type": "string",
                                     "description": "Cat Id"
+                                },
+                                "notification_hasmany_service_relationship": {
+                                    "type": "integer",
+                                    "description": "services"
                                 },
                                 "name_task": {
                                     "type": "string",
@@ -29971,13 +30090,13 @@
                                     "type": "string",
                                     "description": "Good Bad"
                                 },
-                                "reviewer_id": {
-                                    "type": "string",
-                                    "description": "Reviewer Id"
-                                },
                                 "as_performer": {
                                     "type": "string",
                                     "description": "As Performer"
+                                },
+                                "reviewer_id": {
+                                    "type": "string",
+                                    "description": "Reviewer Id"
                                 },
                                 "task_id": {
                                     "type": "string",
@@ -30027,13 +30146,13 @@
                                     "description": "Created At",
                                     "example": "2021-05-17 00:00"
                                 },
-                                "reviewer_id": {
-                                    "type": "string",
-                                    "description": "Reviewer Id"
-                                },
                                 "as_performer": {
                                     "type": "string",
                                     "description": "As Performer"
+                                },
+                                "reviewer_id": {
+                                    "type": "string",
+                                    "description": "Reviewer Id"
                                 },
                                 "task_id": {
                                     "type": "string",
@@ -30083,13 +30202,13 @@
                                     "description": "Created At",
                                     "example": "2021-05-17 00:00"
                                 },
-                                "reviewer_id": {
-                                    "type": "string",
-                                    "description": "Reviewer Id"
-                                },
                                 "as_performer": {
                                     "type": "string",
                                     "description": "As Performer"
+                                },
+                                "reviewer_id": {
+                                    "type": "string",
+                                    "description": "Reviewer Id"
                                 },
                                 "task_id": {
                                     "type": "string",
