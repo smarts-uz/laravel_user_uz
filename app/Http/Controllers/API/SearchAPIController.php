@@ -117,8 +117,8 @@ class SearchAPIController extends Controller
     /**
      * @OA\Post(
      *     path="/api/task-cancel/{task}",
-     *     tags={"Task Cancel"},
-     *     summary="Task",
+     *     tags={"Task"},
+     *     summary="Task Cancel",
      *     security={
      *         {"token": {}}
      *     },
@@ -146,6 +146,12 @@ class SearchAPIController extends Controller
      */
     public function task_cancel(Task $task): \Illuminate\Http\JsonResponse
     {
+        if ($task->user_id !== auth()->id()){
+            return response()->json([
+                'success' => false,
+                "message" => __("Отсутствует разрешение")
+            ], 403);
+        }
 
         auth()->user()->active_task = $task;
         auth()->user()->save();

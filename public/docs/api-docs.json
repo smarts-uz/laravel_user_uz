@@ -1943,9 +1943,9 @@
         "\/api\/task-cancel\/{task}": {
             "post": {
                 "tags": [
-                    "Task Cancel"
+                    "Task"
                 ],
-                "summary": "Task",
+                "summary": "Task Cancel",
                 "operationId": "8b7e63ad7248256f80ed003f7c499fac",
                 "parameters": [
                     {
