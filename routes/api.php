@@ -69,7 +69,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::get('/my-tasks', [TaskAPIController::class, 'my_tasks_all']); // fix
     Route::get('/performer-tasks', [TaskAPIController::class, 'performer_tasks']); // fix
     Route::post('/cancel-task/{task}', [SearchAPIController::class, 'cancelTask']); // fix
-    Route::delete('/delete-task/{task}', [SearchAPIController::class, 'delete_task']); // fix
+    Route::delete('/delete-task/{task}/{user}', [SearchAPIController::class, 'delete_task']); // fix
 
     Route::get('account/verify', [LoginAPIController::class, 'verifyCredentials']); // fix
     Route::post('account/verification/phone', [LoginAPIController::class, 'verify_phone']); // fix
@@ -91,6 +91,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::get('/reviews', [PerformerAPIController::class, 'reviews']); // fix
     Route::get('/settings/get-all', [FaqController::class, 'get_all']); // fix
     Route::get('/settings/{key}', [FaqController::class, 'get_key']); // fix
+    Route::post('/task-cancel/{task}', [SearchAPIController::class, 'task_cancel']); // fix
 
     // Profile API
     Route::prefix('/profile')->group(function () {

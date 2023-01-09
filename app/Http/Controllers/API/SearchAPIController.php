@@ -58,9 +58,67 @@ class SearchAPIController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/delete-task/{task}",
+     *     path="/api/delete-task/{task}/{user}",
      *     tags={"Task"},
      *     summary="Delete Task",
+     *     security={
+     *         {"token": {}}
+     *     },
+     *     @OA\Parameter(
+     *          in="path",
+     *          name="task",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          ),
+     *     ),
+     *     @OA\Parameter(
+     *          in="path",
+     *          name="user",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          ),
+     *     ),
+     *     @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     )
+     * )
+     */
+    public function delete_task(Task $task,User $user)
+    {
+        if ($task->user_id !== auth()->id()){
+            return response()->json([
+                'success' => false,
+                "message" => __("Отсутствует разрешение")
+            ], 403);
+        }
+        $task->delete();
+
+        $user->active_step = null;
+        $user->active_task = null;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => __('Успешно удалено')
+        ]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/task-cancel/{task}",
+     *     tags={"Task Cancel"},
+     *     summary="Task",
      *     security={
      *         {"token": {}}
      *     },
@@ -86,18 +144,12 @@ class SearchAPIController extends Controller
      *     )
      * )
      */
-    public function delete_task(Task $task)
+    public function task_cancel(Task $task): \Illuminate\Http\JsonResponse
     {
-        if ($task->user_id !== auth()->id()){
-            return response()->json([
-                'success' => false,
-                "message" => __("Отсутствует разрешение")
-            ], 403);
-        }
-        $task->delete();
-        auth()->user()->active_step = null;
-        auth()->user()->active_task = null;
+
+        auth()->user()->active_task = $task;
         auth()->user()->save();
+
         return response()->json([
             'success' => true,
             'message' => __('Успешно удалено')
