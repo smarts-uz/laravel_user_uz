@@ -34,15 +34,15 @@ class PerformerIndexResource extends JsonResource
         }
         $user_exists = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$this->id)->exists();
         if(!$user_exists){
-            $user_avarat = asset('storage/'.$this->avatar);
+            $user_avatar = asset('storage/'.$this->avatar);
         }else{
-            $user_avarat = asset("images/block-user.jpg");
+            $user_avatar = asset("images/block-user.jpg");
         }
         return [
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'avatar' => $user_avarat,
+            'avatar' => $user_avatar,
             'phone_number' => correctPhoneNumber($this->phone_number),
             'location' => $this->location,
             'last_seen' => $lastSeen,

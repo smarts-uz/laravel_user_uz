@@ -5,6 +5,9 @@ namespace App\Http\Resources;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @property mixed $gender
+ */
 class UserInTaskResource extends JsonResource
 {
     /**
