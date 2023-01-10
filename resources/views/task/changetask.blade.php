@@ -293,7 +293,7 @@
 
     </form>
 
-    <x-laravelUppy route="{{route('task.create.images.store', $task->id)}}"/>
+    <x-laravelUppy route="{{route('task.create.images.store', $task->id)}}"></x-laravelUppy>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/imask/6.4.3/imask.min.js'></script>
     <script id="map_api" src="https://api-maps.yandex.ru/2.1/?apikey=f4b34baa-cbd1-432b-865b-9562afa3fcdb&lang={{__('ru_RU')}}" type="text/javascript"></script>
     <script src="{{ asset('js/changetask.js') }}"></script>

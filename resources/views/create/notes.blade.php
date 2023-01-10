@@ -112,7 +112,7 @@
         </div>
 
     </form>
-    <x-laravelUppy route="{{route('task.create.images.store', $task->id)}}"/>
+    <x-laravelUppy route="{{route('task.create.images.store', $task->id)}}"></x-laravelUppy>
 @endsection
 
 @push("javascript")

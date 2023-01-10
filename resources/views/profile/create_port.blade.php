@@ -38,7 +38,7 @@
         </form>
     </div>
 
-    <x-laravelUppy route="{{route('profile.UploadImage')}}"/>
+    <x-laravelUppy route="{{route('profile.UploadImage')}}"></x-laravelUppy>
     <script>
         $('.uppy-StatusBar-actions').click(function (){
             $('#save_button').removeClass('hidden');

@@ -63,7 +63,7 @@
     <link rel="stylesheet" href="{{ asset('css/fancybox.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/lightgallery.css') }}">
 
-    <x-laravelUppy route="{{route('profile.UploadImage')}}"/>
+    <x-laravelUppy route="{{route('profile.UploadImage')}}"></x-laravelUppy>
     <script>
         $(document).ready(function () {
             $('.img-delete').on('click', function () {
