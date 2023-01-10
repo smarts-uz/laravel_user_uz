@@ -26,7 +26,7 @@ class PortfolioIndexResource extends JsonResource
     public function makeAssets($collection){
         $arr = [];
         foreach ($collection as $item) {
-            $arr[] = asset('portfolio/'.$item);
+            $arr[] = asset('/storage/portfolio/'.$item);
         }
         return $arr;
     }
