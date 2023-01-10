@@ -220,7 +220,7 @@ class ProfileAPIController extends Controller
      *                 ),
      *                 @OA\Property (
      *                    property="image",
-     *                    type="json",
+     *                    type="file",
      *                 ),
      *             ),
      *         ),
@@ -926,9 +926,13 @@ class ProfileAPIController extends Controller
      *         @OA\MediaType (
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="category",
-     *                    type="json",
+     *                  @OA\Property (
+     *                    property="sms_notification",
+     *                    type="integer",
+     *                 ),
+     *                  @OA\Property (
+     *                    property="email_notification",
+     *                    type="integer",
      *                 ),
      *             ),
      *         ),

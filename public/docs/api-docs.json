@@ -901,7 +901,7 @@
                                         "type": "string"
                                     },
                                     "image": {
-                                        "type": "json"
+                                        "type": "file"
                                     }
                                 },
                                 "type": "object"
@@ -1499,8 +1499,11 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "category": {
-                                        "type": "json"
+                                    "sms_notification": {
+                                        "type": "integer"
+                                    },
+                                    "email_notification": {
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
