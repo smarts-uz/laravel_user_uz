@@ -54,9 +54,7 @@ class ProfileController extends Controller
 
     public function comment(Request $request)
     {
-        $profC = new ProfileService();
-        return $profC->commentServ($request);
-
+        return (new ProfileService())->commentServ($request);
     }
 
     public function delete(Portfolio $portfolio)
@@ -74,11 +72,9 @@ class ProfileController extends Controller
         return true;
     }
 
-    public function testBase(Request $request)
+    public function testBase()
     {
-        $testBaseS = new ProfileService();
-        return $testBaseS->testBaseServ();
-
+        return (new ProfileService())->testBaseServ();
     }
 
     public function portfolio(Portfolio $portfolio)
@@ -318,7 +314,7 @@ class ProfileController extends Controller
     {
         portfolioGuard($portfolio);
         $image = $request->get('image');
-        File::delete(public_path() . '/portfolio/' . $image);
+        File::delete(public_path() . '/storage/portfolio/' . $image);
         $images = json_decode($portfolio->image);
         $updatedImages = array_diff($images, [$image]);
         $portfolio->image = json_encode(array_values($updatedImages));

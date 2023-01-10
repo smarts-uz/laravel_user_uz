@@ -151,17 +151,9 @@ class PerformersController extends Controller
     }
 
     public function performers_portfolio(User $user,Portfolio $portfolio){
+
         return view('performers.performer_portfolio',compact('portfolio','user'));
+
     }
 
-    public function search(Request $request){
-
-        $search = $request->input('search');
-
-        $users = User::query()
-            ->where('name', 'LIKE', "%{$search}%")
-            ->get();
-
-        return view('performers.performers', compact('users'));
-    }
 }

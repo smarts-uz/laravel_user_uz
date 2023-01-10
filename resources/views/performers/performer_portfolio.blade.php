@@ -20,11 +20,11 @@
             <div class="flex flex-wrap gap-x-2">
                 @foreach(json_decode($portfolio->image)??[] as $key => $image)
                     <div class="relative boxItem">
-                        <a class="boxItem relative" href="{{ asset('portfolio/' . $image) }}"
+                        <a class="boxItem relative" href="{{ asset('/storage/portfolio/' . $image) }}"
                         data-fancybox="img1"
                         data-caption="<span>{{ $portfolio->created_at }}</span>">
                             <div class="mediateka_photo_content">
-                                <img src="{{ asset('portfolio/' . $image) }}" alt="">
+                                <img src="{{ asset('/storage/portfolio/' . $image) }}" alt="">
                             </div>
                         </a>
                     </div>

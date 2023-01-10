@@ -62,7 +62,7 @@ class ProfileService
         $imgData = session()->has('images') ? json_decode(session('images')) : [];
         foreach ($request->file('images') as $uploadedImage) {
             $filename = $user->name . '/' . time() . '_' . $uploadedImage->getClientOriginalName();
-            $uploadedImage->move(public_path() . '/portfolio/' . $user->name . '/', $filename);
+            $uploadedImage->move(public_path() . '/storage/portfolio/' . $user->name . '/', $filename);
             $imgData[] = $filename;
         }
         session()->put('images', json_encode($imgData));
@@ -79,15 +79,13 @@ class ProfileService
         $user = Auth::user();
         /** @var Portfolio $comment */
         $comment = $user->portfolios()->orderBy('created_at', 'desc')->first();
-        $image = File::allFiles("portfolio/$user->name");
+        $image = File::allFiles("/storage/portfolio/$user->name");
         $json = implode(',', $image);
         $data['image'] = $json;
         $id = $comment->id;
         $base = new Portfolio();
         if ($base->query()->where('id', $id)->update($data)) {
             return redirect()->route('profile.profileData');
-        } else {
-            return dd(false);
         }
     }
 
@@ -285,7 +283,7 @@ class ProfileService
             $image = [];
             foreach ($request->file('images') as $uploadedImage) {
                 $filename = $user->name . '/' . time() . '_' . $uploadedImage->getClientOriginalName();
-                $uploadedImage->move(public_path() . '/portfolio/' . $user->name . '/', $filename);
+                $uploadedImage->move(public_path() . '/storage/portfolio/' . $user->name . '/', $filename);
                 $image[] = $filename;
             }
             $data['image'] = json_encode($image);
@@ -308,7 +306,7 @@ class ProfileService
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $uploadedImage) {
                 $filename = $user->name . '/' . time() . '_' . $uploadedImage->getClientOriginalName();
-                $uploadedImage->move(public_path() . '/portfolio/' . $user->name . '/', $filename);
+                $uploadedImage->move(public_path() . '/storage/portfolio/' . $user->name . '/', $filename);
                 $imgData[] = $filename;
             }
         }
