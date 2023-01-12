@@ -25,7 +25,7 @@ class PerformersService
      * @param $authId
      * @return  PerformerServiceItem
      */
-    public function service($authId,$search)
+    public function service($authId,$search): PerformerServiceItem
     {
         $item = new PerformerServiceItem();
         $item->tasks = Task::query()->where('user_id', $authId)
@@ -38,6 +38,7 @@ class PerformersService
         $item->users = User::query()
             ->where('role_id', User::ROLE_PERFORMER)
             ->where('name', 'LIKE', "%{$search}%")
+            ->WhereNot('id',\auth()->id())
             ->orderByDesc('review_rating')
             ->orderbyRaw('(review_good - review_bad) DESC')->paginate(50);
         $item->top_users = User::query()
@@ -55,7 +56,7 @@ class PerformersService
      * @param $user
      * @return  PerformerUserItem
      */
-    public function performer($user)
+    public function performer($user): PerformerUserItem
     {
         $item = new PerformerUserItem();
         $item->top_users = User::query()
@@ -83,7 +84,7 @@ class PerformersService
      * @param $authId
      * @return PerformerPrefItem
      */
-    public function perf_ajax($authId,$search,$cf_id)
+    public function perf_ajax($authId,$search,$cf_id): PerformerPrefItem
     {
         $item = new PerformerPrefItem();
         $item->categories = Category::query()->where('parent_id', null)
@@ -94,6 +95,7 @@ class PerformersService
         $item->users = User::query()
             ->where('role_id', User::ROLE_PERFORMER)
             ->where('name', 'LIKE', "%{$search}%")
+            ->WhereNot('id',\auth()->id())
             ->whereIn('id', $item->user_categories)
             ->orderByDesc('review_rating')
             ->orderbyRaw('(review_good - review_bad) DESC')->paginate(50);
@@ -115,7 +117,9 @@ class PerformersService
      */
     public function performer_filter($data): LengthAwarePaginator
     {
-        $performers = User::query()->where('role_id', User::ROLE_PERFORMER);
+        $performers = User::query()
+            ->where('role_id', User::ROLE_PERFORMER)
+            ->WhereNot('id',\auth()->id());
 
         if (isset($data['categories'])) {
             $categories = is_array($data['categories'])?$data['categories']:json_decode($data['categories']);
