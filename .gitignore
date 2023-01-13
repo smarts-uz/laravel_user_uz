@@ -1,25 +1,9 @@
-# /vendor/
-# node_modules/
-# npm-debug.log
-# yarn-error.log
-
-
-# storage/*.key
-# .env
-# Homestead.yaml
-# Homestead.json
-# /.vagrant
-# .phpunit.result.cache
-
 /node_modules
 /storage
 /vendor
 .env
 .env.backup
 .phpunit.result.cache
-docker-compose.override.yml
-Homestead.json
-Homestead.yaml
 npm-debug.log
 yarn-error.log
 /.idea
