@@ -140,26 +140,26 @@ class PerformersService
             $performers = $performers->where('last_seen', ">=",$date);
         }
 
-        if(isset($data['review']) && isset($data['desc'])){
+        if(isset($data['review'], $data['desc'])){
             $performers = $performers
                 ->orderByDesc('review_rating')
                 ->orderByRaw('(review_good - review_bad) DESC');
         }
 
-        if(isset($data['review']) && isset($data['asc'])){
+        if(isset($data['review'], $data['asc'])){
             $performers = $performers
-                ->orderBy('review_rating','asc')
+                ->orderBy('review_rating')
                 ->orderByRaw('(review_good - review_bad) DESC');
         }
 
-        if (isset($data['alphabet']) && isset($data['desc']))
+        if (isset($data['alphabet'], $data['desc']))
         {
             $performers = $performers->orderBy('name','desc');
         }
 
-        if (isset($data['alphabet']) && isset($data['asc']))
+        if (isset($data['alphabet'], $data['asc']))
         {
-            $performers = $performers->orderBy('name','asc');
+            $performers = $performers->orderBy('name');
         }
 
         if (isset($data['search']))
