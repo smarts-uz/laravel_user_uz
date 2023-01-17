@@ -71,7 +71,7 @@ class UserIndexResource extends JsonResource
         $task_count = $item->task_count;
 
         // check top performer part
-        if (in_array($this->id, $item->top_users)) {
+        if (in_array($this->id, $item->top_users, true)) {
             $best = asset('images/best.png');
             $message = __('Входит в ТОП-20 исполнителей USer.Uz');
         } else {
@@ -96,17 +96,6 @@ class UserIndexResource extends JsonResource
             'message' => $message
         ];
 
-        $tasks = Task::query()->where(['performer_id' => $this->id])->where('status', Task::STATUS_COMPLETE)->latest()->get();
-        $performed_tasks = $tasks->groupBy('category_id');
-        $performed_tasks_count = [];
-        foreach ($performed_tasks as $id => $task) {
-            if (Category::query()->find($id) !== null) {
-                $performed_tasks_count[] = [
-                    'name' => Category::query()->find($id)->getTranslatedAttribute('name'),
-                    'count' => __('Выполнено ') . ' ' . $task->count() . __(' заданий')
-                ];
-            }
-        }
         $goodReviews = $this->goodReviews();
         $lastReview = $goodReviews->get()->last();
         if((int)$this->gender === 1){
@@ -128,7 +117,6 @@ class UserIndexResource extends JsonResource
         }
         $age = Carbon::parse($this->born_date)->age;
         $born_date = Carbon::parse($this->born_date)->format('Y-m-d');
-        $user_categories = UserCategory::query()->where('user_id',$this->id)->pluck('category_id')->toArray();
         $user_exists = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$this->id)->exists();
         if(!$user_exists){
             $blocked_user = 0;
@@ -136,6 +124,23 @@ class UserIndexResource extends JsonResource
         }else{
             $blocked_user = 1;
             $user_avatar = asset("images/block-user.jpg");
+        }
+
+        $user_categories = UserCategory::query()->where('user_id',$this->id)->pluck('category_id')->toArray();
+        $categories = CategoryIndexResource::collection(Category::query()
+                ->select('id', 'parent_id', 'name', 'ico')
+                ->whereIn('id', $user_categories)
+                ->get());
+        $tasks = Task::query()->where(['performer_id' => $this->id])->where('status', Task::STATUS_COMPLETE)->latest()->get();
+        $performed_tasks = $tasks->groupBy('category_id');
+        $performed_tasks_count = [];
+        foreach ($performed_tasks as $id => $task) {
+            if (Category::query()->find($id) !== null) {
+                $performed_tasks_count[] = [
+                    'name' => Category::query()->find($id)->getTranslatedAttribute('name'),
+                    'count' => __('Выполнено ') . ' ' . $task->count() . __(' заданий')
+                ];
+            }
         }
         return [
             'id' => $this->id,
@@ -154,10 +159,7 @@ class UserIndexResource extends JsonResource
             'district' => $this->district,
             'age' => $age,
             'description' => $this->description,
-            'categories' => CategoryIndexResource::collection(Category::query()
-                ->select('id', 'parent_id', 'name', 'ico')
-                ->whereIn('id', $user_categories)
-                ->get()),
+            'categories' => $categories,
             'email_verified' => boolval($this->is_email_verified),
             'phone_verified' => boolval($this->is_phone_number_verified),
             'google_id' => $this->google_id,
