@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Passport\HasApiTokens;
 
 /**
@@ -57,6 +58,8 @@ use Laravel\Passport\HasApiTokens;
  * @property $active_task
  * @property $active_step
  * @property $work_experience
+ * @property $deleted_by
+ * @property $deleted_at
  * @return array //Value Returned
  */
 class User extends \TCG\Voyager\Models\User
@@ -230,7 +233,25 @@ class User extends \TCG\Voyager\Models\User
             $user->walletBalance()->delete();
             $user->email = '_' . $user->email . '_' . Carbon::now();
             $user->phone_number = '_' . $user->phone_number . '_' . Carbon::now();
+            $user->deleted_at = now();
+            $user->deleted_by = Auth::user()->id;
             $user->save();
+
+        });
+
+        static::creating(static function ($model) {
+            if (!$model->isDirty('created_by')) {
+                $model->created_by = auth()->user()->id;
+            }
+            if (!$model->isDirty('updated_by')) {
+                $model->updated_by = auth()->user()->id;
+            }
+        });
+
+        static::updating(static function ($model) {
+            if (!$model->isDirty('updated_by')) {
+                $model->updated_by = auth()->user()->id;
+            }
         });
     }
 }

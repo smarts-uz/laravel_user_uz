@@ -96,7 +96,7 @@ class SearchAPIController extends Controller
      */
     public function delete_task(Task $task,User $user)
     {
-        if ($task->user_id !== auth()->id()){
+        if ($task->user_id !== $user->id){
             return response()->json([
                 'success' => false,
                 "message" => __("Отсутствует разрешение")
