@@ -39,14 +39,14 @@ class CustomField extends Model
     protected $translatable = ['title','description','placeholder','label','error_message'];
 
 
-    const ROUTE_NAME = 'name';
-    const ROUTE_ADDRESS = 'address';
-    const ROUTE_CUSTOM = 'custom';
-    const ROUTE_DATE = 'date';
-    const ROUTE_NOTE = 'note';
-    const ROUTE_BUDGET = 'budget';
-    const ROUTE_CONTACTS = 'contacts';
-    const ROUTE_REMOTE = 'remote';
+    public const ROUTE_NAME = 'name';
+    public const ROUTE_ADDRESS = 'address';
+    public const ROUTE_CUSTOM = 'custom';
+    public const ROUTE_DATE = 'date';
+    public const ROUTE_NOTE = 'note';
+    public const ROUTE_BUDGET = 'budget';
+    public const ROUTE_CONTACTS = 'contacts';
+    public const ROUTE_REMOTE = 'remote';
 
 
     public function custom_field_values(){

@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Elastic\ScoutDriverPlus\Searchable;
+use Illuminate\Support\Facades\Auth;
 
 /**
- * @property $user
+ * @return array //Value Returned
+ *@property $user
  * @property $performer
  * @property $reviews
  * @property object $category
@@ -34,7 +36,8 @@ use Elastic\ScoutDriverPlus\Searchable;
  * @property $verify_expiration
  * @property $performer_id
  * @property $created_at
- * @return array //Value Returned
+ * @property \Illuminate\Support\Carbon|mixed $deleted_at
+ * @property mixed $deleted_by
  */
 class Task extends Model
 {
@@ -61,12 +64,12 @@ class Task extends Model
         ]
     ];
 
-    const STATUS_OPEN = 1;
-    const STATUS_RESPONSE = 2;
-    const STATUS_IN_PROGRESS = 3;
-    const STATUS_COMPLETE = 4;
-    const STATUS_NOT_COMPLETED = 5;
-    const STATUS_CANCELLED = 6;
+    public const STATUS_OPEN = 1;
+    public const STATUS_RESPONSE = 2;
+    public const STATUS_IN_PROGRESS = 3;
+    public const STATUS_COMPLETE = 4;
+    public const STATUS_NOT_COMPLETED = 5;
+    public const STATUS_CANCELLED = 6;
 
     protected $guarded = [];
 
@@ -138,6 +141,21 @@ class Task extends Model
     {
         parent::boot();
 
+        static::updating(static function ($model) {
+            if (!$model->isDirty('updated_by')) {
+                $model->updated_by = auth()->user()->id;
+            }
+        });
+
+        static::creating(static function ($model) {
+            if (!$model->isDirty('created_by')) {
+                $model->created_by = auth()->user()->id;
+            }
+            if (!$model->isDirty('updated_by')) {
+                $model->updated_by = auth()->user()->id;
+            }
+        });
+
         self::deleting(function (Task $task) {
 
             $task->responses()->delete();
@@ -148,20 +166,24 @@ class Task extends Model
             }
             $task->compliances()->delete();
 
+            $task->deleted_at = now();
+            $task->deleted_by = Auth::user()->id;
+            $task->save();
             Notification::query()->where('task_id', $task->id)->delete();
         });
+
     }
 
     public function getStatusTextAttribute()
     {
         switch (true){
-            case (int)$this->status === Task::STATUS_IN_PROGRESS :
+            case (int)$this->status === self::STATUS_IN_PROGRESS :
                 return __('В исполнении');
-            case $this->status < Task::STATUS_IN_PROGRESS  :
+            case $this->status < self::STATUS_IN_PROGRESS  :
                 return __('Открыто');
-            case (int)$this->status === Task::STATUS_NOT_COMPLETED :
+            case (int)$this->status === self::STATUS_NOT_COMPLETED :
                 return __('Не выполнено');
-            case (int)$this->status === Task::STATUS_CANCELLED :
+            case (int)$this->status === self::STATUS_CANCELLED :
                 return __('Отменен');
             default :
                 return __('Закрыто');
