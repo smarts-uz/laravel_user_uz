@@ -18,6 +18,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed $id
  * @property mixed $avatar
  * @property mixed $last_seen
+ * @property mixed $is_phone_number_verified
  */
 class UserIndexResource extends JsonResource
 {
@@ -45,10 +46,11 @@ class UserIndexResource extends JsonResource
         }
         $b = File::directories(public_path("portfolio/{$this->name}"));
         $directories = array_map('basename', $b);
-        if (WalletBalance::query()->where('user_id', $this->id)->first() != null)
+        if (WalletBalance::query()->where('user_id', $this->id)->first() !== null){
             $balance = WalletBalance::query()->where('user_id', $this->id)->first()->balance;
-        else
+        }else{
             $balance = 0;
+        }
 
         $achievements = [];
 
