@@ -13,8 +13,9 @@ class FaqsController extends Controller
     {
         $fc = FaqCategories::all();
 
-        if ($request->input('search')) {
-            $fc = FaqCategories::query()->where('title','like', '%'.$request->input('search')."%")->get();
+        $data = $request->input('search');
+        if ($data) {
+            $fc = FaqCategories::query()->where('title','like', '%'.$data."%")->get();
         }
         return view('faq.faq', compact('fc'));
     }

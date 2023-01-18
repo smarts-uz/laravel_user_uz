@@ -189,45 +189,4 @@
 {{--        </div>--}}
     </div>
 
-    {{-- Modal1 start --}}
-    <div class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" style="background-color: rgba(0, 0, 0,0.5)" id="modal-id8">
-        <div class="relative my-6 mx-auto w-4/5 max-w-3xl" id="modal-id8">
-            <div class="border-0 rounded-lg shadow-2xl px-10 py-10 relative flex mx-auto flex-col w-full bg-white outline-none focus:outline-none">
-                <div class="text-center h-full w-full text-base">
-                    <h1 class="mb-8">{!! getContentText('verification', 'modal_section_1') !!}</h1>
-                    <button onclick="toggleModal8('modal-id8')" class="font-sans  text-xl  font-medium bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">{{__('Отмена')}}</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id8-backdrop"></div>
-    {{-- Modal1 end --}}
-
-    {{-- Modal2 start --}}
-    <div class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" style="background-color: rgba(0, 0, 0,0.5)" id="modal-id9">
-        <div class="relative my-6 mx-auto w-4/5 max-w-3xl" id="modal-id9">
-            <div class="border-0 rounded-lg shadow-2xl px-10 py-10 relative flex mx-auto flex-col w-full bg-white outline-none focus:outline-none">
-                <div class="text-center h-full w-full text-base">
-                    <h1 class="mb-8">{!! getContentText('verification', 'modal_section_2') !!}</h1>
-                    <button onclick="toggleModal9('modal-id9')" class="font-sans  text-xl  font-medium bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">{{__('Отмена')}}</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id9-backdrop"></div>
-    {{-- Modal2 end --}}
-
-    {{-- Modal3 start --}}
-    <div class="hidden overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" style="background-color: rgba(0, 0, 0,0.5)" id="modal-id10">
-        <div class="relative my-6 mx-auto w-4/5 max-w-3xl" id="modal-id10">
-            <div class="border-0 rounded-lg shadow-2xl px-10 py-10 relative flex mx-auto flex-col w-full bg-white outline-none focus:outline-none">
-                <div class="text-center h-full w-full text-base">
-                    <h1 class="mb-8">{!! getContentText('verification', 'modal_section_3') !!}</h1>
-                    <button onclick="toggleModal10('modal-id10')" class="font-sans  text-xl  font-medium bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">{{__('Отмена')}}</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id10-backdrop"></div>
-    <script src="{{ asset('js/verification/verification.js') }}"></script>
 @endsection
