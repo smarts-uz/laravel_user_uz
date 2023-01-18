@@ -16,18 +16,10 @@
     </div>
     <div class="w-4/5 ">
         <div class="flex sm:flex-row flex-col sm:items-center items-start">
-            @if (Auth::check() && Auth::user()->id == $user->id)
-                <a href="/profile"
-                   class="lg:text-3xl mr-2 text-2xl underline text-blue-500 hover:text-red-500"
-                   id="{{$user->id}}">
-                    {{$user->name}}
-                </a>
-            @else
-                <a class="user mr-2" href="/performers/{{$user->id}}">
-                    <p class="text-2xl underline text-blue-500 performer-page{{$user->id}} hover:text-red-500"
-                       id="{{$user->id}}"> {{$user->name}} </p>
-                </a>
-            @endif
+            <a class="user mr-2" href="/performers/{{$user->id}}">
+                <p class="text-2xl underline text-blue-500 performer-page{{$user->id}} hover:text-red-500"
+                   id="{{$user->id}}"> {{$user->name}} </p>
+            </a>
             <div class="flex items-center sm:my-0 my-2">
                 @if ($user->is_phone_number_verified)
                     <div data-tooltip-target="tooltip-animation-verified"
@@ -84,7 +76,7 @@
                     </div>
                 @endif
                 <div data-tooltip-target="tooltip-animation-many" class="mx-1">
-                    @if(($user->review_good)+($user->review_bad) >= 50 && $user->role_id==2)
+                    @if($user->reviews >= 50 && $user->role_id == 2)
                         <img src="{{ asset('images/50.png') }}" alt="" class="w-10">
                     @else
                         <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-10">
@@ -117,28 +109,20 @@
         </div>
         <div class="mt-6">
             @auth
-                @switch(true)
-                    @case ($tasks->where('status', '<=', 2)->count() > 0 && Auth::user()->id !== $user->id)
-                        <a id="open{{$user->id}}">
-                            <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
-                                    onclick="$('#performer_id').val({{$user->id}}); $('#performer_id_task').val({{$user->id}});">
-                                {{__('Предложить задание')}}
-                            </button>
-                        </a>
-                        @break
-                    @case ($tasks->where('status', '<=', 2)->count() >= 0 && Auth::user()->id === $user->id)
-                        <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-gray-500 transition duration-300 text-white mt-3">
+                @if($tasks->where('status', '<=', 2)->count() > 0)
+                    <a id="open{{$user->id}}">
+                        <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
+                                onclick="$('#performer_id').val({{$user->id}}); $('#performer_id_task').val({{$user->id}});">
                             {{__('Предложить задание')}}
                         </button>
-                        @break
-                    @default
-                        <a onclick="toggleModal12('modal-id12')" class="">
-                            <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
-                                {{__('Предложить задание')}}
-                            </button>
-                        </a>
-                        @break
-                @endswitch
+                    </a>
+                @else
+                    <a onclick="toggleModal12('modal-id12')" class="">
+                        <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
+                            {{__('Предложить задание')}}
+                        </button>
+                    </a>
+                @endif
                 <input type="hidden" id="performer_id" value="">
             @endauth
         </div>
