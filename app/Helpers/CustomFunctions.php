@@ -18,8 +18,7 @@ function getAddress($data)
     $data['address'] = $array['address'];
     $data['address_add'] = $array['address_add'];
     $data['coordinates'] = $data['coordinates0'];
-    unset($data['coordinates0']);
-    unset($data['location0']);
+    unset($data['coordinates0'], $data['location0']);
     return $data;
 }
 
