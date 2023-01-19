@@ -145,16 +145,28 @@
         </div>
     </div>
     <!-- End Delete File Modal -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery.appendgrid@2/dist/AppendGrid.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery.appendgrid@2/dist/AppendGrid.js"></script>
     <script>
         var myAppendGrid = new AppendGrid({
             element: "tblAppendGrid",
-            columns: [
-                { name: "foo", display: "Foo", value: "<default foo>" },
-                { name: "bar", display: "Bar" }
-            ],
+            uiFramework: "bootstrap4",
+            iconFramework: "fontawesome5",
+            initRows: 0,
+            columns: [{
+                // Pass options as object
+                name: "nomi", display: "Nomi", type: "text"
+            }, {
+                // Pass options as string array
+                name: "name", display: "Называние", type: "text"
+            }],
         });
 
+        myAppendGrid.appendRow([
+            { "nomi": "1A", "name": "2019-01-01" },
+            { "nomi": "2A", "name": "2019-02-02" },
+            { "nomi": "3A", "name": "2019-03-03" },
+        ]);
     </script>
 @stop
 
