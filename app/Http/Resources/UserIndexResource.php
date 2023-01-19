@@ -130,19 +130,14 @@ class UserIndexResource extends JsonResource
 
         $user_categories = UserCategory::query()->where('user_id',$this->id)->pluck('category_id')->toArray();
         $categories = CategoryIndexResource::collection(Category::query()
-                ->select('id', 'parent_id', 'name', 'ico')
-                ->whereIn('id', $user_categories)
-                ->get());
-        $tasks = Task::query()->where(['performer_id' => $this->id])->where('status', Task::STATUS_COMPLETE)->latest()->get();
-        $performed_tasks = $tasks->groupBy('category_id');
+            ->select('id', 'parent_id', 'name', 'ico')
+            ->whereIn('id', $user_categories)
+            ->get());
         $performed_tasks_count = [];
-        foreach ($performed_tasks as $id => $task) {
-            if (Category::query()->find($id) !== null) {
-                $performed_tasks_count[] = [
-                    'name' => Category::query()->find($id)->getTranslatedAttribute('name'),
-                    'count' => __('Выполнено ') . ' ' . $task->count() . __(' заданий')
-                ];
-            }
+        foreach ($categories as $category) {
+            $performed_tasks_count[] = [
+                'name' => $category->getTranslatedAttribute('name')
+            ];
         }
         return [
             'id' => $this->id,
