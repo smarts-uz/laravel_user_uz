@@ -2,15 +2,11 @@
 
 namespace App\Providers;
 
-use App\Events\ClearUserCache;
-use App\Events\UserDeleted;
-use App\Events\UserSaved;
 use App\Models\Review;
 use App\Observers\ReviewObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -26,12 +22,6 @@ class EventServiceProvider extends ServiceProvider
         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
             // ... other providers
             \SocialiteProviders\Apple\AppleExtendSocialite::class.'@handle',
-        ],
-        UserSaved::class => [
-            ClearUserCache::class,
-        ],
-        UserDeleted::class => [
-            ClearUserCache::class,
         ],
     ];
 

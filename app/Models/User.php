@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-
-use App\Events\UserDeleted;
-use App\Events\UserSaved;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -84,10 +81,6 @@ class User extends \TCG\Voyager\Models\User
     protected $hidden = [
         'password',
         'remember_token',
-    ];
-    protected $dispatchesEvents = [
-        'saved' => UserSaved::class,
-        'deleted' => UserDeleted::class,
     ];
     /**
      * The attributes that should be cast.

@@ -2,14 +2,11 @@
 
 namespace App\Models;
 
-use App\Events\TaskDeleted;
-use App\Events\TaskSaved;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Elastic\ScoutDriverPlus\Searchable;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -76,11 +73,6 @@ class Task extends Model
     protected $guarded = [];
 
     protected $withCount = ['responses', 'reviews'];
-
-    protected $dispatchesEvents = [
-        'saved' => TaskSaved::class,
-        'deleted' => TaskDeleted::class,
-    ];
 
     public function custom_field_values()
     {

@@ -168,7 +168,6 @@ return [
         /*
          * Package Service Providers...
          */
-        App\Providers\CacheServiceProvider::class,
         /*
          * Application Service Providers...
          */
