@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\BlockedUser;
+use App\Models\Portfolio;
 use App\Models\UserCategory;
 use Carbon\Carbon;
 use App\Models\Task;
@@ -181,6 +182,7 @@ class UserIndexResource extends JsonResource
             'system_notification' =>$this->system_notification,
             'news_notification' => $this->news_notification,
             'portfolios' => PortfolioIndexResource::collection($this->portfolios),
+            'portfolios_count' =>Portfolio::query()->where('user_id',$this->id)->get()->count(),
             'views' => $this->performer_views()->count(),
             'directories' => $directories,
             'wallet_balance' => $balance,
