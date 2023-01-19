@@ -155,18 +155,20 @@
             initRows: 0,
             columns: [{
                 // Pass options as object
-                name: "nomi", display: "Nomi", type: "text"
+                name: "uz", display: "Nomi", type: "text"
             }, {
                 // Pass options as string array
-                name: "name", display: "Называние", type: "text"
+                name: "ru", display: "Называние", type: "text"
             }],
         });
 
-        myAppendGrid.appendRow([
-            { "nomi": "1A", "name": "2019-01-01" },
-            { "nomi": "2A", "name": "2019-02-02" },
-            { "nomi": "3A", "name": "2019-03-03" },
-        ]);
+        myAppendGrid.appendRow(
+            [
+                @foreach($dataTypeContent->options_ru["options"] as $key => $value)
+                { "uz": "{{$dataTypeContent->options["options"][$key]}}", "ru": "{{$value}}" },
+                @endforeach
+            ]
+        );
     </script>
 @stop
 
