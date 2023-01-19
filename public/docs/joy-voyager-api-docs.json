@@ -64,8 +64,6 @@
                                 "password",
                                 "remember_token",
                                 "settings",
-                                "created_at",
-                                "updated_at",
                                 "phone_number",
                                 "api_token",
                                 "device_token",
@@ -96,7 +94,6 @@
                                 "sms_notification",
                                 "email_notification",
                                 "reviews",
-                                "deleted_at",
                                 "firebase_token",
                                 "review_good",
                                 "review_bad",
@@ -104,8 +101,12 @@
                                 "apple_id",
                                 "updated_password_by",
                                 "updated_password_at",
-                                "deleted_by",
+                                "created_at",
+                                "created_by",
+                                "updated_at",
                                 "updated_by",
+                                "deleted_at",
+                                "deleted_by",
                                 "user_belongsto_role_relationship"
                             ],
                             "type": "string"
@@ -201,6 +202,14 @@
                         }
                     },
                     {
+                        "name": "filters[work_experience]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "filters[description]",
                         "in": "query",
                         "required": false,
@@ -217,7 +226,7 @@
                         }
                     },
                     {
-                        "name": "filters[apple_id]",
+                        "name": "filters[created_by]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -225,7 +234,7 @@
                         }
                     },
                     {
-                        "name": "filters[updated_password_by]",
+                        "name": "filters[updated_by]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -233,7 +242,7 @@
                         }
                     },
                     {
-                        "name": "filters[updated_password_at]",
+                        "name": "filters[deleted_by]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -526,11 +535,9 @@
                                 "role_id",
                                 "user_belongsto_role_relationship",
                                 "phone_number",
+                                "work_experience",
                                 "description",
-                                "born_date",
-                                "apple_id",
-                                "updated_password_by",
-                                "updated_password_at"
+                                "born_date"
                             ]
                         }
                     },
@@ -552,11 +559,9 @@
                                     "role_id",
                                     "user_belongsto_role_relationship",
                                     "phone_number",
+                                    "work_experience",
                                     "description",
-                                    "born_date",
-                                    "apple_id",
-                                    "updated_password_by",
-                                    "updated_password_at"
+                                    "born_date"
                                 ]
                             }
                         }
@@ -1938,14 +1943,16 @@
                                 "max",
                                 "min",
                                 "slug",
-                                "created_at",
-                                "updated_at",
                                 "ico",
+                                "ico_mini",
                                 "double_address",
                                 "remote",
-                                "deleted_by",
+                                "created_at",
+                                "created_by",
+                                "updated_at",
                                 "updated_by",
-                                "deleted_at"
+                                "deleted_at",
+                                "deleted_by"
                             ],
                             "type": "string"
                         }
@@ -3816,19 +3823,20 @@
                                 "min",
                                 "max",
                                 "options",
+                                "options_ru",
                                 "values",
                                 "category_id",
                                 "route",
-                                "created_at",
-                                "updated_at",
                                 "order",
                                 "description",
                                 "placeholder",
                                 "label",
-                                "options_ru",
+                                "created_at",
+                                "created_by",
+                                "updated_at",
+                                "updated_by",
                                 "deleted_at",
                                 "deleted_by",
-                                "updated_by",
                                 "custom_field_belongsto_category_relationship"
                             ],
                             "type": "string"
@@ -4589,8 +4597,6 @@
                         "schema": {
                             "enum": [
                                 "id",
-                                "created_at",
-                                "updated_at",
                                 "name",
                                 "remote",
                                 "return_to_b",
@@ -4618,10 +4624,13 @@
                                 "is_phone_verified",
                                 "verify_code",
                                 "verify_expiration",
-                                "deleted_at",
                                 "not_completed_reason",
-                                "deleted_by",
+                                "created_at",
+                                "created_by",
+                                "updated_at",
                                 "updated_by",
+                                "deleted_at",
+                                "deleted_by",
                                 "task_hasmany_custom_field_relationship",
                                 "task_belongsto_service_relationship",
                                 "task_belongsto_category_relationship"
@@ -20709,6 +20718,10 @@
                         "type": "string",
                         "description": "Phone Number"
                     },
+                    "work_experience": {
+                        "type": "string",
+                        "description": "Work Experience"
+                    },
                     "description": {
                         "type": "string",
                         "description": "Description"
@@ -20717,17 +20730,17 @@
                         "type": "string",
                         "description": "Born Date"
                     },
-                    "apple_id": {
+                    "created_by": {
                         "type": "string",
-                        "description": "Apple Id"
+                        "description": "Created By"
                     },
-                    "updated_password_by": {
+                    "updated_by": {
                         "type": "string",
-                        "description": "Updated Password By"
+                        "description": "Updated By"
                     },
-                    "updated_password_at": {
+                    "deleted_by": {
                         "type": "string",
-                        "description": "Updated Password At"
+                        "description": "Deleted By"
                     }
                 }
             },
@@ -20771,6 +20784,10 @@
                         "type": "string",
                         "description": "Phone Number"
                     },
+                    "work_experience": {
+                        "type": "string",
+                        "description": "Work Experience"
+                    },
                     "description": {
                         "type": "string",
                         "description": "Description"
@@ -20779,17 +20796,17 @@
                         "type": "string",
                         "description": "Born Date"
                     },
-                    "apple_id": {
+                    "created_by": {
                         "type": "string",
-                        "description": "Apple Id"
+                        "description": "Created By"
                     },
-                    "updated_password_by": {
+                    "updated_by": {
                         "type": "string",
-                        "description": "Updated Password By"
+                        "description": "Updated By"
                     },
-                    "updated_password_at": {
+                    "deleted_by": {
                         "type": "string",
-                        "description": "Updated Password At"
+                        "description": "Deleted By"
                     }
                 }
             },
@@ -23297,6 +23314,10 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
+                                "work_experience": {
+                                    "type": "string",
+                                    "description": "Work Experience"
+                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
@@ -23304,18 +23325,6 @@
                                 "born_date": {
                                     "type": "string",
                                     "description": "Born Date"
-                                },
-                                "apple_id": {
-                                    "type": "string",
-                                    "description": "Apple Id"
-                                },
-                                "updated_password_by": {
-                                    "type": "string",
-                                    "description": "Updated Password By"
-                                },
-                                "updated_password_at": {
-                                    "type": "string",
-                                    "description": "Updated Password At"
                                 }
                             }
                         }
@@ -23370,6 +23379,10 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
+                                "work_experience": {
+                                    "type": "string",
+                                    "description": "Work Experience"
+                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
@@ -23377,18 +23390,6 @@
                                 "born_date": {
                                     "type": "string",
                                     "description": "Born Date"
-                                },
-                                "apple_id": {
-                                    "type": "string",
-                                    "description": "Apple Id"
-                                },
-                                "updated_password_by": {
-                                    "type": "string",
-                                    "description": "Updated Password By"
-                                },
-                                "updated_password_at": {
-                                    "type": "string",
-                                    "description": "Updated Password At"
                                 }
                             }
                         }
@@ -23443,6 +23444,10 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
+                                "work_experience": {
+                                    "type": "string",
+                                    "description": "Work Experience"
+                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
@@ -23450,18 +23455,6 @@
                                 "born_date": {
                                     "type": "string",
                                     "description": "Born Date"
-                                },
-                                "apple_id": {
-                                    "type": "string",
-                                    "description": "Apple Id"
-                                },
-                                "updated_password_by": {
-                                    "type": "string",
-                                    "description": "Updated Password By"
-                                },
-                                "updated_password_at": {
-                                    "type": "string",
-                                    "description": "Updated Password At"
                                 }
                             }
                         }
