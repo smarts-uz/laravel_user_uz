@@ -38,7 +38,7 @@ class PerformersController extends Controller
            ]);
     }
 
-    public function getPerformers(Request $request)
+    public function getPerformers_Old1(Request $request)
     {
 
             $data = User::query()
@@ -46,6 +46,42 @@ class PerformersController extends Controller
                 ->WhereNot('id',\auth()->id())
                 ->orderByDesc('review_rating')
                 ->orderbyRaw('(review_good - review_bad) DESC')->get();
+
+            return Datatables::of($data)
+                ->addColumn('user_images', function (User $user) {
+                    return view('performers.user_images',[
+                        'user' => $user
+                    ]);
+                })
+                ->addColumn('user_information', function (User $user) {
+                    $top_users = Cache::get('users')
+                        ->where('review_rating', '!=', 0)
+                        ->where('role_id', User::ROLE_PERFORMER)
+                        ->sortBy('(review_good - review_bad) DESC')
+                        ->take(Review::TOP_USER)
+                        ->pluck('id')
+                        ->toArray();
+                    $authId = Auth::id();
+                    $tasks = Cache::get('tasks')->where('user_id', $authId)
+                        ->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE])->sortBy('created_at DESC');
+                    return view('performers.user_information',[
+                        'user' => $user,
+                        'top_users' => $top_users,
+                        'tasks' => $tasks,
+                    ]);
+                })
+                ->make(true);
+    }
+
+ public function getPerformers(Request $request)
+    {
+
+            $data = User::query()
+                ->where('role_id', User::ROLE_PERFORMER)
+                ->WhereNot('id',\auth()->id())
+                ->orderByDesc('review_rating')
+                ->orderbyRaw('(review_good - review_bad) DESC')->get();
+
             return Datatables::of($data)
                 ->addColumn('user_images', function (User $user) {
                     return view('performers.user_images',[
