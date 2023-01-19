@@ -40,11 +40,11 @@ class UserIndexResource extends JsonResource
         }
 
         $this->locale = app()->getLocale();
-        $file = "/storage/portfolio/{$this->name}";
+        $file = "storage/portfolio/{$this->name}";
         if (!file_exists($file)) {
             File::makeDirectory($file);
         }
-        $b = File::directories(public_path("/storage/portfolio/{$this->name}"));
+        $b = File::directories(public_path("storage/portfolio/{$this->name}"));
         $directories = array_map('basename', $b);
         if (WalletBalance::query()->where('user_id', $this->id)->first() !== null){
             $balance = WalletBalance::query()->where('user_id', $this->id)->first()->balance;
