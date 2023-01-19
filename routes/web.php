@@ -42,9 +42,9 @@ Route::get('/performers_portfolio/{portfolio}',[PerformersController::class,'per
 Route::group(['prefix' => 'performers'], function () {
     Route::get('/', [PerformersController::class, 'service'])->name('performers.service');
     Route::get('/{user}', [PerformersController::class, 'performer'])->name('performers.performer');
+    Route::get('performer/list', [PerformersController::class, 'getPerformers'])->name('performers.list');
 });
 #endregion
-
 
 #region chat
 Route::group(['prefix' => 'chat'], function (){

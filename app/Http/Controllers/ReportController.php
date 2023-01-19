@@ -23,9 +23,7 @@ class ReportController extends Controller
     public function report()
     {
 
-        $service = new ReportService();
-
-        return $service->report();
+        return (new ReportService())->report();
     }
 
     public function index_sub($id)
@@ -37,8 +35,6 @@ class ReportController extends Controller
     public function report_sub()
     {
         $id = Cache::get('child');
-        $service = new ReportService();
-
-        return $service->child_report($id);
+        return (new ReportService())->child_report($id);
     }
 }

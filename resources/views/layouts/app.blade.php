@@ -32,9 +32,9 @@
 <body class=" text-xl">
 
 @include('components.preloader')
-<x-navbar/>
+<x-navbar></x-navbar>
 @yield('content')
-<x-footer/>
+<x-footer></x-footer>
 @include('sweetalert::alert')
 
 <x-modal></x-modal>
