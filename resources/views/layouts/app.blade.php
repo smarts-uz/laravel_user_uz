@@ -17,13 +17,9 @@
     <script src="https://cdn.jsdelivr.net/npm/jspanel4@4.14.1/dist/extensions/modal/jspanel.modal.js"></script>
     {{--JS Panel CSS--}}
     <link href="https://cdn.jsdelivr.net/npm/jspanel4@4.14.1/dist/jspanel.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
     @yield('style')
 
-    <style>
-        body {
-            font-family: 'Montserrat', sans-serif !important;
-        }
-    </style>
     <style>
         [class*="copyrights-pane"]
         {display: none !important;}

@@ -40,7 +40,7 @@ class UserIndexResource extends JsonResource
         }
 
         $this->locale = app()->getLocale();
-        $file = "portfolio/{$this->name}";
+        $file = "/storage/portfolio/{$this->name}";
         if (!file_exists($file)) {
             File::makeDirectory($file);
         }
