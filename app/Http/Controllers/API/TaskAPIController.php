@@ -1795,4 +1795,44 @@ class TaskAPIController extends Controller
         return new TaskPaginationResource($tasks->orderByDesc('created_at')->paginate());
 
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/all-tasks",
+     *     tags={"Task"},
+     *     summary="Get Performer all Tasks",
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="user_id",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *      {"token": {}},
+     *     },
+     * )
+     */
+    public function all_tasks(Request $request): TaskPaginationResource
+    {
+
+        $user_id = $request->get('user_id');
+        $tasks = Task::query()->where('user_id', $user_id)->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED]);
+
+        return new TaskPaginationResource($tasks->orderByDesc('created_at')->paginate());
+
+    }
 }

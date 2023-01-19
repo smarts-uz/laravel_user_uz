@@ -68,6 +68,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::get('/my-tasks-count', [TaskAPIController::class, 'my_tasks_count']); // fix
     Route::get('/my-tasks', [TaskAPIController::class, 'my_tasks_all']); // fix
     Route::get('/performer-tasks', [TaskAPIController::class, 'performer_tasks']); // fix
+    Route::get('/all-tasks', [TaskAPIController::class, 'all_tasks']); // fix
     Route::post('/cancel-task/{task}', [SearchAPIController::class, 'cancelTask']); // fix
     Route::delete('/delete-task/{task}/{user}', [SearchAPIController::class, 'delete_task']); // fix
 
