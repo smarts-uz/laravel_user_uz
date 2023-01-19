@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\Task;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 
@@ -40,13 +41,11 @@ class PerformersController extends Controller
     public function getPerformers(Request $request)
     {
 
-        if ($request->ajax()) {
             $data = User::query()
                 ->where('role_id', User::ROLE_PERFORMER)
                 ->WhereNot('id',\auth()->id())
                 ->orderByDesc('review_rating')
                 ->orderbyRaw('(review_good - review_bad) DESC')->get();
-
             return Datatables::of($data)
                 ->addColumn('user_images', function (User $user) {
                     return view('performers.user_images',[
@@ -54,14 +53,16 @@ class PerformersController extends Controller
                     ]);
                 })
                 ->addColumn('user_information', function (User $user) {
-                    $top_users = User::query()
+                    $top_users = Cache::get('users')
                         ->where('review_rating', '!=', 0)
-                        ->where('role_id', User::ROLE_PERFORMER)->orderbyRaw('(review_good - review_bad) DESC')
-                        ->limit(Review::TOP_USER)->pluck('id')->toArray();
+                        ->where('role_id', User::ROLE_PERFORMER)
+                        ->sortBy('(review_good - review_bad) DESC')
+                        ->take(Review::TOP_USER)
+                        ->pluck('id')
+                        ->toArray();
                     $authId = Auth::id();
-                    $tasks = Task::query()->where('user_id', $authId)
-                        ->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE])->orderBy('created_at', 'DESC')
-                        ->get();
+                    $tasks = Cache::get('tasks')->where('user_id', $authId)
+                        ->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE])->sortBy('created_at DESC');
                     return view('performers.user_information',[
                         'user' => $user,
                         'top_users' => $top_users,
@@ -69,7 +70,6 @@ class PerformersController extends Controller
                     ]);
                 })
                 ->make(true);
-        }
     }
 
 
