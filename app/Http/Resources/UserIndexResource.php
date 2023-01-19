@@ -70,7 +70,6 @@ class UserIndexResource extends JsonResource
 
         $service = new ProfileService();
         $item = $service->profileData($this);
-        $task_count = $item->task_count;
 
         // check top performer part
         if (in_array($this->id, $item->top_users, true)) {
@@ -86,7 +85,7 @@ class UserIndexResource extends JsonResource
         ];
 
         // check completed tasks count bigger than 50
-        if ($task_count >= 50) {
+        if ($this->reviews >= 50) {
             $task_count = asset('images/50.png');
             $message = __('Более 50 выполненных заданий');
         } else {
@@ -167,7 +166,7 @@ class UserIndexResource extends JsonResource
             'google_id' => $this->google_id,
             'facebook_id' => $this->facebook_id,
             'born_date' => $born_date,
-            'created_tasks' => Task::query()->where(['user_id' => $this->id])->where('status', Task::STATUS_COMPLETE)->get()->count(),
+            'created_tasks' => Task::query()->where(['user_id' => $this->id])->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->get()->count(),
             'performed_tasks' => Task::query()->where(['performer_id' => $this->id])->where('status', Task::STATUS_COMPLETE)->get()->count(),
             'reviews' => [
                 'review_bad' => $this->review_bad,
