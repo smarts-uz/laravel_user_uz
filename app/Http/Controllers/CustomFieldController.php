@@ -31,8 +31,7 @@ class CustomFieldController extends VoyagerBreadController
     final public function update(Request $request, $id): RedirectResponse
     {
         $customfield = CustomField::find($id);
-
-        $customfield->name = $request->neme;
+        $customfield->name = $request->name;
         $customfield->title = $request->title;
         $customfield->type = $request->type;
         $customfield->required = $request->required;
@@ -59,6 +58,7 @@ class CustomFieldController extends VoyagerBreadController
         $customfield->category_id = $request->category_id;
         $customfield->route = $request->route;
         $customfield->order = $request->order;
+        $customfield->description = $request->description;
         $customfield->placeholder = $request->placeholder;
         $customfield->label = $request->label;
 
