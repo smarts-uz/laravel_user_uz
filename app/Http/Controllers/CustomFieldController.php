@@ -23,7 +23,7 @@ class CustomFieldController extends VoyagerBreadController
     }
     /**
      * @param string $table
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse
      */
     final public function update(Request $request, $id)
     {
@@ -31,7 +31,7 @@ class CustomFieldController extends VoyagerBreadController
         $duration =  substr($request->Options_rowOrder, -1) ;
         $options_uz = [];
         $options_ru = [];
-        
+
         for ($i = 1; $i <= $duration; $i++) {
             $uz = 'Options_uz_' . $i;
             $ru = 'Options_ru_' . $i;
@@ -42,5 +42,6 @@ class CustomFieldController extends VoyagerBreadController
         $customfield->options = $options_uz;
         $customfield->options_ru = $options_ru;
         $customfield->save();
+        return redirect('/admin/custom-fields');
     }
 }
