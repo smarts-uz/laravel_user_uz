@@ -71,7 +71,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('tasks/cancel/{task}', [VoyagerTaskController::class, "cancelTask"])->name("voyagerTask.cancel");
     Route::get('/resetPassword/{user}',[VoyagerUserController::class,'resetPassword'])->name('voyager.reset.password');
     Route::post('/resetPassword/store/{user}',[VoyagerUserController::class,'resetPassword_store'])->name('voyager.reset.password.store');
-    Route::put('/custom-fields/store',[CustomFieldController::class,'store'])->name('voyager.custom-fields.store');
+    Route::post('/custom-fields/store',[CustomFieldController::class,'store'])->name('voyager.custom-fields.store');
     Route::put('/custom-fields/{id}/update',[CustomFieldController::class,'update'])->name('voyager.custom-fields.update');
 });
 #endregion

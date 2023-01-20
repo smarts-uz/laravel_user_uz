@@ -4,19 +4,23 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\CustomField;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use TCG\Voyager\Http\Controllers\VoyagerBreadController;
 
 class CustomFieldController extends VoyagerBreadController
 {
     /**
      * @param Request $request
-     * @return void
+     * @return \Illuminate\Contracts\Foundation\Application|RedirectResponse|\Illuminate\Routing\Redirector|void
      */
-    final public function store(Request $request): void
+    final public function store(Request $request)
     {
-        parent::store($request);
+        $customfield = new CustomField;
+        $this->save($customfield, $request);
+        return redirect('/admin/custom-fields');
     }
     final public function edit($id)
     {
@@ -24,17 +28,31 @@ class CustomFieldController extends VoyagerBreadController
     }
 
     /**
+     *
+     * Function  update
      * @param Request $request
      * @param $id
-     * @return RedirectResponse
+     * @return \Illuminate\Contracts\Foundation\Application|Factory|RedirectResponse|\Illuminate\Routing\Redirector|View|void
      */
-    final public function update(Request $request, $id): RedirectResponse
+    final public function update(Request $request, $id)
     {
         $customfield = CustomField::find($id);
+        $this->save($customfield, $request);
+        return redirect('/admin/custom-fields');
+    }
+
+    /**
+     *
+     * Function  save
+     * @param $customfield
+     * @param $request
+     */
+    public function save($customfield, $request)
+    {
         $customfield->name = $request->name;
         $customfield->title = $request->title;
         $customfield->type = $request->type;
-        $customfield->required = $request->required;
+        $customfield->required = $request->required = 'ON' ? true : false;
         $customfield->data_type = $request->data_type;
         $customfield->regex = $request->regex;
         $customfield->min = $request->min;
@@ -63,6 +81,5 @@ class CustomFieldController extends VoyagerBreadController
         $customfield->label = $request->label;
 
         $customfield->save();
-        return redirect('/admin/custom-fields');
     }
 }
