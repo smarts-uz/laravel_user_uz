@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\CustomField;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use TCG\Voyager\Http\Controllers\VoyagerBreadController;
 
