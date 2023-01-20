@@ -28,31 +28,19 @@ class CustomFieldController extends VoyagerBreadController
     final public function update(Request $request, $id)
     {
         $customfield = CustomField::find($id);
+        $duration =  substr($request->Options_rowOrder, -1) ;
+        $options_uz = [];
+        $options_ru = [];
+        
+        for ($i = 1; $i <= $duration; $i++) {
+            $uz = 'Options_uz_' . $i;
+            $ru = 'Options_ru_' . $i;
+            $options_uz['options'][] = $request->$uz;
+            $options_ru['options'][] = $request->$ru;
+        }
 
-        $uz = isset($customfield->options) ? $customfield->options["options"] : null;
-        $ru = isset($customfield->options_ru) ? $customfield->options_ru["options"] : null;
-        foreach(explode(',',$request->language_rowOrder) as $value)
-        {
-            $b = 'language_uz_'.$value;
-            $uz[] = $request->$b;
-        }
-        foreach(explode(',',$request->language_rowOrder) as $value)
-        {
-            $b = 'language_ru_'.$value;
-            $ru[] = $request->$b;
-        }
-        $uz = ['options' => collect($this->startfrom1($uz))];
-        $customfield->options = $uz;
-        $ru = ['options' => collect($this->startfrom1($ru))];
-        $customfield->options_ru = $ru;
+        $customfield->options = $options_uz;
+        $customfield->options_ru = $options_ru;
         $customfield->save();
-        dd($request);
-        parent::update($request,$id);
-    }
-    final public function startfrom1($variable)
-    {
-        array_unshift($variable,"");
-        unset($variable[0]);
-        return $variable;
     }
 }
