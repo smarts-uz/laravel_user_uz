@@ -1,9 +1,7 @@
-<div class="difficultTask score scores{{$user->id}} w-12/12 m-5 h-[200px] flex md:flex-none overflow-hidden md:overflow-visible mb-10 "
+<div class="difficultTask score scores{{$user->id}} w-full m-5 flex mb-10 "
      id="{{$user->id}}">
     <div class=" float-left mr-4">
-        <img class="rounded-lg w-24 h-24 border-2 mb-2"
-             @if ((!$user->avatar)) src='{{asset("storage/images/default.jpg")}}'
-             @else src="{{asset("storage/{$user->avatar}")}}" @endif alt="avatar">
+        <img class="rounded-lg w-24 h-24 border-2 mb-2" src="{{asset("storage/{$user->avatar}")}}" alt="avatar">
         <div class="flex sm:flex-row items-center text-sm">
             <p class="text-black ">{{__('Отзывы:')}}</p>
             <i class="far fa-thumbs-up text-blue-500 ml-1 mb-1"></i>
@@ -16,14 +14,14 @@
     </div>
     <div class="w-4/5 ">
         <div class="flex sm:flex-row flex-col sm:items-center items-start">
-            <a class="user mr-2" href="/performers/{{$user->id}}">
+            <a class="user mr-6" href="/performers/{{$user->id}}">
                 <p class="text-2xl underline text-blue-500 performer-page{{$user->id}} hover:text-red-500"
                    id="{{$user->id}}"> {{$user->name}} </p>
             </a>
             <div class="flex items-center sm:my-0 my-2">
                 @if ($user->is_phone_number_verified)
                     <div data-tooltip-target="tooltip-animation-verified"
-                         class="mx-1 tooltip-1">
+                         class="tooltip-1">
                         <img
                             src="{{asset('images/verify.png')}}"
                             alt="" class="w-10">
@@ -37,7 +35,7 @@
                     </div>
                 @else
                     <div data-tooltip-target="tooltip-animation-not-verified"
-                         class="mx-1 tooltip-1">
+                         class="tooltip-1">
                         <img
                             src="{{asset('images/verify_gray.png') }}"
                             alt="" class="w-10">
@@ -52,7 +50,7 @@
                 @endif
                 @if(in_array($user->id, $top_users))
                     <div data-tooltip-target="tooltip-animation-on-top"
-                         class="mx-1 tooltip-2">
+                         class="mx-0.5 tooltip-2">
                         <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
                         <div id="tooltip-animation-on-top" role="tooltip"
                              class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
@@ -64,7 +62,7 @@
                     </div>
                 @else
                     <div data-tooltip-target="tooltip-animation-on-top"
-                         class="mx-1 tooltip-2">
+                         class="mx-0.5 tooltip-2">
                         <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
                         <div id="tooltip-animation-on-top" role="tooltip"
                              class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
@@ -75,7 +73,7 @@
                         </div>
                     </div>
                 @endif
-                <div data-tooltip-target="tooltip-animation-many" class="mx-1">
+                <div data-tooltip-target="tooltip-animation-many" class="">
                     @if($user->reviews >= 50 && $user->role_id == 2)
                         <img src="{{ asset('images/50.png') }}" alt="" class="w-10">
                     @else
@@ -107,7 +105,7 @@
                 @endif
             </p>
         </div>
-        <div class="mt-6">
+        <div class="mt-2">
             @auth
                 @if($tasks->where('status', '<=', 2)->count() > 0)
                     <a id="open{{$user->id}}">
