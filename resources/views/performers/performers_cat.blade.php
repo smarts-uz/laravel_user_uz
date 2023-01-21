@@ -26,16 +26,20 @@
                     <div class="max-w-md mx-left">
                         @foreach ($categories as $category)
                             <div x-data={show:false} class="rounded-sm">
-                                <div class="my-3 text-blue-500 hover:text-red-500 cursor-pointer" id="{{ preg_replace('/[ ,]+/', '', $category->name) }}">
-                                    {{ $category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
+                                <div class="flex flex-row my-1 text-blue-500 hover:text-red-500 cursor-pointer" id="{{ preg_replace('/[ ,]+/', '', $category->name) }}">
+                                    <div class="mr-2 cursor-pointer" @click="show=!show">
+                                        <i class="fas fa-chevron-down text-sm" x-show="!show"></i>
+                                        <i class="fas fa-chevron-up text-sm" x-show="show"></i>
+                                    </div>
+                                    <div @click="show=!show">{{ $category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</div>
                                 </div>
-                                <div id="{{$category->slug}}" class="px-8 py-1 hidden">
+                                <div id="{{$category->slug}}" class="pl-8 py-1 hidden">
                                     @foreach ($categories2 as $category2)
-                                        @if($category2->parent_id == $category->id)
+                                        @if($category2->parent_id === $category->id)
                                             <div>
-                                                <a href="/perf-ajax/{{ $category2->id }}"
-                                                   class="text-blue-500 cursor-pointer hover:text-red-500 my-1 send-request"
-                                                   data-id="{{$category2->id}}">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</a>
+                                                <a href="/perf-ajax/{{ $category2->id }}" class="text-blue-500 cursor-pointer hover:text-red-500 my-1 send-request" data-id="{{$category2->id}}">
+                                                    {{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
+                                                </a>
                                             </div>
                                         @endif
                                     @endforeach
