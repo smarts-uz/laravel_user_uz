@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services;
-
 
 use App\Mail\VerifyEmail;
 use App\Models\User;
@@ -90,9 +88,8 @@ class NotificationService
             $locale = cacheLang($performer->id);
             $price = number_format($task->budget, 0, '.', ' ');
             self::pushNotification($performer, [
-                'title' => __('Новая задания', [], $locale),
-                'body' => __('task_name  №task_id с бюджетом до task_budget', [
-                    'task_name' => $task->name, 'task_id' => $task->id, 'budget' => $price], $locale)
+                'title' => self::titles($notification->type),
+                'body' => self::descriptions($notification)
             ], 'notification', new NotificationResource($notification));
 
             self::sendNotificationRequest([$performer->id], [
@@ -145,10 +142,9 @@ class NotificationService
                 "name_task" => $not->title,
                 "type" => Notification::NEWS_NOTIFICATION
             ]);
-            $locale = cacheLang($user->id);
             self::pushNotification($user, [
-                'title' => __('Новости', [], $locale),
-                'body' => __('Важные новости и объявления для вас', [], $locale)
+                'title' => self::titles($notification->type),
+                'body' => self::descriptions($notification)
             ], 'notification', new NotificationResource($notification));
             self::sendNotificationRequest([$user->id], [
                 'created_date' => $notification->created_at->format('d M'),
