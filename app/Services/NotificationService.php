@@ -102,7 +102,7 @@ class NotificationService
                 'description' => self::descriptions($notification)
             ]);
 
-            if (in_array($task->category_id, $user_cat_ids)) {
+            if (in_array($task->category_id, $user_cat_ids, true)) {
                 $performer_ids[] = $performer->id;
 
                 $notification->save();
