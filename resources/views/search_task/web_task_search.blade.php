@@ -3,9 +3,9 @@
         <div class="grid md:grid-cols-5 grid-cols-3 container mx-auto gap-x-2">
             {{-- left start --}}
             <div class="col-span-3">
-                    <div class="w-full bg-yellow-100 my-5 rounded-md  text-sm">
+                    <div class="w-full bg-yellow-100 my-5 rounded-md text-sm">
                         <div class="px-5 py-5">
-                            <div class="grid grid-cols-4 gap-4 mb-3">
+                            <div class="grid grid-cols-4 gap-2 mb-3">
                                 <div class="sm:inline-flex block w-full col-span-4 relative">
                                     <input id="filter" name="filter" type="text"
                                         class="form-input focus:border-yellow-500 focus:placeholder-transparent w-4/5 py-1 px-3 text-black-700 border-2 rounded-md border-neutral-400 focus:shadow-sm focus:shadow-sky-500 mr-4"
@@ -18,11 +18,9 @@
                                 </div>
                                 <div class="md:inline-flex  block w-full col-span-4 disalable">
                                     <div class="w-8/12 md:w-4/5 relative">
-                                        <label
-                                            class="lg:text-base md:text-sm mb-1 text-neutral-400">{{__('Город, адрес, метро, район...')}}</label>
+                                        <label class="mb-1">{{__('Город, адрес, метро, район...')}}</label>
                                         <div class="">
-                                            <input
-                                                class="form-input bg-white address float-left py-1 px-2 text-black-700 border-2 rounded-md focus:shadow-sm w-full text-black-700 focus:border-yellow-500 focus:outline-none  float-left bg-transparent border-0 mr-3.5 h-full "
+                                            <input class="form-input bg-white address float-left py-1 px-2 text-black-700 border-2 rounded-md focus:shadow-sm w-full text-black-700 focus:border-yellow-500 focus:outline-none  float-left bg-transparent border-0 mr-3.5 h-full "
                                                 type="text" id="suggest" name="suggest">
                                             <svg class="absolute right-2 bottom-1.5 h-4 w-4 text-purple-500" id="geoBut"
                                                 width="12" height="12" viewBox="0 0 24 24" stroke-width="2"
@@ -42,7 +40,7 @@
                                 <div class="md:inline-flex  block w-full col-span-4 ">
                                     <div class="md:w-2/5 pr-5 disalable">
                                         <label
-                                            class="lg:text-base md:text-sm mb-1 text-neutral-400">{{__('Радиус поиска')}}</label>
+                                            class="mb-1">{{__('Радиус поиска')}}</label>
                                         <select name="radius" id="selectGeo"
                                             class="form-select py-1 px-2 w-full text-gray-700 border-2 rounded-md focus:shadow-sm focus:border-yellow-500 text-lg-left text-black-700 rounded"
                                             onchange="">
@@ -62,26 +60,24 @@
                                     </div>
                                     <div class="relative pl-5 md:w-2/5">
                                         <label
-                                            class="lg:text-base md:text-sm mb-1 text-neutral-400">{{__('Стоимость заданий')}}</label>
+                                            class="mb-1">{{__('Стоимость заданий')}}</label>
                                         <input type="text" min="1" max="999999999" name="price"
-                                            class="form-input focus:border-yellow-500 focus:placeholder-transparent w-full border-md py-1 px-2 text-black-700 border-2 rounded-md border-neutral-400 focus:shadow-sm   text-black-700"
+                                            class="form-input focus:border-yellow-500 focus:placeholder-transparent w-full border-md py-1 px-2 text-black-700 border-2 rounded-md focus:shadow-sm text-black-700"
                                             placeholder="UZS" onkeypress="validate(event)" id="price">
                                         <img src="images/close.png" class="absolute right-2 bottom-2.5 cursor-pointer"
                                             id="prcClose" hidden>
                                     </div>
                                 </div>
                                 <div class="inline-flex  block w-full col-span-4">
-                                    <label class="inline-flex items-center mt-3">
+                                    <label class="inline-flex items-center mt-1">
                                         <input type="checkbox" id="remjob" name="remjob"
-                                            class="focus:outline-none form-checkbox checkboxByAs  h-5 w-5 text-orange-400">
-                                        <span
-                                            class="sm:ml-2 ml-0.5 text-gray-700 lg:text-sm">{{__('Удалённая работа')}}</span>
+                                            class="focus:outline-none form-checkbox checkboxByAs h-5 w-5 text-orange-400">
+                                        <span class="sm:ml-2 ml-0.5 text-gray-700 cursor-pointer">{{__('Удалённая работа')}}</span>
                                     </label>
-                                    <label class="inline-flex items-center mt-3 xl:ml-3 sm:ml-2 ml-0.5">
+                                    <label class="inline-flex items-center mt-1 xl:ml-3 sm:ml-2 ml-0.5">
                                         <input type="checkbox" id="noresp" name="noresp"
-                                            class="focus:outline-none form-checkbox  h-5 w-5 text-orange-400">
-                                        <span
-                                            class="sm:ml-2  ml-0.5 text-gray-700 lg:text-sm">{{__('Задания без откликов')}}</span>
+                                            class="focus:outline-none form-checkbox h-5 w-5 text-orange-400">
+                                        <span class="sm:ml-2 ml-0.5 text-gray-700 cursor-pointer">{{__('Задания без откликов')}}</span>
                                     </label>
                                 </div>
                             </div>
@@ -128,7 +124,7 @@
                         <div class="w-full my-1 for_check text-sm">
                             @foreach ($categories as $category)
                             <div x-data={show:false} class="rounded-sm">
-                                <div class=" mb-2" id="headingOne">
+                                <div class="" id="headingOne">
                                     <button @click="show=!show"
                                         class="underline text-gray-500 hover:text-blue-700 focus:outline-none"
                                         type="button">
@@ -145,11 +141,11 @@
                                             class="ml-2 text-gray-700">{{$category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}</span>
                                     </label>
                                 </div>
-                                <div x-show="show" class="border-b-0 px-8 py-0">
+                                <div x-show="show" class="border-b-0 px-8">
                                     @foreach ($categories2 as $category2)
                                         @if($category2->parent_id === $category->id)
                                             <div class="par{{$category->id}}">
-                                                <label class="inline-flex items-center mt-3 hover:cursor-pointer">
+                                                <label class="inline-flex items-center my-1 hover:cursor-pointer">
                                                     <input type="checkbox"
                                                         class="form-checkbox chi_cat mr-1 h-5 w-5 text-orange-400 hover:cursor-pointer"
                                                         name="{{$category2->id}}" id="par{{$category->id}}"><span
