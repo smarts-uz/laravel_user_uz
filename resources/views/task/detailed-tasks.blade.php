@@ -1,13 +1,10 @@
 @extends("layouts.app")
 
 @section("content")
-    <script type="text/javascript" src="http://connect.mail.ru/js/loader.js">
-    </script>
     <div class="hidden" id="map_route">{{ route('task.map', $task->id) }}</div>
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=f4b34baa-cbd1-432b-865b-9562afa3fcdb"
             type="text/javascript"></script>
     <script src="{{ asset('js/detailed-task-map.js') }}" type="text/javascript"></script>
-
 
     <div class="xl:flex container w-11/12 mx-auto">
         <div class="md:flex mx-auto xl:w-9/12 w-full">
@@ -67,11 +64,10 @@
                     @endif
                 </div>
 
-                <div class="mt-12 border-2 py-2 lg:w-[600px]  w-[400px] rounded-lg border-orange-100 shadow-2xl">
+                <div class="mt-12 border-2 py-2 rounded-lg border-orange-100 shadow-2xl">
                     {{-- task information --}}
                     @include('detailed_task.detailed_task_information')
                     {{-- task information --}}
-
 
                     <div>
                         {{-- otklik buttons --}}
@@ -82,12 +78,11 @@
                 @if($task->user_id === auth()->id())
                 @else
                     <div
-                        class="mt-12 border-2 p-6 lg:w-[600px]  w-[400px] rounded-lg border-orange-100 shadow-lg">
+                        class="mt-12 border-2 p-6 rounded-lg border-orange-100 shadow-lg">
                         <h1 class="text-3xl font-semibold py-3">{{__('Хотите найти надежного помощника?')}}</h1>
                         <p class="mb-10">{{__('Universal Services помогает быстро решать любые бытовые и бизнес-задачи.')}}</p>
                         <a href="/categories/1">
-                            <button
-                                class="font-sans text-lg font-semibold bg-yellow-500 text-white hover:bg-orange-500 px-8 pt-2 pb-3 rounded">
+                            <button class="font-sans text-lg font-semibold bg-yellow-500 text-white hover:bg-orange-500 px-8 pt-2 pb-3 rounded">
                                 {{__('Создайте свое задание')}}
                             </button>
                         </a>
@@ -100,33 +95,27 @@
 
                 @if ($task->status === 4)
                     @foreach ($respons_reviews as $respons_review)
-                        @if ($respons_review->good_bad === 1 && $respons_review->task_id === $task->id)
+                        @if ($respons_review->good_bad === 1)
                             <div class="my-6">
                                 <div class="flex flex-row gap-x-2 my-4">
                                     @if ($respons_review->as_performer === 0)
-                                        <img src="@if ($task->user?->avatar === ''){{ asset("storage/images/default.png") }}
-                                        @else{{asset("storage/{$task->user->avatar}") }}" @endif alt="#"
+                                        <img src="{{asset("storage/{$task->user->avatar}") }}" alt="avatar"
                                             class="w-12 h-12 border-2 rounded-lg border-gray-500">
                                     @elseif ($respons_review->as_performer === 1)
-                                        <img src="@if ($respons_review->reviewer?->avatar === ''){{ asset("storage/images/default.png") }}
-                                        @else{{asset("storage/{$respons_review->reviewer->avatar}") }}" @endif alt="#"
+                                        <img src="{{asset("storage/{$respons_review->reviewer->avatar}") }}" alt="avatar"
                                             class="w-12 h-12 border-2 rounded-lg border-gray-500">
                                     @endif
 
                                     <div class="flex flex-col">
                                         @if ($respons_review->as_performer === 0)
-                                            <a @if (Auth::check() && Auth::user()->id === $task->user->id)
-                                                href="/profile"
-                                            @else href="/performers/{{$task->user->id}}"
-                                             @endif
+                                            <a @if (Auth::check() && Auth::user()->id === $task->user->id) href="/profile"
+                                            @else href="/performers/{{$task->user->id}}" @endif
                                             class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
                                             </a>
                                         @elseif ( $respons_review->as_performer === 1)
-                                            <a  @if (Auth::check() && Auth::user()->id === $respons_review->reviewer->id)
-                                                href="/profile"
-                                                @else href="/performers/{{$respons_review->reviewer->id}}"
-                                                @endif
-                                            class="text-2xl text-blue-500 hover:text-red-500">{{$respons_review->reviewer->name}}
+                                            <a @if(Auth::check() && Auth::user()->id === $respons_review->reviewer->id) href="/profile"
+                                                @else href="/performers/{{$respons_review->reviewer->id}}" @endif
+                                              class="text-2xl text-blue-500 hover:text-red-500">{{$respons_review->reviewer->name}}
                                             </a>
                                         @endif
                                         <div class="flex flex-row gap-x-2">
@@ -140,37 +129,32 @@
                                     </div>
                                 </div>
                                 <div class="w-full py-3 px-6 bg-yellow-50 rounded-xl">
-                                    <p>{{__('Задание')}} <a href="#"
-                                                            class="hover:text-red-400 border-b border-gray-300 hover:border-red-400"> {{$task->name}} </a> {{__('выполнено')}}</p>
+                                    <p>{{__('Задание')}} <a href="#" class="hover:text-red-400 border-b border-gray-300 hover:border-red-400">
+                                        {{$task->name}} </a> {{__('выполнено')}}
+                                    </p>
                                     <p class="border-t-2 border-gray-300 my-3 pt-3"><i class="far fa-thumbs-up text-gray-400 mr-3"></i>{{$respons_review->description}}</p>
                                     <p class="text-right">{{$respons_review->created}}</p>
                                 </div>
                             </div>
-                        @elseif ($respons_review->good_bad === 0 && $respons_review->task_id === $task->id)
+                        @elseif ($respons_review->good_bad === 0)
                             <div class="my-6">
                                 <div class="flex flex-row gap-x-2 my-4">
                                     @if ($respons_review->as_performer === 0)
-                                        <img src="@if ($task->user->avatar === ''){{ asset("storage/images/default.png") }}
-                                        @else{{asset("storage/{$task->user->avatar}") }}" @endif alt="#"
+                                        <img src="{{asset("storage/{$task->user->avatar}") }}" alt="avatar"
                                             class="w-12 h-12 border-2 rounded-lg border-gray-500">
                                     @elseif ($respons_review->as_performer === 1)
-                                        <img src="@if ($respons_review->reviewer->avatar === ''){{ asset("storage/images/default.png") }}
-                                        @else{{asset("storage/{$respons_review->reviewer->avatar}") }}" @endif alt="#"
+                                        <img src="{{asset("storage/{$respons_review->reviewer->avatar}") }}" alt="avatar"
                                             class="w-12 h-12 border-2 rounded-lg border-gray-500">
                                     @endif
                                     <div class="flex flex-col">
                                         @if ($respons_review->as_performer === 0)
-                                            <a @if (Auth::check() && Auth::user()->id === $task->user->id)
-                                                href="/profile"
-                                            @else href="/performers/{{$task->user->id}}"
-                                            @endif
+                                            <a @if (Auth::check() && Auth::user()->id === $task->user->id) href="/profile"
+                                            @else href="/performers/{{$task->user->id}}" @endif
                                             class="text-2xl text-blue-500 hover:text-red-500">{{$task->user->name ?? $task->user_name}}
                                             </a>
                                         @elseif ( $respons_review->as_performer === 1)
-                                            <a  @if (Auth::check() && Auth::user()->id === $respons_review->reviewer->id)
-                                                href="/profile"
-                                                @else href="/performers/{{$respons_review->reviewer->id}}"
-                                                @endif
+                                            <a @if (Auth::check() && Auth::user()->id === $respons_review->reviewer->id) href="/profile"
+                                                @else href="/performers/{{$respons_review->reviewer->id}}" @endif
                                             class="text-2xl text-blue-500 hover:text-red-500">{{$respons_review->reviewer->name}}
                                             </a>
                                         @endif
@@ -185,8 +169,8 @@
                                     </div>
                                 </div>
                                 <div class="w-full py-3 px-6 bg-yellow-50 rounded-xl">
-                                    <p>{{__('Задание')}} <a href="#"
-                                                            class="hover:text-red-400 border-b border-gray-300 hover:border-red-400"> {{$task->name}} </a> {{__('выполнено')}}</p>
+                                    <p>{{__('Задание')}}
+                                        <a href="#" class="hover:text-red-400 border-b border-gray-300 hover:border-red-400"> {{$task->name}} </a> {{__('выполнено')}}</p>
                                     <p class="border-t-2 border-gray-300 my-3 pt-3"><i class="far fa-thumbs-down text-gray-400 mr-3"></i>{{$respons_review->description}}</p>
                                     <p class="text-right">{{$respons_review->created}}</p>
                                 </div>

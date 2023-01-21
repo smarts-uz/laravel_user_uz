@@ -65,7 +65,7 @@ class SearchService
             ->where('review_rating', '!=', 0)
             ->where('role_id', User::ROLE_PERFORMER)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(Review::TOP_USER)->pluck('id')->toArray();
-        $item->respons_reviews = Review::all();
+        $item->respons_reviews = Review::query()->where('task_id',$task->id)->get();
         return $item;
     }
 
