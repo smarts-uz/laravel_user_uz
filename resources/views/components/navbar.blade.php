@@ -109,8 +109,8 @@
 
                     {{-- icon-4  Profile  --}}
                     <div class="max-w-lg ml-5 float-left">
-                        <button class="focus:outline-none" type="button" data-dropdown-toggle="dropdowndesk"><i
-                                class="xl:text-2xl lg:text-xl text-gray-500 hover:text-yellow-500 far fa-user"></i>
+                        <button class="focus:outline-none" type="button" data-dropdown-toggle="dropdowndesk">
+                            <img class="w-8 h-8 border-2 rounded-lg hover:border-yellow-500" src="{{asset('storage/'.auth()->user()->avatar)}}" alt="avatar">
                         </button>
                         <!-- Dropdown menu -->
                         <div class="hidden bg-white text-base z-50 list-none divide-y divide-gray-100 rounded shadow my-4" id="dropdowndesk">

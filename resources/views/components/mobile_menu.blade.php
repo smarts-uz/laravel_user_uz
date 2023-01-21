@@ -114,8 +114,8 @@
                             {{-- icon-2 --}}
                             <div class="max-w-lg mx-auto ml-6">
                                 <a href="/profile" class="delete-task cursor-pointer profiles">
-                                    <button class="focus:outline-none" type="button" data-dropdown-toggle="dropdownuser"><i
-                                            class="text-2xl text-gray-500 hover:text-yellow-500  far fa-user"></i>
+                                    <button class="focus:outline-none" type="button" data-dropdown-toggle="dropdownuser">
+                                        <img class="w-12 h-12 border-2 rounded-lg hover:border-yellow-500" src="{{asset('storage/'.auth()->user()->avatar)}}" alt="avatar">
                                     </button>
                                 </a>
                             </div>
