@@ -4,17 +4,17 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\CustomField;
-use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Illuminate\Routing\Redirector;
 use TCG\Voyager\Http\Controllers\VoyagerBreadController;
 
 class CustomFieldController extends VoyagerBreadController
 {
     /**
      * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @return Application|Redirector|RedirectResponse
      */
     final public function store(Request $request)
     {
@@ -32,7 +32,7 @@ class CustomFieldController extends VoyagerBreadController
      * Function  update
      * @param Request $request
      * @param $id
-     * @return \Illuminate\Contracts\Foundation\Application|Factory|RedirectResponse|\Illuminate\Routing\Redirector|View|void
+     * @return Application|Redirector|RedirectResponse
      */
     final public function update(Request $request, $id)
     {
@@ -47,7 +47,7 @@ class CustomFieldController extends VoyagerBreadController
      * @param $customfield
      * @param $request
      */
-    public function save($customfield, $request)
+    public function save($customfield, $request): void
     {
         $customfield->name = $request->name;
         $customfield->title = $request->title;

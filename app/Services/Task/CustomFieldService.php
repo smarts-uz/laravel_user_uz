@@ -5,7 +5,7 @@ namespace App\Services\Task;
 class CustomFieldService
 {
 
-    public function getCustomFieldsByRoute($task, $routeName)
+    public function getCustomFieldsByRoute($task, $routeName): array
     {
         $custom_fields = $task->category->custom_fields()->where('route', $routeName)->get();
         $result = [];
@@ -17,7 +17,7 @@ class CustomFieldService
         return $result;
     }
 
-    public function getCustomFields($task)
+    public function getCustomFields($task): array
     {
         $custom_fields = $task->category->custom_fields;
         $result = [];
@@ -28,7 +28,7 @@ class CustomFieldService
         return $result;
     }
 
-    private function initCustomField($custom_field, $task, $values)
+    private function initCustomField($custom_field, $task, $values): array
     {
         $item = [];
         $item['description'] = $custom_field->getTranslatedAttribute('description', app()->getLocale());
@@ -60,34 +60,34 @@ class CustomFieldService
         $data = [];
         foreach ($options as $key => $option) {
             $item['id'] = $key;
-            $item['selected'] = in_array($key, $values[$custom_field->id]);
+            $item['selected'] = in_array($key, $values[$custom_field->id], true);
             $item['value'] = $option;
             $data[] = $item;
         }
         return $data;
     }
 
-    private function getValuesOfTask($task)
+    private function getValuesOfTask($task): array
     {
         $data = [];
         foreach ($task->category->custom_fields as $custom_field) {
             $data[$custom_field->id] = [];
         }
         foreach ($task->custom_field_values as $custom_fields_value) {
-            $data[$custom_fields_value->custom_field_id] = $custom_fields_value->value ? json_decode($custom_fields_value->value) : [];
+            $data[$custom_fields_value->custom_field_id] = $custom_fields_value->value ? json_decode($custom_fields_value->value, false) : [];
         }
 
         return $data;
     }
 
 
-    public static function showOptions($task, $data_id, $key, $option)
+    public static function showOptions($task, $data_id, $key, $option): bool
     {
         if (isset($task)) {
             $field = $task->custom_field_values()->where('custom_field_id', $data_id)->first();
-            if ($field && is_array(json_decode($field->value)) && in_array($option, json_decode($field->value))) {
+            if ($field && is_array(json_decode($field->value, false)) && in_array($option, json_decode($field->value, false), true)) {
                 return true;
-            };
+            }
         }
         return false;
     }
@@ -96,7 +96,7 @@ class CustomFieldService
     {
         $array = isset($task) && $task->custom_field_values()->where('custom_field_id', $data_id)->first() ?
             json_decode($task->custom_field_values()->where('custom_field_id', $data_id)->first()->value, true) : null;
-        if (is_array($array) || is_array($array) && array_key_exists('_token', $array)) {
+        if (is_array($array) || (is_array($array) && array_key_exists('_token', $array))) {
             $array = end($array);
         }
 
