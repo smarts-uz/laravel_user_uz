@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Passport\HasApiTokens;
 
@@ -239,16 +240,16 @@ class User extends \TCG\Voyager\Models\User
 
         static::creating(static function ($model) {
             if (!$model->isDirty('created_by')) {
-                $model->created_by = auth()->user()->id;
+                $model->created_by = Arr::get(auth()->user(), 'id');
             }
             if (!$model->isDirty('updated_by')) {
-                $model->updated_by = auth()->user()->id;
+                $model->updated_by = Arr::get(auth()->user(), 'id');
             }
         });
 
         static::updating(static function ($model) {
             if (!$model->isDirty('updated_by')) {
-                $model->updated_by = auth()->user()->id;
+                $model->updated_by = Arr::get(auth()->user(), 'id');
             }
         });
     }
