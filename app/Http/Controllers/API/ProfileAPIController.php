@@ -24,7 +24,7 @@ use App\Models\ResponseTemplate;
 use App\Models\User;
 use App\Services\Profile\ProfileService;
 use App\Services\VerificationService;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\JsonResponse as JsonResponseAlias;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -90,7 +90,7 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function portfolios(): JsonResponse
+    public function portfolios(): JsonResponseAlias
     {
         /** @var User $user */
         $user = auth()->user();
@@ -138,7 +138,7 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function portfolioCreate(PortfolioRequest $request): JsonResponse
+    public function portfolioCreate(PortfolioRequest $request): JsonResponseAlias
     {
         $portfolio = $this->profileService->createPortfolio($request);
         return response()->json([
@@ -177,7 +177,7 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function portfolioDelete(Portfolio $portfolio): JsonResponse
+    public function portfolioDelete(Portfolio $portfolio): JsonResponseAlias
     {
         portfolioGuard($portfolio);
         $portfolio->delete();
@@ -242,7 +242,7 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function portfolioUpdate(PortfolioRequest $request, Portfolio $portfolio): JsonResponse
+    public function portfolioUpdate(PortfolioRequest $request, Portfolio $portfolio): JsonResponseAlias
     {
         $portfolio = $this->profileService->updatePortfolio($request, $portfolio);
         return response()->json([
@@ -286,7 +286,7 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function videoStore(ProfileVideoRequest $request): JsonResponse
+    public function videoStore(ProfileVideoRequest $request): JsonResponseAlias
     {
         $response = $this->profileService->videoStore($request);
         return response()->json($response);
@@ -315,7 +315,7 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function videoDelete(): JsonResponse
+    public function videoDelete(): JsonResponseAlias
     {
         /** @var User $user */
         $user = auth()->user();
@@ -353,7 +353,7 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function reviews(Request $request): JsonResponse
+    public function reviews(Request $request): JsonResponseAlias
     {
         $user = auth()->user();
         $reviews = ProfileService::userReviews($user, $request);
@@ -419,7 +419,7 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function balance(Request $request): JsonResponse
+    public function balance(Request $request): JsonResponseAlias
     {
         $data = $this->profileService->balance($request);
         return response()->json([
@@ -451,7 +451,7 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function phoneEdit(): JsonResponse
+    public function phoneEdit(): JsonResponseAlias
     {
         /** @var User $user */
         $user = auth()->user();
@@ -496,8 +496,9 @@ class ProfileAPIController extends Controller
      *         {"token": {}}
      *     },
      * )
+     * @throws \Exception
      */
-    public function phoneUpdate(ProfilePhoneRequest $request): JsonResponse
+    public function phoneUpdate(ProfilePhoneRequest $request): JsonResponseAlias
     {
         $response = $this->profileService->phoneUpdate($request);
         return response()->json($response);
@@ -550,7 +551,7 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function change_password(ProfilePasswordRequest $request): JsonResponse
+    public function change_password(ProfilePasswordRequest $request): JsonResponseAlias
     {
         return $this->profileService->changePassword($request->validated());
     }
@@ -589,7 +590,7 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function avatar(ProfileAvatarRequest $request): JsonResponse
+    public function avatar(ProfileAvatarRequest $request): JsonResponseAlias
     {
         $this->profileService->changeAvatar($request);
         $message = trans('file.Photo updated successfully.');
@@ -660,7 +661,7 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function updateData(ProfileSettingsRequest $request): JsonResponse
+    public function updateData(ProfileSettingsRequest $request): JsonResponseAlias
     {
         $this->profileService->updateSettings($request);
         $message = trans('trans.Settings updated successfully.');
@@ -693,7 +694,7 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function editData(): JsonResponse
+    public function editData(): JsonResponseAlias
     {
         /** @var User $user */
         $user = auth()->user();
@@ -747,7 +748,7 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function editDesctiption(Request $request): JsonResponse
+    public function editDescription(Request $request): JsonResponseAlias
     {
         $profile = new ProfileService();
         $profile->editDescription($request);
@@ -797,7 +798,7 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function userNotifications(Request $request): JsonResponse
+    public function userNotifications(Request $request): JsonResponseAlias
     {
         $message = $this->profileService->notifications($request);
         return response()->json([
@@ -835,7 +836,7 @@ class ProfileAPIController extends Controller
      *     )
      * )
      */
-    public function userProfile(User $user): JsonResponse
+    public function userProfile(User $user): JsonResponseAlias
     {
         setview($user);
         return response()->json([
@@ -871,7 +872,7 @@ class ProfileAPIController extends Controller
      *     )
      * )
      */
-    public function userPortfolios($id): JsonResponse
+    public function userPortfolios($id): JsonResponseAlias
     {
         return response()->json([
             'success' => true,
@@ -906,7 +907,7 @@ class ProfileAPIController extends Controller
      *     )
      * )
      */
-    public function userReviews(Request $request, User $user): JsonResponse
+    public function userReviews(Request $request, User $user): JsonResponseAlias
     {
         $reviews = ProfileService::userReviews($user, $request);
         return response()->json([
@@ -954,7 +955,7 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function subscribeToCategory(CategoryRequest $request): JsonResponse
+    public function subscribeToCategory(CategoryRequest $request): JsonResponseAlias
     {
 
         $data = $request->validated();
@@ -1007,7 +1008,7 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function changeLanguage(Request $request): JsonResponse
+    public function changeLanguage(Request $request): JsonResponseAlias
     {
         if (Auth::guard('api')->check()) {
             cache()->forever('lang' . auth()->id(), $request->get('lang'));
@@ -1046,8 +1047,9 @@ class ProfileAPIController extends Controller
      *         {"token": {}}
      *     },
      * )
+     * @throws \Exception
      */
-    public function selfDelete(): JsonResponse
+    public function selfDelete(): JsonResponseAlias
     {
         /** @var User $user */
         $user = \auth()->user();
@@ -1058,12 +1060,12 @@ class ProfileAPIController extends Controller
                 'phone_number' => correctPhoneNumber($user->phone_number),
                 'message' => __('СМС-код отправлен!')
             ]);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => __('Ваш номер не подтвержден')
-            ]);
         }
+
+        return response()->json([
+            'success' => false,
+            'message' => __('Ваш номер не подтвержден')
+        ]);
     }
 
     /**
@@ -1101,29 +1103,29 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function confirmationSelfDelete(Request $request): JsonResponse
+    public function confirmationSelfDelete(Request $request): JsonResponseAlias
     {
         /** @var User $user */
         $user = \auth()->user();
-        if ($user->verify_code == $request->get('code')) {
+        if ((int)$user->verify_code === (int)$request->get('code')) {
             if (strtotime($user->verify_expiration) >= strtotime(now())) {
                 $user->delete();
                 return response()->json([
                     'success' => true,
                     'message' => __('Успешно удалено')
                 ]);
-            } else {
-                return response()->json([
-                    'success' => false,
-                    'message' => __('Срок действия номера истек')
-                ]);
             }
-        } else {
+
             return response()->json([
                 'success' => false,
-                'message' => __('Код ошибки')
+                'message' => __('Срок действия номера истек')
             ]);
         }
+
+        return response()->json([
+            'success' => false,
+            'message' => __('Код ошибки')
+        ]);
     }
 
     /**
@@ -1166,7 +1168,7 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function report(UserReportRequest $request)
+    public function report(UserReportRequest $request): JsonResponseAlias
     {
         $data = $request->validated();
         ReportedUser::query()->updateOrCreate([
@@ -1216,7 +1218,7 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function block(UserBlockRequest $request)
+    public function block(UserBlockRequest $request): JsonResponseAlias
     {
         $data = $request->validated();
         $blocked_user = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$data['blocked_user_id']);
@@ -1265,11 +1267,11 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function deleteImage(Request $request, Portfolio $portfolio)
+    public function deleteImage(Request $request, Portfolio $portfolio): JsonResponseAlias
     {
         $image = $request->get('image');
         File::delete(public_path() . '/storage/portfolio/'. $image);
-        $images = json_decode($portfolio->image);
+        $images = json_decode($portfolio->image, false);
         $updatedImages = array_diff($images, [$image]);
         $portfolio->image = json_encode(array_values($updatedImages));
         $portfolio->save();
@@ -1313,7 +1315,8 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function work_experience(Request $request){
+    public function work_experience(Request $request): JsonResponseAlias
+    {
 
         /** @var User $user */
         $user = Auth::user();
@@ -1350,7 +1353,8 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function response_template(){
+    public function response_template(): JsonResponseAlias
+    {
 
         /** @var User $user */
         $user = auth()->user();
@@ -1399,7 +1403,8 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function response_template_edit(ResponseTemplateRequest $request){
+    public function response_template_edit(ResponseTemplateRequest $request): JsonResponseAlias
+    {
 
         $data = $request->validated();
         $user_exists = ResponseTemplate::query()->where('user_id',auth()->id());

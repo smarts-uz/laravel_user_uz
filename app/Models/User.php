@@ -194,12 +194,9 @@ class User extends \TCG\Voyager\Models\User
         return $this->walletBalance->balance ?? 0;
     }
 
-    public function isActive()
+    public function isActive(): bool
     {
-        if ((int)$this->is_active === 1) {
-            return true;
-        }
-        return false;
+        return (int)$this->is_active === 1;
     }
 
     public function compliances(): HasMany

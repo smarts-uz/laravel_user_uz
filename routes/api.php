@@ -111,7 +111,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
         Route::get('/balance', [ProfileAPIController::class, 'balance']); // fix
         Route::get('/response-template', [ProfileAPIController::class, 'response_template']); // fix
         Route::post('/response-template/edit', [ProfileAPIController::class, 'response_template_edit']); // fix
-        Route::post('/description/edit', [ProfileAPIController::class, 'editDesctiption']); // fix
+        Route::post('/description/edit', [ProfileAPIController::class, 'editDescription']); // fix
         Route::post('/work-experience', [ProfileAPIController::class, 'work_experience']); // fix
         Route::post('/categories-subscribe', [ProfileAPIController::class, 'subscribeToCategory']); // fix
         Route::post('/firebase-token', [NotificationController::class, 'setToken']); // fix
