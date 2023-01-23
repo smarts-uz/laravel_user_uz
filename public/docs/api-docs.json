@@ -4513,6 +4513,7 @@
                                 "required": [
                                     "name",
                                     "email",
+                                    "phone_number",
                                     "password",
                                     "password_confirmation"
                                 ],
@@ -4525,6 +4526,10 @@
                                         "type": "string",
                                         "format": "email",
                                         "example": "user001@user.com"
+                                    },
+                                    "phone_number": {
+                                        "type": "integer",
+                                        "example": "99899444443"
                                     },
                                     "password": {
                                         "type": "string",
