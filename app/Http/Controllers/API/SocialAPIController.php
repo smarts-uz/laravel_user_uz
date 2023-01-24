@@ -4,12 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\SocialRequest;
-use App\Http\Resources\NotificationResource;
 use App\Http\Resources\PerformerIndexResource;
-use App\Models\Notification;
 use App\Models\User;
 use App\Models\WalletBalance;
-use App\Services\NotificationService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -54,7 +51,7 @@ class SocialAPIController extends Controller
      *     ),
      * )
      */
-    public function login(SocialRequest $request)
+    public function login(SocialRequest $request): \Illuminate\Http\JsonResponse
     {
         try {
             $data = $request->validated();
@@ -75,8 +72,9 @@ class SocialAPIController extends Controller
             $query = User::query()
                 ->where($provider . '_id', $providerUser->id);
 
-            if ($providerUser->email !== null)
+            if ($providerUser->email !== null) {
                 $query->orWhere('email', $providerUser->email);
+            }
 
             $user = $query->first();
 
