@@ -8,16 +8,8 @@
     <div сlass="grid-rows-12  md:px-5 px-1 md:pb-5 pb-1">
         <div class="container p-5">
             <div class="text-center">
-                @php
-                    $user = auth()->user()
-                @endphp
                 <div class="flex justify-center">
-                    <img class="w-20 h-20"
-                        @if ($user->avatar == Null)
-                        src='{{asset("storage/images/default.jpg")}}'
-                        @else
-                        src="{{asset("storage/{$user->avatar}")}}"
-                        @endif alt="avatar">
+                    <img class="w-20 h-20" src="{{asset("storage/{$user->avatar}")}}" alt="avatar">
                 </div>
                 <h3 class="text-2xl font-semibold my-3">
                     {{$user->name}}

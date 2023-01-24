@@ -145,11 +145,13 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function updateData(UserUpdateDataRequest $request)
+    public function updateData(UserUpdateDataRequest $request): \Illuminate\Http\RedirectResponse
     {
         $data = $request->validated();
+        /** @var User $user */
+        $user = auth()->user();
         $profile = new ProfileService();
-        $updatedData = $profile->settingsUpdate($data);
+        $updatedData = $profile->settingsUpdate($data, $user);
         Auth::user()->update((array)$updatedData);
         Alert::success(__('Настройки успешно сохранены'));
         return redirect()->back();
@@ -190,10 +192,12 @@ class ProfileController extends Controller
         return redirect()->back();
     }
 
-    public function editDescription(Request $request)
+    public function editDescription(Request $request): \Illuminate\Http\RedirectResponse
     {
-        $profile = new ProfileService();
-        $profile->editDescription($request);
+        /** @var User $user */
+        $user = Auth::user();
+        $user->description = $request->get('description');
+        $user->save();
         return redirect()->back();
 
     }
@@ -250,7 +254,7 @@ class ProfileController extends Controller
         return view('personalinfo.contact');
     }
 
-    public function verificationContactStore(PersonalInfoRequest $request)
+    public function verificationContactStore(PersonalInfoRequest $request): \Illuminate\Http\RedirectResponse
     {
         $data = $request->validated();
         /** @var User $user */
@@ -266,7 +270,9 @@ class ProfileController extends Controller
 
     public function verificationPhoto()
     {
-        return view('personalinfo.profilephoto');
+        /** @var User $user */
+        $user = auth()->user();
+        return view('personalinfo.profilephoto',compact('user'));
     }
 
     public function verificationPhotoStore(Request $request)
@@ -341,17 +347,22 @@ class ProfileController extends Controller
         return redirect()->route('profile.profileData');
     }
 
-    public function notif_setting_ajax(Request $request)
+    public function notif_setting_ajax(Request $request): Request
     {
-        $profile = new ProfileService();
-        $profile->userNotifications($request);
+        /** @var User $user */
+        $user = auth()->user();
+        $user->system_notification = $request->get('notif11');
+        $user->news_notification = $request->get('notif22');
+        $user->save();
         return $request;
     }
 
-    public function storeProfileImage(Request $request)
+    public function storeProfileImage(Request $request): void
     {
+        /** @var User $user */
+        $user = auth()->user();
         $profile = new ProfileService();
-        $photoName = $profile->storeProfilePhoto($request);
+        $photoName = $profile->storeProfilePhoto($request, $user);
 
         if ($photoName) {
             echo json_encode(['status' => 1, 'msg' => 'success', 'name' => $photoName]);

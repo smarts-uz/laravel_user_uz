@@ -16,6 +16,8 @@ use App\Models\UserCategory;
 use App\Models\WalletBalance;
 use App\Services\SmsMobileService;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -85,11 +87,11 @@ class ProfileService
      * Function  settingsUpdate
      * Mazkur metod sozlamalar bo'limida ma'lumotlarni tahrirlaydi
      * @param $data
+     * @param $user
+     * @return mixed
      */
-    public function settingsUpdate($data)
+    public function settingsUpdate($data, $user)
     {
-        /** @var User $user */
-        $user = auth()->user();
         if ($data['phone_number'] !== $user->phone_number) {
             $data['is_phone_number_verified'] = 0;
             $data['phone_number_old'] = $user->phone_number;
@@ -101,50 +103,21 @@ class ProfileService
      *
      * Function  storeProfilePhoto
      * Mazkur metod user profilidagi rasmni tahrirlaydi
-     * @param Request $request Object
+     * @param $data
+     * @param $user
+     * @return array|string|string[]|null
      */
-    public function storeProfilePhoto(Request $request): array|bool|string|null
+    public function storeProfilePhoto($data, $user)
     {
-        if ($request->hasFile('image')) {
-            $files = $request->file('image');
-            $name = Storage::put('public/uploads', $files);
+        if ($data->hasFile('image')) {
+            $files = $data->file('image');
+            $name = Storage::put('public/user-avatar', $files);
             $name = str_replace('public/', '', $name);
-            /** @var User $user */
-            $user = auth()->user();
             $user->avatar = $name;
             $user->save();
             return $name;
         }
         return null;
-    }
-
-    /**
-     *
-     * Function  editDescription
-     * Mazkur metod user qoldirgan tavsifni tahrirlayi
-     * @param Request $request Object
-     */
-    public function editDescription(Request $request): void
-    {
-        /** @var User $user */
-        $user = Auth::user();
-        $user->description = $request->get('description');
-        $user->save();
-    }
-
-    /**
-     *
-     * Function  userNotifications
-     * Mazkur metod setting bo'limidagi system va news notification
-     * @param Request $request Object
-     */
-    public function userNotifications(Request $request): void
-    {
-        /** @var User $user */
-        $user = auth()->user();
-        $user->system_notification = $request->get('notif11');
-        $user->news_notification = $request->get('notif22');
-        $user->save();
     }
 
     /**
@@ -186,8 +159,8 @@ class ProfileService
             ->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(Review::TOP_USER)->pluck('id')->toArray();
         $item->categories = Category::withTranslations(['ru', 'uz'])->get();
-        $item->review_good = $user->review_good;
         $item->review_bad = $user->review_bad;
+        $item->review_good = $user->review_good;
         $item->review_rating = $user->review_rating;
         $item->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->latest()->get();
         $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->latest()->get();
@@ -200,16 +173,19 @@ class ProfileService
      *
      * Function  userReviews
      * Mazkur metod userga qoldirilgan reviewlar chiqarib beradi
-     * @param Request $request Object
+     * @param $user
+     * @param $performer
+     * @param $review
+     * @return Builder[]|Collection
      */
-    public static function userReviews($user, Request $request)
+    public static function userReviews($user, $performer, $review)
     {
         $reviews = Review::query()->whereHas('task')->where(['user_id' => $user->id]);
-        $performer = $request->get('performer');
+
         if (isset($performer)) {
             $reviews->where(['as_performer' => $performer]);
         }
-        switch ($request->get('review')){
+        switch ($review){
             case 'good' :
                 $reviews->where(['good_bad' => 1]);
                 break;
@@ -253,7 +229,7 @@ class ProfileService
      * @param $portfolio
      * @return mixed
      */
-    public function updatePortfolio($request, $portfolio): mixed
+    public function updatePortfolio($request, $portfolio)
     {
         $user = $portfolio->user;
         $imgData = $portfolio->image ? json_decode($portfolio->image) : [];
@@ -446,7 +422,7 @@ class ProfileService
     {
         /** @var User $user */
         $user = auth()->user();
-        $destination = 'storage/' . $user->avatar;
+        $destination = 'storage/'. $user->avatar;
         if (File::exists($destination)) {
             File::delete($destination);
         }

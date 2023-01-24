@@ -147,8 +147,8 @@ class SocialController extends Controller
     private static function get_avatar($user)
     {
         $fileContents = file_get_contents($user->getAvatar());
-        File::put(public_path() . '/storage/users-avatar/' . $user->getId() . ".jpg", $fileContents);
-        $picture = 'users-avatar/' . $user->getId() . ".jpg";
+        File::put(public_path() . '/storage/user-avatar/' . $user->getId() . ".jpg", $fileContents);
+        $picture = 'user-avatar/' . $user->getId() . ".jpg";
         return $picture;
     }
 

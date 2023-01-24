@@ -356,7 +356,9 @@ class ProfileAPIController extends Controller
     public function reviews(Request $request): JsonResponseAlias
     {
         $user = auth()->user();
-        $reviews = ProfileService::userReviews($user, $request);
+        $performer = $request->get('performer');
+        $review = $request->get('review');
+        $reviews = ProfileService::userReviews($user, $performer, $review);
         return response()->json([
             'success' => true,
             'data' => ReviewIndexResource::collection($reviews)
@@ -750,8 +752,10 @@ class ProfileAPIController extends Controller
      */
     public function editDescription(Request $request): JsonResponseAlias
     {
-        $profile = new ProfileService();
-        $profile->editDescription($request);
+        /** @var User $user */
+        $user = Auth::user();
+        $user->description = $request->get('description');
+        $user->save();
 
         $message = trans('trans.Description updated successfully.');
         return response()->json([
@@ -909,7 +913,9 @@ class ProfileAPIController extends Controller
      */
     public function userReviews(Request $request, User $user): JsonResponseAlias
     {
-        $reviews = ProfileService::userReviews($user, $request);
+        $performer = $request->get('performer');
+        $review = $request->get('review');
+        $reviews = ProfileService::userReviews($user, $performer, $review);
         return response()->json([
             'success' => true,
             'data' => ReviewIndexResource::collection($reviews)

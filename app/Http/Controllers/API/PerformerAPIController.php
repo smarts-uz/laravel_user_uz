@@ -380,13 +380,13 @@ class PerformerAPIController extends Controller
      *     },
      * )
      */
-    public function becomePerformerAvatar(Request $request)
+    public function becomePerformerAvatar(Request $request): JsonResponse
     {
         $data = $request->validate(['avatar'=>'required']);
         $avatar = $data['avatar'];
 
         $data['role_id'] = 2;
-        $name = Storage::put('public/uploads', $avatar);
+        $name = Storage::put('public/user-avatar', $avatar);
         $name = str_replace('public/', '', $name);
         $data['avatar'] = $name;
         auth()->user()->update($data);
