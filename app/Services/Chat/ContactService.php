@@ -8,6 +8,10 @@ use App\Models\User;
 
 class ContactService
 {
+    /**
+     * @param $authUser
+     * @return mixed
+     */
     public static function contactsList($authUser)
     {
         // get not deleted archive chat user ids
@@ -46,7 +50,7 @@ class ContactService
 
         // get unique elements and remove current user from list
         $userIdsList = array_unique($userIdsList);
-        if (($key = array_search($authUser, $userIdsList)) !== false) {
+        if (($key = array_search($authUser, $userIdsList, true)) !== false) {
             unset($userIdsList[$key]);
         }
 

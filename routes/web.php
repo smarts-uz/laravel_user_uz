@@ -143,8 +143,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/getcategory', [ProfileController::class, 'getCategory'])->name('profile.getCategory');
         Route::post('/storeDistrict', [ProfileController::class, 'storeDistrict'])->name('profile.StoreDistrict');
         Route::post('/store/profile/image', [ProfileController::class, 'storeProfileImage'])->name('profile.storeProfileImage');
-        Route::post('/comment', [ProfileController::class, 'comment'])->name('profile.comment');
-        Route::post('/testBase', [ProfileController::class, 'testBase'])->name('profile.testBase');
         Route::post('/description', [ProfileController::class, 'editDescription'])->name('profile.EditDescription');
         Route::view('/create', 'profile/create_port');
         Route::post('/portfolio/create', [ProfileController::class, 'createPortfolio'])->name('profile.createPortfolio');
@@ -156,7 +154,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 });
 Route::post('/set-session', [ProfileController::class, 'setSession'])->name('profile.set_session');
-Route::post('/uploadImage', [ProfileController::class, 'UploadImage'])->name('profile.UploadImage');
+Route::post('/uploadImage', [ProfileController::class, 'uploadImage'])->name('profile.UploadImage');
 #endregion
 
 #region creat task

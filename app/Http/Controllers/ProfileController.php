@@ -40,7 +40,7 @@ class ProfileController extends Controller
         return redirect('categories/1');
     }
 
-    public function clear_sessions()
+    public function clear_sessions(): \Illuminate\Http\RedirectResponse
     {
         /** @var User $user */
         $user = auth()->user();
@@ -51,13 +51,7 @@ class ProfileController extends Controller
         return back();
     }
 
-
-    public function comment(Request $request)
-    {
-        return (new ProfileService())->commentServ($request);
-    }
-
-    public function delete(Portfolio $portfolio)
+    public function delete(Portfolio $portfolio): \Illuminate\Http\RedirectResponse
     {
         portfolioGuard($portfolio);
 
@@ -65,16 +59,13 @@ class ProfileController extends Controller
         return redirect()->route('profile.profileData');
     }
 
-    public function UploadImage(Request $request)
+    public function uploadImage(Request $request): bool
     {
-        $uploadImg = new ProfileService();
-        $uploadImg->uploadImageServ($request);
+        /** @var User $user */
+        $user = auth()->user();
+        $uploadedImages = $request->file('images');
+        (new ProfileService())->uploadImageServ($uploadedImages,$user);
         return true;
-    }
-
-    public function testBase()
-    {
-        return (new ProfileService())->testBaseServ();
     }
 
     public function portfolio(Portfolio $portfolio)
@@ -131,13 +122,27 @@ class ProfileController extends Controller
             ]);
     }
 
-    //settings
     public function editData()
     {
-        $profile = new ProfileService();
-        $data = $profile->settingsEdit();
+        /** @var User $user */
+        $user = Auth::user();
+        $service = new ProfileService();
+        $item = $service->settingsEdit($user);
 
-        return view('profile.settings', $data);
+        return view('profile.settings',[
+            'user' => $user,
+            'categories' => $item->categories,
+            'categories2' => $item->categories2,
+            'regions' => $item->regions,
+            'top_users' => $item->top_users,
+            'sessions' => $item->sessions,
+            'parser' => $item->parser,
+            'review_good' => $item->review_good,
+            'review_bad' => $item->review_bad,
+            'review_rating' => $item->review_rating,
+            'task' => $item->task,
+            'user_categories' => $item->user_categories,
+        ]);
     }
 
     public function updateData(UserUpdateDataRequest $request)

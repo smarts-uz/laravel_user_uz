@@ -5,6 +5,7 @@ namespace App\Services\Profile;
 use App\Http\Resources\TransactionHistoryCollection;
 use App\Item\ProfileCashItem;
 use App\Item\ProfileDataItem;
+use App\Item\ProfileSettingItem;
 use App\Models\Region;
 use App\Models\Review;
 use App\Models\Session;
@@ -24,43 +25,25 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use JetBrains\PhpStorm\ArrayShape;
 use TCG\Voyager\Models\Category;
+use UAParser\Exception\FileNotFoundException;
 use UAParser\Parser;
 
 
 class ProfileService
 {
     public const MAX_TRANSACTIONS = 15;
-    /**
-     *
-     * Function  commentServ
-     * Mazkur metod user portfolioda qoldirilgan commentni saqlaydi
-     * @param $request
-     * @return
-     */
-    public function commentServ($request)
-    {
-        /** @var User $user */
-        $user = Auth::user();
-        $comment = $request->input('comment');
-        $description = $request->input('description');
-        $data['user_id'] = $user->id;
-        $data['comment'] = $comment;
-        $data['description'] = $description;
-        return Portfolio::query()->create($data);
-    }
 
     /**
      *
      * Function  uploadImageServ
      * Mazkur metod user portfolioda rasmlarni saqlaydi
-     * @param Request $request Object
+     * @param $uploadedImages
+     * @param $user
      */
-    public function uploadImageServ(Request $request): void
+    public function uploadImageServ($uploadedImages, $user): void
     {
-        /** @var User $user */
-        $user = auth()->user();
-        $imgData = session()->has('images') ? json_decode(session('images')) : [];
-        foreach ($request->file('images') as $uploadedImage) {
+        $imgData = session()->has('images') ? json_decode(session('images'), false) : [];
+        foreach ($uploadedImages as $uploadedImage) {
             $filename = $user->name . '/' . time() . '_' . $uploadedImage->getClientOriginalName();
             $uploadedImage->move(public_path() . '/storage/portfolio/' . $user->name . '/', $filename);
             $imgData[] = $filename;
@@ -70,60 +53,31 @@ class ProfileService
 
     /**
      *
-     * Function  testBaseServ
-     * Mazkur metod user portfolioni tahrirlaydi
-     */
-    public function testBaseServ()
-    {
-        /** @var User $user */
-        $user = Auth::user();
-        /** @var Portfolio $comment */
-        $comment = $user->portfolios()->orderBy('created_at', 'desc')->first();
-        $image = File::allFiles("/storage/portfolio/$user->name");
-        $json = implode(',', $image);
-        $data['image'] = $json;
-        $id = $comment->id;
-        $base = new Portfolio();
-        if ($base->query()->where('id', $id)->update($data)) {
-            return redirect()->route('profile.profileData');
-        }
-    }
-
-    /**
-     *
      * Function  settingsEdit
      * Mazkur metod sozlamalar bo'limida ma'lumotlarni chiqarib beradi
+     * @param $user
+     * @return ProfileSettingItem
+     * @throws FileNotFoundException
      */
-    public function settingsEdit(): array
+    public function settingsEdit($user): ProfileSettingItem
     {
-        /** @var User $user */
-        $user = Auth::user();
-        $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->select('id', 'name')->orderBy("order", "asc")->get();
-        $categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->orderBy("order", "asc")->get();
-        $regions = Region::withTranslations(['ru', 'uz'])->get();
-        $top_users = User::query()->where('role_id', User::ROLE_PERFORMER)->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
-            ->limit(Review::TOP_USER)->pluck('id')->toArray();
-        $sessions = Session::query()->where('user_id', $user->id)->get();
-        $parser = Parser::create();
-        $review_good = $user->review_good;
-        $review_bad = $user->review_bad;
-        $review_rating = $user->review_rating;
-        $user_categories = UserCategory::query()->where('user_id',$user->id)->pluck('category_id')->toArray();
-        $task = Task::query()->where('user_id', Auth::id())->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->get();
-        return array(
-            'user' => $user,
-            'categories' => $categories,
-            'categories2' => $categories2,
-            'regions' => $regions,
-            'top_users' => $top_users,
-            'sessions' => $sessions,
-            'parser' => $parser,
-            'review_good' => $review_good,
-            'review_bad' => $review_bad,
-            'review_rating' => $review_rating,
-            'task' => $task,
-            'user_categories' => $user_categories,
-        );
+        $item = new ProfileSettingItem();
+        $item->categories = Category::query()->where('parent_id', null)->select('id', 'name')->orderBy("order")->get();
+        $item->categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->orderBy("order")->get();
+        $item->regions = Region::all();
+        $item->top_users = User::query()
+            ->where('role_id', User::ROLE_PERFORMER)
+            ->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
+            ->limit(Review::TOP_USER)->pluck('id')
+            ->toArray();
+        $item->sessions = Session::query()->where('user_id', $user->id)->get();
+        $item->parser = Parser::create();
+        $item->review_good = $user->review_good;
+        $item->review_bad = $user->review_bad;
+        $item->review_rating = $user->review_rating;
+        $item->user_categories = UserCategory::query()->where('user_id',$user->id)->pluck('category_id')->toArray();
+        $item->task = Task::query()->where('user_id', Auth::id())->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->get();
+        return $item;
     }
 
     /**

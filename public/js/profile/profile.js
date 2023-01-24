@@ -12,15 +12,3 @@ $('#s2').click(function(event){
     $('.desc').addClass('block').removeClass('hidden');
     $('.formdesc').removeClass('block').addClass('hidden')
 });
-$("#button_comment").click(function(event){
-    let comment = $("input[name=comment]").val();
-    $.ajax({
-        url: "{{route('profile.comment')}}",
-        type:"POST",
-        data:{
-            comment:comment,
-            _token:$('meta[name="csrf-token"]').attr('content'),
-        },
-    });
-    toggleModal6('modal-id6');
-});
