@@ -236,7 +236,7 @@ return [
          * Pass the validatorUrl parameter to SwaggerUi init on the JS side.
          * A null value here disables validation.
         */
-        'validator_url' => null,
+        'validator_url' => "https://validator.swagger.io/validator",
 
         /*
          * Persist authorization login after refresh browser
