@@ -105,17 +105,17 @@ class ProfileService
      * Mazkur metod user profilidagi rasmni tahrirlaydi
      * @param $data
      * @param $user
-     * @return array|string|string[]|null
+     * @return string|null
      */
-    public function storeProfilePhoto($data, $user)
+    public function storeProfilePhoto($data, $user): ?string
     {
         if ($data->hasFile('image')) {
             $files = $data->file('image');
-            $name = Storage::put('public/user-avatar', $files);
-            $name = str_replace('public/', '', $name);
-            $user->avatar = $name;
+            $filename = 'user-avatar/'.$files->getClientOriginalName().'_'.time() . ".jpg";
+            $files->move(public_path().'/storage/user-avatar/', $filename);
+            $user->avatar = $filename;
             $user->save();
-            return $name;
+            return $filename;
         }
         return null;
     }

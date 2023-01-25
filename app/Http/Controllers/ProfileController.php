@@ -275,7 +275,7 @@ class ProfileController extends Controller
         return view('personalinfo.profilephoto',compact('user'));
     }
 
-    public function verificationPhotoStore(Request $request)
+    public function verificationPhotoStore(Request $request): \Illuminate\Http\RedirectResponse
     {
         /** @var User $user */
         $user = Auth::user();
