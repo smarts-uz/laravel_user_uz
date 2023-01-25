@@ -1,6 +1,6 @@
 <?php
 
-namespace Joy\VoyagerApi\Console\Commands;
+namespace App\Console\Commands;
 
 use TCG\Voyager\Models\DataRow;
 use cebe\openapi\spec\OpenApi;
@@ -29,17 +29,12 @@ class GenerateDocsCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Regenerate docs';
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $description = 'Command description';
 
     /**
      * Execute the console command.
      *
-     * @return void
+     * @return int
      */
     public function handle()
     {

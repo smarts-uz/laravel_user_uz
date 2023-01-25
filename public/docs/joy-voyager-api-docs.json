@@ -89,6 +89,9 @@
                                 "phone_number_old",
                                 "system_notification",
                                 "news_notification",
+                                "notification_off",
+                                "notification_to",
+                                "notification_from",
                                 "last_seen",
                                 "gender",
                                 "sms_notification",
@@ -1944,7 +1947,6 @@
                                 "min",
                                 "slug",
                                 "ico",
-                                "ico_mini",
                                 "double_address",
                                 "remote",
                                 "created_at",
@@ -4016,22 +4018,6 @@
                             "type": "string",
                             "example": "2020-01-01 00:00,,2021-06-01 00:00"
                         }
-                    },
-                    {
-                        "name": "filters[deleted_by]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[updated_by]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
                     }
                 ],
                 "responses": {
@@ -4327,9 +4313,7 @@
                                 "route",
                                 "order",
                                 "values",
-                                "deleted_at",
-                                "deleted_by",
-                                "updated_by"
+                                "deleted_at"
                             ]
                         }
                     },
@@ -4359,9 +4343,7 @@
                                     "route",
                                     "order",
                                     "values",
-                                    "deleted_at",
-                                    "deleted_by",
-                                    "updated_by"
+                                    "deleted_at"
                                 ]
                             }
                         }
@@ -21218,14 +21200,6 @@
                         "type": "date-time",
                         "description": "Deleted At",
                         "example": "2021-05-17 00:00"
-                    },
-                    "deleted_by": {
-                        "type": "string",
-                        "description": "Deleted By"
-                    },
-                    "updated_by": {
-                        "type": "string",
-                        "description": "Updated By"
                     }
                 }
             },
@@ -21326,14 +21300,6 @@
                         "type": "date-time",
                         "description": "Deleted At",
                         "example": "2021-05-17 00:00"
-                    },
-                    "deleted_by": {
-                        "type": "string",
-                        "description": "Deleted By"
-                    },
-                    "updated_by": {
-                        "type": "string",
-                        "description": "Updated By"
                     }
                 }
             },
@@ -24197,14 +24163,6 @@
                                     "type": "date-time",
                                     "description": "Deleted At",
                                     "example": "2021-05-17 00:00"
-                                },
-                                "deleted_by": {
-                                    "type": "string",
-                                    "description": "Deleted By"
-                                },
-                                "updated_by": {
-                                    "type": "string",
-                                    "description": "Updated By"
                                 }
                             }
                         }
@@ -24310,14 +24268,6 @@
                                     "type": "date-time",
                                     "description": "Deleted At",
                                     "example": "2021-05-17 00:00"
-                                },
-                                "deleted_by": {
-                                    "type": "string",
-                                    "description": "Deleted By"
-                                },
-                                "updated_by": {
-                                    "type": "string",
-                                    "description": "Updated By"
                                 }
                             }
                         }
@@ -24423,14 +24373,6 @@
                                     "type": "date-time",
                                     "description": "Deleted At",
                                     "example": "2021-05-17 00:00"
-                                },
-                                "deleted_by": {
-                                    "type": "string",
-                                    "description": "Deleted By"
-                                },
-                                "updated_by": {
-                                    "type": "string",
-                                    "description": "Updated By"
                                 }
                             }
                         }

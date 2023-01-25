@@ -39,7 +39,7 @@ return [
                  * Absolute paths to directory containing the swagger annotations are stored.
                 */
                 'annotations' => [
-                    base_path('app'),
+                    base_path('app/Http/Controllers/API'),
                     base_path('vendor/joy/*api*/src'),
                 ],
 
@@ -236,7 +236,7 @@ return [
          * Pass the validatorUrl parameter to SwaggerUi init on the JS side.
          * A null value here disables validation.
         */
-        'validator_url' => "https://validator.swagger.io/validator",
+        'validator_url' => null,
 
         /*
          * Persist authorization login after refresh browser
@@ -246,9 +246,10 @@ return [
         /*
          * Uncomment to add constants which can be used in annotations
          */
+
         'constants' => [
             'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://my-default-host.com'),
-            'L5_SWAGGER_CONST_HOST2' => env('L5_SWAGGER_CONST_HOST2', 'http://my-default-host.com'),
+            'L5_SWAGGER_CONST_HOST2' => 'https://dev.' . substr(env('L5_SWAGGER_CONST_HOST', 'http://my-default-host.com'), 8),
             'APP_NAME' => env('APP_NAME', 'Joy Voyager Api'),
         ],
     ],

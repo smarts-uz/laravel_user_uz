@@ -11,7 +11,7 @@
             "description": "Primary API Server"
         },
         {
-            "url": "http:\/\/servboxvoyager",
+            "url": "https:\/\/dev.user.uz",
             "description": "Another API Server"
         }
     ],
@@ -1322,7 +1322,7 @@
                     "Profile"
                 ],
                 "summary": "Profile edit description",
-                "operationId": "939d0a485408db6dea4775fe847e4498",
+                "operationId": "0f09bde9de7481991dbfc16f79d4bc68",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -4016,342 +4016,6 @@
                 ]
             }
         },
-        "\/api\/notifications": {
-            "get": {
-                "tags": [
-                    "Notifications"
-                ],
-                "summary": "Get notifications",
-                "operationId": "955f0fc2425cb971c9b3bdd768fc2a04",
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/read-notification\/{notification}": {
-            "post": {
-                "tags": [
-                    "Notifications"
-                ],
-                "summary": "Read notifications",
-                "operationId": "97f7d76ff0f0ea630efedcfc0a2c46ff",
-                "parameters": [
-                    {
-                        "name": "notification",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/firebase-token": {
-            "post": {
-                "tags": [
-                    "Profile"
-                ],
-                "summary": "Firebase token",
-                "operationId": "c221d40772a6cf70fa55b76c08d8a03f",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart\/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "token": {
-                                        "type": "string"
-                                    },
-                                    "device_id": {
-                                        "type": "integer"
-                                    },
-                                    "device_name": {
-                                        "type": "string"
-                                    },
-                                    "platform": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/count\/notifications": {
-            "get": {
-                "tags": [
-                    "Notifications"
-                ],
-                "summary": "Notifications count",
-                "operationId": "3d76d779c655ce923cba405fca8b544b",
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/chat\/deleteConversation": {
-            "post": {
-                "tags": [
-                    "Chat"
-                ],
-                "summary": "Chat Delete Conversation",
-                "operationId": "47e07671140f9b20b82508ef4cd2de32",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/chat\/sendMessage": {
-            "post": {
-                "tags": [
-                    "Chat"
-                ],
-                "summary": "",
-                "operationId": "6d158f296101e86e16ec71247600a663",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "msg",
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/chat\/fetchMessages": {
-            "post": {
-                "tags": [
-                    "Chat"
-                ],
-                "summary": "Chat Fetch Messages",
-                "operationId": "bf77389bd76fc7884effb535b28e2615",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/chat\/makeSeen": {
-            "post": {
-                "tags": [
-                    "Chat"
-                ],
-                "summary": "",
-                "operationId": "c078d17b4efaa29b1b8617a5600b8b52",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/chat\/getContacts": {
-            "get": {
-                "tags": [
-                    "Chat"
-                ],
-                "summary": "Chat getContacts",
-                "operationId": "6fc0b9c90459b92cf96fc08bd002d613",
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/chat\/search": {
-            "get": {
-                "tags": [
-                    "Chat"
-                ],
-                "summary": "Chat search",
-                "operationId": "09e094d028e9e617684e2ad093d9153b",
-                "parameters": [
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
         "\/api\/login": {
             "post": {
                 "tags": [
@@ -4513,7 +4177,6 @@
                                 "required": [
                                     "name",
                                     "email",
-                                    "phone_number",
                                     "password",
                                     "password_confirmation"
                                 ],
@@ -4526,10 +4189,6 @@
                                         "type": "string",
                                         "format": "email",
                                         "example": "user001@user.com"
-                                    },
-                                    "phone_number": {
-                                        "type": "integer",
-                                        "example": "99899444443"
                                     },
                                     "password": {
                                         "type": "string",
@@ -4646,6 +4305,9 @@
                                 "phone_number_old",
                                 "system_notification",
                                 "news_notification",
+                                "notification_off",
+                                "notification_to",
+                                "notification_from",
                                 "last_seen",
                                 "gender",
                                 "sms_notification",
@@ -8197,22 +7859,6 @@
                             "type": "string",
                             "example": "2020-01-01 00:00,,2021-06-01 00:00"
                         }
-                    },
-                    {
-                        "name": "filters[deleted_by]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[updated_by]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
                     }
                 ],
                 "responses": {
@@ -8508,9 +8154,7 @@
                                 "route",
                                 "order",
                                 "values",
-                                "deleted_at",
-                                "deleted_by",
-                                "updated_by"
+                                "deleted_at"
                             ]
                         }
                     },
@@ -8540,9 +8184,7 @@
                                     "route",
                                     "order",
                                     "values",
-                                    "deleted_at",
-                                    "deleted_by",
-                                    "updated_by"
+                                    "deleted_at"
                                 ]
                             }
                         }
@@ -9576,6 +9218,258 @@
                                     "properties": {
                                         "message": {
                                             "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/notifications": {
+            "get": {
+                "tags": [
+                    "Core | notifications"
+                ],
+                "summary": "notifications index",
+                "operationId": "notifications_index",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Global search",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "length",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "description": "Sort by column",
+                        "required": false,
+                        "schema": {
+                            "enum": [
+                                "id",
+                                "created_at",
+                                "updated_at",
+                                "description",
+                                "user_id",
+                                "service_id",
+                                "task_id",
+                                "cat_id",
+                                "name_task",
+                                "status",
+                                "type",
+                                "is_read",
+                                "performer_id",
+                                "deleted_at",
+                                "notification_belongsto_user_relationship",
+                                "notification_hasmany_service_relationship"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort_order",
+                        "in": "query",
+                        "description": "Sort by direction",
+                        "required": false,
+                        "schema": {
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[id][]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    {
+                        "name": "filters[created_at]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
+                        }
+                    },
+                    {
+                        "name": "filters[description]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[user_id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[service_id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[task_id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[cat_id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[name_task]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[type]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[is_read]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[performer_id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[deleted_at]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#\/components\/schemas\/VoyagerNotificationsBrowseResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "$ref": "#\/components\/schemas\/Links"
+                                        },
+                                        "meta": {
+                                            "$ref": "#\/components\/schemas\/Meta"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Core | notifications"
+                ],
+                "summary": "notifications store",
+                "operationId": "notifications_store",
+                "requestBody": {
+                    "$ref": "#\/components\/requestBodies\/VoyagerNotificationsStoreRequest"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#\/components\/schemas\/VoyagerNotificationsReadResource"
                                         }
                                     }
                                 }
@@ -24993,14 +24887,6 @@
                         "type": "date-time",
                         "description": "Deleted At",
                         "example": "2021-05-17 00:00"
-                    },
-                    "deleted_by": {
-                        "type": "string",
-                        "description": "Deleted By"
-                    },
-                    "updated_by": {
-                        "type": "string",
-                        "description": "Updated By"
                     }
                 }
             },
@@ -25101,14 +24987,6 @@
                         "type": "date-time",
                         "description": "Deleted At",
                         "example": "2021-05-17 00:00"
-                    },
-                    "deleted_by": {
-                        "type": "string",
-                        "description": "Deleted By"
-                    },
-                    "updated_by": {
-                        "type": "string",
-                        "description": "Updated By"
                     }
                 }
             },
@@ -27980,14 +27858,6 @@
                                     "type": "date-time",
                                     "description": "Deleted At",
                                     "example": "2021-05-17 00:00"
-                                },
-                                "deleted_by": {
-                                    "type": "string",
-                                    "description": "Deleted By"
-                                },
-                                "updated_by": {
-                                    "type": "string",
-                                    "description": "Updated By"
                                 }
                             }
                         }
@@ -28093,14 +27963,6 @@
                                     "type": "date-time",
                                     "description": "Deleted At",
                                     "example": "2021-05-17 00:00"
-                                },
-                                "deleted_by": {
-                                    "type": "string",
-                                    "description": "Deleted By"
-                                },
-                                "updated_by": {
-                                    "type": "string",
-                                    "description": "Updated By"
                                 }
                             }
                         }
@@ -28206,14 +28068,6 @@
                                     "type": "date-time",
                                     "description": "Deleted At",
                                     "example": "2021-05-17 00:00"
-                                },
-                                "deleted_by": {
-                                    "type": "string",
-                                    "description": "Deleted By"
-                                },
-                                "updated_by": {
-                                    "type": "string",
-                                    "description": "Updated By"
                                 }
                             }
                         }
