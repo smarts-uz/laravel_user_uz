@@ -306,32 +306,34 @@ class NotificationService
     /**
      * Function for use send push(firebase) notifications
      *
-     * @param $user // User firebase token
+     * @param $user // User model
      * @param $notification // Notification title and body
      * @param $type // for notification or chat. Values - e.g. "chat", "notification"
      * @param $model // data for handling in mobile
      */
-    public static function pushNotification($user, $notification, $type, $model): void
+    public static function pushNotification(User $user, $notification, $type, $model): void
     {
         $notification['sound'] = "default";
         foreach ($user->sessions as $session) {
-            Http::withHeaders([
-                'Content-Type' => 'application/json',
-                'Authorization' => 'key=' . env('FCM_SERVER_KEY')
-            ])->post('https://fcm.googleapis.com/fcm/send',
-                [
-                    "to" => $session->firebase_token,
-                    "notification" => $notification,
-                    "data" => [
-                        "type" => $type,
-                        "data" => $model,
-                        "click_action" => "FLUTTER_NOTIFICATION_CLICK",
+
+            if (!empty($session->firebase_token))
+                Http::withHeaders([
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'key=' . env('FCM_SERVER_KEY')
+                ])->post('https://fcm.googleapis.com/fcm/send',
+                    [
+                        "to" => $session->firebase_token,
+                        "notification" => $notification,
+                        "data" => [
+                            "type" => $type,
+                            "data" => $model,
+                            "click_action" => "FLUTTER_NOTIFICATION_CLICK",
+                            "sound" => "default",
+                        ],
                         "sound" => "default",
-                    ],
-                    "sound" => "default",
-                    "click_action" => "FLUTTER_NOTIFICATION_CLICK"
-                ]
-            )->body();
+                        "click_action" => "FLUTTER_NOTIFICATION_CLICK"
+                    ]
+                )->body();
         }
     }
 
