@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -142,16 +143,16 @@ class Task extends Model
 
         static::updating(static function ($model) {
             if (!$model->isDirty('updated_by')) {
-                $model->updated_by = auth()->user()->id;
+                $model->updated_by = Arr::get(auth()->user(), 'id');
             }
         });
 
         static::creating(static function ($model) {
             if (!$model->isDirty('created_by')) {
-                $model->created_by = auth()->user()->id;
+                $model->created_by =  Arr::get(auth()->user(), 'id');
             }
             if (!$model->isDirty('updated_by')) {
-                $model->updated_by = auth()->user()->id;
+                $model->updated_by =  Arr::get(auth()->user(), 'id');
             }
         });
 
