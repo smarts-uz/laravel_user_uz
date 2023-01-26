@@ -39,7 +39,7 @@ return [
                  * Absolute paths to directory containing the swagger annotations are stored.
                 */
                 'annotations' => [
-                    base_path('app/Http/Controllers/API'),
+                    base_path('app/Http/Controllers'),
                     base_path('vendor/joy/*api*/src'),
                 ],
 

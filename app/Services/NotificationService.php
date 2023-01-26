@@ -258,7 +258,7 @@ class NotificationService
     }
 
 
-    public static function pushNoti(User $user, Notification $notification)
+    public static function pushNoti(User $user, Notification $notification): void
     {
         $locale = cacheLang($user->id);
 

@@ -198,7 +198,7 @@ class PerformerAPIController extends Controller
      *     },
      * )
      */
-    public function give_task(GiveTaskRequest $request)
+    public function give_task(GiveTaskRequest $request): JsonResponse
     {
         $data = $request->validated();
         /** @var Task $task */
