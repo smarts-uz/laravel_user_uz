@@ -42,7 +42,7 @@ class NotificationService
                                 Notification::RESPONSE_TO_TASK, Notification::SEND_REVIEW_PERFORMER,
                                 Notification::RESPONSE_TO_TASK_FOR_USER, Notification::CANCELLED_TASK,
                                 Notification::ADMIN_COMPLETE_TASK, Notification::ADMIN_CANCEL_TASK,
-                                Notification::NEW_PASSWORD, Notification::WALLET_BALANCE
+                                Notification::NEW_PASSWORD, Notification::WALLET_BALANCE,
                             ]);
                     });
                 if ((int)$user->role_id === User::ROLE_PERFORMER && $web)
@@ -281,7 +281,7 @@ class NotificationService
                 $notification = Notification::query()->create([
                     'performer_id' => $performer->id,
                     'description' => 'test notif',
-                    "type" => 15
+                    "type" => Notification::TEST_FIREBASE_NOTIFICATION
                 ]);
                 self::pushNotification($performer, [
                     'title' => 'test firebase notification title',
