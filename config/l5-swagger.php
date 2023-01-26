@@ -249,7 +249,7 @@ return [
 
         'constants' => [
             'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://my-default-host.com'),
-            'L5_SWAGGER_CONST_HOST2' => 'https://dev.' . substr(env('L5_SWAGGER_CONST_HOST', 'http://my-default-host.com'), 8),
+            'L5_SWAGGER_CONST_HOST2' => 'http://dev.' . substr(env('L5_SWAGGER_CONST_HOST', 'http://my-default-host.com'), 8),
             'APP_NAME' => env('APP_NAME', 'Joy Voyager Api'),
         ],
     ],

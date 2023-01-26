@@ -11,7 +11,7 @@
             "description": "Primary API Server"
         },
         {
-            "url": "https:\/\/dev.user.uz",
+            "url": "http:\/\/dev.user.uz",
             "description": "Another API Server"
         }
     ],
