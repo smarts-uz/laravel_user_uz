@@ -272,7 +272,7 @@ class NotificationService
 
     }
 
-    public function test_firebase_notif($data)
+    public function test_firebase_notif($data): array
     {
         if ($data === 'null'){
             $performers = User::query()->where('role_id', User::ROLE_PERFORMER)->get();
@@ -300,7 +300,7 @@ class NotificationService
                 'body' => 'test firebase notification body'
             ], 'notification', new NotificationResource($notification));
         }
-        return $data;
+        return ['success' => true, 'message' => 'success', 'data'=> $data];
     }
 
     /**
