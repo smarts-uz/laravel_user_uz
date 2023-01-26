@@ -20,7 +20,7 @@
                                     @csrf
                                     <div class="form-group">
                                         <label>Yangi Parol</label>
-                                        <input type="text" value="" id="reset_password" required class="form-control" name="password" placeholder="New Password">
+                                        <input type="password" value="" id="reset_password" required class="form-control" name="password" placeholder="New Password">
                                     </div>
                                     <div class="form-group">
                                         <label>Yangi parolni takrorlang</label>
