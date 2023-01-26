@@ -272,6 +272,36 @@ class NotificationService
 
     }
 
+    public function test_firebase_notif($data)
+    {
+        if ($data === 'null'){
+            $performers = User::query()->where('role_id', User::ROLE_PERFORMER)->get();
+            foreach ($performers as $performer) {
+                /** @var Notification $notification */
+                $notification = Notification::query()->create([
+                    'performer_id' => $performer->id,
+                    'description' => 'test notif',
+                    "type" => 15
+                ]);
+                self::pushNotification($performer, [
+                    'title' => 'test firebase notification title',
+                    'body' => 'test firebase notification body'
+                ], 'notification', new NotificationResource($notification));
+            }
+        }else{
+            $notification = Notification::query()->create([
+                'user_id'=> $data,
+                'description' => '123',
+                'type' => 15,
+            ]);
+            $performer = User::query()->findOrFail($data);
+            self::pushNotification($performer, [
+                'title' => 'test firebase notification title',
+                'body' => 'test firebase notification body'
+            ], 'notification', new NotificationResource($notification));
+        }
+        return $data;
+    }
 
     /**
      * Function for use send push(firebase) notifications
@@ -303,8 +333,6 @@ class NotificationService
                 ]
             )->body();
         }
-
-
     }
 
     public static function titles($type, $locale = null): string

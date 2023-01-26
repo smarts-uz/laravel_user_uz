@@ -19,7 +19,13 @@ use TCG\Voyager\Http\Controllers\VoyagerBaseController;
 class NotificationController extends VoyagerBaseController
 {
     use Response;
+    protected NotificationService $notificationService;
 
+
+    public function __construct()
+    {
+        $this->notificationService = new NotificationService();
+    }
 
     /**
      * @OA\Get(
@@ -239,9 +245,9 @@ class NotificationController extends VoyagerBaseController
                 'message' => __('voyager::generic.successfully_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
                 'alert-type' => 'success',
             ]);
-        } else {
-            return response()->json(['success' => true, 'data' => $data]);
         }
+
+        return response()->json(['success' => true, 'data' => $data]);
     }
 
     /**
@@ -312,33 +318,9 @@ class NotificationController extends VoyagerBaseController
      */
     public function test_firebase_notification(Request $request): JsonResponse
     {
+
         $data = $request->get('user_id');
-        if ($data === 'null'){
-            $performers = User::query()->where('role_id', User::ROLE_PERFORMER)->select('id', 'email', 'firebase_token', 'sms_notification', 'email_notification', 'phone_number')->get();
-            foreach ($performers as $performer) {
-                /** @var Notification $notification */
-                $notification = Notification::query()->create([
-                    'performer_id' => $performer->id,
-                    'description' => 'test notif',
-                    "type" => 15
-                ]);
-                NotificationService::pushNotification($performer, [
-                    'title' => 'test firebase notification title',
-                    'body' => 'test firebase notification body'
-                ], 'notification', new NotificationResource($notification));
-            }
-        }else{
-            $notification = Notification::query()->create([
-                'user_id'=> $data,
-                'description' => '123',
-                'type' => 15,
-            ]);
-            $performer = User::query()->findOrFail($data);
-            NotificationService::pushNotification($performer, [
-                'title' => 'test firebase notification title',
-                'body' => 'test firebase notification body'
-            ], 'notification', new NotificationResource($notification));
-        }
+        $this->notificationService->test_firebase_notif($data);
 
         return response()->json(['success' => true, 'message' => 'success']);
     }

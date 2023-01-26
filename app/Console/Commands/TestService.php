@@ -2,10 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\User;
-use App\Services\Chat\ContactService;
-use App\Services\PerformersService;
-use App\Services\Profile\ProfileService;
+use App\Services\NotificationService;
 use Illuminate\Console\Command;
 
 class TestService extends Command
@@ -31,9 +28,9 @@ class TestService extends Command
      */
     public function handle()
     {
-
-        $performer_filter = new PerformersService();
-        $data = $performer_filter->performer_filter([]);
+        $datas = 655;
+        $notificationService = new NotificationService();
+        $data = $notificationService->test_firebase_notif($datas);
         dd($data);
     }
 }
