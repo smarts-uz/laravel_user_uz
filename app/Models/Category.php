@@ -37,9 +37,9 @@ class Category extends Model
         return $this->hasMany(Task::class);
     }
 
-    public function getIcoAttribute($value)
+    public function getIcoAttribute($value): string
     {
-        return $value == null ? Category::find($this->parent_id)->ico : ucfirst($value);
+        return $value == null ? str_replace('Categories', 'categories', self::find($this->parent_id)->ico) : ucfirst($value);
     }
 
 
