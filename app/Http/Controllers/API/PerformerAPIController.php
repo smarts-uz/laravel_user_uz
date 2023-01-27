@@ -64,7 +64,7 @@ class PerformerAPIController extends Controller
      * )
      *
      */
-    public function service(Request $request)
+    public function service(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $performers = User::query()
             ->where('role_id', User::ROLE_PERFORMER)
@@ -154,9 +154,10 @@ class PerformerAPIController extends Controller
      * )
      *
      */
-    public function performer_filter(Request $request)
+    public function performer_filter(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $performers = $this->performer_service->performer_filter($request->all());
+        $data = $request->all();
+        $performers = $this->performer_service->performer_filter($data);
         return PerformerIndexResource::collection($performers);
     }
 
@@ -279,7 +280,7 @@ class PerformerAPIController extends Controller
      *     },
      * )
      */
-    public function becomePerformerData(BecomePerformerRequest $request)
+    public function becomePerformerData(BecomePerformerRequest $request): JsonResponse
     {
         $data = $request->validated();
         /** @var User $user */
@@ -329,7 +330,7 @@ class PerformerAPIController extends Controller
      *     },
      * )
      */
-    public function becomePerformerEmailPhone(BecomePerformerEmailPhone $request)
+    public function becomePerformerEmailPhone(BecomePerformerEmailPhone $request): JsonResponse
     {
         $data = $request->validated();
         /** @var User $user */
@@ -384,8 +385,6 @@ class PerformerAPIController extends Controller
     {
         $data = $request->validate(['avatar'=>'required']);
         $avatar = $data['avatar'];
-
-        $data['role_id'] = 2;
         $name = Storage::put('public/user-avatar', $avatar);
         $name = str_replace('public/', '', $name);
         $data['avatar'] = $name;
@@ -430,7 +429,7 @@ class PerformerAPIController extends Controller
      *     },
      * )
      */
-    public function becomePerformerCategory(CategoriesRequest $request)
+    public function becomePerformerCategory(CategoriesRequest $request): JsonResponse
     {
         $data = $request->validated();
 
@@ -469,7 +468,7 @@ class PerformerAPIController extends Controller
      *     },
      * )
      */
-    public function reviews(Request $request)
+    public function reviews(Request $request): JsonResponse
     {
         $reviews = Review::query()
             ->whereHas('task')->whereHas('user')
@@ -511,12 +510,46 @@ class PerformerAPIController extends Controller
      *     ),
      * )
      */
-    public function performers_count($category_id){
+    public function performers_count($category_id): JsonResponse
+    {
         $user_category = UserCategory::query()->where('category_id',$category_id)->count();
         return response()->json([
             'success' => true,
             'data' => $user_category,
         ]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/performers-image/{category_id}",
+     *     tags={"Performers"},
+     *     summary="Performer image",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="category_id",
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     * )
+     */
+    public function performers_image($category_id): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    {
+        $user_cat = UserCategory::query()->where('category_id',$category_id)->pluck('user_id')->toArray();
+        $user_image = User::query()->whereIn('id',$user_cat)->take(3)->get();
+        return PerformerIndexResource::collection($user_image);
     }
 
 }
