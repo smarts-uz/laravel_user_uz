@@ -230,7 +230,7 @@ class User extends \TCG\Voyager\Models\User
             $user->email = '_' . $user->email . '_' . Carbon::now();
             $user->phone_number = '_' . $user->phone_number . '_' . Carbon::now();
             $user->deleted_at = now();
-            $user->deleted_by = Auth::user()->id;
+            $user->deleted_by = Arr::get(auth()->user(), 'id');
             $user->save();
 
         });

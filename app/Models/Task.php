@@ -156,7 +156,7 @@ class Task extends Model
             }
         });
 
-        self::deleting(function (Task $task) {
+        self::deleting(static function (Task $task) {
 
             $task->responses()->delete();
             $task->custom_field_values()->delete();
@@ -167,7 +167,7 @@ class Task extends Model
             $task->compliances()->delete();
 
             $task->deleted_at = now();
-            $task->deleted_by = Auth::user()->id;
+            $task->deleted_by =  Arr::get(auth()->user(), 'id');
             $task->save();
             Notification::query()->where('task_id', $task->id)->delete();
         });

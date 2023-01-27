@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Traits\Translatable;
 
@@ -69,11 +70,11 @@ class Category extends Model
         return $this->hasMany(CustomField::class)->where('route', CustomField::ROUTE_DATE);
     }
     public function parent(){
-        return $this->belongsTo(Category::class, 'parent_id', 'id');
+        return $this->belongsTo(self::class, 'parent_id', 'id');
     }
 
     public function childs(){
-        return $this->hasMany(Category::class,'parent_id','id');
+        return $this->hasMany(self::class,'parent_id','id');
     }
 
     public function delete(): void
@@ -91,17 +92,17 @@ class Category extends Model
         // updating created_by and updated_by when model is created
         static::creating(function ($model) {
             if (!$model->isDirty('created_by')) {
-                $model->created_by = auth()->user()->id;
+                $model->created_by = Arr::get(auth()->user(), 'id');
             }
             if (!$model->isDirty('updated_by')) {
-                $model->updated_by = auth()->user()->id;
+                $model->updated_by = Arr::get(auth()->user(), 'id');
             }
         });
 
         // updating updated_by when model is updated
         static::updating(function ($model) {
             if (!$model->isDirty('updated_by')) {
-                $model->updated_by = auth()->user()->id;
+                $model->updated_by = Arr::get(auth()->user(), 'id');
             }
         });
     }
