@@ -166,7 +166,6 @@ class ProfileController extends Controller
     //getCategory
     public function getCategory(CategoryRequest $request)
     {
-
         $data = $request->validated();
         /** @var User $user */
         $user = auth()->user();
@@ -279,8 +278,6 @@ class ProfileController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
-        $user->role_id = User::ROLE_PERFORMER;
-
         $profile = new ProfileService();
         $profile->storeProfilePhoto($request, $user);
 

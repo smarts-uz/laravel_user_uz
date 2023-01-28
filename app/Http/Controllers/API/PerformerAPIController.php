@@ -433,8 +433,6 @@ class PerformerAPIController extends Controller
 
         /** @var User $user */
         $user = Auth::user();
-        $user->role_id = User::ROLE_PERFORMER;
-        $user->save();
         $categories = explode(",",$data['category_id']);
         $sms_notification = (int)$request->get('sms_notification');
         $email_notification = (int)$request->get('email_notification');

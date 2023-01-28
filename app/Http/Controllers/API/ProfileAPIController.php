@@ -976,7 +976,6 @@ class ProfileAPIController extends Controller
         $sms_notification = (int)$request->get('sms_notification');
         $email_notification = (int)$request->get('email_notification');
 
-
         $response = $this->profileService->subscribeToCategory($categories, $user, $sms_notification, $email_notification);
         return response()->json($response);
     }

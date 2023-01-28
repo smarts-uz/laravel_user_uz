@@ -489,6 +489,8 @@ class ProfileService
      */
     public function subscribeToCategory(array $categories, $user, int $sms_notification, int $email_notification): array
     {
+        $user->role_id = User::ROLE_PERFORMER;
+        $user->save();
         $user_exists = UserCategory::query()->where('user_id',$user->id)->get();
         if($user_exists){
             UserCategory::query()->where('user_id',$user->id)->delete();
