@@ -280,23 +280,10 @@ class ProfileController extends Controller
         /** @var User $user */
         $user = Auth::user();
         $user->role_id = User::ROLE_PERFORMER;
-        if (!$user->avatar) {
-            $request->validate([
-                'avatar' => 'required|image'
-            ]);
-        }
-        $data = $request->all();
-        if ($request->hasFile('avatar')) {
-            $destination = 'storage/' . $user->avatar;
-            if (File::exists($destination)) {
-                File::delete($destination);
-            }
-            $filename = $request->file('avatar');
-            $imageName = "user-avatar/" . $filename->getClientOriginalName();
-            $filename->move(public_path() . '/storage/user-avatar/', $imageName);
-            $data['avatar'] = $imageName;
-        }
-        $user->update($data);
+
+        $profile = new ProfileService();
+        $profile->storeProfilePhoto($request, $user);
+
         return redirect()->route('profile.verificationCategory');
     }
 
