@@ -1277,7 +1277,7 @@ class ProfileAPIController extends Controller
     {
         $image = $request->get('image');
         File::delete(public_path() . '/storage/portfolio/'. $image);
-        $images = json_decode($portfolio->image, false);
+        $images = json_decode($portfolio->image);
         $updatedImages = array_diff($images, [$image]);
         $portfolio->image = json_encode(array_values($updatedImages));
         $portfolio->save();

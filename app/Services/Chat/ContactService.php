@@ -50,7 +50,7 @@ class ContactService
 
         // get unique elements and remove current user from list
         $userIdsList = array_unique($userIdsList);
-        if (($key = array_search($authUser, $userIdsList, true)) !== false) {
+        if (($key = array_search($authUser, $userIdsList)) !== false) {
             unset($userIdsList[$key]);
         }
 

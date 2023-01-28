@@ -44,7 +44,7 @@ class ProfileService
      */
     public function uploadImageServ($uploadedImages, $user): void
     {
-        $imgData = session()->has('images') ? json_decode(session('images'), false) : [];
+        $imgData = session()->has('images') ? json_decode(session('images')) : [];
         foreach ($uploadedImages as $uploadedImage) {
             $filename = $user->name . '/' . time() . '_' . $uploadedImage->getClientOriginalName();
             $uploadedImage->move(public_path() . '/storage/portfolio/' . $user->name . '/', $filename);

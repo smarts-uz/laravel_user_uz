@@ -75,7 +75,7 @@ class CustomFieldService
             $data[$custom_field->id] = [];
         }
         foreach ($task->custom_field_values as $custom_fields_value) {
-            $data[$custom_fields_value->custom_field_id] = $custom_fields_value->value ? json_decode($custom_fields_value->value, false) : [];
+            $data[$custom_fields_value->custom_field_id] = $custom_fields_value->value ? json_decode($custom_fields_value->value) : [];
         }
 
         return $data;
@@ -86,7 +86,7 @@ class CustomFieldService
     {
         if (isset($task)) {
             $field = $task->custom_field_values()->where('custom_field_id', $data_id)->first();
-            if ($field && is_array(json_decode($field->value, false)) && in_array($option, json_decode($field->value, false), true)) {
+            if ($field && is_array(json_decode($field->value)) && in_array($option, json_decode($field->value))) {
                 return true;
             }
         }
