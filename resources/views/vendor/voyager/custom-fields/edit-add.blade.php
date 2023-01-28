@@ -99,7 +99,7 @@
                             @endforeach
 
 
-                                <table id="Options"></table>
+                                <table id="options"></table>
                         </div><!-- panel-body -->
 
                         <div class="panel-footer">
@@ -149,7 +149,7 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery.appendgrid@2/dist/AppendGrid.js"></script>
     <script>
         var myAppendGrid = new AppendGrid({
-            element: "Options",
+            element: "options",
             uiFramework: "bootstrap4",
             iconFramework: "fontawesome5",
             initRows: 0,

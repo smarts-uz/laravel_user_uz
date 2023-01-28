@@ -8,9 +8,10 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
+use TCG\Voyager\Http\Controllers\VoyagerBaseController;
 use TCG\Voyager\Http\Controllers\VoyagerBreadController;
 
-class CustomFieldController extends VoyagerBreadController
+class CustomFieldController extends VoyagerBaseController
 {
     /**
      * @param Request $request
@@ -18,13 +19,8 @@ class CustomFieldController extends VoyagerBreadController
      */
     final public function store(Request $request)
     {
-        $customfield = new CustomField;
-        $this->save($customfield, $request);
-        return redirect('/admin/custom-fields');
-    }
-    final public function edit($id)
-    {
-        parent::edit($id);
+        $request = $this->save($request);
+        return parent::store($request);
     }
 
     /**
@@ -36,9 +32,8 @@ class CustomFieldController extends VoyagerBreadController
      */
     final public function update(Request $request, $id)
     {
-        $customfield = CustomField::find($id);
-        $this->save($customfield, $request);
-        return redirect('/admin/custom-fields');
+        $request = $this->save($request);
+        return parent::update($request, $id);
     }
 
     /**
@@ -47,39 +42,22 @@ class CustomFieldController extends VoyagerBreadController
      * @param $customfield
      * @param $request
      */
-    public function save($customfield, $request): void
+    public function save($request)
     {
-        $customfield->name = $request->name;
-        $customfield->title = $request->title;
-        $customfield->type = $request->type;
-        $customfield->required = $request->required = 'ON' ? true : false;
-        $customfield->data_type = $request->data_type;
-        $customfield->regex = $request->regex;
-        $customfield->min = $request->min;
-        $customfield->max = $request->max;
+        $duration =  substr($request->options_rowOrder, -1);
 
-        //AppendGrid Options
-        $duration =  substr($request->Options_rowOrder, -1) ;
         $options_uz = [];
         $options_ru = [];
         for ($i = 1; $i <= $duration; $i++) {
-            $uz = 'Options_uz_' . $i;
-            $ru = 'Options_ru_' . $i;
-            $options_uz['options'][] = $request->$uz;
-            $options_ru['options'][] = $request->$ru;
+            $uz = 'options_uz_' . $i;
+            $ru = 'options_ru_' . $i;
+            $options_uz['options'][$i] = $request->$uz;
+            $options_ru['options'][$i] = $request->$ru;
         }
-        $customfield->options = $options_uz;
-        $customfield->options_ru = $options_ru;
-        //AppendGrid Options end
-
-        $customfield->values = $request->values;
-        $customfield->category_id = $request->category_id;
-        $customfield->route = $request->route;
-        $customfield->order = $request->order;
-        $customfield->description = $request->description;
-        $customfield->placeholder = $request->placeholder;
-        $customfield->label = $request->label;
-
-        $customfield->save();
+        $request->merge([
+            'options' => $options_uz,
+            'options_ru' => $options_ru,
+        ]);
+        return  $request;
     }
 }
