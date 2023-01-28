@@ -383,12 +383,10 @@ class PerformerAPIController extends Controller
      */
     public function becomePerformerAvatar(Request $request): JsonResponse
     {
-        $data = $request->validate(['avatar'=>'required']);
-        $avatar = $data['avatar'];
-        $name = Storage::put('public/user-avatar', $avatar);
-        $name = str_replace('public/', '', $name);
-        $data['avatar'] = $name;
-        auth()->user()->update($data);
+        /** @var User $user */
+        $user = auth()->user();
+        $filename = $request->file('avatar');
+        $this->profileService->changeAvatar($filename, $user);
 
         return response()->json(['success' => true, 'message' => 'true']);
 

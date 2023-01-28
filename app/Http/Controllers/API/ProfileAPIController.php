@@ -594,7 +594,10 @@ class ProfileAPIController extends Controller
      */
     public function avatar(ProfileAvatarRequest $request): JsonResponseAlias
     {
-        $this->profileService->changeAvatar($request);
+        /** @var User $user */
+        $user = auth()->user();
+        $filename = $request->file('avatar');
+        $this->profileService->changeAvatar($filename, $user);
         $message = trans('file.Photo updated successfully.');
         return response()->json([
             'success' => true,

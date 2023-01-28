@@ -416,17 +416,15 @@ class ProfileService
      *
      * Function  changeAvatar
      * Mazkur metod profilda rasm tahrirlash
-     * @param $request
+     * @param $filename
+     * @param $user
      */
-    public function changeAvatar($request): void
+    public function changeAvatar($filename, $user): void
     {
-        /** @var User $user */
-        $user = auth()->user();
         $destination = 'storage/'. $user->avatar;
         if (File::exists($destination)) {
             File::delete($destination);
         }
-        $filename = $request->file('avatar');
         $imageName = "user-avatar/" . $filename->getClientOriginalName();
         $filename->move(public_path() . '/storage/user-avatar/', $imageName);
         $data['avatar'] = $imageName;
