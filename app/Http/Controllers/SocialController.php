@@ -138,7 +138,7 @@ class SocialController extends Controller
 
             return redirect()->route('profile.profileData');
         } catch (Exception $e) {
-            dd($e, 11);
+            dd($e, 114);
         }
         return false;
     }
