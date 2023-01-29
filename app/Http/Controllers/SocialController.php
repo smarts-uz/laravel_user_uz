@@ -91,9 +91,9 @@ class SocialController extends Controller
             $user = Socialite::driver('apple')->setScopes(['name', 'email'])->user();
 
             /** @var User $findUser */
-            $findUser = User::query()->where('email', $user->email)->first();
+            $findUser = User::query()->where('email', $user->email)->withTrashed()->first();
             if (!$user->email) {
-                $findUser = User::query()->where('apple_id', $user->id)->first();
+                $findUser = User::query()->where('apple_id', $user->id)->withTrashed()->first();
             }
 
             if ($findUser) {
