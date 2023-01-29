@@ -241,9 +241,9 @@
                 <div class="text-base my-6 bg-white rounded-md shadow-md p-4">
                     <h1 class="text-xl font-semibold py-4">{{__('На какой бюджет вы рассчитываете?')}}</h1>
                     <div>
-                        <select
-                            class="border border-gray-300 rounded-md w-full focus:outline-none focus:border-yellow-500 py-2 px-4"
-                            name="budget" id="budget">
+                        <input type="number" class="focus:outline-none border border-gray-300 mb-3 rounded p-2 text-center focus:border-yellow-500"
+                               value="{{$task->budget}}" id="task_budget" name="budget">
+                        <select class="border border-gray-300 rounded-md w-full focus:outline-none focus:border-yellow-500 py-2 px-4" id="budget">
                             <option @selected($task->budget === round($task->category->max/5)) value="{{round($task->category->max/5)}}">
                                 {{round($task->category->max/5)}} UZS
                             </option>
@@ -298,6 +298,9 @@
     <script id="map_api" src="https://api-maps.yandex.ru/2.1/?apikey=f4b34baa-cbd1-432b-865b-9562afa3fcdb&lang={{__('ru_RU')}}" type="text/javascript"></script>
     <script src="{{ asset('js/changetask.js') }}"></script>
     <script>
+        $('#budget').change(function() {
+            $('#task_budget').val($(this).val())
+        });
         function ch_task(){
             var settings = {
                 "url": "{{ route('task.map', $task->id) }}",
