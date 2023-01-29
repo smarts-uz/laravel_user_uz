@@ -42,7 +42,7 @@ class NotificationService
                                 Notification::RESPONSE_TO_TASK, Notification::SEND_REVIEW_PERFORMER,
                                 Notification::RESPONSE_TO_TASK_FOR_USER, Notification::CANCELLED_TASK,
                                 Notification::ADMIN_COMPLETE_TASK, Notification::ADMIN_CANCEL_TASK,
-                                Notification::NEW_PASSWORD, Notification::WALLET_BALANCE,
+                                Notification::NEW_PASSWORD, Notification::WALLET_BALANCE,Notification::TEST_PUSHER_NOTIFICATION
                             ]);
                     });
                 if ((int)$user->role_id === User::ROLE_PERFORMER && $web)
@@ -272,6 +272,7 @@ class NotificationService
 
     }
 
+    #[\JetBrains\PhpStorm\ArrayShape(['success' => "bool", 'message' => "string", 'data' => "mixed"])]
     public function test_firebase_notif($data): array
     {
         if ($data === 'null'){
@@ -280,7 +281,7 @@ class NotificationService
                 /** @var Notification $notification */
                 $notification = Notification::query()->create([
                     'performer_id' => $performer->id,
-                    'description' => 'test notif',
+                    'description' => 'test notif firebase',
                     "type" => Notification::TEST_FIREBASE_NOTIFICATION
                 ]);
                 self::pushNotification($performer, [
@@ -291,14 +292,50 @@ class NotificationService
         }else{
             $notification = Notification::query()->create([
                 'user_id'=> $data,
-                'description' => '123',
-                'type' => 15,
+                'description' => 'test notif firebase',
+                'type' => Notification::TEST_FIREBASE_NOTIFICATION,
             ]);
             $performer = User::query()->findOrFail($data);
             self::pushNotification($performer, [
                 'title' => 'test firebase notification title',
                 'body' => 'test firebase notification body'
             ], 'notification', new NotificationResource($notification));
+        }
+        return ['success' => true, 'message' => 'success', 'data'=> $data];
+    }
+
+    #[\JetBrains\PhpStorm\ArrayShape(['success' => "bool", 'message' => "string", 'data' => "mixed"])]
+    public function test_pusher_notif($data): array
+    {
+        if ($data === 'null'){
+            $performers = User::query()->where('role_id', User::ROLE_PERFORMER)->get();
+            foreach ($performers as $performer) {
+                /** @var Notification $notification */
+                $notification = Notification::query()->create([
+                    'performer_id' => $performer->id,
+                    'description' => 'test notif pusher',
+                    "type" => Notification::TEST_PUSHER_NOTIFICATION
+                ]);
+                self::sendNotificationRequest([$performer->id], [
+                    'created_date' => $notification->created_at->format('d M'),
+                    'title' => 'test pusher notification title',
+                    'url' => route('show_notification', [$notification]),
+                    'description' => 'test pusher notification body',
+                ]);
+            }
+        }else{
+            $notification = Notification::query()->create([
+                'user_id'=> $data,
+                'description' => 'test notif pusher',
+                'type' => Notification::TEST_PUSHER_NOTIFICATION,
+            ]);
+            $performer = User::query()->findOrFail($data);
+            self::sendNotificationRequest([$performer->id], [
+                'created_date' => $notification->created_at->format('d M'),
+                'title' => 'test pusher notification title',
+                'body' => 'test pusher notification body',
+                'url' => route('show_notification', [$notification])
+            ]);
         }
         return ['success' => true, 'message' => 'success', 'data'=> $data];
     }

@@ -95,16 +95,13 @@ class NotificationController extends VoyagerBaseController
     public function show_notification(Notification $notification)
     {
         $notification->update(['is_read' => 1]);
-        if ((int)$notification->type === Notification::NEWS_NOTIFICATION || (int)$notification->type === Notification::SYSTEM_NOTIFICATION) {
-            return redirect('/news/' . $notification->id);
-        }
-        if ((int)$notification->type === Notification::NEW_PASSWORD ){
-            return redirect('/profile/settings');
-        }
-        if ((int)$notification->type === Notification::WALLET_BALANCE ){
-            return redirect('/profile/cash');
-        }
-        return redirect('/detailed-tasks/' . $notification->task_id);
+        return match ($notification->type) {
+            Notification::NEWS_NOTIFICATION || Notification::SYSTEM_NOTIFICATION => redirect('/news/' . $notification->id),
+            Notification::NEW_PASSWORD => redirect('/profile/settings'),
+            Notification::WALLET_BALANCE => redirect('/profile/cash'),
+            Notification::TEST_PUSHER_NOTIFICATION => redirect('/'),
+            default => redirect('/detailed-tasks/' . $notification->task_id),
+        };
     }
 
 
@@ -321,6 +318,48 @@ class NotificationController extends VoyagerBaseController
 
         $data = $request->get('user_id');
         $this->notificationService->test_firebase_notif($data);
+
+        return response()->json(['success' => true, 'message' => 'success']);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/test-pusher-notification",
+     *     tags={"Test Notifications"},
+     *     summary="test pusher notification",
+     *     @OA\RequestBody (
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="user_id",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function test_pusher_notification(Request $request): JsonResponse
+    {
+
+        $data = $request->get('user_id');
+        $this->notificationService->test_pusher_notif($data);
 
         return response()->json(['success' => true, 'message' => 'success']);
     }

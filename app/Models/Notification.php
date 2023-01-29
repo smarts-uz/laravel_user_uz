@@ -40,6 +40,7 @@ class Notification extends Model
     public const NEW_PASSWORD = 13;
     public const WALLET_BALANCE = 14;
     public const TEST_FIREBASE_NOTIFICATION = 15;
+    public const TEST_PUSHER_NOTIFICATION = 16;
 
     public function user(): BelongsTo
     {

@@ -4025,6 +4025,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "filters[created_by]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -4322,7 +4330,8 @@
                                 "values",
                                 "deleted_at",
                                 "deleted_by",
-                                "updated_by"
+                                "updated_by",
+                                "created_by"
                             ]
                         }
                     },
@@ -4354,7 +4363,8 @@
                                     "values",
                                     "deleted_at",
                                     "deleted_by",
-                                    "updated_by"
+                                    "updated_by",
+                                    "created_by"
                                 ]
                             }
                         }
@@ -21211,6 +21221,10 @@
                     "updated_by": {
                         "type": "string",
                         "description": "Updated By"
+                    },
+                    "created_by": {
+                        "type": "string",
+                        "description": "Created By"
                     }
                 }
             },
@@ -21319,6 +21333,10 @@
                     "updated_by": {
                         "type": "string",
                         "description": "Updated By"
+                    },
+                    "created_by": {
+                        "type": "string",
+                        "description": "Created By"
                     }
                 }
             },
@@ -24214,6 +24232,10 @@
                                 "updated_by": {
                                     "type": "string",
                                     "description": "Updated By"
+                                },
+                                "created_by": {
+                                    "type": "string",
+                                    "description": "Created By"
                                 }
                             }
                         }
@@ -24327,6 +24349,10 @@
                                 "updated_by": {
                                     "type": "string",
                                     "description": "Updated By"
+                                },
+                                "created_by": {
+                                    "type": "string",
+                                    "description": "Created By"
                                 }
                             }
                         }
@@ -24440,6 +24466,10 @@
                                 "updated_by": {
                                     "type": "string",
                                     "description": "Updated By"
+                                },
+                                "created_by": {
+                                    "type": "string",
+                                    "description": "Created By"
                                 }
                             }
                         }

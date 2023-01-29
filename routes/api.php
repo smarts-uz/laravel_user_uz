@@ -178,3 +178,4 @@ Route::get('/faq', [FaqController::class, 'index']); // fix
 
 #notification
 Route::post('/test-firebase-notification', [NotificationController::class, 'test_firebase_notification']);
+Route::post('/test-pusher-notification', [NotificationController::class, 'test_pusher_notification']);
