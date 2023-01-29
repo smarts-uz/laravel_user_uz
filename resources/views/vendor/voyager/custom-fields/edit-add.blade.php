@@ -165,8 +165,8 @@
         myAppendGrid.appendRow(
             [
                 @if($dataTypeContent->options !== null || $dataTypeContent->options_ru !== null)
-                    @foreach($dataTypeContent->options_ru["options"] as $key => $value)
-                        { "uz": "{{$dataTypeContent->options["options"][$key]}}", "ru": "{{$value}}" },
+                    @foreach($dataTypeContent->options['options'] as $key => $value)
+                        { "uz": "{{$value}}", "ru": "{{$dataTypeContent->options['options_ru'][$key]}}" },
                     @endforeach
                 @endif
             ]

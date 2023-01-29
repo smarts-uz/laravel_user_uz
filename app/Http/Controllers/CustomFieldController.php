@@ -46,18 +46,14 @@ class CustomFieldController extends VoyagerBaseController
     {
         $duration =  substr($request->options_rowOrder, -1);
 
-        $options_uz = [];
-        $options_ru = [];
+        $options = [];
         for ($i = 1; $i <= $duration; $i++) {
             $uz = 'options_uz_' . $i;
             $ru = 'options_ru_' . $i;
-            $options_uz['options'][$i] = $request->$uz;
-            $options_ru['options'][$i] = $request->$ru;
+            $options['options'][$i] = $request->$uz;
+            $options['options_ru'][$i] = $request->$ru;
         }
-        $request->merge([
-            'options' => $options_uz,
-            'options_ru' => $options_ru,
-        ]);
+        $request->merge(['options' => $options]);
         return  $request;
     }
 }
