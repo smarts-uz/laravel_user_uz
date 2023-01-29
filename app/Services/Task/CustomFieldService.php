@@ -54,8 +54,7 @@ class CustomFieldService
     {
         $values = $this->getValuesOfTask($task);
 
-        $options = app()->getLocale() === 'ru' && $custom_field->options_ru ? $custom_field->options_ru : $custom_field->options;
-        $options = $options ? $options['options'] : [];
+        $options = app()->getLocale() === 'uz' ? $custom_field->options['options'] : $custom_field->options['options_ru'];
         $item = [];
         $data = [];
         foreach ($options as $key => $option) {
