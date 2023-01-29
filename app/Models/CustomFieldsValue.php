@@ -29,7 +29,7 @@ class CustomFieldsValue extends Model
         if (app()->getLocale() === 'uz') {
             return array_intersect_key($this->custom_field->options['options'], array_flip(json_decode($this->value)));
         }
-        return array_intersect_key($this->custom_field->options_ru['options'], array_flip(json_decode($this->value)));
+        return array_intersect_key($this->custom_field->options['options_ru'], array_flip(json_decode($this->value)));
     }
 
 }

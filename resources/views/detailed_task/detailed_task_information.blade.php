@@ -88,6 +88,7 @@
         @endif
     @endforeach
 </div>
+
 @foreach($task->custom_field_values as $value)
     @if($value->value &&  $value->custom_field && $value->value !== "[null]")
         @switch($value->custom_field->type)
