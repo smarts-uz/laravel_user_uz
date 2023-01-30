@@ -272,8 +272,7 @@ class NotificationService
 
     }
 
-    #[\JetBrains\PhpStorm\ArrayShape(['success' => "bool", 'message' => "string", 'data' => "mixed"])]
-    public function test_firebase_notif($data): array
+    public function firebase_notif($data): array
     {
         if ($data === 'null'){
             $performers = User::query()->where('role_id', User::ROLE_PERFORMER)->get();
@@ -304,8 +303,7 @@ class NotificationService
         return ['success' => true, 'message' => 'success', 'data'=> $data];
     }
 
-    #[\JetBrains\PhpStorm\ArrayShape(['success' => "bool", 'message' => "string", 'data' => "mixed"])]
-    public function test_pusher_notif($data): array
+    public function pusher_notif($data): array
     {
         if ($data === 'null'){
             $performers = User::query()->where('role_id', User::ROLE_PERFORMER)->get();

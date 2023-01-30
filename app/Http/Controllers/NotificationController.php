@@ -282,9 +282,9 @@ class NotificationController extends VoyagerBaseController
 
     /**
      * @OA\Post(
-     *     path="/api/test-firebase-notification",
-     *     tags={"Test Notifications"},
-     *     summary="test firebase notification",
+     *     path="/api/firebase-notification",
+     *     tags={"Notifications"},
+     *     summary="firebase notification",
      *     @OA\RequestBody (
      *         @OA\MediaType (
      *             mediaType="multipart/form-data",
@@ -313,20 +313,20 @@ class NotificationController extends VoyagerBaseController
      *     },
      * )
      */
-    public function test_firebase_notification(Request $request): JsonResponse
+    public function firebase_notification(Request $request): JsonResponse
     {
 
         $data = $request->get('user_id');
-        $this->notificationService->test_firebase_notif($data);
+        $this->notificationService->firebase_notif($data);
 
         return response()->json(['success' => true, 'message' => 'success']);
     }
 
     /**
      * @OA\Post(
-     *     path="/api/test-pusher-notification",
-     *     tags={"Test Notifications"},
-     *     summary="test pusher notification",
+     *     path="/api/pusher-notification",
+     *     tags={"Notifications"},
+     *     summary="pusher notification",
      *     @OA\RequestBody (
      *         @OA\MediaType (
      *             mediaType="multipart/form-data",
@@ -355,11 +355,11 @@ class NotificationController extends VoyagerBaseController
      *     },
      * )
      */
-    public function test_pusher_notification(Request $request): JsonResponse
+    public function pusher_notification(Request $request): JsonResponse
     {
 
         $data = $request->get('user_id');
-        $this->notificationService->test_pusher_notif($data);
+        $this->notificationService->pusher_notif($data);
 
         return response()->json(['success' => true, 'message' => 'success']);
     }

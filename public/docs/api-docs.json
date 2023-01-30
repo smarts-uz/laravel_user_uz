@@ -4179,13 +4179,13 @@
                 ]
             }
         },
-        "\/api\/test-firebase-notification": {
+        "\/api\/firebase-notification": {
             "post": {
                 "tags": [
-                    "Test Notifications"
+                    "Notifications"
                 ],
-                "summary": "test firebase notification",
-                "operationId": "090ba2dd7884736646cffdb1bffaf4f5",
+                "summary": "firebase notification",
+                "operationId": "ae12f93ac3a12733474d5cb1b7dcab91",
                 "requestBody": {
                     "content": {
                         "multipart\/form-data": {
@@ -4218,13 +4218,13 @@
                 ]
             }
         },
-        "\/api\/test-pusher-notification": {
+        "\/api\/pusher-notification": {
             "post": {
                 "tags": [
-                    "Test Notifications"
+                    "Notifications"
                 ],
-                "summary": "test pusher notification",
-                "operationId": "2d1366985c6a2710208a946b167bd42d",
+                "summary": "pusher notification",
+                "operationId": "78d456995f51e557e2c6db9d33d84464",
                 "requestBody": {
                     "content": {
                         "multipart\/form-data": {
