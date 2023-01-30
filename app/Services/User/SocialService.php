@@ -6,6 +6,7 @@ use App\Http\Resources\PerformerIndexResource;
 use App\Models\User;
 use App\Models\WalletBalance;
 use Exception;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Laravel\Socialite\Facades\Socialite;
@@ -30,7 +31,7 @@ class SocialService
             if ($user === null) {
                 $user = User::query()->create([
                     $provider . '_id' => $providerUser->id,
-                    'name' => $providerUser->name,
+                    'name' => $providerUser->name ?? self::emailToName($providerUser->email),
                     'email' => $providerUser->email,
                     'is_email_verified' => 1,
                     'avatar' => $provider !== 'apple' ? self::get_avatar($providerUser) : null
@@ -72,5 +73,10 @@ class SocialService
         $fileContents = file_get_contents($user->getAvatar());
         File::put(public_path() . '/storage/user-avatar/' . $user->getId() . ".jpg", $fileContents);
         return 'user-avatar/' . $user->getId() . ".jpg";
+    }
+
+    public static function emailToName($email) {
+        $name = explode('@', $email);
+        return ucfirst(Arr::get($name, '0'));
     }
 }

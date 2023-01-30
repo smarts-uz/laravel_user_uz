@@ -87,7 +87,7 @@ class SocialController extends Controller
     public function loginWithApple()
     {
         try {
-            $user = Socialite::driver('apple')->setScopes(['name', 'email'])->user();
+            $user = Socialite::driver('apple')->user();
 
             /** @var User $findUser */
             $findUser = User::query()->where('email', $user->email)->first();
@@ -110,7 +110,7 @@ class SocialController extends Controller
                 Alert::success(__('Успешно'), __('Вы успешно связали свой аккаунт Google'));
             } else {
                 $new_user = new User();
-                $new_user->name = $user->name;
+                $new_user->name = $user->name ?? SocialService::emailToName($user->email);
                 $new_user->email = $user->email;
                 $new_user->apple_id = $user->id;
                 $new_user->is_email_verified = 1;
