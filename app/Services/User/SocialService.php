@@ -13,7 +13,7 @@ use Laravel\Socialite\Facades\Socialite;
 class SocialService
 {
     public static function login($provider, $token) {
-    
+
         try {
             $providerUser = Socialite::driver($provider)->userFromToken($token);
 
@@ -72,25 +72,5 @@ class SocialService
         $fileContents = file_get_contents($user->getAvatar());
         File::put(public_path() . '/storage/user-avatar/' . $user->getId() . ".jpg", $fileContents);
         return 'user-avatar/' . $user->getId() . ".jpg";
-    }
-
-    public static function findOrCreateUser($user, $provider)
-    {
-        $authUser = User::query()->where('email', $user->email)->first();
-
-        if ($authUser) {
-            return $authUser;
-        }
-
-        $name = explode(' ', $user->name);
-
-        return User::query()->create([
-            'first_name' => $name[0],
-            'last_name' => $name[1] ?? '',
-            'email' => $user->email,
-            'provider' => $provider,
-            'provider_id' => $user->id,
-            'avatar' => $user->avatar
-        ]);
     }
 }

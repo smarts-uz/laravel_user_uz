@@ -76,8 +76,28 @@ class SocialAPIController extends Controller
     {
         $user = Socialite::driver($provider)->user();
 
-        $auth_user = Socialite::findOrCreateUser($user, $provider);
+        $auth_user = $this->findOrCreateUser($user, $provider);
 
         Auth::login($auth_user, true);
+    }
+
+    public function findOrCreateUser($user, $provider)
+    {
+        $authUser = User::query()->where('email', $user->email)->first();
+
+        if ($authUser) {
+            return $authUser;
+        }
+
+        $name = explode(' ', $user->name);
+
+        return User::query()->create([
+            'first_name' => $name[0],
+            'last_name' => $name[1] ?? '',
+            'email' => $user->email,
+            'provider' => $provider,
+            'provider_id' => $user->id,
+            'avatar' => $user->avatar
+        ]);
     }
 }
