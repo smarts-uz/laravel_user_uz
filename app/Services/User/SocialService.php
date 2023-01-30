@@ -24,7 +24,7 @@ class SocialService
                 $query->orWhere('email', '=', $providerUser->email);
             }
 
-            $user = $query->withTrashed()->first();
+            $user = $query->first();
 
             // if there is no record with these data, create a new user
             if ($user === null) {

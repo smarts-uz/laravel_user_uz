@@ -34,7 +34,7 @@ class SocialController extends Controller
 
     public function loginWithFacebook()
     {
-        $user = Socialite::driver('facebook')->setScopes(['email'])->user();
+        $user = Socialite::driver('facebook')->setScopes(['name','email'])->user();
         /** @var User $findUser */
         $findUser = User::query()->where('email', $user->email)->first();
 
