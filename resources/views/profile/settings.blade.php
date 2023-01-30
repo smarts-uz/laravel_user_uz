@@ -169,10 +169,12 @@
                                                    <input type="submit" class="text-xl bg-green-500 hover:bg-green-600 text-white py-4 px-8 rounded-xl cursor-pointer mr-3"
                                                           name="submit1" value="{{__('Сохранить')}}">
 
-                                                   <a onclick="toggleModal111()"
-                                                      class="text-xl bg-red-500 hover:bg-red-600 text-white p-4 rounded-xl cursor-pointer text-center sm:mt-0 mt-3">
-                                                       {{__('Удалить профиль')}}
-                                                   </a>
+                                                   @if($user->is_phone_number_verified === 1)
+                                                       <a onclick="toggleModal111()"
+                                                          class="text-xl bg-red-500 hover:bg-red-600 text-white p-4 rounded-xl cursor-pointer text-center sm:mt-0 mt-3">
+                                                           {{__('Удалить профиль')}}
+                                                       </a>
+                                                   @endif
                                                </div>
                                             </form>
 
