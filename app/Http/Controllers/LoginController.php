@@ -166,20 +166,20 @@ class LoginController extends Controller
                 'email-message' => 'Your email',
                 'email' => $request->get('email')
             ]);
-        } else {
-            $request->validate([
-                'email' => 'required|unique:users|email'
-            ], [
-                'email.required' => __('login.email.required'),
-                'email.email' => __('login.email.email'),
-                'email.unique' => __('login.email.unique'),
-            ]);
-            $user->email = $request->get('email');
-            $user->save();
-            VerificationService::send_verification('email', $user);
-            Alert::success(__('Поздравляю'), __('Ваш адрес электронной почты успешно изменен, и мы отправили ссылку для подтверждения на') . $user->email);
-            return redirect()->back();
         }
+
+        $request->validate([
+            'email' => 'required|unique:users|email'
+        ], [
+            'email.required' => __('login.email.required'),
+            'email.email' => __('login.email.email'),
+            'email.unique' => __('login.email.unique'),
+        ]);
+        $user->email = $request->get('email');
+        $user->save();
+        VerificationService::send_verification('email', $user);
+        Alert::success(__('Поздравляю'), __('Ваш адрес электронной почты успешно изменен, и мы отправили ссылку для подтверждения на') . $user->email);
+        return redirect()->back();
     }
 
     public function change_phone_number(ModalNumberRequest $request)

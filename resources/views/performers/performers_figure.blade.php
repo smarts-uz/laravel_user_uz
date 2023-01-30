@@ -19,7 +19,7 @@
                    id="{{$user->id}}"> {{$user->name}} </p>
             </a>
             <div class="flex items-center sm:my-0 my-2">
-                @if ($user->is_phone_number_verified)
+                @if ($user->is_email_verified && $user->is_phone_number_verified)
                     <div data-tooltip-target="tooltip-animation-verified"
                          class="tooltip-1">
                         <img

@@ -19,11 +19,9 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Portfolio;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use JetBrains\PhpStorm\ArrayShape;
 use TCG\Voyager\Models\Category;
@@ -92,6 +90,10 @@ class ProfileService
      */
     public function settingsUpdate($data, $user)
     {
+        if ($data['email'] !== $user->email) {
+            $data['is_email_verified'] = 0;
+            $data['email_old'] = $user->email;
+        }
         if ($data['phone_number'] !== $user->phone_number) {
             $data['is_phone_number_verified'] = 0;
             $data['phone_number_old'] = $user->phone_number;

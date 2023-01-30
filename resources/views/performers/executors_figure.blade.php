@@ -89,7 +89,7 @@
             </div>
             <div class="text-gray-500 text-base mt-3 hidden" id="str2">{{__('Нет оценок')}}</div>
             <div class="flex mt-6 items-center">
-                @if ($user->is_phone_number_verified)
+                @if ($user->is_email_verified && $user->is_phone_number_verified)
                     <div data-tooltip-target="tooltip-animation_1" class="mx-4 tooltip-1">
                         <img
                             src="{{asset('images/verify.png')}}"

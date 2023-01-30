@@ -85,7 +85,7 @@
                                                     <input
                                                         class="focus:outline-none focus:border-yellow-500  rounded-xl border py-2 px-3 w-full text-grey-900"
                                                         type="email" name="email" id="email"
-                                                        value="{{$user->email}}">
+                                                        value="{{ $user->is_email_verified?$user->email??old('email'):$user->email_old}}">
                                                     @error('email')
                                                         <p class="text-red-500">{{ $message }}</p>
                                                     @enderror
