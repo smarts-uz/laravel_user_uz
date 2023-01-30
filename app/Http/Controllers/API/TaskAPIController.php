@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Resources\ComplianceTypeResource;
+use App\Services\Task\TaskService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
@@ -432,18 +433,13 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function task(Task $task): TaskIndexResource
+    public function task(int $task_id): TaskIndexResource
     {
         if (auth()->guard('api')->check()) {
-            $user_id = auth()->guard('api')->id();
-            $viewed_tasks = Cache::get('user_viewed_tasks' . $user_id) ?? [];
-            if (!in_array($task->id, $viewed_tasks)) {
-                $viewed_tasks[] = $task->id;
-            }
-            Cache::put('user_viewed_tasks' . $user_id, $viewed_tasks);
-            $task->increment('views');
+            $user_id = auth()->guard('api');
+            (new TaskService)->taskIncrement($user_id, $task_id);
         }
-        return new TaskIndexResource($task);
+        return (new TaskService)->taskIndex($task_id);
     }
 
     /**

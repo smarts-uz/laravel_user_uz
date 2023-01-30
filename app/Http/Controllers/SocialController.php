@@ -146,6 +146,7 @@ class SocialController extends Controller
     {
         try {
             $user = Socialite::driver('google')->setScopes(['openid', 'email'])->user();
+
             /** @var User $findUser */
             $findUser = User::query()->where('email', $user->email)->first();
 

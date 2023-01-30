@@ -2,6 +2,8 @@
 
 namespace App\Services\Task;
 
+use Illuminate\Support\Arr;
+
 class CustomFieldService
 {
 
@@ -45,7 +47,11 @@ class CustomFieldService
         $item['data_type'] = $custom_field->data_type;
         $item['order'] = $custom_field->order;
         $item['name'] = $custom_field->name;
-        $item['task_value'] = ($custom_field->type === 'input' or $custom_field->type === 'number') ? count($values[$custom_field->id]) ? (string)$values[$custom_field->id][0] : '' : '';
+        if (count($values[$custom_field->id])) {
+            $item['task_value'] = ($custom_field->type === 'input' or $custom_field->type === 'number') ? (string)Arr::get($values, $custom_field->id.'0') : '';
+        } else {
+            $item['task_value'] = ($custom_field->type === 'input' or $custom_field->type === 'number') ? '' : '';
+        }
         return $item;
 
     }
@@ -54,12 +60,12 @@ class CustomFieldService
     {
         $values = $this->getValuesOfTask($task);
 
-        $options = app()->getLocale() === 'uz' ? $custom_field->options['options'] : $custom_field->options['options_ru'];
+        $options = app()->getLocale() === 'uz' ? $custom_field->options['options'] : Arr::get($custom_field->options, 'options_ru');
         $item = [];
         $data = [];
         foreach ($options as $key => $option) {
-            $item['id'] = $key;
             $haystack = $values[$custom_field->id];
+            $item['id'] = $key;
             $item['selected'] = in_array((string)$key, $haystack, true);
             $item['value'] = $option;
             $data[] = $item;
