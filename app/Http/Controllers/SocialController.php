@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Notification;
 use App\Models\User;
 use App\Models\WalletBalance;
+use App\Services\User\SocialService;
 use Exception;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 use Laravel\Socialite\Facades\Socialite;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -17,6 +17,19 @@ class SocialController extends Controller
     public function facebookRedirect()
     {
         return Socialite::driver('facebook')->redirect();
+    }
+
+    // login with google
+    public function googleRedirect()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    // login with apple
+    public function appleRedirect()
+    {
+
+        return Socialite::driver('apple')->redirect();
     }
 
     public function loginWithFacebook()
@@ -46,7 +59,7 @@ class SocialController extends Controller
             $new_user->name = $user->name;
             $new_user->email = $user->email;
             $new_user->facebook_id = $user->id;
-            $new_user->avatar = self::get_avatar($user);
+            $new_user->avatar = SocialService::get_avatar($user);
             $new_user->save();
             $wallBal = new WalletBalance();
             $wallBal->balance = setting('admin.bonus');
@@ -71,29 +84,15 @@ class SocialController extends Controller
         return redirect()->route('profile.profileData');
     }
 
-
-    // login with google
-    public function googleRedirect()
-    {
-        return Socialite::driver('google')->redirect();
-    }
-
-    // login with apple
-    public function appleRedirect()
-    {
-
-        return Socialite::driver('apple')->redirect();
-    }
-
     public function loginWithApple()
     {
         try {
             $user = Socialite::driver('apple')->setScopes(['name', 'email'])->user();
 
             /** @var User $findUser */
-            $findUser = User::query()->where('email', $user->email)->withTrashed()->first();
+            $findUser = User::query()->where('email', $user->email)->first();
             if (!$user->email) {
-                $findUser = User::query()->where('apple_id', $user->id)->withTrashed()->first();
+                $findUser = User::query()->where('apple_id', $user->id)->first();
             }
 
             if ($findUser) {
@@ -138,18 +137,9 @@ class SocialController extends Controller
 
             return redirect()->route('profile.profileData');
         } catch (Exception $e) {
-            dd($e, 114);
+            dd($e, 11);
         }
         return false;
-    }
-
-
-    private static function get_avatar($user)
-    {
-        $fileContents = file_get_contents($user->getAvatar());
-        File::put(public_path() . '/storage/user-avatar/' . $user->getId() . ".jpg", $fileContents);
-        $picture = 'user-avatar/' . $user->getId() . ".jpg";
-        return $picture;
     }
 
     public function loginWithGoogle()
@@ -180,7 +170,7 @@ class SocialController extends Controller
                 $new_user->name = $user->name;
                 $new_user->email = $user->email;
                 $new_user->google_id = $user->id;
-                $new_user->avatar = self::get_avatar($user);
+                $new_user->avatar = SocialService::get_avatar($user);
                 $new_user->is_email_verified = 1;
                 $new_user->save();
                 $wallBal = new WalletBalance();

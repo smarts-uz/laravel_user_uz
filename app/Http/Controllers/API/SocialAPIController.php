@@ -4,14 +4,10 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\SocialRequest;
-use App\Http\Resources\PerformerIndexResource;
 use App\Models\User;
-use App\Models\WalletBalance;
 use App\Services\User\SocialService;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 use Laravel\Socialite\Facades\Socialite;
 
 class SocialAPIController extends Controller
@@ -80,28 +76,8 @@ class SocialAPIController extends Controller
     {
         $user = Socialite::driver($provider)->user();
 
-        $auth_user = $this->findOrCreateUser($user, $provider);
+        $auth_user = Socialite::findOrCreateUser($user, $provider);
 
         Auth::login($auth_user, true);
-    }
-
-    public function findOrCreateUser($user, $provider)
-    {
-        $authUser = User::query()->where('email', $user->email)->first();
-
-        if ($authUser) {
-            return $authUser;
-        }
-
-        $name = explode(' ', $user->name);
-
-        return User::query()->create([
-            'first_name' => $name[0],
-            'last_name' => $name[1] ?? '',
-            'email' => $user->email,
-            'provider' => $provider,
-            'provider_id' => $user->id,
-            'avatar' => $user->avatar
-        ]);
     }
 }
