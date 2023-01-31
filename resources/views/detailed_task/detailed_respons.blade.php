@@ -66,10 +66,10 @@
                     </div>
                 @endif
                 @if(in_array(auth()->user()->id, $top_users))
-                    <div data-tooltip-target="tooltip-animation-on-top"
+                    <div data-tooltip-target="tooltip-animation-on-2"
                          class="mx-1 tooltip-2">
                         <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
-                        <div id="tooltip-animation-on-top" role="tooltip"
+                        <div id="tooltip-animation-on-2" role="tooltip"
                              class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                             <p class="text-center">
                                 {{__('Входит в ТОП-20 исполнителей USer.Uz')}}
@@ -239,10 +239,10 @@
                         </div>
                     @endif
                     @if(in_array($selected->performer->id, $top_users))
-                        <div data-tooltip-target="tooltip-animation-on-top"
+                        <div data-tooltip-target="tooltip-animation-on-2"
                              class="mx-1 tooltip-2">
                             <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
-                            <div id="tooltip-animation-on-top" role="tooltip"
+                            <div id="tooltip-animation-on-2" role="tooltip"
                                  class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                 <p class="text-center">
                                     {{__('Входит в ТОП-20 исполнителей USer.Uz')}}
@@ -403,10 +403,10 @@
                         </div>
                     @endif
                     @if(in_array($response->performer->id, $top_users))
-                        <div data-tooltip-target="tooltip-animation-on-top"
+                        <div data-tooltip-target="tooltip-animation-on-2"
                              class="mx-1 tooltip-2">
                             <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
-                            <div id="tooltip-animation-on-top" role="tooltip"
+                            <div id="tooltip-animation-on-2" role="tooltip"
                                  class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                 <p class="text-center">
                                     {{__('Входит в ТОП-20 исполнителей USer.Uz')}}

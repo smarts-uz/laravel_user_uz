@@ -4200,7 +4200,7 @@
                                     },
                                     "type": {
                                         "type": "string",
-                                        "default": "",
+                                        "default": "default",
                                         "enum": [
                                             "all",
                                             "role_user",

@@ -28,7 +28,7 @@ class TestService extends Command
      */
     public function handle()
     {
-        $type = '';
+        $type = 'default';
         $title = 'test title';
         $text = 'test text';
         $user_id = 655;
