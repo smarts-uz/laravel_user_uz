@@ -53,14 +53,14 @@ class CustomFieldService
             $item['task_value'] = ($custom_field->type === 'input' or $custom_field->type === 'number') ? '' : '';
         }
         return $item;
-
     }
 
     private function setOption($custom_field, $task)
     {
         $values = $this->getValuesOfTask($task);
 
-        $options = app()->getLocale() === 'uz' ? $custom_field->options['options'] : (Arr::get($custom_field->options, 'options_ru') ?? $custom_field->options['options']);
+        $options = app()->getLocale() === 'uz' ? Arr::get($custom_field->options, 'options', []) : Arr::get($custom_field->options, 'options_ru', []);
+        $options = empty($options) ? Arr::get($custom_field->options, 'options', []) : Arr::get($custom_field->options, 'options_ru', []);
         $item = [];
         $data = [];
         foreach ($options as $key => $option) {
@@ -82,7 +82,6 @@ class CustomFieldService
         foreach ($task->custom_field_values as $custom_fields_value) {
             $data[$custom_fields_value->custom_field_id] = $custom_fields_value->value ? json_decode($custom_fields_value->value) : [];
         }
-
         return $data;
     }
 

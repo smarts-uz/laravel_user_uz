@@ -68,6 +68,18 @@
                 </div>
             </div>
         @endif
+        @if($user->facebook_id)
+            <div class="telefon ml-4 h-20 grid grid-cols-4">
+                <div class="w-12 h-12 text-center mx-auto my-auto py-2 bg-gray-300 rounded-xl col-span-1"
+                     style="background-color: #000000;">
+                    <i class="fab fa-apple text-white text-2xl"></i>
+                </div>
+                <div class="ml-3 col-span-3">
+                    <h5 class="font-bold text-gray-700 block mt-2 text-md">Apple</h5>
+                    <p>{{__('Подтвержден')}}</p>
+                </div>
+            </div>
+        @endif
     </div>
     <p class="mx-5 my-4">
         {!! getContentText('profile', 'profile_text') !!}
@@ -82,9 +94,9 @@
             <div class="ml-3 col-span-3">
                 <h5 class="font-bold text-gray-700 block mt-4 text-md">Google</h5>
                 <a href="{{route('social.googleRedirect')}}" target="_blank"
-                   class="block text-sm">
+                   class="block text-sm text-primary">
                 {{__('Привязать')}}
-                </a></p></a>
+                </a>
             </div>
         </div>
     @endif
@@ -97,7 +109,22 @@
             <div class="ml-3 col-span-3">
                 <h5 class="font-bold text-gray-700 block mt-4 text-md">Facebook</h5>
                 <a href="{{route('social.facebookRedirect')}}" target="_blank"
-                   class="block text-sm">
+                   class="block text-sm text-primary">
+                {{__('Привязать')}}
+                </a>
+            </div>
+        </div>
+    @endif
+    @if(!$user->apple_id)
+        <div class="telefon ml-4 h-20 grid grid-cols-4">
+            <div class="w-12 h-12 text-center mx-auto my-auto py-2 bg-gray-300 rounded-xl col-span-1"
+                 style="background-color: #000000;">
+                <i class="fab fa-apple text-white text-2xl"></i>
+            </div>
+            <div class="ml-3 col-span-3">
+                <h5 class="font-bold text-gray-700 block mt-4 text-md">Apple</h5>
+                <a href="{{route('social.appleRedirect')}}" target="_blank"
+                   class="block text-sm text-primary">
                 {{__('Привязать')}}
                 </a>
             </div>
