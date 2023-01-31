@@ -436,7 +436,7 @@ class TaskAPIController extends Controller
     public function task(int $task_id): TaskIndexResource
     {
         if (auth()->guard('api')->check()) {
-            $user_id = auth()->guard('api');
+            $user_id = auth()->guard('api')->id();
             (new TaskService)->taskIncrement($user_id, $task_id);
         }
         return (new TaskService)->taskIndex($task_id);
