@@ -94,7 +94,7 @@
             <div class="ml-3 col-span-3">
                 <h5 class="font-bold text-gray-700 block mt-4 text-md">Google</h5>
                 <a href="{{route('social.googleRedirect')}}" target="_blank"
-                   class="block text-sm text-primary">
+                   class="block text-sm text-blue-600">
                 {{__('Привязать')}}
                 </a>
             </div>
@@ -109,7 +109,7 @@
             <div class="ml-3 col-span-3">
                 <h5 class="font-bold text-gray-700 block mt-4 text-md">Facebook</h5>
                 <a href="{{route('social.facebookRedirect')}}" target="_blank"
-                   class="block text-sm text-primary">
+                   class="block text-sm text-blue-600">
                 {{__('Привязать')}}
                 </a>
             </div>
@@ -122,9 +122,9 @@
                 <i class="fab fa-apple text-white text-2xl"></i>
             </div>
             <div class="ml-3 col-span-3">
-                <h5 class="font-bold text-gray-700 block mt-4 text-md">Apple</h5>
+                <h5 class="font-bold text-gray-700 block mt-4 text-md">Apple Id</h5>
                 <a href="{{route('social.appleRedirect')}}" target="_blank"
-                   class="block text-sm text-primary">
+                   class="block text-sm text-blue-600">
                 {{__('Привязать')}}
                 </a>
             </div>
