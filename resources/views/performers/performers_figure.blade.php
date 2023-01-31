@@ -61,13 +61,13 @@
                         </div>
                     </div>
                 @else
-                    <div data-tooltip-target="tooltip-animation-on-top"
+                    <div data-tooltip-target="tooltip-animation-on-2"
                          class="mx-0.5 tooltip-2">
                         <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
-                        <div id="tooltip-animation-on-top" role="tooltip"
+                        <div id="tooltip-animation-on-2" role="tooltip"
                              class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                             <p class="text-center">
-                                {{__('Невходит в ТОП-20 исполнителей USer.Uz')}}
+                                {{__('Не входит в ТОП-20 всех исполнителей USer.Uz')}}
                             </p>
                             <div class="tooltip-arrow" data-popper-arrow></div>
                         </div>
