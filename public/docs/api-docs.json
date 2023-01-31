@@ -4195,7 +4195,14 @@
                                         "type": "string"
                                     },
                                     "type": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "default": "option",
+                                        "enum": [
+                                            "all",
+                                            "role_user",
+                                            "role_performer",
+                                            "role_admin"
+                                        ]
                                     },
                                     "title": {
                                         "type": "string"
@@ -4243,7 +4250,14 @@
                                         "type": "string"
                                     },
                                     "type": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "default": "option",
+                                        "enum": [
+                                            "all",
+                                            "role_user",
+                                            "role_performer",
+                                            "role_admin"
+                                        ]
                                     },
                                     "title": {
                                         "type": "string"
@@ -4291,7 +4305,14 @@
                                         "type": "string"
                                     },
                                     "type": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "default": "option",
+                                        "enum": [
+                                            "all",
+                                            "role_user",
+                                            "role_performer",
+                                            "role_admin"
+                                        ]
                                     },
                                     "text": {
                                         "type": "string"
@@ -4336,7 +4357,14 @@
                                         "type": "string"
                                     },
                                     "type": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "default": "option",
+                                        "enum": [
+                                            "all",
+                                            "role_user",
+                                            "role_performer",
+                                            "role_admin"
+                                        ]
                                     },
                                     "text": {
                                         "type": "string"
