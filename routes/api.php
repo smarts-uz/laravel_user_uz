@@ -74,6 +74,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
 
     Route::get('account/verify', [LoginAPIController::class, 'verifyCredentials']); // fix
     Route::post('account/verification/phone', [LoginAPIController::class, 'verify_phone']); // fix
+    Route::post('account/verification/email', [LoginAPIController::class, 'verify_email']); // fix
 
     Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']); // fix
     Route::get('/responses/{task}', [TaskAPIController::class, 'responses']); // fix
