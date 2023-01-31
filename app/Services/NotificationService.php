@@ -258,6 +258,11 @@ class NotificationService
     }
 
 
+    /**
+     * @param User $user
+     * @param Notification $notification
+     * @return void
+     */
     public static function pushNoti(User $user, Notification $notification): void
     {
         $locale = cacheLang($user->id);
@@ -272,70 +277,149 @@ class NotificationService
 
     }
 
-    public function firebase_notif($data): array
+    /**
+     * @param $type
+     * @param $title
+     * @param $text
+     * @param $user_id
+     * @return array
+     */
+    public function firebase_notif($type, $title, $text, $user_id): array
     {
-        if ($data === 'null'){
-            $performers = User::query()->where('role_id', User::ROLE_PERFORMER)->get();
-            foreach ($performers as $performer) {
-                /** @var Notification $notification */
-                $notification = Notification::query()->create([
-                    'performer_id' => $performer->id,
-                    'description' => 'test notif firebase',
-                    "type" => Notification::TEST_FIREBASE_NOTIFICATION
-                ]);
-                self::pushNotification($performer, [
-                    'title' => 'test firebase notification title',
-                    'body' => 'test firebase notification body'
+
+        $users = match ($type) {
+            'all' => User::all(),
+            'role_user' => User::query()->where('role_id', User::ROLE_USER)->get(),
+            'role_performer' => User::query()->where('role_id', User::ROLE_PERFORMER)->get(),
+            'role_admin' => User::query()->where('role_id', User::ROLE_ADMIN)->get(),
+            default => null,
+        };
+        if ($users !== null){
+            foreach ($users as $user) {
+                $notification = [
+                    'user_id' => $user->id,
+                    'description' => $text,
+                    'type' => Notification::TEST_FIREBASE_NOTIFICATION
+                ];
+                self::pushNotification($user, [
+                    'title' => $title,
+                    'body' => $text
                 ], 'notification', new NotificationResource($notification));
             }
-        }else{
-            $notification = Notification::query()->create([
-                'user_id'=> $data,
-                'description' => 'test notif firebase',
-                'type' => Notification::TEST_FIREBASE_NOTIFICATION,
-            ]);
-            $performer = User::query()->findOrFail($data);
-            self::pushNotification($performer, [
-                'title' => 'test firebase notification title',
-                'body' => 'test firebase notification body'
+        }
+        if ($user_id !== null){
+            $user = User::query()->findOrFail($user_id);
+            $notification = [
+                'user_id' => $user->id,
+                'description' => $text,
+                'type' => Notification::TEST_FIREBASE_NOTIFICATION
+            ];
+            self::pushNotification($user, [
+                    'title' => $title,
+                    'body' => $text
             ], 'notification', new NotificationResource($notification));
         }
-        return ['success' => true, 'message' => 'success', 'data'=> $data];
+
+        return ['success' => true, 'message' => 'success'];
     }
 
-    public function pusher_notif($data): array
+    /**
+     * @param $type
+     * @param $title
+     * @param $text
+     * @param $user_id
+     * @return array
+     */
+    public function pusher_notif($type, $title, $text, $user_id): array
     {
-        if ($data === 'null'){
-            $performers = User::query()->where('role_id', User::ROLE_PERFORMER)->get();
-            foreach ($performers as $performer) {
-                /** @var Notification $notification */
-                $notification = Notification::query()->create([
-                    'performer_id' => $performer->id,
-                    'description' => 'test notif pusher',
-                    "type" => Notification::TEST_PUSHER_NOTIFICATION
-                ]);
-                self::sendNotificationRequest([$performer->id], [
-                    'created_date' => $notification->created_at->format('d M'),
-                    'title' => 'test pusher notification title',
-                    'url' => route('show_notification', [$notification]),
-                    'description' => 'test pusher notification body',
+        $users = match ($type) {
+            'all' => User::all(),
+            'role_user' => User::query()->where('role_id', User::ROLE_USER)->get(),
+            'role_performer' => User::query()->where('role_id', User::ROLE_PERFORMER)->get(),
+            'role_admin' => User::query()->where('role_id', User::ROLE_ADMIN)->get(),
+            default => null,
+        };
+        if ($users !== null){
+            foreach ($users as $user) {
+                self::sendNotificationRequest([$user->id], [
+                    'created_date' => '29 Jan',
+                    'title' => $title,
+                    'url' => route('show_notification', [111232]),
+                    'description' => $text,
+                    'type'=> Notification::TEST_PUSHER_NOTIFICATION
                 ]);
             }
-        }else{
-            $notification = Notification::query()->create([
-                'user_id'=> $data,
-                'description' => 'test notif pusher',
-                'type' => Notification::TEST_PUSHER_NOTIFICATION,
-            ]);
-            $performer = User::query()->findOrFail($data);
-            self::sendNotificationRequest([$performer->id], [
-                'created_date' => $notification->created_at->format('d M'),
-                'title' => 'test pusher notification title',
-                'body' => 'test pusher notification body',
-                'url' => route('show_notification', [$notification])
+        }
+        if ($user_id !== null){
+            $user = User::query()->findOrFail($user_id);
+            self::sendNotificationRequest([$user->id], [
+                'created_date' => '29 Jan',
+                'title' => $title,
+                'url' => route('show_notification', [111232]),
+                'description' => $text,
+                'type'=> Notification::TEST_PUSHER_NOTIFICATION
             ]);
         }
-        return ['success' => true, 'message' => 'success', 'data'=> $data];
+
+        return ['success' => true, 'message' => 'success'];
+    }
+
+    /**
+     * @param $type
+     * @param $text
+     * @param $user_id
+     * @return array
+     */
+    public function sms_notif($type, $text, $user_id): array
+    {
+        $users = match ($type) {
+            'all' => User::all(),
+            'role_user' => User::query()->where('role_id', User::ROLE_USER)->get(),
+            'role_performer' => User::query()->where('role_id', User::ROLE_PERFORMER)->get(),
+            'role_admin' => User::query()->where('role_id', User::ROLE_ADMIN)->get(),
+            default => null,
+        };
+        if ($users !== null){
+            foreach ($users as $user) {
+                $phone_number = $user->phone_number;
+                SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $text);
+            }
+        }
+        if ($user_id !== null){
+            $user = User::query()->findOrFail($user_id);
+            $phone_number = $user->phone_number;
+            SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $text);
+        }
+
+        return ['success' => true, 'message' => 'success'];
+    }
+
+    /**
+     * @param $type
+     * @param $text
+     * @param $user_id
+     * @return array
+     */
+    public function email_notif($type, $text, $user_id): array
+    {
+        $users = match ($type) {
+            'all' => User::all(),
+            'role_user' => User::query()->where('role_id', User::ROLE_USER)->get(),
+            'role_performer' => User::query()->where('role_id', User::ROLE_PERFORMER)->get(),
+            'role_admin' => User::query()->where('role_id', User::ROLE_ADMIN)->get(),
+            default => null,
+        };
+        if ($users !== null){
+            foreach ($users as $user) {
+                Mail::to($user->email)->send(new VerifyEmail($text));
+            }
+        }
+        if ($user_id !== null){
+            $user = User::query()->findOrFail($user_id);
+            Mail::to($user->email)->send(new VerifyEmail($text));
+        }
+
+        return ['success' => true, 'message' => 'success'];
     }
 
     /**

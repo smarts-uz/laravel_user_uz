@@ -293,6 +293,18 @@ class NotificationController extends VoyagerBaseController
      *                    property="user_id",
      *                    type="string",
      *                 ),
+     *                 @OA\Property (
+     *                    property="type",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="title",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="text",
+     *                    type="string",
+     *                 ),
      *             ),
      *         ),
      *     ),
@@ -316,8 +328,11 @@ class NotificationController extends VoyagerBaseController
     public function firebase_notification(Request $request): JsonResponse
     {
 
-        $data = $request->get('user_id');
-        $this->notificationService->firebase_notif($data);
+        $user_id = $request->get('user_id');
+        $type = $request->get('type');
+        $title = $request->get('title');
+        $text = $request->get('text');
+        $this->notificationService->firebase_notif($type,$title,$text,$user_id);
 
         return response()->json(['success' => true, 'message' => 'success']);
     }
@@ -333,6 +348,18 @@ class NotificationController extends VoyagerBaseController
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="user_id",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="type",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="title",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="text",
      *                    type="string",
      *                 ),
      *             ),
@@ -358,10 +385,116 @@ class NotificationController extends VoyagerBaseController
     public function pusher_notification(Request $request): JsonResponse
     {
 
-        $data = $request->get('user_id');
-        $this->notificationService->pusher_notif($data);
+        $user_id = $request->get('user_id');
+        $type = $request->get('type');
+        $title = $request->get('title');
+        $text = $request->get('text');
+        $this->notificationService->pusher_notif($type, $title, $text, $user_id);
 
         return response()->json(['success' => true, 'message' => 'success']);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/sms-notification",
+     *     tags={"Notifications"},
+     *     summary="sms notification",
+     *     @OA\RequestBody (
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="user_id",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="type",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="text",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function sms_notification(Request $request): JsonResponse
+    {
+        $user_id = $request->get('user_id');
+        $type = $request->get('type');
+        $text = $request->get('text');
+        $this->notificationService->sms_notif($type, $text, $user_id);
+
+        return response()->json(['success' => true, 'message' => 'success']);
+    }
+
+
+    /**
+     * @OA\Post(
+     *     path="/api/email-notification",
+     *     tags={"Notifications"},
+     *     summary="email notification",
+     *     @OA\RequestBody (
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="user_id",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="type",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="text",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function email_notification(Request $request): JsonResponse
+    {
+        $user_id = $request->get('user_id');
+        $type = $request->get('type');
+        $text = $request->get('text');
+        $this->notificationService->email_notif($type, $text, $user_id);
+
+        return response()->json(['success' => true, 'message' => 'success']);
+    }
 }

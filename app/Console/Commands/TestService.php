@@ -28,9 +28,12 @@ class TestService extends Command
      */
     public function handle()
     {
-        $datas = 655;
+        $type = '';
+        $title = 'test title';
+        $text = 'test text';
+        $user_id = 655;
         $notificationService = new NotificationService();
-        $data = $notificationService->test_firebase_notif($datas);
+        $data = $notificationService->firebase_notif($type,$title,$text,$user_id);
         dd($data);
     }
 }

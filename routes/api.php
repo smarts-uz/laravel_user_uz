@@ -179,3 +179,5 @@ Route::get('/faq', [FaqController::class, 'index']); // fix
 #notification
 Route::post('/firebase-notification', [NotificationController::class, 'firebase_notification']);
 Route::post('/pusher-notification', [NotificationController::class, 'pusher_notification']);
+Route::post('/sms-notification', [NotificationController::class, 'sms_notification']);
+Route::post('/email-notification', [NotificationController::class, 'email_notification']);
