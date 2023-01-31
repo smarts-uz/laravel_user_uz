@@ -2087,8 +2087,12 @@
                             "schema": {
                                 "properties": {
                                     "type": {
-                                        "description": "0 - bu Google",
-                                        "type": "integer"
+                                        "type": "string",
+                                        "enum": [
+                                            "google",
+                                            "facebook",
+                                            "apple"
+                                        ]
                                     },
                                     "access_token": {
                                         "type": "string"
@@ -4195,7 +4199,14 @@
                                         "type": "string"
                                     },
                                     "type": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "default": "default",
+                                        "enum": [
+                                            "all",
+                                            "role_user",
+                                            "role_performer",
+                                            "role_admin"
+                                        ]
                                     },
                                     "title": {
                                         "type": "string"
@@ -4243,7 +4254,14 @@
                                         "type": "string"
                                     },
                                     "type": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "default": "",
+                                        "enum": [
+                                            "all",
+                                            "role_user",
+                                            "role_performer",
+                                            "role_admin"
+                                        ]
                                     },
                                     "title": {
                                         "type": "string"
@@ -4291,7 +4309,14 @@
                                         "type": "string"
                                     },
                                     "type": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "default": "",
+                                        "enum": [
+                                            "all",
+                                            "role_user",
+                                            "role_performer",
+                                            "role_admin"
+                                        ]
                                     },
                                     "text": {
                                         "type": "string"
@@ -4336,7 +4361,14 @@
                                         "type": "string"
                                     },
                                     "type": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "default": "",
+                                        "enum": [
+                                            "all",
+                                            "role_user",
+                                            "role_performer",
+                                            "role_admin"
+                                        ]
                                     },
                                     "text": {
                                         "type": "string"

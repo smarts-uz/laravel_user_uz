@@ -304,6 +304,8 @@ class NotificationController extends VoyagerBaseController
      *                 @OA\Property (
      *                    property="type",
      *                    type="string",
+     *                    default="default",
+     *                    enum={"all", "role_user","role_performer","role_admin"}
      *                 ),
      *                 @OA\Property (
      *                    property="title",
@@ -361,6 +363,8 @@ class NotificationController extends VoyagerBaseController
      *                 @OA\Property (
      *                    property="type",
      *                    type="string",
+     *                    default="",
+     *                    enum={"all", "role_user","role_performer","role_admin"}
      *                 ),
      *                 @OA\Property (
      *                    property="title",
@@ -419,6 +423,8 @@ class NotificationController extends VoyagerBaseController
      *                 @OA\Property (
      *                    property="type",
      *                    type="string",
+     *                    default="",
+     *                    enum={"all", "role_user","role_performer","role_admin"}
      *                 ),
      *                 @OA\Property (
      *                    property="text",
@@ -471,6 +477,8 @@ class NotificationController extends VoyagerBaseController
      *                 @OA\Property (
      *                    property="type",
      *                    type="string",
+     *                    default="",
+     *                    enum={"all", "role_user","role_performer","role_admin"}
      *                 ),
      *                 @OA\Property (
      *                    property="text",

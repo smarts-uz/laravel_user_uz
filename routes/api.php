@@ -176,7 +176,7 @@ Route::post('/social-login', [SocialAPIController::class, 'login']); // fix
 #faq
 Route::get('/faq', [FaqController::class, 'index']); // fix
 
-#notification
+#Test notifications
 Route::post('/firebase-notification', [NotificationController::class, 'firebase_notification']);
 Route::post('/pusher-notification', [NotificationController::class, 'pusher_notification']);
 Route::post('/sms-notification', [NotificationController::class, 'sms_notification']);

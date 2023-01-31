@@ -24,8 +24,8 @@ class SocialAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="type",
-     *                    description="0 - bu Google",
-     *                    type="integer",
+     *                    type="string",
+     *                    enum={"google", "facebook","apple"}
      *                 ),
      *                 @OA\Property (
      *                    property="access_token",
@@ -51,16 +51,17 @@ class SocialAPIController extends Controller
     public function login(SocialRequest $request): \Illuminate\Http\JsonResponse
     {
         $data = $request->validated();
-        switch ((int)$data['type']){
-            case 0 :
+        switch ($data['type']){
+            case 'google' :
                 $provider = 'google';
                 break;
-            case 1 :
+            case 'facebook' :
                 $provider = 'facebook';
                 break;
-            default :
+            case 'apple' :
                 $provider = 'apple';
                 break;
+            default :
         }
         return SocialService::login($provider, $data['access_token']);
     }
