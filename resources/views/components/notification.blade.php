@@ -37,7 +37,10 @@
             </li>
         @endforeach
     </ul>
-    <span class="clear-notification flex justify-center cursor-pointer text-center px-5 py-2 font-sans  text-sm  font-semibold bg-green-500 text-white rounded-sm max-w-full">test</span>
+    @if($count !== 0)
+        <span id="clear_notification"  class="clear-notification flex justify-center cursor-pointer text-center px-5 py-2 font-sans  text-sm  font-semibold bg-green-500 text-black-50 rounded-full max-w-full w-3/4">test</span>
+    @endif
+
 </div>
 {{-- modal notification --}}
 
@@ -155,6 +158,10 @@
                     response = text;
                 }
             })
+
+            $('#notifications').empty()
+            $('#all_notification_count').addClass('hidden');
+            $('#clear_notification').addClass('hidden');
             console.log(response);
         });
     </script>
