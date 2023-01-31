@@ -54,12 +54,13 @@ class LoginAPIController extends Controller
      *         {"token": {}}
      *     },
      * )
+     * @throws \Exception
      */
     public function verifyCredentials(VerifyCredentialsRequest $request): JsonResponse
     {
         $data = $request->validated();
         $column = $data['type'];
-        $verified = 'is_' . $column . '_verified';
+
         if (!User::query()
             ->where($column, $data['type'] === 'phone_number' ? correctPhoneNumber($data['data']) : $data['data'])
             ->whereNot('id', auth()->id())
@@ -73,14 +74,12 @@ class LoginAPIController extends Controller
                 VerificationService::send_verification($data['type'], $user, phone_number: $data['data']);
             } else {
                 $user = Auth::user();
-                $user->email = $data['data'];
-                $user->save();
-                VerificationService::send_verification($data['type'], $user, email: $data['data']);
+                VerificationService::send_verification_email($data['data'],$user);
             }
 
             return response()->json([
                 'success' => true,
-                'message' => $data['type'] === 'email' ? __('Данные пользователя обновлены!') : __('Код отправлен!')
+                'message' => __('Код отправлен!')
             ]);
         }
         return response()->json([
@@ -142,17 +141,83 @@ class LoginAPIController extends Controller
                     'success' => true,
                     'message' => __('Ваш телефон успешно подтвержден')
                 ]);
-            } else {
-                return response()->json([
-                    'success' => false,
-                    'message' => __('Неправильный код!')
-                ]);
             }
-        } else {
+
             return response()->json([
                 'success' => false,
-                'message' => __('Срок действия номера истек')
+                'message' => __('Неправильный код!')
             ]);
         }
+
+        return response()->json([
+            'success' => false,
+            'message' => __('Срок действия номера истек')
+        ]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/account/verification/email",
+     *     tags={"Verification"},
+     *     summary="Verification email",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="code",
+     *                    type="integer",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function verify_email(Request $request): JsonResponse
+    {
+        $request->validate([
+            'code' => 'required'
+        ]);
+        /** @var User $user */
+        $user = auth()->user();
+
+        if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
+            if ($request->get('code') === $user->verify_code || $request->get('code') === setting('admin.CONFIRM_CODE')) {
+                $user->email = Cache::get($user->id . 'user_email');
+                $user->is_email_verified = 1;
+                $user->save();
+                Cache::forget($user->id . 'user_email');
+                return response()->json([
+                    'success' => true,
+                    'message' => __('Ваш электронная почта успешно подтвержден')
+                ]);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => __('Неправильный код!')
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => __('Срок действия номера истек')
+        ]);
     }
 }
