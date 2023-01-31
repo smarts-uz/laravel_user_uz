@@ -304,7 +304,7 @@ class NotificationService
                 self::pushNotification($user, [
                     'title' => $title,
                     'body' => $text
-                ], 'notification', new NotificationResource($notification));
+                ], 'notification', $notification);
             }
         }
         if ($user_id !== null){
