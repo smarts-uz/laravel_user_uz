@@ -4196,7 +4196,7 @@
                                     },
                                     "type": {
                                         "type": "string",
-                                        "default": "option",
+                                        "default": "",
                                         "enum": [
                                             "all",
                                             "role_user",
@@ -4251,7 +4251,7 @@
                                     },
                                     "type": {
                                         "type": "string",
-                                        "default": "option",
+                                        "default": "",
                                         "enum": [
                                             "all",
                                             "role_user",
@@ -4306,7 +4306,7 @@
                                     },
                                     "type": {
                                         "type": "string",
-                                        "default": "option",
+                                        "default": "",
                                         "enum": [
                                             "all",
                                             "role_user",
@@ -4358,7 +4358,7 @@
                                     },
                                     "type": {
                                         "type": "string",
-                                        "default": "option",
+                                        "default": "",
                                         "enum": [
                                             "all",
                                             "role_user",
