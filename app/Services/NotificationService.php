@@ -515,4 +515,13 @@ class NotificationService
             default => 'Description',
         };
     }
+
+    public static function readAllNotifications($user_id)
+    {
+        $user_notify = Notification::where('user_id', $user_id);
+        $user_notify->update([
+            'is_read' => 1
+        ]);
+        return $user_notify;
+    }
 }

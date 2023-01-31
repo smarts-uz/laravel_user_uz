@@ -104,6 +104,14 @@ class NotificationController extends VoyagerBaseController
         };
     }
 
+    public function read_all_notification($user_id){
+        NotificationService::readAllNotifications($user_id);
+
+        return $this->success([
+            "user_id" => $user_id,
+        ]);
+    }
+
 
     public function show_notification_user(Notification $notification)
     {

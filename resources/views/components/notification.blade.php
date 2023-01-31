@@ -37,6 +37,7 @@
             </li>
         @endforeach
     </ul>
+    <span class="clear-notification flex justify-center cursor-pointer text-center px-5 py-2 font-sans  text-sm  font-semibold bg-green-500 text-white rounded-sm max-w-full">test</span>
 </div>
 {{-- modal notification --}}
 
@@ -142,5 +143,19 @@
             document.getElementById(modalID121).classList.toggle("flex");
             document.getElementById(modalID121 + "-backdrop").classList.toggle("flex");
         }
+
+        var response = '';
+
+        $(".clear-notification").click(function () {
+            $.ajax({
+                url: '/read-all-notification/{{auth()->id()}}',
+                method: "GET",
+                dataType: "JSON",
+                success: function (text) {
+                    response = text;
+                }
+            })
+            console.log(response);
+        });
     </script>
 @endauth

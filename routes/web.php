@@ -201,6 +201,7 @@ Route::get('/paynet_oplata',[Controller::class,'paynet_oplata']);
 Route::get('/show-notification/{notification}', [NotificationController::class, 'show_notification'])->name('show_notification');
 Route::get('/show-notification-user/{notification}', [NotificationController::class, 'show_notification_user'])->name('show_notification_user');
 Route::get('/read-notification/{notification}', [NotificationController::class, 'read_notification'])->name('read_notification');
+Route::get('/read-all-notification/{user_id}', [NotificationController::class, 'read_all_notification'])->name('read_all_notification');
 Route::get('/info/{user}',[Controller::class,'user_info'])->name('user.info');
 #endregion
 
