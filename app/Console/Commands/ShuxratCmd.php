@@ -7,6 +7,7 @@ use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\PerformersService;
+use App\Services\Task\TaskService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -44,8 +45,7 @@ class ShuxratCmd extends Command
      */
     public function handle()
     {
-        Mail::to('asror.zk@gmail.com')->send(new MessageEmail('Test Email'));
-
+        (new TaskService)->taskIndex('2615');
     }
 
 

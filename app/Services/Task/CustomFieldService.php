@@ -47,7 +47,11 @@ class CustomFieldService
         $item['data_type'] = $custom_field->data_type;
         $item['order'] = $custom_field->order;
         $item['name'] = $custom_field->name;
-        $item['task_value'] = ($custom_field->type === 'input' or $custom_field->type === 'number') ? count($values[$custom_field->id]) ? (string)$values[$custom_field->id][0] : '' : '';
+        if (count($values[$custom_field->id])) {
+            $item['task_value'] = ($custom_field->type === 'input' or $custom_field->type === 'number') ? (string)Arr::get($values,$custom_field->id . '0') : '';
+        } else {
+            $item['task_value'] = ($custom_field->type === 'input' or $custom_field->type === 'number') ? '' : '';
+        }
         return $item;
 
     }
@@ -55,8 +59,8 @@ class CustomFieldService
     private function setOption($custom_field, $task)
     {
         $values = $this->getValuesOfTask($task);
-        //Arr::get($custom_field->options, 'options_ru')
-        $options = app()->getLocale() === 'uz' ? $custom_field->options['options'] : [];
+
+        $options = app()->getLocale() === 'uz' ? $custom_field->options['options'] : Arr::get($custom_field->options, 'options_ru');
         $item = [];
         $data = [];
         foreach ($options as $key => $option) {
