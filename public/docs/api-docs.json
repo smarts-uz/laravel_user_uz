@@ -2087,8 +2087,12 @@
                             "schema": {
                                 "properties": {
                                     "type": {
-                                        "description": "0 - bu Google",
-                                        "type": "integer"
+                                        "type": "string",
+                                        "enum": [
+                                            "google",
+                                            "facebook",
+                                            "apple"
+                                        ]
                                     },
                                     "access_token": {
                                         "type": "string"
