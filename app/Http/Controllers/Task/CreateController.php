@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Task;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BudgetRequest;
 use App\Http\Requests\CreateContactRequest;
+use App\Http\Requests\CreateNameRequest;
 use App\Http\Requests\TaskDateRequest;
 use App\Http\Requests\UserPhoneRequest;
 use App\Http\Requests\UserRequest;
@@ -47,18 +48,9 @@ class CreateController extends Controller
         ]);
     }
 
-    public function name_store(Request $request)
+    public function name_store(CreateNameRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'category_id' => 'required'
-        ],
-        [
-            'name.required'=>__('Требуется заполнение!'),
-            'name.string'=>__('Требуется заполнение!'),
-            'name.max'=>__('Требуется заполнение!'),
-            'category_id.required'=>__('Требуется заполнение!')
-        ]);
+        $data = $request->validated();
         /** @var Task $task */
         $task = Task::query()->create($data);
         $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_NAME, $request);
@@ -112,7 +104,7 @@ class CreateController extends Controller
             return redirect()->route("task.create.date", $task->id);
         }
 
-        return back();
+        return redirect()->back();
     }
 
     public function address(Task $task)

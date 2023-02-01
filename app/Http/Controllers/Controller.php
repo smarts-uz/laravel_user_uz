@@ -124,9 +124,9 @@ class Controller extends BaseController
         $agent = new Agent();
         if ($agent->isMobile()) {
             return view('auth.terms_mobile');
-        } else {
-            return view('auth.terms');
         }
+
+        return view('auth.terms');
 
     }
 
@@ -134,9 +134,9 @@ class Controller extends BaseController
         $agent = new Agent();
         if ($agent->isMobile()) {
             return view('staticpages.paynet_mobile');
-        } else {
-            return view('staticpages.paynet');
         }
+
+        return view('staticpages.paynet');
     }
 
     public function user_info($user){

@@ -51,18 +51,12 @@ class SocialAPIController extends Controller
     public function login(SocialRequest $request): \Illuminate\Http\JsonResponse
     {
         $data = $request->validated();
-        switch ($data['type']){
-            case 'google' :
-                $provider = 'google';
-                break;
-            case 'facebook' :
-                $provider = 'facebook';
-                break;
-            case 'apple' :
-                $provider = 'apple';
-                break;
-            default :
-        }
+        $provider = match ($data['type']) {
+            'google' => 'google',
+            'facebook' => 'facebook',
+            'apple' => 'apple',
+            default => [],
+        };
         return SocialService::login($provider, $data['access_token']);
     }
 
