@@ -33,3 +33,6 @@
     z-index: 2;
     background-color: rgba(0, 0, 0, .8);
 }
+#youtube_link-error{
+    color:red;
+}

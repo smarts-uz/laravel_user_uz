@@ -255,16 +255,13 @@ class ProfileService
      *
      * Function  videoStore
      * Mazkur metod profilga video saqlash
-     * @param $request
+     * @param $user
+     * @param $link
      * @return array
      */
     #[ArrayShape([])]
-    public function videoStore($request): array
+    public function videoStore($user, $link): array
     {
-        /** @var User $user */
-        $user = auth()->user();
-        $validated = $request->validated();
-        $link = $validated['link'];
         switch (true){
             case str_starts_with($link, 'https://youtu.be/') :
                 $user->youtube_link =  str_replace('https://youtu.be', 'https://www.youtube.com/embed', $link);
