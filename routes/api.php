@@ -27,17 +27,16 @@ use App\Http\Controllers\{
 
 Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::post('logout', [UserAPIController::class, 'logout']); // fix
-
-    Route::group(['prefix' => 'chat'], function (){
-
+    //Chat
+    Route::group(['prefix' => 'chat'], static function (){
         Route::post('/sendMessage', [MessagesController::class, 'send']); // fix
         Route::get('/getContacts', [MessagesController::class, 'getContacts']); // fix
         Route::get('/search', [MessagesController::class, 'search']); // fix
         Route::post('/fetchMessages', [MessagesController::class, 'fetch']); // fix
         Route::post('/makeSeen', [MessagesController::class, 'seen']); // fix
         Route::post('/deleteConversation', [MessagesController::class, 'deleteConversation']); // fix
-
     });
+    //Task Create
     Route::post('create-task/name', [TaskAPIController::class, 'name']); // fix
     Route::post('create-task/custom', [TaskAPIController::class, 'custom']); // fix
     Route::post('create-task/remote', [TaskAPIController::class, 'remote']); // fix
@@ -48,7 +47,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::post('create-task/images', [TaskAPIController::class, 'uploadImages']); // fix
     Route::post('create-task/contacts', [TaskAPIController::class, 'contacts']); // fix
     Route::post('create-task/verify', [TaskAPIController::class, 'verify']); // fix
-
+    //Task Update
     Route::post('update-task/{task}/name', [TaskAPIController::class, 'updateName']); // fix
     Route::post('update-task/{task}/custom', [TaskAPIController::class, 'updateCustom']); // fix
     Route::post('update-task/{task}/remote', [TaskAPIController::class, 'updateRemote']); // fix
@@ -71,11 +70,6 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::get('/all-tasks', [TaskAPIController::class, 'all_tasks']); // fix
     Route::post('/cancel-task/{task}', [SearchAPIController::class, 'cancelTask']); // fix
     Route::delete('/delete-task/{task}/{user}', [SearchAPIController::class, 'delete_task']); // fix
-
-    Route::get('account/verify', [LoginAPIController::class, 'verifyCredentials']); // fix
-    Route::post('account/verification/phone', [LoginAPIController::class, 'verify_phone']); // fix
-    Route::post('account/verification/email', [LoginAPIController::class, 'verify_email']); // fix
-
     Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']); // fix
     Route::get('/responses/{task}', [TaskAPIController::class, 'responses']); // fix
     Route::get('/complain/types', [TaskAPIController::class, 'complainTypes']); // fix
@@ -91,9 +85,12 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::post('/become-performer-avatar', [PerformerAPIController::class, 'becomePerformerAvatar']); // fix
     Route::post('/become-performer-category', [PerformerAPIController::class, 'becomePerformerCategory']); // fix
     Route::get('/reviews', [PerformerAPIController::class, 'reviews']); // fix
-    Route::get('/settings/get-all', [FaqController::class, 'get_all']); // fix
-    Route::get('/settings/{key}', [FaqController::class, 'get_key']); // fix
     Route::post('/task-cancel/{task}', [SearchAPIController::class, 'task_cancel']); // fix
+
+    //Verification
+    Route::get('account/verify', [LoginAPIController::class, 'verifyCredentials']); // fix
+    Route::post('account/verification/phone', [LoginAPIController::class, 'verify_phone']); // fix
+    Route::post('account/verification/email', [LoginAPIController::class, 'verify_email']); // fix
 
     // Profile API
     Route::prefix('/profile')->group(function () {
@@ -138,17 +135,19 @@ Route::get('/profile/{user}/portfolios', [ProfileAPIController::class, 'userPort
 Route::get('/profile/{user}/reviews', [ProfileAPIController::class, 'userReviews']); // fix
 
 
+//Setting
+Route::get('/settings/get-all', [FaqController::class, 'get_all']); // fix
+Route::get('/settings/{key}', [FaqController::class, 'get_key']); // fix
+
 //User Routes
 Route::post('login', [UserAPIController::class, 'login']); // fix
 Route::post('register', [UserAPIController::class, 'register']); // fix
-
 Route::post('/reset', [UserAPIController::class, 'reset_submit']); // fix
 Route::post('/reset/password', [UserAPIController::class, 'reset_password_save'])->name('user.reset_password_save'); // fix
 Route::post('/code', [UserAPIController::class, 'reset_code'])->name('user.reset_code'); // fix
-
 Route::get('/support-admin', [UserAPIController::class, "getSupportId"]); // fix
 
-//News
+//Blog News
 Route::get('/blog-news', [BlogController::class, 'index']); // fix
 Route::get('/blog-news/{blogNew}', [BlogController::class, 'show']); // fix
 
@@ -158,7 +157,7 @@ Route::post('user/{user}', [TaskAPIController::class, 'active_task_null']); // f
 Route::get('tasks-filter', [TaskAPIController::class, 'filter']); // fix
 Route::get('same-tasks/{task}', [TaskAPIController::class, 'same_tasks']); // fix
 
-//Categories
+//CategoryAPI
 Route::get('/categories', [CategoriesAPIController::class, 'index']); // fix
 Route::get('/popular-categories', [CategoriesAPIController::class, 'popular']); // fix
 Route::get('/categories-parent', [CategoriesAPIController::class, 'parents']); // fix
@@ -171,13 +170,13 @@ Route::get('/performers-filter', [PerformerAPIController::class, 'performer_filt
 Route::get('/performers-count/{category_id}', [PerformerAPIController::class, 'performers_count']); // fix
 Route::get('/performers-image/{category_id}', [PerformerAPIController::class, 'performers_image']); // fix
 
-#Social
+//Social
 Route::post('/social-login', [SocialAPIController::class, 'login']); // fix
 
-#faq
+//FAQ
 Route::get('/faq', [FaqController::class, 'index']); // fix
 
-#Test notifications
+//Test notifications
 Route::post('/firebase-notification', [NotificationController::class, 'firebase_notification']);
 Route::post('/pusher-notification', [NotificationController::class, 'pusher_notification']);
 Route::post('/sms-notification', [NotificationController::class, 'sms_notification']);
