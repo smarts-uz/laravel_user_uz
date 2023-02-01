@@ -151,7 +151,11 @@
                     {{-- about-me end --}}
                 </div>
             </div>
-
+            <style>
+                #youtube_link-error{
+                    color:red;
+                }
+            </style>
             {{-- right-side-bar --}}
             @include('auth.profile-side-info')
             {{-- right-side-bar --}}
