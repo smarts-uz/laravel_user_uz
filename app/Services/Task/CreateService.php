@@ -3,6 +3,7 @@
 namespace App\Services\Task;
 
 use App\Http\Resources\NotificationResource;
+use App\Item\CreateNameItem;
 use App\Models\Address;
 use App\Models\Category;
 use App\Models\CustomFieldsValue;
@@ -22,13 +23,18 @@ class CreateService
      *
      * Function  attachCustomFields
      * Mazkur metod Task yaratishda  nom kiritadigan joyni ochib beradi
-     * @param $request
-     * @return View
+     * @param $category_id
+     * @return array
      */
-    public function name($request): View
+    public function name($category_id): CreateNameItem
     {
-        $current_category = Category::query()->findOrFail($request->category_id);
-        return view("create.name", compact('current_category'));
+        $item = new CreateNameItem();
+        $item->current_category = Category::query()->findOrFail($category_id);
+        $item->categories = Category::query()->where('parent_id', null)
+            ->select('id', 'name', 'slug')->orderBy("order")->get();
+        $item->child_categories = Category::query()->where('parent_id', '<>', null)
+            ->select('id', 'parent_id', 'name')->orderBy("order")->get();
+        return $item;
     }
     /**
      *

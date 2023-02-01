@@ -1,7 +1,6 @@
 @extends("layouts.app")
 
 @section("content")
-
     <script>
         let var_for_id_task = null;
     </script>
@@ -33,10 +32,8 @@
                                 <label class="block text-gray-700 text-base mb-2" for="username">
                                     {{__('Название задания')}}
                                 </label>
-                                <input
-                                    class="shadow sm:text-base text-sm  border focus:shadow-orange-500 rounded-lg w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none
-                                    focus:border-yellow-500 "
-                                    id="username" type="text" autofocus="autofocus"
+                                <input class="shadow sm:text-base text-sm  border focus:shadow-orange-500 rounded-lg w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none
+                                    focus:border-yellow-500" id="username" type="text" autofocus="autofocus"
                                     placeholder="{{__('Например, ')}} {{ $current_category->getTranslatedAttribute('name') }}"
                                     name="name" value="{{session('neym')}}">
                             </div>
@@ -50,23 +47,20 @@
                                     <div class="lg:w-1/2 w-full lg:pr-3 py-5">
                                         <select class="select2 parent-category"
                                                 style="width: 100%">
-                                            @foreach(getCategoriesByParent(null) as $parentCategory)
-                                                <option value="{{ $parentCategory->id }}" {{ $parentCategory->id == $current_category->parent_id ? 'selected': '' }}> {{ $parentCategory->getTranslatedAttribute('name') }}</option>
+                                            @foreach($categories as $parentCategory)
+                                                <option value="{{ $parentCategory->id }}" @selected($parentCategory->id === $current_category->parent_id)> {{ $parentCategory->getTranslatedAttribute('name') }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="lg:w-1/2 w-full lg:pl-3 py-5">
-                                        @foreach(getCategoriesByParent(null) as $category)
-
+                                        @foreach($categories as $category)
                                             <div class="hidden child-category child-category-{{ $category->id }}">
-                                                <select class="select2  child-category1"
-                                                        style="width: 100%">
-                                                    @foreach($category->childs as $child)
-                                                        <option value="{{ $child->id }}" {{ $current_category->id == $child->id ? 'selected': '' }} class="hidden" data-parent="{{ $child->parent_id }}">{{ $child->getTranslatedAttribute('name') }}</option>
+                                                <select class="select2 child-category1" style="width: 100%">
+                                                    @foreach($child_categories as $child)
+                                                        <option value="{{ $child->id }}" @selected($current_category->id === $child->id) class="hidden" data-parent="{{ $child->parent_id }}">{{ $child->getTranslatedAttribute('name') }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-
                                         @endforeach
 
                                     </div>

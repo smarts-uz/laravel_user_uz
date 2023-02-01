@@ -37,7 +37,14 @@ class CreateController extends Controller
 
     public function name(Request $request)
     {
-        return $this->service->name($request);
+        $category_id = $request->get('category_id');
+        $service = new CreateService();
+        $item = $service->name($category_id);
+        return view("create.name", [
+            'current_category'=>$item->current_category,
+            'categories'=>$item->categories,
+            'child_categories'=>$item->child_categories,
+        ]);
     }
 
     public function name_store(Request $request)
