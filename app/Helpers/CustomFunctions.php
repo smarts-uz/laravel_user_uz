@@ -90,7 +90,7 @@ function categories()
 
 function getCategoriesByParent($parent)
 {
-    return Category::withTranslations(['uz', 'ru'])->where('parent_id', $parent)->get();
+    return Category::query()->where('parent_id', $parent)->get();
 }
 
 function getFaqCategories()
