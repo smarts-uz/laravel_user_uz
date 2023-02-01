@@ -11,7 +11,7 @@ return [
     'Description should be in text format.' => 'Tasvir tekst bo\'lishi kerak.',
     'Enter link.' => 'Halova kiriting.',
     'Link should be type of url.' => 'Ma\'lumot halova bo\'lishi kerak.',
-    'Link should be from YouTube.' => 'Yaroqsiz YouTube havolasi kiritildi. Yaroqli havolaga misol "https://www.youtube.com/embed/O-lhhgMWqmo"',
+    'Link should be from YouTube.' => 'Yaroqsiz YouTube havolasi kiritildi. Yaroqli havolaga misol "https://youtu.be/O-lhhgMWqmo"',
     'Video added successfully.' => 'Video muvaffaqiyatli kiritildi.',
     'Video deleted successfully.' => 'Video muaffaqiyatli o\'chirildi.',
     'Enter your phone number.' => 'Telefon raqamingizni kiriting.',

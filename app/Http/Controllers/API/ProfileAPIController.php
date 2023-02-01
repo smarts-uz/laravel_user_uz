@@ -288,7 +288,11 @@ class ProfileAPIController extends Controller
      */
     public function videoStore(ProfileVideoRequest $request): JsonResponseAlias
     {
-        $response = $this->profileService->videoStore($request);
+        /** @var User $user */
+        $user = auth()->user();
+        $validated = $request->validated();
+        $link = $validated['link'];
+        $response = $this->profileService->videoStore($user, $link);
         return response()->json($response);
     }
 

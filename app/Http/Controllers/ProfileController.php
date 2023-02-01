@@ -355,35 +355,19 @@ class ProfileController extends Controller
         }
     }
 
-    public function youtube_link(Request $request)
+    public function youtube_link(Request $request): \Illuminate\Http\RedirectResponse
     {
         /** @var User $user */
-        $user = User::query()->find(auth()->id());
-        $validator = Validator::make($request->all(), [
+        $user = auth()->user();
+        $validated = $request->validate([
             'youtube_link' => 'required|url'
         ]);
-        if ($validator->fails()) {
-            Alert::error(__('Отправить действующую ссылку на Youtube'));
-        }
-        $validated = $validator->validated();
         $link = $validated['youtube_link'];
-        switch (true){
-            case str_starts_with($link, 'https://youtu.be/') :
-                $user->youtube_link =  str_replace('https://youtu.be', 'https://www.youtube.com/embed', $request->get('youtube_link'));
-                $user->save();
-                break;
-            case str_starts_with($link, 'https://www.youtube.com/') :
-                $user->youtube_link = str_replace('watch?v=', 'embed/', $request->get('youtube_link'));
-                $user->save();
-                break;
-            default :
-                Alert::error(__('Отправить действующую ссылку на Youtube'));
-                break;
-        }
-        return redirect()->back();
+        $response = $this->profileService->videoStore($user, $link);
+        return redirect()->back()->with('message', $response['message']);
     }
 
-    public function youtube_link_delete()
+    public function youtube_link_delete(): \Illuminate\Http\RedirectResponse
     {
         /** @var User $user */
         $user = User::query()->find(auth()->id());

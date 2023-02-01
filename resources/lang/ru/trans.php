@@ -11,7 +11,7 @@ return [
     'Description should be in text format.' => 'Описание должно быть в текстовом формате.',
     'Enter link.' => 'Введите ссылку.',
     'Link should be type of url.' => 'Введенные данные должны быть ссылкой.',
-    'Link should be from YouTube.' => 'Введена не корректная ссылка YouTube. Пример корректной ссылки "https://www.youtube.com/embed/O-lhhgMWqmo"',
+    'Link should be from YouTube.' => 'Введена не корректная ссылка YouTube. Пример корректной ссылки "https://youtu.be/O-lhhgMWqmo"',
     'Video added successfully.' => 'Видео добавлено успешно.',
     'Video deleted successfully.' => 'Видео удалено успешно.',
     'Enter your phone number.' => 'Введите свой номер телефона.',

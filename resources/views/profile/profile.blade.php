@@ -70,20 +70,27 @@
                         <h4 class="font-bold mt-5 text-gray-700">{{__('Примеры работ')}}</h4>
                         <p class="mt-2">{{__('Если у вас есть примеры выполненной вами работы, обязательно прикрепите их, это покажет вас в лучшем свете в глазах автора задания.')}} {{__('А также вы будете вызывать больше доверия как исполнитель.')}}</p>
 
-                        <form action="{{route('youtube_link')}}" method="POST">
+                        <form action="{{route('youtube_link')}}" method="POST" id="youtube_form">
                             @csrf
                             <div class="border-dashed border-2 border-gray-500 rounded-xl mt-6 p-4">
                                 <h1 class="text-xl font-bold">{{__('Добавьте видеоролик о себе')}}</h1>
                                 <p class="text-lg mt-2">{{__('Профили с видео получают больше внимания и вызывают доверие заказчиков.')}}</p>
-                                <div class="flex sm:flex-row flex-col my-3">
-                                    <input name="youtube_link" type="text" id="youtube_link"
-                                           class="border border-gray-400 hover:border-yellow-500 focus:outline-none rounded-lg sm:w-2/3 w-full p-2"
-                                           placeholder="{{__('Ссылка на ролик с YouTube')}}" required>
-                                    <button
-                                            class="sm:w-1/3 w-2/3 sm:mx-3 mx-0 rounded-lg bg-green-500 hover:bg-green-600 text-white py-2 px-4 cursor-pointer sm:mt-0 mt-3">{{__('Добавить')}}</button>
+                                <div class="grid grid-cols-3 my-3">
+                                    <div class="sm:col-span-2 col-span-3 flex flex-col">
+                                        <input name="youtube_link" type="text" id="youtube_link"
+                                               class="border border-gray-400 hover:border-yellow-500 focus:outline-none rounded-lg p-2"
+                                               placeholder="{{__('Ссылка на ролик с YouTube')}}">
+                                        @if(session()->has('message'))
+                                            <div class="text-red-500">
+                                                {{ session()->get('message') }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <button class="sm:col-span-1 col-span-3 h-10 sm:mx-3 mx-0 rounded-lg bg-green-500 hover:bg-green-600 text-white py-2 px-4 cursor-pointer sm:mt-0 mt-3">{{__('Добавить')}}</button>
                                 </div>
                             </div>
                         </form>
+
                         @if($user->youtube_link)
                             <iframe class="my-4 sm:w-full w-5/6" width="644" height="362" id="iframe" src="{{$user->youtube_link}}" frameborder="0"></iframe>
                                 <a href="{{route('youtube_link_delete')}}" class="float-right text-gray-500 hover:text-red-500 mb-3 border-b-2 border-dotted hover:border-red-500 border-gray-500">{{__('Удалить')}}</a>
@@ -144,12 +151,42 @@
                     {{-- about-me end --}}
                 </div>
             </div>
-
+            <style>
+                #youtube_link-error{
+                    color:red;
+                }
+            </style>
             {{-- right-side-bar --}}
             @include('auth.profile-side-info')
             {{-- right-side-bar --}}
         </div>
     </div>
     <script src="{{ asset('js/profile/profile.js') }}"></script>
+    <script>
+        $(document).ready(function($) {
+            $("#youtube_form").validate({
+                rules: {
+                    youtube_link: {
+                        required: true,
+                        url: true
+                    },
+                },
+                messages: {
+                    youtube_link: {
+                        @if(session('lang')==='ru')
+                        required: 'Пожалуйста, введите вашу ссылку!',
+                        url: 'Пожалуйста, введите корректный адрес.'
+                        @else
+                        required: 'Iltimos, havolangizni kiriting!',
+                        url: 'Yaroqli URL manzilini kiriting.'
+                        @endif
+                    },
+                },
+                submitHandler: function(form) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
     @include('sweetalert::alert')
 @endsection
