@@ -3,14 +3,17 @@
 
 namespace App\Services;
 
+use App\Http\Resources\NotificationResource;
 use App\Item\PerformerPrefItem;
 use App\Item\PerformerServiceItem;
 use App\Item\PerformerUserItem;
+use App\Models\Notification;
 use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\UserCategory;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use TCG\Voyager\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -169,6 +172,52 @@ class PerformersService
         }
 
         return $performers->paginate(20);
+    }
+
+    public function task_give($task_id, $user_id, $data): JsonResponse
+    {
+        if ($user_id !== null) {
+            $data->session()->put('given_id', $user_id);
+        }
+
+        if (isset($task_id)) {
+            /** @var Task $task_name */
+            $task_name = Task::query()->where('id', $task_id)->first();
+            $users_id = $data->session()->pull('given_id');
+            /** @var User $performer */
+            $performer = User::query()->find($users_id);
+            $text_url = route("searchTask.task",$task_id);
+            $message = __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
+                'task_name' => $text_url, 'task_id' => $task_id, 'task_user' => $task_name->user?->name
+            ]);
+            $phone_number = $performer->phone_number;
+            SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
+            /** @var Notification $notification */
+            $notification = Notification::query()->create([
+                'user_id' => $task_name->user_id,
+                'performer_id' => $users_id,
+                'task_id' => $task_id,
+                'name_task' => $task_name->name,
+                'description' => '123',
+                'type' => Notification::GIVE_TASK,
+            ]);
+
+            NotificationService::sendNotificationRequest([$users_id], [
+                'created_date' => $notification->created_at->format('d M'),
+                'title' => NotificationService::titles($notification->type),
+                'url' => route('show_notification', [$notification]),
+                'description' => NotificationService::descriptions($notification)
+            ]);
+            $locale = cacheLang($performer->id);
+            NotificationService::pushNotification($performer, [
+                'title' => __('Предложение', [], $locale), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
+                    'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name
+                ], $locale)
+            ], 'notification', new NotificationResource($notification));
+
+            return response()->json(['success' => true]);
+        }
+        return response()->json(['success' => true]);
     }
 
 }

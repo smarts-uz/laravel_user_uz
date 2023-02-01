@@ -120,8 +120,9 @@ class LoginController extends Controller
                 $user->$needle = 1;
                 $user->save();
                 $result = true;
-                if ($needle !== 'is_phone_number_verified' && !$user->is_phone_number_verified)
+                if ($needle !== 'is_phone_number_verified' && !$user->is_phone_number_verified) {
                     VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
+                }
             }
         } else {
             abort(419);
@@ -149,12 +150,11 @@ class LoginController extends Controller
             auth()->user()->save();
             Alert::success(__('Поздравляю'), __('Ваш телефон успешно подтвержден'));
             return redirect()->route('profile.profileData');
-        } else {
-            return back()->with([
-                'code' => __('Неправильный код!')
-            ]);
-
         }
+
+        return back()->with([
+            'code' => __('Неправильный код!')
+        ]);
     }
 
     public function change_email(Request $request)
@@ -191,17 +191,17 @@ class LoginController extends Controller
                 'email-message' => 'Your phone',
                 'email' => $request->get('email')
             ]);
-        } else {
-            $request->validated();
-
-            $user->phone_number = $request->get('phone_number');
-            $user->save();
-            VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
-
-            return redirect()->back()->with([
-                'code' => __('Код отправлен!')
-            ]);
         }
+
+        $request->validated();
+
+        $user->phone_number = $request->get('phone_number');
+        $user->save();
+        VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
+
+        return redirect()->back()->with([
+            'code' => __('Код отправлен!')
+        ]);
     }
 
     public function logout()

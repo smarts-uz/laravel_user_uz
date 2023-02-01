@@ -8,6 +8,10 @@ use App\Services\NotificationService;
 use App\Services\PerformersService;
 use App\Services\SmsMobileService;
 use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Portfolio;
 use App\Models\User;
@@ -20,10 +24,16 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PerformersController extends Controller
 {
-    public function service(Request $request)
+
+    protected PerformersService $performerService;
+
+    public function __construct()
+    {
+        $this->performerService = new PerformersService();
+    }
+    public function service(Request $request): Factory|View|Application
     {
         $search = $request->input('search');
-
         $authId = Auth::id();
         $service = new PerformersService();
         $item = $service->service($authId,$search);
@@ -39,7 +49,7 @@ class PerformersController extends Controller
     }
 
 
-    public function getPerformers(Request $request)
+    public function getPerformers(): JsonResponse
     {
 
             $data = User::query()
@@ -75,7 +85,7 @@ class PerformersController extends Controller
     }
 
 
-    public function performer(User $user)
+    public function performer(User $user): Factory|View|Application
     {
         setview($user);
 
@@ -103,58 +113,19 @@ class PerformersController extends Controller
     }
 
 
-    public function give_task(Request $request)
+    public function give_task(Request $request): JsonResponse
     {
-        if ($request->input('user_id') !== null) {
-            $request->session()->put('given_id', $request->input('user_id'));
-        }
+
         $task_id = $request->input('task_id');
+        $user_id = $request->input('user_id');
 
-        if (isset($task_id)) {
-            /** @var Task $task_name */
-            $task_name = Task::query()->where('id', $task_id)->first();
-            $users_id = $request->session()->pull('given_id');
-            /** @var User $performer */
-            $performer = User::query()->find($users_id);
-            $text_url = route("searchTask.task",$task_id);
-            $message = __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
-                'task_name' => $text_url, 'task_id' => $task_id, 'task_user' => $task_name->user?->name
-            ]);
-            $phone_number=$performer->phone_number;
-            SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
-            /** @var Notification $notification */
-            $notification = Notification::query()->create([
-                'user_id' => $task_name->user_id,
-                'performer_id' => $users_id,
-                'task_id' => $task_id,
-                'name_task' => $task_name->name,
-                'description' => '123',
-                'type' => Notification::GIVE_TASK,
-            ]);
+        $this->performerService->task_give($task_id, $user_id, $request);
 
-            NotificationService::sendNotificationRequest([$users_id], [
-                'created_date' => $notification->created_at->format('d M'),
-                'title' => NotificationService::titles($notification->type),
-                'url' => route('show_notification', [$notification]),
-                'description' => NotificationService::descriptions($notification)
-            ]);
-//            NotificationService::sendNotificationRequest([$users_id], [
-//                'url' => 'detailed-tasks' . '/' . $task_id, 'name' => $task_name->name, 'time' => 'recently'
-//            ]);
-            $locale = cacheLang($performer->id);
-            NotificationService::pushNotification($performer, [
-                'title' => __('Предложение', [], $locale), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
-                    'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name
-                ], $locale)
-            ], 'notification', new NotificationResource($notification));
-
-            return response()->json(['success' => $users_id]);
-        }
-        return response()->json(['success' => '$users_id']);
+        return response()->json(['success' => true]);
     }
 
 
-    public function perf_ajax($cf_id, User $user, Request $request)
+    public function perf_ajax($cf_id, User $user, Request $request): Factory|View|Application
     {
         $authId = Auth::id();
         $search = $request->input('search');
@@ -173,7 +144,7 @@ class PerformersController extends Controller
 
     }
 
-    public function ajaxAP()
+    public function ajaxAP(): array
     {
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
         $activePerformers = User::query()->where([['role_id', User::ROLE_PERFORMER], ['last_seen', ">=", $date]])
@@ -183,13 +154,14 @@ class PerformersController extends Controller
         return $activePerformers->all();
     }
 
-    public function del_all_notif()
+    public function del_all_notif(): JsonResponse
     {
         Notification::query()->where('user_id', Auth::id())->delete();
         return response()->json(['success']);
     }
 
-    public function performers_portfolio(User $user,Portfolio $portfolio){
+    public function performers_portfolio(User $user,Portfolio $portfolio): Factory|View|Application
+    {
         return view('performers.performer_portfolio',
         [
             'user' => $user,
