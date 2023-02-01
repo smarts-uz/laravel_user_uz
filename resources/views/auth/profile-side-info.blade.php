@@ -104,4 +104,14 @@
         </div>
     @endif
 
+        <div class="sm:w-9/12 w-full container mx-auto my-12 sm:px-0 px-4">
+            @foreach($news as $new)
+                <a href="/news/{{$new->id}}">
+                    <h1 class="font-bold text-l my-4">{{$new->getTranslatedAttribute('title',Session::get('lang') , 'fallbackLocale')}}</h1>
+                </a>
+                <hr>
+            @endforeach
+        </div>
+
+
 </div>
