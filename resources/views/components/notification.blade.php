@@ -38,7 +38,7 @@
         @endforeach
     </ul>
     @if($count !== 0)
-        <span id="clear_notification"  class="clear-notification flex justify-center cursor-pointer text-center px-5 py-2 font-sans  text-sm  font-semibold text-black-50 rounded-full max-w-full w-3/4  bg-green-500 blur-sm"><p class="font-sans  text-sm  font-semibold text-black-50">{{__('Пометить, как прочитанное')}}</p></span>
+        <span id="clear_notification"  class="clear-notification flex justify-center cursor-pointer text-center my-0 mx-auto mb-1.5 px-5 py-2 font-sans  text-sm  font-semibold text-black-50 rounded-full max-w-full w-3/4  bg-yellow-400 blur-sm"><p class="font-sans  text-sm  font-semibold text-black-50">{{__('Пометить, как прочитанное')}}</p></span>
     @endif
 
 </div>

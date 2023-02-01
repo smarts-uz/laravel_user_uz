@@ -54,6 +54,9 @@
                                 </li>
                             @endforeach
                         </ul>
+                            @if($count !== 0)
+                                <span id="clear_notification"  class="clear-notification flex justify-center cursor-pointer text-center my-0 mx-auto mb-1.5 px-5 py-2 font-sans  text-sm  font-semibold text-white rounded-full max-w-full w-3/4  bg-yellow-400 blur-sm"><p class="font-sans  text-sm  font-semibold text-black-50">{{__('Пометить, как прочитанное')}}</p></span>
+                            @endif
                     </div>
                 </div>
                 <div class="ml-4 open-chat-mob">
@@ -254,5 +257,24 @@
                 });
             }
         }
+    });
+
+    //mark as read
+    var response = '';
+
+    $(".clear-notification").click(function () {
+        $.ajax({
+            url: '/read-all-notification/{{auth()->id()}}',
+            method: "GET",
+            dataType: "JSON",
+            success: function (text) {
+                response = text;
+            }
+        })
+
+        $('#notifs').empty()
+        $('#content_count').addClass('hidden');
+        $('#clear_notification').addClass('hidden');
+        console.log(response);
     });
 </script>
