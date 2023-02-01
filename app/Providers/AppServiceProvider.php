@@ -46,5 +46,11 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
+        View::composer('components.navbar', function ($view) {
+            if (Auth::check()) {
+                $view->with('walletBalance', auth()->user()->walletBalance);
+            }
+        });
+
     }
 }
