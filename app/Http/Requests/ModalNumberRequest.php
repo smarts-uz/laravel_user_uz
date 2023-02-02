@@ -30,9 +30,9 @@ class ModalNumberRequest extends FormRequest
     public function messages()
     {
         return  [
-            'phone_number.required' => __('login.phone_number.required'),
-            'phone_number.unique' => __('login.phone_number.unique'),
-            'phone_number.min' => __('login.phone_number.min'),
+            'phone_number.required' => __('Требуется заполнение!'),
+            'phone_number.unique' => __('Этот номер есть в системе!'),
+            'phone_number.min' => __('Неверный формат номера телефона!'),
         ];
     }
     public function getValidatorInstance()
