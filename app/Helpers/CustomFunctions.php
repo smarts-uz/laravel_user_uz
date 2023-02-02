@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Category;
-use App\Models\FaqCategories;
 use App\Models\UserView;
 use App\Services\Task\CreateService;
 
@@ -58,7 +57,7 @@ function setView($user)
 
 function categories()
 {
-    $datas = Category::with('translations')->orderBy("order", "asc")->get();
+    $datas = Category::with('translations')->orderBy("order")->get();
 
     $child_categories = [];
     $parent_categories = [];
@@ -86,21 +85,6 @@ function categories()
 
     return $categories;
 
-}
-
-function getCategoriesByParent($parent)
-{
-    return Category::query()->where('parent_id', $parent)->get();
-}
-
-function getFaqCategories()
-{
-    return FaqCategories::all();
-}
-
-function getAuthUserBalance()
-{
-    return auth()->user() && auth()->user()->walletBalance ? auth()->user()->walletBalance->balance : null;
 }
 
 function taskGuard($task)
@@ -140,7 +124,7 @@ function updateCache($key, $property, $value)
     return $data;
 }
 
-function correctPhoneNumber($phone)
+function correctPhoneNumber($phone): string
 {
     return match (true) {
         strlen($phone) == 12 => '+' . $phone,

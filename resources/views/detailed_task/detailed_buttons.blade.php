@@ -1,7 +1,10 @@
 <div class="w-full flex flex-col sm:flex-row sm:p-6 p-2">
     <div class="w-full text-center">
+        @php
+            $walletBalance = \App\Services\Profile\ProfileService::walletBalance(auth()->user());
+        @endphp
         @auth
-            @if(getAuthUserBalance() >= setting('admin.pullik_otklik'))
+            @if($walletBalance >= setting('admin.pullik_otklik'))
                 @if($task->user_id !== auth()->id() && $task->status < 3 && !$auth_response)
                     <button
                         class="sm:w-4/5 w-full font-sans text-lg pay font-semibold bg-green-500 text-white hover:bg-green-600 px-8 pt-1 pb-2 mt-6 rounded-lg transition-all duration-300"
@@ -24,7 +27,7 @@
                         </span>
                     </button>
                 @endif
-            @elseif(getAuthUserBalance() < setting('admin.pullik_otklik') )
+            @elseif($walletBalance < setting('admin.pullik_otklik') )
                 @if($task->user_id !== auth()->id() && $task->status < 3 && !$auth_response)
                     <a class="open-modal"
                        data-modal="#modal1">
