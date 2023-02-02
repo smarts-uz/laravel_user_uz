@@ -46,7 +46,7 @@ class CreateContactRequest extends FormRequest
     {
         if($this->request->has('phone_number')){
             $this->merge([
-                'phone_number' => str_replace(['-','(',')'], '', $this->request->get('phone_number'))
+                'phone_number' => str_replace(['-','_','(',')'], '', $this->request->get('phone_number'))
             ]);
         }
     }

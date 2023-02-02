@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ModalNumberRequest extends FormRequest
@@ -35,17 +36,17 @@ class ModalNumberRequest extends FormRequest
             'phone_number.min' => __('Неверный формат номера телефона!'),
         ];
     }
-    public function getValidatorInstance()
+    public function getValidatorInstance(): Validator
     {
         $this->cleanPhoneNumber();
         return parent::getValidatorInstance();
     }
 
-    protected function cleanPhoneNumber()
+    protected function cleanPhoneNumber(): void
     {
         if($this->request->has('phone_number')){
             $this->merge([
-                'phone_number' => str_replace(['-','(',')'], '', $this->request->get('phone_number'))
+                'phone_number' => str_replace(['-','_','(',')'], '', $this->request->get('phone_number'))
             ]);
         }
     }
