@@ -64,7 +64,7 @@ class ProfileController extends Controller
         /** @var User $user */
         $user = auth()->user();
         $uploadedImages = $request->file('images');
-        (new ProfileService())->uploadImageServ($uploadedImages,$user);
+        $this->profileService->uploadImageServ($uploadedImages,$user);
         return true;
     }
 
@@ -84,8 +84,7 @@ class ProfileController extends Controller
     public function profileData()
     {
         $user = Auth::user();
-        $service = new ProfileService();
-        $item = $service->profileData($user);
+        $item = $this->profileService->profileData($user);
 
         return view('profile.profile',
             [
@@ -107,8 +106,7 @@ class ProfileController extends Controller
     public function profileCash()
     {
         $user = Auth::user();
-        $service = new ProfileService();
-        $item = $service->profileCash($user);
+        $item = $this->profileService->profileCash($user);
         return view('profile.cash',
             [
                 'balance' => $item->balance,
@@ -126,8 +124,7 @@ class ProfileController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
-        $service = new ProfileService();
-        $item = $service->settingsEdit($user);
+        $item = $this->profileService->settingsEdit($user);
 
         return view('profile.settings',[
             'user' => $user,
@@ -150,8 +147,7 @@ class ProfileController extends Controller
         $data = $request->validated();
         /** @var User $user */
         $user = auth()->user();
-        $profile = new ProfileService();
-        $updatedData = $profile->settingsUpdate($data, $user);
+        $updatedData = $this->profileService->settingsUpdate($data, $user);
         Auth::user()->update((array)$updatedData);
         Alert::success(__('Настройки успешно сохранены'));
         return redirect()->back();
@@ -278,8 +274,7 @@ class ProfileController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
-        $profile = new ProfileService();
-        $profile->storeProfilePhoto($request, $user);
+        $this->profileService->storeProfilePhoto($request, $user);
 
         return redirect()->route('profile.verificationCategory');
     }
@@ -345,8 +340,7 @@ class ProfileController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-        $profile = new ProfileService();
-        $photoName = $profile->storeProfilePhoto($request, $user);
+        $photoName = $this->profileService->storeProfilePhoto($request, $user);
 
         if ($photoName) {
             echo json_encode(['status' => 1, 'msg' => 'success', 'name' => $photoName]);

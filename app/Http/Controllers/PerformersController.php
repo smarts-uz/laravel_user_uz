@@ -35,8 +35,7 @@ class PerformersController extends Controller
     {
         $search = $request->input('search');
         $authId = Auth::id();
-        $service = new PerformersService();
-        $item = $service->service($authId,$search);
+        $item = $this->performerService->service($authId,$search);
 
        return view('performers/performers',
            [
@@ -49,9 +48,8 @@ class PerformersController extends Controller
     }
 
 
-    public function getPerformers(): JsonResponse
+   /* public function getPerformers(): JsonResponse
     {
-
             $data = User::query()
                 ->where('role_id', User::ROLE_PERFORMER)
                 ->WhereNot('id',\auth()->id())
@@ -82,19 +80,18 @@ class PerformersController extends Controller
                     ]);
                 })
                 ->make(true);
-    }
+    }*/
 
 
     public function performer(User $user): Factory|View|Application
     {
         setview($user);
 
-        $service = new PerformersService();
-        $item = $service->performer($user);
+        $item = $this->performerService->performer($user);
 
         $value = Carbon::parse($user->created_at)->locale(getLocale());
         $day = $value == now()->toDateTimeString() ? "Bugun" : "$value->day-$value->monthName";
-        $created = "$day  $value->year";
+        $created = "$day  {$value->year}";
 
         return view('performers/executors-courier',
             [
@@ -129,8 +126,8 @@ class PerformersController extends Controller
     {
         $authId = Auth::id();
         $search = $request->input('search');
-        $service = new PerformersService();
-        $item = $service->perf_ajax($authId,$search,$cf_id);
+
+        $item = $this->performerService->perf_ajax($authId,$search,$cf_id);
         return view('performers/performers_cat',
         [
             'top_users' => $item->top_users,
