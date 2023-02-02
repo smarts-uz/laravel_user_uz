@@ -1,4 +1,4 @@
-@extends("layouts.app")
+    @extends("layouts.app")
 @section('content')
 <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css" rel="stylesheet">
@@ -178,7 +178,7 @@
 
 
             {{-- right-side-bar --}}
-            @include('auth.profile-side-info')
+            <x-profile-info></x-profile-info>
             {{-- tugashi o'ng tomon ispolnitel --}}
         </div>
     </div>

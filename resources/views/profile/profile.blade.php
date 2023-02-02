@@ -157,7 +157,7 @@
                 }
             </style>
             {{-- right-side-bar --}}
-            @include('auth.profile-side-info')
+            <x-profile-info></x-profile-info>
             {{-- right-side-bar --}}
         </div>
     </div>

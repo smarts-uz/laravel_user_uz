@@ -516,4 +516,9 @@ class ProfileService
             ]
         ];
     }
+
+    public static function walletBalance($user)
+    {
+        return ($user && $user->walletBalance) ? ($user->walletBalance->balance) : (null);
+    }
 }

@@ -54,7 +54,7 @@
         ?>
         @if (Route::has('login'))
             @auth
-                <div class="flex lg:inline-block hidden w-3/12 float-right">
+                <div class="flex lg:inline-block hidden w-3/12 float-right mt-3">
                     {{-- icon-1  Notifications  --}}
                     <div class="max-w-lg mx-auto float-left">
                         @include('components.notification')
@@ -98,22 +98,21 @@
                         const openChat = document.querySelector('.open-chat');
                         openChat.addEventListener('click', createChatPanel);
                     </script>
-
+                    @php
+                        $walletBalance = \App\Services\Profile\ProfileService::walletBalance(auth()->user());
+                    @endphp
                     {{-- icon 3  Payment--}}
                     <div class="max-w-lg ml-5 float-left">
                         <a onclick="toggleModal()" style="cursor:pointer">
-
-                           <div class="flex flex-row space-x-2 justify-evenly">
+                           <div class="flex flex-row space-x-2 justify-evenly text-green-400 hover:text-yellow-500">
                                 <div>
-                                  <i class="xl:text-2xl lg:text-xl text-green-400 hover:text-yellow-500 fas fa-wallet"></i>
+                                  <i class="xl:text-2xl lg:text-xl fas fa-wallet"></i>
                                  </div>
-                               <div class="font-medium py-1 text-center text-gray-500 ">
-                                   {{$walletBalance->balance}}
+                               <div class="font-medium py-1 text-center">
+                                   {{$walletBalance}}  @if($walletBalance) UZS @endif
                                </div>
                            </div>
                         </a>
-
-
                     </div>
 
 

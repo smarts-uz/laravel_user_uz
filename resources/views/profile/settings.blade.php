@@ -443,7 +443,7 @@
                 </div>
             </div>
             {{-- right-side-bar --}}
-            @include('auth.profile-side-info')
+            <x-profile-info></x-profile-info>
             {{-- tugashi o'ng tomon ispolnitel --}}
 
         </div>

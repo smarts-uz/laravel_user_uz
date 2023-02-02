@@ -1,15 +1,15 @@
 <div class="lg:col-span-1 col-span-2 rounded-xl ring-1 ring-gray-300 h-auto text-gray-600 sm:ml-8 ml-0">
-    @if(auth()->user()->role_id !== \App\Models\User::ROLE_PERFORMER)
-            <a href="/verification" class="flex flex-row shadow-lg rounded-lg mb-8">
-                <div class="w-1/2 h-24 bg-contain bg-no-repeat bg-center" style="background-image: url({{asset('images/like.png')}});">
-                </div>
-                <div class="font-bold text-xs text-gray-700 text-left my-auto">
-                    {!!__('Станьте исполнителем <br> USer.Uz. И начните  <br> зарабатывать')!!}
-                </div>
-            </a>
-        @endif
+    @if($user->role_id !== \App\Models\User::ROLE_PERFORMER)
+        <a href="/verification" class="flex flex-row shadow-lg rounded-lg mb-8">
+            <div class="w-1/2 h-24 bg-contain bg-no-repeat bg-center" style="background-image: url({{asset('images/like.png')}});">
+            </div>
+            <div class="font-bold text-xs text-gray-700 text-left my-auto">
+                {!!__('Станьте исполнителем <br> USer.Uz. И начните  <br> зарабатывать')!!}
+            </div>
+        </a>
+    @endif
     <div class="mt-6 ml-4">
-        @if (auth()->user()->role_id === \App\Models\User::ROLE_PERFORMER)
+        @if ($user->role_id === \App\Models\User::ROLE_PERFORMER)
             <h3 class="font-medium text-gray-700 text-3xl">
                 {{__('Исполнитель')}}
             </h3>
@@ -18,7 +18,7 @@
     <div class="contacts">
         <div class="ml-4 h-20 grid grid-cols-4 content-center">
             <div class="w-12 h-12 text-center mx-auto my-auto py-2 bg-gray-300 rounded-xl col-span-1"
-                style="background-color: orange;">
+                 style="background-color: orange;">
                 <i class="fas fa-phone-alt text-white text-2xl"></i>
             </div>
             <div class="ml-3 col-span-3">
@@ -32,7 +32,7 @@
         </div>
         <div class="telefon ml-4 h-20 grid grid-cols-4 content-center">
             <div class="w-12 h-12 text-center mx-auto my-auto py-2 bg-gray-300 rounded-xl col-span-1"
-                style="background-color: #0091E6;">
+                 style="background-color: #0091E6;">
                 <i class="far fa-envelope text-white text-2xl"></i>
             </div>
             <div class="ml-3 col-span-3">
@@ -94,7 +94,7 @@
                 <h5 class="font-bold text-gray-700 block mt-4 text-md">Google</h5>
                 <a href="{{route('social.googleRedirect')}}" target="_blank"
                    class="block text-sm text-blue-600">
-                {{__('Привязать')}}
+                    {{__('Привязать')}}
                 </a>
             </div>
         </div>
@@ -109,7 +109,7 @@
                 <h5 class="font-bold text-gray-700 block mt-4 text-md">Facebook</h5>
                 <a href="{{route('social.facebookRedirect')}}" target="_blank"
                    class="block text-sm text-blue-600">
-                {{__('Привязать')}}
+                    {{__('Привязать')}}
                 </a>
             </div>
         </div>
@@ -124,20 +124,20 @@
                 <h5 class="font-bold text-gray-700 block mt-4 text-md">Apple Id</h5>
                 <a href="{{route('social.appleRedirect')}}" target="_blank"
                    class="block text-sm text-blue-600">
-                {{__('Привязать')}}
+                    {{__('Привязать')}}
                 </a>
             </div>
         </div>
     @endif
 
-        <div class="sm:w-9/12 w-full container mx-auto my-12 sm:px-0 px-4">
-            @foreach($news as $new)
-                <a href="/news/{{$new->id}}">
-                    <h1 class="font-bold text-l my-4">{{$new->getTranslatedAttribute('title',Session::get('lang') , 'fallbackLocale')}}</h1>
-                </a>
-                <hr>
-            @endforeach
-        </div>
+    <div class="sm:w-9/12 w-full container mx-auto my-12 sm:px-0 px-4">
+        @foreach($news as $new)
+            <a href="/news/{{$new->id}}" class="hover:text-red-500">
+                <h1 class="font-bold text-l my-4">{{$new->getTranslatedAttribute('title',Session::get('lang') , 'fallbackLocale')}}</h1>
+            </a>
+            <hr>
+        @endforeach
+    </div>
 
 
 </div>

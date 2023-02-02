@@ -7,7 +7,12 @@ use App\Models\Notification;
 
 class UserNotificationService extends NotificationService
 {
-    public static function sendNotificationToPerformer($task, $type = Notification::ADMIN_CANCEL_TASK)
+    /**
+     * @param $task
+     * @param int $type
+     * @return void
+     */
+    public static function sendNotificationToPerformer($task, int $type = Notification::ADMIN_CANCEL_TASK): void
     {
         /** @var Notification $notification */
         $notification = Notification::query()->create([
@@ -25,9 +30,6 @@ class UserNotificationService extends NotificationService
             'url' => route('show_notification', [$notification]),
             'description' => self::descriptions($notification)
         ]);
-//        self::sendNotificationRequest([$task->performer_id], [
-//            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
-//        ]);
         $locale = cacheLang($task->performer_id);
         self::pushNotification($task->performer, [
             'title' => self::titles($type, $locale),
@@ -35,7 +37,12 @@ class UserNotificationService extends NotificationService
         ], 'notification', new NotificationResource($notification));
     }
 
-    public static function sendNotificationToUser($task, $type = Notification::ADMIN_CANCEL_TASK)
+    /**
+     * @param $task
+     * @param int $type
+     * @return void
+     */
+    public static function sendNotificationToUser($task, int $type = Notification::ADMIN_CANCEL_TASK): void
     {
         /** @var Notification $notification */
         $notification = Notification::query()->create([
@@ -53,9 +60,7 @@ class UserNotificationService extends NotificationService
             'url' => route('show_notification', [$notification]),
             'description' => self::descriptions($notification)
         ]);
-//        self::sendNotificationRequest([$task->user_id], [
-//            'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
-//        ]);
+
         $locale = cacheLang($task->user_id);
         self::pushNotification($task->user, [
             'title' => self::titles($type, $locale),

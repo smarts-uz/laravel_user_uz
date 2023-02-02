@@ -2,12 +2,8 @@
 
 namespace App\Providers;
 
-use App\Http\Resources\BlogNewsResource;
-use App\Models\BlogNew;
 use App\Models\Review;
 use App\Observers\ReviewObserver;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use TCG\Voyager\Facades\Voyager;
 use Illuminate\Pagination\Paginator;
@@ -40,17 +36,6 @@ class AppServiceProvider extends ServiceProvider
             require_once $filename;
         }
         Paginator::useBootstrap();
-        View::composer('*', function ($view) {
-            if (Auth::check()) {
-                $view->with('news', BlogNewsResource::collection(BlogNew::query()->latest()->get()));
-            }
-        });
-
-        View::composer('components.navbar', function ($view) {
-            if (Auth::check()) {
-                $view->with('walletBalance', auth()->user()->walletBalance);
-            }
-        });
 
     }
 }
