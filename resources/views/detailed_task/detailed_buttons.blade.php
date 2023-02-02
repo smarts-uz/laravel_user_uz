@@ -1,7 +1,7 @@
 <div class="w-full flex flex-col sm:flex-row sm:p-6 p-2">
     <div class="w-full text-center">
         @php
-            $walletBalance = \App\Services\Profile\ProfileService::walletBalance(auth()->user());
+            $walletBalance = App\Services\Profile\ProfileService::walletBalance(auth()->user());
         @endphp
         @auth
             @if($walletBalance >= setting('admin.pullik_otklik'))

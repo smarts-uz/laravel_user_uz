@@ -45,14 +45,14 @@ class UserUpdateDataRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.email' => __('login.email.email'),
-            'email.required' => __('login.email.required'),
-            'email.unique' => __('login.email.unique'),
-            'phone_number.numeric' => __('login.phone_number.numeric'),
-            'phone_number.min' => __('login.phone_number.min'),
-            'phone_number.required' => __('login.phone_number.required'),
-            'phone_number.unique' => __('login.phone_number.unique'),
-            'born_date.required' => __('login.name.required'),
+            'email.email' => __('Введите адрес электронной почты в правильном формате!'),
+            'email.required' => __('Требуется заполнение!'),
+            'email.unique' => __('Пользователь с такой почтой уже существует!'),
+            'phone_number.numeric' => __('Поле должно быть числом'),
+            'phone_number.min' => __('Неверный формат номера телефона!'),
+            'phone_number.required' => __('Требуется заполнение!'),
+            'phone_number.unique' => __('Этот номер есть в системе!'),
+            'born_date.required' => __('Требуется заполнение!'),
             'gender.nullable' => __('Проверяемое поле может быть нулевым.'),
             'age.nullable' => __('Проверяемое поле может быть нулевым.'),
             'age.int' => __('Проверяемое поле должно быть целым числом.'),

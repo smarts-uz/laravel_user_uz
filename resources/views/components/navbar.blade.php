@@ -99,7 +99,7 @@
                         openChat.addEventListener('click', createChatPanel);
                     </script>
                     @php
-                        $walletBalance = \App\Services\Profile\ProfileService::walletBalance(auth()->user());
+                        $walletBalance = App\Services\Profile\ProfileService::walletBalance(auth()->user());
                     @endphp
                     {{-- icon 3  Payment--}}
                     <div class="max-w-lg ml-5 float-left">
