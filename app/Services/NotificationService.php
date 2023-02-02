@@ -278,6 +278,7 @@ class NotificationService
     }
 
     /**
+     * test firebase notification
      * @param $type
      * @param $title
      * @param $text
@@ -324,6 +325,7 @@ class NotificationService
     }
 
     /**
+     * test pusher notification
      * @param $type
      * @param $title
      * @param $text
@@ -365,6 +367,7 @@ class NotificationService
     }
 
     /**
+     * test sms notification
      * @param $type
      * @param $text
      * @param $user_id
@@ -395,6 +398,7 @@ class NotificationService
     }
 
     /**
+     * test email notification
      * @param $type
      * @param $text
      * @param $user_id
