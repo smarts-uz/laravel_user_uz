@@ -10,10 +10,11 @@ use App\Http\Requests\UserPasswordRequest;
 use App\Http\Requests\UserUpdateDataRequest;
 use App\Models\Session;
 use App\Models\UserCategory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Jenssegers\Agent\Agent;
-use \TCG\Voyager\Models\Category;
+use TCG\Voyager\Models\Category;
 use App\Models\Portfolio;
 use Illuminate\Support\Facades\File;
 use App\Models\User;
@@ -40,7 +41,7 @@ class ProfileController extends Controller
         return redirect('categories/1');
     }
 
-    public function clear_sessions(): \Illuminate\Http\RedirectResponse
+    public function clear_sessions(): RedirectResponse
     {
         /** @var User $user */
         $user = auth()->user();
@@ -51,7 +52,7 @@ class ProfileController extends Controller
         return back();
     }
 
-    public function delete(Portfolio $portfolio): \Illuminate\Http\RedirectResponse
+    public function delete(Portfolio $portfolio): RedirectResponse
     {
         portfolioGuard($portfolio);
 
@@ -142,7 +143,7 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function updateData(UserUpdateDataRequest $request): \Illuminate\Http\RedirectResponse
+    public function updateData(UserUpdateDataRequest $request): RedirectResponse
     {
         $data = $request->validated();
         /** @var User $user */
@@ -175,19 +176,7 @@ class ProfileController extends Controller
         return redirect()->back();
     }
 
-    public function storeDistrict(Request $request)
-    {
-        $request->validate([
-            'district' => 'required',
-        ]);
-        /** @var User $user */
-        $user = Auth::user();
-        $user->district = $request->get('district');
-        $user->save();
-        return redirect()->back();
-    }
-
-    public function editDescription(Request $request): \Illuminate\Http\RedirectResponse
+    public function editDescription(Request $request): RedirectResponse
     {
         /** @var User $user */
         $user = Auth::user();
@@ -249,7 +238,7 @@ class ProfileController extends Controller
         return view('personalinfo.contact');
     }
 
-    public function verificationContactStore(PersonalInfoRequest $request): \Illuminate\Http\RedirectResponse
+    public function verificationContactStore(PersonalInfoRequest $request): RedirectResponse
     {
         $data = $request->validated();
         /** @var User $user */
@@ -270,7 +259,7 @@ class ProfileController extends Controller
         return view('personalinfo.profilephoto',compact('user'));
     }
 
-    public function verificationPhotoStore(Request $request): \Illuminate\Http\RedirectResponse
+    public function verificationPhotoStore(Request $request): RedirectResponse
     {
         /** @var User $user */
         $user = Auth::user();
@@ -349,7 +338,7 @@ class ProfileController extends Controller
         }
     }
 
-    public function youtube_link(Request $request): \Illuminate\Http\RedirectResponse
+    public function youtube_link(Request $request): RedirectResponse
     {
         /** @var User $user */
         $user = auth()->user();
@@ -361,7 +350,7 @@ class ProfileController extends Controller
         return redirect()->back()->with('message', $response['message']);
     }
 
-    public function youtube_link_delete(): \Illuminate\Http\RedirectResponse
+    public function youtube_link_delete(): RedirectResponse
     {
         /** @var User $user */
         $user = User::query()->find(auth()->id());

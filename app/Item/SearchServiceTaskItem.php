@@ -23,4 +23,7 @@ class SearchServiceTaskItem
     public $top_users;
     public $respons_reviews;
     public $review_description;
+    public $start;
+    public $created;
+    public $end;
 }

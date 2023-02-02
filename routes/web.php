@@ -141,7 +141,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/clear-sessions', [ProfileController::class, 'clear_sessions'])->name('profile.clear_sessions');
         Route::get('/delete', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::post('/getcategory', [ProfileController::class, 'getCategory'])->name('profile.getCategory');
-        Route::post('/storeDistrict', [ProfileController::class, 'storeDistrict'])->name('profile.StoreDistrict');
         Route::post('/store/profile/image', [ProfileController::class, 'storeProfileImage'])->name('profile.storeProfileImage');
         Route::post('/description', [ProfileController::class, 'editDescription'])->name('profile.EditDescription');
         Route::view('/create', 'profile/create_port');
