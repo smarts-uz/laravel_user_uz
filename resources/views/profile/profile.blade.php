@@ -56,8 +56,8 @@
                                 @csrf
                                 <textarea name="description" name="description"
                                           class="w-full h-32 border border-gray-400 focus:outline-none focus:border-yellow-500 py-2 px-4 mt-3"
-                                          @if (!$user->description) placeholder="{{__('Введите описание')}}"@endif
-                                    >@if ($user->description){{$user->description}}@endif</textarea><br>
+                                          @if (!$user->description) placeholder="{{__('Введите описание')}}"@endif >
+                                    @if ($user->description){{$user->description}}@endif</textarea><br>
                                 <input type="submit"
                                        class="bg-green-500 cursor-pointer hover:bg-green-600 text-white py-2 px-6 rounded cursor-"
                                        id="s1" value="{{__('Сохранить')}}">
@@ -77,7 +77,7 @@
                                 <p class="text-lg mt-2">{{__('Профили с видео получают больше внимания и вызывают доверие заказчиков.')}}</p>
                                 <div class="grid grid-cols-3 my-3">
                                     <div class="sm:col-span-2 col-span-3 flex flex-col">
-                                        <input name="youtube_link" type="text" id="youtube_link"
+                                        <input name="link" type="text" id="youtube_link"
                                                class="border border-gray-400 hover:border-yellow-500 focus:outline-none rounded-lg p-2"
                                                placeholder="{{__('Ссылка на ролик с YouTube')}}">
                                         @if(session()->has('message'))
@@ -166,13 +166,13 @@
         $(document).ready(function($) {
             $("#youtube_form").validate({
                 rules: {
-                    youtube_link: {
+                    link: {
                         required: true,
                         url: true
                     },
                 },
                 messages: {
-                    youtube_link: {
+                    link: {
                         @if(session('lang')==='ru')
                         required: 'Пожалуйста, введите вашу ссылку!',
                         url: 'Пожалуйста, введите корректный адрес.'

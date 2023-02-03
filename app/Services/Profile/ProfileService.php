@@ -6,6 +6,7 @@ use App\Http\Resources\TransactionHistoryCollection;
 use App\Item\ProfileCashItem;
 use App\Item\ProfileDataItem;
 use App\Item\ProfileSettingItem;
+use App\Item\VerificationCategoryItem;
 use App\Models\Region;
 use App\Models\Review;
 use App\Models\Session;
@@ -24,7 +25,7 @@ use App\Models\Portfolio;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use JetBrains\PhpStorm\ArrayShape;
-use TCG\Voyager\Models\Category;
+use App\Models\Category;
 use UAParser\Exception\FileNotFoundException;
 use UAParser\Parser;
 
@@ -520,5 +521,34 @@ class ProfileService
     public static function walletBalance($user)
     {
         return ($user && $user->walletBalance) ? ($user->walletBalance->balance) : (null);
+    }
+
+    public function verifyCategory($user): VerificationCategoryItem
+    {
+        $item = new VerificationCategoryItem();
+        $item->categories = Category::query()->where('parent_id', null)->orderBy("order")->get();
+        $item->categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->orderBy("order")->get();
+        $item->user_categories = UserCategory::query()->where('user_id',$user->id)->pluck('category_id')->toArray();
+        return $item;
+    }
+
+    public function deleteImage($image, Portfolio $portfolio): bool
+    {
+        File::delete(public_path() . '/storage/portfolio/' . $image);
+        $images = json_decode($portfolio->image);
+        $updatedImages = array_diff($images, [$image]);
+        $portfolio->image = json_encode(array_values($updatedImages));
+        $portfolio->save();
+        return true;
+    }
+
+    public function portfolioUpdate($data, Portfolio $portfolio): bool
+    {
+        $images = array_merge(json_decode(session()->has('images') ? session('images') : '[]'), json_decode($portfolio->image));
+        session()->forget('images');
+        $data['image'] = json_encode($images);
+        $portfolio->update($data);
+        $portfolio->save();
+        return true;
     }
 }

@@ -3,20 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\CategoryRequest;
+use App\Http\Requests\Api\ProfileVideoRequest;
 use App\Http\Requests\PersonalInfoRequest;
 use App\Http\Requests\PortfolioRequest;
 use App\Http\Requests\User\PerformerCreateRequest;
 use App\Http\Requests\UserPasswordRequest;
 use App\Http\Requests\UserUpdateDataRequest;
 use App\Models\Session;
-use App\Models\UserCategory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Jenssegers\Agent\Agent;
-use TCG\Voyager\Models\Category;
 use App\Models\Portfolio;
-use Illuminate\Support\Facades\File;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -156,7 +153,9 @@ class ProfileController extends Controller
 
     public function destroy()
     {
-        auth()->user()->delete();
+        /** @var User $user */
+        $user = \auth()->user();
+        $user->delete();
         return redirect('/');
     }
 
@@ -270,12 +269,16 @@ class ProfileController extends Controller
 
     public function verificationCategory()
     {
+
         /** @var User $user */
         $user = Auth::user();
-        $categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->orderBy("order", "asc")->get();
-        $categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->orderBy("order", "asc")->get();
-        $user_categories = UserCategory::query()->where('user_id',$user->id)->pluck('category_id')->toArray();
-        return view('personalinfo.personalcategoriya', compact('categories', 'categories2','user_categories'));
+        $item = $this->profileService->verifyCategory($user);
+
+        return view('personalinfo.personalcategoriya',[
+            'categories' => $item->categories,
+            'categories2' => $item->categories2,
+            'user_categories' => $item->user_categories,
+        ]);
     }
 
     public function createPortfolio(PortfolioRequest $request,Portfolio $portfolio)
@@ -289,63 +292,48 @@ class ProfileController extends Controller
         return redirect()->route('profile.profileData');
     }
 
-    public function deleteImage(Request $request, Portfolio $portfolio)
+    public function deleteImage(Request $request, Portfolio $portfolio): bool
     {
         portfolioGuard($portfolio);
         $image = $request->get('image');
-        File::delete(public_path() . '/storage/portfolio/' . $image);
-        $images = json_decode($portfolio->image);
-        $updatedImages = array_diff($images, [$image]);
-        $portfolio->image = json_encode(array_values($updatedImages));
-        $portfolio->save();
+        $this->profileService->deleteImage($image,$portfolio);
         return true;
     }
 
-    public function updatePortfolio(PortfolioRequest $request, Portfolio $portfolio)
+    public function updatePortfolio(PortfolioRequest $request, Portfolio $portfolio): RedirectResponse
     {
         portfolioGuard($portfolio);
         $data = $request->validated();
+        $this->profileService->portfolioUpdate($data, $portfolio);
 
-        $images = array_merge(json_decode(session()->has('images') ? session('images') : '[]'), json_decode($portfolio->image));
-
-        session()->forget('images');
-        $data['image'] = json_encode($images);
-        $portfolio->update($data);
-        $portfolio->save();
         return redirect()->route('profile.profileData');
     }
 
-    public function notif_setting_ajax(Request $request): Request
+    public function notif_setting_ajax(Request $request): bool
     {
         /** @var User $user */
         $user = auth()->user();
         $user->system_notification = $request->get('notif11');
         $user->news_notification = $request->get('notif22');
         $user->save();
-        return $request;
+        return true;
     }
 
-    public function storeProfileImage(Request $request): void
+    public function storeProfileImage(Request $request): bool
     {
         /** @var User $user */
         $user = auth()->user();
-        $photoName = $this->profileService->storeProfilePhoto($request, $user);
+        $this->profileService->storeProfilePhoto($request, $user);
+        return true;
 
-        if ($photoName) {
-            echo json_encode(['status' => 1, 'msg' => 'success', 'name' => $photoName]);
-        } else {
-            echo json_encode(['status' => 0, 'msg' => 'failed']);
-        }
     }
 
-    public function youtube_link(Request $request): RedirectResponse
+    public function youtube_link(ProfileVideoRequest $request): RedirectResponse
     {
         /** @var User $user */
         $user = auth()->user();
-        $validated = $request->validate([
-            'youtube_link' => 'required|url'
-        ]);
-        $link = $validated['youtube_link'];
+        $validated = $request->validated();
+        $link = $validated['link'];
         $response = $this->profileService->videoStore($user, $link);
         return redirect()->back()->with('message', $response['message']);
     }
@@ -353,7 +341,7 @@ class ProfileController extends Controller
     public function youtube_link_delete(): RedirectResponse
     {
         /** @var User $user */
-        $user = User::query()->find(auth()->id());
+        $user = auth()->user();
         $user->youtube_link = null;
         $user->save();
         return redirect()->back();
