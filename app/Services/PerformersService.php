@@ -76,6 +76,9 @@ class PerformersService
             ->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->get();
         $user_categories = UserCategory::query()->where('user_id',$user->id)->pluck('category_id')->toArray();
         $item->user_category = Category::query()->whereIn('id',$user_categories)->get();
+        $value = Carbon::parse($user->created_at)->locale(getLocale());
+        $day = $value == now()->toDateTimeString() ? "Bugun" : "$value->day-$value->monthName";
+        $item->created = "$day  {$value->year}";
         return $item;
     }
 
@@ -177,13 +180,13 @@ class PerformersService
     public function task_give($task_id, $user_id, $data): JsonResponse
     {
         if ($user_id !== null) {
-            $data->session()->put('given_id', $user_id);
+            $data->put('given_id', $user_id);
         }
 
         if (isset($task_id)) {
             /** @var Task $task_name */
             $task_name = Task::query()->where('id', $task_id)->first();
-            $users_id = $data->session()->pull('given_id');
+            $users_id = $data->pull('given_id');
             /** @var User $performer */
             $performer = User::query()->find($users_id);
             $text_url = route("searchTask.task",$task_id);
