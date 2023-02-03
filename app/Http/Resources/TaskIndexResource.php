@@ -55,7 +55,7 @@ class TaskIndexResource extends JsonResource
             'oplata' => $this->oplata,
             'docs' => $this->docs,
             'created_at' => $this->created,
-            'custom_fields' => (new CustomFieldService())->getCustomFieldsByRoute($this->id, 'custom'),
+            'custom_fields' => (new CustomFieldService())->getCustomFieldsByRoute($this->id, 'custom')['custom_fields'],
             'photos' => $photos,
             'performer_review' => $this->performer_review,
             'response_price' => setting('admin.pullik_otklik'),
