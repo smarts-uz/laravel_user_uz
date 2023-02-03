@@ -522,7 +522,7 @@ class NotificationService
 
     public static function readAllNotifications($user_id)
     {
-        $user_notify = Notification::where('user_id', $user_id);
+        $user_notify = Notification::where('user_id', $user_id)->orWhere('performer_id', $user_id);
         $user_notify->update([
             'is_read' => 1
         ]);
