@@ -32,7 +32,7 @@ class ResetRequest extends FormRequest
         return [
             'phone_number.integer' => __('login.phone_number.integer'),
             'phone_number.required' =>  __('login.phone_number.required'),
-            'phone_number.exists' => __('login.phone_number.exists'),
+            'phone_number.exists' => __('Этот номер телефона не зарегистрирован!'),
             'phone_number.min' => __('login.phone_number.min'),
         ];
 

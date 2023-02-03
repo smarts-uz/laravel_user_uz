@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ResetCodeRequest;
+use App\Http\Requests\ResetEmailRequest;
+use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\ResetRequest;
+use App\Http\Requests\VerifyProfileRequest;
 use App\Mail\VerifyEmail;
 use App\Models\User;
 use App\Models\Task;
 use App\Services\NotificationService;
 use App\Services\SmsMobileService;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
 
@@ -46,18 +50,12 @@ class UserController extends Controller
         $data = $request->validated();
         /** @var User $user */
         $user = User::query()->where('phone_number', $data['phone_number'])->first();
-        if (!$user) {
-            return back()->with([
-                'message' => __("Этот номер телефона не зарегистрирован!")
-            ]);
-        }
         $code = random_int(100000, 999999);
         $user->verify_code = $code;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
-        $phone_number = $user->phone_number;
         $message = config('app.name').' '. __("Код подтверждения") . ' ' . $code;
-        SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
+        SmsMobileService::sms_packages(correctPhoneNumber($data['phone_number']), $message);
 
         session()->put('verifications', ['key' => 'phone_number', 'value' => $data['phone_number']]);
 
@@ -67,27 +65,14 @@ class UserController extends Controller
     /**
      * @throws \Exception
      */
-    public function reset_by_email(Request $request)
+    public function reset_by_email(ResetEmailRequest $request): RedirectResponse
     {
 
-        $data = $request->validate([
-            'email' => 'required|email|exists:users'
-        ],[
-            'email.required' => trans('login.email.required'),
-            'email.email' => trans('login.email.email'),
-            'email.exists' => trans('login.email.exists'),
-        ]);
+        $data = $request->validated();
         /** @var User $user */
         $user = User::query()->where('email', $data['email'])->first();
-        if (!$user) {
-            return back()->with([
-                'message' => __("Этот адрес электронной почты не имеет учетной записи!")
-            ]);
-
-        }
         $sms_otp = random_int(100000, 999999);
         $message = config('app.name').' ' . __("Код подтверждения") . ' ' . $sms_otp;
-
 
         $user->verify_code = $sms_otp;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
@@ -100,16 +85,9 @@ class UserController extends Controller
         return redirect()->route('user.reset_code_view_email');
     }
 
-    public function reset_code(Request $request)
+    public function reset_code(ResetCodeRequest $request)
     {
-        $data = $request->validate([
-            'code' => 'required|numeric|min:6'
-        ],
-        [
-            'code.required' => __('Требуется заполнение!'),
-            'code.numeric' =>  __('Поле должно быть числом'),
-            'code.min' => __('Поле должно содержать не менее 6 символов')
-        ]);
+        $data = $request->validated();
         $verifications = $request->session()->get('verifications');
         /** @var User $user */
         $user = User::query()->where($verifications['key'], $verifications['value'])->first();
@@ -117,9 +95,9 @@ class UserController extends Controller
         if ($data['code'] === $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
                 return redirect()->route('user.reset_password');
-            } else {
-                abort(419);
             }
+
+            abort(419);
         } else {
             return back()->with(['error' => __('Код ошибки')]);
         }
@@ -135,12 +113,9 @@ class UserController extends Controller
         return view('auth.confirm_password');
     }
 
-    public function reset_password_save(Request $request)
+    public function reset_password_save(ResetPasswordRequest $request)
     {
-        $data = $request->validate([
-            'password' => 'required|min:8|confirmed',
-            'password_confirmation' => 'required|min:8'
-        ]);
+        $data = $request->validated();
         /** @var User $user */
         $user = User::query()->where($request->session()->get('verifications')['key'], $request->session()->get('verifications')['value'])->first();
         $user->password = Hash::make($data['password']);
@@ -149,16 +124,13 @@ class UserController extends Controller
         return redirect('/profile');
     }
 
-    public function verifyProfil(Request $request, User $user)
+    public function verifyProfile(VerifyProfileRequest $request, User $user): RedirectResponse
     {
+        $data = $request->validated();
         /** @var Task $task */
-        $task = Task::query()->find($request->get('for_ver_func'));
-        $request->validate(
-            ['sms_otp' => 'required'],
-            ['sms_otp.required' => 'Требуется заполнение!']
-        );
+        $task = Task::query()->find($data['for_ver_func']);
 
-        if ($request->get('sms_otp') === $user->verify_code) {
+        if ($data['sms_otp'] === $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
                 if ($task->phone === null && $user->phone_number !== $task->phone && (int)$user->is_phone_number_verified === 0) {
                     $user->update(['is_phone_number_verified' => 0]);
@@ -168,26 +140,26 @@ class UserController extends Controller
                     $user->save();
                 }
                 if ($task->phone === null) {
-                    Task::query()->findOrFail($request->get('for_ver_func'))->update([
+                    Task::query()->findOrFail($data['for_ver_func'])->update([
                         'status' => 1, 'user_id' => $user->id, 'phone' => correctPhoneNumber($user->phone_number)
                     ]);
                 } else {
-                    Task::query()->findOrFail($request->get('for_ver_func'))->update(['status' => Task::STATUS_OPEN, 'user_id' => $user->id,]);
+                    Task::query()->findOrFail($data['for_ver_func'])->update(['status' => Task::STATUS_OPEN, 'user_id' => $user->id,]);
                 }
                 auth()->login($user);
 
                 // send notification
                 NotificationService::sendTaskNotification($task, $user->id);
 
-                return redirect()->route('searchTask.task', $request->get('for_ver_func'));
-            } else {
-                auth()->logout();
-                return back()->with('expired_message', __('Срок действия номера истек'));
+                return redirect()->route('searchTask.task', $data['for_ver_func']);
             }
-        } else {
+
             auth()->logout();
-            return back()->with('incorrect_message', __('Ваш номер не подтвержден'));
+            return back()->with('expired_message', __('Срок действия номера истек'));
         }
+
+        auth()->logout();
+        return back()->with('incorrect_message', __('Ваш номер не подтвержден'));
 
     }
 
