@@ -81,10 +81,7 @@ function categories()
         }
 
     }
-
-
     return $categories;
-
 }
 
 function taskGuard($task)

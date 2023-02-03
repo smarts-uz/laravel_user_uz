@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BudgetRequest;
 use App\Http\Requests\CreateContactRequest;
 use App\Http\Requests\CreateNameRequest;
+use App\Http\Requests\NoteRequest;
 use App\Http\Requests\TaskDateRequest;
 use App\Http\Requests\UserPhoneRequest;
 use App\Http\Requests\UserRequest;
@@ -20,6 +21,8 @@ use App\Services\Task\CreateService;
 use App\Services\Task\CustomFieldService;
 use App\Services\VerificationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -27,7 +30,6 @@ class CreateController extends Controller
 {
     protected CreateService $service;
     protected CustomFieldService $custom_field_service;
-
 
     public function __construct()
     {
@@ -39,8 +41,7 @@ class CreateController extends Controller
     public function name(Request $request)
     {
         $category_id = $request->get('category_id');
-        $service = new CreateService();
-        $item = $service->name($category_id);
+        $item = $this->service->name($category_id);
         return view("create.name", [
             'current_category'=>$item->current_category,
             'categories'=>$item->categories,
@@ -51,42 +52,40 @@ class CreateController extends Controller
     public function name_store(CreateNameRequest $request)
     {
         $data = $request->validated();
-        /** @var Task $task */
-        $task = Task::query()->create($data);
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_NAME, $request);
-
-        return redirect()->route("task.create.custom.get", $task->id);
+        $task_id = $this->service->storeName($data['name'], $data['category_id']);
+        return redirect()->route("task.create.custom.get", $task_id);
     }
 
 
-    public function custom_get(Task $task)
-    {
 
-        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM);
+    public function custom_get(int $task_id)
+    {
+        $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_CUSTOM);
+        $task = $result['task'];
+        $custom_fields = $result['custom_fields'];
         if (!$task->category->customFieldsInCustom->count()) {
             if ($task->category->parent->remote) {
                 return redirect()->route("task.create.remote", $task->id);
             }
             return redirect()->route('task.create.address', $task->id);
         }
-
         return view('create.custom', compact('task', 'custom_fields'));
-
     }
 
-    public function custom_store(Request $request, Task $task)
+    public function custom_store(Request $request, int $task_id)
     {
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM, $request);
+        $task = $this->service->attachCustomFieldsByRoute($task_id, CustomField::ROUTE_CUSTOM, $request->all());
 
         if ($task->category->parent->remote) {
             return redirect()->route("task.create.remote", $task->id);
         }
-
         return redirect()->route('task.create.address', $task->id);
     }
 
-    public function remote_get(Task $task)
+    public function remote_get(int $task_id)
     {
+        dd($task_id);
+        $task = Task::with('category.custom_fields')->find($task_id);
         return view('create.remote', compact('task'));
     }
 
@@ -107,61 +106,68 @@ class CreateController extends Controller
         return redirect()->back();
     }
 
-    public function address(Task $task)
+    public function address(int $task_id)
     {
-        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS);
+        $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_ADDRESS);
+        $task = $result['task'];
+        $custom_fields = $result['custom_fields'];
         return view('create.location', compact('task', 'custom_fields'));
     }
 
-    public function address_store(Request $request, Task $task)
+    public function address_store(Request $request, int $task_id)
     {
-
+        $task = Task::select('id')->find($task_id);
         $requestAll = $request->all();
-
+        $cordinates = $this->service->addAdditionalAddress($task_id, $requestAll);
+        /*$task = DB::table('tasks')->where('id', $task_id)->update([
+            'coordinates' => $cordinates,
+            'go_back'=> $request->get('go_back')
+        ]);*/
         $task->update([
-            'coordinates' => $this->service->addAdditionalAddress($task, $requestAll),
+            'coordinates' => $cordinates,
             'go_back'=> $request->get('go_back')
         ]);
 
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_ADDRESS, $request);
-        return redirect()->route("task.create.date", $task->id);
+        $this->service->attachCustomFieldsByRoute($task_id, CustomField::ROUTE_ADDRESS, $requestAll);
+        return redirect()->route("task.create.date", $task_id);
 
     }
 
-    public function date(Task $task)
+    public function date(int $task_id)
     {
-        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_DATE);
+        $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_DATE);
+        $task = $result['task'];
+        $custom_fields = $result['custom_fields'];
         return view('create.date', compact('task', 'custom_fields'));
 
     }
 
-    public function date_store(TaskDateRequest $request, Task $task)
+    public function date_store(TaskDateRequest $request, $task_id)
     {
         $data = $request->validated();
+        $task = $this->service->attachCustomFieldsByRoute($task_id, CustomField::ROUTE_DATE, $request->all());
         $task->update($data);
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_DATE, $request);
 
-        return redirect()->route('task.create.budget', $task->id);
+        return redirect()->route('task.create.budget', $task_id);
     }
 
-    public function budget(Task $task)
+    public function budget(int $task_id)
     {
-        $category = Category::query()->findOrFail($task->category_id);
-        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET);
-
+        $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_BUDGET);
+        $category = $result['category'];
+        $custom_fields = $result['custom_fields'];
+        $task = $result['task'];
         return view('create.budget', compact('task', 'category', 'custom_fields'));
     }
 
-    public function budget_store(Task $task, BudgetRequest $request)
+    public function budget_store(int $task_id, BudgetRequest $request)
     {
+        $task = $this->service->attachCustomFieldsByRoute($task_id, CustomField::ROUTE_BUDGET, $request->all());
 
         $task->budget = $request->get('amount2');
         $task->save();
-        $this->service->attachCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET, $request);
-
 
         return redirect()->route('task.create.note', $task->id);
-
     }
 
     public function images_store(Request $request, Task $task)
@@ -176,37 +182,35 @@ class CreateController extends Controller
         $task->save();
     }
 
-    public function note(Task $task)
+    public function note(int $task_id)
     {
-        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_NOTE);
+        $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_NOTE);
+        $task = $result['task'];
+        $custom_fields = $result['custom_fields'];
 
         return view('create.notes', compact('task', 'custom_fields'));
     }
 
-    public function note_store(Task $task, Request $request)
+    public function note_store(int $task_id, NoteRequest $request)
     {
-        $data = $request->validate([
-            'description' => 'required|string',
-            'oplata' => 'required',
-        ],
-            [
-                'description.required' =>  __('Требуется заполнение!'),
-                'description.string' =>  __('login.name.string'),
-            ]
-        );
+        $data = $request->validated();
         if ($request['docs'] === "on") {
             $data['docs'] = 1;
         } else {
             $data['docs'] = 0;
         }
-        $task->update($data);
-        return redirect()->route("task.create.contact", $task->id);
+
+        $task = Task::select('id')->find($task_id)->update($data);
+
+        return redirect()->route("task.create.contact", $task_id);
     }
 
 
-    public function contact(Task $task)
+    public function contact(int $task_id)
     {
-        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CONTACTS);
+        $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_CONTACTS);
+        $task = $result['task'];
+        $custom_fields = $result['custom_fields'];
 
         return view('create.contacts', compact('task', 'custom_fields'));
     }
@@ -214,6 +218,7 @@ class CreateController extends Controller
 
     public function contact_store(Task $task, CreateContactRequest $request)
     {
+        dd($task);
         /** @var User $user */
         $user = auth()->user();
         $data = $request->validated();
@@ -232,8 +237,7 @@ class CreateController extends Controller
         $task->user_id = $user->id;
         $task->phone = $data['phone_number'];
 
-        $create_service = new CreateService();
-        $create_service->perform_notification($task, $user);
+        $this->service->perform_notification($task, $user);
 
         $task->save();
         return redirect()->route('searchTask.task', $task->id);

@@ -2,12 +2,12 @@
 
 namespace App\Services\Task;
 
+use App\Models\Task;
 use Illuminate\Support\Arr;
 
 class CustomFieldService
 {
-
-    public function getCustomFieldsByRoute($task, $routeName): array
+    /*public function getCustomFieldsByRoute($task, $routeName): array
     {
         $custom_fields = $task->category->custom_fields()->where('route', $routeName)->get();
         $result = [];
@@ -15,6 +15,20 @@ class CustomFieldService
 
         foreach ($custom_fields as $custom_field) {
             $result[] = $this->initCustomField($custom_field, $task, $values);
+        }
+        return $result;
+    }*/
+
+    public function getCustomFieldsByRoute(int $task_id, string $routeName): array
+    {
+        $task = Task::with('category.custom_fields.custom_field_values')->find($task_id);
+        $custom_fields = collect($task->category->custom_fields)->where('route', $routeName)->all();
+        $result['task'] = $task;
+        $result['category'] = $task->category;
+        $result['custom_fields'] = [];
+        $values = $this->getValuesOfTask($task);
+        foreach ($custom_fields as $custom_field) {
+            $result['custom_fields'][] = $this->initCustomField($custom_field, $task, $values);
         }
         return $result;
     }
