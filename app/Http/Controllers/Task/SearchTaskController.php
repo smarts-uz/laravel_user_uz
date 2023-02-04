@@ -60,12 +60,19 @@ class SearchTaskController extends VoyagerBaseController
 
         return view('task.detailed-tasks',
             [
-                'review_description' => $item->review_description, 'task' => $task,
-                'created' => $item->created, 'end' => $item->end, 'start' => $item->start,
-                'complianceType' => $item->complianceType, 'same_tasks' => $item->same_tasks,
-                'auth_response' => $item->auth_response, 'selected' => $item->selected,
-                'responses' => $item->responses, 'addresses' => $item->addresses,
-                'top_users' => $item->top_users, 'respons_reviews' => $item->respons_reviews
+                'review_description' => $item->review_description,
+                'task'               => $task,
+                'created'            => $item->created,
+                'end'                => $item->end,
+                'start'              => $item->start,
+                'complianceType'     => $item->complianceType,
+                'same_tasks'         => $item->same_tasks,
+                'auth_response'      => $item->auth_response,
+                'selected'           => $item->selected,
+                'responses'          => $item->responses,
+                'addresses'          => $item->addresses,
+                'top_users'          => $item->top_users,
+                'respons_reviews'    => $item->respons_reviews
             ]);
     }
 

@@ -79,9 +79,10 @@ class CustomFieldService
         $data = [];
         foreach ($options as $key => $option) {
             $haystack = $values[$custom_field->id];
+            $select = $custom_field->type === 'select';
             $item['id'] = $key;
-            $item['selected'] = in_array((string)$key, $haystack, true);
-            $item['value'] = $option;
+            $item['selected'] = $select ? in_array((string)$key, $haystack, true) : true;
+            $item['value'] = $select ? $option : $haystack[0];
             $data[] = $item;
         }
         return $data;
@@ -91,11 +92,12 @@ class CustomFieldService
     {
         $data = [];
         foreach ($task->category->custom_fields as $custom_field) {
-            $data[$custom_field->id] = [];
+            $data[$custom_field->id] = json_decode(collect($custom_field->relationsToArray()['custom_field_values'])->where('task_id', $task->id)->value('value'));
+            //$data[$custom_field->id] = [];
         }
-        foreach ($task->custom_field_values as $custom_fields_value) {
+        /*foreach ($task->category->custom_fields as $custom_fields_value) {
             $data[$custom_fields_value->custom_field_id] = $custom_fields_value->value ? json_decode($custom_fields_value->value) : [];
-        }
+        }*/
         return $data;
     }
 
