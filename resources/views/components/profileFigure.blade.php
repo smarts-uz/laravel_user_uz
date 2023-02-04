@@ -6,13 +6,7 @@
     <h2 class="font-bold text-2xl text-gray-800 mb-2">{{__('Здравствуйте')}}, {{$user->name}}!</h2>
     <div class="flex sm:flex-row flex-col mt-6">
         <div class="sm:w-1/3 pb-10 w-full">
-            <img class="border border-3 border-gray-400 h-44 w-44"
-                 @if (!($user->avatar))
-                     src='{{asset("images/pofilevector.png")}}'
-                 @else
-                     src="{{asset('storage/'.$user->avatar)}}"
-                 @endif alt="avatar">
-
+            <img class="border border-3 border-gray-400 h-44 w-44" src="{{asset('storage/'.$user->avatar)}}" alt="avatar">
             <div class="rounded-md bg-gray-200 w-44 mt-2 py-1 border-2 border-gray-700" type="button">
                 <input type="file" name="file" id="file" onclick="fileupdate()" class="hidden">
                 <label for="file" class="p-1 cursor-pointer">
@@ -146,7 +140,7 @@
                 @endif
 
                 <div data-tooltip-target="tooltip-animation_3" class="mx-4">
-                    @if(($user->review_good)+($user->review_bad) >= 50 && $user->role_id==2)
+                    @if($user->reviews >= 50 && $user->role_id === \App\Models\User::ROLE_PERFORMER)
                         <img src="{{ asset('images/50.png') }}" alt="" class="w-24">
                     @else
                         <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-24">

@@ -309,22 +309,26 @@ class ProfileController extends Controller
         return redirect()->route('profile.profileData');
     }
 
-    public function notif_setting_ajax(Request $request): bool
+    public function notif_setting_ajax(Request $request): Request
     {
         /** @var User $user */
         $user = auth()->user();
         $user->system_notification = $request->get('notif11');
         $user->news_notification = $request->get('notif22');
         $user->save();
-        return true;
+        return $request;
     }
 
-    public function storeProfileImage(Request $request): bool
+    public function storeProfileImage(Request $request): void
     {
         /** @var User $user */
         $user = auth()->user();
-        $this->profileService->storeProfilePhoto($request, $user);
-        return true;
+        $photoName = $this->profileService->storeProfilePhoto($request, $user);
+        if ($photoName) {
+            echo json_encode(['status' => 1, 'msg' => 'success', 'name' => $photoName]);
+        } else {
+            echo json_encode(['status' => 0, 'msg' => 'failed']);
+        }
 
     }
 
