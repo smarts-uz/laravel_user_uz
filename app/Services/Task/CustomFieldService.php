@@ -62,7 +62,7 @@ class CustomFieldService
         $item['order'] = $custom_field->order;
         $item['name'] = $custom_field->name;
         if (count($values[$custom_field->id])) {
-            $item['task_value'] = ($custom_field->type === 'input' or $custom_field->type === 'number') ? (string)Arr::get($values,$custom_field->id . '0') : '';
+            $item['task_value'] = ($custom_field->type === 'input' or $custom_field->type === 'number') ? (string)Arr::get($values,$custom_field->id, 0) : '';
         } else {
             $item['task_value'] = ($custom_field->type === 'input' or $custom_field->type === 'number') ? '' : '';
         }
