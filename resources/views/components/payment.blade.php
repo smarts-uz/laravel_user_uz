@@ -49,17 +49,23 @@
                     <div class="my-3 w-3/5 mx-auto">
                         <div class="custom-control custom-radio mb-4 text-3xl flex flex-row items-center">
                             <input id="credit" onclick="doBlock()" name="payment_system" checked type="radio" value="payme" class="custom-control-input w-5 h-5 ">
-                            <button type="button" class=" w-52 focus:border-2 focus:border-dashed focus:border-green-500 mx-8" name="button"><label for="credit"><img
-                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBUPBIFq--0RLaG-j2I9jtnOewkrM5v70tPi5NnWBLwrdL0v2gyIyFBdqXCKW__A8MTA&usqp=CAU" class="h-12" alt=""></label></button>
+                            <button type="button" class=" w-52 focus:border-2 focus:border-dashed focus:border-green-500 mx-8" name="button">
+                                <label for="credit">
+                                    <img src="{{asset('images/icons/payme.png')}}" class="h-12 cursor-pointer" alt="">
+                                </label>
+                            </button>
                         </div>
                         <div class="custom-control custom-radio my-8 text-3xl flex flex-row items-center">
                             <input id="debit" onclick="doBlock()" name="payment_system" value="click" type="radio" class="custom-control-input w-5 h-5 ">
-                            <button type="button" class=" w-52 focus:border-2 focus:border-dashed focus:border-green-500 mx-8" name="button"><label for="debit"><img
-                                        src="https://docs.click.uz/wp-content/themes/click_help/assets/images/logo.png" class="h-14" alt=""></label></button>
+                            <button type="button" class=" w-52 focus:border-2 focus:border-dashed focus:border-green-500 mx-8" name="button">
+                                <label for="debit">
+                                    <img src="{{asset('images/icons/click.png')}}" class="h-14 cursor-pointer" alt="">
+                                </label>
+                            </button>
                         </div>
                         <div class="custom-control custom-radio mb-4 text-3xl flex flex-row items-center">
                             <a href="/paynet_oplata" class=" w-52 focus:border-2 focus:border-dashed focus:border-green-500 mx-8">
-                                <img src="https://paynet.uz/medias/article/big/134/logo-paynet.png" class="cursor-pointer" alt="">
+                                <img src="{{asset('images/icons/paynet.png')}}" class="cursor-pointer" alt="">
                             </a>
                         </div>
                         <div class="d-none input-group my-5" id="forhid">
