@@ -53,7 +53,7 @@ class CustomFieldService
         $item['label'] = $custom_field->getTranslatedAttribute('label', app()->getLocale());
         $item['type'] = $custom_field->type;
         $item['options'] = $this->setOption($custom_field, $task);
-        $item['values'] = $custom_field->values;
+        $item['values'] = $values[$custom_field->id][0];
         $item['required'] = $custom_field->required;
         $item['regex'] = $custom_field->regex;
         $item['min'] = $custom_field->min;
