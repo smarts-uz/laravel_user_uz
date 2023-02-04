@@ -8,6 +8,8 @@ use Elastic\ScoutDriverPlus\Support\Query;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use TCG\Voyager\Models\Category;
 use Illuminate\Http\Request;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
@@ -76,24 +78,48 @@ class SearchTaskController extends VoyagerBaseController
             ]);
     }
 
+    /**
+     *
+     * Function  compliance_save
+     * @param Request $request
+     * @return  RedirectResponse
+     */
     public function compliance_save(Request $request)
     {
         $this->service->comlianse_saveS($request);
         return redirect()->back();
     }
 
+    /**
+     *
+     * Function  task_map
+     * @param Task $task
+     * @return  mixed
+     */
     public function task_map(Task $task)
     {
         return $task->addresses;
     }
 
-    public function delete_task(Task $task)
+    /**
+     *
+     * Function  delete_task
+     * @param Task $task
+     * @return  RedirectResponse
+     */
+    public function delete_task(Task $task): RedirectResponse
     {
         $task->status = Task::STATUS_CANCELLED;
         $task->save();
         return redirect()->back();
     }
 
+    /**
+     *
+     * Function  changeTask
+     * @param Task $task
+     * @return  Application|Factory|View
+     */
     public function changeTask(Task $task)
     {
         taskGuard($task);
@@ -104,6 +130,11 @@ class SearchTaskController extends VoyagerBaseController
         return view('task.changetask', compact('task', 'addresses'));
     }
 
+    /**
+     *
+     * Function  search_new
+     * @return  Application|Factory|View
+     */
     public function search_new()
     {
         $agent = new Agent();
@@ -116,7 +147,13 @@ class SearchTaskController extends VoyagerBaseController
         return view('search_task.new_search', compact('categories', 'categories2'));
     }
 
-    public function search_new2(Request $request)
+    /**
+     *
+     * Function  search_new2
+     * @param Request $request
+     * @return  JsonResponse
+     */
+    public function search_new2(Request $request): \Illuminate\Http\JsonResponse
     {
 
         $data = collect($request->get('data'))->keyBy('name');

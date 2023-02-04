@@ -7,18 +7,13 @@ use Illuminate\Support\Arr;
 
 class CustomFieldService
 {
-    /*public function getCustomFieldsByRoute($task, $routeName): array
-    {
-        $custom_fields = $task->category->custom_fields()->where('route', $routeName)->get();
-        $result = [];
-        $values = $this->getValuesOfTask($task);
-
-        foreach ($custom_fields as $custom_field) {
-            $result[] = $this->initCustomField($custom_field, $task, $values);
-        }
-        return $result;
-    }*/
-
+    /**
+     *
+     * Function  getCustomFieldsByRoute
+     * @param int $task_id
+     * @param string $routeName
+     * @return  array
+     */
     public function getCustomFieldsByRoute(int $task_id, string $routeName): array
     {
         $task = Task::with('category.custom_fields.custom_field_values')->find($task_id);
@@ -33,6 +28,12 @@ class CustomFieldService
         return $result;
     }
 
+    /**
+     *
+     * Function  getCustomFields
+     * @param $task
+     * @return  array
+     */
     public function getCustomFields($task): array
     {
         $custom_fields = $task->category->custom_fields;
@@ -44,6 +45,14 @@ class CustomFieldService
         return $result;
     }
 
+    /**
+     *
+     * Function  initCustomField
+     * @param $custom_field
+     * @param $task
+     * @param $values
+     * @return  array
+     */
     private function initCustomField($custom_field, $task, $values): array
     {
         $item = [];
@@ -60,14 +69,21 @@ class CustomFieldService
         $item['data_type'] = $custom_field->data_type;
         $item['order'] = $custom_field->order;
         $item['name'] = $custom_field->name;
-        if ($custom_field->type === 'input' || $custom_field->type === 'number'){
-            $item['task_value'] =  count($values[$custom_field->id]);
+        if ($custom_field->type === 'input' || $custom_field->type === 'number') {
+            $item['task_value'] = count($values[$custom_field->id]);
         } else {
-            $item['task_value'] =  (string)Arr::get($values[$custom_field->id],0, []);
+            $item['task_value'] = (string)Arr::get($values[$custom_field->id], 0, []);
         }
         return $item;
     }
 
+    /**
+     *
+     * Function  setOption
+     * @param $custom_field
+     * @param $values
+     * @return  array
+     */
     private function setOption($custom_field, $values)
     {
         $options = app()->getLocale() === 'uz' ? Arr::get($custom_field->options, 'options', []) : Arr::get($custom_field->options, 'options_ru', []);
@@ -85,16 +101,34 @@ class CustomFieldService
         return $data;
     }
 
+    /**
+     *
+     * Function  getValuesOfTask
+     * @param $task
+     * @return  array
+     */
     private function getValuesOfTask($task): array
     {
         $data = [];
         foreach ($task->category->custom_fields as $custom_field) {
-            $data[$custom_field->id] = json_decode(collect($custom_field->relationsToArray()['custom_field_values'])->where('task_id', $task->id)->value('value'));
+            $data[$custom_field->id] = json_decode(
+                collect($custom_field->relationsToArray()['custom_field_values'])
+                    ->where('task_id', $task->id)
+                    ->value('value'));
         }
         return $data;
     }
 
 
+    /**
+     *
+     * Function  showOptions
+     * @param $task
+     * @param $data_id
+     * @param $key
+     * @param $option
+     * @return  bool
+     */
     public static function showOptions($task, $data_id, $key, $option): bool
     {
         if (isset($task)) {
@@ -106,6 +140,13 @@ class CustomFieldService
         return false;
     }
 
+    /**
+     *
+     * Function  setInputValue
+     * @param $task
+     * @param $data_id
+     * @return  false|mixed|null
+     */
     public static function setInputValue($task, $data_id)
     {
         $array = isset($task) && $task->custom_field_values()->where('custom_field_id', $data_id)->first() ?
@@ -113,7 +154,6 @@ class CustomFieldService
         if (is_array($array) || (is_array($array) && array_key_exists('_token', $array))) {
             $array = end($array);
         }
-
         return $array;
     }
 }

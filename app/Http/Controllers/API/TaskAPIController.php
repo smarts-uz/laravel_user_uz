@@ -408,7 +408,7 @@ class TaskAPIController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/task/{task}",
+     *     path="/api/task/{id}",
      *     tags={"Task"},
      *     summary="Get Task By ID",
      *     @OA\Parameter(
@@ -469,7 +469,8 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function active_task_null(User $user){
+    public function active_task_null(User $user): JsonResponse
+    {
 
         $user->active_step = null;
         $user->active_task = null;

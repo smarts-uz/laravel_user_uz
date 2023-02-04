@@ -2,10 +2,8 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Task;
 use App\Models\TaskResponse;
 use App\Services\Task\CustomFieldService;
-use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TaskIndexResource extends JsonResource
