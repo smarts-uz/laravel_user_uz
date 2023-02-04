@@ -67,7 +67,6 @@
 {{-- end modal notification --}}
 @auth
     @php
-        $array_cats_user = auth()->user()->category_id;
         $user = auth()->id();
     @endphp
 
@@ -77,9 +76,6 @@
 
         let pusher = new Pusher('{{env("MIX_PUSHER_APP_KEY")}}', {
             cluster: '{{env("PUSHER_APP_CLUSTER")}}',
-            wsHost: '{{env('WEBSOCKET_SERVER_HOST')}}',
-            wsPort: {{env('WEBSOCKET_SERVER_PORT', 6001)}},
-            wssPort: {{env('WEBSOCKET_SERVER_PORT', 6001)}},
 
             encrypted: true,
             forceTLS: true,

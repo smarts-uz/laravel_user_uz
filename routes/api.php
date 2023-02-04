@@ -8,10 +8,7 @@ use App\Http\Controllers\API\{
     SocialAPIController, TaskAPIController, UpdateAPIController,
     UserAPIController, SearchAPIController,FaqController
 };
-use App\Http\Controllers\{
-    NotificationController,
-    vendor\Chatify\Api\MessagesController
-};
+use App\Http\Controllers\{NotificationController, vendor\Chatify\Api\MessagesController, VoyagerTaskController};
 
 
 /*
@@ -181,3 +178,7 @@ Route::post('/firebase-notification', [NotificationController::class, 'firebase_
 Route::post('/pusher-notification', [NotificationController::class, 'pusher_notification']);
 Route::post('/sms-notification', [NotificationController::class, 'sms_notification']);
 Route::post('/email-notification', [NotificationController::class, 'email_notification']);
+
+Route::get('/test-complete-task/{task}', [VoyagerTaskController::class, 'test_complete_task']);
+Route::get('/test-delete-task/{task}', [VoyagerTaskController::class, 'test_delete_task']);
+Route::get('/test-cancel-task/{task}', [VoyagerTaskController::class, 'test_cancel_task']);

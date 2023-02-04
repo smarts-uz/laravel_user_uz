@@ -4437,6 +4437,111 @@
                 ]
             }
         },
+        "\/api\/test-complete-task\/{task}": {
+            "get": {
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "complete task notifications",
+                "operationId": "c02ef5267610de872cffb373698bed46",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/test-delete-task\/{task}": {
+            "get": {
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "delete task notifications",
+                "operationId": "3786573f53513f632a24c7919a153d49",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/test-cancel-task\/{task}": {
+            "get": {
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "cencel task notifications",
+                "operationId": "59bd6d8203bb7f0522340f2f4dcac4c8",
+                "parameters": [
+                    {
+                        "name": "task",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "\/api\/chat\/deleteConversation": {
             "post": {
                 "tags": [
@@ -5044,7 +5149,7 @@
                         }
                     },
                     {
-                        "name": "filters[work_experience]",
+                        "name": "filters[description]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -5052,7 +5157,7 @@
                         }
                     },
                     {
-                        "name": "filters[description]",
+                        "name": "filters[work_experience]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -5371,14 +5476,12 @@
                                 "name",
                                 "email",
                                 "password",
-                                "active_task",
-                                "active_step",
                                 "avatar",
                                 "role_id",
                                 "user_belongsto_role_relationship",
                                 "phone_number",
-                                "work_experience",
                                 "description",
+                                "work_experience",
                                 "born_date"
                             ]
                         }
@@ -5395,14 +5498,12 @@
                                     "name",
                                     "email",
                                     "password",
-                                    "active_task",
-                                    "active_step",
                                     "avatar",
                                     "role_id",
                                     "user_belongsto_role_relationship",
                                     "phone_number",
-                                    "work_experience",
                                     "description",
+                                    "work_experience",
                                     "born_date"
                                 ]
                             }
@@ -8380,14 +8481,6 @@
                         }
                     },
                     {
-                        "name": "filters[regex]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "name": "filters[type]",
                         "in": "query",
                         "required": false,
@@ -8396,7 +8489,7 @@
                         }
                     },
                     {
-                        "name": "filters[min]",
+                        "name": "filters[regex]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -8412,7 +8505,7 @@
                         }
                     },
                     {
-                        "name": "filters[max]",
+                        "name": "filters[min]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -8421,6 +8514,14 @@
                     },
                     {
                         "name": "filters[placeholder]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[max]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -8767,12 +8868,12 @@
                                 "data_type",
                                 "required",
                                 "name",
-                                "regex",
                                 "type",
-                                "min",
+                                "regex",
                                 "label",
-                                "max",
+                                "min",
                                 "placeholder",
+                                "max",
                                 "options",
                                 "route",
                                 "order",
@@ -8797,12 +8898,12 @@
                                     "data_type",
                                     "required",
                                     "name",
-                                    "regex",
                                     "type",
-                                    "min",
+                                    "regex",
                                     "label",
-                                    "max",
+                                    "min",
                                     "placeholder",
+                                    "max",
                                     "options",
                                     "route",
                                     "order",
@@ -9240,7 +9341,7 @@
                         }
                     },
                     {
-                        "name": "filters[performer_review]",
+                        "name": "filters[performer_id]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -9248,7 +9349,7 @@
                         }
                     },
                     {
-                        "name": "filters[performer_id]",
+                        "name": "filters[performer_review]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -9616,8 +9717,8 @@
                                 "status",
                                 "phone",
                                 "category_id",
-                                "performer_review",
                                 "performer_id",
+                                "performer_review",
                                 "task_hasmany_custom_field_relationship",
                                 "oplata",
                                 "user_id",
@@ -9653,8 +9754,8 @@
                                     "status",
                                     "phone",
                                     "category_id",
-                                    "performer_review",
                                     "performer_id",
+                                    "performer_review",
                                     "task_hasmany_custom_field_relationship",
                                     "oplata",
                                     "user_id",
@@ -10063,10 +10164,10 @@
                                 "description",
                                 "user_id",
                                 "service_id",
-                                "task_id",
                                 "notification_belongsto_user_relationship",
-                                "cat_id",
+                                "task_id",
                                 "notification_hasmany_service_relationship",
+                                "cat_id",
                                 "name_task",
                                 "type",
                                 "is_read",
@@ -10087,10 +10188,10 @@
                                     "description",
                                     "user_id",
                                     "service_id",
-                                    "task_id",
                                     "notification_belongsto_user_relationship",
-                                    "cat_id",
+                                    "task_id",
                                     "notification_hasmany_service_relationship",
+                                    "cat_id",
                                     "name_task",
                                     "type",
                                     "is_read",
@@ -10959,6 +11060,7 @@
                                 "deleted_at",
                                 "deleted_by",
                                 "updated_by",
+                                "created_by",
                                 "wallet_balance_belongsto_user_relationship"
                             ],
                             "type": "string"
@@ -18292,8 +18394,8 @@
                                 "description",
                                 "good_bad",
                                 "created_at",
-                                "as_performer",
                                 "reviewer_id",
+                                "as_performer",
                                 "task_id",
                                 "reviewer_name",
                                 "deleted_at"
@@ -18313,8 +18415,8 @@
                                     "description",
                                     "good_bad",
                                     "created_at",
-                                    "as_performer",
                                     "reviewer_id",
+                                    "as_performer",
                                     "task_id",
                                     "reviewer_name",
                                     "deleted_at"
@@ -24758,13 +24860,13 @@
                         "type": "string",
                         "description": "Phone Number"
                     },
-                    "work_experience": {
-                        "type": "string",
-                        "description": "Work Experience"
-                    },
                     "description": {
                         "type": "string",
                         "description": "Description"
+                    },
+                    "work_experience": {
+                        "type": "string",
+                        "description": "Work Experience"
                     },
                     "born_date": {
                         "type": "string",
@@ -24799,14 +24901,6 @@
                         "type": "string",
                         "description": "Email"
                     },
-                    "active_task": {
-                        "type": "string",
-                        "description": "Active Task"
-                    },
-                    "active_step": {
-                        "type": "string",
-                        "description": "Active Step"
-                    },
                     "avatar": {
                         "type": "string",
                         "description": "jpg,jpeg,png",
@@ -24824,13 +24918,13 @@
                         "type": "string",
                         "description": "Phone Number"
                     },
-                    "work_experience": {
-                        "type": "string",
-                        "description": "Work Experience"
-                    },
                     "description": {
                         "type": "string",
                         "description": "Description"
+                    },
+                    "work_experience": {
+                        "type": "string",
+                        "description": "Work Experience"
                     },
                     "born_date": {
                         "type": "string",
@@ -25202,29 +25296,29 @@
                         "type": "string",
                         "description": "Required"
                     },
-                    "regex": {
-                        "type": "string",
-                        "description": "Regex"
-                    },
                     "type": {
                         "type": "string",
                         "description": "Input Type"
                     },
-                    "min": {
+                    "regex": {
                         "type": "string",
-                        "description": "Min"
+                        "description": "Regex"
                     },
                     "label": {
                         "type": "string",
                         "description": "Input Label"
                     },
-                    "max": {
+                    "min": {
                         "type": "string",
-                        "description": "Max"
+                        "description": "Min"
                     },
                     "placeholder": {
                         "type": "string",
                         "description": "Input Placeholder"
+                    },
+                    "max": {
+                        "type": "string",
+                        "description": "Max"
                     },
                     "route": {
                         "enum": [
@@ -25302,29 +25396,29 @@
                         "type": "string",
                         "description": "Input Name"
                     },
-                    "regex": {
-                        "type": "string",
-                        "description": "Regex"
-                    },
                     "type": {
                         "type": "string",
                         "description": "Input Type"
                     },
-                    "min": {
+                    "regex": {
                         "type": "string",
-                        "description": "Min"
+                        "description": "Regex"
                     },
                     "label": {
                         "type": "string",
                         "description": "Input Label"
                     },
-                    "max": {
+                    "min": {
                         "type": "string",
-                        "description": "Max"
+                        "description": "Min"
                     },
                     "placeholder": {
                         "type": "string",
                         "description": "Input Placeholder"
+                    },
+                    "max": {
+                        "type": "string",
+                        "description": "Max"
                     },
                     "route": {
                         "enum": [
@@ -25434,13 +25528,13 @@
                         "type": "string",
                         "description": "Category Id"
                     },
-                    "performer_review": {
-                        "type": "string",
-                        "description": "Performer Review"
-                    },
                     "performer_id": {
                         "type": "string",
                         "description": "Performer Id"
+                    },
+                    "performer_review": {
+                        "type": "string",
+                        "description": "Performer Review"
                     },
                     "task_hasmany_custom_field_relationship": {
                         "type": "integer",
@@ -25563,13 +25657,13 @@
                         "type": "string",
                         "description": "Category Id"
                     },
-                    "performer_review": {
-                        "type": "string",
-                        "description": "Performer Review"
-                    },
                     "performer_id": {
                         "type": "string",
                         "description": "Performer Id"
+                    },
+                    "performer_review": {
+                        "type": "string",
+                        "description": "Performer Review"
                     },
                     "task_hasmany_custom_field_relationship": {
                         "type": "integer",
@@ -25650,21 +25744,21 @@
                         "type": "string",
                         "description": "Service Id"
                     },
-                    "task_id": {
-                        "type": "string",
-                        "description": "Task Id"
-                    },
                     "notification_belongsto_user_relationship": {
                         "type": "integer",
                         "description": "users"
                     },
-                    "cat_id": {
+                    "task_id": {
                         "type": "string",
-                        "description": "Cat Id"
+                        "description": "Task Id"
                     },
                     "notification_hasmany_service_relationship": {
                         "type": "integer",
                         "description": "services"
+                    },
+                    "cat_id": {
+                        "type": "string",
+                        "description": "Cat Id"
                     },
                     "name_task": {
                         "type": "string",
@@ -25715,21 +25809,21 @@
                         "type": "string",
                         "description": "Service Id"
                     },
-                    "task_id": {
-                        "type": "string",
-                        "description": "Task Id"
-                    },
                     "notification_belongsto_user_relationship": {
                         "type": "integer",
                         "description": "users"
                     },
-                    "cat_id": {
+                    "task_id": {
                         "type": "string",
-                        "description": "Cat Id"
+                        "description": "Task Id"
                     },
                     "notification_hasmany_service_relationship": {
                         "type": "integer",
                         "description": "services"
+                    },
+                    "cat_id": {
+                        "type": "string",
+                        "description": "Cat Id"
                     },
                     "name_task": {
                         "type": "string",
@@ -26530,13 +26624,13 @@
                         "description": "Created At",
                         "example": "2021-05-17 00:00"
                     },
-                    "as_performer": {
-                        "type": "string",
-                        "description": "As Performer"
-                    },
                     "reviewer_id": {
                         "type": "string",
                         "description": "Reviewer Id"
+                    },
+                    "as_performer": {
+                        "type": "string",
+                        "description": "As Performer"
                     },
                     "task_id": {
                         "type": "string",
@@ -26579,13 +26673,13 @@
                         "description": "Created At",
                         "example": "2021-05-17 00:00"
                     },
-                    "as_performer": {
-                        "type": "string",
-                        "description": "As Performer"
-                    },
                     "reviewer_id": {
                         "type": "string",
                         "description": "Reviewer Id"
+                    },
+                    "as_performer": {
+                        "type": "string",
+                        "description": "As Performer"
                     },
                     "task_id": {
                         "type": "string",
@@ -27321,14 +27415,6 @@
                                     "type": "password",
                                     "description": "Password"
                                 },
-                                "active_task": {
-                                    "type": "string",
-                                    "description": "Active Task"
-                                },
-                                "active_step": {
-                                    "type": "string",
-                                    "description": "Active Step"
-                                },
                                 "avatar": {
                                     "type": "string",
                                     "description": "jpg,jpeg,png",
@@ -27346,13 +27432,13 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
-                                "work_experience": {
-                                    "type": "string",
-                                    "description": "Work Experience"
-                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
+                                },
+                                "work_experience": {
+                                    "type": "string",
+                                    "description": "Work Experience"
                                 },
                                 "born_date": {
                                     "type": "string",
@@ -27386,14 +27472,6 @@
                                     "type": "password",
                                     "description": "Password"
                                 },
-                                "active_task": {
-                                    "type": "string",
-                                    "description": "Active Task"
-                                },
-                                "active_step": {
-                                    "type": "string",
-                                    "description": "Active Step"
-                                },
                                 "avatar": {
                                     "type": "string",
                                     "description": "jpg,jpeg,png",
@@ -27411,13 +27489,13 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
-                                "work_experience": {
-                                    "type": "string",
-                                    "description": "Work Experience"
-                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
+                                },
+                                "work_experience": {
+                                    "type": "string",
+                                    "description": "Work Experience"
                                 },
                                 "born_date": {
                                     "type": "string",
@@ -27451,14 +27529,6 @@
                                     "type": "password",
                                     "description": "Password"
                                 },
-                                "active_task": {
-                                    "type": "string",
-                                    "description": "Active Task"
-                                },
-                                "active_step": {
-                                    "type": "string",
-                                    "description": "Active Step"
-                                },
                                 "avatar": {
                                     "type": "string",
                                     "description": "jpg,jpeg,png",
@@ -27476,13 +27546,13 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
-                                "work_experience": {
-                                    "type": "string",
-                                    "description": "Work Experience"
-                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
+                                },
+                                "work_experience": {
+                                    "type": "string",
+                                    "description": "Work Experience"
                                 },
                                 "born_date": {
                                     "type": "string",
@@ -28171,29 +28241,29 @@
                                     "type": "string",
                                     "description": "Input Name"
                                 },
-                                "regex": {
-                                    "type": "string",
-                                    "description": "Regex"
-                                },
                                 "type": {
                                     "type": "string",
                                     "description": "Input Type"
                                 },
-                                "min": {
+                                "regex": {
                                     "type": "string",
-                                    "description": "Min"
+                                    "description": "Regex"
                                 },
                                 "label": {
                                     "type": "string",
                                     "description": "Input Label"
                                 },
-                                "max": {
+                                "min": {
                                     "type": "string",
-                                    "description": "Max"
+                                    "description": "Min"
                                 },
                                 "placeholder": {
                                     "type": "string",
                                     "description": "Input Placeholder"
+                                },
+                                "max": {
+                                    "type": "string",
+                                    "description": "Max"
                                 },
                                 "options": {
                                     "type": "string",
@@ -28216,13 +28286,13 @@
                                     "type": "integer",
                                     "description": "\u041f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c"
                                 },
-                                "options_ru": {
-                                    "type": "string",
-                                    "description": "Options Ru"
-                                },
                                 "values": {
                                     "type": "string",
                                     "description": "In Options Default value"
+                                },
+                                "options_ru": {
+                                    "type": "string",
+                                    "description": "Options Ru"
                                 },
                                 "deleted_at": {
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
@@ -28280,29 +28350,29 @@
                                     "type": "string",
                                     "description": "Input Name"
                                 },
-                                "regex": {
-                                    "type": "string",
-                                    "description": "Regex"
-                                },
                                 "type": {
                                     "type": "string",
                                     "description": "Input Type"
                                 },
-                                "min": {
+                                "regex": {
                                     "type": "string",
-                                    "description": "Min"
+                                    "description": "Regex"
                                 },
                                 "label": {
                                     "type": "string",
                                     "description": "Input Label"
                                 },
-                                "max": {
+                                "min": {
                                     "type": "string",
-                                    "description": "Max"
+                                    "description": "Min"
                                 },
                                 "placeholder": {
                                     "type": "string",
                                     "description": "Input Placeholder"
+                                },
+                                "max": {
+                                    "type": "string",
+                                    "description": "Max"
                                 },
                                 "options": {
                                     "type": "string",
@@ -28385,29 +28455,29 @@
                                     "type": "string",
                                     "description": "Input Name"
                                 },
-                                "regex": {
-                                    "type": "string",
-                                    "description": "Regex"
-                                },
                                 "type": {
                                     "type": "string",
                                     "description": "Input Type"
                                 },
-                                "min": {
+                                "regex": {
                                     "type": "string",
-                                    "description": "Min"
+                                    "description": "Regex"
                                 },
                                 "label": {
                                     "type": "string",
                                     "description": "Input Label"
                                 },
-                                "max": {
+                                "min": {
                                     "type": "string",
-                                    "description": "Max"
+                                    "description": "Min"
                                 },
                                 "placeholder": {
                                     "type": "string",
                                     "description": "Input Placeholder"
+                                },
+                                "max": {
+                                    "type": "string",
+                                    "description": "Max"
                                 },
                                 "options": {
                                     "type": "string",
@@ -28516,13 +28586,13 @@
                                     "type": "string",
                                     "description": "Category Id"
                                 },
-                                "performer_review": {
-                                    "type": "string",
-                                    "description": "Performer Review"
-                                },
                                 "performer_id": {
                                     "type": "string",
                                     "description": "Performer Id"
+                                },
+                                "performer_review": {
+                                    "type": "string",
+                                    "description": "Performer Review"
                                 },
                                 "task_hasmany_custom_field_relationship": {
                                     "type": "integer",
@@ -28652,13 +28722,13 @@
                                     "type": "string",
                                     "description": "Category Id"
                                 },
-                                "performer_review": {
-                                    "type": "string",
-                                    "description": "Performer Review"
-                                },
                                 "performer_id": {
                                     "type": "string",
                                     "description": "Performer Id"
+                                },
+                                "performer_review": {
+                                    "type": "string",
+                                    "description": "Performer Review"
                                 },
                                 "task_hasmany_custom_field_relationship": {
                                     "type": "integer",
@@ -28788,13 +28858,13 @@
                                     "type": "string",
                                     "description": "Category Id"
                                 },
-                                "performer_review": {
-                                    "type": "string",
-                                    "description": "Performer Review"
-                                },
                                 "performer_id": {
                                     "type": "string",
                                     "description": "Performer Id"
+                                },
+                                "performer_review": {
+                                    "type": "string",
+                                    "description": "Performer Review"
                                 },
                                 "task_hasmany_custom_field_relationship": {
                                     "type": "integer",
@@ -28876,21 +28946,21 @@
                                     "type": "string",
                                     "description": "Service Id"
                                 },
-                                "task_id": {
-                                    "type": "string",
-                                    "description": "Task Id"
-                                },
                                 "notification_belongsto_user_relationship": {
                                     "type": "integer",
                                     "description": "users"
                                 },
-                                "cat_id": {
+                                "task_id": {
                                     "type": "string",
-                                    "description": "Cat Id"
+                                    "description": "Task Id"
                                 },
                                 "notification_hasmany_service_relationship": {
                                     "type": "integer",
                                     "description": "services"
+                                },
+                                "cat_id": {
+                                    "type": "string",
+                                    "description": "Cat Id"
                                 },
                                 "name_task": {
                                     "type": "string",
@@ -28942,21 +29012,21 @@
                                     "type": "string",
                                     "description": "Service Id"
                                 },
-                                "task_id": {
-                                    "type": "string",
-                                    "description": "Task Id"
-                                },
                                 "notification_belongsto_user_relationship": {
                                     "type": "integer",
                                     "description": "users"
                                 },
-                                "cat_id": {
+                                "task_id": {
                                     "type": "string",
-                                    "description": "Cat Id"
+                                    "description": "Task Id"
                                 },
                                 "notification_hasmany_service_relationship": {
                                     "type": "integer",
                                     "description": "services"
+                                },
+                                "cat_id": {
+                                    "type": "string",
+                                    "description": "Cat Id"
                                 },
                                 "name_task": {
                                     "type": "string",
@@ -29008,21 +29078,21 @@
                                     "type": "string",
                                     "description": "Service Id"
                                 },
-                                "task_id": {
-                                    "type": "string",
-                                    "description": "Task Id"
-                                },
                                 "notification_belongsto_user_relationship": {
                                     "type": "integer",
                                     "description": "users"
                                 },
-                                "cat_id": {
+                                "task_id": {
                                     "type": "string",
-                                    "description": "Cat Id"
+                                    "description": "Task Id"
                                 },
                                 "notification_hasmany_service_relationship": {
                                     "type": "integer",
                                     "description": "services"
+                                },
+                                "cat_id": {
+                                    "type": "string",
+                                    "description": "Cat Id"
                                 },
                                 "name_task": {
                                     "type": "string",
@@ -30349,13 +30419,13 @@
                                     "type": "string",
                                     "description": "Good Bad"
                                 },
-                                "as_performer": {
-                                    "type": "string",
-                                    "description": "As Performer"
-                                },
                                 "reviewer_id": {
                                     "type": "string",
                                     "description": "Reviewer Id"
+                                },
+                                "as_performer": {
+                                    "type": "string",
+                                    "description": "As Performer"
                                 },
                                 "task_id": {
                                     "type": "string",
@@ -30405,13 +30475,13 @@
                                     "description": "Created At",
                                     "example": "2021-05-17 00:00"
                                 },
-                                "as_performer": {
-                                    "type": "string",
-                                    "description": "As Performer"
-                                },
                                 "reviewer_id": {
                                     "type": "string",
                                     "description": "Reviewer Id"
+                                },
+                                "as_performer": {
+                                    "type": "string",
+                                    "description": "As Performer"
                                 },
                                 "task_id": {
                                     "type": "string",
@@ -30461,13 +30531,13 @@
                                     "description": "Created At",
                                     "example": "2021-05-17 00:00"
                                 },
-                                "as_performer": {
-                                    "type": "string",
-                                    "description": "As Performer"
-                                },
                                 "reviewer_id": {
                                     "type": "string",
                                     "description": "Reviewer Id"
+                                },
+                                "as_performer": {
+                                    "type": "string",
+                                    "description": "As Performer"
                                 },
                                 "task_id": {
                                     "type": "string",
