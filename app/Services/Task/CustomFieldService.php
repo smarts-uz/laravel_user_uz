@@ -52,8 +52,7 @@ class CustomFieldService
         $item['title'] = $custom_field->getTranslatedAttribute('title', app()->getLocale());
         $item['label'] = $custom_field->getTranslatedAttribute('label', app()->getLocale());
         $item['type'] = $custom_field->type;
-        $item['options'] = $this->setOption($custom_field, $task);
-        $item['values'] = $values[$custom_field->id][0];
+        $item['options'] = $this->setOption($custom_field, $values);
         $item['required'] = $custom_field->required;
         $item['regex'] = $custom_field->regex;
         $item['min'] = $custom_field->min;
@@ -61,21 +60,23 @@ class CustomFieldService
         $item['data_type'] = $custom_field->data_type;
         $item['order'] = $custom_field->order;
         $item['name'] = $custom_field->name;
-        $item['task_value'] = ($custom_field->type == 'input' or $custom_field->type == 'number') ? count($values[$custom_field->id]) ? (string)$values[$custom_field->id][0] : '' : '';
+        if ($custom_field->type === 'input' || $custom_field->type === 'number'){
+            $item['task_value'] =  count($values[$custom_field->id]);
+        } else {
+            $item['task_value'] =  (string)Arr::get($values[$custom_field->id],0, []);
+        }
         return $item;
     }
 
-    private function setOption($custom_field, $task)
+    private function setOption($custom_field, $values)
     {
-        $values = $this->getValuesOfTask($task);
-
         $options = app()->getLocale() === 'uz' ? Arr::get($custom_field->options, 'options', []) : Arr::get($custom_field->options, 'options_ru', []);
         $options = empty($options) ? Arr::get($custom_field->options, 'options', []) : Arr::get($custom_field->options, 'options_ru', []);
         $item = [];
         $data = [];
         foreach ($options as $key => $option) {
             $haystack = $values[$custom_field->id];
-            $select = $custom_field->type === 'select';
+            $select = $custom_field->type === 'select' || $custom_field->type === 'radio';
             $item['id'] = $key;
             $item['selected'] = $select ? in_array((string)$key, $haystack, true) : true;
             $item['value'] = $select ? $option : $haystack[0];
@@ -89,11 +90,7 @@ class CustomFieldService
         $data = [];
         foreach ($task->category->custom_fields as $custom_field) {
             $data[$custom_field->id] = json_decode(collect($custom_field->relationsToArray()['custom_field_values'])->where('task_id', $task->id)->value('value'));
-            //$data[$custom_field->id] = [];
         }
-        /*foreach ($task->category->custom_fields as $custom_fields_value) {
-            $data[$custom_fields_value->custom_field_id] = $custom_fields_value->value ? json_decode($custom_fields_value->value) : [];
-        }*/
         return $data;
     }
 
