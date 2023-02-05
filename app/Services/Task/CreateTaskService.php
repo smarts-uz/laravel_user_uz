@@ -52,16 +52,16 @@ class CreateTaskService
      * @param array $data // Validated request data from mobile
      * @return array $result //Value Returned (use void if doesn't return)
      */
-    public function name_store(array $data): array
+    public function name_store($name, $category_id, $user): array
     {
-        $data['user_id'] = auth()->id();
+        $data = ["name" => $name, "category_id" => $category_id];
+        $data['user_id'] = 1;
         $task = Task::query()->create($data);
         /** @var User $user */
-        $user = auth()->user();
         $user->active_task = $task->id;
         $user->active_step = self::Create_Name;
         $user->save();
-        return $this->get_custom($task);
+        return $this->get_custom($task->id);
     }
 
     /**
@@ -70,19 +70,19 @@ class CreateTaskService
      * @param object $task // Task model object
      * @return array //Value Returned
      */
-    public function get_custom($task): array
+    public function get_custom($task_id): array
     {
         $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_CUSTOM);
         $task = $result['task'];
         $custom_fields = $result['custom_fields'];
         if (!$task->category->customFieldsInCustom->count()) {
-            if ($task->category->parent->remote) {
+            if (!is_null($task->category->parent) && $task->category->parent->remote) {
                 return [
                     'route' => 'remote', 'task_id' => $task->id, 'steps' => self::Create_Remote,
                     'custom_fields' => $custom_fields
                 ];
             }
-            if ($task->category->parent->double_address) {
+            if (!is_null($task->category->parent) && $task->category->parent->double_address) {
                 return [
                     'route' => 'address', 'address' => 2, 'task_id' => $task_id, 'steps' => self::Create_Address,
                     'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_ADDRESS)['custom_fields']
@@ -147,7 +147,7 @@ class CreateTaskService
         $user = auth()->user();
         $user->active_step = self::Create_Remote;
         $user->save();
-        switch ($data['radio'] ){
+        switch ($data['radio']) {
             case CustomField::ROUTE_ADDRESS :
                 return $this->get_address($task->id);
             case CustomField::ROUTE_REMOTE :
@@ -386,7 +386,7 @@ class CreateTaskService
         /** @var Task $task */
         $task = Task::query()->findOrFail($data['task_id']);
         unset($data['task_id']);
-        switch (true){
+        switch (true) {
             case (!$user->is_phone_number_verified && $user->phone_number !== $data['phone_number']):
                 $data['is_phone_number_verified'] = 0;
                 $data['phone_number'] = correctPhoneNumber($data['phone_number']);
@@ -429,10 +429,10 @@ class CreateTaskService
         /** @var User $user */
         $user = auth()->user();
 
-        switch (true){
+        switch (true) {
             case !$user->is_phone_number_verified && $data['sms_otp'] === $user->verify_code :
                 if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-                    $user->update(['is_phone_number_verified' => 1,'active_step'=>null,'active_task'=>null]);
+                    $user->update(['is_phone_number_verified' => 1, 'active_step' => null, 'active_task' => null]);
                     $task->update(['status' => 1, 'user_id' => $user->id, 'phone' => $user->phone_number]);
                     // send notification
                     NotificationService::sendTaskNotification($task, $user->id);
@@ -486,7 +486,7 @@ class CreateTaskService
             $value = $task->custom_field_values()->where('custom_field_id', $data->id)->first() ?? new CustomFieldsValue();
             $value->task_id = $task_id;
             $value->custom_field_id = $data->id;
-            $arr = $data->name !== null ? Arr::get($request, $data->name):null;
+            $arr = $data->name !== null ? Arr::get($request, $data->name) : null;
             $value->value = is_array($arr) ? json_encode($arr) : $arr;
             $value->save();
         }

@@ -17,7 +17,7 @@ class CustomFieldService
     public function getCustomFieldsByRoute(int $task_id, string $routeName): array
     {
         $task = Task::with('category.custom_fields.custom_field_values')->find($task_id);
-        $custom_fields = collect($task->category->custom_fields)->where('route', $routeName)->all();
+        $custom_fields = collect(Arr::get($task->category, 'custom_fields', []))->where('route', $routeName)->all();
         $result['task'] = $task;
         $result['category'] = $task->category;
         $result['custom_fields'] = [];
@@ -106,7 +106,7 @@ class CustomFieldService
     private function getValuesOfTask($task): array
     {
         $data = [];
-        foreach ($task->category->custom_fields as $custom_field) {
+        foreach (Arr::get($task->category,'custom_fields', []) as $custom_field) {
             $data[$custom_field->id] = json_decode(
                 collect($custom_field->relationsToArray()['custom_field_values'])
                     ->where('task_id', $task->id)

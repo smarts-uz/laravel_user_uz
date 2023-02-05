@@ -599,10 +599,12 @@ class TaskAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
+     *                    description="Taskning nomi kiritiladi",
      *                    property="name",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
+     *                    description="Category id yoziladi (faqat parent_idsi bor bo'lishi kerak)",
      *                    property="category_id",
      *                    type="integer",
      *                 ),
@@ -628,7 +630,12 @@ class TaskAPIController extends Controller
      */
     public function name(TaskNameRequest $request): JsonResponse
     {
-        return $this->success($this->create_task_service->name_store($request->validated()));
+        $data = $request->validated();
+
+        $name = $data['name'];
+        $category_id = $data['category_id'];
+        $user = auth()->user();
+        return $this->success($this->create_task_service->name_store($name, $category_id, $user));
     }
 
     /**
@@ -832,10 +839,12 @@ class TaskAPIController extends Controller
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
+     *                    description="Narxi",
      *                    property="amount",
      *                    type="number",
      *                 ),
      *                 @OA\Property (
+     *                    description="Naqt yoki plastik (0 yoki 1)",
      *                    property="budget_type",
      *                    type="integer",
      *                 ),

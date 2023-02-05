@@ -7,6 +7,7 @@ use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\PerformersService;
+use App\Services\Task\CreateTaskService;
 use App\Services\Task\TaskService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Auth;
@@ -45,7 +46,7 @@ class ShuxratCmd extends Command
      */
     public function handle()
     {
-        (new TaskService)->taskIndex('2488');
+        (new CreateTaskService)->name_store('test','1');
     }
 
 
