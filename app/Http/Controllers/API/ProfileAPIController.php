@@ -1000,6 +1000,10 @@ class ProfileAPIController extends Controller
      *                    description="ru yoki uz",
      *                    type="string",
      *                 ),
+     *                 @OA\Property (
+     *                    property="version",
+     *                    type="string",
+     *                 ),
      *             ),
      *         ),
      *     ),
@@ -1025,6 +1029,10 @@ class ProfileAPIController extends Controller
         if (Auth::guard('api')->check()) {
             cache()->forever('lang' . auth()->id(), $request->get('lang'));
             app()->setLocale($request->get('lang'));
+            /** @var User $user */
+            $user = auth()->user();
+            $user->version = $request->get('version');
+            $user->save();
             return response()->json([
                 'success' => true,
                 'data' => [
@@ -1032,6 +1040,7 @@ class ProfileAPIController extends Controller
                 ]
             ]);
         }
+
         return response()->json([
             'success' => true,
             'message' => trans('trans.Language changed successfully.')

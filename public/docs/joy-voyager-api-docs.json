@@ -86,6 +86,7 @@
                                 "born_date",
                                 "work_experience",
                                 "email_old",
+                                "version",
                                 "phone_number_old",
                                 "system_notification",
                                 "news_notification",

@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Passport\HasApiTokens;
 
 /**
- * @property $is_phone_number_verified user raqamini tasdiqlash, 1 bo'lsa tasdiqlangan, null bo'lsa tasdiqlanmagan
+ * @return array //Value Returned
+ *@property $is_phone_number_verified user raqamini tasdiqlash, 1 bo'lsa tasdiqlangan, null bo'lsa tasdiqlanmagan
  * @property $is_email_verified user emailini tasdiqlash, 1 bo'lsa tasdiqlangan, null bo'lsa tasdiqlanmagan
  * @property $born_date user tug'ilgan kunini kiritadi
  * @property $verify_expiration
@@ -59,8 +60,8 @@ use Laravel\Passport\HasApiTokens;
  * @property $active_step
  * @property $work_experience
  * @property $deleted_by
- * @property $deleted_at
- * @return array //Value Returned
+ * @property $version
+ * @property $deleted_at*@property mixed $version
  */
 class User extends \TCG\Voyager\Models\User
 {

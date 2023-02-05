@@ -184,6 +184,7 @@ class UserIndexResource extends JsonResource
             'wallet_balance' => $balance,
             'work_experience'=>$this->work_experience,
             'last_seen' => $lastSeen,
+            'last_version'=> setting('admin.last_version'),
             'gender'=> $this->gender,
             'blocked_user'=> $blocked_user,
             'created_at' => $this->created_at
