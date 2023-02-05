@@ -60,7 +60,6 @@ class Controller extends BaseController
                 'child_categories' => $item->child_categories,
                 'categories' => $item->categories,
                 'choosed_category' => $item->choosed_category,
-                'idR' => $item->idR,
             ]);
     }
 

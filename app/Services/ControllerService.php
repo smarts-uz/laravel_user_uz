@@ -24,9 +24,9 @@ class ControllerService
     public function home()
     {
         $item = new ControllerItem();
-        $item -> categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->orderBy("order", "asc")->get();
-        $item -> tasks  =  Task::query()->where('status', Task::STATUS_OPEN)->orWhere('status',Task::STATUS_RESPONSE)->orderBy('id', 'desc')->take(self::MAX_HOMEPAGE_TASK)->get();
-        $item -> child_categories = Category::withTranslations(['ru', 'uz'])->where('parent_id','!=',null)->orderBy("order", "asc")->get();
+        $item -> categories = Category::query()->where('parent_id', null)->orderBy("order")->get();
+        $item -> tasks = Task::query()->where('status', Task::STATUS_OPEN)->orWhere('status',Task::STATUS_RESPONSE)->orderBy('id', 'desc')->take(self::MAX_HOMEPAGE_TASK)->get();
+        $item -> child_categories = Category::query()->where('parent_id','!=',null)->orderBy("order")->get();
         return $item;
 
     }
@@ -37,12 +37,12 @@ class ControllerService
      * @param $id
      * @return  CategoryItem
      */
-    public function category($id){
+    public function category($id): CategoryItem
+    {
         $item = new CategoryItem();
-        $item -> categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', null)->get();
-        $item -> choosed_category = Category::withTranslations(['ru', 'uz'])->where('id', $id)->orderBy("order", "asc")->get();
-        $item -> child_categories = Category::withTranslations(['ru', 'uz'])->where('parent_id', $id)->orderBy("order", "asc")->get();
-        $item -> idR = $id;
+        $item -> categories = Category::query()->where('parent_id', null)->get();
+        $item -> choosed_category = Category::find($id);
+        $item -> child_categories = Category::query()->where('parent_id', $id)->orderBy("order")->get();
         return $item;
     }
     /**
@@ -57,8 +57,8 @@ class ControllerService
         $item->user = auth()->user();
         $item->tasks = $item->user->tasks()->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->orderBy('created_at', 'desc')->get();
         $item->perform_tasks = $item->user->performer_tasks()->orderBy('created_at', 'desc')->get();
-        $item->categories = Category::query()->where('parent_id', null)->select('id', 'name', 'slug')->orderBy("order", "asc")->get();
-        $item->categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name','ico')->orderBy("order", "asc")->get();
+        $item->categories = Category::query()->where('parent_id', null)->select('id', 'name', 'slug')->orderBy("order")->get();
+        $item->categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name','ico')->orderBy("order")->get();
         return $item;
     }
 

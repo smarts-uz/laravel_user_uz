@@ -29,11 +29,11 @@ class FilterTaskService
         $tasks = Task::query()->where('status', '=',Task::STATUS_OPEN);
 
         $tasks_items =  [];
-        if (isset($data['lat']) && isset($data['long']) && isset($data['difference']) && !isset($data['is_remote']))
+        if (isset($data['lat'], $data['long'], $data['difference']) && !isset($data['is_remote']))
         {
             foreach ($tasks->get() as $task) {
                 $address = $task->addresses->first();
-                if (isset($address->latitude) && isset($address->longitude)) {
+                if (isset($address->latitude, $address->longitude)) {
                     $k = $this->distance($data['lat'], $data['long'], $address->latitude, $address->longitude);
                     if ($k < $data['difference']) {
                         $tasks_items[] = $task->id;
