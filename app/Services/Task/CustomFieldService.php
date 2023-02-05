@@ -68,8 +68,7 @@ class CustomFieldService
         $item['max'] = $custom_field->max;
         $item['data_type'] = $custom_field->data_type;
         $item['order'] = $custom_field->order;
-        $item['name'] = $custom_field->name;
-        $item['task_value'] = (string)Arr::get($values[$custom_field->id], 0, []);
+        $item['task_value'] = ($custom_field->type === 'input' || $custom_field->type === 'number') ? count($values[$custom_field->id]) ? (string)$values[$custom_field->id][0] : '' : '';
         return $item;
     }
 
@@ -91,7 +90,8 @@ class CustomFieldService
             $select = $custom_field->type === 'select' || $custom_field->type === 'radio';
             $item['id'] = $key;
             $item['selected'] = $select ? in_array((string)$key, $haystack, true) : true;
-            $item['value'] = $select ? $option : $haystack[0];
+            //dd($item);
+            $item['value'] = $option;
             $data[] = $item;
         }
         return $data;

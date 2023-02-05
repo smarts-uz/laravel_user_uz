@@ -85,7 +85,7 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function same_tasks(Task $task): AnonymousResourceCollection
+    public function same_tasks(int $task_id): AnonymousResourceCollection
     {
         $tasks = $task->category->tasks()->where('id', '!=', $task->id);
         $tasks = $tasks->where('status', Task::STATUS_OPEN)->take(self::SOME_TASK_LIMIT)->orderByDesc('created_at')->get();

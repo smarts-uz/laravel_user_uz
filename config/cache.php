@@ -17,6 +17,14 @@ return [
 
     'default' => env('CACHE_DRIVER', 'file'),
 
+    /*'default' => [
+        'host' => env('REDIS_HOST', 'localhost'),
+        'password' => env('REDIS_PASSWORD', null),
+        'port' => env('REDIS_PORT', 6379),
+        'database' => 0,
+        'read_timeout' => 60,
+    ],*/
+
     /*
     |--------------------------------------------------------------------------
     | Cache Stores
@@ -74,9 +82,14 @@ return [
         ],
 
         'redis' => [
-            'driver' => 'redis',
-            'connection' => 'cache',
-            'lock_connection' => 'default',
+            'client' => 'predis',
+            'cluster' => false,
+            'default' => [
+                'host' => env('REDIS_HOST', 'localhost'),
+                'password' => env('REDIS_PASSWORD', null),
+                'port' => env('REDIS_PORT', 6379),
+                'database' => 0,
+            ],
         ],
 
         'dynamodb' => [

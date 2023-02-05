@@ -3,6 +3,7 @@
 use App\Models\Category;
 use App\Models\UserView;
 use App\Services\Task\CreateService;
+use Illuminate\Support\Facades\Cache;
 
 if (!function_exists('amount_format')) {
     function amount_format($amount)
@@ -57,7 +58,11 @@ function setView($user)
 
 function categories()
 {
-    $datas = Category::with('translations')->orderBy("order")->get();
+    $datas = Cache::remember('category-translations', now()->addMinute(180), function () {
+        return Category::with('translations')->orderBy("order")->get();
+    });
+
+    //$datas = Category::with('translations')->orderBy("order")->get();
 
     $child_categories = [];
     $parent_categories = [];
