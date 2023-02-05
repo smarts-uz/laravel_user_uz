@@ -139,7 +139,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/settings', [ProfileController::class, 'editData'])->name('profile.editData');
         Route::post('/settings/update', [ProfileController::class, 'updateData'])->name('profile.updateData');
         Route::get('/clear-sessions', [ProfileController::class, 'clear_sessions'])->name('profile.clear_sessions');
-        Route::get('/delete', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::post('/getcategory', [ProfileController::class, 'getCategory'])->name('profile.getCategory');
         Route::post('/store/profile/image', [ProfileController::class, 'storeProfileImage'])->name('profile.storeProfileImage');
         Route::post('/description', [ProfileController::class, 'editDescription'])->name('profile.EditDescription');
@@ -232,6 +231,8 @@ Route::get('/code', [UserController::class, 'reset_code_view'])->name('user.rese
 Route::view('/code-email', 'auth.codeEmail')->name('user.reset_code_view_email');
 Route::post('/code', [UserController::class, 'reset_code'])->name('user.reset_code');
 Route::get('/register/code', [UserController::class, 'code'])->name('user.code');
+Route::get('/self-delete', [UserController::class, 'self_delete'])->name('self.delete');
+Route::post('/confirmation-self-delete', [UserController::class, 'confirmationSelfDelete'])->name('confirmation.self.delete');
 Route::post('/account/password/change', [ProfileController::class, 'change_password'])->name('profile.change_password');
 #endregion
 

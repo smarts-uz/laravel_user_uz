@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\Task;
 use App\Services\NotificationService;
 use App\Services\SmsMobileService;
+use App\Services\VerificationService;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
@@ -160,7 +161,39 @@ class UserController extends Controller
 
         auth()->logout();
         return back()->with('incorrect_message', __('Ваш номер не подтвержден'));
+    }
 
+    /**
+     * @throws \Exception
+     */
+    public function self_delete(): RedirectResponse
+    {
+        /** @var User $user */
+        $user = \auth()->user();
+
+        VerificationService::send_verification('phone', $user, $user->phone_number);
+        return redirect()->back()->with([
+            'sms_code' => __('Код отправлен!')
+        ]);
+    }
+
+    public function confirmationSelfDelete(ResetCodeRequest $request)
+    {
+        $data = $request->validated();
+        /** @var User $user */
+        $user = \auth()->user();
+
+        if ($data['code'] === $user->verify_code) {
+            if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
+                $user->delete();
+                return redirect('/');
+            }
+            return back()->with(['sms_code' => __('Срок действия кода истек')]);
+        }
+
+        return back()->with([
+            'sms_code' => __('Неправильный код!')
+        ]);
     }
 
 }

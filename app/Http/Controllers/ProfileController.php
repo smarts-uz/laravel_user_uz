@@ -151,14 +151,6 @@ class ProfileController extends Controller
         return redirect()->back();
     }
 
-    public function destroy()
-    {
-        /** @var User $user */
-        $user = \auth()->user();
-        $user->delete();
-        return redirect('/');
-    }
-
     //getCategory
     public function getCategory(CategoryRequest $request)
     {
