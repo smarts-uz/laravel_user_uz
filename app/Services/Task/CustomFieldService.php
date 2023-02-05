@@ -17,7 +17,7 @@ class CustomFieldService
     public function getCustomFieldsByRoute(int $task_id, string $routeName): array
     {
         $task = Task::with('category.custom_fields.custom_field_values')->find($task_id);
-        $custom_fields = collect(Arr::get($task->category, 'custom_fields', []))->where('route', $routeName)->all();
+        $custom_fields = collect($task->category->custom_fields)->where('route', $routeName)->all();
         $result['task'] = $task;
         $result['category'] = $task->category;
         $result['custom_fields'] = [];
@@ -68,7 +68,15 @@ class CustomFieldService
         $item['max'] = $custom_field->max;
         $item['data_type'] = $custom_field->data_type;
         $item['order'] = $custom_field->order;
-        $item['task_value'] = ($custom_field->type === 'input' || $custom_field->type === 'number') ? count($values[$custom_field->id]) ? (string)$values[$custom_field->id][0] : '' : '';
+
+
+        if(is_array($values))
+        if (!empty($values[$custom_field->id]))
+        if ( count($values[$custom_field->id])) {
+            $item['task_value'] = ($custom_field->type === 'input' || $custom_field->type === 'number') ? (string)$values[$custom_field->id][0] : '';
+        } else {
+            $item['task_value'] = ($custom_field->type === 'input' || $custom_field->type === 'number') ? '' : '';
+        }
         return $item;
     }
 
@@ -89,6 +97,7 @@ class CustomFieldService
             $haystack = $values[$custom_field->id];
             $select = $custom_field->type === 'select' || $custom_field->type === 'radio';
             $item['id'] = $key;
+            if (!empty($haystack))
             $item['selected'] = $select ? in_array((string)$key, $haystack, true) : true;
             //dd($item);
             $item['value'] = $option;
@@ -106,7 +115,7 @@ class CustomFieldService
     private function getValuesOfTask($task): array
     {
         $data = [];
-        foreach (Arr::get($task->category,'custom_fields', []) as $custom_field) {
+        foreach ($task->category->custom_fields as $custom_field) {
             $data[$custom_field->id] = json_decode(
                 collect($custom_field->relationsToArray()['custom_field_values'])
                     ->where('task_id', $task->id)

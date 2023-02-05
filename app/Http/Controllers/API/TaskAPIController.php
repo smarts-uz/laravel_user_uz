@@ -86,7 +86,7 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function same_tasks(int $task_id): AnonymousResourceCollection
+    public function same_tasks(Task $task): AnonymousResourceCollection
     {
         $tasks = $task->category->tasks()->where('id', '!=', $task->id);
         $tasks = $tasks->where('status', Task::STATUS_OPEN)->take(self::SOME_TASK_LIMIT)->orderByDesc('created_at')->get();
@@ -406,7 +406,7 @@ class TaskAPIController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/task/{id}",
+     *     path="/api/task/{task}",
      *     tags={"Task"},
      *     summary="Get Task By ID",
      *     @OA\Parameter(
@@ -414,7 +414,7 @@ class TaskAPIController extends Controller
      *          name="task",
      *          required=true,
      *          @OA\Schema(
-     *              type="string"
+     *              type="integer"
      *          ),
      *     ),
      *     @OA\Response(
@@ -431,13 +431,13 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function task(int $task_id): TaskIndexResource
+    public function task($task): array
     {
         if (auth()->guard('api')->check()) {
             $user_id = auth()->guard('api')->id();
-            (new TaskService)->taskIncrement($user_id, $task_id);
+            (new TaskService)->taskIncrement($user_id, $task);
         }
-        return (new TaskService)->taskIndex($task_id);
+        return (new TaskService)->taskIndex($task);
     }
 
     /**
@@ -635,7 +635,8 @@ class TaskAPIController extends Controller
         $name = $data['name'];
         $category_id = $data['category_id'];
         $user = auth()->user();
-        return $this->success($this->create_task_service->name_store($name, $category_id, $user));
+        $user_id = auth()->id();
+        return $this->success($this->create_task_service->name_store($name, $category_id, $user, $user_id));
     }
 
     /**

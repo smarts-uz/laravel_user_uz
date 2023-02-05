@@ -2491,20 +2491,20 @@
                 }
             }
         },
-        "\/api\/task\/{id}": {
+        "\/api\/task\/{task}": {
             "get": {
                 "tags": [
                     "Task"
                 ],
                 "summary": "Get Task By ID",
-                "operationId": "df0616199c2740cfa86c2ecd29d5ff5d",
+                "operationId": "f81261f5febbe5e9edecf62e8b165e8f",
                 "parameters": [
                     {
                         "name": "task",
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     }
                 ],

@@ -52,10 +52,10 @@ class CreateTaskService
      * @param array $data // Validated request data from mobile
      * @return array $result //Value Returned (use void if doesn't return)
      */
-    public function name_store($name, $category_id, $user): array
+    public function name_store($name, $category_id, $user, $user_id): array
     {
         $data = ["name" => $name, "category_id" => $category_id];
-        $data['user_id'] = 1;
+        $data['user_id'] = $user_id;
         $task = Task::query()->create($data);
         /** @var User $user */
         $user->active_task = $task->id;

@@ -19,7 +19,7 @@ class TaskIndexResource extends JsonResource
         $photos = array_map(function ($val) {
             return asset('storage/uploads/' . $val);
         },
-            json_decode($this->photos) ?? []
+            json_decode(!empty($this->photos)) ?? []
         );
         $user_response = TaskResponse::query()
             ->where('task_id', $this->id)

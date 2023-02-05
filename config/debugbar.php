@@ -23,7 +23,8 @@ return [
         'payment/click',
         'payment/payme',
         'payment/click/user-balance',
-        'paynet'
+        'paynet',
+        'api/*'
     ],
 
     /*
