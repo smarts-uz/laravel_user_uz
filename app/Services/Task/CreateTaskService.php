@@ -61,7 +61,7 @@ class CreateTaskService
         $user->active_task = $task->id;
         $user->active_step = self::Create_Name;
         $user->save();
-        return $this->get_custom($task->id);
+        return $this->get_custom($task);
     }
 
     /**
@@ -70,7 +70,7 @@ class CreateTaskService
      * @param object $task // Task model object
      * @return array //Value Returned
      */
-    public function get_custom($task_id): array
+    public function get_custom($task): array
     {
         $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_CUSTOM);
         $task = $result['task'];
@@ -79,7 +79,7 @@ class CreateTaskService
             if ($task->category->parent->remote) {
                 return [
                     'route' => 'remote', 'task_id' => $task->id, 'steps' => self::Create_Remote,
-                    'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_REMOTE)['custom_fields']
+                    'custom_fields' => $custom_fields
                 ];
             }
             if ($task->category->parent->double_address) {
@@ -106,8 +106,7 @@ class CreateTaskService
     public function custom_store($data, $request): array
     {
         /** @var Task $task */
-        $task = Task::query()->findOrFail($data['task_id']);
-        $this->attachCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM, $request->all());
+        $task = $this->attachCustomFieldsByRoute($data['task_id'], CustomField::ROUTE_CUSTOM, $request->all());
         $category = $task->category;
         /** @var User $user */
         $user = auth()->user();
@@ -315,7 +314,7 @@ class CreateTaskService
         $user = auth()->user();
         $user->active_step = self::Create_Note;
         $user->save();
-        return $this->get_contact($task->);
+        return $this->get_contact($task->id);
     }
 
     /**
@@ -393,13 +392,13 @@ class CreateTaskService
                 $data['phone_number'] = correctPhoneNumber($data['phone_number']);
                 $user->update($data);
                 VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
-                return $this->get_verify($task, $user);
+                return $this->get_verify($task->id, $user);
             case ($user->phone_number !== $data['phone_number']) :
                 VerificationService::send_verification_for_task_phone($task, correctPhoneNumber($data['phone_number']));
-                return $this->get_verify($task, $user);
+                return $this->get_verify($task->id, $user);
             case (!$user->is_phone_number_verified) :
                 VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
-                return $this->get_verify($task, $user);
+                return $this->get_verify($task->id, $user);
         }
 
         $task->status = 1;
@@ -418,9 +417,9 @@ class CreateTaskService
     }
 
     #[ArrayShape(['route' => "string", 'task_id' => "", 'user' => ""])]
-    public function get_verify($task, $user): array
+    public function get_verify($task_id, $user): array
     {
-        return ['route' => 'verify', 'task_id' => $task->id, 'user' => $user];
+        return ['route' => 'verify', 'task_id' => $task_id, 'user' => $user];
     }
 
     public function verification($data): JsonResponse
@@ -479,7 +478,7 @@ class CreateTaskService
      * @param $routeName
      * @param $request
      */
-    protected function attachCustomFieldsByRoute($task_id, $routeName, $request): void
+    protected function attachCustomFieldsByRoute($task_id, $routeName, $request)
     {
         $task = Task::with('category.custom_fields.custom_field_values')->find($task_id);
         $custom_fields = collect($task->category->custom_fields)->where('route', $routeName)->all();
@@ -491,5 +490,6 @@ class CreateTaskService
             $value->value = is_array($arr) ? json_encode($arr) : $arr;
             $value->save();
         }
+        return $task;
     }
 }
