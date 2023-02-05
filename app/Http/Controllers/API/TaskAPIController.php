@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Requests\Api\TaskResponseRequest;
 use App\Http\Resources\ComplianceTypeResource;
 use App\Services\Task\TaskService;
 use Illuminate\Http\Request;
@@ -175,11 +176,6 @@ class TaskAPIController extends Controller
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
-     *                    property="notificate",
-     *                    description="0 - xabar kelmasin, 1 - xabar kelsin",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
      *                    property="not_free",
      *                    description="0 - bepul, 1 - pullik",
      *                    type="integer",
@@ -204,7 +200,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function response_store(Task $task, Request $request): JsonResponse
+    public function response_store(Task $task, TaskResponseRequest $request): JsonResponse
     {
         /** @var User $user */
         $user = auth()->user();
@@ -217,8 +213,10 @@ class TaskAPIController extends Controller
             case (!($user->is_phone_number_verified)) :
                 return $this->fail(null, trans('trans.verify phone'));
         }
-
-        $response = $this->response_service->store($request, $task);
+        $data = $request->validated();
+        /** @var User $auth_user */
+        $auth_user = auth()->user();
+        $response = $this->response_service->store($data, $task, $auth_user);
 
         return response()->json($response);
     }

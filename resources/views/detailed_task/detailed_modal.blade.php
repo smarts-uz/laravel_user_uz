@@ -230,10 +230,7 @@
                         </svg>
                     </button>
                 </div>
-                <form
-                    class="space-y-6 px-6 lg:px-8 pb-4 sm:pb-6 xl:pb-8"
-                    action="{{route("task.response.store", $task->id)}}"
-                    method="post">
+                <form class="space-y-6 px-6 lg:px-8 pb-4 sm:pb-6 xl:pb-8" action="{{route("task.response.store", $task->id)}}" method="post">
                     @csrf
                     <header>
                         <h2 class="font-semibold text-3xl mb-4 text-center">{{__('Откликнуться')}}</h2>
@@ -242,8 +239,7 @@
                         <span class="text-base">{{__('Описание отклика')}}</span>
                         <textarea required
                                   class="resize-none rounded-md w-full focus:outline-none  focus:border-yellow-500 border border-gray-300 p-4  transition duration-200 mb-4"
-                                  type="text" id="form8" rows="4"
-                                  name="description"></textarea>
+                                  type="text" id="form8" rows="4" name="description"></textarea>
                         <p class="text-base">{{__('Сколько вы предлагаете')}}</p>
                         <label>
                             <input type="text" required onkeypress='validate(event)' id="task_price"

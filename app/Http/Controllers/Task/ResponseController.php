@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TaskResponseRequest;
 use App\Models\Task;
 use App\Models\TaskResponse;
+use App\Models\User;
 use App\Services\Task\ResponseService;
-use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ResponseController extends Controller
@@ -18,19 +19,24 @@ class ResponseController extends Controller
         $this->service = new ResponseService();
     }
 
-    public function store(Request $request, Task $task)
+    public function store(TaskResponseRequest $request, Task $task)
     {
-        $response = $this->service->store($request, $task);
-        if (!$response['success'])
+        $data = $request->validated();
+        /** @var User $auth_user */
+        $auth_user = auth()->user();
+        $response = $this->service->store($data, $task, $auth_user);
+        if (!$response['success']) {
             Alert::error($response['message']);
-        else
+        }
+        else {
             Alert::success($response['message']);
+        }
         return back();
     }
 
     public function selectPerformer(TaskResponse $response)
     {
-        $response = $this->service->selectPerformer($response);
-        return back()->with($response);
+        $responses = $this->service->selectPerformer($response);
+        return back()->with($responses);
     }
 }
