@@ -296,7 +296,7 @@ class ProfileService
      * @return array
      */
     #[ArrayShape([])]
-    public function balance($request): array
+    public function balance($period, $from, $to, $type): array
     {
         /** @var User $user */
         $user = auth()->user();
@@ -307,10 +307,7 @@ class ProfileService
         else
             $balance = 0;
         $transactions = Transaction::query()->where(['transactionable_id' => $user->id])->where('state', 2);
-        $period = $request->get('period');
-        $from = $request->get('from');
-        $to = $request->get('to');
-        $type = $request->get('type');
+
         switch ($type){
             case 'in' :
                 $transactions = $transactions->whereIn('payment_system', Transaction::METHODS);
@@ -343,14 +340,14 @@ class ProfileService
      *
      * Function  phoneUpdate
      * Mazkur metod telefon raqamni tahrirlaydi
-     * @param $request
+     * @param $phoneNumber
      * @return array
      * @throws \Exception
      */
     #[ArrayShape([])]
-    public function phoneUpdate($request): array
+    public function phoneUpdate($phoneNumber): array
     {
-        $phoneNumber = $request->get('phone_number');
+
         /** @var User $userPhone */
         $userPhone = User::query()->where(['phone_number' => $phoneNumber])->first();
         /** @var User $user */

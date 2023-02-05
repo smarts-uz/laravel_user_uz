@@ -427,7 +427,12 @@ class ProfileAPIController extends Controller
      */
     public function balance(Request $request): JsonResponseAlias
     {
-        $data = $this->profileService->balance($request);
+        $period = $request->get('period');
+        $from = $request->get('from');
+        $to = $request->get('to');
+        $type = $request->get('type');
+
+        $data = $this->profileService->balance($period, $from, $to, $type);
         return response()->json([
             'success' => true,
             'data' => $data
@@ -506,7 +511,8 @@ class ProfileAPIController extends Controller
      */
     public function phoneUpdate(ProfilePhoneRequest $request): JsonResponseAlias
     {
-        $response = $this->profileService->phoneUpdate($request);
+        $phoneNumber = $request->get('phone_number');
+        $response = $this->profileService->phoneUpdate($phoneNumber);
         return response()->json($response);
 
     }

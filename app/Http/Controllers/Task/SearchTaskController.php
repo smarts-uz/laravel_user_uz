@@ -86,7 +86,8 @@ class SearchTaskController extends VoyagerBaseController
      */
     public function compliance_save(Request $request)
     {
-        $this->service->comlianse_saveS($request);
+        $data = $request->all();
+        $this->service->comlianse_saveS($data);
         return redirect()->back();
     }
 

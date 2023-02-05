@@ -25,16 +25,16 @@ class SearchService
      *
      * Function  comlianse_saveS
      * Mazkur metod taskka qoldirilgan shikoyatlarni tablega yozib beradi va telegramga yuboradi
-     * @param Object
+     * @param $data
      * @return bool
      */
-    public function comlianse_saveS($request)
+    public function comlianse_saveS($data): bool
     {
         $comp = new Compliance();
-        $comp->compliance_type_id = $request->input('c_type');
-        $comp->text = $request->input('c_text');
-        $comp->user_id = $request->input('userId');
-        $comp->task_id = $request->input('taskId');
+        $comp->compliance_type_id = $data['c_type'];
+        $comp->text = $data['c_text'];
+        $comp->user_id = $data['userId'];
+        $comp->task_id = $data['taskId'];
         $comp->save();
         $telegramService = new TelegramService();
         $data['id'] = $comp->id;

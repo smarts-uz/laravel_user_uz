@@ -315,7 +315,9 @@ class ProfileController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-        $photoName = $this->profileService->storeProfilePhoto($request, $user);
+        $hasFile = $request->hasFile('images');
+        $fileImages = $request->file('images');
+        $photoName = $this->profileService->storeProfilePhoto($user, $hasFile, $fileImages);
         if ($photoName) {
             echo json_encode(['status' => 1, 'msg' => 'success', 'name' => $photoName]);
         } else {
