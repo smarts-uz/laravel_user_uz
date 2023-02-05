@@ -120,8 +120,7 @@ class CategoriesAPIController extends Controller
         $name = $request->get('name');
         $categories = Category::query()->whereNotNull('parent_id')->orderBy("order", "asc");
         if ($parentId)
-            $categories
-            ->where('parent_id', $parentId);
+            $categories->where('parent_id', $parentId);
         if ($name)
             $categories->where('name','LIKE',"%$name%");
         return CategoryIndexResource::collection($categories->get());
