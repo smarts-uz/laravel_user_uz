@@ -1394,9 +1394,17 @@ class ProfileAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/profile/response-template/edit",
+     *     path="/api/profile/response-template/edit/{id}",
      *     tags={"Profile"},
      *     summary="Profile response template edit",
+     *     @OA\Parameter(
+     *          in="path",
+     *          name="id",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          ),
+     *     ),
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -1430,24 +1438,65 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function response_template_edit(ResponseTemplateRequest $request): JsonResponseAlias
+    public function response_template_edit(ResponseTemplateRequest $request, ResponseTemplate $id): JsonResponseAlias
     {
 
         $data = $request->validated();
-        $user_exists = ResponseTemplate::query()->where('user_id',auth()->id());
-        if($user_exists->exists()){
-            $user_exists->update([
-                'user_id' => auth()->id(),
-                'title' => $data['title'],
-                'text' => $data['text'],
-            ]);
-        }else{
-            ResponseTemplate::query()->create([
-                'user_id' => auth()->id(),
-                'title' => $data['title'],
-                'text' => $data['text'],
-            ]);
-        }
+        $id->update($data);
+
+        return response()->json([
+            'success' => true,
+            'message' => __('Успешно сохранено'),
+        ]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/response-template/create",
+     *     tags={"Profile"},
+     *     summary="Profile response template create",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="title",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="text",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function response_template_create(ResponseTemplateRequest $request): JsonResponseAlias
+    {
+
+        $data = $request->validated();
+        ResponseTemplate::query()->create([
+            'user_id' => auth()->id(),
+            'title' => $data['title'],
+            'text' => $data['text'],
+        ]);
 
         return response()->json([
             'success' => true,
