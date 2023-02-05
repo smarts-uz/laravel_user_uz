@@ -8,15 +8,15 @@
                 @foreach($tasks as $task)
                     <div class="w-full grid sm:grid-cols-5 grid-cols-3 gap-2 items-center border rounded-lg my-2 h-28 overflow-hidden force-overflow">
                         <div class="icon col-span-1 mx-auto">
-                            <img src="{{ asset('storage/'.$task->category->ico) }}" alt="" class="sm:h-14 h-10 sm:w-14 w-10 bg-blue-200 p-2 rounded-xl">
+                            <img src="{{ asset('storage/'.$task->category->ico) }}" alt="" class="sm:h-14 h-10 sm:w-14 w-10 rounded-xl">
                         </div>
                         <div class="sm:col-span-4 col-span-2">
-                            <a href="/detailed-tasks/{{$task->id}}" class="sm:text-xl text-sm hover:text-yellow-500">
+                            <a href="/detailed-tasks/{{$task->id}}" class="font-normal sm:text-lg text-sm hover:text-yellow-500">
                                 {{$task->name}}
                             </a>
-                            <p class="sm:text-lg text-xs mt-2 overflow-hidden text-gray-400">
-                                @if(strlen($task->description) >= 25)
-                                    {{ Str::limit($task->description, 25) }}
+                            <p class="sm:text-lg text-xs overflow-hidden text-gray-400">
+                                @if(strlen($task->description) >= 150)
+                                    {{ Str::limit($task->description, 150) }}
                                 @else
                                     {{ $task->description}}
                                 @endif
@@ -48,9 +48,9 @@
 {{--                </div>--}}
 {{--            </div>--}}
             <a href="{{route('performers.service')}}">
-                <div class="w-96 h-48 rounded-xl" style="background: url({{getContentImage('home', 'post_section_img3')}});">
+                <div class="w-96 h-56 rounded-xl" style="background: url({{getContentImage('home', 'post_section_img3')}});">
                     <div class="w-full text-center">
-                        <p class="text-2xl font-bold text-yellow-400 pt-12">
+                        <p class="text-2xl font-bold text-white pt-20">
                             {!!__('Надежные <br/> исполнители <br/> бизнеса')!!}</p>
                     </div>
                 </div>

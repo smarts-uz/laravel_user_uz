@@ -48,10 +48,6 @@
                 @endauth
             @endif
         </div>
-        <?php
-        use App\Models\Notification;
-        use Illuminate\Support\Facades\Auth;
-        ?>
         @if (Route::has('login'))
             @auth
                 <div class="flex lg:inline-block hidden w-3/12 float-right mt-3">
@@ -98,23 +94,14 @@
                         const openChat = document.querySelector('.open-chat');
                         openChat.addEventListener('click', createChatPanel);
                     </script>
-                    @php
-                        $walletBalance = App\Services\Profile\ProfileService::walletBalance(auth()->user());
-                    @endphp
                     {{-- icon 3  Payment--}}
                     <div class="max-w-lg ml-5 float-left">
                         <a onclick="toggleModal()" style="cursor:pointer">
                            <div class="flex flex-row space-x-2 justify-evenly text-green-400 hover:text-yellow-500">
-                                <div>
-                                  <i class="xl:text-2xl lg:text-xl fas fa-wallet"></i>
-                                 </div>
-                               <div class="font-medium py-1 text-center">
-                                   {{$walletBalance}}  @if($walletBalance) UZS @endif
-                               </div>
+                               <i class="xl:text-2xl lg:text-xl fas fa-wallet"></i>
                            </div>
                         </a>
                     </div>
-
 
                     {{-- icon-4  Profile  --}}
                     <div class="max-w-lg ml-5 float-left">
@@ -146,13 +133,13 @@
                                 O'zbek
                             </a>
                             I
-                            <a href="{{route('lang', ['lang'=>'ru'])}}" class="text-red-500 hover:text-gray-500-500 ml-2 font-bold">
+                            <p class="text-red-500 ml-2 font-bold">
                                 Русский
-                            </a>
+                            </p>
                         @else
-                            <a href="{{route('lang', ['lang'=>'uz'])}}" class="text-red-500 hover:text-gray-500 mr-2 font-bold">
+                            <p class="text-red-500 mr-2 font-bold">
                                 O'zbek
-                            </a>
+                            </p>
                             I
                             <a href="{{route('lang', ['lang'=>'ru'])}}" class="hover:text-red-500 ml-2 font-bold">
                                 Русский
@@ -160,9 +147,6 @@
                         @endif
                     </div>
                 </div>
-
-
-
             @else
                 <div class="w-3/12 text-right inline-block float-right md:float-none mt-6 mb-6 lg:block hidden mr-4 text-sm xl:text-base">
                     <a href="{{ route('login') }}"
@@ -178,13 +162,13 @@
                                 O'zbek
                             </a>
                             I
-                            <a href="{{route('lang', ['lang'=>'ru'])}}" class="text-red-500 hover:text-gray-500-500 ml-2 font-bold">
+                            <p class="text-red-500 ml-2 font-bold">
                                 Русский
-                            </a>
+                            </p>
                         @else
-                            <a href="{{route('lang', ['lang'=>'uz'])}}" class="text-red-500 hover:text-gray-500 mr-2 font-bold">
+                            <p class="text-red-500 mr-2 font-bold">
                                 O'zbek
-                            </a>
+                            </p>
                             I
                             <a href="{{route('lang', ['lang'=>'ru'])}}" class="hover:text-red-500 ml-2 font-bold">
                                 Русский
