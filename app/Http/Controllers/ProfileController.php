@@ -253,8 +253,10 @@ class ProfileController extends Controller
     public function verificationPhotoStore(Request $request): RedirectResponse
     {
         /** @var User $user */
-        $user = Auth::user();
-        $this->profileService->storeProfilePhoto($request, $user);
+        $user = auth()->user();
+        $hasFile = $request->hasFile('image');
+        $files = $request->file('image');
+        $this->profileService->storeProfilePhoto($files, $hasFile, $user);
 
         return redirect()->route('profile.verificationCategory');
     }
@@ -315,9 +317,9 @@ class ProfileController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-        $hasFile = $request->hasFile('images');
-        $fileImages = $request->file('images');
-        $photoName = $this->profileService->storeProfilePhoto($user, $hasFile, $fileImages);
+        $hasFile = $request->hasFile('image');
+        $files = $request->file('image');
+        $photoName = $this->profileService->storeProfilePhoto($files, $hasFile, $user);
         if ($photoName) {
             echo json_encode(['status' => 1, 'msg' => 'success', 'name' => $photoName]);
         } else {

@@ -106,14 +106,13 @@ class ProfileService
      *
      * Function  storeProfilePhoto
      * Mazkur metod user profilidagi rasmni tahrirlaydi
-     * @param $data
+     * @param $request
      * @param $user
      * @return string|null
      */
-    public function storeProfilePhoto($data, $user): ?string
+    public function storeProfilePhoto($files, $hasFile, $user): ?string
     {
-        if ($data->hasFile('image')) {
-            $files = $data->file('image');
+        if ($hasFile) {
             $filename = 'user-avatar/'.$files->getClientOriginalName().'_'.time() . ".jpg";
             $files->move(public_path().'/storage/user-avatar/', $filename);
             $user->avatar = $filename;
@@ -181,7 +180,7 @@ class ProfileService
      * @param $review
      * @return Builder[]|Collection
      */
-    public static function userReviews($user, $performer, $review)
+    public static function userReviews($user, $performer, $review): Collection|array
     {
         $reviews = Review::query()->whereHas('task')->where(['user_id' => $user->id]);
 
