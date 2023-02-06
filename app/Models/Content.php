@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Rennokki\QueryCache\Traits\QueryCacheable;
 
 /**
  * bu table dinamik qilingandagi ma'lumotlar yuklanadi
@@ -18,4 +19,10 @@ use Illuminate\Database\Eloquent\Model;
 class Content extends Model
 {
     use HasFactory;
+
+    use QueryCacheable;
+
+    public $cacheFor = 3600;
+
+    public $cacheTags = ['content'];
 }

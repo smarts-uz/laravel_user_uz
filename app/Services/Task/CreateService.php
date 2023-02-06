@@ -111,8 +111,8 @@ class CreateService
     public function storeName($name, $category_id) {
         $data = ['name' => $name, 'category_id' => $category_id];
         $task = Task::query()->create($data);
-        $task->category->custom_fields()->where('route', CustomField::ROUTE_NAME,)->get();
         return $task->id;
+        //$task->category->custom_fields()->where('route', CustomField::ROUTE_NAME)->get();
     }
 
     public function attachCustomFieldsByRout($task, $request = [])
@@ -122,7 +122,7 @@ class CreateService
             $value = $task->custom_field_values()->where('custom_field_id', $data->id)->first() ?? new CustomFieldsValue();
             $value->task_id = $task->id;
             $value->custom_field_id = $data->id;
-            $arr = $data->name !== null ? Arr::get($request, str_replace(' ', '_', $data->name, ), [null]) : [];
+            $arr = $data->name !== null ? Arr::get($request, str_replace(' ', '_', $data->name), [null]) : [];
             $value->value = is_array($arr) ? json_encode($arr) : $arr;
             $value->save();
         }

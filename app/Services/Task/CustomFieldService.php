@@ -59,6 +59,7 @@ class CustomFieldService
         $item['description'] = $custom_field->getTranslatedAttribute('description', app()->getLocale());
         $item['placeholder'] = $custom_field->getTranslatedAttribute('placeholder', app()->getLocale());
         $item['title'] = $custom_field->getTranslatedAttribute('title', app()->getLocale());
+        $item['name'] = $custom_field->name;
         $item['label'] = $custom_field->getTranslatedAttribute('label', app()->getLocale());
         $item['type'] = $custom_field->type;
         $item['options'] = $this->setOption($custom_field, $values);
@@ -93,8 +94,9 @@ class CustomFieldService
             $haystack = $values[$custom_field->id];
             $select = $custom_field->type === 'select' || $custom_field->type === 'radio';
             $item['id'] = $key;
-            if (!empty($haystack))
-            $item['selected'] = $select ? in_array((string)$key, $haystack, true) : true;
+            if ($haystack === null) {$item['selected'] = false;} else{
+                $item['selected'] = $select ? in_array((string)$key, $haystack, true) : true;
+            }
             $item['value'] = $option;
             $data[] = $item;
         }

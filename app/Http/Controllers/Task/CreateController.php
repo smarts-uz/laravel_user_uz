@@ -52,7 +52,9 @@ class CreateController extends Controller
     public function name_store(CreateNameRequest $request)
     {
         $data = $request->validated();
+        //CustomField::ROUTE_NAME
         $task_id = $this->service->storeName($data['name'], $data['category_id']);
+        $this->service->attachCustomFieldsByRoute($task_id, CustomField::ROUTE_NAME, $request->all());
         return redirect()->route("task.create.custom.get", $task_id);
     }
 
@@ -218,7 +220,6 @@ class CreateController extends Controller
 
     public function contact_store(Task $task, CreateContactRequest $request)
     {
-        dd($task);
         /** @var User $user */
         $user = auth()->user();
         $data = $request->validated();

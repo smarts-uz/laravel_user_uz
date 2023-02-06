@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Rennokki\QueryCache\Traits\QueryCacheable;
 
 /**
  * @return array //Value Returned
@@ -43,6 +44,11 @@ class Task extends Model
 {
 
     use HasFactory, SoftDeletes;
+    use QueryCacheable;
+
+    public $cacheFor = 3600;
+
+    public $cacheTags = ['task'];
 
     public function toSearchableArray()
     {
