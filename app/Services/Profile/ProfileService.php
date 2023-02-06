@@ -341,18 +341,16 @@ class ProfileService
      * Function  phoneUpdate
      * Mazkur metod telefon raqamni tahrirlaydi
      * @param $phoneNumber
+     * @param $user
      * @return array
      * @throws \Exception
      */
     #[ArrayShape([])]
-    public function phoneUpdate($phoneNumber): array
+    public function phoneUpdate($phoneNumber, $user): array
     {
-
         /** @var User $userPhone */
         $userPhone = User::query()->where(['phone_number' => $phoneNumber])->first();
-        /** @var User $user */
-        $user = auth()->user();
-        if ($userPhone && ($userPhone->id != $user->id)) {
+        if ($userPhone && ((int)$userPhone->id !== (int)$user->id)) {
             $messages = trans('trans.User with entered phone number already exists.');
             $success = false;
         } else {
@@ -379,16 +377,16 @@ class ProfileService
      *
      * Function  changePassword
      * Mazkur metod passwordni tahrirlash
-     * @param $data
+     * @param $user
+     * @param $password
+     * @param $old_password
      * @return JsonResponse
      */
-    public function changePassword($data): JsonResponse
+    public function changePassword($user, $password, $old_password): JsonResponse
     {
-        /** @var User $user */
-        $user = auth()->user();
         if (isset($user->password)) {
-            if (Hash::check($data['old_password'], $user->password)) {
-                $user->update(['password' => Hash::make($data['password'])]);
+            if (Hash::check($old_password, $user->password)) {
+                $user->update(['password' => Hash::make($password)]);
 
                 $message = trans('trans.Password updated successfully.');
                 $status = true;
@@ -397,7 +395,7 @@ class ProfileService
                 $status = false;
             }
         } else {
-            $user->update(['password' => Hash::make($data['password'])]);
+            $user->update(['password' => Hash::make($password)]);
 
             $message = trans('trans.Password updated successfully.');
             $status = true;
@@ -432,14 +430,11 @@ class ProfileService
      *
      * Function  updateSettings
      * Mazkur metod settingni tahrirlash
-     * @param $request
+     * @param $validated
+     * @param $user
      */
-    public function updateSettings($request): void
+    public function updateSettings($validated, $user): void
     {
-        $validated = $request->validated();
-        unset($validated['age']);
-        /** @var User $user */
-        $user = auth()->user();
         if ($validated['email'] !== $user->email) {
             $validated['is_email_verified'] = 0;
             $validated['email_old'] = $user->email;
@@ -452,14 +447,12 @@ class ProfileService
      *
      * Function  notifications
      * Mazkur method setting notification api
-     * @param $request
+     * @param $user
+     * @param $notification
      * @return array|string
      */
-    public function notifications($request): array|string
+    public function notifications($user, $notification): array|string
     {
-        $notification = $request->get('notification');
-        /** @var User $user */
-        $user = auth()->user();
         switch ($notification){
             case 1 :
                 $user->news_notification = 1;

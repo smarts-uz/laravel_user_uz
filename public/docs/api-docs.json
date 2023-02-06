@@ -1430,7 +1430,7 @@
                 "tags": [
                     "Profile Settings"
                 ],
-                "summary": "Profile edit description",
+                "summary": "Profile edit news notifications",
                 "operationId": "895f5a03086cd836dad741774d397045",
                 "requestBody": {
                     "required": true,
@@ -1439,7 +1439,8 @@
                             "schema": {
                                 "properties": {
                                     "notification": {
-                                        "type": "boolean"
+                                        "description": "0 yoki 1 kiritiladi, 0 bo'lsa o'chiriladi, 1 bo'lsa yoqiladi",
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"

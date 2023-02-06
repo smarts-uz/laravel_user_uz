@@ -511,8 +511,10 @@ class ProfileAPIController extends Controller
      */
     public function phoneUpdate(ProfilePhoneRequest $request): JsonResponseAlias
     {
+        /** @var User $user */
+        $user = auth()->user();
         $phoneNumber = $request->get('phone_number');
-        $response = $this->profileService->phoneUpdate($phoneNumber);
+        $response = $this->profileService->phoneUpdate($phoneNumber, $user);
         return response()->json($response);
 
     }
@@ -565,7 +567,12 @@ class ProfileAPIController extends Controller
      */
     public function change_password(ProfilePasswordRequest $request): JsonResponseAlias
     {
-        return $this->profileService->changePassword($request->validated());
+        /** @var User $user */
+        $user = auth()->user();
+        $data = $request->validated();
+        $password = $data['password'];
+        $old_password = $data['old_password'];
+        return $this->profileService->changePassword($user, $password, $old_password);
     }
 
     /**
@@ -678,7 +685,11 @@ class ProfileAPIController extends Controller
      */
     public function updateData(ProfileSettingsRequest $request): JsonResponseAlias
     {
-        $this->profileService->updateSettings($request);
+        $validated = $request->validated();
+        unset($validated['age']);
+        /** @var User $user */
+        $user = auth()->user();
+        $this->profileService->updateSettings($validated, $user);
         $message = trans('trans.Settings updated successfully.');
         return response()->json([
             'success' => true,
@@ -785,7 +796,7 @@ class ProfileAPIController extends Controller
      * @OA\Post(
      *     path="/api/profile/settings/notifications",
      *     tags={"Profile Settings"},
-     *     summary="Profile edit description",
+     *     summary="Profile edit news notifications",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -793,7 +804,8 @@ class ProfileAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="notification",
-     *                    type="boolean",
+     *                    type="integer",
+     *                    description="0 yoki 1 kiritiladi, 0 bo'lsa o'chiriladi, 1 bo'lsa yoqiladi",
      *                 ),
      *             ),
      *         ),
@@ -817,7 +829,10 @@ class ProfileAPIController extends Controller
      */
     public function userNotifications(Request $request): JsonResponseAlias
     {
-        $message = $this->profileService->notifications($request);
+        /** @var User $user */
+        $user = auth()->user();
+        $notification = $request->get('notification');
+        $message = $this->profileService->notifications($user, $notification);
         return response()->json([
             'success' => true,
             'data' => [
