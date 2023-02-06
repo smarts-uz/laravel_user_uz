@@ -1,9 +1,8 @@
 <div class="lg:col-span-1 col-span-2 rounded-xl ring-1 ring-gray-300 h-auto text-gray-600 sm:ml-8 ml-0">
     @if($user->role_id !== \App\Models\User::ROLE_PERFORMER)
-        <a href="/verification" class="flex flex-row shadow-lg rounded-lg mb-8">
-            <div class="w-1/2 h-24 bg-contain bg-no-repeat bg-center" style="background-image: url({{asset('images/like.png')}});">
-            </div>
-            <div class="font-bold text-xs text-gray-700 text-left my-auto">
+        <a href="/verification" class="flex flex-row shadow-lg rounded-lg mb-8 bg-yellow-100 px-3">
+            <img src="{{asset('images/like.png')}}" alt="#" class="w-24 h-24">
+            <div class="font-medium text-base text-gray-700 text-left my-auto">
                 {!!__('Станьте исполнителем <br> USer.Uz. И начните  <br> зарабатывать')!!}
             </div>
         </a>

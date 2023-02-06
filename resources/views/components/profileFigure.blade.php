@@ -1,5 +1,5 @@
 <figure class="w-full">
-    <div class="hidden md:block float-right mr-8 text-gray-500 text-lg">
+    <div class="hidden md:block float-right mr-8 text-gray-500 text-base">
         <i class="far fa-eye"> {{$user->performer_views()->count()}}  {{__('просмотр')}}</i>
     </div>
     <br>
@@ -44,7 +44,7 @@
                     @endisset
                 </p>
             </span>
-            <div class="text-gray-500 text-base mt-2">
+            <div class="text-gray-500 mt-2">
                 @if ( session('lang') === 'ru' )
                     <p class="mt-2">{{__('Создал')}}
                         <a href="{{route('searchTask.mytasks')}}" class="text-blue-500 hover:text-red-600">

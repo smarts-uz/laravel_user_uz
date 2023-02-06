@@ -21,19 +21,21 @@
     </div>
     <ul class="py-1 overflow-y-auto max-h-96" id="notifications" aria-labelledby="dropdown">
         @foreach($notifications as $notification)
-            <li class="border-b-2 border-gray-500 flex gap-x-2 p-3 text-gray-800">
-                <div class="flex flex-col w-full">
-                    <p class="text-right text-sm">{{$notification->created_at->format('d M')}}</p>
-                    <div class="w-full flex flex-row gap-x-4">
-                        <i class="fas fa-bell text-yellow-500 text-xl"></i>
-                        <div>
-                            <p>{{\App\Services\NotificationService::titles($notification->type)}}</p>
-                            <a class="hover:text-red-500" href="{{route('show_notification', [$notification])}}">
-                                {{ \App\Services\NotificationService::descriptions($notification)}}
-                            </a>
+            <li class="border-b-2 border-gray-500 flex gap-x-2 p-3 text-gray-800 hover:bg-yellow-200">
+                <a href="{{route('show_notification', [$notification])}}">
+                    <div class="flex flex-col w-full">
+                        <p class="text-right text-sm">{{$notification->created_at->format('d M')}}</p>
+                        <div class="w-full flex flex-row gap-x-4">
+                            <i class="fas fa-bell text-yellow-500 text-xl"></i>
+                            <div>
+                                <p>{{\App\Services\NotificationService::titles($notification->type)}}</p>
+                                <p>
+                                    {{ \App\Services\NotificationService::descriptions($notification)}}
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </li>
         @endforeach
     </ul>
