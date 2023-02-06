@@ -143,8 +143,8 @@ class ProfileAPIController extends Controller
         /** @var User $user */
         $user = auth()->user();
         $data = $request->except('images');
-        $hasFile = $request->hasFile('image');
-        $files = $request->file('image');
+        $hasFile = $request->hasFile('images');
+        $files = $request->file('images');
 
         $portfolio = $this->profileService->createPortfolio($user, $data, $hasFile, $files);
         return response()->json([
@@ -250,8 +250,8 @@ class ProfileAPIController extends Controller
      */
     public function portfolioUpdate(PortfolioRequest $request, Portfolio $portfolio): JsonResponseAlias
     {
-        $hasFile = $request->hasFile('image');
-        $files = $request->file('image');
+        $hasFile = $request->hasFile('images');
+        $files = $request->file('images');
         $description = $request->get('description');
         $comment = $request->get('comment');
         $portfolio = $this->profileService->updatePortfolio($hasFile, $files, $portfolio, $description, $comment);
