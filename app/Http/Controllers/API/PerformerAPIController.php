@@ -20,10 +20,11 @@ use App\Services\Profile\ProfileService;
 use App\Services\SmsMobileService;
 use Carbon\Carbon;
 use App\Services\PerformersService;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class PerformerAPIController extends Controller
 {
@@ -64,7 +65,7 @@ class PerformerAPIController extends Controller
      * )
      *
      */
-    public function service(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function service(Request $request): AnonymousResourceCollection
     {
         $performers = User::query()
             ->where('role_id', User::ROLE_PERFORMER)
@@ -154,11 +155,10 @@ class PerformerAPIController extends Controller
      * )
      *
      */
-    public function performer_filter(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function performer_filter(Request $request): AnonymousResourceCollection
     {
         $data = $request->all();
-        $performers = $this->performer_service->performer_filter($data);
-        return PerformerIndexResource::collection($performers);
+        return $this->performer_service->performer_filter($data);
     }
 
     /**
@@ -202,38 +202,9 @@ class PerformerAPIController extends Controller
     public function give_task(GiveTaskRequest $request): JsonResponse
     {
         $data = $request->validated();
-        /** @var Task $task */
-        $task = Task::query()->where('id', $data['task_id'])->first();
-        /** @var User $performer */
-        $performer = User::query()->findOrFail($data['performer_id']);
-        $locale = cacheLang($performer->id);
-        $text_url = route("searchTask.task",$data['task_id']);
-        $message = __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
-            'task_name' => $text_url, 'task_id' => $task->id, 'task_user' => $task->user?->name
-        ], $locale);
-        $phone_number = $performer->phone_number;
-        SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
-        /** @var Notification $notification */
-        $notification = Notification::query()->create([
-            'user_id' => $task->user_id,
-            'performer_id' => $data['performer_id'],
-            'task_id' => $data['task_id'],
-            'name_task' => $task->name,
-            'description' => '123',
-            'type' => Notification::GIVE_TASK,
-        ]);
-
-        NotificationService::sendNotificationRequest([$data['performer_id']], [
-            'created_date' => $notification->created_at->format('d M'),
-            'title' => NotificationService::titles($notification->type),
-            'url' => route('show_notification', [$notification]),
-            'description' => NotificationService::descriptions($notification)
-        ]);
-
-        NotificationService::pushNotification($performer, [
-            'title' => NotificationService::titles($notification->type, $locale),
-            'body' => NotificationService::descriptions($notification, $locale)
-        ], 'notification', new NotificationResource($notification));
+        $task_id = $data['task_id'];
+        $performer_id = $data['performer_id'];
+        $this->performer_service->task_give_app($task_id, $performer_id);
 
         return response()->json(['success' => true, 'message' => 'Success']);
     }

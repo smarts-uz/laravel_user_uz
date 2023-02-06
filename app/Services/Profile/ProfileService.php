@@ -2,6 +2,8 @@
 
 namespace App\Services\Profile;
 
+use App\Http\Resources\PortfolioIndexResource;
+use App\Http\Resources\ReviewIndexResource;
 use App\Http\Resources\TransactionHistoryCollection;
 use App\Item\ProfileCashItem;
 use App\Item\ProfileDataItem;
@@ -21,6 +23,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Portfolio;
 use Illuminate\Support\Facades\Hash;
@@ -179,9 +182,9 @@ class ProfileService
      * @param $user
      * @param $performer
      * @param $review
-     * @return Builder[]|Collection
+     * @return AnonymousResourceCollection
      */
-    public static function userReviews($user, $performer, $review): Collection|array
+    public static function userReviews($user, $performer, $review): AnonymousResourceCollection
     {
         $reviews = Review::query()->whereHas('task')->where(['user_id' => $user->id]);
 
@@ -196,7 +199,7 @@ class ProfileService
                 $reviews->where(['good_bad' => 0]);
                 break;
         }
-        return $reviews->orderByDesc('created_at')->get();
+        return ReviewIndexResource::collection($reviews->orderByDesc('created_at')->get());
     }
 
     /**
@@ -207,9 +210,9 @@ class ProfileService
      * @param $data
      * @param $hasFile
      * @param $files
-     * @return Builder|Model
+     * @return PortfolioIndexResource
      */
-    public function createPortfolio($user, $data, $hasFile, $files): Model|Builder
+    public function createPortfolio($user, $data, $hasFile, $files): PortfolioIndexResource
     {
         $data['user_id'] = $user->id;
         if ($hasFile) {
@@ -221,7 +224,8 @@ class ProfileService
             }
             $data['image'] = json_encode($image);
         }
-        return Portfolio::query()->create($data);
+        $portfolio = Portfolio::query()->create($data);
+        return new PortfolioIndexResource($portfolio);
     }
 
     /**
@@ -233,10 +237,10 @@ class ProfileService
      * @param $portfolio
      * @param $description
      * @param $comment
-     * @return mixed
+     * @return PortfolioIndexResource
      * @throws \JsonException
      */
-    public function updatePortfolio($hasFile, $files, $portfolio, $description, $comment): mixed
+    public function updatePortfolio($hasFile, $files, $portfolio, $description, $comment): PortfolioIndexResource
     {
         $user = $portfolio->user;
         $imgData = $portfolio->image ? json_decode($portfolio->image) : [];
@@ -253,7 +257,7 @@ class ProfileService
         $portfolio->update($data);
         $portfolio->save();
 
-        return $portfolio;
+        return new PortfolioIndexResource($portfolio);
     }
 
     /**
@@ -542,6 +546,16 @@ class ProfileService
         session()->forget('images');
         $data['image'] = json_encode($images);
         $portfolio->update($data);
+        $portfolio->save();
+        return true;
+    }
+
+    public function delete_image($image,$portfolio): bool
+    {
+        File::delete(public_path() . '/storage/portfolio/'. $image);
+        $images = json_decode($portfolio->image);
+        $updatedImages = array_diff($images, [$image]);
+        $portfolio->image = json_encode(array_values($updatedImages));
         $portfolio->save();
         return true;
     }

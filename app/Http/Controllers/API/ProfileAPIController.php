@@ -111,6 +111,10 @@ class ProfileAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
+     *                    property="images",
+     *                    type="file",
+     *                 ),
+     *                 @OA\Property (
      *                    property="comment",
      *                    type="string",
      *                 ),
@@ -149,7 +153,7 @@ class ProfileAPIController extends Controller
         $portfolio = $this->profileService->createPortfolio($user, $data, $hasFile, $files);
         return response()->json([
             'success' => true,
-            'data' => new PortfolioIndexResource($portfolio)
+            'data' => $portfolio
         ]);
     }
 
@@ -254,10 +258,10 @@ class ProfileAPIController extends Controller
         $files = $request->file('images');
         $description = $request->get('description');
         $comment = $request->get('comment');
-        $portfolio = $this->profileService->updatePortfolio($hasFile, $files, $portfolio, $description, $comment);
+        $portfolios = $this->profileService->updatePortfolio($hasFile, $files, $portfolio, $description, $comment);
         return response()->json([
             'success' => true,
-            'data' => new PortfolioIndexResource($portfolio)
+            'data' => $portfolios
         ]);
     }
 
@@ -375,7 +379,7 @@ class ProfileAPIController extends Controller
         $reviews = ProfileService::userReviews($user, $performer, $review);
         return response()->json([
             'success' => true,
-            'data' => ReviewIndexResource::collection($reviews)
+            'data' => $reviews
         ]);
     }
 
@@ -956,7 +960,7 @@ class ProfileAPIController extends Controller
         $reviews = ProfileService::userReviews($user, $performer, $review);
         return response()->json([
             'success' => true,
-            'data' => ReviewIndexResource::collection($reviews)
+            'data' => $reviews
         ]);
     }
 
@@ -1322,11 +1326,7 @@ class ProfileAPIController extends Controller
     public function deleteImage(Request $request, Portfolio $portfolio): JsonResponseAlias
     {
         $image = $request->get('image');
-        File::delete(public_path() . '/storage/portfolio/'. $image);
-        $images = json_decode($portfolio->image);
-        $updatedImages = array_diff($images, [$image]);
-        $portfolio->image = json_encode(array_values($updatedImages));
-        $portfolio->save();
+        $this->profileService->delete_image($image,$portfolio);
         return response()->json([
             'success' => true,
             'message' => __('Успешно удалено')

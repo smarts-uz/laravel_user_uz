@@ -67,9 +67,9 @@ class PerformersController extends Controller
 
         $task_id = $request->input('task_id');
         $user_id = $request->input('user_id');
-        $data = $request->session();
+        $session = $request->session();
 
-        $this->performerService->task_give($task_id, $user_id, $data);
+        $this->performerService->task_give_web($task_id, $user_id, $session);
 
         return response()->json(['success' => true]);
     }

@@ -12,7 +12,7 @@ class ContactService
      * @param $authUser
      * @return mixed
      */
-    public static function contactsList($authUser)
+    public static function contactsList($authUser): mixed
     {
         // get not deleted archive chat user ids
         $messages = ChMessage::query()->select('from_id', 'to_id', 'created_at','deleted_at')

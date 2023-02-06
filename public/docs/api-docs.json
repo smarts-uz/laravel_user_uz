@@ -875,6 +875,9 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
+                                    "images": {
+                                        "type": "file"
+                                    },
                                     "comment": {
                                         "type": "string"
                                     },

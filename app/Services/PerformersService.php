@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\Http\Resources\NotificationResource;
+use App\Http\Resources\PerformerIndexResource;
 use App\Item\PerformerPrefItem;
 use App\Item\PerformerServiceItem;
 use App\Item\PerformerUserItem;
@@ -14,9 +15,9 @@ use App\Models\User;
 use App\Models\UserCategory;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use TCG\Voyager\Models\Category;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class PerformersService
 {
@@ -26,6 +27,7 @@ class PerformersService
      * Function  service
      * @link https://user.uz/performers
      * @param $authId
+     * @param $search
      * @return  PerformerServiceItem
      */
     public function service($authId,$search): PerformerServiceItem
@@ -86,8 +88,9 @@ class PerformersService
      *
      * Function  perf_ajax
      * Mazkur metod categoriya bo'yicha performerlarni chiqarib beradi
-     * @param $cf_id
      * @param $authId
+     * @param $search
+     * @param $cf_id
      * @return PerformerPrefItem
      */
     public function perf_ajax($authId,$search,$cf_id): PerformerPrefItem
@@ -119,9 +122,9 @@ class PerformersService
      * Function  perf_ajax
      * Mazkur metod performerlar bo'yicha filter qiladi
      * @param $data
-     * @return LengthAwarePaginator
+     * @return AnonymousResourceCollection
      */
-    public function performer_filter($data): LengthAwarePaginator
+    public function performer_filter($data): AnonymousResourceCollection
     {
         $performers = User::query()
             ->where('role_id', User::ROLE_PERFORMER)
@@ -174,19 +177,25 @@ class PerformersService
             $performers = $performers->where('name','like',"%$search%");
         }
 
-        return $performers->paginate(20);
+        return PerformerIndexResource::collection($performers->paginate(20));
     }
 
-    public function task_give($task_id, $user_id, $data): JsonResponse
+    /**
+     * @param $task_id
+     * @param $user_id
+     * @param $session
+     * @return JsonResponse
+     */
+    public function task_give_web($task_id, $user_id, $session): JsonResponse
     {
         if ($user_id !== null) {
-            $data->put('given_id', $user_id);
+            $session->put('given_id', $user_id);
         }
 
         if (isset($task_id)) {
             /** @var Task $task_name */
             $task_name = Task::query()->where('id', $task_id)->first();
-            $users_id = $data->pull('given_id');
+            $users_id = $session->pull('given_id');
             /** @var User $performer */
             $performer = User::query()->find($users_id);
             $text_url = route("searchTask.task",$task_id);
@@ -220,6 +229,43 @@ class PerformersService
 
             return response()->json(['success' => true]);
         }
+        return response()->json(['success' => true]);
+    }
+
+    public function task_give_app($task_id, $performer_id): JsonResponse
+    {
+        /** @var Task $task */
+        $task = Task::query()->where('id', $task_id)->first();
+        /** @var User $performer */
+        $performer = User::query()->findOrFail($performer_id);
+        $locale = cacheLang($performer->id);
+        $text_url = route("searchTask.task",$task_id);
+        $message = __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
+            'task_name' => $text_url, 'task_id' => $task->id, 'task_user' => $task->user?->name
+        ], $locale);
+        SmsMobileService::sms_packages(correctPhoneNumber($performer->phone_number), $message);
+        /** @var Notification $notification */
+        $notification = Notification::query()->create([
+            'user_id' => $task->user_id,
+            'performer_id' => $performer_id,
+            'task_id' => $task_id,
+            'name_task' => $task->name,
+            'description' => '123',
+            'type' => Notification::GIVE_TASK,
+        ]);
+
+        NotificationService::sendNotificationRequest([$performer_id], [
+            'created_date' => $notification->created_at->format('d M'),
+            'title' => NotificationService::titles($notification->type),
+            'url' => route('show_notification', [$notification]),
+            'description' => NotificationService::descriptions($notification)
+        ]);
+
+        NotificationService::pushNotification($performer, [
+            'title' => NotificationService::titles($notification->type, $locale),
+            'body' => NotificationService::descriptions($notification, $locale)
+        ], 'notification', new NotificationResource($notification));
+
         return response()->json(['success' => true]);
     }
 

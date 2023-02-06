@@ -6,6 +6,7 @@ use App\Http\Resources\CategoryIndexResource;
 use App\Http\Resources\CategoryShowResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
 
 class CategoriesAPIController extends Controller
@@ -37,7 +38,7 @@ class CategoriesAPIController extends Controller
      *     )
      * )
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         $categories = Category::query()->select('id', 'parent_id', 'name', 'ico')->withTranslation(app()->getLocale())->whereNull('parent_id')->orderBy("order", "asc")->get();
         return CategoryIndexResource::collection($categories);
@@ -70,7 +71,7 @@ class CategoriesAPIController extends Controller
      *     )
      * )
      */
-    public function popular(Request $request)
+    public function popular(Request $request): array
     {
         $name = $request->get('category');
         $categories = Category::query()->select('id', 'parent_id', 'name', 'ico')->withCount('tasks')->withTranslation('uz')
@@ -114,15 +115,17 @@ class CategoriesAPIController extends Controller
      *     )
      * )
      */
-    public function search(Request $request)
+    public function search(Request $request): AnonymousResourceCollection
     {
         $parentId = $request->get('parent_id');
         $name = $request->get('name');
-        $categories = Category::query()->whereNotNull('parent_id')->orderBy("order", "asc");
-        if ($parentId)
+        $categories = Category::query()->whereNotNull('parent_id')->orderBy("order");
+        if ($parentId) {
             $categories->where('parent_id', $parentId);
-        if ($name)
-            $categories->where('name','LIKE',"%$name%");
+        }
+        if ($name) {
+            $categories->where('name', 'LIKE', "%$name%");
+        }
         return CategoryIndexResource::collection($categories->get());
     }
 
@@ -145,8 +148,9 @@ class CategoriesAPIController extends Controller
      *     )
      * )
      */
-    public function parents(){
-        $categories = Category::query()->whereNull('parent_id')->orderBy("order", "asc")->get();
+    public function parents(): AnonymousResourceCollection
+    {
+        $categories = Category::query()->whereNull('parent_id')->orderBy("order")->get();
         return CategoryIndexResource::collection($categories);
 
     }
@@ -180,7 +184,8 @@ class CategoriesAPIController extends Controller
      *     )
      * )
      */
-    public function show(Category $id, Request $request){
+    public function show(Category $id, Request $request): CategoryShowResource
+    {
         $category = $id->translate($request->get('lang'));
         return new CategoryShowResource($category);
 
