@@ -45,8 +45,8 @@ class ShuxratCmd extends Command
      */
     public function handle()
     {
-    //    $a = (new TaskService)->taskIndex('2663');
-        $a = (new TaskService)->taskIndex('1058');
+    //  $a = (new TaskService)->taskIndex('2663');
+        $a = (new TaskService)->taskIndex('2672');
         var_dump($a);
     }
 

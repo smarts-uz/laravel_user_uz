@@ -68,7 +68,7 @@ class CustomFieldService
         $item['max'] = $custom_field->max;
         $item['data_type'] = $custom_field->data_type;
         $item['order'] = $custom_field->order;
-        if (count(Arr::get($values[$custom_field->id], 0, []))) {
+        if (!empty($values) && Arr::get($values, $custom_field->id . '.0', [])) {
             $item['task_value'] = ($custom_field->type === 'input' || $custom_field->type === 'number') ? (string)$values[$custom_field->id][0] : '';
         } else {
             $item['task_value'] = '';
