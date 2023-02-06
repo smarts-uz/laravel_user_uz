@@ -38,8 +38,7 @@ class TaskService
                 ->where('task_id', $task->id)
                 ->where('performer_id', $task->performer_id)
                 ->first();
-
-            return [
+            $data = ['data' => [
                 'id' => $task->id,
                 'name' => $task->name,
                 'address' => TaskAddressResource::collection($task->addresses),
@@ -57,7 +56,7 @@ class TaskService
                 'category_id' => $task->category_id,
                 'current_user_response' => (bool)$user_response,
                 'responses_count' => $task->responses()->count(),
-                'user' => new UserInTaskResource($task->user),
+                'user' => $task->user ? new UserInTaskResource($task->user) : [],
                 'views' => $task->views,
                 'status' => $task->status,
                 'oplata' => $task->oplata,
@@ -68,10 +67,15 @@ class TaskService
                 'performer_review' => $task->performer_review,
                 'response_price' => setting('admin.pullik_otklik'),
                 'free_response' => setting('admin.bepul_otklik')
-            ];
+            ]];
+            return $data;
 
         } else {
-            return [];
+            $data = ['data' => [
+                'success' => true,
+                'message' => __('Задача не найдена')
+            ]];
+            return response()->json($data);
         }
 
     }

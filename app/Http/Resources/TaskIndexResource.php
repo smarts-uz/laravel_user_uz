@@ -29,7 +29,7 @@ class TaskIndexResource extends JsonResource
             ->where('task_id', $this->id)
             ->where('performer_id', $this->performer_id)
             ->first();
-        return [
+        return ['data' => [
             'id' => $this->id,
             'name' => $this->name,
             'address' => TaskAddressResource::collection($this->addresses),
@@ -58,6 +58,6 @@ class TaskIndexResource extends JsonResource
             'performer_review' => $this->performer_review,
             'response_price' => setting('admin.pullik_otklik'),
             'free_response' => setting('admin.bepul_otklik')
-        ];
+        ]];
     }
 }

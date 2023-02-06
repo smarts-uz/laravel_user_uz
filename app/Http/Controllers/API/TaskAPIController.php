@@ -431,12 +431,13 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function task($task): array
+    public function task($task)
     {
         if (auth()->guard('api')->check()) {
             $user_id = auth()->guard('api')->id();
             (new TaskService)->taskIncrement($user_id, $task);
         }
+
         return (new TaskService)->taskIndex($task);
     }
 

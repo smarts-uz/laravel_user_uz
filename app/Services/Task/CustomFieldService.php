@@ -68,14 +68,10 @@ class CustomFieldService
         $item['max'] = $custom_field->max;
         $item['data_type'] = $custom_field->data_type;
         $item['order'] = $custom_field->order;
-
-
-        if(is_array($values))
-        if (!empty($values[$custom_field->id]))
-        if ( count($values[$custom_field->id])) {
+        if (count(Arr::get($values[$custom_field->id], 0, []))) {
             $item['task_value'] = ($custom_field->type === 'input' || $custom_field->type === 'number') ? (string)$values[$custom_field->id][0] : '';
         } else {
-            $item['task_value'] = ($custom_field->type === 'input' || $custom_field->type === 'number') ? '' : '';
+            $item['task_value'] = '';
         }
         return $item;
     }
@@ -99,7 +95,6 @@ class CustomFieldService
             $item['id'] = $key;
             if (!empty($haystack))
             $item['selected'] = $select ? in_array((string)$key, $haystack, true) : true;
-            //dd($item);
             $item['value'] = $option;
             $data[] = $item;
         }
