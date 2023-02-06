@@ -140,7 +140,13 @@ class ProfileAPIController extends Controller
      */
     public function portfolioCreate(PortfolioRequest $request): JsonResponseAlias
     {
-        $portfolio = $this->profileService->createPortfolio($request);
+        /** @var User $user */
+        $user = auth()->user();
+        $data = $request->except('images');
+        $hasFile = $request->hasFile('image');
+        $files = $request->file('image');
+
+        $portfolio = $this->profileService->createPortfolio($user, $data, $hasFile, $files);
         return response()->json([
             'success' => true,
             'data' => new PortfolioIndexResource($portfolio)
@@ -244,7 +250,11 @@ class ProfileAPIController extends Controller
      */
     public function portfolioUpdate(PortfolioRequest $request, Portfolio $portfolio): JsonResponseAlias
     {
-        $portfolio = $this->profileService->updatePortfolio($request, $portfolio);
+        $hasFile = $request->hasFile('image');
+        $files = $request->file('image');
+        $description = $request->get('description');
+        $comment = $request->get('comment');
+        $portfolio = $this->profileService->updatePortfolio($hasFile, $files, $portfolio, $description, $comment);
         return response()->json([
             'success' => true,
             'data' => new PortfolioIndexResource($portfolio)

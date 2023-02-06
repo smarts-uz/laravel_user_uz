@@ -19,6 +19,7 @@ use App\Services\SmsMobileService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Portfolio;
@@ -202,18 +203,18 @@ class ProfileService
      *
      * Function  createPortfolio
      * Mazkur metod portfolio tablega rasmlarni saqlash
-     * @param $request
-     * @return
+     * @param $user
+     * @param $data
+     * @param $hasFile
+     * @param $files
+     * @return Builder|Model
      */
-    public function createPortfolio($request)
+    public function createPortfolio($user, $data, $hasFile, $files): Model|Builder
     {
-        /** @var User $user */
-        $user = auth()->user();
-        $data = $request->except('images');
         $data['user_id'] = $user->id;
-        if ($request->hasFile('images')) {
+        if ($hasFile) {
             $image = [];
-            foreach ($request->file('images') as $uploadedImage) {
+            foreach ($files as $uploadedImage) {
                 $filename = $user->name . '/' . time() . '_' . $uploadedImage->getClientOriginalName();
                 $uploadedImage->move(public_path() . '/storage/portfolio/' . $user->name . '/', $filename);
                 $image[] = $filename;
@@ -227,24 +228,28 @@ class ProfileService
      *
      * Function  updatePortfolio
      * Mazkur metod portfolio rasmlarni tahrirlash
-     * @param $request
+     * @param $hasFile
+     * @param $files
      * @param $portfolio
+     * @param $description
+     * @param $comment
      * @return mixed
+     * @throws \JsonException
      */
-    public function updatePortfolio($request, $portfolio)
+    public function updatePortfolio($hasFile, $files, $portfolio, $description, $comment): mixed
     {
         $user = $portfolio->user;
         $imgData = $portfolio->image ? json_decode($portfolio->image) : [];
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $uploadedImage) {
+        if ($hasFile) {
+            foreach ($files as $uploadedImage) {
                 $filename = $user->name . '/' . time() . '_' . $uploadedImage->getClientOriginalName();
                 $uploadedImage->move(public_path() . '/storage/portfolio/' . $user->name . '/', $filename);
                 $imgData[] = $filename;
             }
         }
-        $data['comment'] = $request->get('comment');
-        $data['description'] = $request->get('description');
-        $data['image'] = json_encode($imgData);
+        $data['comment'] = $comment;
+        $data['description'] = $description;
+        $data['image'] = json_encode($imgData, JSON_THROW_ON_ERROR);
         $portfolio->update($data);
         $portfolio->save();
 
