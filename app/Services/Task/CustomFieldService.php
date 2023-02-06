@@ -59,7 +59,7 @@ class CustomFieldService
         $item['description'] = $custom_field->getTranslatedAttribute('description', app()->getLocale());
         $item['placeholder'] = $custom_field->getTranslatedAttribute('placeholder', app()->getLocale());
         $item['title'] = $custom_field->getTranslatedAttribute('title', app()->getLocale());
-        $item['name'] = $custom_field->name;
+        $item['name'] = $custom_field->getTranslatedAttribute('name', app()->getLocale());
         $item['label'] = $custom_field->getTranslatedAttribute('label', app()->getLocale());
         $item['type'] = $custom_field->type;
         $item['options'] = $this->setOption($custom_field, $values);
@@ -87,7 +87,7 @@ class CustomFieldService
     private function setOption($custom_field, $values)
     {
         $options = app()->getLocale() === 'uz' ? Arr::get($custom_field->options, 'options', []) : Arr::get($custom_field->options, 'options_ru', []);
-        $options = empty($options) ? Arr::get($custom_field->options, 'options', []) : Arr::get($custom_field->options, 'options_ru', []);
+        if(!empty($options) && count($options)) {$options = Arr::get($custom_field->options, 'options', []);}
         $item = [];
         $data = [];
         foreach ($options as $key => $option) {

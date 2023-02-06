@@ -46,6 +46,7 @@ class PerformersService
             ->WhereNot('id',\auth()->id())
             ->orderByDesc('review_rating')
             ->orderbyRaw('(review_good - review_bad) DESC')->paginate(50);
+
         $item->top_users = User::query()
             ->where('review_rating', '!=', 0)
             ->where('role_id', User::ROLE_PERFORMER)->orderbyRaw('(review_good - review_bad) DESC')

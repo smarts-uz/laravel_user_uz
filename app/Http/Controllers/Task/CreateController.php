@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers\Task;
 
@@ -10,7 +11,6 @@ use App\Http\Requests\NoteRequest;
 use App\Http\Requests\TaskDateRequest;
 use App\Http\Requests\UserPhoneRequest;
 use App\Http\Requests\UserRequest;
-use App\Models\Category;
 use App\Models\CustomField;
 use App\Models\CustomFieldsValue;
 use App\Models\Notification;
@@ -20,9 +20,12 @@ use App\Models\WalletBalance;
 use App\Services\Task\CreateService;
 use App\Services\Task\CustomFieldService;
 use App\Services\VerificationService;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -38,6 +41,12 @@ class CreateController extends Controller
     }
 
 
+    /**
+     *
+     * Function  name
+     * @param Request $request
+     * @return  Application|Factory|View
+     */
     public function name(Request $request)
     {
         $category_id = $request->get('category_id');
@@ -49,17 +58,27 @@ class CreateController extends Controller
         ]);
     }
 
-    public function name_store(CreateNameRequest $request)
+    /**
+     *
+     * Function  name_store
+     * @param CreateNameRequest $request
+     * @return  RedirectResponse
+     */
+    public function name_store(CreateNameRequest $request): RedirectResponse
     {
         $data = $request->validated();
-        //CustomField::ROUTE_NAME
         $task_id = $this->service->storeName($data['name'], $data['category_id']);
         $this->service->attachCustomFieldsByRoute($task_id, CustomField::ROUTE_NAME, $request->all());
         return redirect()->route("task.create.custom.get", $task_id);
     }
 
 
-
+    /**
+     *
+     * Function  custom_get
+     * @param int $task_id
+     * @return  Application|Factory|View|RedirectResponse
+     */
     public function custom_get(int $task_id)
     {
         $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_CUSTOM);
@@ -74,7 +93,14 @@ class CreateController extends Controller
         return view('create.custom', compact('task', 'custom_fields'));
     }
 
-    public function custom_store(Request $request, int $task_id)
+    /**
+     *
+     * Function  custom_store
+     * @param Request $request
+     * @param int $task_id
+     * @return  RedirectResponse
+     */
+    public function custom_store(Request $request, int $task_id): RedirectResponse
     {
         $task = $this->service->attachCustomFieldsByRoute($task_id, CustomField::ROUTE_CUSTOM, $request->all());
 
@@ -84,14 +110,26 @@ class CreateController extends Controller
         return redirect()->route('task.create.address', $task->id);
     }
 
+    /**
+     *
+     * Function  remote_get
+     * @param int $task_id
+     * @return  Application|Factory|View
+     */
     public function remote_get(int $task_id)
     {
-        dd($task_id);
         $task = Task::with('category.custom_fields')->find($task_id);
         return view('create.remote', compact('task'));
     }
 
-    public function remote_store(Request $request, Task $task)
+    /**
+     *
+     * Function  remote_store
+     * @param Request $request
+     * @param Task $task
+     * @return  RedirectResponse
+     */
+    public function remote_store(Request $request, Task $task): RedirectResponse
     {
         $data = $request->validate(['radio' => 'required']);
 
@@ -108,6 +146,12 @@ class CreateController extends Controller
         return redirect()->back();
     }
 
+    /**
+     *
+     * Function  address
+     * @param int $task_id
+     * @return  Application|Factory|View
+     */
     public function address(int $task_id)
     {
         $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_ADDRESS);
@@ -116,15 +160,18 @@ class CreateController extends Controller
         return view('create.location', compact('task', 'custom_fields'));
     }
 
-    public function address_store(Request $request, int $task_id)
+    /**
+     *
+     * Function  address_store
+     * @param Request $request
+     * @param int $task_id
+     * @return  RedirectResponse
+     */
+    public function address_store(Request $request, int $task_id): RedirectResponse
     {
         $task = Task::select('id')->find($task_id);
         $requestAll = $request->all();
         $cordinates = $this->service->addAdditionalAddress($task_id, $requestAll);
-        /*$task = DB::table('tasks')->where('id', $task_id)->update([
-            'coordinates' => $cordinates,
-            'go_back'=> $request->get('go_back')
-        ]);*/
         $task->update([
             'coordinates' => $cordinates,
             'go_back'=> $request->get('go_back')
@@ -135,6 +182,12 @@ class CreateController extends Controller
 
     }
 
+    /**
+     *
+     * Function  date
+     * @param int $task_id
+     * @return  Application|Factory|View
+     */
     public function date(int $task_id)
     {
         $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_DATE);
@@ -144,7 +197,14 @@ class CreateController extends Controller
 
     }
 
-    public function date_store(TaskDateRequest $request, $task_id)
+    /**
+     *
+     * Function  date_store
+     * @param TaskDateRequest $request
+     * @param $task_id
+     * @return  RedirectResponse
+     */
+    public function date_store(TaskDateRequest $request, int $task_id): RedirectResponse
     {
         $data = $request->validated();
         $task = $this->service->attachCustomFieldsByRoute($task_id, CustomField::ROUTE_DATE, $request->all());
@@ -153,6 +213,12 @@ class CreateController extends Controller
         return redirect()->route('task.create.budget', $task_id);
     }
 
+    /**
+     *
+     * Function  budget
+     * @param int $task_id
+     * @return  Application|Factory|View
+     */
     public function budget(int $task_id)
     {
         $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_BUDGET);
@@ -162,7 +228,14 @@ class CreateController extends Controller
         return view('create.budget', compact('task', 'category', 'custom_fields'));
     }
 
-    public function budget_store(int $task_id, BudgetRequest $request)
+    /**
+     *
+     * Function  budget_store
+     * @param int $task_id
+     * @param BudgetRequest $request
+     * @return  RedirectResponse
+     */
+    public function budget_store(int $task_id, BudgetRequest $request): \Illuminate\Http\RedirectResponse
     {
         $task = $this->service->attachCustomFieldsByRoute($task_id, CustomField::ROUTE_BUDGET, $request->all());
 
@@ -172,7 +245,13 @@ class CreateController extends Controller
         return redirect()->route('task.create.note', $task->id);
     }
 
-    public function images_store(Request $request, Task $task)
+    /**
+     *
+     * Function  images_store
+     * @param Request $request
+     * @param Task $task
+     */
+    public function images_store(Request $request, Task $task): void
     {
         $imgData = json_decode($task->photos) ?? [];
         foreach ($request->file('images') as $uploadedImage) {
@@ -184,6 +263,12 @@ class CreateController extends Controller
         $task->save();
     }
 
+    /**
+     *
+     * Function  note
+     * @param int $task_id
+     * @return  Application|Factory|View
+     */
     public function note(int $task_id)
     {
         $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_NOTE);
@@ -193,7 +278,14 @@ class CreateController extends Controller
         return view('create.notes', compact('task', 'custom_fields'));
     }
 
-    public function note_store(int $task_id, NoteRequest $request)
+    /**
+     *
+     * Function  note_store
+     * @param int $task_id
+     * @param NoteRequest $request
+     * @return  RedirectResponse
+     */
+    public function note_store(int $task_id, NoteRequest $request): RedirectResponse
     {
         $data = $request->validated();
         if ($request['docs'] === "on") {
@@ -208,6 +300,12 @@ class CreateController extends Controller
     }
 
 
+    /**
+     *
+     * Function  contact
+     * @param int $task_id
+     * @return  Application|Factory|View
+     */
     public function contact(int $task_id)
     {
         $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_CONTACTS);
@@ -218,7 +316,15 @@ class CreateController extends Controller
     }
 
 
-    public function contact_store(Task $task, CreateContactRequest $request)
+    /**
+     *
+     * Function  contact_store
+     * @param Task $task
+     * @param CreateContactRequest $request
+     * @return  RedirectResponse
+     * @throws Exception
+     */
+    public function contact_store(Task $task, CreateContactRequest $request): RedirectResponse
     {
         /** @var User $user */
         $user = auth()->user();
@@ -244,7 +350,15 @@ class CreateController extends Controller
         return redirect()->route('searchTask.task', $task->id);
     }
 
-    public function contact_register(Task $task, UserRequest $request)
+    /**
+     *
+     * Function  contact_register
+     * @param Task $task
+     * @param UserRequest $request
+     * @return  RedirectResponse
+     * @throws Exception
+     */
+    public function contact_register(Task $task, UserRequest $request): RedirectResponse
     {
         $data = $request->validated();
         $data['password'] = Hash::make($request->get('password'));
@@ -270,7 +384,15 @@ class CreateController extends Controller
         return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
     }
 
-    public function contact_login(Task $task, UserPhoneRequest $request)
+    /**
+     *
+     * Function  contact_login
+     * @param Task $task
+     * @param UserPhoneRequest $request
+     * @return  RedirectResponse
+     * @throws Exception
+     */
+    public function contact_login(Task $task, UserPhoneRequest $request): RedirectResponse
     {
         $request->validated();
         /** @var User $user */
@@ -280,18 +402,36 @@ class CreateController extends Controller
 
     }
 
+    /**
+     *
+     * Function  verify
+     * @param Task $task
+     * @param User $user
+     * @return  Application|Factory|View
+     */
     public function verify(Task $task, User $user)
     {
         return view('create.verify', compact('task', 'user'));
     }
 
-    public function deleteTask(Task $task)
+    /**
+     *
+     * Function  deleteTask
+     * @param Task $task
+     */
+    public function deleteTask(Task $task): void
     {
         $task->delete();
         CustomFieldsValue::query()->where('task_id', $task)->delete();
     }
 
-    public function deleteAllImages(Task $task)
+    /**
+     *
+     * Function  deleteAllImages
+     * @param Task $task
+     * @return  RedirectResponse
+     */
+    public function deleteAllImages(Task $task): RedirectResponse
     {
         taskGuard($task);
         $task->photos = null;

@@ -14,6 +14,10 @@ use App\Models\User;
 use App\Services\NotificationService;
 use App\Services\SmsMobileService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\HigherOrderBuilderProxy;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
 
@@ -22,12 +26,11 @@ class CreateService
 
     /**
      *
-     * Function  attachCustomFields
-     * Mazkur metod Task yaratishda  nom kiritadigan joyni ochib beradi
-     * @param $category_id
-     * @return array
+     * Function  name
+     * @param int $category_id
+     * @return  CreateNameItem
      */
-    public function name($category_id): CreateNameItem
+    public function name(int $category_id): CreateNameItem
     {
         $item = new CreateNameItem();
         $item->current_category = Category::query()->findOrFail($category_id);
@@ -108,35 +111,29 @@ class CreateService
         ], 'notification', new NotificationResource($notification));
     }
 
-    public function storeName($name, $category_id) {
+    /**
+     *
+     * Function  storeName
+     * @param string $name
+     * @param int $category_id
+     * @return  int
+     */
+    public function storeName(string $name, int $category_id): int
+    {
         $data = ['name' => $name, 'category_id' => $category_id];
         $task = Task::query()->create($data);
-        return $task->id;
-        //$task->category->custom_fields()->where('route', CustomField::ROUTE_NAME)->get();
-    }
-
-    public function attachCustomFieldsByRout($task, $request = [])
-    {
-        foreach ($task as $data) {
-            dd($task);
-            $value = $task->custom_field_values()->where('custom_field_id', $data->id)->first() ?? new CustomFieldsValue();
-            $value->task_id = $task->id;
-            $value->custom_field_id = $data->id;
-            $arr = $data->name !== null ? Arr::get($request, str_replace(' ', '_', $data->name), [null]) : [];
-            $value->value = is_array($arr) ? json_encode($arr) : $arr;
-            $value->save();
-        }
+        return (int)$task->id;
     }
 
     /**
      *
      * Function  attachCustomFieldsByRoute
-     * Mazkur metod Task obyektiga address qo'shish
-     * @param $task
-     * @param  $routeName
+     * @param int $task_id
+     * @param string $routeName
      * @param $request
+     * @return  Builder|Builder|Collection|Model|null
      */
-    public function attachCustomFieldsByRoute(int $task_id, $routeName, $request)
+    public function attachCustomFieldsByRoute(int $task_id, string $routeName, $request)
     {
         $task = Task::with('category.custom_fields')->find($task_id);
         foreach ($task->category->custom_fields()->where('route', $routeName)->get() as $data) {
@@ -153,12 +150,11 @@ class CreateService
     /**
      *
      * Function  addAdditionalAddress
-     * Mazkur metod Task obyektiga address qo'shish
-     * @param $task
+     * @param int $task_id
      * @param $requestAll
-     * @return mixed
+     * @return  mixed
      */
-    public function addAdditionalAddress($task_id, $requestAll): mixed
+    public function addAdditionalAddress(int $task_id, $requestAll): mixed
     {
         $data_inner = [];
         $dataMain = Arr::get($requestAll, 'coordinates0', '');
@@ -189,7 +185,7 @@ class CreateService
      * @param $task $user
      * @param $user
      */
-    public function perform_notification($task,$user): void
+    public function perform_notification($task, $user): void
     {
         $performer_id = Session::get('performer_id_for_task');
         if ($performer_id) {

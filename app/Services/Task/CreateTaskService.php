@@ -12,6 +12,9 @@ use App\Services\NotificationService;
 use App\Services\Response;
 use App\Services\VerificationService;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
@@ -47,17 +50,19 @@ class CreateTaskService
     }
 
     /**
-     * Create and save the task name
      *
-     * @param array $data // Validated request data from mobile
-     * @return array $result //Value Returned (use void if doesn't return)
+     * Function  name_store
+     * @param string $name
+     * @param int $category_id
+     * @param User $user
+     * @param int $user_id
+     * @return  array
      */
-    public function name_store($name, $category_id, $user, $user_id): array
+    public function name_store(string $name, int $category_id, User $user, int $user_id): array
     {
         $data = ["name" => $name, "category_id" => $category_id];
         $data['user_id'] = $user_id;
         $task = Task::query()->create($data);
-        /** @var User $user */
         $user->active_task = $task->id;
         $user->active_step = self::Create_Name;
         $user->save();
@@ -65,12 +70,12 @@ class CreateTaskService
     }
 
     /**
-     * Retrieve next step with additional fields - e.g - remote, address or custom
      *
-     * @param object $task // Task model object
-     * @return array //Value Returned
+     * Function  get_custom
+     * @param int $task_id
+     * @return  array
      */
-    public function get_custom($task_id): array
+    public function get_custom(int $task_id): array
     {
         $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_CUSTOM);
         $task = $result['task'];
@@ -125,7 +130,7 @@ class CreateTaskService
      * @return array //Value Returned
      */
     #[ArrayShape(['route' => "string", 'task_id' => "int", 'steps' => "int", 'custom_fields' => "array"])]
-    public function get_remote($task_id): array
+    public function get_remote(int $task_id): array
     {
         return [
             'route' => 'remote', 'task_id' => $task_id, 'steps' => self::Create_Remote,
@@ -167,7 +172,7 @@ class CreateTaskService
      * @return array //Value Returned
      */
     #[ArrayShape(['route' => "string", 'address' => "int", 'steps' => "int", 'custom_fields' => "array"])]
-    public function get_address($task_id): array
+    public function get_address(int $task_id): array
     {
         $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_ADDRESS);
         $task = $result['task'];
@@ -219,7 +224,7 @@ class CreateTaskService
      * @return array //Value Returned
      */
     #[ArrayShape(['route' => "string", 'task_id' => "", 'steps' => "int", 'custom_fields' => "array"])]
-    public function get_date($task_id): array
+    public function get_date(int $task_id): array
     {
         return [
             'route' => 'date', 'task_id' => $task_id, 'steps' => self::Create_Date,
@@ -253,7 +258,7 @@ class CreateTaskService
      * @return array //Value Returned
      */
     #[ArrayShape([])]
-    public function get_budget($task_id): array
+    public function get_budget(int $task_id): array
     {
         $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_BUDGET);
         $task = $result['task'];
@@ -292,7 +297,7 @@ class CreateTaskService
      * @return array //Value Returned
      */
     #[ArrayShape([])]
-    public function get_note($task_id): array
+    public function get_note(int $task_id): array
     {
         $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_NOTE)['custom_fields'];
         return ['route' => 'note', 'task_id' => $task_id, 'steps' => self::Create_Note, 'custom_fields' => $custom_fields];
@@ -364,7 +369,7 @@ class CreateTaskService
      * @return array //Value Returned
      */
     #[ArrayShape([])]
-    public function get_contact($task_id): array
+    public function get_contact(int $task_id): array
     {
         return [
             'route' => 'contact', 'task_id' => $task_id, 'steps' => self::Create_Contact,
@@ -417,7 +422,7 @@ class CreateTaskService
     }
 
     #[ArrayShape(['route' => "string", 'task_id' => "", 'user' => ""])]
-    public function get_verify($task_id, $user): array
+    public function get_verify(int $task_id, $user): array
     {
         return ['route' => 'verify', 'task_id' => $task_id, 'user' => $user];
     }
@@ -471,14 +476,15 @@ class CreateTaskService
         }
     }
 
-
     /**
-     * Custom values store for API
-     * @param $task
-     * @param $routeName
+     *
+     * Function  attachCustomFieldsByRoute
+     * @param int $task_id
+     * @param string $routeName
      * @param $request
+     * @return  Builder|Builder|Collection|Model|null
      */
-    protected function attachCustomFieldsByRoute($task_id, $routeName, $request)
+    protected function attachCustomFieldsByRoute(int $task_id, string $routeName, $request)
     {
         $task = Task::with('category.custom_fields.custom_field_values')->find($task_id);
         $custom_fields = collect($task->category->custom_fields)->where('route', $routeName)->all();

@@ -8,11 +8,19 @@ use App\Http\Resources\TaskIndexResource;
 use App\Http\Resources\UserInTaskResource;
 use App\Models\Task;
 use App\Models\TaskResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 
 class TaskService
 {
-    public function taskIncrement($user_id, $task_id) {
+    /**
+     *
+     * Function  taskIncrement
+     * @param int $user_id
+     * @param int $task_id
+     */
+    public function taskIncrement(int $user_id, int $task_id): void
+    {
         $viewed_tasks = Cache::get('user_viewed_tasks' . $user_id) ?? [];
         if (!in_array($task_id, $viewed_tasks)) {
             $viewed_tasks[] = $task_id;
@@ -22,7 +30,13 @@ class TaskService
         $task->increment('views');
     }
 
-    public function taskIndex($task_id) {
+    /**
+     *
+     * Function  taskIndex
+     * @param int $task_id
+     * @return  array[]|JsonResponse
+     */
+    public function taskIndex(int $task_id) {
         $task = Task::where('id', (int)$task_id)->first();
         if(!empty($task)) {
             $photos = array_map(function ($val) {

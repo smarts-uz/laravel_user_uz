@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Passport\HasApiTokens;
+use Rennokki\QueryCache\Traits\QueryCacheable;
 
 /**
  * @return array //Value Returned
@@ -66,6 +67,11 @@ use Laravel\Passport\HasApiTokens;
 class User extends \TCG\Voyager\Models\User
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use QueryCacheable;
+
+    public $cacheFor = 3600;
+
+    public $cacheTags = ['user'];
 
     public const ROLE_ADMIN = 1;
     public const ROLE_PERFORMER = 2;
