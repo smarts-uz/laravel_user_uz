@@ -121,8 +121,7 @@ class UserController extends Controller
         $user = User::query()->where($request->session()->get('verifications')['key'], $request->session()->get('verifications')['value'])->first();
         $user->password = Hash::make($data['password']);
         $user->save();
-        auth()->login($user);
-        return redirect('/profile');
+        return redirect('/login');
     }
 
     public function verifyProfile(VerifyProfileRequest $request, User $user): RedirectResponse
