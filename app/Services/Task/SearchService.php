@@ -97,11 +97,10 @@ class SearchService
         $item->respons_reviews = Review::query()->where('task_id',$task->id)->get();
 
         $item->responses = match ($filter) {
-          /*  'rating' => TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating')->get(),*/
-            'rating' => [],
+            'rating' => TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating')->get(),
             'date' => $item->responses->orderByDesc('created_at')->get(),
             'reviews' => TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.reviews')->get(),
-         //   'reviews' => [],
+            'reviews' => [],
             default => $item->responses->get(),
         };
 
