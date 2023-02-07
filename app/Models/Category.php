@@ -48,7 +48,7 @@ class Category extends Model
 
     public function getIcoAttribute($value): string
     {
-        return $value == null ? lcfirst(self::find($this->parent_id)->ico) : ucfirst($value);
+        return $value == null ? (self::find($this->parent_id)->ico) : $value;
     }
 
 
