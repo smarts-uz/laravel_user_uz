@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Rennokki\QueryCache\Traits\QueryCacheable;
 use TCG\Voyager\Traits\Translatable;
 
 /**
@@ -29,13 +28,7 @@ class Category extends Model
 {
     use HasFactory,SoftDeletes;
     use Translatable;
-    use QueryCacheable;
-
-    public $cacheFor = 36000;
-
-    public $cacheTags = ['category'];
-
-
+    
 
     protected array $translatable = ['name'];
 

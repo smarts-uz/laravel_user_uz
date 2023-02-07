@@ -12,7 +12,7 @@
                 <span class="flex w-full flex-wrap content-center items-center">
                     <img src=" {{ asset('storage/'.$category2->ico) }}" alt="" class="h-8 w-8">
                 <a class="text-sm p-3" href="{{route('categories',['id'=>$category2->id])}}">
-                    {{$category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}
+                    {{$category2->name}}
                 </a>
                 </span>
             </button>
@@ -20,12 +20,12 @@
     </div>
 
     <div class="flex flex-col float-left my-10 w-full md:hidden block">
-        @foreach ($categories as $category2)  
+        @foreach ($categories as $category2)
             <span class="flex w-full flex-row items-center sm:my-2 my-1">
-                <img src="{{ asset('storage/'.$category2->ico) }}" alt="" class="h-8 w-8"></i>
+                <img src="{{ asset('storage/'.$category2->ico) }}" alt="" class="h-8 w-8">
                 <a href="{{route('categories', ['id'=> $category2->id])}}"
                 class="sm:ml-4 ml-2 sm:text-base text-xs text-gray-600 hover:text-yellow-500">
-                    {{ $category2->getTranslatedAttribute('name', Session::get('lang') , 'fallbackLocale' )}}
+                    {{ $category2->name}}
                 </a>
             </span>
         @endforeach

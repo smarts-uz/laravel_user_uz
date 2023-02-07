@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('CACHE_DRIVER', 'file'),
+    'default' => env('CACHE_DRIVER', 'redis'),
 
     /*'default' => [
         'host' => env('REDIS_HOST', 'localhost'),
@@ -82,14 +82,9 @@ return [
         ],
 
         'redis' => [
-            'client' => 'predis',
-            'cluster' => false,
-            'default' => [
-                'host' => env('REDIS_HOST', 'localhost'),
-                'password' => env('REDIS_PASSWORD', null),
-                'port' => env('REDIS_PORT', 6379),
-                'database' => 0,
-            ],
+            'driver' => 'redis',
+            'connection' => 'cache',
+            'lock_connection' => 'default',
         ],
 
         'dynamodb' => [
