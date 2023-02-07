@@ -1055,6 +1055,7 @@ class TaskAPIController extends Controller
      */
     public function verify(TaskVerificationRequest $request): JsonResponse
     {
+        dd($request);
         return $this->create_task_service->verification($request->validated());
     }
 

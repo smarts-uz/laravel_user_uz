@@ -84,6 +84,10 @@ class SearchService
         $item->selected = $task->responses()->where('performer_id', $task->performer_id)->first();
         $item->responses = $item->selected ? $task->responses()->where('id', '!=', $item->selected->id) : $task->responses();
         $item->auth_response = $auth_response ? $task->responses()->where('performer_id', $userId)->with('user')->first() : null;
+
+     /*   $item->responses = null;
+        $item->auth_response = null;*/
+
         $item->same_tasks = $task->category->tasks()->where('id', '!=', $task->id)->where('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE])->orderBy('created_at', 'desc')->get();
         $item->addresses = $task->addresses;
         $item->top_users = User::query()
@@ -91,14 +95,18 @@ class SearchService
             ->where('role_id', User::ROLE_PERFORMER)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(Review::TOP_USER)->pluck('id')->toArray();
         $item->respons_reviews = Review::query()->where('task_id',$task->id)->get();
+
         $item->responses = match ($filter) {
-            'rating' => TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')
-                ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating')->get(),
+          /*  'rating' => TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating')->get(),*/
+            'rating' => [],
             'date' => $item->responses->orderByDesc('created_at')->get(),
-            'reviews' => TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')
-                ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.reviews')->get(),
+            'reviews' => TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.reviews')->get(),
+         //   'reviews' => [],
             default => $item->responses->get(),
         };
+
+
+     //   $item->responses =[];
         $value = Carbon::parse($task->created_at)->locale(getLocale());
         $value->minute < 10 ? $minut = '0' . $value->minute : $minut = $value->minute;
         $day = $value == now()->toDateTimeString() ? "Bugun" : "$value->day-$value->monthName";

@@ -3,6 +3,7 @@
 namespace App\Services\Task;
 
 
+use App\Http\Resources\PerformerResponseResource;
 use App\Http\Resources\TaskAddressResource;
 use App\Http\Resources\TaskIndexResource;
 use App\Http\Resources\UserInTaskResource;
@@ -48,10 +49,10 @@ class TaskService
                 ->where('task_id', $task->id)
                 ->where('performer_id', \auth()->guard('api')->id())
                 ->first();
-            /*$performer_response = TaskResponse::query()
+            $performer_response = TaskResponse::query()
                 ->where('task_id', $task->id)
                 ->where('performer_id', $task->performer_id)
-                ->first();*/
+                ->first();
             $data = ['data' => [
                 'id' => $task->id,
                 'name' => $task->name,
@@ -61,9 +62,9 @@ class TaskService
                 'end_date' => $task->end_date,
                 'budget' => $task->budget,
                 'description' => $task->description,
-                //'phone' => $this->phone,
-                //'performer_id' => $this->performer_id,
-                //'performer' => new PerformerResponseResource($performer_response),
+                'phone' => $this->phone,
+                'performer_id' => $this->performer_id,
+                'performer' => new PerformerResponseResource($performer_response),
                 'other'=> $task->category->name === "Что-то другое" || $task->category->name === "Boshqa narsa",
                 'parent_category_name'=>$task->category->parent->getTranslatedAttribute('name', app()->getLocale(), 'ru'),
                 'category_name' => $task->category->getTranslatedAttribute('name', app()->getLocale(), 'ru'),

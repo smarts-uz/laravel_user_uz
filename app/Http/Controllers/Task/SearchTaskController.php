@@ -49,9 +49,8 @@ class SearchTaskController extends VoyagerBaseController
     /**
      * @param Task $task
      * @param Request $request
-     * @return Factory|View|Application
      */
-    public function task(Task $task, Request $request): Factory|View|Application
+    public function task(Task $task, Request $request)
     {
         if (!$task->user_id) {
             abort(404);
