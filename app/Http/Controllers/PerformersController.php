@@ -42,7 +42,7 @@ class PerformersController extends Controller
 
     public function performer(User $user): Factory|View|Application
     {
-        setview($user);
+        (new PerformersService)->setView($user);
         $item = $this->performerService->performer($user);
 
         return view('performers/executors-courier',

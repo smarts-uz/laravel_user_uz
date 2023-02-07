@@ -51,7 +51,7 @@ class ProfileController extends Controller
 
     public function delete(Portfolio $portfolio): RedirectResponse
     {
-        portfolioGuard($portfolio);
+        (new ProfileService)->portfolioGuard($portfolio);
 
         $portfolio->delete();
         return redirect()->route('profile.profileData');
@@ -288,7 +288,7 @@ class ProfileController extends Controller
 
     public function deleteImage(Request $request, Portfolio $portfolio): bool
     {
-        portfolioGuard($portfolio);
+        (new ProfileService)->portfolioGuard($portfolio);
         $image = $request->get('image');
         $this->profileService->deleteImage($image,$portfolio);
         return true;
@@ -296,7 +296,7 @@ class ProfileController extends Controller
 
     public function updatePortfolio(PortfolioRequest $request, Portfolio $portfolio): RedirectResponse
     {
-        portfolioGuard($portfolio);
+        (new ProfileService)->portfolioGuard($portfolio);
         $data = $request->validated();
         $this->profileService->portfolioUpdate($data, $portfolio);
 

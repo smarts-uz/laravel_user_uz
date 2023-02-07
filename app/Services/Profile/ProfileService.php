@@ -550,4 +550,12 @@ class ProfileService
         return true;
     }
 
+    public function portfolioGuard($portfolio): void
+    {
+        if ((int)$portfolio->user_id !== (int)auth()->user()->id) {
+            abort(403, "No Permission");
+        }
+    }
+
+
 }

@@ -19,6 +19,7 @@ use App\Models\User;
 use App\Models\WalletBalance;
 use App\Services\Task\CreateService;
 use App\Services\Task\CustomFieldService;
+use App\Services\Task\UpdateTaskService;
 use App\Services\VerificationService;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -433,7 +434,7 @@ class CreateController extends Controller
      */
     public function deleteAllImages(Task $task): RedirectResponse
     {
-        taskGuard($task);
+        (new UpdateTaskService)->taskGuard($task);
         $task->photos = null;
         $task->save();
         Alert::success(__('Изменено успешно'));

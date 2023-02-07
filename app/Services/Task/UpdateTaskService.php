@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Services\Response;
 use App\Services\VerificationService;
 use Carbon\Carbon;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
@@ -354,6 +355,32 @@ class UpdateTaskService
         ]);
 
         cache()->forget('task_update_' . $task->id);
+    }
+
+    public function getAddress($data)
+    {
+        $array = (new CreateService())->addAdditionalAddress(request());
+        $data['address'] = $array['address'];
+        $data['address_add'] = $array['address_add'];
+        $data['coordinates'] = $data['coordinates0'];
+        unset($data['coordinates0'], $data['location0']);
+        return $data;
+    }
+
+    public function taskGuardApi($task): void
+    {
+        if ((int)$task->user_id !== auth()->id() && (int)$task->performer_id !== auth()->id()) {
+            throw new HttpResponseException(response()->json([
+                'success' => false, 'message' => "No Permission"
+            ], 403));
+        }
+    }
+
+    public function taskGuard($task): void
+    {
+        if ((int)$task->user_id !== (int)auth()->id() && (int)$task->performer_id !== (int)auth()->id()) {
+            abort(403, "No Permission");
+        }
     }
 }
 

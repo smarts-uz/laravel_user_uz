@@ -22,6 +22,7 @@ use App\Models\Portfolio;
 use App\Models\ReportedUser;
 use App\Models\ResponseTemplate;
 use App\Models\User;
+use App\Services\PerformersService;
 use App\Services\Profile\ProfileService;
 use App\Services\VerificationService;
 use Illuminate\Http\JsonResponse as JsonResponseAlias;
@@ -189,7 +190,7 @@ class ProfileAPIController extends Controller
      */
     public function portfolioDelete(Portfolio $portfolio): JsonResponseAlias
     {
-        portfolioGuard($portfolio);
+        (new ProfileService)->portfolioGuard($portfolio);
         $portfolio->delete();
         $message = trans('trans.Portfolio deleted successfully.');
 
@@ -884,7 +885,7 @@ class ProfileAPIController extends Controller
      */
     public function userProfile(User $user): JsonResponseAlias
     {
-        setview($user);
+        (new PerformersService)->setView($user);
         return response()->json([
             'success' => true,
             'data' => new UserIndexResource($user)

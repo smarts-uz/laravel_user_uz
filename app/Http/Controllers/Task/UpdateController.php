@@ -8,6 +8,7 @@ use App\Models\ChMessage;
 use App\Models\Task;
 use App\Services\Task\CreateService;
 use App\Services\Task\ReviewService;
+use App\Services\Task\UpdateTaskService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -24,7 +25,7 @@ class UpdateController extends Controller
 
     public function change(UpdateRequest $request, Task $task)
     {
-        taskGuard($task);
+        (new UpdateTaskService)->taskGuard($task);
         if ($task->responses_count)
             abort(403, "No Permission");
         if (!(int)$task->remote === 1) {
@@ -69,7 +70,7 @@ class UpdateController extends Controller
 
     public function deleteImage(Request $request, Task $task)
     {
-        taskGuard($task);
+        (new UpdateTaskService)->taskGuard($task);
         $image = $request->get('image');
         File::delete(public_path() . '/storage/uploads/' . $image);
         $images = json_decode($task->photos);
@@ -105,7 +106,7 @@ class UpdateController extends Controller
 
     public function sendReview(Task $task, Request $request)
     {
-        taskGuard($task);
+        (new UpdateTaskService)->taskGuard($task);
 
         try {
             ReviewService::sendReview($task, $request, true);

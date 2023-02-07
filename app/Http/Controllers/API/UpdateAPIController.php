@@ -10,6 +10,7 @@ use App\Models\ChMessage;
 use App\Models\Task;
 use App\Services\Task\CreateService;
 use App\Services\Task\ReviewService;
+use App\Services\Task\UpdateTaskService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -27,9 +28,9 @@ class UpdateAPIController extends Controller
 
     public function __invoke(UpdateRequest $request, Task $task): JsonResponse
     {
-        taskGuard($task);
+        (new UpdateTaskService)->taskGuard($task);
         $data = $request->validated();
-        $data = getAddress($data);
+        $data = (new UpdateTaskService)->getAddress($data);
         $task->update($data);
         $this->service->syncCustomFields($task);
 
@@ -70,7 +71,7 @@ class UpdateAPIController extends Controller
      */
     public function completed(Task $task): JsonResponse
     {
-        taskGuardApi($task);
+        (new UpdateTaskService)->taskGuardApi($task);
         $data = [
             'status' => Task::STATUS_COMPLETE
         ];
@@ -130,7 +131,7 @@ class UpdateAPIController extends Controller
      */
     public function not_completed(Request $request, Task $task)
     {
-        taskGuardApi($task);
+        (new UpdateTaskService)->taskGuardApi($task);
         $request->validate(['reason' => 'required'], ['reason.required' => 'Reason is required']);
 
         ChMessage::query()->where('from_id', $task->user_id)->where('to_id', $task->performer_id)->delete();
@@ -196,7 +197,7 @@ class UpdateAPIController extends Controller
      */
     public function sendReview(Task $task, ReviewRequest $request): JsonResponse
     {
-        taskGuard($task);
+        (new UpdateTaskService)->taskGuard($task);
         DB::beginTransaction();
 
         try {

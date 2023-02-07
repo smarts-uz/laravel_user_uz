@@ -13,6 +13,7 @@ use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\UserCategory;
+use App\Models\UserView;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -270,4 +271,20 @@ class PerformersService
         return response()->json(['success' => true]);
     }
 
+
+    public function setView($user): UserView|bool
+    {
+        if (auth()->check()) {
+            $user->performer_views()->where('user_id', auth()->user()->id)->first();
+
+            if (!$user->performer_views()->where('user_id', auth()->user()->id)->first()) {
+                $view = new UserView();
+                $view->user_id = auth()->user()->id;
+                $view->performer_id = $user->id;
+                $view->save();
+                return $view;
+            }
+        }
+        return false;
+    }
 }

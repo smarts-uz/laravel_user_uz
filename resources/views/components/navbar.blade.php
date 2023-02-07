@@ -7,7 +7,9 @@
            @include('components.mobile_menu')
             {{-- mobile menu end--}}
         </div>
-
+        @php
+            $categories = App\Services\Task\FilterTaskService::categories();
+        @endphp
         <div class="hidden w-7/12 lg:inline-block xl:ml-12 lg:ml-12 md:text-sm xl:text-base">
             <div class="group inline-block mr-4">
                 <button class="hover:text-yellow-500 focus:outline-none">
@@ -15,7 +17,7 @@
                     <span></span>
                 </button>
                 <ul class="bg-white border rounded-md transform scale-0 group-hover:scale-100 absolute transition duration-150 ease-in-out origin-top z-10">
-                    @foreach (categories() as $category)
+                    @foreach ($categories as $category)
                         <li class="py-2 px-4 rounded-sm hover:bg-gray-100">
                             <button class="w-full text-left flex items-center outline-none focus:outline-none">
                                 <span class="pr-1 flex-1 font-semibold text-sm hover:text-blue-700">{{ $category[0]->parent->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}</span>

@@ -6,6 +6,7 @@ namespace App\Services\Task;
 use App\Models\Category;
 use App\Models\Task;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Cache;
 
 class FilterTaskService
 {
@@ -92,6 +93,37 @@ class FilterTaskService
         $dist = $dist * 180/ pi();
         $dist = $dist * 60 * 1.1515;
         return $dist * 1.609344;
+    }
+
+
+    public static function categories(): array
+    {
+        $datas = Cache::remember('category-translations', now()->addMinute(180), function () {
+            return Category::withTranslations()->orderBy("order")->get();
+        });
+
+        $child_categories = [];
+        $parent_categories = [];
+
+        foreach ($datas as $data) {
+            if ($data->parent_id === null) {
+                $parent_categories[] = $data;
+            } else {
+                $child_categories[] = $data;
+            }
+
+        }
+
+        foreach ($parent_categories as $parent_category) {
+
+            foreach ($child_categories as $child_category) {
+                if ((int)$parent_category->id === (int)$child_category->parent_id) {
+                    $categories[$parent_category->id][] = $child_category;
+                }
+            }
+
+        }
+        return $categories;
     }
 
 }

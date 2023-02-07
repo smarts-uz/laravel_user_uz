@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Task;
 
 use App\Models\TaskElastic;
 use App\Models\Task;
+use App\Services\Task\UpdateTaskService;
 use Elastic\ScoutDriverPlus\Support\Query;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -123,7 +124,7 @@ class SearchTaskController extends VoyagerBaseController
      */
     public function changeTask(Task $task)
     {
-        taskGuard($task);
+        (new UpdateTaskService)->taskGuard($task);
         if ($task->responses_count) {
             abort(403, "No Permission");
         }

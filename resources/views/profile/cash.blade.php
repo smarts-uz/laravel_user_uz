@@ -37,14 +37,13 @@
                         </div>
                     </div>
                     <hr>
-
                     {{-- cash start --}}
                     <div class="cash block  w-full" id="tab-cash">
                         <div class="head mt-5">
                             <div class="flex sm:flex-row flex-col">
-                                <h2 class="font-semibold text-2xl text-gray-700 mb-4">{{__('Ваш баланс')}}
+                                <h2 class="font-semibold text-2xl text-gray-700 mb-4">{{__('Ваш баланс')}} :
                                     @if ($balance == null) 0
-                                    @else {{ amount_format($balance->balance) }}
+                                    @else {{$balance->balance }}
                                     @endif
                                 </h2>
                                 <h1 class="font-semibold text-2xl text-gray-700 mb-4 sm:ml-12 ml-0">ID: {{$user->id}}</h1>
