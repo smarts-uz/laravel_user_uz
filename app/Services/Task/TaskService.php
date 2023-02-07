@@ -37,7 +37,7 @@ class TaskService
      * @param int $task_id
      * @return  array[]|JsonResponse
      */
-    public function taskIndex(int $task_id) {
+    public function taskIndex($task_id) {
         $task = Task::where('id', (int)$task_id)->first();
         if(!empty($task)) {
             $photos = array_map(function ($val) {
@@ -53,10 +53,11 @@ class TaskService
                 ->where('task_id', $task->id)
                 ->where('performer_id', $task->performer_id)
                 ->first();
+
             $data = ['data' => [
                 'id' => $task->id,
                 'name' => $task->name,
-                'address' => TaskAddressResource::collection($task->addresses),
+                'address' => (!empty($task->addresses)) ? TaskAddressResource::collection($task->addresses) : [],
                 'date_type' => $task->date_type,
                 'start_date' => $task->start_date,
                 'end_date' => $task->end_date,
@@ -64,7 +65,7 @@ class TaskService
                 'description' => $task->description,
                 'phone' => $task->phone,
                 'performer_id' => $task->performer_id,
-                'performer' => new PerformerResponseResource($performer_response),
+                'performer' => (!empty($performer_response)) ? new PerformerResponseResource($performer_response) : [],
                 'other'=> $task->category->name === "Что-то другое" || $task->category->name === "Boshqa narsa",
                 'parent_category_name'=>$task->category->parent->getTranslatedAttribute('name', app()->getLocale(), 'ru'),
                 'category_name' => $task->category->getTranslatedAttribute('name', app()->getLocale(), 'ru'),
@@ -77,7 +78,7 @@ class TaskService
                 'oplata' => $task->oplata,
                 'docs' => $task->docs,
                 'created_at' => $task->created,
-                'custom_fields' => (new CustomFieldService())->getCustomFieldsByRoute($task->id, 'custom')['custom_fields'],
+                'custom_fields' => (new CustomFieldService())->getCustomFieldsByRoute($task->id, 'custom')['custom_fields'] ?? [],
                 'photos' => $photos,
                 'performer_review' => $task->performer_review,
                 'response_price' => setting('admin.pullik_otklik'),
@@ -92,6 +93,7 @@ class TaskService
             ]];
             return response()->json($data);
         }
-
     }
+
+
 }
