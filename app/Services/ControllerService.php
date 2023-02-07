@@ -28,8 +28,8 @@ class ControllerService
      */
     public function home(?string $lang = 'uz')
     {
-        $category = Cache::remember('category_', now()->addMinute(180), function () {
-            return \App\Models\Category::withTranslations(['uz', 'ru'])->orderBy("order")->get();
+        $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use($lang) {
+            return \App\Models\Category::withTranslations($lang)->orderBy("order")->get();
         });
 
         $item = new ControllerItem();

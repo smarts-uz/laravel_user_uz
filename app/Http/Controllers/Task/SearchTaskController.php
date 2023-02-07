@@ -11,6 +11,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Session;
 use TCG\Voyager\Models\Category;
 use Illuminate\Http\Request;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
@@ -139,9 +140,12 @@ class SearchTaskController extends VoyagerBaseController
      */
     public function search_new()
     {
+        $lang = Session::get('lang');
+        $allCategories = $this->service->search_new($lang);
         $agent = new Agent();
-        $categories = Category::query()->where('parent_id', null)->select('id', 'name')->orderBy("order")->get();
-        $categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->orderBy("order")->get();
+        $categories = $allCategories['categories'];
+        $categories2 = $allCategories['categories2'];
+
         if ($agent->isMobile()) {
             return view('search_task.mobile_task_search', compact('categories', 'categories2'));
         }
@@ -157,7 +161,6 @@ class SearchTaskController extends VoyagerBaseController
      */
     public function search_new2(Request $request): \Illuminate\Http\JsonResponse
     {
-
         $data = collect($request->get('data'))->keyBy('name');
         $filter = $data['filter']['value'] ?? null;
         $suggest = $data['suggest']['value'] ?? null;

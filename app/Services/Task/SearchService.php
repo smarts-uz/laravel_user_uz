@@ -21,6 +21,19 @@ class SearchService
 {
     public const MAX_SEARCH_TASK = 20;
     public const REMOTE_TASK = 1;
+
+    public function search_new(?string $lang = 'uz') {
+        $categories = Cache::remember('category_' . $lang, now()->addMinute(180), function () use ($lang) {
+            return Category::withTranslations('uz')->orderBy("order")->get();
+        });
+        //forget('name')forget
+        $allCategories['categories'] = collect($categories)->where('parent_id', null)->all();
+
+        $allCategories['categories2'] = collect($categories)->where('parent_id', '!=', null)->all();
+
+        return $allCategories;
+    }
+
     /**
      *
      * Function  comlianse_saveS
@@ -111,9 +124,19 @@ class SearchService
     public function search_new_service($arr_check, $filter, $suggest, $price, $remjob, $noresp, $radius, $lat, $lon, $filterByStartDate)
     {
 
-        $users = User::all()->keyBy('id');
-        $categories = Category::all()->keyBy('id');
-        $adresses = Address::all()->keyBy('id');
+        $users = Cache::remember('usersAll_', now()->addMinute(180), function () {
+            return User::all()->keyBy('id');
+        });
+
+        $categories = Cache::remember('categoriesAll_', now()->addMinute(180), function () {
+            return Category::all()->keyBy('id');
+        });
+
+        $adresses = Cache::remember('adressesAll_', now()->addMinute(180), function () {
+            return Address::all()->keyBy('id');
+        });
+
+
         $adressesQuery = "
         SELECT task_id FROM ( SELECT task_id,
         6371 * acos(cos(radians($lat))
