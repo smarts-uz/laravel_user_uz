@@ -8,7 +8,7 @@
             <div class="max-w-full container mx-auto lg:hidden">
                 @foreach ($categories as $category2)
                     <span class="flex w-full flex-row items-center sm:my-2 my-1">
-                        <img src="{{ asset('storage/'.$category2->ico) }}" alt="" class="h-8 w-8"></i>
+                        <img src="{{asset('storage/'.$category2->ico) }}" alt="" class="h-8 w-8"></i>
                         @if ($category2->id === $choosed_category->id)
                             <a href="{{route('categories', ['id'=> $category2->id])}}"
                             class="sm:ml-4 ml-2 sm:text-base text-xs text-yellow-500">
@@ -28,7 +28,7 @@
                     <button type="button"
                             class="bg-inherit hover:text-yellow-500 border py-1 rounded-full px-4 my-2 mx-2 text-gray-500 border-gray-300 text-left md:text-center text-md md:inline-block block">
                         <span class="flex w-full flex-wrap content-center items-center">
-                            <img src=" {{ asset('storage/'.$category->ico) }}" alt="" class="h-8 w-8">
+                            <img src="{{asset('storage/'.$category->ico) }}" alt="" class="h-8 w-8">
                             @if ($category->id === $choosed_category->id)
                                 <a class="text-yellow-500 text-sm p-1" href="{{route('categories',['id'=>$category->id])}}">
                                     {{$category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}

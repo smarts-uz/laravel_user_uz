@@ -126,12 +126,11 @@ class UserController extends Controller
 
     public function verifyProfile(VerifyProfileRequest $request, User $user): RedirectResponse
     {
-        //dd($request, $user);
         $data = $request->validated();
         /** @var Task $task */
         $task = Task::query()->find($data['for_ver_func']);
 
-        if ($data['sms_otp'] === $user->verify_code) {
+        if ((int)$data['sms_otp'] === (int)$user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
                 if ($task->phone === null && $user->phone_number !== $task->phone && (int)$user->is_phone_number_verified === 0) {
                     $user->update(['is_phone_number_verified' => 0]);
