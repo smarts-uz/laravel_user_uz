@@ -1534,4 +1534,53 @@ class ProfileAPIController extends Controller
         ]);
     }
 
+
+    /**
+     * @OA\Delete(
+     *     path="/api/profile/response-template/delete/{id}",
+     *     tags={"Profile"},
+     *     summary="Profile response template delete",
+     *     @OA\Parameter(
+     *          in="path",
+     *          name="id",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function response_template_delete(ResponseTemplate $template): JsonResponseAlias
+    {
+        /** @var User $user */
+        $user = auth()->user();
+        if((int)$user->id === (int)$template->user_id){
+            $template->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'success',
+            ]);
+        }
+        return response()->json([
+            'success' => false,
+            'message' => 'unsuccessful',
+        ]);
+
+    }
+
 }

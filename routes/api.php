@@ -107,6 +107,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
         Route::get('/response-template', [ProfileAPIController::class, 'response_template']); // fix
         Route::post('/response-template/edit/{id}', [ProfileAPIController::class, 'response_template_edit']); // fix
         Route::post('/response-template/create', [ProfileAPIController::class, 'response_template_create']); // fix
+        Route::delete('/response-template/delete/{template}', [ProfileAPIController::class, 'response_template_delete']); // fix
         Route::post('/description/edit', [ProfileAPIController::class, 'editDescription']); // fix
         Route::post('/work-experience', [ProfileAPIController::class, 'work_experience']); // fix
         Route::post('/categories-subscribe', [ProfileAPIController::class, 'subscribeToCategory']); // fix
@@ -178,7 +179,6 @@ Route::post('/firebase-notification', [NotificationController::class, 'firebase_
 Route::post('/pusher-notification', [NotificationController::class, 'pusher_notification']);
 Route::post('/sms-notification', [NotificationController::class, 'sms_notification']);
 Route::post('/email-notification', [NotificationController::class, 'email_notification']);
-
 Route::get('/test-complete-task/{task}', [VoyagerTaskController::class, 'test_complete_task']);
 Route::get('/test-delete-task/{task}', [VoyagerTaskController::class, 'test_delete_task']);
 Route::get('/test-cancel-task/{task}', [VoyagerTaskController::class, 'test_cancel_task']);
