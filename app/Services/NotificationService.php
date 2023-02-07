@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Mail\MessageEmail;
 use App\Models\Notification;
 use App\Models\UserCategory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
@@ -520,9 +521,9 @@ class NotificationService
         };
     }
 
-    public static function readAllNotifications($user_id)
+    public static function readAllNotifications($user_id): Builder
     {
-        $user_notify = Notification::where('user_id', $user_id)->orWhere('performer_id', $user_id);
+        $user_notify = Notification::query()->where('user_id', $user_id)->orWhere('performer_id', $user_id);
         $user_notify->update([
             'is_read' => 1
         ]);

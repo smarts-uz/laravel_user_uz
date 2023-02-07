@@ -4244,6 +4244,31 @@
                 ]
             }
         },
+        "\/api\/read-all-notification": {
+            "post": {
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Read all notifications",
+                "operationId": "7c84847394b7aa6a32c8da6d91145a7e",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "\/api\/firebase-token": {
             "post": {
                 "tags": [

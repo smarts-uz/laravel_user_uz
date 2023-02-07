@@ -92,6 +92,39 @@ class NotificationController extends VoyagerBaseController
         return $this->success($notification);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/read-all-notification",
+     *     tags={"Notifications"},
+     *     summary="Read all notifications",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function read_all_mobile_notification(): JsonResponse
+    {
+        /** @var User $user */
+        $user = auth()->user();
+        NotificationService::readAllNotifications($user->id);
+        return response()->json([
+            'success' => true,
+            'message' => __('success'),
+        ]);
+    }
+
     public function show_notification(Notification $notification)
     {
         $notification->update(['is_read' => 1]);
@@ -104,8 +137,8 @@ class NotificationController extends VoyagerBaseController
         };
     }
 
-    public function read_all_notification($user_id){
-
+    public function read_all_notification($user_id): JsonResponse
+    {
         NotificationService::readAllNotifications($user_id);
         return $this->success([
             "user_id" => $user_id,
