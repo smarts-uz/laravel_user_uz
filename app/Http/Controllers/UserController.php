@@ -93,7 +93,7 @@ class UserController extends Controller
         /** @var User $user */
         $user = User::query()->where($verifications['key'], $verifications['value'])->first();
 
-        if ($data['code'] === $user->verify_code) {
+        if ((int)$data['code'] === (int)$user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
                 return redirect()->route('user.reset_password');
             }
