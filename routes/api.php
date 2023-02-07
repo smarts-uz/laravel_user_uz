@@ -60,6 +60,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::get('/notifications', [NotificationController::class, 'getNotifications']); // fix
     Route::get('/count/notifications', [NotificationController::class, 'count']); // fix
     Route::post('/read-notification/{notification}', [NotificationController::class, 'read_notification']); // fix
+    Route::post('/read-all-notification', [NotificationController::class, 'read_all_mobile_notification']); // fix
 
     Route::get('/my-tasks-count', [TaskAPIController::class, 'my_tasks_count']); // fix
     Route::get('/my-tasks', [TaskAPIController::class, 'my_tasks_all']); // fix
