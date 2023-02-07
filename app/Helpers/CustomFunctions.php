@@ -59,7 +59,7 @@ function setView($user)
 function categories()
 {
     $datas = Cache::remember('category-translations', now()->addMinute(180), function () {
-        return Category::with('translations')->orderBy("order")->get();
+        return Category::withTranslations()->orderBy("order")->get();
     });
 
     //$datas = Category::with('translations')->orderBy("order")->get();

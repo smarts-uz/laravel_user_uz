@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Rennokki\QueryCache\Traits\QueryCacheable;
 use TCG\Voyager\Traits\Translatable;
 
 /**
@@ -33,6 +34,10 @@ class CustomField extends Model
 {
     use HasFactory, SoftDeletes;
     use Translatable;
+    use QueryCacheable;
+
+    public $cacheFor = 3600;
+    public $cacheTags = ['customfield'];
 
     protected $casts = [
         'options' => 'array',

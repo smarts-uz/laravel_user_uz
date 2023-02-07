@@ -27,10 +27,10 @@ class CreateService
     /**
      *
      * Function  name
-     * @param int $category_id
+     * @param $category_id
      * @return  CreateNameItem
      */
-    public function name(int $category_id): CreateNameItem
+    public function name($category_id): CreateNameItem
     {
         $item = new CreateNameItem();
         $item->current_category = Category::query()->findOrFail($category_id);
@@ -115,10 +115,10 @@ class CreateService
      *
      * Function  storeName
      * @param string $name
-     * @param int $category_id
+     * @param $category_id
      * @return  int
      */
-    public function storeName(string $name, int $category_id): int
+    public function storeName(string $name, $category_id): int
     {
         $data = ['name' => $name, 'category_id' => $category_id];
         $task = Task::query()->create($data);

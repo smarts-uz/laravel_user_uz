@@ -26,9 +26,11 @@ class ControllerService
      * @param string|null $lang
      * @return  ControllerItem
      */
-    public function home()
+    public function home(?string $lang = 'uz')
     {
-        $category = Category::query()->orderBy("order")->get();
+        $category = Cache::remember('category_', now()->addMinute(180), function () {
+            return \App\Models\Category::withTranslations(['uz', 'ru'])->orderBy("order")->get();
+        });
 
         $item = new ControllerItem();
         $item->categories = collect($category)->where('parent_id', null)->all();

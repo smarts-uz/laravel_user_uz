@@ -26,8 +26,9 @@ class Controller extends BaseController
 
     public function home(Category $id)
     {
+        $lang = Session::get('lang');
         $service = new ControllerService();
-        $item = $service->home();
+        $item = $service->home($lang);
         return view('home',
             [
                 'categories' => $item->categories,
