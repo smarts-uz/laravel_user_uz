@@ -48,7 +48,8 @@ class UpdateTaskService
     #[ArrayShape([])]
     public function get_custom($task): array
     {
-        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CUSTOM);
+        $result = $this->custom_field_service->getCustomFieldsByRoute($task->id, CustomField::ROUTE_CUSTOM);
+        $custom_fields = $result['custom_fields'];
         if (!$task->category->customFieldsInCustom->count()) {
             if ($task->category->parent->remote) {
                 return $this->get_remote($task);
@@ -133,7 +134,7 @@ class UpdateTaskService
     {
         return [
             'route' => 'date', 'task_id' => $task->id, 'steps' => 3,
-            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_DATE)
+            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task->id, CustomField::ROUTE_DATE)['custom_fields']
         ];
     }
 
@@ -150,7 +151,7 @@ class UpdateTaskService
     {
         return [
             'route' => 'budget', 'task_id' => $task->id, 'steps' => 2, 'price' => Category::query()->findOrFail($task->category_id)->max,
-            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_BUDGET)
+            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task->id, CustomField::ROUTE_BUDGET)['custom_fields']
         ];
     }
 
@@ -165,7 +166,9 @@ class UpdateTaskService
     #[ArrayShape([])]
     public function get_note($task): array
     {
-        $custom_fields = $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_NOTE);
+        $result = $this->custom_field_service->getCustomFieldsByRoute($task->id, CustomField::ROUTE_NOTE);
+        $custom_fields = $result['custom_fields'];
+
         return ['route' => 'note', 'task_id' => $task->id, 'steps' => 1, 'custom_fields' => $custom_fields];
     }
 
@@ -182,7 +185,7 @@ class UpdateTaskService
         return [
             'route' => 'contact', 'task_id' => $task->id, 'steps' => 0,
             'phone' => $task->phone ? correctPhoneNumber($task->phone) : null,
-            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task, CustomField::ROUTE_CONTACTS)
+            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task->id, CustomField::ROUTE_CONTACTS)['custom_fields']
         ];
     }
 
