@@ -126,6 +126,7 @@ class UserController extends Controller
 
     public function verifyProfile(VerifyProfileRequest $request, User $user): RedirectResponse
     {
+        //dd($request, $user);
         $data = $request->validated();
         /** @var Task $task */
         $task = Task::query()->find($data['for_ver_func']);

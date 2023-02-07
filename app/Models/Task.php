@@ -44,11 +44,6 @@ class Task extends Model
 {
 
     use HasFactory, SoftDeletes;
-    use QueryCacheable;
-
-    public $cacheFor = 3600;
-
-    public $cacheTags = ['task'];
 
     public function toSearchableArray()
     {
