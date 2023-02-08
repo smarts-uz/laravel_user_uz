@@ -32,7 +32,7 @@ class CreateService
     public function name($category_id, ?string $lang = 'uz'): CreateNameItem
     {
         $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use($lang) {
-            return \App\Models\Category::withTranslations($lang)->orderBy("order")->get();
+            return Category::withTranslations($lang)->orderBy("order")->get();
         });
 
         $item = new CreateNameItem();

@@ -13,6 +13,7 @@ use App\Models\Portfolio;
 use App\Models\User;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 
 class PerformersController extends Controller
@@ -26,9 +27,10 @@ class PerformersController extends Controller
     }
     public function service(Request $request): Factory|View|Application
     {
+        $lang = Session::get('lang');
         $search = $request->input('search');
         $authId = Auth::id();
-        $item = $this->performerService->service($authId,$search);
+        $item = $this->performerService->service($authId,$search,$lang);
 
        return view('performers/performers',
            [
