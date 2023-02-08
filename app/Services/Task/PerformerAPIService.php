@@ -4,8 +4,11 @@ namespace App\Services\Task;
 
 
 use App\Http\Resources\PerformerIndexResource;
+use App\Http\Resources\ReviewIndexResource;
 use App\Models\BlockedUser;
+use App\Models\Review;
 use App\Models\User;
+use App\Models\UserCategory;
 use Carbon\Carbon;
 
 class PerformerAPIService
@@ -75,5 +78,69 @@ class PerformerAPIService
             strlen($phone) > 13 => substr($phone, 0, 13),
             default => $phone,
         };
+    }
+
+    public function becomePerformerEmailPhone($data, $user)
+    {
+        if ($data['phone_number'] !== $user->phone_number) {
+            $user->phone_number = $data['phone_number'];
+            $user->is_phone_number_verified = 0;
+        }
+        if ($data['email'] !== $user->email) {
+            $user->email = $data['email'];
+            $user->is_email_verified = 0;
+        }
+        $user->save();
+    }
+
+    public function reviews($form, $type)
+    {
+        $reviews = Review::query()
+            ->whereHas('task')->whereHas('user')
+            ->where('user_id',auth()->id())
+            ->fromUserType($form )
+            ->type($type)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => ReviewIndexResource::collection($reviews),
+            'message' => 'Success'
+        ]);
+    }
+
+    public function performers_count($category_id)
+    {
+        $user_category = UserCategory::query()->where('category_id',$category_id)->count();
+        return response()->json([
+            'success' => true,
+            'data' => $user_category,
+        ]);
+    }
+
+    public function performers_image($category_id)
+    {
+        $user_cat = UserCategory::query()->where('category_id',$category_id)->pluck('user_id')->toArray();
+        $user_image = User::query()->whereIn('id',$user_cat)->take(3)->get();
+        $images = [];
+        foreach ($user_image as $image){
+            $images[] = asset('storage/'.$image->avatar);
+        }
+        switch(count($user_image)) {
+            case(0):
+                $images[0] = asset('images/Rectangle2.png');
+                $images[1] = asset('images/Ellipse1.png');
+                $images[2] = asset('images/performer4.jpg');
+                break;
+            case(1):
+                $images[1] = asset('images/performer1.jpg');
+                $images[2] = asset('images/performer2.jpg');
+                break;
+            case(2):
+                $images[2] = asset('images/Rectangle4.png');
+                break;
+            default:
+        }
+        return ['data' => $images];
     }
 }

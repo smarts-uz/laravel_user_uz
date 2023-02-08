@@ -302,15 +302,7 @@ class PerformerAPIController extends Controller
         $data = $request->validated();
         /** @var User $user */
         $user = auth()->user();
-        if ($data['phone_number'] !== $user->phone_number) {
-            $user->phone_number = $data['phone_number'];
-            $user->is_phone_number_verified = 0;
-        }
-        if ($data['email'] !== $user->email) {
-            $user->email = $data['email'];
-            $user->is_email_verified = 0;
-        }
-        $user->save();
+        $this->service->becomePerformerEmailPhone($data, $user);
         return response()->json(['success' => 'true', 'message' => __('Успешно обновлено')]);
     }
 
@@ -356,8 +348,6 @@ class PerformerAPIController extends Controller
         $this->profileService->changeAvatar($filename, $user);
 
         return response()->json(['success' => true, 'message' => 'true']);
-
-
     }
 
     /**
@@ -433,18 +423,9 @@ class PerformerAPIController extends Controller
      */
     public function reviews(Request $request): JsonResponse
     {
-        $reviews = Review::query()
-            ->whereHas('task')->whereHas('user')
-            ->where('user_id',auth()->id())
-            ->fromUserType($request->get('from'))
-            ->type($request->get('type'))
-            ->get();
-
-        return response()->json([
-            'success' => true,
-            'data' => ReviewIndexResource::collection($reviews),
-            'message' => 'Success'
-        ]);
+        $form = $request->get('from');
+        $type = $request->get('type');
+        return $this->service->reviews($form, $type);
     }
 
     /**
@@ -475,11 +456,7 @@ class PerformerAPIController extends Controller
      */
     public function performers_count($category_id): JsonResponse
     {
-        $user_category = UserCategory::query()->where('category_id',$category_id)->count();
-        return response()->json([
-            'success' => true,
-            'data' => $user_category,
-        ]);
+        return $this->service->performers_count($category_id);
     }
 
     /**
@@ -510,28 +487,7 @@ class PerformerAPIController extends Controller
      */
     public function performers_image($category_id): array
     {
-        $user_cat = UserCategory::query()->where('category_id',$category_id)->pluck('user_id')->toArray();
-        $user_image = User::query()->whereIn('id',$user_cat)->take(3)->get();
-        $images = [];
-        foreach ($user_image as $image){
-            $images[] = asset('storage/'.$image->avatar);
-        }
-        switch(count($user_image)) {
-            case(0):
-                $images[0] = asset('images/Rectangle2.png');
-                $images[1] = asset('images/Ellipse1.png');
-                $images[2] = asset('images/performer4.jpg');
-                break;
-            case(1):
-                $images[1] = asset('images/performer1.jpg');
-                $images[2] = asset('images/performer2.jpg');
-                break;
-            case(2):
-                $images[2] = asset('images/Rectangle4.png');
-                break;
-            default:
-        }
-        return ['data' => $images];
+        return $this->service->performers_image($category_id);
     }
 
 }
