@@ -6,19 +6,17 @@ use App\Http\Resources\NotificationResource;
 use App\Item\CreateNameItem;
 use App\Models\Address;
 use App\Models\Category;
-use App\Models\CustomField;
 use App\Models\CustomFieldsValue;
 use App\Models\Notification;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\NotificationService;
 use App\Services\SmsMobileService;
-use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\HigherOrderBuilderProxy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 
 class CreateService
@@ -28,16 +26,19 @@ class CreateService
      *
      * Function  name
      * @param $category_id
+     * @param string|null $lang
      * @return  CreateNameItem
      */
-    public function name($category_id): CreateNameItem
+    public function name($category_id, ?string $lang = 'uz'): CreateNameItem
     {
+        $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use($lang) {
+            return \App\Models\Category::withTranslations($lang)->orderBy("order")->get();
+        });
+
         $item = new CreateNameItem();
         $item->current_category = Category::query()->findOrFail($category_id);
-        $item->categories = Category::query()->where('parent_id', null)
-            ->select('id', 'name', 'slug')->orderBy("order")->get();
-        $item->child_categories = Category::query()->where('parent_id', '<>', null)
-            ->select('id', 'parent_id', 'name')->orderBy("order")->get();
+        $item->categories = collect($category)->where('parent_id', null)->all();
+        $item->child_categories = collect($category)->where('parent_id', '!=', null)->all();
         return $item;
     }
     /**
@@ -215,9 +216,6 @@ class CreateService
                 'url' => route('show_notification', [$notification]),
                 'description' => NotificationService::descriptions($notification)
             ]);
-//            NotificationService::sendNotificationRequest([$performer_id], [
-//                'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
-//            ]);
 
             NotificationService::pushNotification($performer, [
                 'title' => __('Предложение', [], $locale), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [

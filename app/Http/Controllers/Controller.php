@@ -4,16 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\CustomField;
 use App\Models\FooterReview;
-use App\Models\Terms;
 use App\Services\Response;
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Session;
 use Jenssegers\Agent\Agent;
-use TCG\Voyager\Models\Category;
 use App\Models\Massmedia;
 use App\Services\ControllerService;
 use App\Models\BlogNew;
