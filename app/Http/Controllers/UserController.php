@@ -86,15 +86,21 @@ class UserController extends Controller
 
     public function reset_password_save(ResetPasswordRequest $request)
     {
+        $data = $request->validated();
         $service = new UserService();
-        $service->reset_password_save($request);
+        $session = $request->session();
+        $password = $data['password'];
+        $service->reset_password_save($session, $password);
         return redirect('/login');
     }
 
     public function verifyProfile(VerifyProfileRequest $request, User $user): RedirectResponse
     {
+        $data = $request->validated();
         $service = new UserService();
-        return $service->verifyProfile($request, $user);
+        $for_ver_func = $data['for_ver_func'];
+        $sms_otp = $data['sms_otp'];
+        return $service->verifyProfile($user, $for_ver_func, $sms_otp);
     }
 
     /**
@@ -103,13 +109,18 @@ class UserController extends Controller
     public function self_delete(): RedirectResponse
     {
         $service = new UserService();
-        return $service->self_delete();
+        $user = \auth()->user();
+        return $service->self_delete($user);
     }
 
     public function confirmationSelfDelete(ResetCodeRequest $request)
     {
+        $data = $request->validated();
+        /** @var User $user */
+        $user = \auth()->user();
+        $code = $data['code'];
         $service = new UserService();
-        return $service->confirmationSelfDelete($request);
+        return $service->confirmationSelfDelete($code, $user);
     }
 
 }
