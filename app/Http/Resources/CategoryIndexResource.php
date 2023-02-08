@@ -14,6 +14,12 @@ class CategoryIndexResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [];
+        return [
+            'id' => $this->id,
+            'parent_id' => $this->parent_id,
+            'name' => $this->getTranslatedAttribute('name'),
+            'child_count' => $this->childs()->count(),
+            'ico' => asset('storage/' . $this->ico),
+        ];
     }
 }

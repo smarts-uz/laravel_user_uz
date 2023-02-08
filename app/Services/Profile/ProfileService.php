@@ -54,7 +54,7 @@ class ProfileService
         $b = File::directories(public_path("storage/portfolio/{$user->name}"));
         $directories = array_map('basename', $b);
         if (WalletBalance::query()->where('user_id', $user->id)->first() !== null){
-            $balance = WalletBalance::query()->where('user_id', $this->id)->first()->balance;
+            $balance = WalletBalance::query()->where('user_id', $user->id)->first()->balance;
         }else{
             $balance = 0;
         }
@@ -75,8 +75,8 @@ class ProfileService
             'message' => $message
         ];
 
-        $service = new ProfileService();
-        $item = $service->profileData($this);
+        $service = new self();
+        $item = $service->profileData($user);
 
         // check top performer part
         if (in_array($user->id, $item->top_users, true)) {
@@ -147,14 +147,7 @@ class ProfileService
         }
 
         $statuses = [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED];
-        $portfolios = $user->portfolios;
-        $portfolio = [
-            'id' => $portfolios->id,
-            'user_id' => $portfolios->user_id,
-            'comment' => $portfolios->comment,
-            'description' => $portfolios->description,
-            'images' => $this->makeAssets(json_decode($portfolios->image??"[]")),
-        ];
+
         $data = [
             'id' => $user->id,
             'name' => $user->name,
@@ -192,7 +185,7 @@ class ProfileService
             'phone_number_old' => $user->phone_number_old,
             'system_notification' =>$user->system_notification,
             'news_notification' => $user->news_notification,
-            'portfolios' => $portfolio,
+            'portfolios' => PortfolioIndexResource::collection($user->portfolios),
             'portfolios_count' => Portfolio::query()->where('user_id',$user->id)->get()->count(),
             'views' => $user->performer_views()->count(),
             'directories' => $directories,
