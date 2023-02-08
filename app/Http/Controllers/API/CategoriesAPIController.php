@@ -17,7 +17,8 @@ class CategoriesAPIController extends Controller
      */
     public $service;
 
-    public function __construct(CategoriesAPIService $categoriesAPIService) {
+    public function __construct(CategoriesAPIService $categoriesAPIService)
+    {
         $this->service = $categoriesAPIService;
     }
 
@@ -116,10 +117,8 @@ class CategoriesAPIController extends Controller
     public function search(Request $request)
     {
         $parentId = (!empty($request->get('parent_id'))) ? $request->get('parent_id') : '';
-        if ((!empty($request->get('parent_id')))) {
-            $name = $request->get('name');
-            return $this->service->search($parentId, $name);
-        }
+        $name = $request->get('name');
+        return $this->service->search($parentId, $name);
     }
 
     /**
