@@ -18,6 +18,7 @@ use App\Models\UserCategory;
 use App\Services\NotificationService;
 use App\Services\Profile\ProfileService;
 use App\Services\SmsMobileService;
+use App\Services\Task\PerformerAPIService;
 use Carbon\Carbon;
 use App\Services\PerformersService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -31,11 +32,13 @@ class PerformerAPIController extends Controller
 
     protected ProfileService $profileService;
     private PerformersService $performer_service;
+    public $service;
 
-    public function __construct()
+    public function __construct(PerformerAPIService $performerAPIService)
     {
         $this->performer_service = new PerformersService();
         $this->profileService = new ProfileService();
+        $this->service = $performerAPIService;
     }
 
     /**
@@ -65,18 +68,11 @@ class PerformerAPIController extends Controller
      * )
      *
      */
-    public function service(Request $request): AnonymousResourceCollection
+    public function service(Request $request)
     {
-        $performers = User::query()
-            ->where('role_id', User::ROLE_PERFORMER)
-            ->orderByDesc('review_rating')
-            ->orderByRaw('(review_good - review_bad) DESC');
-        if (isset($request->online))
-        {
-            $date = Carbon::now()->subMinutes(2)->toDateTimeString();
-            $performers = $performers->where('role_id', User::ROLE_PERFORMER)->where('last_seen', ">=",$date);
-        }
-        return PerformerIndexResource::collection($performers->paginate($request->get('per_page')));
+        $online = $request->online;
+        $per_page = $request->get('per_page');
+        return $this->service->service($online, $per_page);
     }
 
     /**
