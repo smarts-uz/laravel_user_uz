@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\FaqResource;
 use App\Http\Resources\SettingResource;
 use App\Models\FaqCategories;
+use App\Services\Task\FaqService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -14,6 +15,13 @@ use TCG\Voyager\Models\Setting;
 
 class FaqController extends Controller
 {
+
+    public $service;
+
+    public function __construct(FaqService $faqService)
+    {
+        $this->service = $faqService;
+    }
 
     /**
      * @OA\Get(
@@ -34,13 +42,9 @@ class FaqController extends Controller
      *     ),
      * )
      */
-    public function index(): Factory|View|JsonResponse|Application
+    public function index()
     {
-        $faqs = FaqCategories::query()->latest()->get();
-        return response()->json([
-            'success' => true,
-            'data' => FaqResource::collection($faqs)
-        ]);
+        return $this->service->index();
     }
 
     /**
@@ -67,10 +71,7 @@ class FaqController extends Controller
      */
     public function get_all(): JsonResponse
     {
-        return response()->json([
-            'success' => true,
-            'data' => SettingResource::collection(Setting::all())
-        ]);
+        return $this->service->get_all();
     }
 
     /**
@@ -104,11 +105,7 @@ class FaqController extends Controller
      */
     public function get_key($key): JsonResponse
     {
-        $setting_key = Setting::query()->where('key',$key)->get();
-        return response()->json([
-            'success' => true,
-            'data' => $setting_key
-        ]);
+        return $this->service->get_key($key);
     }
 
 }

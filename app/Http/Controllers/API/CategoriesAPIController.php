@@ -5,12 +5,22 @@ namespace App\Http\Controllers\API;
 use App\Http\Resources\CategoryIndexResource;
 use App\Http\Resources\CategoryShowResource;
 use App\Models\Category;
+use App\Services\Task\CategoriesAPIService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
 
 class CategoriesAPIController extends Controller
 {
+    /**
+     * @var CategoriesAPIService
+     */
+    public $service;
+
+    public function __construct(CategoriesAPIService $categoriesAPIService) {
+        $this->service = $categoriesAPIService;
+    }
+
     /**
      * @OA\Get(
      *     path="/api/categories",
@@ -38,10 +48,9 @@ class CategoriesAPIController extends Controller
      *     )
      * )
      */
-    public function index(): AnonymousResourceCollection
+    public function index()
     {
-        $categories = Category::query()->select('id', 'parent_id', 'name', 'ico')->withTranslation(app()->getLocale())->whereNull('parent_id')->orderBy("order", "asc")->get();
-        return CategoryIndexResource::collection($categories);
+        return $this->service->index();
     }
 
     /**
@@ -74,18 +83,7 @@ class CategoriesAPIController extends Controller
     public function popular(Request $request): array
     {
         $name = $request->get('category');
-        $categories = Category::query()->select('id', 'parent_id', 'name', 'ico')->withCount('tasks')->withTranslation('uz')
-            ->whereTranslation('name', 'like', "%$name%")->orWhere('name', 'like', "%$name%")->whereNotNull('parent_id')->orderByDesc('tasks_count')->get();
-        $response = [];
-        foreach ($categories as $category) {
-            $object['category_id'] = $category->id;
-            $object['total'] = $category->tasks_count;
-            $category->name = $category->getTranslatedAttribute('name', app()->getLocale() , 'ru');
-            unset($category->translations);
-            $object['category'] = $category;
-            $response[] = $object;
-        }
-        return $response;
+        return $this->service->popular($name);
     }
 
     /**
@@ -115,18 +113,13 @@ class CategoriesAPIController extends Controller
      *     )
      * )
      */
-    public function search(Request $request): AnonymousResourceCollection
+    public function search(Request $request)
     {
-        $parentId = $request->get('parent_id');
-        $name = $request->get('name');
-        $categories = Category::query()->whereNotNull('parent_id')->orderBy("order");
-        if ($parentId) {
-            $categories->where('parent_id', $parentId);
+        $parentId = (!empty($request->get('parent_id'))) ? $request->get('parent_id') : '';
+        if ((!empty($request->get('parent_id')))) {
+            $name = $request->get('name');
+            return $this->service->search($parentId, $name);
         }
-        if ($name) {
-            $categories->where('name', 'LIKE', "%$name%");
-        }
-        return CategoryIndexResource::collection($categories->get());
     }
 
     /**
@@ -148,13 +141,10 @@ class CategoriesAPIController extends Controller
      *     )
      * )
      */
-    public function parents(): AnonymousResourceCollection
+    public function parents(): array
     {
-        $categories = Category::query()->whereNull('parent_id')->orderBy("order")->get();
-        return CategoryIndexResource::collection($categories);
-
+        return $this->service->parents();
     }
-
 
 
     /**
@@ -184,10 +174,9 @@ class CategoriesAPIController extends Controller
      *     )
      * )
      */
-    public function show(Category $id, Request $request): CategoryShowResource
+    public function show(Category $id, Request $request)
     {
         $category = $id->translate($request->get('lang'));
-        return new CategoryShowResource($category);
-
+        return $this->service->show($category);
     }
 }

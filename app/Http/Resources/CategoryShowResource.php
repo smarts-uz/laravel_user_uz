@@ -14,14 +14,6 @@ class CategoryShowResource extends JsonResource
      */
     public function toArray($request)
     {
-        return  [
-            'id' => $this->id,
-            'parent_id' => $this->parent_id,
-            'name' => $this->name,
-            'ico' => asset('storage/'.lcfirst($this->ico)),
-            'max' => $this->max,
-            'min' => $this->min,
-            'isDoubleAddress' => $this->double_address
-        ];
+        return  [];
     }
 }

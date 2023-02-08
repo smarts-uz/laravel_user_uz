@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\VerifyCredentialsRequest;
 use App\Models\User;
+use App\Services\Task\LoginAPIService;
 use App\Services\VerificationService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -14,6 +15,12 @@ use Illuminate\Support\Facades\Cache;
 
 class LoginAPIController extends Controller
 {
+    public $service;
+
+    public function __construct(LoginAPIService $loginAPIService)
+    {
+        $this->service = $loginAPIService;
+    }
 
     /**
      * @OA\Get(
@@ -59,33 +66,7 @@ class LoginAPIController extends Controller
     public function verifyCredentials(VerifyCredentialsRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $column = $data['type'];
-
-        if (!User::query()
-            ->where($column, $data['type'] === 'phone_number' ? correctPhoneNumber($data['data']) : $data['data'])
-            ->whereNot('id', auth()->id())
-            ->exists()
-        ) {
-            /** @var User $user */
-            $user = auth()->user();
-            Cache::put($user->id . 'user_' . $column , $data['type'] === 'phone_number' ? correctPhoneNumber($data['data']) : $data['data']);
-
-            if ($data['type'] === 'phone_number') {
-                VerificationService::send_verification($data['type'], $user, phone_number: $data['data']);
-            } else {
-                $user = Auth::user();
-                VerificationService::send_verification_email($data['data'],$user);
-            }
-
-            return response()->json([
-                'success' => true,
-                'message' => __('Код отправлен!')
-            ]);
-        }
-        return response()->json([
-            'success' => false,
-            'message' => $data['type'] === 'email' ? __('Пользователь с такой почтой уже существует!') : __('Пользователь с таким номером уже существует!')
-        ]);
+        return $this->service->verifyCredentials($data);
     }
 
 
@@ -128,31 +109,11 @@ class LoginAPIController extends Controller
         $request->validate([
             'code' => 'required'
         ]);
+        $code = $request->get('code');
         /** @var User $user */
         $user = auth()->user();
 
-        if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-            if ($request->get('code') === $user->verify_code || $request->get('code') === setting('admin.CONFIRM_CODE')) {
-                $user->phone_number = correctPhoneNumber(Cache::get($user->id . 'user_phone_number'));
-                $user->is_phone_number_verified = 1;
-                $user->save();
-                Cache::forget($user->id . 'user_phone_number');
-                return response()->json([
-                    'success' => true,
-                    'message' => __('Ваш телефон успешно подтвержден')
-                ]);
-            }
-
-            return response()->json([
-                'success' => false,
-                'message' => __('Неправильный код!')
-            ]);
-        }
-
-        return response()->json([
-            'success' => false,
-            'message' => __('Срок действия номера истек')
-        ]);
+        return $this->service->verify_phone($user, $code);
     }
 
     /**
@@ -194,30 +155,10 @@ class LoginAPIController extends Controller
         $request->validate([
             'code' => 'required'
         ]);
+        $code = $request->get('code');
         /** @var User $user */
         $user = auth()->user();
+        return $this->service->verify_email($user, $code);
 
-        if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-            if ($request->get('code') === $user->verify_code || $request->get('code') === setting('admin.CONFIRM_CODE')) {
-                $user->email = Cache::get($user->id . 'user_email');
-                $user->is_email_verified = 1;
-                $user->save();
-                Cache::forget($user->id . 'user_email');
-                return response()->json([
-                    'success' => true,
-                    'message' => __('Ваш электронная почта успешно подтвержден')
-                ]);
-            }
-
-            return response()->json([
-                'success' => false,
-                'message' => __('Неправильный код!')
-            ]);
-        }
-
-        return response()->json([
-            'success' => false,
-            'message' => __('Срок действия номера истек')
-        ]);
     }
 }
