@@ -3,10 +3,18 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\{
-    BlogController, PerformerAPIController, ProfileAPIController,
-    CategoriesAPIController, LoginAPIController, SessionController,
-    SocialAPIController, TaskAPIController, UpdateAPIController,
-    UserAPIController, SearchAPIController,FaqController
+    BlogController,
+    PerformerAPIController,
+    ProfileAPIController,
+    CategoriesAPIController,
+    LoginAPIController,
+    SessionController,
+    SocialAPIController,
+    TaskAPIController,
+    UpdateAPIController,
+    UserAPIController,
+    SearchAPIController,
+    FaqController
 };
 use App\Http\Controllers\{NotificationController, vendor\Chatify\Api\MessagesController, VoyagerTaskController};
 
@@ -25,7 +33,7 @@ use App\Http\Controllers\{NotificationController, vendor\Chatify\Api\MessagesCon
 Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::post('logout', [UserAPIController::class, 'logout']); // fix
     //Chat
-    Route::group(['prefix' => 'chat'], static function (){
+    Route::group(['prefix' => 'chat'], static function () {
         Route::post('/sendMessage', [MessagesController::class, 'send']); // fix
         Route::get('/getContacts', [MessagesController::class, 'getContacts']); // fix
         Route::get('/search', [MessagesController::class, 'search']); // fix

@@ -39,6 +39,7 @@ class TaskService
      */
     public function taskIndex($task_id) {
         $task = Task::where('id', (int)$task_id)->first();
+        $val = $task->photos;
         if(!empty($task)) {
             $photos = (!empty($task->photos)) ? array_map(function ($val) {return asset('storage/uploads/' . $val);}, json_decode($task->photos) ?? []) : [];
             $user_response = TaskResponse::query()
