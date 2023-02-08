@@ -54,16 +54,13 @@
                             @endif
                             <form action="{{route('profile.EditDescription')}}" method="POST" class="formdesc hidden">
                                 @csrf
-                                <textarea name="description" name="description"
-                                          class="w-full h-32 border border-gray-400 focus:outline-none focus:border-yellow-500 py-2 px-4 mt-3"
-                                          @if (!$user->description) placeholder="{{__('Введите описание')}}"@endif >
-                                    @if ($user->description){{$user->description}}@endif</textarea><br>
-                                <input type="submit"
-                                       class="bg-green-500 cursor-pointer hover:bg-green-600 text-white py-2 px-6 rounded cursor-"
+                                <textarea name="description" class="w-full h-32 border border-gray-400 focus:outline-none focus:border-yellow-500 py-2 px-4 mt-3"
+                                    @if (!$user->description) placeholder="{{__('Введите описание')}}" @endif>
+                                    @if ($user->description) {{$user->description}}@endif</textarea><br>
+                                <input type="submit" class="bg-green-500 cursor-pointer hover:bg-green-600 text-white py-2 px-6 rounded cursor-"
                                        id="s1" value="{{__('Сохранить')}}">
-                                <a id="s2"
-                                   class="border-dotted border-b-2 mx-4 pb-1 text-gray-500 hover:text-red-500 hover:border-red-500"
-                                   href="">{{__('Отмена')}}
+                                <a id="s2" href="" class="border-dotted border-b-2 mx-4 pb-1 text-gray-500 hover:text-red-500 hover:border-red-500">
+                                    {{__('Отмена')}}
                                 </a>
                             </form>
                         </div>
@@ -109,8 +106,7 @@
                                    class="border my-6 border-gray-400 mr-auto w-56 h-48 mr-6 sm:mb-0 mb-8">
                                     <img src="{{ count(json_decode($portfolio->image)) == 0 ? '': asset('/storage/portfolio/' . json_decode($portfolio->image)[0]) }}"
                                         alt="#" class="w-56 h-48">
-                                    <div
-                                        class="h-12 flex relative bottom-12 w-full bg-black opacity-75 hover:opacity-100 items-center">
+                                    <div class="h-12 flex relative bottom-12 w-full bg-black opacity-75 hover:opacity-100 items-center">
                                         <p class="w-2/3 text-center text-base text-white">{{$portfolio->comment}}</p>
                                         <div class="w-1/3 flex items-center">
                                             <i class="fas fa-camera float-right text-white text-2xl m-2"></i>

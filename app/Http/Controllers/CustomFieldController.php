@@ -3,19 +3,15 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\CustomField;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Redirector;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
-use TCG\Voyager\Http\Controllers\VoyagerBreadController;
 
 class CustomFieldController extends VoyagerBaseController
 {
     /**
      * @param Request $request
-     * @return Application|Redirector|RedirectResponse
+     * @return RedirectResponse
      */
     final public function store(Request $request)
     {
@@ -28,7 +24,7 @@ class CustomFieldController extends VoyagerBaseController
      * Function  update
      * @param Request $request
      * @param $id
-     * @return Application|Redirector|RedirectResponse
+     * @return RedirectResponse
      */
     final public function update(Request $request, $id)
     {
