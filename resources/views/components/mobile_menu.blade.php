@@ -161,21 +161,21 @@
                             <!-- language blog -->
                             <div class="text-gray-500 mt-2">
                                 <div class="flex">
-                                    @if(session('lang') === 'ru')
-                                        <a href="{{route('lang', ['lang'=>'uz'])}}" class="hover:text-red-500 mr-2">
-                                            UZ
+                                    @if (session('lang') === 'ru')
+                                        <a href="{{route('lang', ['lang'=>'uz'])}}" class="hover:text-red-500 mr-2 font-bold">
+                                            O'zbek
                                         </a>
                                         I
-                                        <a href="{{route('lang', ['lang'=>'ru'])}}" class="hover:text-red-500 text-red-500 ml-2">
-                                            RU
-                                        </a>
+                                        <p class="text-red-500 ml-2 font-bold">
+                                            Русский
+                                        </p>
                                     @else
-                                        <a href="{{route('lang', ['lang'=>'uz'])}}" class="hover:text-red-500 text-red-500 mr-2">
-                                            UZ
-                                        </a>
+                                        <p class="text-red-500 mr-2 font-bold">
+                                            O'zbek
+                                        </p>
                                         I
-                                        <a href="{{route('lang', ['lang'=>'ru'])}}" class="hover:text-red-500 ml-2">
-                                            RU
+                                        <a href="{{route('lang', ['lang'=>'ru'])}}" class="hover:text-red-500 ml-2 font-bold">
+                                            Русский
                                         </a>
                                     @endif
                                 </div>
@@ -199,20 +199,20 @@
                             <div class="text-gray-500 mt-2">
                                 <div class="flex">
                                     @if (session('lang') === 'ru')
-                                        <a href="{{route('lang', ['lang'=>'uz'])}}" class="hover:text-red-500 mr-2">
-                                            UZ
+                                        <a href="{{route('lang', ['lang'=>'uz'])}}" class="hover:text-red-500 mr-2 font-bold">
+                                            O'zbek
                                         </a>
                                         I
-                                        <a href="{{route('lang', ['lang'=>'ru'])}}" class="text-red-500 hover:text-gray-500-500 ml-2">
-                                            RU
-                                        </a>
+                                        <p class="text-red-500 ml-2 font-bold">
+                                            Русский
+                                        </p>
                                     @else
-                                        <a href="{{route('lang', ['lang'=>'uz'])}}" class="text-red-500 hover:text-gray-500 mr-2">
-                                            UZ
-                                        </a>
+                                        <p class="text-red-500 mr-2 font-bold">
+                                            O'zbek
+                                        </p>
                                         I
-                                        <a href="{{route('lang', ['lang'=>'ru'])}}" class="hover:text-red-500 ml-2">
-                                            RU
+                                        <a href="{{route('lang', ['lang'=>'ru'])}}" class="hover:text-red-500 ml-2 font-bold">
+                                            Русский
                                         </a>
                                     @endif
                                 </div>

@@ -24,7 +24,7 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     use Response;
 
-    public function home(Category $id)
+    public function home()
     {
         $lang = Session::get('lang');
         $service = new ControllerService();
