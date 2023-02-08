@@ -61,7 +61,7 @@ class TaskService
                 'description' => $task->description,
                 'phone' => $task->phone,
                 'performer_id' => $task->performer_id,
-                'performer' => (!empty($performer_response)) ? new PerformerResponseResource($performer_response) : [],
+                'performer' => (!empty($performer_response)) ? new PerformerResponseResource($performer_response) : null,
                 'other'=> $task->category->name === "Что-то другое" || $task->category->name === "Boshqa narsa",
                 'parent_category_name'=>$task->category->parent->getTranslatedAttribute('name', app()->getLocale(), 'ru'),
                 'category_name' => $task->category->getTranslatedAttribute('name', app()->getLocale(), 'ru'),
