@@ -50,7 +50,9 @@ class UserController extends Controller
     public function reset_submit(ResetRequest $request)
     {
         $service = new UserService();
-        $service->reset_submit($request);
+        $data = $request->validated();
+        $phone_number = $data['phone_number'];
+        $service->reset_submit($phone_number);
         return redirect()->route('user.reset_code_view');
     }
 
@@ -67,7 +69,9 @@ class UserController extends Controller
     public function reset_code(ResetCodeRequest $request)
     {
         $service = new UserService();
-        return $service->reset_code($request);
+        $data = $request->validated();
+        $email = $data['email'];
+        return $service->reset_code($email);
     }
 
     public function reset_code_view()

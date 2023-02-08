@@ -16,31 +16,29 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class UserService
 {
-    public function reset_submit($request){
-        $data = $request->validated();
+    public function reset_submit($phone_number){
         /** @var User $user */
-        $user = User::query()->where('phone_number', $data['phone_number'])->first();
+        $user = User::query()->where('phone_number', $phone_number)->first();
         $code = random_int(100000, 999999);
         $user->verify_code = $code;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
         $message = config('app.name').' '. __("Код подтверждения") . ' ' . $code;
-        SmsMobileService::sms_packages(correctPhoneNumber($data['phone_number']), $message);
+        SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
 
-        session()->put('verifications', ['key' => 'phone_number', 'value' => $data['phone_number']]);
+        session()->put('verifications', ['key' => 'phone_number', 'value' => $phone_number]);
     }
 
-    public function reset_by_email($request) {
-        $data = $request->validated();
+    public function reset_by_email($email) {
         /** @var User $user */
-        $user = User::query()->where('email', $data['email'])->first();
+        $user = User::query()->where('email', $email)->first();
         $sms_otp = random_int(100000, 999999);
         $message = config('app.name').' ' . __("Код подтверждения") . ' ' . $sms_otp;
 
         $user->verify_code = $sms_otp;
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
-        session()->put('verifications', ['key' => 'email', 'value' => $data['email']]);
+        session()->put('verifications', ['key' => 'email', 'value' => $email]);
 
         Mail::to($user->email)->send(new VerifyEmail($message));
         Alert::success(__('Поздравляю'), __('Ваш проверочный код успешно отправлен на') . $user->email);
