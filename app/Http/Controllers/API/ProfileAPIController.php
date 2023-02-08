@@ -15,7 +15,6 @@ use App\Http\Requests\Api\UserReportRequest;
 use App\Http\Requests\UserBlockRequest;
 use App\Http\Resources\PortfolioIndexResource;
 use App\Http\Resources\ResponseTemplateResource;
-use App\Http\Resources\ReviewIndexResource;
 use App\Http\Resources\UserIndexResource;
 use App\Models\BlockedUser;
 use App\Models\Portfolio;
@@ -29,7 +28,6 @@ use Illuminate\Http\JsonResponse as JsonResponseAlias;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use function React\Promise\all;
 
 class ProfileAPIController extends Controller
 {
@@ -62,10 +60,10 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function index(): UserIndexResource
+    public function index()
     {
         $user = Auth::user();
-        return new UserIndexResource($user);
+        return $this->profileService->index($user);
     }
 
 
