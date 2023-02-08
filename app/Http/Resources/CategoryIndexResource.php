@@ -19,7 +19,7 @@ class CategoryIndexResource extends JsonResource
             'parent_id' => $this->parent_id,
             'name' => $this->getTranslatedAttribute('name'),
             'child_count' => $this->childs()->count(),
-            'ico' => asset('storage/' . lcfirst($this->ico)),
+            'ico' => asset('storage/' . $this->ico),
         ];
     }
 }
