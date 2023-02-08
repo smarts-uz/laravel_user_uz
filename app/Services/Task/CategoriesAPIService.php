@@ -9,7 +9,7 @@ class CategoriesAPIService
 {
     public function index() {
         $categories = Category::query()->select('id', 'parent_id', 'name', 'ico')->withTranslation(app()->getLocale())->whereNull('parent_id')->orderBy("order", "asc")->get();
-        return $this->category($categories);
+        return $this->category($categories);;
     }
     public function show($category) {
         $data = (!empty($category)) ? [
@@ -38,17 +38,21 @@ class CategoriesAPIService
         if ($name) {
             $categories->where('name', 'LIKE', "%$name%");
         }
-        return $this->category($categories);
+        return $this->category($categories->get());
     }
 
     private function category($categories) {
-        $data = (!empty($categories)) ? [
-            'id' => $categories->id,
-            'parent_id' => $categories->parent_id,
-            'name' => $categories->getTranslatedAttribute('name'),
-            'child_count' =>$categories->childs()->count(),
-            'ico' => asset('storage/' . lcfirst($categories->ico)),
-        ] : [];
+        $data = [];
+        foreach ($categories as $category) {
+            $data[] = (!empty($categories)) ? [
+                'id' => $category->id,
+                'parent_id' => $category->parent_id,
+                'name' => $category->getTranslatedAttribute('name'),
+                'child_count' =>$category->childs()->count(),
+                'ico' => asset('storage/' . $category->ico),
+            ] : [];
+        }
+
         return ['data' => $data];
     }
 
