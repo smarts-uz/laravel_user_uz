@@ -209,6 +209,4 @@ class UpdateAPIController extends Controller
         DB::commit();
         return response()->json(['success' => true, 'message' => __('Успешно отправлено')]);  //back();
     }
-
-
 }

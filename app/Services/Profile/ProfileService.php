@@ -2,6 +2,7 @@
 
 namespace App\Services\Profile;
 
+use App\Http\Resources\CategoryIndexResource;
 use App\Http\Resources\PortfolioIndexResource;
 use App\Http\Resources\ReviewIndexResource;
 use App\Http\Resources\TransactionHistoryCollection;
@@ -9,6 +10,7 @@ use App\Item\ProfileCashItem;
 use App\Item\ProfileDataItem;
 use App\Item\ProfileSettingItem;
 use App\Item\VerificationCategoryItem;
+use App\Models\BlockedUser;
 use App\Models\Region;
 use App\Models\Review;
 use App\Models\Session;
@@ -19,9 +21,6 @@ use App\Models\UserCategory;
 use App\Models\WalletBalance;
 use App\Services\SmsMobileService;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
@@ -37,6 +36,184 @@ use UAParser\Parser;
 class ProfileService
 {
     public const MAX_TRANSACTIONS = 15;
+
+    public function index($user)
+    {
+        if(isset($user->password)) {
+            $socialPassword=false;
+        }
+        else{
+            $socialPassword=true;
+        }
+
+        $user->locale = app()->getLocale();
+        $file = "storage/portfolio/{$user->name}";
+        if (!file_exists($file)) {
+            File::makeDirectory($file);
+        }
+        $b = File::directories(public_path("storage/portfolio/{$user->name}"));
+        $directories = array_map('basename', $b);
+        if (WalletBalance::query()->where('user_id', $user->id)->first() !== null){
+            $balance = WalletBalance::query()->where('user_id', $this->id)->first()->balance;
+        }else{
+            $balance = 0;
+        }
+
+        $achievements = [];
+
+        // check verify part
+        if ($user->is_email_verified && $user->is_phone_number_verified) {
+            $email_phone_photo = asset('images/verify.png');
+            $message = __('Номер телефона и Е-mail пользователя подтверждены');
+        }
+        else {
+            $email_phone_photo = asset('images/verify_gray.png');
+            $message = __('Номер телефона и Е-mail пользователя неподтверждены');
+        }
+        $achievements[] = [
+            'image' => $email_phone_photo,
+            'message' => $message
+        ];
+
+        $service = new ProfileService();
+        $item = $service->profileData($this);
+
+        // check top performer part
+        if (in_array($user->id, $item->top_users, true)) {
+            $best = asset('images/best.png');
+            $message = __('Входит в ТОП-20 исполнителей USer.Uz');
+        } else {
+            $best = asset('images/best_gray.png');
+            $message = __('Не входит в ТОП-20 всех исполнителей USer.Uz');
+        }
+        $achievements[] = [
+            'image' => $best,
+            'message' => $message
+        ];
+
+        // check completed tasks count bigger than 50
+        if ($user->reviews >= 50) {
+            $task_count = asset('images/50.png');
+            $message = __('Более 50 выполненных заданий');
+        } else {
+            $task_count = asset('images/50_gray.png');
+            $message = __('Не более 50 выполненных заданий');
+        }
+        $achievements[] = [
+            'image' => $task_count,
+            'message' => $message
+        ];
+
+        $goodReviews = $user->goodReviews();
+        $lastReview = $goodReviews->get()->last();
+        if((int)$user->gender === 1){
+            $date_gender = __('Был онлайн');
+        }else{
+            $date_gender = __('Была онлайн');
+        }
+        $date = Carbon::now()->subMinutes(2)->toDateTimeString();
+        if ($user->last_seen >= $date) {
+            $lastSeen = __('В сети');
+        } else {
+            $seenDate = Carbon::parse($user->last_seen);
+            $seenDate->locale(app()->getLocale() . '-' . app()->getLocale());
+            if(app()->getLocale()==='uz'){
+                $lastSeen = $seenDate->diffForHumans().' onlayn edi';
+            }else{
+                $lastSeen = $date_gender. $seenDate->diffForHumans();
+            }
+        }
+        $age = Carbon::parse($user->born_date)->age;
+        $born_date = Carbon::parse($user->born_date)->format('Y-m-d');
+        $user_exists = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$user->id)->exists();
+        if(!$user_exists){
+            $blocked_user = 0;
+            $user_avatar = asset('storage/'.$user->avatar);
+        }else{
+            $blocked_user = 1;
+            $user_avatar = asset("images/block-user.jpg");
+        }
+
+        $user_categories = UserCategory::query()->where('user_id',$user->id)->pluck('category_id')->toArray();
+        $categories = CategoryIndexResource::collection(Category::query()
+            ->select('id', 'parent_id', 'name', 'ico')
+            ->whereIn('id', $user_categories)
+            ->get());
+        $performed_tasks_count = [];
+        foreach ($categories as $category) {
+            $performed_tasks_count[] = [
+                'name' => $category->getTranslatedAttribute('name')
+            ];
+        }
+
+        $statuses = [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED];
+        $portfolios = $user->portfolios;
+        $portfolio = [
+            'id' => $portfolios->id,
+            'user_id' => $portfolios->user_id,
+            'comment' => $portfolios->comment,
+            'description' => $portfolios->description,
+            'images' => $this->makeAssets(json_decode($portfolios->image??"[]")),
+        ];
+        $data = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'social_password'=> $socialPassword,
+            'last_name' => $user->last_name,
+            'email' => $user->email,
+            'avatar' => $user_avatar,
+            'video' => $user->youtube_link,
+            'active_task' => $user->active_task,
+            'active_step' => $user->active_step,
+            'tasks_count' => $performed_tasks_count,
+            'achievements' => $achievements,
+            'phone_number' => correctPhoneNumber($user->phone_number),
+            'location' => $user->location,
+            'district' => $user->district,
+            'age' => $age,
+            'description' => $user->description,
+            'categories' => $categories,
+            'email_verified' => boolval($user->is_email_verified),
+            'phone_verified' => boolval($user->is_phone_number_verified),
+            'google_id' => $user->google_id,
+            'facebook_id' => $user->facebook_id,
+            'born_date' => $born_date,
+            'created_tasks' => Task::query()->where(['user_id' => $user->id])->whereIn('status', $statuses)->get()->count(),
+            'performed_tasks' => Task::query()->where(['performer_id' => $user->id])->where('status', Task::STATUS_COMPLETE)->get()->count(),
+            'reviews' => [
+                'review_bad' => $user->review_bad,
+                'review_good' => $user->review_good,
+                'rating' => $user->review_rating,
+                'last_review' => $lastReview ? [
+                    'description' => $lastReview->description,
+                    'reviewer_name' => $lastReview->reviewer_name
+                ] : null
+            ],
+            'phone_number_old' => $user->phone_number_old,
+            'system_notification' =>$user->system_notification,
+            'news_notification' => $user->news_notification,
+            'portfolios' => $portfolio,
+            'portfolios_count' => Portfolio::query()->where('user_id',$user->id)->get()->count(),
+            'views' => $user->performer_views()->count(),
+            'directories' => $directories,
+            'wallet_balance' => $balance,
+            'work_experience'=>$user->work_experience,
+            'last_seen' => $lastSeen,
+            'last_version'=> setting('admin.last_version'),
+            'gender'=> $user->gender,
+            'blocked_user'=> $blocked_user,
+            'created_at' => $user->created_at
+        ];
+        return ['data' => $data];
+    }
+
+    public function makeAssets($collection){
+        $arr = [];
+        foreach ($collection as $item) {
+            $arr[] = asset('/storage/portfolio/'.$item);
+        }
+        return $arr;
+    }
 
     /**
      *
