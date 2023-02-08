@@ -128,7 +128,7 @@ class UserController extends Controller
     {
         $data = $request->validated();
         /** @var Task $task */
-        $task = Task::query()->find($data['for_ver_func']);
+        $task = Task::select('phone')->find($data['for_ver_func']);
 
         if ((int)$data['sms_otp'] === (int)$user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
@@ -140,16 +140,16 @@ class UserController extends Controller
                     $user->save();
                 }
                 if ($task->phone === null) {
-                    Task::query()->findOrFail($data['for_ver_func'])->update([
+                    Task::findOrFail($data['for_ver_func'])->update([
                         'status' => 1, 'user_id' => $user->id, 'phone' => correctPhoneNumber($user->phone_number)
                     ]);
                 } else {
-                    Task::query()->findOrFail($data['for_ver_func'])->update(['status' => Task::STATUS_OPEN, 'user_id' => $user->id,]);
+                    Task::findOrFail($data['for_ver_func'])->update(['status' => Task::STATUS_OPEN, 'user_id' => $user->id,]);
                 }
                 auth()->login($user);
 
                 // send notification
-                NotificationService::sendTaskNotification($task, $user->id);
+                //NotificationService::sendTaskNotification($task, $user->id);
 
                 return redirect()->route('searchTask.task', $data['for_ver_func']);
             }

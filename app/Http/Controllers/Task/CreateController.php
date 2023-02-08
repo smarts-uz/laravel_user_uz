@@ -325,13 +325,14 @@ class CreateController extends Controller
      * @return  RedirectResponse
      * @throws Exception
      */
-    public function contact_store(Task $task, CreateContactRequest $request): RedirectResponse
+    public function contact_store(int $task_id, CreateContactRequest $request): RedirectResponse
     {
+        $task = Task::find($task_id);
         /** @var User $user */
         $user = auth()->user();
         $data = $request->validated();
         if (!($user->is_phone_number_verified && $user->phone_number === $data['phone_number'])) {
-            VerificationService::send_verification('phone', $user, $data['phone_number']);
+            //VerificationService::send_verification('phone', $user, $data['phone_number']);
             $task->phone = $data['phone_number'];
             if ($user->phone_number === null) {
                 $user->phone_number = $task->phone;
@@ -344,9 +345,7 @@ class CreateController extends Controller
         $task->status = Task::STATUS_OPEN;
         $task->user_id = $user->id;
         $task->phone = $data['phone_number'];
-
-        $this->service->perform_notification($task, $user);
-
+        //$this->service->perform_notification($task, $user);
         $task->save();
         return redirect()->route('searchTask.task', $task->id);
     }
@@ -359,8 +358,9 @@ class CreateController extends Controller
      * @return  RedirectResponse
      * @throws Exception
      */
-    public function contact_register(Task $task, UserRequest $request): RedirectResponse
+    public function contact_register(int $task_id, UserRequest $request): RedirectResponse
     {
+        $task = Task::select('phone')->first($task_id);
         $data = $request->validated();
         $data['password'] = Hash::make($request->get('password'));
         unset($data['password_confirmation']);
@@ -393,13 +393,13 @@ class CreateController extends Controller
      * @return  RedirectResponse
      * @throws Exception
      */
-    public function contact_login(Task $task, UserPhoneRequest $request): RedirectResponse
+    public function contact_login($task_id, UserPhoneRequest $request): RedirectResponse
     {
         $request->validated();
         /** @var User $user */
-        $user = User::query()->where('phone_number', $request->get('phone_number'))->first();
+        $user = User::select('id', 'phone_number', 'email')->where('phone_number', $request->get('phone_number'))->first();
         VerificationService::send_verification('phone', $user, $user->phone_number);
-        return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id])->with(['not-show', 'true']);
+        return redirect()->route('task.create.verify', ['task' => $task_id, 'user' => $user->id])->with(['not-show', 'true']);
 
     }
 
@@ -410,8 +410,10 @@ class CreateController extends Controller
      * @param User $user
      * @return  Application|Factory|View
      */
-    public function verify(Task $task, User $user)
+    public function verify($task_id, User $user)
     {
+        dd($task_id);
+        $task = Task::select('name')->first($task_id);
         return view('create.verify', compact('task', 'user'));
     }
 

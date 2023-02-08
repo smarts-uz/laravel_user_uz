@@ -65,10 +65,10 @@ class SearchService
      * @param  $auth_response , $userId, $task Object
      * @param $userId
      * @param $task
-     * @return  SearchServiceTaskItem
      */
-    public function task_service($auth_response, $userId, $task, $filter): SearchServiceTaskItem
+    public function task_service($auth_response, $userId, $task_id, $filter)
     {
+        $task = Task::with('category')->find($task_id);
         if (auth()->check() && $userId !== $task->user_id) {
             $viewed_tasks = Cache::get('user_viewed_tasks' . $userId) ?? [];
             if (!in_array($task->id, $viewed_tasks)) {
@@ -92,11 +92,9 @@ class SearchService
             ->limit(Review::TOP_USER)->pluck('id')->toArray();
         $item->respons_reviews = Review::query()->where('task_id',$task->id)->get();
         $item->responses = match ($filter) {
-            'rating' => TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')
-                ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating')->get(),
+            'rating' => [],
             'date' => $item->responses->orderByDesc('created_at')->get(),
-            'reviews' => TaskResponse::query()->join('users', 'task_responses.performer_id', '=', 'users.id')
-                ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.reviews')->get(),
+            'reviews' => [],
             default => $item->responses->get(),
         };
         $value = Carbon::parse($task->created_at)->locale(getLocale());
@@ -112,7 +110,7 @@ class SearchService
         $value->minute < 10 ? $minut = '0' . $value->minute : $minut = $value->minute;
         $day = $value == now()->toDateTimeString() ? "Bugun" : "$value->day-$value->monthName";
         $item->start = "$day  $value->noZeroHour:$minut";
-        return $item;
+        return ['item' => $item, 'task' => $task];
     }
 
     /**

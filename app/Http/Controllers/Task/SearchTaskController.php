@@ -47,11 +47,12 @@ class SearchTaskController extends VoyagerBaseController
     }
 
     /**
-     * @param Task $task
+     * @param $task
      * @param Request $request
      */
-    public function task(Task $task, Request $request)
+    public function task(int $task_id, Request $request)
     {
+        $task = Task::select('user_id')->find($task_id);
         if (!$task->user_id) {
             abort(404);
         }
@@ -59,12 +60,13 @@ class SearchTaskController extends VoyagerBaseController
         $userId = auth()->id();
         $auth_response = auth()->check();
         $filter = $request->get('filter');
-        $item = $this->service->task_service($auth_response, $userId, $task, $filter);
-
+        $result = $this->service->task_service($auth_response, $userId, $task_id, $filter);
+        $item = $result['item'];
+        $tasks = $result['task'];
         return view('task.detailed-tasks',
             [
                 'review_description' => $item->review_description,
-                'task'               => $task,
+                'task'               => $tasks,
                 'created'            => $item->created,
                 'end'                => $item->end,
                 'start'              => $item->start,
