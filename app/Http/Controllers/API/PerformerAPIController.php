@@ -18,7 +18,6 @@ use App\Models\UserCategory;
 use App\Services\NotificationService;
 use App\Services\Profile\ProfileService;
 use App\Services\SmsMobileService;
-use App\Services\Task\PerformerAPIService;
 use Carbon\Carbon;
 use App\Services\PerformersService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -32,13 +31,11 @@ class PerformerAPIController extends Controller
 
     protected ProfileService $profileService;
     private PerformersService $performer_service;
-    public $service;
 
-    public function __construct(PerformerAPIService $performerAPIService)
+    public function __construct()
     {
         $this->performer_service = new PerformersService();
         $this->profileService = new ProfileService();
-        $this->service = $performerAPIService;
     }
 
     /**
@@ -68,11 +65,18 @@ class PerformerAPIController extends Controller
      * )
      *
      */
-    public function service(Request $request)
+    public function service(Request $request): AnonymousResourceCollection
     {
-        $online = $request->online;
-        $per_page = $request->get('per_page');
-        return $this->service->service($online, $per_page);
+        $performers = User::query()
+            ->where('role_id', User::ROLE_PERFORMER)
+            ->orderByDesc('review_rating')
+            ->orderByRaw('(review_good - review_bad) DESC');
+        if (isset($request->online))
+        {
+            $date = Carbon::now()->subMinutes(2)->toDateTimeString();
+            $performers = $performers->where('role_id', User::ROLE_PERFORMER)->where('last_seen', ">=",$date);
+        }
+        return PerformerIndexResource::collection($performers->paginate($request->get('per_page')));
     }
 
     /**
@@ -302,7 +306,15 @@ class PerformerAPIController extends Controller
         $data = $request->validated();
         /** @var User $user */
         $user = auth()->user();
-        $this->service->becomePerformerEmailPhone($data, $user);
+        if ($data['phone_number'] !== $user->phone_number) {
+            $user->phone_number = $data['phone_number'];
+            $user->is_phone_number_verified = 0;
+        }
+        if ($data['email'] !== $user->email) {
+            $user->email = $data['email'];
+            $user->is_email_verified = 0;
+        }
+        $user->save();
         return response()->json(['success' => 'true', 'message' => __('Успешно обновлено')]);
     }
 
@@ -348,6 +360,8 @@ class PerformerAPIController extends Controller
         $this->profileService->changeAvatar($filename, $user);
 
         return response()->json(['success' => true, 'message' => 'true']);
+
+
     }
 
     /**
@@ -423,9 +437,18 @@ class PerformerAPIController extends Controller
      */
     public function reviews(Request $request): JsonResponse
     {
-        $form = $request->get('from');
-        $type = $request->get('type');
-        return $this->service->reviews($form, $type);
+        $reviews = Review::query()
+            ->whereHas('task')->whereHas('user')
+            ->where('user_id',auth()->id())
+            ->fromUserType($request->get('from'))
+            ->type($request->get('type'))
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => ReviewIndexResource::collection($reviews),
+            'message' => 'Success'
+        ]);
     }
 
     /**
@@ -456,7 +479,11 @@ class PerformerAPIController extends Controller
      */
     public function performers_count($category_id): JsonResponse
     {
-        return $this->service->performers_count($category_id);
+        $user_category = UserCategory::query()->where('category_id',$category_id)->count();
+        return response()->json([
+            'success' => true,
+            'data' => $user_category,
+        ]);
     }
 
     /**
@@ -487,7 +514,28 @@ class PerformerAPIController extends Controller
      */
     public function performers_image($category_id): array
     {
-        return $this->service->performers_image($category_id);
+        $user_cat = UserCategory::query()->where('category_id',$category_id)->pluck('user_id')->toArray();
+        $user_image = User::query()->whereIn('id',$user_cat)->take(3)->get();
+        $images = [];
+        foreach ($user_image as $image){
+            $images[] = asset('storage/'.$image->avatar);
+        }
+        switch(count($user_image)) {
+            case(0):
+                $images[0] = asset('images/Rectangle2.png');
+                $images[1] = asset('images/Ellipse1.png');
+                $images[2] = asset('images/performer4.jpg');
+                break;
+            case(1):
+                $images[1] = asset('images/performer1.jpg');
+                $images[2] = asset('images/performer2.jpg');
+                break;
+            case(2):
+                $images[2] = asset('images/Rectangle4.png');
+                break;
+            default:
+        }
+        return ['data' => $images];
     }
 
 }
