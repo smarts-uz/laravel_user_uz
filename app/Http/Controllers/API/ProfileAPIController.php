@@ -15,7 +15,6 @@ use App\Http\Requests\Api\UserReportRequest;
 use App\Http\Requests\UserBlockRequest;
 use App\Http\Resources\PortfolioIndexResource;
 use App\Http\Resources\ResponseTemplateResource;
-use App\Http\Resources\UserIndexResource;
 use App\Models\BlockedUser;
 use App\Models\Portfolio;
 use App\Models\ReportedUser;
@@ -884,9 +883,10 @@ class ProfileAPIController extends Controller
     public function userProfile(User $user): JsonResponseAlias
     {
         (new PerformersService)->setView($user);
+        $data = $this->profileService->index($user);
         return response()->json([
             'success' => true,
-            'data' => new UserIndexResource($user)
+            'data' => $data
         ]);
     }
 
