@@ -40,11 +40,7 @@ class TaskService
     public function taskIndex($task_id) {
         $task = Task::where('id', (int)$task_id)->first();
         if(!empty($task)) {
-            $photos = array_map(function ($val) {
-                return asset('storage/uploads/' . $val);
-            },
-                json_decode(!empty($task->photos)) ?? []
-            );
+            $photos = (!empty($task->photos)) ? array_map(function ($val) {return asset('storage/uploads/' . $val);}, json_decode($task->photos) ?? []) : [];
             $user_response = TaskResponse::query()
                 ->where('task_id', $task->id)
                 ->where('performer_id', \auth()->guard('api')->id())
