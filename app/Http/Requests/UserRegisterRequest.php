@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserRegisterRequest extends FormRequest
 {
@@ -27,7 +25,7 @@ class UserRegisterRequest extends FormRequest
         return [
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'phone_number' =>  'numeric|unique:users|min:13',
+            'phone_number' =>  'required|numeric|unique:users|min:13',
             'password' => 'required|confirmed|min:8'
         ];
     }
@@ -42,6 +40,7 @@ class UserRegisterRequest extends FormRequest
             'password.required' => trans('login.password.required'),
             'password.min' => trans('login.password.min'),
             'password.confirmed' => trans('login.password.confirmed'),
+            'phone_number.required' => trans('login.phone_number.required'),
             'phone_number.unique' => trans('login.phone_number.unique')
         ];
     }
