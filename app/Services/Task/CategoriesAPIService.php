@@ -9,11 +9,13 @@ class CategoriesAPIService
 {
     public function index() {
         $categories = Category::query()->select('id', 'parent_id', 'name', 'ico')->withTranslation(app()->getLocale())->whereNull('parent_id')->orderBy("order", "asc")->get();
-        return $this->category($categories);;
+        return $this->category($categories);
     }
-    public function show($category) {
+    public function show($category_id, $lang) {
+        $category = Category::select('parent_id','name', 'ico', 'max', 'min', 'double_address')
+        ->withTranslation($lang)->find($category_id);
         $data = (!empty($category)) ? [
-            'id' => $category->id,
+            'id' => $category_id,
             'parent_id' => $category->parent_id,
             'name' => $category->name,
             'ico' => asset('storage/' . $category->ico),

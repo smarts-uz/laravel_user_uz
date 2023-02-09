@@ -173,9 +173,9 @@ class CategoriesAPIController extends Controller
      *     )
      * )
      */
-    public function show(Category $id, Request $request)
+    public function show($category_id, Request $request)
     {
-        $category = $id->translate($request->get('lang'));
-        return $this->service->show($category);
+        $lang = $request->get('lang');
+        return $this->service->show($category_id, $lang);
     }
 }
