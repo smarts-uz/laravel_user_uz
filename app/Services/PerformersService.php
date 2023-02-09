@@ -17,6 +17,7 @@ use App\Models\UserView;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Cache;
 use TCG\Voyager\Models\Category;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,16 +32,18 @@ class PerformersService
      * @param $search
      * @return  PerformerServiceItem
      */
-    public function service($authId,$search): PerformerServiceItem
+    public function service($authId, $search, ?string $lang = 'uz'): PerformerServiceItem
     {
+        $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use($lang) {
+            return Category::withTranslations($lang)->orderBy("order")->get();
+        });
+
         $item = new PerformerServiceItem();
         $item->tasks = Task::query()->where('user_id', $authId)
             ->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE])->orderBy('created_at', 'DESC')
             ->get();
-        $item->categories = Category::query()->where('parent_id', null)
-            ->select('id', 'name', 'slug')->orderBy("order", "asc")->get();
-        $item->categories2 = Category::query()->where('parent_id', '<>', null)
-            ->select('id', 'parent_id', 'name')->orderBy("order", "asc")->get();
+        $item->categories =  collect($category)->where('parent_id', null)->all();
+        $item->categories2 = collect($category)->where('parent_id', '!=', null)->all();
         $item->users = User::query()
             ->where('role_id', User::ROLE_PERFORMER)
             ->where('name', 'LIKE', "%{$search}%")
