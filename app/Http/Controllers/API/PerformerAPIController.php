@@ -157,7 +157,8 @@ class PerformerAPIController extends Controller
     public function performer_filter(Request $request): AnonymousResourceCollection
     {
         $data = $request->all();
-        return $this->performer_service->performer_filter($data);
+        $authId = Auth::id();
+        return $this->performer_service->performer_filter($data, $authId);
     }
 
     /**
@@ -426,7 +427,8 @@ class PerformerAPIController extends Controller
     {
         $from = $request->get('from');
         $type = $request->get('type');
-        $reviews = $this->performer_service->reviews($from, $type);
+        $authId = Auth::id();
+        $reviews = $this->performer_service->reviews($from, $type, $authId);
         return response()->json([
             'success' => true,
             'data' => ReviewIndexResource::collection($reviews),

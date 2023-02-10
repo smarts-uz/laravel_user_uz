@@ -48,7 +48,7 @@ class PerformersService
         $item->users = User::query()
             ->where('role_id', User::ROLE_PERFORMER)
             ->where('name', 'LIKE', "%{$search}%")
-            ->WhereNot('id', \auth()->id())
+            ->WhereNot('id', $authId)
             ->orderByDesc('review_rating')
             ->orderbyRaw('(review_good - review_bad) DESC')->paginate(50);
 
@@ -65,9 +65,10 @@ class PerformersService
      * Function  performer
      * @link https://user.uz/performers/354
      * @param $user
+     * @param $authId
      * @return  PerformerUserItem
      */
-    public function performer($user): PerformerUserItem
+    public function performer($user, $authId): PerformerUserItem
     {
         $item = new PerformerUserItem();
         $item->top_users = User::query()
@@ -80,7 +81,7 @@ class PerformersService
         $item->review_rating = $user->review_rating;
         $item->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->latest()->get();
         $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->latest()->get();
-        $item->task_count = Task::query()->where('user_id', Auth::id())
+        $item->task_count = Task::query()->where('user_id', $authId)
             ->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->get();
         $user_categories = UserCategory::query()->where('user_id', $user->id)->pluck('category_id')->toArray();
         $item->user_category = Category::query()->whereIn('id', $user_categories)->get();
@@ -110,7 +111,7 @@ class PerformersService
         $item->users = User::query()
             ->where('role_id', User::ROLE_PERFORMER)
             ->where('name', 'LIKE', "%{$search}%")
-            ->WhereNot('id', \auth()->id())
+            ->WhereNot('id', $authId)
             ->whereIn('id', $item->user_categories)
             ->orderByDesc('review_rating')
             ->orderbyRaw('(review_good - review_bad) DESC')->paginate(50);
@@ -128,13 +129,14 @@ class PerformersService
      * Function  perf_ajax
      * Mazkur metod performerlar bo'yicha filter qiladi
      * @param $data
+     * @param $authId
      * @return AnonymousResourceCollection
      */
-    public function performer_filter($data): AnonymousResourceCollection
+    public function performer_filter($data, $authId): AnonymousResourceCollection
     {
         $performers = User::query()
             ->where('role_id', User::ROLE_PERFORMER)
-            ->WhereNot('id', \auth()->id());
+            ->WhereNot('id', $authId);
 
         if (isset($data['categories'])) {
             $categories = is_array($data['categories']) ? $data['categories'] : json_decode($data['categories']);
@@ -322,13 +324,14 @@ class PerformersService
     /**
      * @param $from
      * @param $type
+     * @param $authId
      * @return mixed
      */
-    public function reviews($from, $type): mixed
+    public function reviews($from, $type, $authId): mixed
     {
         $reviews = Review::query()
             ->whereHas('task')->whereHas('user')
-            ->where('user_id', auth()->id())
+            ->where('user_id', $authId)
             ->fromUserType($from)
             ->type($type)
             ->get();
