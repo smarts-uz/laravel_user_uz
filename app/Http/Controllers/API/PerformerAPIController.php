@@ -71,10 +71,9 @@ class PerformerAPIController extends Controller
             ->where('role_id', User::ROLE_PERFORMER)
             ->orderByDesc('review_rating')
             ->orderByRaw('(review_good - review_bad) DESC');
-        if (isset($request->online))
-        {
+        if (isset($request->online)) {
             $date = Carbon::now()->subMinutes(2)->toDateTimeString();
-            $performers = $performers->where('role_id', User::ROLE_PERFORMER)->where('last_seen', ">=",$date);
+            $performers = $performers->where('role_id', User::ROLE_PERFORMER)->where('last_seen', ">=", $date);
         }
         return PerformerIndexResource::collection($performers->paginate($request->get('per_page')));
     }
@@ -158,7 +157,8 @@ class PerformerAPIController extends Controller
     public function performer_filter(Request $request): AnonymousResourceCollection
     {
         $data = $request->all();
-        return $this->performer_service->performer_filter($data);
+        $authId = Auth::id();
+        return $this->performer_service->performer_filter($data, $authId);
     }
 
     /**
@@ -256,10 +256,7 @@ class PerformerAPIController extends Controller
         $data = $request->validated();
         /** @var User $user */
         $user = auth()->user();
-        $data['born_date'] = Carbon::parse($data['born_date'])->format('Y-m-d');
-        $user->update($data);
-
-        return response()->json(['success' => 'true', 'message' => __('Успешно обновлено')]);
+        return $this->performer_service->becomePerformerData($user, $data);
     }
 
     /**
@@ -306,16 +303,7 @@ class PerformerAPIController extends Controller
         $data = $request->validated();
         /** @var User $user */
         $user = auth()->user();
-        if ($data['phone_number'] !== $user->phone_number) {
-            $user->phone_number = $data['phone_number'];
-            $user->is_phone_number_verified = 0;
-        }
-        if ($data['email'] !== $user->email) {
-            $user->email = $data['email'];
-            $user->is_email_verified = 0;
-        }
-        $user->save();
-        return response()->json(['success' => 'true', 'message' => __('Успешно обновлено')]);
+        return $this->performer_service->becomePerformerEmailPhone($user, $data);
     }
 
     /**
@@ -404,7 +392,7 @@ class PerformerAPIController extends Controller
 
         /** @var User $user */
         $user = Auth::user();
-        $categories = explode(",",$data['category_id']);
+        $categories = explode(",", $data['category_id']);
         $sms_notification = (int)$request->get('sms_notification');
         $email_notification = (int)$request->get('email_notification');
         $response = $this->profileService->subscribeToCategory($categories, $user, $sms_notification, $email_notification);
@@ -437,13 +425,10 @@ class PerformerAPIController extends Controller
      */
     public function reviews(Request $request): JsonResponse
     {
-        $reviews = Review::query()
-            ->whereHas('task')->whereHas('user')
-            ->where('user_id',auth()->id())
-            ->fromUserType($request->get('from'))
-            ->type($request->get('type'))
-            ->get();
-
+        $from = $request->get('from');
+        $type = $request->get('type');
+        $authId = Auth::id();
+        $reviews = $this->performer_service->reviews($from, $type, $authId);
         return response()->json([
             'success' => true,
             'data' => ReviewIndexResource::collection($reviews),
@@ -479,7 +464,7 @@ class PerformerAPIController extends Controller
      */
     public function performers_count($category_id): JsonResponse
     {
-        $user_category = UserCategory::query()->where('category_id',$category_id)->count();
+        $user_category = UserCategory::query()->where('category_id', $category_id)->count();
         return response()->json([
             'success' => true,
             'data' => $user_category,
@@ -514,27 +499,7 @@ class PerformerAPIController extends Controller
      */
     public function performers_image($category_id): array
     {
-        $user_cat = UserCategory::query()->where('category_id',$category_id)->pluck('user_id')->toArray();
-        $user_image = User::query()->whereIn('id',$user_cat)->take(3)->get();
-        $images = [];
-        foreach ($user_image as $image){
-            $images[] = asset('storage/'.$image->avatar);
-        }
-        switch(count($user_image)) {
-            case(0):
-                $images[0] = asset('images/Rectangle2.png');
-                $images[1] = asset('images/Ellipse1.png');
-                $images[2] = asset('images/performer4.jpg');
-                break;
-            case(1):
-                $images[1] = asset('images/performer1.jpg');
-                $images[2] = asset('images/performer2.jpg');
-                break;
-            case(2):
-                $images[2] = asset('images/Rectangle4.png');
-                break;
-            default:
-        }
+        $images = $this->performer_service->performers_image($category_id);
         return ['data' => $images];
     }
 

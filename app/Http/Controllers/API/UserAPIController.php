@@ -3,68 +3,37 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\ResetCodeRequest;
 use App\Http\Requests\Api\ResetPasswordRequest;
 use App\Http\Requests\Api\UserUpdateRequest;
 use App\Http\Requests\PhoneNumberRequest;
 use App\Http\Requests\Api\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
-use App\Http\Resources\NotificationResource;
-use App\Models\Notification;
-use App\Models\Session;
 use App\Models\User;
-use App\Models\WalletBalance;
-use App\Services\NotificationService;
 use App\Services\Response;
-use App\Services\SmsMobileService;
-use Carbon\Carbon;
+use App\Services\User\UserService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class UserAPIController extends Controller
 {
 
     use Response;
+    public UserService $service;
 
-    public function index(): JsonResponse
+    public function __construct(UserService $userService)
     {
-        $users = User::all();
-        return response()->json($users);
+        $this->service = $userService;
     }
 
 
-    function login(UserLoginRequest $request): JsonResponse
+    public function login(UserLoginRequest $request): JsonResponse
     {
         $request->authenticate();
         /** @var User $user */
         $user = auth()->user();
-        $accessToken = $user->createToken('authToken')->accessToken;
-
-        $expiresAt = now()->addMinutes(2); /* keep online for 2 min */
-        Cache::put('user-is-online-' . $user->id, true, $expiresAt);
-
-        /* last seen */
-        User::query()->where('id', $user->id)->update(['last_seen' => now()]);
-
-        return response()->json([
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'avatar' => asset('storage/' . $user->avatar),
-                'balance' => WalletBalance::query()->where(['user_id' => $user->id])->first()?->balance,
-                'phone_number' => correctPhoneNumber($user->phone_number),
-                'email_verified' => boolval($user->is_email_verified),
-                'phone_verified' => boolval($user->is_phone_number_verified),
-                'role_id' => $user->role_id,
-            ],
-            'access_token' => $accessToken,
-            'socialpas' => $user->has_password
-        ]);
+        return $this->service->login_api_service($user);
     }
 
 
@@ -93,22 +62,13 @@ class UserAPIController extends Controller
      *          description="Forbidden"
      *     ),
      * )
+     * @throws \Exception
      */
     public function reset_submit(PhoneNumberRequest $request): JsonResponse
     {
-
         $data = $request->validated();
-        /** @var User $user */
-        $user = User::query()->where('phone_number', '+' . $data['phone_number'])->firstOrFail();
-        $message = random_int(100000, 999999);
-        $user->verify_code = $message;
-        $user->verify_expiration = Carbon::now()->addMinutes(5);
-        $user->save();
-        $message = config('app.name').' '. __("Код подтверждения") . ' ' . $message;
-        $phone_number = $user->phone_number;
-        SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
-        session(['phone' => $data['phone_number']]);
-
+        $phone_number = $data['phone_number'];
+        $this->service->reset_submit_api($phone_number);
         return response()->json(['success' => true, 'message' => __('СМС-код отправлен!')]);
     }
 
@@ -153,18 +113,12 @@ class UserAPIController extends Controller
      *     ),
      * )
      */
-    public function reset_password_save(ResetPasswordRequest $request)
+    public function reset_password_save(ResetPasswordRequest $request): JsonResponse
     {
         $data = $request->validated();
-        /** @var User $user */
-        $user = User::query()->where('phone_number', '+' . $data['phone_number'])->firstOrFail();
-        $user->password = Hash::make($data['password']);
-        $user->save();
-        return response()->json([
-            'success' => true,
-            'message' => __('Пароль был изменен')
-        ]);
-
+        $phone_number = $data['phone_number'];
+        $password = $data['password'];
+        return $this->service->reset_save($phone_number, $password);
     }
 
 
@@ -203,53 +157,26 @@ class UserAPIController extends Controller
      *     ),
      * )
      */
-    public function reset_code(Request $request)
+    public function reset_code(ResetCodeRequest $request): JsonResponse
     {
-        $data = $request->validate([
-            'code' => 'required|numeric|min:6',
-            'phone_number' => 'required|numeric'
-        ]);
-        /** @var User $user */
-        $user = User::query()->where('phone_number', '+' . $data['phone_number'])->firstOrFail();
-
-        if ($data['code'] === $user->verify_code) {
-            if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-                return response()->json(['success' => true, 'message' => __('Введите новый пароль')]);
-            } else {
-                abort(419);
-            }
-        } else {
-            return response()->json(['success' => false, 'message' => __('Код ошибки')]);
-        }
+        $data = $request->validated();
+        $phone_number = $data['phone_number'];
+        $code = $data['code'];
+        return $this->service->reset_code($phone_number, $code);
     }
 
     public function register(UserRegisterRequest $request): JsonResponse
     {
         try {
             $data = $request->validated();
-            $data['password'] = Hash::make($data['password']);
-            unset($data['password_confirmation']);
-            /** @var User $user */
-            $user = User::query()->create($data);
-            $user->update(['phone_number' => $data['phone_number'] . '_' . $user->id]);
-            $wallBal = new WalletBalance();
-            $wallBal->balance = setting('admin.bonus');
-            $wallBal->user_id = $user->id;
-            $wallBal->save();
-            $user->api_token = Str::random(60);
-            $user->remember_token = Str::random(60);
-            $user->save();
-            Auth::login($user);
-            $accessToken = auth()->user()->createToken('authToken')->accessToken;
-            $auth_user = auth()->user();
-            return response()->json(['user' => $auth_user, 'access_token' => $accessToken, 'socialpas' => $user->has_password]);
+            return $this->service->register_api_service($data);
         } catch (ValidationException $e) {
             return response()->json(array_values($e->errors()));
         }
     }
 
 
-    public function update(UserUpdateRequest $request, $id)
+    public function update(UserUpdateRequest $request, $id): JsonResponse
     {
         $data = $request->validated();
         $user = User::query()->where('id', $id)->firstOrFail();
@@ -280,19 +207,9 @@ class UserAPIController extends Controller
      *     },
      * )
      */
-    public function getSupportId()
+    public function getSupportId(): JsonResponse
     {
-        /** @var User $user */
-        $user = User::query()->findOrFail(setting('site.moderator_id'));
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'avatar' => url('/storage') . '/' . $user->avatar,
-                'last_seen' => $user->last_seen
-            ]
-        ]);
+       return $this->service->getSupportId();
     }
 
     /**
@@ -317,23 +234,9 @@ class UserAPIController extends Controller
      *     },
      * )
      */
-    public function logout(Request $request)
+    public function logout(Request $request): JsonResponse
     {
-        /** @var User $user */
-        $user = auth()->user();
-        $user->tokens->each(function ($token, $key) {
-            $token->delete();
-        });
-
-        if ($request->get('device_id')) {
-            Session::query()
-                ->where('user_id', $user->id)
-                ->where('device_id', $request->get('device_id'))
-                ->delete();
-        }
-        return response()->json([
-            'success' => true,
-            'message' => __('Успешно вышел из системы')
-        ]);
+        $device_id = $request->get('device_id');
+        return $this->service->logout($device_id);
     }
 }

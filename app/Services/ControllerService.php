@@ -60,17 +60,21 @@ class ControllerService
      *
      * Function  my_tasks
      * Mazkur metod my_task sahifasini ochib beradi
-     * @param Object
+     * @param string|null $lang
      * @return  MyTaskItem
      */
-    public function my_tasks()
+    public function my_tasks(?string $lang = 'uz'): MyTaskItem
     {
+        $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use($lang) {
+            return \App\Models\Category::withTranslations($lang)->orderBy("order")->get();
+        });
+
         $item = new MyTaskItem();
         $item->user = auth()->user();
         $item->tasks = $item->user->tasks()->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->orderBy('created_at', 'desc')->get();
         $item->perform_tasks = $item->user->performer_tasks()->orderBy('created_at', 'desc')->get();
-        $item->categories = Category::query()->where('parent_id', null)->select('id', 'name', 'slug')->orderBy("order")->get();
-        $item->categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name', 'ico')->orderBy("order")->get();
+        $item->categories = collect($category)->where('parent_id', null)->all();
+        $item->categories2 = collect($category)->where('parent_id', '!=', null)->all();
         return $item;
     }
 
@@ -81,7 +85,7 @@ class ControllerService
      * @param Object
      * @return  UserInfoItem
      */
-    public function user_info($user)
+    public function user_info($user): UserInfoItem
     {
 
         $item = new UserInfoItem();

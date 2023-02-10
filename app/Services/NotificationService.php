@@ -8,6 +8,7 @@ use App\Mail\MessageEmail;
 use App\Models\Notification;
 use App\Models\UserCategory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
@@ -86,7 +87,7 @@ class NotificationService
                 "name_task" => $task->name,
                 "type" => Notification::TASK_CREATED
             ]);
-            $locale = cacheLang($performer->id);
+            $locale = (new CustomService)->cacheLang($performer->id);
             $price = number_format($task->budget, 0, '.', ' ');
             self::pushNotification($performer, [
                 'title' => self::titles($notification->type),
@@ -110,8 +111,8 @@ class NotificationService
                         'task_name' => $task->name, 'task_id' => $task->id, 'budget' => $price
                     ], $locale);
                 if ($performer->sms_notification) {
-                    $phone_number = $performer->phone_number;
-                    SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
+                    $phone_number = (new CustomService)->correctPhoneNumber($performer->phone_number);
+                    SmsMobileService::sms_packages($phone_number, $message);
                 }
                 info(json_encode($performer));
                 if ($performer->email_notification) {
@@ -184,7 +185,7 @@ class NotificationService
         // 1. Send notification to responded performer
         /** @var User $user */
         $user = auth()->user();
-        $locale = cacheLang($user->id);
+        $locale = (new CustomService)->cacheLang($user->id);
         /** @var Notification $notification */
         $notification = Notification::query()->create([
             'user_id' => $user->id,
@@ -219,7 +220,7 @@ class NotificationService
             "type" => Notification::RESPONSE_TO_TASK_FOR_USER
         ]);
 
-        $locale = cacheLang($task->user_id);
+        $locale = (new CustomService)->cacheLang($task->user_id);
 
         self::sendNotificationRequest([$task->user_id], [
             'created_date' => $notification->created_at->format('d M'),
@@ -252,9 +253,9 @@ class NotificationService
         $amount = number_format($amount, 0, '.', ' ');
         $message = __("Ваш баланс на сайте UserUz пополнен на сумму amount через payment_system. Номер транзакции = transaction_id ID пользователя = user_id", [
             'amount' => $amount, 'payment_system' => $payment_system, 'transaction_id' => $transaction_id, 'user_id' => $user_id
-        ], cacheLang($user_id));
-        $phone_number = $user->phone_number;
-        SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
+        ], (new CustomService)->cacheLang($user_id));
+        $phone_number = (new CustomService)->correctPhoneNumber($user->phone_number);
+        SmsMobileService::sms_packages($phone_number, $message);
         Mail::to($user->email)->send(new VerifyEmail($message));
     }
 
@@ -266,7 +267,7 @@ class NotificationService
      */
     public static function pushNoti(User $user, Notification $notification): void
     {
-        $locale = cacheLang($user->id);
+        $locale = (new CustomService)->cacheLang($user->id);
 
         self::pushNotification($user, [
             'title' => self::titles($notification->type, $locale),
@@ -385,14 +386,14 @@ class NotificationService
         };
         if ($users !== null){
             foreach ($users as $user) {
-                $phone_number = $user->phone_number;
-                SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $text);
+                $phone_number = (new CustomService)->correctPhoneNumber($user->phone_number);
+                SmsMobileService::sms_packages($phone_number, $text);
             }
         }
         if ($user_id !== null){
             $user = User::query()->findOrFail($user_id);
-            $phone_number = $user->phone_number;
-            SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $text);
+            $phone_number = (new CustomService)->correctPhoneNumber($user->phone_number);
+            SmsMobileService::sms_packages($phone_number, $text);
         }
 
         return ['success' => true, 'message' => 'success'];
@@ -425,6 +426,29 @@ class NotificationService
         }
 
         return ['success' => true, 'message' => 'success'];
+    }
+
+    public function task_create_notification($user, $task_id, $task_name, $task_category_id, $title, $body): JsonResponse
+    {
+        $user_cat_ids = UserCategory::query()->where('category_id', $task_category_id)->pluck('user_id')->toArray();
+        $performers = User::query()->whereIn('id', $user_cat_ids)->get();
+        foreach ($performers as $performer) {
+            $notification = [
+                'user_id' => $user->id,
+                'performer_id' => $performer->id,
+                'description' => 'description',
+                'task_id' => $task_id,
+                "cat_id" => $task_category_id,
+                "name_task" => $task_name,
+                "type" => Notification::TASK_CREATED
+            ];
+            self::pushNotification($performer, [
+                'title' => $title,
+                'body' => $body,
+            ], 'notification', $notification);
+        }
+
+        return response()->json(['success' => true, 'message' => 'success']);
     }
 
     /**

@@ -9,7 +9,7 @@
                     {{__('Отзывы исполнителей о Universal Services')}}
                 </h1>
                 <div class="text-base">
-                    {!! getContentText('performer_review', 'performer_review') !!}
+                    {!! App\Services\CustomService::getContentText('performer_review', 'performer_review') !!}
                 </div>
                 @foreach($performer_reviews as $performer_review)
                     <div class="border border-solid border-2 rounded-md bg-pink-50 my-3">

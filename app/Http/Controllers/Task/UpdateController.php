@@ -44,9 +44,8 @@ class UpdateController extends Controller
         session()->forget('images');
         $data['photos'] = json_encode($images);
         $requestAll = $request->all();
-        $data['coordinates'] = $this->service->addAdditionalAddress($task, $requestAll);
-        unset($data['location0']);
-        unset($data['coordinates0']);
+        $data['coordinates'] = $this->service->addAdditionalAddress($task->id, $requestAll);
+        unset($data['location0'], $data['coordinates0']);
         $task->update($data);
         $note = $request->validate([
             'description' => 'required|string',

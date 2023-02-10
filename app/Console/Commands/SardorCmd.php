@@ -7,7 +7,9 @@ use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\PerformersService;
+use App\Services\Task\CategoriesAPIService;
 use App\Services\Task\SearchService;
+use App\Services\Task\TaskService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,8 +46,7 @@ class SardorCmd extends Command
      */
     public function handle()
     {
-        $new = new ReportController();
-        $new->report();
+        (new TaskService)->taskIndex(2585);
     }
 
     private function testTaskSearch() {

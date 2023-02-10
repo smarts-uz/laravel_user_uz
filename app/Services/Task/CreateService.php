@@ -6,19 +6,18 @@ use App\Http\Resources\NotificationResource;
 use App\Item\CreateNameItem;
 use App\Models\Address;
 use App\Models\Category;
-use App\Models\CustomField;
 use App\Models\CustomFieldsValue;
 use App\Models\Notification;
 use App\Models\Task;
 use App\Models\User;
+use App\Services\CustomService;
 use App\Services\NotificationService;
 use App\Services\SmsMobileService;
-use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\HigherOrderBuilderProxy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 
 class CreateService
@@ -28,16 +27,19 @@ class CreateService
      *
      * Function  name
      * @param $category_id
+     * @param string|null $lang
      * @return  CreateNameItem
      */
-    public function name($category_id): CreateNameItem
+    public function name($category_id, ?string $lang = 'uz'): CreateNameItem
     {
+        $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use($lang) {
+            return Category::withTranslations($lang)->orderBy("order")->get();
+        });
+
         $item = new CreateNameItem();
         $item->current_category = Category::query()->findOrFail($category_id);
-        $item->categories = Category::query()->where('parent_id', null)
-            ->select('id', 'name', 'slug')->orderBy("order")->get();
-        $item->child_categories = Category::query()->where('parent_id', '<>', null)
-            ->select('id', 'parent_id', 'name')->orderBy("order")->get();
+        $item->categories = collect($category)->where('parent_id', null)->all();
+        $item->child_categories = collect($category)->where('parent_id', '!=', null)->all();
         return $item;
     }
     /**
@@ -102,7 +104,7 @@ class CreateService
             'description' => NotificationService::descriptions($notification)
         ]);
 
-        $locale = cacheLang($task->user_id);
+        $locale = (new CustomService)->cacheLang($task->user_id);
         NotificationService::pushNotification($task->user, [
             'title' => __('3адание отменено', [], $locale),
             'body' => __('Ваше задание task_name №task_id было отменено', [
@@ -191,13 +193,13 @@ class CreateService
         if ($performer_id) {
             /** @var User $performer */
             $performer = User::query()->findOrFail($performer_id);
-            $locale = cacheLang($performer_id);
+            $locale = (new CustomService)->cacheLang($performer_id);
             $text_url = route("searchTask.task", $task->id);
             $message = __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
                 'task_name' => $text_url, 'task_id' => $task->id, 'task_user' => $user->name
             ], $locale);
-            $phone_number=$performer->phone_number;
-            SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
+            $phone_number = (new CustomService)->correctPhoneNumber($performer->phone_number);
+            SmsMobileService::sms_packages($phone_number, $message);
 
             /** @var Notification $notification */
             $notification = Notification::query()->create([
@@ -215,9 +217,6 @@ class CreateService
                 'url' => route('show_notification', [$notification]),
                 'description' => NotificationService::descriptions($notification)
             ]);
-//            NotificationService::sendNotificationRequest([$performer_id], [
-//                'url' => 'detailed-tasks' . '/' . $task->id, 'name' => $task->name, 'time' => 'recently'
-//            ]);
 
             NotificationService::pushNotification($performer, [
                 'title' => __('Предложение', [], $locale), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [

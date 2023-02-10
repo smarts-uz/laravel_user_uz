@@ -3,10 +3,18 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\{
-    BlogController, PerformerAPIController, ProfileAPIController,
-    CategoriesAPIController, LoginAPIController, SessionController,
-    SocialAPIController, TaskAPIController, UpdateAPIController,
-    UserAPIController, SearchAPIController,FaqController
+    BlogController,
+    PerformerAPIController,
+    ProfileAPIController,
+    CategoriesAPIController,
+    LoginAPIController,
+    SessionController,
+    SocialAPIController,
+    TaskAPIController,
+    UpdateAPIController,
+    UserAPIController,
+    SearchAPIController,
+    FaqController
 };
 use App\Http\Controllers\{NotificationController, vendor\Chatify\Api\MessagesController, VoyagerTaskController};
 
@@ -25,7 +33,7 @@ use App\Http\Controllers\{NotificationController, vendor\Chatify\Api\MessagesCon
 Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::post('logout', [UserAPIController::class, 'logout']); // fix
     //Chat
-    Route::group(['prefix' => 'chat'], static function (){
+    Route::group(['prefix' => 'chat'], static function () {
         Route::post('/sendMessage', [MessagesController::class, 'send']); // fix
         Route::get('/getContacts', [MessagesController::class, 'getContacts']); // fix
         Route::get('/search', [MessagesController::class, 'search']); // fix
@@ -180,6 +188,7 @@ Route::post('/firebase-notification', [NotificationController::class, 'firebase_
 Route::post('/pusher-notification', [NotificationController::class, 'pusher_notification']);
 Route::post('/sms-notification', [NotificationController::class, 'sms_notification']);
 Route::post('/email-notification', [NotificationController::class, 'email_notification']);
+Route::post('/task-create-notification', [NotificationController::class, 'task_create_notification']);
 Route::get('/test-complete-task/{task}', [VoyagerTaskController::class, 'test_complete_task']);
 Route::get('/test-delete-task/{task}', [VoyagerTaskController::class, 'test_delete_task']);
 Route::get('/test-cancel-task/{task}', [VoyagerTaskController::class, 'test_cancel_task']);

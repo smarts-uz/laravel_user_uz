@@ -4,13 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\FirebaseTokenRequest;
 use App\Http\Resources\NotificationResource;
+use App\Mail\MessageEmail;
 use App\Models\Notification;
 use App\Models\Session;
+use App\Models\Task;
 use App\Models\User;
+use App\Models\UserCategory;
 use App\Services\NotificationService;
 use App\Services\Response;
+use App\Services\SmsMobileService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use TCG\Voyager\Events\BreadDataAdded;
 use TCG\Voyager\Facades\Voyager;
@@ -368,16 +373,15 @@ class NotificationController extends VoyagerBaseController
      *     },
      * )
      */
-    public function firebase_notification(Request $request): JsonResponse
+    public function firebase_notification(Request $request): array
     {
 
         $user_id = $request->get('user_id');
         $type = $request->get('type');
         $title = $request->get('title');
         $text = $request->get('text');
-        $this->notificationService->firebase_notif($type,$title,$text,$user_id);
 
-        return response()->json(['success' => true, 'message' => 'success']);
+        return $this->notificationService->firebase_notif($type,$title,$text,$user_id);
     }
 
     /**
@@ -427,16 +431,15 @@ class NotificationController extends VoyagerBaseController
      *     },
      * )
      */
-    public function pusher_notification(Request $request): JsonResponse
+    public function pusher_notification(Request $request): array
     {
 
         $user_id = $request->get('user_id');
         $type = $request->get('type');
         $title = $request->get('title');
         $text = $request->get('text');
-        $this->notificationService->pusher_notif($type, $title, $text, $user_id);
 
-        return response()->json(['success' => true, 'message' => 'success']);
+        return $this->notificationService->pusher_notif($type, $title, $text, $user_id);
     }
 
 
@@ -483,14 +486,13 @@ class NotificationController extends VoyagerBaseController
      *     },
      * )
      */
-    public function sms_notification(Request $request): JsonResponse
+    public function sms_notification(Request $request): array
     {
         $user_id = $request->get('user_id');
         $type = $request->get('type');
         $text = $request->get('text');
-        $this->notificationService->sms_notif($type, $text, $user_id);
 
-        return response()->json(['success' => true, 'message' => 'success']);
+        return $this->notificationService->sms_notif($type, $text, $user_id);
     }
 
 
@@ -537,13 +539,76 @@ class NotificationController extends VoyagerBaseController
      *     },
      * )
      */
-    public function email_notification(Request $request): JsonResponse
+    public function email_notification(Request $request): array
     {
         $user_id = $request->get('user_id');
         $type = $request->get('type');
         $text = $request->get('text');
-        $this->notificationService->email_notif($type, $text, $user_id);
 
-        return response()->json(['success' => true, 'message' => 'success']);
+        return $this->notificationService->email_notif($type, $text, $user_id);
     }
+
+
+    /**
+     * @OA\Post(
+     *     path="/api/task-create-notification",
+     *     tags={"Notifications"},
+     *     summary="task create notification",
+     *     @OA\RequestBody (
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="name",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="category_id",
+     *                    type="integer",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="title",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="body",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function task_create_notification(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = auth()->user();
+        $task_id = $request->get('id');
+        $task_name = $request->get('name');
+        $task_category_id = $request->get('category_id');
+        $title = $request->get('title');
+        $body = $request->get('body');
+        return $this->notificationService->task_create_notification($user, $task_id, $task_name, $task_category_id, $title, $body);
+    }
+
+
 }

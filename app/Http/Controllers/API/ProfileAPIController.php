@@ -15,13 +15,12 @@ use App\Http\Requests\Api\UserReportRequest;
 use App\Http\Requests\UserBlockRequest;
 use App\Http\Resources\PortfolioIndexResource;
 use App\Http\Resources\ResponseTemplateResource;
-use App\Http\Resources\ReviewIndexResource;
-use App\Http\Resources\UserIndexResource;
 use App\Models\BlockedUser;
 use App\Models\Portfolio;
 use App\Models\ReportedUser;
 use App\Models\ResponseTemplate;
 use App\Models\User;
+use App\Services\CustomService;
 use App\Services\PerformersService;
 use App\Services\Profile\ProfileService;
 use App\Services\VerificationService;
@@ -29,7 +28,6 @@ use Illuminate\Http\JsonResponse as JsonResponseAlias;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use function React\Promise\all;
 
 class ProfileAPIController extends Controller
 {
@@ -62,10 +60,10 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function index(): UserIndexResource
+    public function index()
     {
         $user = Auth::user();
-        return new UserIndexResource($user);
+        return $this->profileService->index($user);
     }
 
 
@@ -483,7 +481,7 @@ class ProfileAPIController extends Controller
         $user = auth()->user();
         return response()->json([
             'data' => [
-                'phone_number' => correctPhoneNumber($user->phone_number)
+                'phone_number' => (new CustomService)->correctPhoneNumber($user->phone_number)
             ]
         ]);
     }
@@ -746,7 +744,7 @@ class ProfileAPIController extends Controller
             'location' => $user->location,
             'date_of_birth' => $user->born_date,
             'email' => $user->email,
-            'phone' => correctPhoneNumber($user->phone_number),
+            'phone' => (new CustomService)->correctPhoneNumber($user->phone_number),
             'gender' => $user->gender,
         ];
         return response()->json([
@@ -886,9 +884,10 @@ class ProfileAPIController extends Controller
     public function userProfile(User $user): JsonResponseAlias
     {
         (new PerformersService)->setView($user);
+        $data = $this->profileService->index($user);
         return response()->json([
             'success' => true,
-            'data' => new UserIndexResource($user)
+            'data' => $data
         ]);
     }
 
@@ -1114,7 +1113,7 @@ class ProfileAPIController extends Controller
             VerificationService::send_verification('phone', $user, $user->phone_number);
             return response()->json([
                 'success' => true,
-                'phone_number' => correctPhoneNumber($user->phone_number),
+                'phone_number' => (new CustomService)->correctPhoneNumber($user->phone_number),
                 'message' => __('СМС-код отправлен!')
             ]);
         }

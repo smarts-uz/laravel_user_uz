@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\CustomService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,7 +38,7 @@ class Session extends Model
 
     public function getLastActiveAttribute()
     {
-        $value = Carbon::parse($this->last_activity)->tz('Asia/Tashkent')->locale(getLocale());
+        $value = Carbon::parse($this->last_activity)->tz('Asia/Tashkent')->locale((new CustomService)->getlocale());
         $value->minute < 10 ? $minut = '0' . $value->minute : $minut = $value->minute;
         return "$value->day-$value->monthName  $value->noZeroHour:$minut";
     }

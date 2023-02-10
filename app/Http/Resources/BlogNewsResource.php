@@ -14,13 +14,14 @@ class BlogNewsResource extends JsonResource
      */
     public function toArray($request)
     {
+        $img = (!empty($this->img)) ? asset('storage/'. $this->img) : '';
         return [
             'id' => $this->id,
-            'title' => $this->getTranslatedAttribute('title'),
-            'text' => $this->getTranslatedAttribute('text'),
-            'desc' => $this->getTranslatedAttribute('desc'),
-            'img' => asset('storage/'. $this->img),
-            'created_at' => $this->created_at
+            'title' => (!empty($this->title)) ? $this->getTranslatedAttribute('title') : '',
+            'text' => (!empty($this->text)) ? $this->getTranslatedAttribute('text') : '',
+            'desc' => (!empty($this->desc)) ? $this->getTranslatedAttribute('desc') : '',
+            'img' => $img,
+            'created_at' => (!empty($this->created_at)) ? $this->created_at : ''
         ];
     }
 }

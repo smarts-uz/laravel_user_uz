@@ -11,19 +11,19 @@
                     <h1 class="font-semibold text-4xl">
                         {{__('Как это работает?')}}
                     </h1>
-                    {!! getContentText('geotaskshint', 'geotaskshint_text') !!}
+                    {!! App\Services\CustomService::getContentText('geotaskshint', 'geotaskshint_text') !!}
                     <h1 class="font-medium text-4xl mt-10 text-center">
                         {{__('Как создать задание на Universal Services?')}}
                     </h1>
                     <h3 class="mt-10 font-medium text-2xl text-center mb-2">
-                        {!! getContentText('geotaskshint', 'geotaskshint_category') !!}
+                        {!! App\Services\CustomService::getContentText('geotaskshint', 'geotaskshint_category') !!}
                     </h3>
-                    <img src="{{ getContentImage('geotaskshint', 'geotaskshint_category') }}" class="mx-auto"/>
+                    <img src="{{ App\Services\CustomService::getContentImage('geotaskshint', 'geotaskshint_category') }}" class="mx-auto"/>
 
                     <p class="mt-10 font-medium text-2xl text-center mb-2">
-                        {!! getContentText('geotaskshint', 'geotaskshint_second') !!}
+                        {!! App\Services\CustomService::getContentText('geotaskshint', 'geotaskshint_second') !!}
                     </p>
-                    <img src="{{ getContentImage('geotaskshint', 'geotaskshint_second') }}" class="mx-auto"/>
+                    <img src="{{ App\Services\CustomService::getContentImage('geotaskshint', 'geotaskshint_second') }}" class="mx-auto"/>
                </div>
 
 
@@ -33,34 +33,34 @@
 
                 <div class="flex lg:flex-row flex-col mt-10 sm:w-4/5 w-full mx-auto">
                     <div class="lg:w-1/2 w-full my-auto text-center">
-                        {!! getContentText('geotaskshint', 'geotaskshint_ispolnitel') !!}
+                        {!! App\Services\CustomService::getContentText('geotaskshint', 'geotaskshint_ispolnitel') !!}
                     </div>
                     <div class="lg:w-1/2 w-full">
-                        <img src="{{ getContentImage('geotaskshint', 'geotaskshint_ispolnitel') }}" class="mx-auto w-80 h-64"/>
+                        <img src="{{ App\Services\CustomService::getContentImage('geotaskshint', 'geotaskshint_ispolnitel') }}" class="mx-auto w-80 h-64"/>
                     </div>
                 </div>
 
                 <div class="flex lg:flex-row flex-col mt-4 sm:w-4/5 w-full mx-auto">
                     <div class="lg:w-1/2 w-full lg:block hidden">
-                        <img src="{{ getContentImage('geotaskshint', 'geotaskshint_4') }}" class="mx-auto w-80 h-52"/>
+                        <img src="{{ App\Services\CustomService::getContentImage('geotaskshint', 'geotaskshint_4') }}" class="mx-auto w-80 h-52"/>
                     </div>
                     <div class="lg:w-1/2 w-full text-center ml-4 mt-4 lg:block hidden">
-                        {!! getContentText('geotaskshint', 'geotaskshint_4') !!}
+                        {!! App\Services\CustomService::getContentText('geotaskshint', 'geotaskshint_4') !!}
                     </div>
 
                     <div class="lg:w-1/2 w-full text-center ml-4 mt-4 lg:hidden block">
-                        {!! getContentText('geotaskshint', 'geotaskshint_4') !!}
+                        {!! App\Services\CustomService::getContentText('geotaskshint', 'geotaskshint_4') !!}
                     </div>
                     <div class="lg:w-1/2 w-full lg:hidden block">
-                        <img src="{{ getContentImage('geotaskshint', 'geotaskshint_4') }}" class="mx-auto w-80 h-52"/>
+                        <img src="{{ App\Services\CustomService::getContentImage('geotaskshint', 'geotaskshint_4') }}" class="mx-auto w-80 h-52"/>
                     </div>
                 </div>
                 <div class="flex lg:flex-row flex-col mt-10 sm:w-4/5 w-full mx-auto">
                     <div class="lg:w-1/2 w-full my-auto text-center">
-                        {!! getContentText('geotaskshint', 'geotaskshint_5') !!}
+                        {!! App\Services\CustomService::getContentText('geotaskshint', 'geotaskshint_5') !!}
                     </div>
                     <div class="lg:w-1/2 w-full ml-4 lg:mt-0 mt-8">
-                        <img src="{{ getContentImage('geotaskshint', 'geotaskshint_5') }}" class="mx-auto w-72 h-52"/>
+                        <img src="{{ App\Services\CustomService::getContentImage('geotaskshint', 'geotaskshint_5') }}" class="mx-auto w-72 h-52"/>
                     </div>
                 </div>
                 <div class="sm:w-4/5 w-full mx-auto mt-20">

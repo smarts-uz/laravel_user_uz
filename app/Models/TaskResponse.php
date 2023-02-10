@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\CustomService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -51,7 +52,7 @@ class TaskResponse extends Model
 
     public function getCreatedAttribute()
     {
-        $value = Carbon::parse($this->created_at)->locale(getLocale());
+        $value = Carbon::parse($this->created_at)->locale((new CustomService)->getlocale());
         $value->minute < 10 ? $minut = '0' . $value->minute : $minut = $value->minute;
         $day = $value == now()->toDateTimeString() ? "Bugun" : "$value->day-$value->monthName";
         return "$day $value->noZeroHour:$minut";

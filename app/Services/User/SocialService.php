@@ -3,9 +3,11 @@
 namespace App\Services\User;
 
 use App\Http\Resources\PerformerIndexResource;
+use App\Models\Notification;
 use App\Models\User;
 use App\Models\WalletBalance;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -13,7 +15,13 @@ use Laravel\Socialite\Facades\Socialite;
 
 class SocialService
 {
-    public static function login($provider, $token) {
+    /**
+     * @param $provider
+     * @param $token
+     * @return JsonResponse
+     */
+    public static function login($provider, $token): JsonResponse
+    {
 
         try {
             $providerUser = Socialite::driver($provider)->userFromToken($token);
@@ -79,4 +87,48 @@ class SocialService
         $name = explode('@', $email);
         return ucfirst(Arr::get($name, '0'));
     }
+
+    /**
+     * @param $findUser
+     * @return void
+     */
+    public function password_notif($findUser): void
+    {
+        Auth::login($findUser);
+        if (!($findUser->password)){
+            /** @var Notification $notification */
+            Notification::query()->create([
+                'user_id' => $findUser->id,
+                'description' => 'password',
+                'type' => Notification::NEW_PASSWORD,
+            ]);
+        }
+    }
+
+    /**
+     * @param $new_user
+     * @return void
+     */
+    public function social_wallet($new_user): void
+    {
+        $wallBal = new WalletBalance();
+        $wallBal->balance = setting('admin.bonus');
+        $wallBal->user_id = $new_user->id;
+        $wallBal->save();
+        /** @var Notification $notification */
+        Notification::query()->create([
+            'user_id' => $new_user->id,
+            'description' => 'password',
+            'type' => Notification::NEW_PASSWORD,
+        ]);
+        if(setting('admin.bonus')>0){
+            Notification::query()->create([
+                'user_id' => $new_user->id,
+                'description' => 'wallet',
+                'type' => Notification::WALLET_BALANCE,
+            ]);
+        }
+        Auth::login($new_user);
+    }
+
 }

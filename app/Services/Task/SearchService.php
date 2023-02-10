@@ -11,6 +11,7 @@ use App\Models\TaskResponse;
 use App\Models\User;
 use App\Models\Compliance;
 use App\Models\Review;
+use App\Services\CustomService;
 use App\Services\TelegramService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
@@ -97,16 +98,16 @@ class SearchService
             'reviews' => [],
             default => $item->responses->get(),
         };
-        $value = Carbon::parse($task->created_at)->locale(getLocale());
+        $value = Carbon::parse($task->created_at)->locale((new CustomService)->getlocale());
         $value->minute < 10 ? $minut = '0' . $value->minute : $minut = $value->minute;
         $day = $value == now()->toDateTimeString() ? "Bugun" : "$value->day-$value->monthName";
         $item->created = "$day  $value->noZeroHour:$minut";
 
-        $value = Carbon::parse($task->end_date)->locale(getLocale());
+        $value = Carbon::parse($task->end_date)->locale((new CustomService)->getlocale());
         $value->minute < 10 ? $minut = '0' . $value->minute : $minut = $value->minute;
         $item->end = "$value->day-$value->monthName  $value->noZeroHour:$minut";
 
-        $value = Carbon::parse($task->start_date)->locale(getLocale());
+        $value = Carbon::parse($task->start_date)->locale((new CustomService)->getlocale());
         $value->minute < 10 ? $minut = '0' . $value->minute : $minut = $value->minute;
         $day = $value == now()->toDateTimeString() ? "Bugun" : "$value->day-$value->monthName";
         $item->start = "$day  $value->noZeroHour:$minut";
@@ -198,12 +199,12 @@ class SearchService
             }
 
             if ($task->start_date) {
-                $value = Carbon::parse($task->start_date)->locale(getLocale());
+                $value = Carbon::parse($task->start_date)->locale((new CustomService)->getlocale());
                 $value->minute < 10 ? $minut = '0' . $value->minute : $minut = $value->minute;
                 $task->sd_parse = "$value->day-$value->monthName  $value->noZeroHour:$minut";
             }
             if ($task->end_date) {
-                $value = Carbon::parse($task->end_date)->locale(getLocale());
+                $value = Carbon::parse($task->end_date)->locale((new CustomService)->getlocale());
                 $value->minute < 10 ? $minut = '0' . $value->minute : $minut = $value->minute;
                 $task->ed_parse = "$value->day-$value->monthName  $value->noZeroHour:$minut";
             }

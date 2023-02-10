@@ -23,7 +23,7 @@
             <div class="ml-3 col-span-3">
                 <h5 class="font-bold text-gray-700 block">{{__('Телефон')}}</h5>
                 @if ($user->phone_number != '')
-                    <p class="text-gray-600 block ">{{ correctPhoneNumber($user->phone_number) }}</p>
+                    <p class="text-gray-600 block ">{{ (new App\Services\CustomService)->correctPhoneNumber($user->phone_number) }}</p>
                 @else
                     {{__('нет номера')}}
                 @endif
@@ -81,7 +81,7 @@
         @endif
     </div>
     <p class="mx-5 my-4">
-        {!! getContentText('profile', 'profile_text') !!}
+        {!! App\Services\CustomService::getContentText('profile', 'profile_text') !!}
     </p>
     @if(!$user->google_id)
         <div class="telefon ml-4 h-20 grid grid-cols-4">

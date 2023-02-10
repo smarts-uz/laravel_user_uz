@@ -6,6 +6,7 @@ use App\Http\Resources\MessageResource;
 use App\Http\Resources\UserInSearchChatResource;
 use App\Models\Chat\ChatifyMessenger;
 use App\Services\Chat\ContactService;
+use App\Services\CustomService;
 use App\Services\NotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -161,7 +162,7 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
                 'to_id' => $request['id'],
                 'message' => $chatMessenger->messageCard($messageData, 'default')
             ]);
-            $locale = cacheLang($request['id']);
+            $locale = (new CustomService)->cacheLang($request['id']);
             NotificationService::pushNotification(User::query()->find($request['id']), [
                 'title' => trans('Новое сообщение', [], $locale),
                 'body' => trans('У вас новое сообщение от user', ['user' => Auth::user()->name], $locale)

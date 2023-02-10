@@ -21289,6 +21289,10 @@
                         "type": "string",
                         "description": "Max"
                     },
+                    "options": {
+                        "type": "string",
+                        "description": "Options"
+                    },
                     "route": {
                         "enum": [
                             "name",

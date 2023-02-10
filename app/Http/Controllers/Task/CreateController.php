@@ -28,6 +28,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class CreateController extends Controller
@@ -50,8 +51,9 @@ class CreateController extends Controller
      */
     public function name(Request $request)
     {
+        $lang = Session::get('lang');
         $category_id = $request->get('category_id');
-        $item = $this->service->name($category_id);
+        $item = $this->service->name($category_id, $lang);
         return view("create.name", [
             'current_category'=>$item->current_category,
             'categories'=>$item->categories,

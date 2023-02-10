@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\BlockedUser;
+use App\Services\CustomService;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -43,7 +44,7 @@ class PerformerIndexResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'avatar' => $user_avatar,
-            'phone_number' => correctPhoneNumber($this->phone_number),
+            'phone_number' => (new CustomService)->correctPhoneNumber($this->phone_number),
             'location' => $this->location,
             'last_seen' => $lastSeen,
             'likes' => $this->review_good,
