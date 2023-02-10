@@ -30,6 +30,7 @@ class PerformersService
      * @link https://user.uz/performers
      * @param $authId
      * @param $search
+     * @param string|null $lang
      * @return  PerformerServiceItem
      */
     public function service($authId, $search, ?string $lang = 'uz'): PerformerServiceItem
@@ -83,7 +84,7 @@ class PerformersService
             ->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->get();
         $user_categories = UserCategory::query()->where('user_id', $user->id)->pluck('category_id')->toArray();
         $item->user_category = Category::query()->whereIn('id', $user_categories)->get();
-        $value = Carbon::parse($user->created_at)->locale(getLocale());
+        $value = Carbon::parse($user->created_at)->locale((new CustomService)->getLocale());
         $day = $value == now()->toDateTimeString() ? "Bugun" : "$value->day-$value->monthName";
         $item->created = "$day  {$value->year}";
         return $item;
@@ -203,8 +204,8 @@ class PerformersService
             $message = __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
                 'task_name' => $text_url, 'task_id' => $task_id, 'task_user' => $task_name->user?->name
             ]);
-            $phone_number = $performer->phone_number;
-            SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
+            $phone_number = (new CustomService)->correctPhoneNumber($performer->phone_number);
+            SmsMobileService::sms_packages($phone_number, $message);
             /** @var Notification $notification */
             $notification = Notification::query()->create([
                 'user_id' => $task_name->user_id,
@@ -221,7 +222,7 @@ class PerformersService
                 'url' => route('show_notification', [$notification]),
                 'description' => NotificationService::descriptions($notification)
             ]);
-            $locale = cacheLang($performer->id);
+            $locale = (new CustomService)->cacheLang($performer->id);
             NotificationService::pushNotification($performer, [
                 'title' => __('Предложение', [], $locale), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
                     'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name
@@ -239,12 +240,13 @@ class PerformersService
         $task = Task::query()->where('id', $task_id)->first();
         /** @var User $performer */
         $performer = User::query()->findOrFail($performer_id);
-        $locale = cacheLang($performer->id);
+        $locale = (new CustomService)->cacheLang($performer->id);
         $text_url = route("searchTask.task", $task_id);
         $message = __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
             'task_name' => $text_url, 'task_id' => $task->id, 'task_user' => $task->user?->name
         ], $locale);
-        SmsMobileService::sms_packages(correctPhoneNumber($performer->phone_number), $message);
+        $phone_number = (new CustomService)->correctPhoneNumber($performer->phone_number);
+        SmsMobileService::sms_packages($phone_number, $message);
         /** @var Notification $notification */
         $notification = Notification::query()->create([
             'user_id' => $task->user_id,
@@ -287,7 +289,11 @@ class PerformersService
         return false;
     }
 
-    public function performers_image($category_id)
+    /**
+     * @param $category_id
+     * @return array
+     */
+    public function performers_image($category_id): array
     {
         $user_cat = UserCategory::query()->where('category_id', $category_id)->pluck('user_id')->toArray();
         $user_image = User::query()->whereIn('id', $user_cat)->take(3)->get();
@@ -313,7 +319,12 @@ class PerformersService
         return $images;
     }
 
-    public function reviews($from, $type)
+    /**
+     * @param $from
+     * @param $type
+     * @return mixed
+     */
+    public function reviews($from, $type): mixed
     {
         $reviews = Review::query()
             ->whereHas('task')->whereHas('user')
@@ -325,7 +336,12 @@ class PerformersService
         return $reviews;
     }
 
-    public function becomePerformerEmailPhone($user, $data)
+    /**
+     * @param $user
+     * @param $data
+     * @return JsonResponse
+     */
+    public function becomePerformerEmailPhone($user, $data): JsonResponse
     {
         if ($data['phone_number'] !== $user->phone_number) {
             $user->phone_number = $data['phone_number'];
@@ -339,7 +355,12 @@ class PerformersService
         return response()->json(['success' => 'true', 'message' => __('Успешно обновлено')]);
     }
 
-    public function becomePerformerData($user, $data)
+    /**
+     * @param $user
+     * @param $data
+     * @return JsonResponse
+     */
+    public function becomePerformerData($user, $data): JsonResponse
     {
         $data['born_date'] = Carbon::parse($data['born_date'])->format('Y-m-d');
         $user->update($data);
