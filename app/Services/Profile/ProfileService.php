@@ -23,13 +23,16 @@ use App\Services\CustomService;
 use App\Services\SmsMobileService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Portfolio;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use JetBrains\PhpStorm\ArrayShape;
 use App\Models\Category;
+use RealRashid\SweetAlert\Facades\Alert;
 use UAParser\Exception\FileNotFoundException;
 use UAParser\Parser;
 
@@ -232,14 +235,19 @@ class ProfileService
      * Function  settingsEdit
      * Mazkur metod sozlamalar bo'limida ma'lumotlarni chiqarib beradi
      * @param $user
+     * @param $lang
      * @return ProfileSettingItem
      * @throws FileNotFoundException
      */
-    public function settingsEdit($user): ProfileSettingItem
+    public function settingsEdit($user, ?string $lang = 'uz'): ProfileSettingItem
     {
+        $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use($lang) {
+            return Category::withTranslations($lang)->orderBy("order")->get();
+        });
+
         $item = new ProfileSettingItem();
-        $item->categories = Category::query()->where('parent_id', null)->select('id', 'name')->orderBy("order")->get();
-        $item->categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->orderBy("order")->get();
+        $item->categories = collect($category)->where('parent_id', null)->all();
+        $item->categories2 = collect($category)->where('parent_id', '!=', null)->all();
         $item->regions = Region::all();
         $item->top_users = User::query()
             ->where('role_id', User::ROLE_PERFORMER)
@@ -692,13 +700,44 @@ class ProfileService
         return ($user && $user->walletBalance) ? ($user->walletBalance->balance) : (null);
     }
 
-    public function verifyCategory($user): VerificationCategoryItem
+    public function verifyCategory($user, ?string $lang = 'uz'): VerificationCategoryItem
     {
+        $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use($lang) {
+            return Category::withTranslations($lang)->orderBy("order")->get();
+        });
+
         $item = new VerificationCategoryItem();
-        $item->categories = Category::query()->where('parent_id', null)->orderBy("order")->get();
-        $item->categories2 = Category::query()->where('parent_id', '<>', null)->select('id', 'parent_id', 'name')->orderBy("order")->get();
+        $item->categories = collect($category)->where('parent_id', null)->all();
+        $item->categories2 = collect($category)->where('parent_id', '!=', null)->all();
         $item->user_categories = UserCategory::query()->where('user_id',$user->id)->pluck('category_id')->toArray();
         return $item;
+    }
+
+    /**
+     * @param $user
+     * @param $data
+     * @return RedirectResponse
+     */
+    public function change_password($user, $data): RedirectResponse
+    {
+        switch (true){
+            case !$data || (!isset($data['old_password']) && $user->password) :
+                Alert::error(__('Введите старый пароль'));
+                return redirect()->back();
+            case isset($data['old_password']) && !Hash::check($data['old_password'], $user->password) :
+                Alert::error(__('Неверный старый пароль'));
+                return redirect()->back();
+        }
+
+        $data['password'] = Hash::make($data['password']);
+        unset($data['old_password']);
+        $user->update($data);
+
+        Alert::success(__('Ваш пароль был успешно обновлен'));
+
+        return redirect()->back()->with([
+            'password' => 'password'
+        ]);
     }
 
     public function deleteImage($image, Portfolio $portfolio): bool

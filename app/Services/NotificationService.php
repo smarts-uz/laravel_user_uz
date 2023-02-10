@@ -73,10 +73,9 @@ class NotificationService
      */
     public static function sendTaskNotification($task, $user_id): void
     {
-        $performers = User::query()->where('role_id', User::ROLE_PERFORMER)->select('id', 'email', 'firebase_token', 'sms_notification', 'email_notification', 'phone_number')->get();
-        $performer_ids = [];
+        $user_categories = UserCategory::query()->where('category_id', $task->category_id)->pluck('user_id')->toArray();
+        $performers = User::query()->whereIn('id', $user_categories)->select('id', 'email', 'firebase_token', 'sms_notification', 'email_notification', 'phone_number')->get();
         foreach ($performers as $performer) {
-            $user_cat_ids = UserCategory::query()->where('user_id', $performer->id)->pluck('category_id')->toArray();
             /** @var Notification $notification */
             $notification = Notification::query()->create([
                 'user_id' => $user_id,
@@ -101,24 +100,18 @@ class NotificationService
                 'description' => self::descriptions($notification)
             ]);
 
-            if (in_array($task->category_id, $user_cat_ids, true)) {
-                $performer_ids[] = $performer->id;
+            $subject = __('Новая задания', [], $locale);
+            $message = $subject . "\n" . __('task_name  №task_id с бюджетом до task_budget', [
+                    'task_name' => $task->name, 'task_id' => $task->id, 'budget' => $price
+                ], $locale);
+            if ($performer->sms_notification) {
+                $phone_number = (new CustomService)->correctPhoneNumber($performer->phone_number);
+                SmsMobileService::sms_packages($phone_number, $message);
+            }
 
-                $notification->save();
-
-                $subject = __('Новая задания', [], $locale);
-                $message = $subject . "\n" . __('task_name  №task_id с бюджетом до task_budget', [
-                        'task_name' => $task->name, 'task_id' => $task->id, 'budget' => $price
-                    ], $locale);
-                if ($performer->sms_notification) {
-                    $phone_number = (new CustomService)->correctPhoneNumber($performer->phone_number);
-                    SmsMobileService::sms_packages($phone_number, $message);
-                }
-                info(json_encode($performer));
-                if ($performer->email_notification) {
-                    $task_id = $task->id;
-                    Mail::to($performer->email)->send(new MessageEmail($task_id, $message, $subject));
-                }
+            if ($performer->email_notification) {
+                $task_id = $task->id;
+                Mail::to($performer->email)->send(new MessageEmail($task_id, $message, $subject));
             }
         }
 

@@ -186,49 +186,45 @@ class CreateService
      * Mazkur metod Task yaratganda notification va sms yuborish
      * @param $task $user
      * @param $user
+     * @param $performer_id
      */
-    public function perform_notification($task, $user): void
+    public function perform_notification($task, $user, $performer_id): void
     {
-        $performer_id = Session::get('performer_id_for_task');
-        if ($performer_id) {
-            /** @var User $performer */
-            $performer = User::query()->findOrFail($performer_id);
-            $locale = (new CustomService)->cacheLang($performer_id);
-            $text_url = route("searchTask.task", $task->id);
-            $message = __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
-                'task_name' => $text_url, 'task_id' => $task->id, 'task_user' => $user->name
-            ], $locale);
-            $phone_number = (new CustomService)->correctPhoneNumber($performer->phone_number);
-            SmsMobileService::sms_packages($phone_number, $message);
+        /** @var User $performer */
+        $performer = User::query()->findOrFail($performer_id);
+        $locale = (new CustomService)->cacheLang($performer_id);
+        $text_url = route("searchTask.task", $task->id);
+        $message = __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
+            'task_name' => $text_url, 'task_id' => $task->id, 'task_user' => $user->name
+        ], $locale);
+        $phone_number = (new CustomService)->correctPhoneNumber($performer->phone_number);
+        SmsMobileService::sms_packages($phone_number, $message);
 
-            /** @var Notification $notification */
-            $notification = Notification::query()->create([
-                'user_id' => $task->user_id,
-                'performer_id' => $performer_id,
-                'task_id' => $task->id,
-                'name_task' => $task->name,
-                'description' => '123',
-                'type' => Notification::GIVE_TASK,
-            ]);
+        /** @var Notification $notification */
+        $notification = Notification::query()->create([
+            'user_id' => $task->user_id,
+            'performer_id' => $performer_id,
+            'task_id' => $task->id,
+            'name_task' => $task->name,
+            'description' => '123',
+            'type' => Notification::GIVE_TASK,
+        ]);
 
-            NotificationService::sendNotificationRequest([$performer_id], [
-                'created_date' => $notification->created_at->format('d M'),
-                'title' => NotificationService::titles($notification->type),
-                'url' => route('show_notification', [$notification]),
-                'description' => NotificationService::descriptions($notification)
-            ]);
+        NotificationService::sendNotificationRequest([$performer_id], [
+            'created_date' => $notification->created_at->format('d M'),
+            'title' => NotificationService::titles($notification->type),
+            'url' => route('show_notification', [$notification]),
+            'description' => NotificationService::descriptions($notification)
+        ]);
 
-            NotificationService::pushNotification($performer, [
-                'title' => __('Предложение', [], $locale), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
-                    'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name
-                ], $locale)
-            ], 'notification', new NotificationResource($notification));
+        NotificationService::pushNotification($performer, [
+            'title' => __('Предложение', [], $locale), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
+                'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name
+            ], $locale)
+        ], 'notification', new NotificationResource($notification));
 
-            session()->forget('performer_id_for_task');
-        }
-        else {
-            NotificationService::sendTaskNotification($task, $user->id);
-        }
+        session()->forget('performer_id_for_task');
+
     }
 
 }

@@ -11,7 +11,6 @@ use App\Http\Requests\UserPasswordRequest;
 use App\Http\Requests\UserUpdateDataRequest;
 use App\Models\Session;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Hash;
 use Jenssegers\Agent\Agent;
 use App\Models\Portfolio;
 use App\Models\User;
@@ -122,7 +121,8 @@ class ProfileController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
-        $item = $this->profileService->settingsEdit($user);
+        $lang = \Illuminate\Support\Facades\Session::get('lang');
+        $item = $this->profileService->settingsEdit($user, $lang);
 
         return view('profile.settings',[
             'user' => $user,
@@ -178,29 +178,12 @@ class ProfileController extends Controller
     }
 
 
-    public function change_password(UserPasswordRequest $request)
+    public function change_password(UserPasswordRequest $request): RedirectResponse
     {
         $data = $request->validated();
         /** @var User $user */
         $user = auth()->user();
-        switch (true){
-            case !$data || (!isset($data['old_password']) && $user->password) :
-                Alert::error(__('Введите старый пароль'));
-                return redirect()->back();
-            case isset($data['old_password']) && !Hash::check($data['old_password'], $user->password) :
-                Alert::error(__('Неверный старый пароль'));
-                return redirect()->back();
-        }
-
-        $data['password'] = Hash::make($data['password']);
-        unset($data['old_password']);
-        $user->update($data);
-
-        Alert::success(__('Ваш пароль был успешно обновлен'));
-
-        return redirect()->back()->with([
-            'password' => 'password'
-        ]);
+        return $this->profileService->change_password($user, $data);
     }
 
     //personal info Ijrochi uchun
@@ -266,7 +249,8 @@ class ProfileController extends Controller
 
         /** @var User $user */
         $user = Auth::user();
-        $item = $this->profileService->verifyCategory($user);
+        $lang = \Illuminate\Support\Facades\Session::get('lang');
+        $item = $this->profileService->verifyCategory($user, $lang);
 
         return view('personalinfo.personalcategoriya',[
             'categories' => $item->categories,

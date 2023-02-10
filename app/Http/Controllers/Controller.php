@@ -52,8 +52,9 @@ class Controller extends BaseController
 
     public function category($id)
     {
+        $lang = Session::get('lang');
         $service = new ControllerService();
-        $item = $service->category($id);
+        $item = $service->category($id, $lang);
         return view('task/choosetasks',
             [
                 'child_categories' => $item->child_categories,

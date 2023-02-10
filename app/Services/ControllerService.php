@@ -10,8 +10,7 @@ use App\Models\Review;
 use App\Models\Task;
 use App\Models\TaskResponse;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Session;
-use TCG\Voyager\Models\Category;
+use App\Models\Category;
 use App\Item\UserInfoItem;
 
 class ControllerService
@@ -29,7 +28,7 @@ class ControllerService
     public function home(?string $lang = 'uz')
     {
         $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use($lang) {
-            return \App\Models\Category::withTranslations($lang)->orderBy("order")->get();
+            return Category::withTranslations($lang)->orderBy("order")->get();
         });
 
         $item = new ControllerItem();
@@ -45,14 +44,19 @@ class ControllerService
      * Function  category
      * Mazkur metod barcha kategoriyalarni chiqarib beradi
      * @param $id
+     * @param string|null $lang
      * @return  CategoryItem
      */
-    public function category($id): CategoryItem
+    public function category($id, ?string $lang = 'uz'): CategoryItem
     {
+        $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use($lang) {
+            return Category::withTranslations($lang)->orderBy("order")->get();
+        });
+
         $item = new CategoryItem();
-        $item->categories = Category::query()->where('parent_id', null)->get();
+        $item->categories = collect($category)->where('parent_id', null)->all();
         $item->choosed_category = Category::find($id);
-        $item->child_categories = Category::query()->where('parent_id', $id)->orderBy("order")->get();
+        $item->child_categories =  collect($category)->where('parent_id',$id)->all();
         return $item;
     }
 
@@ -66,7 +70,7 @@ class ControllerService
     public function my_tasks(?string $lang = 'uz'): MyTaskItem
     {
         $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use($lang) {
-            return \App\Models\Category::withTranslations($lang)->orderBy("order")->get();
+            return Category::withTranslations($lang)->orderBy("order")->get();
         });
 
         $item = new MyTaskItem();

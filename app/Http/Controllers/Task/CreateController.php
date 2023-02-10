@@ -17,6 +17,7 @@ use App\Models\Notification;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\WalletBalance;
+use App\Services\NotificationService;
 use App\Services\Task\CreateService;
 use App\Services\Task\CustomFieldService;
 use App\Services\Task\UpdateTaskService;
@@ -322,7 +323,7 @@ class CreateController extends Controller
     /**
      *
      * Function  contact_store
-     * @param Task $task
+     * @param int $task_id
      * @param CreateContactRequest $request
      * @return  RedirectResponse
      * @throws Exception
@@ -334,7 +335,7 @@ class CreateController extends Controller
         $user = auth()->user();
         $data = $request->validated();
         if (!($user->is_phone_number_verified && $user->phone_number === $data['phone_number'])) {
-            //VerificationService::send_verification('phone', $user, $data['phone_number']);
+            VerificationService::send_verification('phone', $user, $data['phone_number']);
             $task->phone = $data['phone_number'];
             if ($user->phone_number === null) {
                 $user->phone_number = $task->phone;
@@ -347,7 +348,12 @@ class CreateController extends Controller
         $task->status = Task::STATUS_OPEN;
         $task->user_id = $user->id;
         $task->phone = $data['phone_number'];
-        //$this->service->perform_notification($task, $user);
+        $performer_id = Session::get('performer_id_for_task');
+        if ($performer_id) {
+            $this->service->perform_notification($task, $user ,$performer_id);
+        } else {
+            NotificationService::sendTaskNotification($task, $user->id);
+        }
         $task->save();
         return redirect()->route('searchTask.task', $task->id);
     }
@@ -355,7 +361,7 @@ class CreateController extends Controller
     /**
      *
      * Function  contact_register
-     * @param Task $task
+     * @param int $task_id
      * @param UserRequest $request
      * @return  RedirectResponse
      * @throws Exception
@@ -390,7 +396,7 @@ class CreateController extends Controller
     /**
      *
      * Function  contact_login
-     * @param Task $task
+     * @param $task_id
      * @param UserPhoneRequest $request
      * @return  RedirectResponse
      * @throws Exception
@@ -408,13 +414,12 @@ class CreateController extends Controller
     /**
      *
      * Function  verify
-     * @param Task $task
+     * @param $task_id
      * @param User $user
      * @return  Application|Factory|View
      */
     public function verify($task_id, User $user)
     {
-        dd($task_id);
         $task = Task::select('name')->first($task_id);
         return view('create.verify', compact('task', 'user'));
     }
