@@ -4557,6 +4557,60 @@
                 ]
             }
         },
+        "\/api\/task-create-notification": {
+            "post": {
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "task create notification",
+                "operationId": "1b0fc1e30dff527d7a609630748965f8",
+                "requestBody": {
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "budget": {
+                                        "type": "integer"
+                                    },
+                                    "category_id": {
+                                        "type": "integer"
+                                    },
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "body": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "\/api\/test-complete-task\/{task}": {
             "get": {
                 "tags": [
@@ -25570,6 +25624,10 @@
                     "max": {
                         "type": "string",
                         "description": "Max"
+                    },
+                    "options": {
+                        "type": "string",
+                        "description": "Options"
                     },
                     "route": {
                         "enum": [

@@ -8,6 +8,7 @@ use App\Mail\MessageEmail;
 use App\Models\Notification;
 use App\Models\UserCategory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
@@ -425,6 +426,29 @@ class NotificationService
         }
 
         return ['success' => true, 'message' => 'success'];
+    }
+
+    public function task_create_notification($user, $task_id, $task_name, $task_category_id, $title, $body): JsonResponse
+    {
+        $user_cat_ids = UserCategory::query()->where('category_id', $task_category_id)->pluck('user_id')->toArray();
+        $performers = User::query()->whereIn('id', $user_cat_ids)->get();
+        foreach ($performers as $performer) {
+            $notification = [
+                'user_id' => $user->id,
+                'performer_id' => $performer->id,
+                'description' => 'description',
+                'task_id' => $task_id,
+                "cat_id" => $task_category_id,
+                "name_task" => $task_name,
+                "type" => Notification::TASK_CREATED
+            ];
+            self::pushNotification($performer, [
+                'title' => $title,
+                'body' => $body,
+            ], 'notification', $notification);
+        }
+
+        return response()->json(['success' => true, 'message' => 'success']);
     }
 
     /**
