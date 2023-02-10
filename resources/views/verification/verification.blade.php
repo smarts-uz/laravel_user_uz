@@ -3,10 +3,10 @@
 
 @section('content')
         {{--  Header  --}}
-    <div style="background-image: url({{ getContentImage('verification', 'verification_header') }})"
+    <div style="background-image: url({{ App\Services\CustomService::getContentImage('verification', 'verification_header') }})"
          class="h-screen bg-no-repeat bg-cover mb-32">
         <div class="text-center my-auto pt-48">
-            {!! getContentText('verification', 'verification_header') !!}
+            {!! App\Services\CustomService::getContentText('verification', 'verification_header') !!}
             @if(auth()->user()->role_id === \App\Models\User::ROLE_PERFORMER)
                 <button  class="px-10 py-4 font-sans  text-lg mt-8 font-semibold bg-yellow-500 hover:bg-yellow-600 text-white rounded-md text-xl">
                     {{__('СТАТЬ ИСПОЛНИТЕЛЕМ')}}
@@ -24,45 +24,45 @@
         {{--    Advantages    --}}
     <div class="container mx-auto px-2">
         <div class="w-10/12 mx-auto text-center mb-16">
-            {!! getContentText('verification', 'Advantages_title') !!}
+            {!! App\Services\CustomService::getContentText('verification', 'Advantages_title') !!}
             <div class="grid md:grid-cols-4 grid-cols-1 gap-4 pt-16 container mx-auto font-bold text-xl">
                 <div>
-                    <img class="mx-auto h-36" src="{{ getContentImage('verification', 'Advantages_img_1') }}" alt="#">
-                    <p class="text-xl">{!! getContentText('verification', 'Advantages_img_1') !!}</p>
+                    <img class="mx-auto h-36" src="{{ App\Services\CustomService::getContentImage('verification', 'Advantages_img_1') }}" alt="#">
+                    <p class="text-xl">{!! App\Services\CustomService::getContentText('verification', 'Advantages_img_1') !!}</p>
                 </div>
                 <div>
-                    <img class="mx-auto h-36" src="{{ getContentImage('verification', 'Advantages_img_2') }}" alt="#">
-                    <p class="text-xl">{!! getContentText('verification', 'Advantages_img_2') !!}</p>
+                    <img class="mx-auto h-36" src="{{ App\Services\CustomService::getContentImage('verification', 'Advantages_img_2') }}" alt="#">
+                    <p class="text-xl">{!! App\Services\CustomService::getContentText('verification', 'Advantages_img_2') !!}</p>
                 </div>
                 <div>
-                    <img class="mx-auto h-36" src="{{ getContentImage('verification', 'Advantages_img_3') }}" alt="#">
-                    <p class="text-xl">{!! getContentText('verification', 'Advantages_img_3') !!}</p>
+                    <img class="mx-auto h-36" src="{{ App\Services\CustomService::getContentImage('verification', 'Advantages_img_3') }}" alt="#">
+                    <p class="text-xl">{!! App\Services\CustomService::getContentText('verification', 'Advantages_img_3') !!}</p>
                 </div>
                 <div>
-                    <img class="mx-auto h-36" src="{{ getContentImage('verification', 'Advantages_img_4') }}" alt="#">
-                    <p class="text-xl">{!! getContentText('verification', 'Advantages_img_4') !!}</p>
+                    <img class="mx-auto h-36" src="{{ App\Services\CustomService::getContentImage('verification', 'Advantages_img_4') }}" alt="#">
+                    <p class="text-xl">{!! App\Services\CustomService::getContentText('verification', 'Advantages_img_4') !!}</p>
                 </div>
             </div>
         </div>
             {{--   to order process   --}}
         <div class="w-9/12 mx-auto text-center font-serif my-32">
             <div class="info">
-                {!! getContentText('verification', 'to_order_process') !!}
+                {!! App\Services\CustomService::getContentText('verification', 'to_order_process') !!}
                 <div class="grid lg:grid-cols-5 grid-cols-1 items-center">
                     <div>
-                        {!! getContentText('verification', 'to_order_1') !!}
+                        {!! App\Services\CustomService::getContentText('verification', 'to_order_1') !!}
                     </div>
                     <div>
                         <img class="lg:block hidden  w-10/12 shrink" src="{{asset('images/arrow.svg')}}" alt="">
                     </div>
                     <div>
-                        {!! getContentText('verification', 'to_order_2') !!}
+                        {!! App\Services\CustomService::getContentText('verification', 'to_order_2') !!}
                     </div>
                     <div>
                         <img class="lg:block hidden  w-10/12 shrink" src="{{asset('images/arrow.svg')}}" alt="">
                     </div>
                     <div>
-                        {!! getContentText('verification', 'to_order_3') !!}
+                        {!! App\Services\CustomService::getContentText('verification', 'to_order_3') !!}
                     </div>
                 </div>
             </div>

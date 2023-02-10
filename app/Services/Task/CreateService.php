@@ -10,6 +10,7 @@ use App\Models\CustomFieldsValue;
 use App\Models\Notification;
 use App\Models\Task;
 use App\Models\User;
+use App\Services\CustomService;
 use App\Services\NotificationService;
 use App\Services\SmsMobileService;
 use Illuminate\Database\Eloquent\Builder;
@@ -103,7 +104,7 @@ class CreateService
             'description' => NotificationService::descriptions($notification)
         ]);
 
-        $locale = cacheLang($task->user_id);
+        $locale = (new CustomService)->cacheLang($task->user_id);
         NotificationService::pushNotification($task->user, [
             'title' => __('3адание отменено', [], $locale),
             'body' => __('Ваше задание task_name №task_id было отменено', [
@@ -192,13 +193,13 @@ class CreateService
         if ($performer_id) {
             /** @var User $performer */
             $performer = User::query()->findOrFail($performer_id);
-            $locale = cacheLang($performer_id);
+            $locale = (new CustomService)->cacheLang($performer_id);
             $text_url = route("searchTask.task", $task->id);
             $message = __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
                 'task_name' => $text_url, 'task_id' => $task->id, 'task_user' => $user->name
             ], $locale);
-            $phone_number=$performer->phone_number;
-            SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
+            $phone_number = (new CustomService)->correctPhoneNumber($performer->phone_number);
+            SmsMobileService::sms_packages($phone_number, $message);
 
             /** @var Notification $notification */
             $notification = Notification::query()->create([

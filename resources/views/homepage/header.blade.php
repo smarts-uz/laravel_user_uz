@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="lg:col-span-1 col-span-2 pt-32 relative z-10">
-                {!! getContentText('home', 'main_text') !!}
+                {!! App\Services\CustomService::getContentText('home', 'main_text') !!}
                 <div class="mx-auto">
                     <div class="xl:w-4/5 w-full flex-1 mt-8">
                         <input name="TypeList" list="TypeList" type="text" id="header_input" maxlength="40" placeholder="{{__('Чем вам помочь...')}}" onkeyup="searchTaskName()"

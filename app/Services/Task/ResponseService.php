@@ -12,6 +12,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserExpense;
 use App\Models\WalletBalance;
+use App\Services\CustomService;
 use App\Services\NotificationService;
 use App\Services\SmsMobileService;
 
@@ -110,15 +111,15 @@ class ResponseService
         $response_user = $response->user;
         $task->update($data);
         $performer = $response->performer;
-        $locale = cacheLang($performer->id);
+        $locale = (new CustomService)->cacheLang($performer->id);
         if ($performer->phone_number) {
             $name = $response_user->name;
             $text_url = route("searchTask.task",$response->task_id);
             $message = __('Вы исполнитель в задании task_name. Контакты заказчика : task_user . phone_number' , [
                 'task_name' => $text_url, 'phone_number' => $task->phone, 'task_user' => $name
             ], $locale);
-            $phone_number=$performer->phone_number;
-            SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
+            $phone_number = (new CustomService)->correctPhoneNumber($performer->phone_number);
+            SmsMobileService::sms_packages($phone_number, $message);
         }
         $data = [
             'performer_name' => $performer->name,

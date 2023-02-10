@@ -1,7 +1,7 @@
 <footer class=" w-full mx-auto mt-32" style="background-color: #242325;">
     <div class="flex md:flex-row flex-col w-4/5 mx-auto rounded-xl relative bottom-20" style="background-color: #F9FAFB">
         <div class="m-5 md:w-2/3 w-11/12">
-            {!! getContentText('footer', 'footer_text') !!}
+            {!! App\Services\CustomService::getContentText('footer', 'footer_text') !!}
         </div>
         <div class="my-auto flex xl:flex-row flex-col md:w-1/3 w-full md:m-5 m-0">
             <a class="rounded-md mx-auto my-2 my-auto xl:mr-3" rel="noopener noreferrer" href="{{setting('site.ios_url')}}" target="_blank">

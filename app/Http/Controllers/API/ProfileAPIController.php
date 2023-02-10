@@ -20,6 +20,7 @@ use App\Models\Portfolio;
 use App\Models\ReportedUser;
 use App\Models\ResponseTemplate;
 use App\Models\User;
+use App\Services\CustomService;
 use App\Services\PerformersService;
 use App\Services\Profile\ProfileService;
 use App\Services\VerificationService;
@@ -480,7 +481,7 @@ class ProfileAPIController extends Controller
         $user = auth()->user();
         return response()->json([
             'data' => [
-                'phone_number' => correctPhoneNumber($user->phone_number)
+                'phone_number' => (new CustomService)->correctPhoneNumber($user->phone_number)
             ]
         ]);
     }
@@ -743,7 +744,7 @@ class ProfileAPIController extends Controller
             'location' => $user->location,
             'date_of_birth' => $user->born_date,
             'email' => $user->email,
-            'phone' => correctPhoneNumber($user->phone_number),
+            'phone' => (new CustomService)->correctPhoneNumber($user->phone_number),
             'gender' => $user->gender,
         ];
         return response()->json([
@@ -1112,7 +1113,7 @@ class ProfileAPIController extends Controller
             VerificationService::send_verification('phone', $user, $user->phone_number);
             return response()->json([
                 'success' => true,
-                'phone_number' => correctPhoneNumber($user->phone_number),
+                'phone_number' => (new CustomService)->correctPhoneNumber($user->phone_number),
                 'message' => __('СМС-код отправлен!')
             ]);
         }

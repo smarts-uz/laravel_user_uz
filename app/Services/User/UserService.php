@@ -8,6 +8,7 @@ use App\Models\Task;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\WalletBalance;
+use App\Services\CustomService;
 use App\Services\NotificationService;
 use App\Services\SmsMobileService;
 use Carbon\Carbon;
@@ -38,7 +39,7 @@ class UserService
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
         $message = config('app.name') . ' ' . __("Код подтверждения") . ' ' . $code;
-        SmsMobileService::sms_packages(correctPhoneNumber($phone_number), $message);
+        SmsMobileService::sms_packages((new CustomService)->correctPhoneNumber($phone_number), $message);
 
         session()->put('verifications', ['key' => 'phone_number', 'value' => $phone_number]);
     }
@@ -97,7 +98,7 @@ class UserService
                 'email' => $user->email,
                 'avatar' => asset('storage/' . $user->avatar),
                 'balance' => WalletBalance::query()->where(['user_id' => $user->id])->first()?->balance,
-                'phone_number' => correctPhoneNumber($user->phone_number),
+                'phone_number' => (new CustomService)->correctPhoneNumber($user->phone_number),
                 'email_verified' => boolval($user->is_email_verified),
                 'phone_verified' => boolval($user->is_phone_number_verified),
                 'role_id' => $user->role_id,
@@ -120,7 +121,7 @@ class UserService
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
         $message = config('app.name').' '. __("Код подтверждения") . ' ' . $message;
-        SmsMobileService::sms_packages(correctPhoneNumber($user->phone_number), $message);
+        SmsMobileService::sms_packages((new CustomService)->correctPhoneNumber($user->phone_number), $message);
         session(['phone' => $phone_number]);
     }
 
@@ -285,12 +286,12 @@ class UserService
                     $user->update(['is_phone_number_verified' => 0]);
                 } else {
                     $user->update(['is_phone_number_verified' => 1]);
-                    $user->phone_number = correctPhoneNumber($user->phone_number);
+                    $user->phone_number = (new CustomService)->correctPhoneNumber($user->phone_number);
                     $user->save();
                 }
                 if ($task->phone === null) {
                     Task::findOrFail($for_ver_func)->update([
-                        'status' => 1, 'user_id' => $user->id, 'phone' => correctPhoneNumber($user->phone_number)
+                        'status' => 1, 'user_id' => $user->id, 'phone' => (new CustomService)->correctPhoneNumber($user->phone_number)
                     ]);
                 } else {
                     Task::findOrFail($for_ver_func)->update(['status' => Task::STATUS_OPEN, 'user_id' => $user->id,]);

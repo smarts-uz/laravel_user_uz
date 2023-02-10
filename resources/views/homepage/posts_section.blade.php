@@ -48,7 +48,7 @@
 {{--                </div>--}}
 {{--            </div>--}}
             <a href="{{route('performers.service')}}">
-                <div class="w-96 h-56 rounded-xl" style="background: url({{getContentImage('home', 'post_section_img3')}});">
+                <div class="w-96 h-56 rounded-xl" style="background: url({{App\Services\CustomService::getContentImage('home', 'post_section_img3')}});">
                     <div class="w-full text-center">
                         <p class="text-2xl font-bold text-white pt-20">
                             {!!__('Надежные <br/> исполнители <br/> бизнеса')!!}</p>

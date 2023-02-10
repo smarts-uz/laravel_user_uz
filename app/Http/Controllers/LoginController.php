@@ -8,6 +8,7 @@ use App\Http\Requests\UserRegisterRequest;
 use App\Models\Notification;
 use App\Models\User;
 use App\Models\WalletBalance;
+use App\Services\CustomService;
 use App\Services\VerificationService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -102,7 +103,7 @@ class LoginController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-        VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
+        VerificationService::send_verification('phone', $user, (new CustomService)->correctPhoneNumber($user->phone_number));
         return redirect()->back()->with([
             'code' => __('Код отправлен!')
         ]);
@@ -121,7 +122,7 @@ class LoginController extends Controller
                 $user->save();
                 $result = true;
                 if ($needle !== 'is_phone_number_verified' && !$user->is_phone_number_verified) {
-                    VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
+                    VerificationService::send_verification('phone', $user, (new CustomService)->correctPhoneNumber($user->phone_number));
                 }
             }
         } else {
@@ -146,7 +147,7 @@ class LoginController extends Controller
             'code' => 'required'
         ]);
         if (self::verifyColum('phone_number', auth()->user(), $request->code)) {
-            auth()->user()->phone_number = correctPhoneNumber(auth()->user()->phone_number);
+            auth()->user()->phone_number = (new CustomService)->correctPhoneNumber(auth()->user()->phone_number);
             auth()->user()->save();
             Alert::success(__('Поздравляю'), __('Ваш телефон успешно подтвержден'));
             return redirect()->route('profile.profileData');
@@ -186,7 +187,7 @@ class LoginController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-        if ($request->get('phone_number') === correctPhoneNumber($user->phone_number)) {
+        if ($request->get('phone_number') === (new CustomService)->correctPhoneNumber($user->phone_number)) {
             return back()->with([
                 'email-message' => 'Your phone',
                 'email' => $request->get('email')
@@ -197,7 +198,7 @@ class LoginController extends Controller
 
         $user->phone_number = $request->get('phone_number');
         $user->save();
-        VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
+        VerificationService::send_verification('phone', $user, (new CustomService)->correctPhoneNumber($user->phone_number));
 
         return redirect()->back()->with([
             'code' => __('Код отправлен!')

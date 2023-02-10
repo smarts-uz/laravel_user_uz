@@ -10,7 +10,7 @@
                     {{__('Отзывы заказчиков о Universal Services')}}
                 </h1>
                 <p class="pb-5 md:text-base leading-lg">
-                    {!! getContentText('customer_reviews', 'customer_reviews') !!}
+                    {!! App\Services\CustomService::getContentText('customer_reviews', 'customer_reviews') !!}
                 </p>
                 @foreach($customer_reviews as $customer_review)
                     <div class="border border-solid border-2 rounded-md bg-pink-50 my-3">

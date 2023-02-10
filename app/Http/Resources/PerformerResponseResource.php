@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\TaskResponse;
+use App\Services\CustomService;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PerformerResponseResource extends JsonResource
@@ -21,8 +22,8 @@ class PerformerResponseResource extends JsonResource
             'id' => $performer->id,
             'name' => $performer->name,
             'avatar' => $performer->avatar?asset('storage/'.$performer->avatar):null,
-            'phone_number' => correctPhoneNumber($performer->phone_number),
-            'degree' => correctPhoneNumber($performer->phone_number),
+            'phone_number' => (new CustomService)->correctPhoneNumber($performer->phone_number),
+            'degree' => (new CustomService)->correctPhoneNumber($performer->phone_number),
             'likes' => $performer->review_good,
             'dislikes' => $performer->review_bad,
             'stars' => $performer->review_rating,

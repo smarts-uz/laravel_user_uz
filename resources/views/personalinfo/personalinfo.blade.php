@@ -7,9 +7,9 @@
 <div class="container-sm md:-mx-0 mx-auto my-3">
     <div class="shadow-2xl px-10 rounded-md w-full sm:w-7/12 mx-auto grid grid-flow-col gap-4 my-5 flex-wrap md:flex-wrap-reverse">
         <div class="text-center grid-rows-12 p-5 hidShad">
-            {!! getContentText('verificationInfo', 'verificationInfo') !!}
+            {!! App\Services\CustomService::getContentText('verificationInfo', 'verificationInfo') !!}
             <div class="flex justify-center mt-4">
-                <img src="{{ getContentImage('verificationInfo', 'verificationInfo') }}" alt="">
+                <img src="{{ App\Services\CustomService::getContentImage('verificationInfo', 'verificationInfo') }}" alt="">
             </div>
         </div>
         <div class="grid-rows-12 sm:px-5 px-0 pb-5  showshad hidden">

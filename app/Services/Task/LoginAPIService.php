@@ -4,6 +4,7 @@ namespace App\Services\Task;
 
 
 use App\Models\User;
+use App\Services\CustomService;
 use App\Services\VerificationService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -15,13 +16,13 @@ class LoginAPIService
     {
         $column = $data['type'];
         if (!User::query()
-            ->where($column, $data['type'] === 'phone_number' ? correctPhoneNumber($data['data']) : $data['data'])
+            ->where($column, $data['type'] === 'phone_number' ? (new CustomService)->correctPhoneNumber($data['data']) : $data['data'])
             ->whereNot('id', auth()->id())
             ->exists()
         ) {
             /** @var User $user */
             $user = auth()->user();
-            Cache::put($user->id . 'user_' . $column , $data['type'] === 'phone_number' ? correctPhoneNumber($data['data']) : $data['data']);
+            Cache::put($user->id . 'user_' . $column , $data['type'] === 'phone_number' ? (new CustomService)->correctPhoneNumber($data['data']) : $data['data']);
 
             if ($data['type'] === 'phone_number') {
                 VerificationService::send_verification($data['type'], $user, phone_number: $data['data']);
@@ -45,7 +46,7 @@ class LoginAPIService
     {
         if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
             if ($code === $user->verify_code || $code === setting('admin.CONFIRM_CODE')) {
-                $user->phone_number = correctPhoneNumber(Cache::get($user->id . 'user_phone_number'));
+                $user->phone_number = (new CustomService)->correctPhoneNumber(Cache::get($user->id . 'user_phone_number'));
                 $user->is_phone_number_verified = 1;
                 $user->save();
                 Cache::forget($user->id . 'user_phone_number');

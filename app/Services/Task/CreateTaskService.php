@@ -8,6 +8,7 @@ use App\Models\CustomField;
 use App\Models\CustomFieldsValue;
 use App\Models\Task;
 use App\Models\User;
+use App\Services\CustomService;
 use App\Services\NotificationService;
 use App\Services\Response;
 use App\Services\VerificationService;
@@ -394,15 +395,15 @@ class CreateTaskService
         switch (true) {
             case (!$user->is_phone_number_verified && $user->phone_number !== $data['phone_number']):
                 $data['is_phone_number_verified'] = 0;
-                $data['phone_number'] = correctPhoneNumber($data['phone_number']);
+                $data['phone_number'] = (new CustomService)->correctPhoneNumber($data['phone_number']);
                 $user->update($data);
-                VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
+                VerificationService::send_verification('phone', $user, (new CustomService)->correctPhoneNumber($user->phone_number));
                 return $this->get_verify($task->id, $user);
             case ($user->phone_number !== $data['phone_number']) :
-                VerificationService::send_verification_for_task_phone($task, correctPhoneNumber($data['phone_number']));
+                VerificationService::send_verification_for_task_phone($task, (new CustomService)->correctPhoneNumber($data['phone_number']));
                 return $this->get_verify($task->id, $user);
             case (!$user->is_phone_number_verified) :
-                VerificationService::send_verification('phone', $user, correctPhoneNumber($user->phone_number));
+                VerificationService::send_verification('phone', $user, (new CustomService)->correctPhoneNumber($user->phone_number));
                 return $this->get_verify($task->id, $user);
         }
 

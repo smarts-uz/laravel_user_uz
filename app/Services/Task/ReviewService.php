@@ -8,6 +8,7 @@ use App\Models\Notification;
 use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
+use App\Services\CustomService;
 use App\Services\NotificationService;
 
 class ReviewService
@@ -96,7 +97,7 @@ class ReviewService
         switch (true){
             case $task->user_id === auth()->id() :
                 // user review to performer
-                $locale = cacheLang($task->performer_id);
+                $locale = (new CustomService)->cacheLang($task->performer_id);
                 if ($status) {
                     $request['status'] = 1;
                 }
@@ -107,7 +108,7 @@ class ReviewService
                 break;
             case $task->performer_id === auth()->id() :
                 // performer review to user
-                $locale = cacheLang($task->user_id);
+                $locale = (new CustomService)->cacheLang($task->user_id);
                 $notification = self::performerReview($task, $request);
                 NotificationService::pushNotification($task->user, [
                     'title' => __('Новый отзыв', [], $locale), 'body' => __('О вас оставлен новый отзыв', [], $locale) . " \"$task->name\" №$task->id"

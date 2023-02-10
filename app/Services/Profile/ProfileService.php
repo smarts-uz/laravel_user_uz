@@ -19,6 +19,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserCategory;
 use App\Models\WalletBalance;
+use App\Services\CustomService;
 use App\Services\SmsMobileService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -160,7 +161,7 @@ class ProfileService
             'active_step' => $user->active_step,
             'tasks_count' => $performed_tasks_count,
             'achievements' => $achievements,
-            'phone_number' => correctPhoneNumber($user->phone_number),
+            'phone_number' => (new CustomService)->correctPhoneNumber($user->phone_number),
             'location' => $user->location,
             'district' => $user->district,
             'age' => $age,
@@ -539,7 +540,7 @@ class ProfileService
             $phone_number = $user->phone_number;
             $user->verify_code = $message;
             $user->save();
-            SmsMobileService::sms_packages(correctPhoneNumber($phone_number), config('app.name').' '. __("Код подтверждения") . ' ' . $message);
+            SmsMobileService::sms_packages((new CustomService)->correctPhoneNumber($phone_number), config('app.name').' '. __("Код подтверждения") . ' ' . $message);
             $messages = trans('trans.Phone number updated successfully.');
             $success = true;
         }

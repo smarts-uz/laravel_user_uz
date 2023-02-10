@@ -30,7 +30,7 @@ class UserNotificationService extends NotificationService
             'url' => route('show_notification', [$notification]),
             'description' => self::descriptions($notification)
         ]);
-        $locale = cacheLang($task->performer_id);
+        $locale = (new CustomService)->cacheLang($task->performer_id);
         self::pushNotification($task->performer, [
             'title' => self::titles($type, $locale),
             'body' => self::descriptions($notification, $locale)
@@ -61,7 +61,7 @@ class UserNotificationService extends NotificationService
             'description' => self::descriptions($notification)
         ]);
 
-        $locale = cacheLang($task->user_id);
+        $locale = (new CustomService)->cacheLang($task->user_id);
         self::pushNotification($task->user, [
             'title' => self::titles($type, $locale),
             'body' => self::descriptions($notification, $locale)
