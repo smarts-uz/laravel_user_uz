@@ -37,6 +37,7 @@ use Illuminate\Support\Arr;
  * @property $created_at
  * @property \Illuminate\Support\Carbon|mixed $deleted_at
  * @property mixed $deleted_by
+ * @property mixed $description
  */
 class Task extends Model
 {
