@@ -7,20 +7,13 @@ use App\Http\Requests\CategoriesRequest;
 use App\Http\Requests\BecomePerformerEmailPhone;
 use App\Http\Requests\BecomePerformerRequest;
 use App\Http\Requests\GiveTaskRequest;
-use App\Http\Resources\NotificationResource;
 use App\Http\Resources\PerformerIndexResource;
 use App\Http\Resources\ReviewIndexResource;
-use App\Models\Notification;
-use App\Models\Review;
-use App\Models\Task;
 use App\Models\User;
 use App\Models\UserCategory;
-use App\Services\NotificationService;
 use App\Services\Profile\ProfileService;
-use App\Services\SmsMobileService;
 use Carbon\Carbon;
 use App\Services\PerformersService;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -65,17 +58,11 @@ class PerformerAPIController extends Controller
      * )
      *
      */
-    public function service(Request $request): AnonymousResourceCollection
+    public function performers(Request $request): AnonymousResourceCollection
     {
-        $performers = User::query()
-            ->where('role_id', User::ROLE_PERFORMER)
-            ->orderByDesc('review_rating')
-            ->orderByRaw('(review_good - review_bad) DESC');
-        if (isset($request->online)) {
-            $date = Carbon::now()->subMinutes(2)->toDateTimeString();
-            $performers = $performers->where('role_id', User::ROLE_PERFORMER)->where('last_seen', ">=", $date);
-        }
-        return PerformerIndexResource::collection($performers->paginate($request->get('per_page')));
+        $online = $request->online;
+        $per_page = $request->get('per_page');
+        return $this->performer_service->performers($online, $per_page);
     }
 
     /**
@@ -431,7 +418,7 @@ class PerformerAPIController extends Controller
         $reviews = $this->performer_service->reviews($from, $type, $authId);
         return response()->json([
             'success' => true,
-            'data' => ReviewIndexResource::collection($reviews),
+            'data' => $reviews,
             'message' => 'Success'
         ]);
     }
@@ -497,10 +484,13 @@ class PerformerAPIController extends Controller
      *     ),
      * )
      */
-    public function performers_image($category_id): array
+    public function performers_image($category_id): JsonResponse
     {
         $images = $this->performer_service->performers_image($category_id);
-        return ['data' => $images];
+        return response()->json([
+            'success' => true,
+            'data' => $images,
+        ]);
     }
 
 }

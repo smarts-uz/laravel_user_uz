@@ -21,6 +21,7 @@ use App\Models\UserCategory;
 use App\Models\WalletBalance;
 use App\Services\CustomService;
 use App\Services\SmsMobileService;
+use App\Services\VerificationService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -765,6 +766,97 @@ class ProfileService
         if ((int)$portfolio->user_id !== (int)auth()->user()->id) {
             abort(403, "No Permission");
         }
+    }
+
+    /**
+     * @param $user
+     * @return JsonResponse
+     */
+    public function portfolios($user): JsonResponse
+    {
+        $portfolio = Portfolio::query()->where(['user_id' => $user])->get();
+        return response()->json([
+            'success' => true,
+            'data' => PortfolioIndexResource::collection($portfolio)
+        ]);
+    }
+
+    /**
+     * @param $lang
+     * @param $version
+     * @return JsonResponse
+     */
+    public function changeLanguage($lang, $version): JsonResponse
+    {
+        if (Auth::guard('api')->check()) {
+            cache()->forever('lang' . auth()->id(), $lang);
+            app()->setLocale($lang);
+            /** @var User $user */
+            $user = auth()->user();
+            $user->version = $version;
+            $user->save();
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'message' => trans('trans.Language changed successfully.')
+                ]
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => trans('trans.Language changed successfully.')
+        ]);
+    }
+
+    /**
+     * @param $user
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function self_delete($user): JsonResponse
+    {
+        if ($user->phone_number && strlen($user->phone_number) === 13) {
+            VerificationService::send_verification('phone', $user, $user->phone_number);
+            return response()->json([
+                'success' => true,
+                'phone_number' => (new CustomService)->correctPhoneNumber($user->phone_number),
+                'message' => __('СМС-код отправлен!')
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => __('Ваш номер не подтвержден')
+        ]);
+    }
+
+    /**
+     * @param $user
+     * @param $code
+     * @return JsonResponse
+     */
+    public function confirmationSelfDelete($user, $code): JsonResponse
+    {
+        if ((int)$user->verify_code === (int)$code) {
+            if (strtotime($user->verify_expiration) >= strtotime(now())) {
+                $user->delete();
+                return response()->json([
+                    'success' => true,
+                    'message' => __('Успешно удалено')
+                ]);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => __('Срок действия номера истек')
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => __('Код ошибки')
+        ]);
     }
 
 

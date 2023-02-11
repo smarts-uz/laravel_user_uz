@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -23,7 +22,6 @@ class ReviewIndexResource extends JsonResource
      * @param Request $request
      * @return array
      */
-    #[ArrayShape([])]
     public function toArray($request): array
     {
         $user = $this->reviewer;

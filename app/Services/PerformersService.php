@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Http\Resources\NotificationResource;
 use App\Http\Resources\PerformerIndexResource;
+use App\Http\Resources\ReviewIndexResource;
 use App\Item\PerformerPrefItem;
 use App\Item\PerformerServiceItem;
 use App\Item\PerformerUserItem;
@@ -19,7 +20,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
 use TCG\Voyager\Models\Category;
-use Illuminate\Support\Facades\Auth;
 
 class PerformersService
 {
@@ -185,6 +185,24 @@ class PerformersService
     }
 
     /**
+     * @param $online
+     * @param $per_page
+     * @return AnonymousResourceCollection
+     */
+    public function performers($online, $per_page): AnonymousResourceCollection
+    {
+        $performers = User::query()
+            ->where('role_id', User::ROLE_PERFORMER)
+            ->orderByDesc('review_rating')
+            ->orderByRaw('(review_good - review_bad) DESC');
+        if (isset($online)) {
+            $date = Carbon::now()->subMinutes(2)->toDateTimeString();
+            $performers = $performers->where('role_id', User::ROLE_PERFORMER)->where('last_seen', ">=", $date);
+        }
+        return PerformerIndexResource::collection($performers->paginate($per_page));
+    }
+
+    /**
      * @param $task_id
      * @param $user_id
      * @param $session
@@ -336,7 +354,7 @@ class PerformersService
             ->type($type)
             ->get();
 
-        return $reviews;
+        return ReviewIndexResource::collection($reviews);
     }
 
     /**

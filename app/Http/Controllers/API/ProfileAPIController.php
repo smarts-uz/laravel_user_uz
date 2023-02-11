@@ -92,11 +92,8 @@ class ProfileAPIController extends Controller
     public function portfolios(): JsonResponseAlias
     {
         /** @var User $user */
-        $user = auth()->user();
-        return response()->json([
-            'success' => true,
-            'data' => PortfolioIndexResource::collection(Portfolio::query()->where(['user_id' => $user->id])->get())
-        ]);
+        $user = auth()->user()->id;
+        return $this->profileService->portfolios($user);
     }
 
     /**
@@ -250,6 +247,7 @@ class ProfileAPIController extends Controller
      *         {"token": {}}
      *     },
      * )
+     * @throws \JsonException
      */
     public function portfolioUpdate(PortfolioRequest $request, Portfolio $portfolio): JsonResponseAlias
     {
@@ -920,10 +918,7 @@ class ProfileAPIController extends Controller
      */
     public function userPortfolios($id): JsonResponseAlias
     {
-        return response()->json([
-            'success' => true,
-            'data' => PortfolioIndexResource::collection(Portfolio::query()->where(['user_id' => $id])->get())
-        ]);
+        return $this->profileService->portfolios($id);
     }
 
     /**
@@ -1061,25 +1056,9 @@ class ProfileAPIController extends Controller
      */
     public function changeLanguage(Request $request): JsonResponseAlias
     {
-        if (Auth::guard('api')->check()) {
-            cache()->forever('lang' . auth()->id(), $request->get('lang'));
-            app()->setLocale($request->get('lang'));
-            /** @var User $user */
-            $user = auth()->user();
-            $user->version = $request->get('version');
-            $user->save();
-            return response()->json([
-                'success' => true,
-                'data' => [
-                    'message' => trans('trans.Language changed successfully.')
-                ]
-            ]);
-        }
-
-        return response()->json([
-            'success' => true,
-            'message' => trans('trans.Language changed successfully.')
-        ]);
+        $lang = $request->get('lang');
+        $version = $request->get('version');
+        return $this->profileService->changeLanguage($lang, $version);
     }
 
     /**
@@ -1108,20 +1087,8 @@ class ProfileAPIController extends Controller
     public function selfDelete(): JsonResponseAlias
     {
         /** @var User $user */
-        $user = \auth()->user();
-        if ($user->phone_number && strlen($user->phone_number) === 13) {
-            VerificationService::send_verification('phone', $user, $user->phone_number);
-            return response()->json([
-                'success' => true,
-                'phone_number' => (new CustomService)->correctPhoneNumber($user->phone_number),
-                'message' => __('СМС-код отправлен!')
-            ]);
-        }
-
-        return response()->json([
-            'success' => false,
-            'message' => __('Ваш номер не подтвержден')
-        ]);
+        $user = auth()->user();
+        return $this->profileService->self_delete($user);
     }
 
     /**
@@ -1163,25 +1130,8 @@ class ProfileAPIController extends Controller
     {
         /** @var User $user */
         $user = \auth()->user();
-        if ((int)$user->verify_code === (int)$request->get('code')) {
-            if (strtotime($user->verify_expiration) >= strtotime(now())) {
-                $user->delete();
-                return response()->json([
-                    'success' => true,
-                    'message' => __('Успешно удалено')
-                ]);
-            }
-
-            return response()->json([
-                'success' => false,
-                'message' => __('Срок действия номера истек')
-            ]);
-        }
-
-        return response()->json([
-            'success' => false,
-            'message' => __('Код ошибки')
-        ]);
+        $code = $request->get('code');
+        return $this->profileService->confirmationSelfDelete($user, $code);
     }
 
     /**

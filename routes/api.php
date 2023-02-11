@@ -172,7 +172,7 @@ Route::get('/categories/{id}', [CategoriesAPIController::class, 'show']); // fix
 Route::get('/category/search', [CategoriesAPIController::class, 'search']); // fix
 
 //Performers
-Route::get('/performers', [PerformerAPIController::class, 'service']); // fix
+Route::get('/performers', [PerformerAPIController::class, 'performers']); // fix
 Route::get('/performers-filter', [PerformerAPIController::class, 'performer_filter']); // fix
 Route::get('/performers-count/{category_id}', [PerformerAPIController::class, 'performers_count']); // fix
 Route::get('/performers-image/{category_id}', [PerformerAPIController::class, 'performers_image']); // fix
