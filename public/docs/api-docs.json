@@ -1814,6 +1814,22 @@
                         }
                     }
                 ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "description": "Ozodbek\/1675856445_image_2023-02-07_11-00-21.png shunday ko'rinishda img url kiritiladi",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Successful operation"

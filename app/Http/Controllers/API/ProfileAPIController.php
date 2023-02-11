@@ -1244,6 +1244,19 @@ class ProfileAPIController extends Controller
      *              type="integer"
      *          ),
      *     ),
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="image",
+     *                    description="Ozodbek/1675856445_image_2023-02-07_11-00-21.png shunday ko'rinishda img url kiritiladi",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -1264,11 +1277,7 @@ class ProfileAPIController extends Controller
     public function deleteImage(Request $request, Portfolio $portfolio): JsonResponseAlias
     {
         $image = $request->get('image');
-        File::delete($image);
-        $images = json_decode($portfolio->image);
-        $updatedImages = array_diff($images, [$image]);
-        $portfolio->image = json_encode(array_values($updatedImages));
-        $portfolio->save();
+        $this->profileService->deleteImage($image,$portfolio);
         return response()->json([
             'success' => true,
             'message' => __('Успешно удалено')
