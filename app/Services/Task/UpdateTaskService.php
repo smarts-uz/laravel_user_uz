@@ -195,7 +195,7 @@ class UpdateTaskService
         /** @var User $user */
         $user = auth()->user();
         unset($data['task_id']);
-        $task = TAsk::select('phone', 'verify_code', 'verify_expiration', 'status', 'user_id')->find($task_id);
+        $task = TAsk::select('id','phone', 'verify_code', 'verify_expiration', 'status', 'user_id')->find($task_id);
         $correct = (new CustomService)->correctPhoneNumber($data['phone_number']);
         $correctUser = (new CustomService)->correctPhoneNumber($user->phone_number);
         switch (true) {
