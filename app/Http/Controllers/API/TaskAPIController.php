@@ -632,7 +632,6 @@ class TaskAPIController extends Controller
     public function name(TaskNameRequest $request): JsonResponse
     {
         $data = $request->validated();
-
         $name = $data['name'];
         $category_id = $data['category_id'];
         $user = auth()->user();
@@ -1007,7 +1006,8 @@ class TaskAPIController extends Controller
      */
     public function contacts(TaskContactsRequest $request): JsonResponse
     {
-        return $this->success($this->create_task_service->contact_store($request->validated()));
+        $data = $request->validated();
+        return $this->success($this->create_task_service->contact_store($data));
     }
 
     /**
@@ -1055,7 +1055,8 @@ class TaskAPIController extends Controller
      */
     public function verify(TaskVerificationRequest $request): JsonResponse
     {
-        return $this->create_task_service->verification($request->validated());
+        $data = $request->validated();
+        return $this->create_task_service->verification($data);
     }
 
 
@@ -1537,9 +1538,9 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateContacts(TaskContactsRequest $request, Task $task): JsonResponse
+    public function updateContacts(TaskContactsRequest $request, $task_id): JsonResponse
     {
-        return $this->success($this->update_task_service->updateContact($task, $request->validated()));
+        return $this->success($this->update_task_service->updateContact($task_id, $request->validated()));
     }
 
 
@@ -1594,9 +1595,10 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateVerify(TaskVerificationRequest $request, Task $task): JsonResponse
+    public function updateVerify(TaskVerificationRequest $request, $task_id): JsonResponse
     {
-        return $this->update_task_service->verification($task, $request->validated());
+        $data = $request->validated();
+        return $this->update_task_service->verification($task_id, $data);
     }
 
     /**

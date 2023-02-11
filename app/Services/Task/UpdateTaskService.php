@@ -190,37 +190,39 @@ class UpdateTaskService
         ];
     }
 
-    public function updateContact($task, $data): array
+    public function updateContact($task_id, $data): array
     {
         /** @var User $user */
         $user = auth()->user();
         unset($data['task_id']);
-
+        $task = TAsk::select('phone', 'verify_code', 'verify_expiration', 'status', 'user_id')->find($task_id);
+        $correct = (new CustomService)->correctPhoneNumber($data['phone_number']);
+        $correctUser = (new CustomService)->correctPhoneNumber($user->phone_number);
         switch (true) {
-            case (!$user->is_phone_number_verified && $user->phone_number !== (new CustomService)->correctPhoneNumber($data['phone_number'])):
+            case (!$user->is_phone_number_verified && $user->phone_number !== $correct):
                 // in this case user phone number will be changed to new phone number
                 $data['is_phone_number_verified'] = 0;
-                $data['phone_number'] = (new CustomService)->correctPhoneNumber($data['phone_number']);
+                $data['phone_number'] = $correct;
                 $user->update($data);
-                VerificationService::send_verification('phone', $user, (new CustomService)->correctPhoneNumber($user->phone_number));
-                return $this->get_verify($task, $user);
-            case (!$user->is_phone_number_verified && $user->phone_number === (new CustomService)->correctPhoneNumber($data['phone_number'])):
-                VerificationService::send_verification('phone', $user, (new CustomService)->correctPhoneNumber($user->phone_number));
-                return $this->get_verify($task, $user);
-            case ($user->phone_number !== (new CustomService)->correctPhoneNumber($data['phone_number']) && $task->phone !== (new CustomService)->correctPhoneNumber($data['phone_number'])):
-                VerificationService::send_verification_for_task_phone($task, (new CustomService)->correctPhoneNumber($data['phone_number']));
-                return $this->get_verify($task, $user);
-            case ($user->is_phone_number_verified && $task->phone === (new CustomService)->correctPhoneNumber($data['phone_number'])):
+                VerificationService::send_verification('phone', $user, $correctUser);
+                return $this->get_verify($task_id, $user);
+            case (!$user->is_phone_number_verified && $user->phone_number === $correct):
+                VerificationService::send_verification('phone', $user, $correctUser);
+                return $this->get_verify($task_id, $user);
+            case ($user->phone_number !== $correctUser && $task->phone !== $correct):
+                VerificationService::send_verification_for_task_phone($task, $correct);
+                return $this->get_verify($task_id, $user);
+            case ($user->is_phone_number_verified && $task->phone === $correct):
                 // in this case task's phone number already verified in create task process, that's why it doesn't need verification
                 $task->status = Task::STATUS_OPEN;
                 $task->user_id = $user->id;
-                $task->phone = (new CustomService)->correctPhoneNumber($data['phone_number']);
+                $task->phone = $correct;
                 $task->save();
                 break;
             default:
                 $task->status = Task::STATUS_OPEN;
                 $task->user_id = $user->id;
-                $task->phone = (new CustomService)->correctPhoneNumber($user->phone_number);
+                $task->phone = $correctUser;
                 $task->save();
                 break;
         }
@@ -283,18 +285,19 @@ class UpdateTaskService
 
 
     #[ArrayShape([])]
-    public function get_verify($task, $user): array
+    public function get_verify($task_id, $user): array
     {
-        return ['route' => 'verify', 'task_id' => $task->id, 'user' => $user];
+        return ['route' => 'verify', 'task_id' => $task_id, 'user' => $user];
     }
 
-    public function verification($task, $data): JsonResponse
+    public function verification($task_id, $data): JsonResponse
     {
+        $correct = (new CustomService)->correctPhoneNumber($data['phone_number']);
         /** @var User $user */
-        $user = User::query()->where('phone_number', (new CustomService)->correctPhoneNumber($data['phone_number']))->first();
+        $user = User::where('phone_number', $correct)->first();
         if (!$user) {
             /** @var Task $task */
-            $task = Task::query()->where('phone', (new CustomService)->correctPhoneNumber($data['phone_number']))->first();
+            $task = Task::where('phone', $correct)->first();
         }
         if ($data['sms_otp'] === $user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
@@ -303,7 +306,7 @@ class UpdateTaskService
                 $this->updateTask($task, $user);
 
                 return $this->success([
-                    'task_id' => $task->id,
+                    'task_id' => $task_id,
                     'route' => 'end',
                 ], __('Ваш телефон успешно подтвержден'));
             } else {
@@ -329,7 +332,7 @@ class UpdateTaskService
             $task->custom_field_values()->delete();
             foreach ($cacheValues['custom_fields'] as $customField) {
                 $customField['task_id'] = $task->id;
-                CustomFieldsValue::query()->create($customField);
+                CustomFieldsValue::create($customField);
             }
         }
         $addressesCount = 0;
@@ -338,7 +341,7 @@ class UpdateTaskService
             $addressesCount = count($cacheValues['addresses']);
             $task->addresses()->delete();
             foreach ($cacheValues['addresses'] as $address) {
-                Address::query()->create($address);
+                Address::create($address);
             }
         }
 
