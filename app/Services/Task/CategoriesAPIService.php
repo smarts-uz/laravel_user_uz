@@ -66,7 +66,7 @@ class CategoriesAPIService
         if (!empty($categories)) {
             foreach ($categories as $category) {
                 $object['category_id'] = (!empty($category->id)) ? $category->id : '';
-                $object['total'] = (!empty($category->tasks_count)) ? $category->tasks_count : '';
+                (int)$object['total'] = (!empty($category->tasks_count)) ? $category->tasks_count : '';
                 $category->name = (!empty($category->name)) ? $category->getTranslatedAttribute('name', app()->getLocale(), 'ru') : '';
                 unset($category->translations);
                 $object['category'] = $category;
