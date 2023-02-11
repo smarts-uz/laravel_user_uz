@@ -195,7 +195,9 @@ Route::get('/categories/{id}', [Controller::class, 'category'])->name("categorie
 Route::get('/lang/{lang}', [Controller::class, 'lang'])->name('lang');
 Route::get('/', [Controller::class, 'home'])->name('home');
 Route::get('/terms',[Controller::class,'terms']);
-Route::get('/paynet_oplata',[Controller::class,'paynet_oplata']);
+Route::get('/terms/{lang}',[Controller::class,'terms_mobile']);
+Route::get('/paynet-oplata',[Controller::class,'paynet_oplata']);
+Route::get('/paynet-oplata/{lang}',[Controller::class,'paynet_mobile']);
 Route::get('/show-notification/{notification}', [NotificationController::class, 'show_notification'])->name('show_notification');
 Route::get('/show-notification-user/{notification}', [NotificationController::class, 'show_notification_user'])->name('show_notification_user');
 Route::get('/read-notification/{notification}', [NotificationController::class, 'read_notification'])->name('read_notification');

@@ -64,7 +64,7 @@
                             </button>
                         </div>
                         <div class="custom-control custom-radio mb-4 text-3xl flex flex-row items-center">
-                            <a href="/paynet_oplata" class=" w-52 focus:border-2 focus:border-dashed focus:border-green-500 mx-8">
+                            <a href="/paynet-oplata" class=" w-52 focus:border-2 focus:border-dashed focus:border-green-500 mx-8">
                                 <img src="{{asset('images/icons/paynet.png')}}" class="cursor-pointer" alt="">
                             </a>
                         </div>

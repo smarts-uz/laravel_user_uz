@@ -15,6 +15,7 @@ use App\Models\Massmedia;
 use App\Services\ControllerService;
 use App\Models\BlogNew;
 use App\Models\Privacy;
+use Nyholm\Psr7\Request;
 
 class Controller extends BaseController
 {
@@ -73,12 +74,14 @@ class Controller extends BaseController
         return redirect()->back();
     }
 
-    public function index() {
+    public function index()
+    {
         $medias = Massmedia::paginate(20);
         return view('reviews.CMI', compact('medias'));
     }
 
-    public function performer_reviews(){
+    public function performer_reviews()
+    {
         $performer_reviews = FooterReview::where('review_type',2)->latest()->get();
         return view('reviews.review',compact('performer_reviews'));
     }
@@ -109,24 +112,46 @@ class Controller extends BaseController
         return view('/staticpages/news',compact('news'));
     }
 
-    public function news_page(BlogNew $id){
+    public function news_page(BlogNew $id)
+    {
         $news = BlogNew::find($id);
         return view('staticpages.blog_new', compact('news'));
     }
 
-    public function policy(){
+    public function policy()
+    {
         $policies = Privacy::get();
         return view('/staticpages/privacy',compact('policies'));
     }
 
-    public function terms(){
+    public function terms()
+    {
         $agent = new Agent();
         if ($agent->isMobile()) {
             return view('auth.terms_mobile');
         }
 
         return view('auth.terms');
+    }
 
+    public function terms_mobile($lang)
+    {
+        Session::put('lang', $lang);
+        if (auth()->check()) {
+            app()->setLocale($lang);
+            cache()->put('lang' . auth()->id(), $lang);
+        }
+        return view('auth.terms_mobile');
+    }
+
+    public function paynet_mobile($lang)
+    {
+        Session::put('lang', $lang);
+        if (auth()->check()) {
+            app()->setLocale($lang);
+            cache()->put('lang' . auth()->id(), $lang);
+        }
+        return view('staticpages.paynet_mobile');
     }
 
     public function paynet_oplata(){
@@ -134,7 +159,6 @@ class Controller extends BaseController
         if ($agent->isMobile()) {
             return view('staticpages.paynet_mobile');
         }
-
         return view('staticpages.paynet');
     }
 
