@@ -46,21 +46,12 @@ class UpdateController extends Controller
         $requestAll = $request->all();
         $data['coordinates'] = $this->service->addAdditionalAddress($task->id, $requestAll);
         unset($data['location0'], $data['coordinates0']);
-        $task->update($data);
-        $note = $request->validate([
-            'description' => 'required|string',
-            'oplata' => 'required',
-        ],[
-            'description.required' => __('login.name.required'),
-            'oplata.required' => __('login.name.required'),
-            'description.string' => __('login.name.required')
-            ]);
         if ($request['docs'] === "on") {
-            $note['docs'] = 1;
+            $data['docs'] = 1;
         } else {
-            $note['docs'] = 0;
+            $data['docs'] = 0;
         }
-        $task->update($note);
+        $task->update($data);
         $this->service->syncCustomFields($task);
         Alert::success(__('Изменения сохранены'));
 

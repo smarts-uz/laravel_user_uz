@@ -244,19 +244,19 @@
                         <input type="number" class="focus:outline-none border border-gray-300 mb-3 rounded p-2 text-center focus:border-yellow-500"
                                value="{{$task->budget}}" id="task_budget" name="budget">
                         <select class="border border-gray-300 rounded-md w-full focus:outline-none focus:border-yellow-500 py-2 px-4" id="budget">
-                            <option @selected($task->budget === round($task->category->max/5)) value="{{round($task->category->max/5)}}">
-                                {{round($task->category->max/5)}} UZS
+                            <option @selected($task->budget === $task->category->max/5) value="{{$task->category->max/5}}">
+                                {{$task->category->max/5}} UZS
                             </option>
-                            <option @selected($task->budget === round($task->category->max/5*2)) value="{{round($task->category->max/5*2)}}">
-                                {{round($task->category->max/5*2)}} UZS
+                            <option @selected($task->budget === $task->category->max/5*2) value="{{$task->category->max/5*2}}">
+                                {{$task->category->max/5*2}} UZS
                             </option>
-                            <option @selected($task->budget === round($task->category->max/5*3)) value="{{round($task->category->max/5*3)}}">
+                            <option @selected($task->budget === $task->category->max/5*3) value="{{$task->category->max/5*3}}">
                                 {{round($task->category->max/5*3)}} UZS
                             </option>
-                            <option @selected($task->budget === round($task->category->max/5*4)) value="{{round($task->category->max/5*4)}}">
-                                {{round($task->category->max/5*4)}} UZS
+                            <option @selected($task->budget === $task->category->max/5*4) value="{{$task->category->max/5*4}}">
+                                {{$task->category->max/5*4}} UZS
                             </option>
-                            <option @selected($task->budget === round($task->category->max)) value="{{$task->category->max}}">
+                            <option @selected($task->budget === $task->category->max) value="{{$task->category->max}}">
                                 {{$task->category->max}} UZS
                             </option>
                         </select>

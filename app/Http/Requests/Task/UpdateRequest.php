@@ -30,7 +30,8 @@ class UpdateRequest extends FormRequest
             'description' => 'required',
             'category_id' => 'required|numeric',
             'photos' => 'nullable|array',
-            'phone' => 'required|numeric|min:13'
+            'phone' => 'required|numeric|min:13',
+            'oplata' => 'required',
         ];
         $rule = $this->dateRule($rule);
         return $rule;
@@ -67,6 +68,7 @@ class UpdateRequest extends FormRequest
             'date_type.required' => __('Требуется заполнение!'),
             'budget.required' => __('Требуется заполнение!'),
             'category_id.required' => __('Требуется заполнение!'),
+            'oplata.required' => __('login.name.required'),
         ];
     }
     public function getValidatorInstance()
