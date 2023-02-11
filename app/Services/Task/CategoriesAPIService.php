@@ -58,7 +58,8 @@ class CategoriesAPIService
         return ['data' => $data];
     }
 
-    public function popular($name) {
+    public function popular($name): array
+    {
         $categories = Category::query()->select('id', 'parent_id', 'name', 'ico')->withCount('tasks')->withTranslation('uz')
             ->whereTranslation('name', 'like', "%$name%")->orWhere('name', 'like', "%$name%")->whereNotNull('parent_id')->orderByDesc('tasks_count')->get();
         $response = [];

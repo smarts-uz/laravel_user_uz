@@ -106,7 +106,6 @@
                     {
                         "name": "category",
                         "in": "query",
-                        "required": true,
                         "schema": {
                             "type": "string"
                         }
@@ -415,7 +414,7 @@
                     "Performers"
                 ],
                 "summary": "Get All Performers",
-                "operationId": "731347e6f7c873d149bc292778b4f161",
+                "operationId": "027b7e9a6cbc132daad2697f1621a24d",
                 "parameters": [
                     {
                         "name": "online",
@@ -4574,9 +4573,6 @@
                                     },
                                     "name": {
                                         "type": "string"
-                                    },
-                                    "budget": {
-                                        "type": "integer"
                                     },
                                     "category_id": {
                                         "type": "integer"

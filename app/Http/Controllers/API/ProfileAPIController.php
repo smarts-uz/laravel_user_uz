@@ -1227,20 +1227,8 @@ class ProfileAPIController extends Controller
     public function block(UserBlockRequest $request): JsonResponseAlias
     {
         $data = $request->validated();
-        $blocked_user = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$data['blocked_user_id']);
-        if($blocked_user->exists()){
-            $blocked_user->delete();
-        }else{
-            BlockedUser::query()->updateOrCreate([
-                'user_id' => \auth()->id(),
-                'blocked_user_id' => $data['blocked_user_id'],
-            ]);
-        }
-
-        return response()->json([
-            'success' => true,
-            'message' => __('Успешно сохранено')
-        ]);
+        $blocked_user_id = $data['blocked_user_id'];
+        return $this->profileService->blocked_user($blocked_user_id);
     }
 
     /**
@@ -1364,11 +1352,7 @@ class ProfileAPIController extends Controller
 
         /** @var User $user */
         $user = auth()->user();
-        $data = ResponseTemplate::query()->where(['user_id' => $user->id])->get();
-        return response()->json([
-            'success' => true,
-            'data' => ResponseTemplateResource::collection($data)
-        ]);
+        return $this->profileService->response_template($user);
     }
 
     /**
@@ -1419,7 +1403,6 @@ class ProfileAPIController extends Controller
      */
     public function response_template_edit(ResponseTemplateRequest $request, ResponseTemplate $id): JsonResponseAlias
     {
-
         $data = $request->validated();
         $id->update($data);
 
@@ -1518,18 +1501,7 @@ class ProfileAPIController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-        if((int)$user->id === (int)$template->user_id){
-            $template->delete();
-            return response()->json([
-                'success' => true,
-                'message' => 'success',
-            ]);
-        }
-        return response()->json([
-            'success' => false,
-            'message' => 'unsuccessful',
-        ]);
-
+        return $this->profileService->response_template_delete($user, $template);
     }
 
 }

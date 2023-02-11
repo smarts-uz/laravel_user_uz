@@ -62,7 +62,6 @@ class CategoriesAPIController extends Controller
      *     @OA\Parameter(
      *          in="query",
      *          name="category",
-     *          required=true,
      *          @OA\Schema(
      *              type="string"
      *          ),

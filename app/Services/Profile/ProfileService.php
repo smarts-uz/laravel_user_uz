@@ -4,6 +4,7 @@ namespace App\Services\Profile;
 
 use App\Http\Resources\CategoryIndexResource;
 use App\Http\Resources\PortfolioIndexResource;
+use App\Http\Resources\ResponseTemplateResource;
 use App\Http\Resources\ReviewIndexResource;
 use App\Http\Resources\TransactionHistoryCollection;
 use App\Item\ProfileCashItem;
@@ -12,6 +13,7 @@ use App\Item\ProfileSettingItem;
 use App\Item\VerificationCategoryItem;
 use App\Models\BlockedUser;
 use App\Models\Region;
+use App\Models\ResponseTemplate;
 use App\Models\Review;
 use App\Models\Session;
 use App\Models\Task;
@@ -859,5 +861,59 @@ class ProfileService
         ]);
     }
 
+    /**
+     * @param $blocked_user_id
+     * @return JsonResponse
+     */
+    public function blocked_user($blocked_user_id): JsonResponse
+    {
+        $blocked_user = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$blocked_user_id);
+        if($blocked_user->exists()){
+            $blocked_user->delete();
+        }else{
+            BlockedUser::query()->updateOrCreate([
+                'user_id' => \auth()->id(),
+                'blocked_user_id' => $blocked_user_id,
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => __('Успешно сохранено')
+        ]);
+    }
+
+    /**
+     * @param $user
+     * @return JsonResponse
+     */
+    public function response_template($user): JsonResponse
+    {
+        $data = ResponseTemplate::query()->where(['user_id' => $user->id])->get();
+        return response()->json([
+            'success' => true,
+            'data' => ResponseTemplateResource::collection($data)
+        ]);
+    }
+
+    /**
+     * @param $user
+     * @param $template
+     * @return JsonResponse
+     */
+    public function response_template_delete($user, $template): JsonResponse
+    {
+        if((int)$user->id === (int)$template->user_id){
+            $template->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'success',
+            ]);
+        }
+        return response()->json([
+            'success' => false,
+            'message' => 'unsuccessful',
+        ]);
+    }
 
 }
