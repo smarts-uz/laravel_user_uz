@@ -60,7 +60,7 @@ class ResponseService
                     $message = __('Выполнено успешно');
                     TaskResponse::query()->create($data);
                     if ((int)$data['not_free'] === 1) {
-                        $balance->balance = $balance->balance - setting('admin.pullik_otklik');
+                        $balance->balance -= setting('admin.pullik_otklik');
                         $balance->save();
                         UserExpense::query()->create([
                             'user_id' => $data['performer_id'],

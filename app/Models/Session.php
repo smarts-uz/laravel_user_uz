@@ -6,7 +6,6 @@ use App\Services\CustomService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Rennokki\QueryCache\Traits\QueryCacheable;
 
 /**
  * @property $id
@@ -25,11 +24,6 @@ use Rennokki\QueryCache\Traits\QueryCacheable;
 class Session extends Model
 {
     use HasFactory;
-    use QueryCacheable;
-
-    public $cacheFor = 3600;
-
-    public $cacheTags = ['session'];
 
     protected $guarded = [];
     protected $keyType = 'string';
