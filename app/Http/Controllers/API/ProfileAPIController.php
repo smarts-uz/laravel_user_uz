@@ -1264,7 +1264,7 @@ class ProfileAPIController extends Controller
     public function deleteImage(Request $request, Portfolio $portfolio): JsonResponseAlias
     {
         $image = $request->get('image');
-        File::delete(public_path() . '/storage/portfolio/'. $image);
+        File::delete($image);
         $images = json_decode($portfolio->image);
         $updatedImages = array_diff($images, [$image]);
         $portfolio->image = json_encode(array_values($updatedImages));
