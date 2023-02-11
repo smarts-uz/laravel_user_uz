@@ -10,12 +10,10 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Session;
-use Jenssegers\Agent\Agent;
 use App\Models\Massmedia;
 use App\Services\ControllerService;
 use App\Models\BlogNew;
 use App\Models\Privacy;
-use Nyholm\Psr7\Request;
 
 class Controller extends BaseController
 {
@@ -126,11 +124,6 @@ class Controller extends BaseController
 
     public function terms()
     {
-        $agent = new Agent();
-        if ($agent->isMobile()) {
-            return view('auth.terms_mobile');
-        }
-
         return view('auth.terms');
     }
 
@@ -154,11 +147,8 @@ class Controller extends BaseController
         return view('staticpages.paynet_mobile');
     }
 
-    public function paynet_oplata(){
-        $agent = new Agent();
-        if ($agent->isMobile()) {
-            return view('staticpages.paynet_mobile');
-        }
+    public function paynet_oplata()
+    {
         return view('staticpages.paynet');
     }
 
