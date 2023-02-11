@@ -327,7 +327,7 @@ class UpdateTaskService
     private function updateTask($task, $user): void
     {
         $cacheValues = cache()->get('task_update_' . $task->id);
-        if (array_key_exists('custom_fields', $cacheValues)) {
+        if (is_array($cacheValues) && array_key_exists('custom_fields', $cacheValues)) {
             // Save task custom fields
             $task->custom_field_values()->delete();
             foreach ($cacheValues['custom_fields'] as $customField) {
