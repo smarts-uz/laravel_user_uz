@@ -13,9 +13,6 @@ use App\Http\Requests\Api\ProfileVideoRequest;
 use App\Http\Requests\Api\ResponseTemplateRequest;
 use App\Http\Requests\Api\UserReportRequest;
 use App\Http\Requests\UserBlockRequest;
-use App\Http\Resources\PortfolioIndexResource;
-use App\Http\Resources\ResponseTemplateResource;
-use App\Models\BlockedUser;
 use App\Models\Portfolio;
 use App\Models\ReportedUser;
 use App\Models\ResponseTemplate;
@@ -23,11 +20,9 @@ use App\Models\User;
 use App\Services\CustomService;
 use App\Services\PerformersService;
 use App\Services\Profile\ProfileService;
-use App\Services\VerificationService;
 use Illuminate\Http\JsonResponse as JsonResponseAlias;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 
 class ProfileAPIController extends Controller
 {
@@ -1512,5 +1507,63 @@ class ProfileAPIController extends Controller
         $user = auth()->user();
         return $this->profileService->response_template_delete($user, $template);
     }
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/notification-off",
+     *     tags={"Profile"},
+     *     summary="Notification on or off",
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="notification_off",
+     *                    type="integer",
+     *                    description="0 yoki 1, 0 bo'lsa o'chirish, 1 bo'lsa yoqish"
+     *                 ),
+     *                 @OA\Property (
+     *                    property="notification_to",
+     *                    type="string",
+     *                 ),
+     *                 @OA\Property (
+     *                    property="notification_from",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function notification_off(Request $request): JsonResponseAlias
+    {
+        /** @var User $user */
+        $user = auth()->user();
+        $user->notification_off = $request->get('notification_off');
+        $user->notification_to = $request->get('notification_to');
+        $user->notification_from = $request->get('notification_from');
+        $user->save();
+        return response()->json([
+            'success' => true,
+            'message' => __('Успешно сохранено'),
+        ]);
+    }
+
 
 }

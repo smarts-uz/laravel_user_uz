@@ -60,7 +60,10 @@ use Laravel\Passport\HasApiTokens;
  * @property $work_experience
  * @property $deleted_by
  * @property $version
- * @property $deleted_at*@property mixed $version
+ * @property $notification_off
+ * @property $notification_to
+ * @property $notification_from
+ * @property $deleted_at
  */
 class User extends \TCG\Voyager\Models\User
 {

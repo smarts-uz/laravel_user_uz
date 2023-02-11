@@ -202,6 +202,9 @@ class ProfileService
             'last_version'=> setting('admin.last_version'),
             'gender'=> $user->gender,
             'blocked_user'=> $blocked_user,
+            'notification_to'=> $user->notification_to,
+            'notification_from'=> $user->notification_from,
+            'notification_off'=> $user->notification_off,
             'created_at' => $user->created_at
         ];
         return ['data' => $data];

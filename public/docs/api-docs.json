@@ -2044,6 +2044,53 @@
                 ]
             }
         },
+        "\/api\/profile\/notification-off": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Notification on or off",
+                "operationId": "49284b654f05cb73ab86cf158a0069e9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart\/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "notification_off": {
+                                        "description": "0 yoki 1, 0 bo'lsa o'chirish, 1 bo'lsa yoqish",
+                                        "type": "integer"
+                                    },
+                                    "notification_to": {
+                                        "type": "string"
+                                    },
+                                    "notification_from": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "\/api\/cancel-task\/{task}": {
             "post": {
                 "tags": [
@@ -25636,10 +25683,6 @@
                     "max": {
                         "type": "string",
                         "description": "Max"
-                    },
-                    "options": {
-                        "type": "string",
-                        "description": "Options"
                     },
                     "route": {
                         "enum": [
