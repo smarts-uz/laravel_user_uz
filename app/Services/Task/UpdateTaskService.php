@@ -336,7 +336,7 @@ class UpdateTaskService
             }
         }
         $addressesCount = 0;
-        if (array_key_exists('addresses', $cacheValues)) {
+        if (is_array($cacheValues) && array_key_exists('addresses', $cacheValues)) {
             // Save task addresses
             $addressesCount = count($cacheValues['addresses']);
             $task->addresses()->delete();
