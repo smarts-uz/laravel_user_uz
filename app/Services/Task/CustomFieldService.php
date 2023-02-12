@@ -23,7 +23,7 @@ class CustomFieldService
         $result['custom_fields'] = [];
         $values = $this->getValuesOfTask($task);
         foreach ($custom_fields as $custom_field) {
-            $result['custom_fields'][] = $this->initCustomField($custom_field, $values);
+            $result['custom_fields'][] = $this->initCustomField($custom_field, $task, $values);
         }
         return $result;
     }
@@ -40,7 +40,7 @@ class CustomFieldService
         $result = [];
         $values = $this->getValuesOfTask($task);
         foreach ($custom_fields as $custom_field) {
-            $result[] = $this->initCustomField($custom_field, $values);
+            $result[] = $this->initCustomField($custom_field, $task, $values);
         }
         return $result;
     }
@@ -53,7 +53,7 @@ class CustomFieldService
      * @param $values
      * @return  array
      */
-    private function initCustomField($custom_field, $values): array
+    private function initCustomField($custom_field, $task, $values): array
     {
         $item = [];
         $item['description'] = $custom_field->getTranslatedAttribute('description', app()->getLocale());
