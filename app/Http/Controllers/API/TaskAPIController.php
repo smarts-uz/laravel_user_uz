@@ -8,6 +8,7 @@ use App\Services\Task\TaskService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Models\User;
@@ -47,12 +48,10 @@ class TaskAPIController extends Controller
     private FilterTaskService $filter_service;
     private CreateTaskService $create_task_service;
     private UpdateTaskService $update_task_service;
-    public $taskservice;
     public const SOME_TASK_LIMIT = 10;
 
-    public function __construct(TaskService $taskService)
+    public function __construct()
     {
-        $this->taskservice = $taskService;
         $this->service = new CreateService();
         $this->filter_service = new FilterTaskService();
         $this->response_service = new ResponseService();
@@ -87,9 +86,11 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function same_tasks($task_id): array
+    public function same_tasks(Task $task): AnonymousResourceCollection
     {
-        return $this->taskservice->same_tasks($task_id, self::SOME_TASK_LIMIT);
+        $tasks = $task->category->tasks()->where('id', '!=', $task->id);
+        $tasks = $tasks->where('status', Task::STATUS_OPEN)->take(self::SOME_TASK_LIMIT)->orderByDesc('created_at')->get();
+        return SameTaskResource::collection($tasks);
     }
 
     /**
@@ -122,11 +123,30 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function responses(Request $request, int $task_id)
+    public function responses(Request $request, Task $task): AnonymousResourceCollection
     {
-        $auth_id = auth()->id();
-        $filter = $request->get('filter');
-        return $this->taskservice->responses($task_id, $auth_id, $filter);
+        if ($task->user_id === auth()->id()) {
+            switch ($request->get('filter')) {
+                case 'rating' :
+                    $responses = TaskResponse::query()->select('task_responses.*')->join('users', 'task_responses.performer_id', '=', 'users.id')
+                        ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating');
+                    break;
+                case 'date' :
+                    $responses = $task->responses()->orderByDesc('created_at');
+                    break;
+                case 'price' :
+                    $responses = $task->responses()->orderBy('price');
+                    break;
+                default :
+                    $responses = $task->responses();
+                    break;
+            }
+        } else {
+            $responses = $task->responses()->where('performer_id', auth()->id());
+        }
+        $responses->where('performer_id', '!=', $task->performer_id);
+        return TaskResponseResource::collection($responses->paginate(5));
+
     }
 
     /**
@@ -180,12 +200,25 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function response_store($task_id, TaskResponseRequest $request): JsonResponse
+    public function response_store(Task $task, TaskResponseRequest $request): JsonResponse
     {
         /** @var User $user */
         $user = auth()->user();
+
+        switch (true) {
+            case ((int)$task->user_id === (int)$user->id) :
+                return $this->fail(null, trans('trans.your task'));
+            case ((int)$user->role_id !== User::ROLE_PERFORMER) :
+                return $this->fail(1, trans('trans.not performer')); // 1 -> for open become performer page in app
+            case (!($user->is_phone_number_verified)) :
+                return $this->fail(null, trans('trans.verify phone'));
+        }
         $data = $request->validated();
-        return $this->taskservice->response_store($task_id, $user, $data);
+        /** @var User $auth_user */
+        $auth_user = auth()->user();
+        $response = $this->response_service->store($data, $task, $auth_user);
+
+        return response()->json($response);
     }
 
     /**
@@ -220,7 +253,16 @@ class TaskAPIController extends Controller
      */
     public function selectPerformer(TaskResponse $response): JsonResponse
     {
-        return $this->taskservice->selectPerformer($response);
+        if (!$response->task) {
+            return response()->json([
+                'success' => false,
+                'message' => __('Задача не найдена')
+            ]);
+        }
+        $this->response_service->selectPerformer($response);
+        return response()->json([
+            'success' => true
+        ]);
     }
 
     /**
@@ -254,10 +296,20 @@ class TaskAPIController extends Controller
      * )
      */
 
-    public function taskStatusUpdate($task_id)
+    public function taskStatusUpdate(Task $task)
     {
-        $auth_id = auth()->id;
-        return $this->taskservice->taskStatusUpdate($task_id, $auth_id);
+        if ($task->user_id !== auth()->id()){
+            return response()->json([
+                'success' => false,
+                "message" => __('Задача не найдена')
+            ], 403);
+        }
+        $task->status = Task::STATUS_OPEN;
+        $task->save();
+        return response()->json([
+            'success' => true,
+            'message' => __('Создано успешно')
+        ]);
     }
 
     /**
