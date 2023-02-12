@@ -18,14 +18,17 @@ class UpdateController extends Controller
 {
     protected CreateService $service;
 
+    public $updateTask;
+
     public function __construct()
     {
+        $this->updateTask = new UpdateTaskService;
         $this->service = new CreateService();
     }
 
     public function change(UpdateRequest $request, Task $task)
     {
-        (new UpdateTaskService)->taskGuard($task);
+        $this->updateTask->taskGuard($task);
         if ($task->responses_count)
             abort(403, "No Permission");
         if (!(int)$task->remote === 1) {
@@ -60,7 +63,7 @@ class UpdateController extends Controller
 
     public function deleteImage(Request $request, Task $task)
     {
-        (new UpdateTaskService)->taskGuard($task);
+        $this->updateTask->taskGuard($task);
         $image = $request->get('image');
         File::delete(public_path() . '/storage/uploads/' . $image);
         $images = json_decode($task->photos);
@@ -96,7 +99,7 @@ class UpdateController extends Controller
 
     public function sendReview(Task $task, Request $request)
     {
-        (new UpdateTaskService)->taskGuard($task);
+        $this->updateTask->taskGuard($task);
 
         try {
             ReviewService::sendReview($task, $request, true);

@@ -7,6 +7,7 @@ use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\PerformersService;
+use App\Services\Profile\ProfileService;
 use App\Services\Task\CategoriesAPIService;
 use App\Services\Task\SearchService;
 use App\Services\Task\TaskService;
@@ -46,7 +47,7 @@ class SardorCmd extends Command
      */
     public function handle()
     {
-        (new TaskService)->taskIndex(2585);
+        (new ProfileService)->response_template(656);
     }
 
     private function testTaskSearch() {

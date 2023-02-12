@@ -36,9 +36,10 @@ class CreateController extends Controller
 {
     protected CreateService $service;
     protected CustomFieldService $custom_field_service;
-
+    public $updatetask;
     public function __construct()
     {
+        $this->updatetask = new UpdateTaskService;
         $this->service = new CreateService();
         $this->custom_field_service = new CustomFieldService();
     }
@@ -298,7 +299,7 @@ class CreateController extends Controller
             $data['docs'] = 0;
         }
 
-        $task = Task::select('id')->find($task_id)->update($data);
+       Task::find($task_id)->update($data);
 
         return redirect()->route("task.create.contact", $task_id);
     }
@@ -443,7 +444,7 @@ class CreateController extends Controller
      */
     public function deleteAllImages(Task $task): RedirectResponse
     {
-        (new UpdateTaskService)->taskGuard($task);
+        $this->updatetask->taskGuard($task);
         $task->photos = null;
         $task->save();
         Alert::success(__('Изменено успешно'));

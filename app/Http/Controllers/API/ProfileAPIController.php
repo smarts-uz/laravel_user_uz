@@ -1219,6 +1219,25 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
+
+     //public function block(UserBlockRequest $request): JsonResponseAlias
+    //    {
+    //        $data = $request->validated();
+    //        $blocked_user = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$data['blocked_user_id']);
+    //        if($blocked_user->exists()){
+    //            $blocked_user->delete();
+    //        }else{
+    //            BlockedUser::query()->updateOrCreate([
+    //                'user_id' => \auth()->id(),
+    //                'blocked_user_id' => $data['blocked_user_id'],
+    //            ]);
+    //        }
+    //
+    //        return response()->json([
+    //            'success' => true,
+    //            'message' => __('Успешно сохранено')
+    //        ]);
+    //    }
     public function block(UserBlockRequest $request): JsonResponseAlias
     {
         $data = $request->validated();

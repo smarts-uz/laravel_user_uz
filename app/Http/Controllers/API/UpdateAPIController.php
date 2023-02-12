@@ -10,6 +10,7 @@ use App\Models\ChMessage;
 use App\Models\Task;
 use App\Services\Task\CreateService;
 use App\Services\Task\ReviewService;
+use App\Services\Task\UpdateAPIService;
 use App\Services\Task\UpdateTaskService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -20,22 +21,21 @@ use RealRashid\SweetAlert\Facades\Alert;
 class UpdateAPIController extends Controller
 {
     protected CreateService $service;
+    public $updateservice;
+    public $updatetask;
 
-    public function __construct()
+    public function __construct(UpdateAPIService $updateAPIService, UpdateTaskService $updateTaskService)
     {
+
         $this->service = new CreateService();
+        $this->updateservice = $updateAPIService;
+        $this->updatetask = $updateTaskService;
     }
 
-    public function __invoke(UpdateRequest $request, Task $task): JsonResponse
+    public function __invoke(UpdateRequest $request, int $task_id): JsonResponse
     {
-        (new UpdateTaskService)->taskGuard($task);
         $data = $request->validated();
-        $data = (new UpdateTaskService)->getAddress($data);
-        $task->update($data);
-        $this->service->syncCustomFields($task);
-
-        Alert::success('Success');
-        return response()->json(['message' => 'Success']);
+        return $this->updatetask->__invoke($task_id, $data);
     }
 
 
@@ -69,21 +69,9 @@ class UpdateAPIController extends Controller
      *     },
      * )
      */
-    public function completed(Task $task): JsonResponse
+    public function completed(int $task_id): JsonResponse
     {
-        (new UpdateTaskService)->taskGuardApi($task);
-        $data = [
-            'status' => Task::STATUS_COMPLETE
-        ];
-        ChMessage::query()->where('from_id', $task->user_id)->where('to_id', $task->performer_id)->delete();
-        ChMessage::query()->where('to_id', $task->user_id)->where('from_id', $task->performer_id)->delete();
-
-        $task->update($data);
-        return response()->json([
-            'success' => true,
-            'message' => __('Успешно сохранено'),
-            'task' => new TaskIndexResource($task)
-        ]);
+        return $this->updatetask->completed($task_id);
     }
 
     /**
@@ -129,19 +117,11 @@ class UpdateAPIController extends Controller
      *     },
      * )
      */
-    public function not_completed(Request $request, Task $task)
+    public function not_completed(Request $request, int $task_id): JsonResponse
     {
-        (new UpdateTaskService)->taskGuardApi($task);
         $request->validate(['reason' => 'required'], ['reason.required' => 'Reason is required']);
-
-        ChMessage::query()->where('from_id', $task->user_id)->where('to_id', $task->performer_id)->delete();
-        ChMessage::query()->where('to_id', $task->user_id)->where('from_id', $task->performer_id)->delete();
-
-        $task->update(['status' => Task::STATUS_NOT_COMPLETED, 'not_completed_reason' => $request->get('reason')]);
-        return response()->json([
-            'success' => true,
-            'message' => __('Успешно сохранено')
-        ]);
+        $data = $request->get('reason');
+        return $this->updatetask->not_completed($task_id, $data);
     }
 
 
@@ -195,18 +175,8 @@ class UpdateAPIController extends Controller
      *     },
      * )
      */
-    public function sendReview(Task $task, ReviewRequest $request): JsonResponse
+    public function sendReview($task_id, ReviewRequest $request): JsonResponse
     {
-        (new UpdateTaskService)->taskGuard($task);
-        DB::beginTransaction();
-
-        try {
-            ReviewService::sendReview($task, $request);
-        } catch (Exception) {
-            DB::rollBack();
-            return response()->json(['success' => false, 'message' => __('Не удалось отправить')]);  //back();
-        }
-        DB::commit();
-        return response()->json(['success' => true, 'message' => __('Успешно отправлено')]);  //back();
+        return $this->updatetask->sendReview($task_id, $request);
     }
 }

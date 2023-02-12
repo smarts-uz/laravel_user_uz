@@ -37,7 +37,7 @@ class CreateService
         });
 
         $item = new CreateNameItem();
-        $item->current_category = Category::query()->findOrFail($category_id);
+        $item->current_category = Category::findOrFail($category_id);
         $item->categories = collect($category)->where('parent_id', null)->all();
         $item->child_categories = collect($category)->where('parent_id', '!=', null)->all();
         return $item;
@@ -49,10 +49,10 @@ class CreateService
      * @param Task $task Task Object
      *
      */
-    public function syncCustomFields(Task $task): void
+    public function syncCustomFields($task_id): void
     {
-        $task->custom_field_values()->delete();
-        $this->attachCustomFields($task);
+        Task::with('id', $task_id)->custom_field_values()->delete();
+        $this->attachCustomFields($task_id);
 
     }
 
@@ -65,11 +65,12 @@ class CreateService
      *
      */
 
-    public function attachCustomFields(Task $task): void
+    public function attachCustomFields($task_id): void
     {
+        $task = Task::with('category.custom_fields')->select('category_id')->find($task_id);
         foreach ($task->category->custom_fields as $data) {
             $value = new CustomFieldsValue();
-            $value->task_id = $task->id;
+            $value->task_id = $task_id;
             $value->custom_field_id = $data->id;
             $arr = $data->name !== null ? (Arr::get(request()->all(), str_replace(' ', '_', $data->name)) ?? [null] ): null;
             $value->value = is_array($arr) ? json_encode($arr) : $arr;

@@ -153,7 +153,14 @@ class ProfileService
             ];
         }
 
-        $statuses = [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED];
+        $statuses = [
+            Task::STATUS_OPEN,
+            Task::STATUS_RESPONSE,
+            Task::STATUS_IN_PROGRESS,
+            Task::STATUS_COMPLETE,
+            Task::STATUS_NOT_COMPLETED,
+            Task::STATUS_CANCELLED
+        ];
 
         $data = [
             'id' => $user->id,
@@ -178,8 +185,8 @@ class ProfileService
             'google_id' => $user->google_id,
             'facebook_id' => $user->facebook_id,
             'born_date' => $born_date,
-            'created_tasks' => Task::query()->where(['user_id' => $user->id])->whereIn('status', $statuses)->get()->count(),
-            'performed_tasks' => Task::query()->where(['performer_id' => $user->id])->where('status', Task::STATUS_COMPLETE)->get()->count(),
+            'created_tasks' => Task::where(['user_id' => $user->id])->whereIn('status', $statuses)->get()->count(),
+            'performed_tasks' => Task::where(['performer_id' => $user->id])->where('status', Task::STATUS_COMPLETE)->get()->count(),
             'reviews' => [
                 'review_bad' => $user->review_bad,
                 'review_good' => $user->review_good,
@@ -193,7 +200,7 @@ class ProfileService
             'system_notification' =>$user->system_notification,
             'news_notification' => $user->news_notification,
             'portfolios' => PortfolioIndexResource::collection($user->portfolios),
-            'portfolios_count' => Portfolio::query()->where('user_id',$user->id)->get()->count(),
+            'portfolios_count' => Portfolio::where('user_id',$user->id)->get()->count(),
             'views' => $user->performer_views()->count(),
             'directories' => $directories,
             'wallet_balance' => $balance,
