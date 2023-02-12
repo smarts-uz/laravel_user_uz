@@ -5,29 +5,18 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ReviewRequest;
 use App\Http\Requests\Task\UpdateRequest;
-use App\Http\Resources\TaskIndexResource;
-use App\Models\ChMessage;
-use App\Models\Task;
 use App\Services\Task\CreateService;
-use App\Services\Task\ReviewService;
-use App\Services\Task\UpdateAPIService;
 use App\Services\Task\UpdateTaskService;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use RealRashid\SweetAlert\Facades\Alert;
 
 class UpdateAPIController extends Controller
 {
-    protected CreateService $service;
-    public $updateservice;
+    protected $service;
     public $updatetask;
 
-    public function __construct(UpdateTaskService $updateTaskService)
-    {
-
-        $this->service = new CreateService();
+    public function __construct(CreateService $createService,UpdateTaskService $updateTaskService){
+        $this->service = $createService;
         $this->updatetask = $updateTaskService;
     }
 
@@ -36,7 +25,6 @@ class UpdateAPIController extends Controller
         $data = $request->validated();
         return $this->updatetask->__invoke($task_id, $data);
     }
-
 
     /**
      * @OA\Post(
@@ -68,6 +56,7 @@ class UpdateAPIController extends Controller
      *     },
      * )
      */
+
     public function completed(int $task_id): JsonResponse
     {
         return $this->updatetask->completed($task_id,true);
@@ -116,6 +105,7 @@ class UpdateAPIController extends Controller
      *     },
      * )
      */
+
     public function not_completed(Request $request, int $task_id): JsonResponse
     {
         $request->validate(['reason' => 'required'], ['reason.required' => 'Reason is required']);
@@ -174,6 +164,7 @@ class UpdateAPIController extends Controller
      *     },
      * )
      */
+
     public function sendReview($task_id, ReviewRequest $request): JsonResponse
     {
         return $this->updatetask->sendReview($task_id, $request, true);
