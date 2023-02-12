@@ -276,7 +276,6 @@ class UpdateTaskService
         ]);
     }
 
-    // Delete Image
     public function deleteImage($request, $task): JsonResponse
     {
         $image = $request->get('image');
@@ -409,7 +408,7 @@ class UpdateTaskService
         return response()->json(['message' => 'Success']);
     }
 
-    public function completed($task_api)
+    public function completed($task_api, $api = false)
     {
         $task = Task::with('category')->find($task_api);
         $this->taskGuardApi($task);
@@ -421,55 +420,60 @@ class UpdateTaskService
 
         $task->update($data);
 
-        $photos = array_map(function ($val) {
-            return asset('storage/uploads/' . $val);
-        },
-            json_decode(!empty($task->photos)) ?? []
-        );
-        $user_response = TaskResponse::where('task_id', $task->id)
-            ->where('performer_id', \auth()->guard('api')->id())
-            ->first();
-        $performer_response = TaskResponse::where('task_id', $task->id)
-            ->where('performer_id', $task->performer_id)
-            ->first();
-        $response = ['data' => [
-            'id' => $task->id,
-            'name' => $task->name,
-            'address' => TaskAddressResource::collection($task->addresses),
-            'date_type' => $task->date_type,
-            'start_date' => $task->start_date,
-            'end_date' => $task->end_date,
-            'budget' => $task->budget,
-            'description' => $task->description,
-            'phone' => $this->phone,
-            'performer_id' => $this->performer_id,
-            'performer' => new PerformerResponseResource($performer_response),
-            'other'=> $task->category->name === "Что-то другое" || $task->category->name === "Boshqa narsa",
-            'parent_category_name'=>$task->category->parent->getTranslatedAttribute('name', app()->getLocale(), 'ru'),
-            'category_name' => $task->category->getTranslatedAttribute('name', app()->getLocale(), 'ru'),
-            'category_id' => $task->category_id,
-            'current_user_response' => (bool)$user_response,
-            'responses_count' => $task->responses()->count(),
-            'user' => new UserInTaskResource($task->user),
-            'views' => $task->views,
-            'status' => $task->status,
-            'oplata' => $task->oplata,
-            'docs' => $task->docs,
-            'created_at' => $task->created,
-            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task->id, 'custom')['custom_fields'],
-            'photos' => $photos,
-            'performer_review' => $task->performer_review,
-            'response_price' => setting('admin.pullik_otklik'),
-            'free_response' => setting('admin.bepul_otklik')
-        ]];
-        return response()->json([
-            'success' => true,
-            'message' => __('Успешно сохранено'),
-            'task' => new $response
-        ]);
+        if($api) {
+            $photos = array_map(function ($val) {
+                return asset('storage/uploads/' . $val);
+            },
+                json_decode(!empty($task->photos)) ?? []
+            );
+            $user_response = TaskResponse::where('task_id', $task->id)
+                ->where('performer_id', \auth()->guard('api')->id())
+                ->first();
+            $performer_response = TaskResponse::where('task_id', $task->id)
+                ->where('performer_id', $task->performer_id)
+                ->first();
+            $response = ['data' => [
+                'id' => $task->id,
+                'name' => $task->name,
+                'address' => TaskAddressResource::collection($task->addresses),
+                'date_type' => $task->date_type,
+                'start_date' => $task->start_date,
+                'end_date' => $task->end_date,
+                'budget' => $task->budget,
+                'description' => $task->description,
+                'phone' => $this->phone,
+                'performer_id' => $this->performer_id,
+                'performer' => new PerformerResponseResource($performer_response),
+                'other'=> $task->category->name === "Что-то другое" || $task->category->name === "Boshqa narsa",
+                'parent_category_name'=>$task->category->parent->getTranslatedAttribute('name', app()->getLocale(), 'ru'),
+                'category_name' => $task->category->getTranslatedAttribute('name', app()->getLocale(), 'ru'),
+                'category_id' => $task->category_id,
+                'current_user_response' => (bool)$user_response,
+                'responses_count' => $task->responses()->count(),
+                'user' => new UserInTaskResource($task->user),
+                'views' => $task->views,
+                'status' => $task->status,
+                'oplata' => $task->oplata,
+                'docs' => $task->docs,
+                'created_at' => $task->created,
+                'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task->id, 'custom')['custom_fields'],
+                'photos' => $photos,
+                'performer_review' => $task->performer_review,
+                'response_price' => setting('admin.pullik_otklik'),
+                'free_response' => setting('admin.bepul_otklik')
+            ]];
+            return response()->json([
+                'success' => true,
+                'message' => __('Успешно сохранено'),
+                'task' => new $response
+            ]);
+        }
+
+        Alert::success(__('Успешно сохранено'));
+        return back();
     }
 
-    public function not_completed($task_id, $data)
+    public function not_completed($task_id, $data, $api = false)
     {
         $task = Task::select('user_id', 'performer_id')->find($task_id);
         $this->taskGuardApi($task);
@@ -478,25 +482,91 @@ class UpdateTaskService
             ->orWhere('from_id', $task->performer_id)->delete();
 
         $task->update(['status' => Task::STATUS_NOT_COMPLETED, 'not_completed_reason' => $data]);
-        return response()->json([
-            'success' => true,
-            'message' => __('Успешно сохранено')
-        ]);
+        if($api){
+            return response()->json([
+                'success' => true,
+                'message' => __('Успешно сохранено')
+            ]);
+        }
+        Alert::success(__('Успешно сохранено'));
+        return back();
     }
 
-    public function sendReview($task_id, $data)
+    public function sendReview($task_id, $data, $api = false)
     {
         $task = Task::find($task_id);
         $this->taskGuard($task);
-        DB::beginTransaction();
+        if($api) {
+            DB::beginTransaction();
+            try {
+                ReviewService::sendReview($task, $data);
+            } catch (Exception) {
+                DB::rollBack();
+                return response()->json(['success' => false, 'message' => __('Не удалось отправить')]);  //back();
+            }
+            DB::commit();
+            return response()->json(['success' => true, 'message' => __('Успешно отправлено')]);  //back();
+        } else {
 
-        try {
-            ReviewService::sendReview($task, $data);
-        } catch (Exception) {
-            DB::rollBack();
-            return response()->json(['success' => false, 'message' => __('Не удалось отправить')]);  //back();
         }
-        DB::commit();
-        return response()->json(['success' => true, 'message' => __('Успешно отправлено')]);  //back();
+
+    }
+
+    public function change($task_id, $request)
+    {
+        $task = Task::find($task_id);
+        $this->taskGuard($task);
+        if ($task->responses_count)
+            abort(403, "No Permission");
+        if (!(int)$task->remote === 1) {
+            $request->validate([
+                'location0' => 'required',
+                'coordinates0' => 'required',
+            ],[
+                'location0.required' => __('login.name.required'),
+                'coordinates0.required' => __('login.name.required'),
+            ]);
+        }
+
+        $data = $request->validated();
+        $task->addresses()->delete();
+        $images = array_merge(json_decode(session()->has('images') ? session('images') : '[]'), json_decode($task->photos)??[]);
+        session()->forget('images');
+        $data['photos'] = json_encode($images);
+        $requestAll = $request->all();
+        $data['coordinates'] = $this->service->addAdditionalAddress($task->id, $requestAll);
+        unset($data['location0'], $data['coordinates0']);
+        if ($request['docs'] === "on") {
+            $data['docs'] = 1;
+        } else {
+            $data['docs'] = 0;
+        }
+        $task->update($data);
+        $this->service->syncCustomFields($task);
+        Alert::success(__('Изменения сохранены'));
+    }
+
+    public function deleteImage2($task_id, $image): void
+    {
+        $task = Task::select('photos', 'performer_id', 'user_id')->find($task_id);
+        $this->taskGuard($task);
+        File::delete(public_path() . '/storage/uploads/' . $image);
+        $images = json_decode($task->photos);
+        $updatedImages = array_diff($images, [$image]);
+        $task->photos = json_encode(array_values($updatedImages));
+        $task->save();
+    }
+
+    public function completed2($task_id)
+    {
+        $task = Task::select('user_id', 'performer_id')->find();
+        $data = [
+            'status' => Task::STATUS_COMPLETE
+        ];
+
+        ChMessage::where('from_id', $task->user_id)->where('to_id', $task->performer_id)
+            ->orWhere('from_id', $task->performer_id)->delete();
+
+        $task->update($data);
     }
 }

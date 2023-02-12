@@ -1795,9 +1795,9 @@ class TaskAPIController extends Controller
         $status = $request->get('status');
 
         if((int)$status === 1){
-            $tasks = Task::query()->where('user_id', $user_id)->where('status', Task::STATUS_COMPLETE);
+            $tasks = Task::where('user_id', $user_id)->where('status', Task::STATUS_COMPLETE);
         }else{
-            $tasks = Task::query()->where('performer_id', $user_id)->where('status', Task::STATUS_COMPLETE);
+            $tasks = Task::where('performer_id', $user_id)->where('status', Task::STATUS_COMPLETE);
         }
 
         return new TaskPaginationResource($tasks->orderByDesc('created_at')->paginate());
@@ -1836,9 +1836,15 @@ class TaskAPIController extends Controller
      */
     public function all_tasks(Request $request): TaskPaginationResource
     {
-
         $user_id = $request->get('user_id');
-        $tasks = Task::query()->where('user_id', $user_id)->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED]);
+        $statuses = [
+            Task::STATUS_OPEN,
+            Task::STATUS_RESPONSE,
+            Task::STATUS_IN_PROGRESS,
+            Task::STATUS_COMPLETE,
+            Task::STATUS_NOT_COMPLETED,
+            Task::STATUS_CANCELLED];
+        $tasks = Task::where('user_id', $user_id)->whereIn('status', $statuses);
 
         return new TaskPaginationResource($tasks->orderByDesc('created_at')->paginate());
 

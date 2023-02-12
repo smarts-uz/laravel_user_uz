@@ -24,11 +24,10 @@ class UpdateAPIController extends Controller
     public $updateservice;
     public $updatetask;
 
-    public function __construct(UpdateAPIService $updateAPIService, UpdateTaskService $updateTaskService)
+    public function __construct(UpdateTaskService $updateTaskService)
     {
 
         $this->service = new CreateService();
-        $this->updateservice = $updateAPIService;
         $this->updatetask = $updateTaskService;
     }
 
@@ -71,7 +70,7 @@ class UpdateAPIController extends Controller
      */
     public function completed(int $task_id): JsonResponse
     {
-        return $this->updatetask->completed($task_id);
+        return $this->updatetask->completed($task_id,true);
     }
 
     /**
@@ -121,7 +120,7 @@ class UpdateAPIController extends Controller
     {
         $request->validate(['reason' => 'required'], ['reason.required' => 'Reason is required']);
         $data = $request->get('reason');
-        return $this->updatetask->not_completed($task_id, $data);
+        return $this->updatetask->not_completed($task_id, $data, true);
     }
 
 
@@ -177,6 +176,6 @@ class UpdateAPIController extends Controller
      */
     public function sendReview($task_id, ReviewRequest $request): JsonResponse
     {
-        return $this->updatetask->sendReview($task_id, $request);
+        return $this->updatetask->sendReview($task_id, $request, true);
     }
 }
