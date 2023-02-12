@@ -94,7 +94,7 @@ class ReviewService
 
     public static function sendReview($task, $request, $status = false): void
     {
-        switch (true){
+        switch (true) {
             case $task->user_id === auth()->id() :
                 // user review to performer
                 $locale = (new CustomService)->cacheLang($task->performer_id);
