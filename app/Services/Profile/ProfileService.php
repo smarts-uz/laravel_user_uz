@@ -219,7 +219,7 @@ class ProfileService
             'notification_off'=> $user->notification_off,
             'created_at' => $user->created_at
         ];
-        return ['data' => $data];
+        return $data;
     }
 
     /**
