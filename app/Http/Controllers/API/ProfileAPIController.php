@@ -877,11 +877,7 @@ class ProfileAPIController extends Controller
     public function userProfile(User $user): JsonResponseAlias
     {
         (new PerformersService)->setView($user);
-        $data = $this->profileService->index($user);
-        return response()->json([
-            'success' => true,
-            'data' => $data
-        ]);
+        return $this->profileService->index($user);
     }
 
     /**

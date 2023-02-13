@@ -46,10 +46,10 @@ class ProfileService
 
     /**
      * @param $user
-     * @return array[]
+     * @return JsonResponse
      */
     #[ArrayShape(['data' => "array"])]
-    public function index($user): array
+    public function index($user): JsonResponse
     {
         if(isset($user->password)) {
             $socialPassword=false;
@@ -219,7 +219,10 @@ class ProfileService
             'notification_off'=> $user->notification_off,
             'created_at' => $user->created_at
         ];
-        return $data;
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
     }
 
     /**
