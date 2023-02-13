@@ -14,7 +14,7 @@ class UpdateController extends Controller
 {
     protected CreateService $service;
 
-    public $updateTask;
+    public UpdateTaskService $updateTask;
 
     public function __construct(UpdateTaskService $updateTaskService, CreateService $createService)
     {
@@ -67,7 +67,7 @@ class UpdateController extends Controller
      * @param int $task_id
      * @return  mixed
      */
-    public function not_completed(Request $request, int $task_id)
+    public function not_completed(Request $request, int $task_id): mixed
     {
         $request->validate(['reason' => 'required']);
         $data = $request->get('reason');

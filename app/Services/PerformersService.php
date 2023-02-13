@@ -140,7 +140,7 @@ class PerformersService
 
         if (isset($data['categories'])) {
             $categories = is_array($data['categories']) ? $data['categories'] : json_decode($data['categories']);
-            $childCategories = \App\Models\Category::query()->whereIn('parent_id', $categories)->pluck('id')->toArray();
+            $childCategories = Category::query()->whereIn('parent_id', $categories)->pluck('id')->toArray();
             $allCategories = array_unique(array_merge($categories, $childCategories));
             $user_categories = UserCategory::query()->whereIn('category_id', $allCategories)->pluck('user_id')->toArray();
             $performers = $performers->whereIn('id', $user_categories);
@@ -156,13 +156,13 @@ class PerformersService
             $performers = $performers->where('last_seen', ">=", $date);
         }
 
-        if (isset($data['review'], $data['desc'])) {
+        if (isset($data['review'], $data['asc'])) {
             $performers = $performers
                 ->orderByDesc('review_rating')
                 ->orderByRaw('(review_good - review_bad) DESC');
         }
 
-        if (isset($data['review'], $data['asc'])) {
+        if (isset($data['review'], $data['desc'])) {
             $performers = $performers
                 ->orderBy('review_rating')
                 ->orderByRaw('(review_good - review_bad) DESC');

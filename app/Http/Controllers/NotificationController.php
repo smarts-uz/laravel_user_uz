@@ -4,18 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\FirebaseTokenRequest;
 use App\Http\Resources\NotificationResource;
-use App\Mail\MessageEmail;
 use App\Models\Notification;
 use App\Models\Session;
-use App\Models\Task;
 use App\Models\User;
-use App\Models\UserCategory;
 use App\Services\NotificationService;
 use App\Services\Response;
-use App\Services\SmsMobileService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use TCG\Voyager\Events\BreadDataAdded;
 use TCG\Voyager\Facades\Voyager;
