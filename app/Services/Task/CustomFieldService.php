@@ -87,7 +87,7 @@ class CustomFieldService
     private function setOption($custom_field, $values)
     {
         $options = app()->getLocale() === 'uz' ? Arr::get($custom_field->options, 'options', []) : Arr::get($custom_field->options, 'options_ru', []);
-        if(!empty($options) && count($options)) {$options = Arr::get($custom_field->options, 'options', []);}
+        if(empty($options) && !count($options)) {$options = Arr::get($custom_field->options, 'options', []);}
         $item = [];
         $data = [];
         foreach ($options as $key => $option) {
