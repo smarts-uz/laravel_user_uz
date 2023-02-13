@@ -12,7 +12,7 @@
                 <span class="flex w-full flex-wrap content-center items-center">
                     <img src="{{asset('storage/'.$category2->ico) }}" alt="" class="h-8 w-8">
                 <a class="text-sm p-3" href="{{route('categories',['id'=>$category2->id])}}">
-                    {{$category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}
+                    {{$category2->name}}
                 </a>
                 </span>
             </button>
@@ -25,7 +25,7 @@
                 <img src="{{asset('storage/'.$category2->ico) }}" alt="" class="h-8 w-8">
                 <a href="{{route('categories', ['id'=> $category2->id])}}"
                 class="sm:ml-4 ml-2 sm:text-base text-xs text-gray-600 hover:text-yellow-500">
-                    {{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}
+                    {{$category2->name}}
                 </a>
             </span>
         @endforeach
