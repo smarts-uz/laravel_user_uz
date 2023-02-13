@@ -25,6 +25,7 @@ use App\Services\CustomService;
 use App\Services\SmsMobileService;
 use App\Services\VerificationService;
 use Carbon\Carbon;
+use Illuminate\Container\Util;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -33,8 +34,10 @@ use App\Models\Portfolio;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use JetBrains\PhpStorm\ArrayShape;
 use App\Models\Category;
+use League\Flysystem\WhitespacePathNormalizer;
 use RealRashid\SweetAlert\Facades\Alert;
 use UAParser\Exception\FileNotFoundException;
 use UAParser\Parser;
@@ -51,23 +54,42 @@ class ProfileService
     #[ArrayShape(['data' => "array"])]
     public function index($user): JsonResponse
     {
-        if(isset($user->password)) {
-            $socialPassword=false;
-        }
-        else{
-            $socialPassword=true;
+        if (isset($user->password)) {
+            $socialPassword = false;
+        } else {
+            $socialPassword = true;
         }
 
         $user->locale = app()->getLocale();
-        $file = "storage/portfolio/{$user->name}";
-        if (!file_exists($file)) {
-            File::makeDirectory($file);
+
+        $suffixAvatarMale = 'users/default_male.png';
+        $suffixAvatarFeMale = 'users/default_female.png';
+        $dirStorage = public_path('storage');
+        $dirUserProfile =  $dirStorage. "/portfolio/{$user->name}";
+
+        $norms = new WhitespacePathNormalizer;
+
+        $dirUserProfile = $norms->normalizePath($dirUserProfile);
+
+        $fileAvatar = $dirUserProfile.'/'.$user->avatar;
+
+
+
+        $fileAvatarMale = $dirUserProfile.'/'.$suffixAvatarMale;
+        $fileAvatarFeMale = $dirUserProfile.'/users/default_female.jpg';
+
+        if (!file_exists($dirUserProfile)) {
+            File::makeDirectory($dirUserProfile);
         }
-        $b = File::directories(public_path("storage/portfolio/{$user->name}"));
-        $directories = array_map('basename', $b);
-        if (WalletBalance::query()->where('user_id', $user->id)->first() !== null){
-            $balance = WalletBalance::query()->where('user_id', $user->id)->first()->balance;
-        }else{
+
+
+
+
+        $wallet = WalletBalance::query()->where('user_id', $user->id)->first();
+
+        if ($wallet !== null) {
+            $balance = $wallet->balance;
+        } else {
             $balance = 0;
         }
 
@@ -77,8 +99,7 @@ class ProfileService
         if ($user->is_email_verified && $user->is_phone_number_verified) {
             $email_phone_photo = asset('images/verify.png');
             $message = __('Номер телефона и Е-mail пользователя подтверждены');
-        }
-        else {
+        } else {
             $email_phone_photo = asset('images/verify_gray.png');
             $message = __('Номер телефона и Е-mail пользователя неподтверждены');
         }
@@ -118,35 +139,45 @@ class ProfileService
 
         $goodReviews = $user->goodReviews();
         $lastReview = $goodReviews->get()->last();
-        if((int)$user->gender === 1){
+        if ((int)$user->gender === 1) {
             $date_gender = __('Был онлайн');
-        }else{
+            $dirUserAvatar = $user->avatar ? $dirStorage."/{$user->avatar}" : $dirStorage."/{$suffixAvatarMale}";
+        } else {
             $date_gender = __('Была онлайн');
+            $dirUserAvatar = $user->avatar ? $dirStorage."/{$user->avatar}" : $dirStorage."/{$suffixAvatarFeMale}";
         }
+        $dirUserAvatar = $norms->normalizePath($dirUserAvatar);
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
         if ($user->last_seen >= $date) {
             $lastSeen = __('В сети');
         } else {
             $seenDate = Carbon::parse($user->last_seen);
             $seenDate->locale(app()->getLocale() . '-' . app()->getLocale());
-            if(app()->getLocale()==='uz'){
-                $lastSeen = $seenDate->diffForHumans().' onlayn edi';
-            }else{
-                $lastSeen = $date_gender. $seenDate->diffForHumans();
+            if (app()->getLocale() === 'uz') {
+                $lastSeen = $seenDate->diffForHumans() . ' onlayn edi';
+            } else {
+                $lastSeen = $date_gender . $seenDate->diffForHumans();
             }
         }
         $age = Carbon::parse($user->born_date)->age;
         $born_date = Carbon::parse($user->born_date)->format('Y-m-d');
-        $user_exists = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$user->id)->exists();
-        if(!$user_exists){
+        $user_exists = BlockedUser::query()->where('user_id', $user->id)->where('blocked_user_id', $user->id)->exists();
+
+        if (!$user_exists) {
             $blocked_user = 0;
-            $user_avatar = asset('storage/'.$user->avatar);
-        }else{
+            if (file_exists($dirUserAvatar))
+            {
+                $user_avatar = asset('storage/' . $user->avatar);
+            } else {
+                $user_avatar = ((int)$user->gender === 1) ? asset('storage/'.$suffixAvatarMale) : asset('storage/'.$suffixAvatarFeMale);
+            }
+
+        } else {
             $blocked_user = 1;
             $user_avatar = asset("images/block-user.jpg");
         }
 
-        $user_categories = UserCategory::query()->where('user_id',$user->id)->pluck('category_id')->toArray();
+        $user_categories = UserCategory::query()->where('user_id', $user->id)->pluck('category_id')->toArray();
         $categories = CategoryIndexResource::collection(Category::query()
             ->select('id', 'parent_id', 'name', 'ico')
             ->whereIn('id', $user_categories)
@@ -170,7 +201,7 @@ class ProfileService
         $data = [
             'id' => $user->id,
             'name' => $user->name,
-            'social_password'=> $socialPassword,
+            'social_password' => $socialPassword,
             'last_name' => $user->last_name,
             'email' => $user->email,
             'avatar' => $user_avatar,
@@ -202,27 +233,24 @@ class ProfileService
                 ] : null
             ],
             'phone_number_old' => $user->phone_number_old,
-            'system_notification' =>$user->system_notification,
+            'system_notification' => $user->system_notification,
             'news_notification' => $user->news_notification,
             'portfolios' => PortfolioIndexResource::collection($user->portfolios),
-            'portfolios_count' => Portfolio::where('user_id',$user->id)->get()->count(),
+            'portfolios_count' => Portfolio::where('user_id', $user->id)->get()->count(),
             'views' => $user->performer_views()->count(),
-            'directories' => $directories,
+       //     'directories' => $directories,
             'wallet_balance' => $balance,
-            'work_experience'=>$user->work_experience,
+            'work_experience' => $user->work_experience,
             'last_seen' => $lastSeen,
-            'last_version'=> setting('admin.last_version'),
-            'gender'=> $user->gender,
-            'blocked_user'=> $blocked_user,
-            'notification_to'=> $user->notification_to,
-            'notification_from'=> $user->notification_from,
-            'notification_off'=> $user->notification_off,
+            'last_version' => setting('admin.last_version'),
+            'gender' => $user->gender,
+            'blocked_user' => $blocked_user,
+            'notification_to' => $user->notification_to,
+            'notification_from' => $user->notification_from,
+            'notification_off' => $user->notification_off,
             'created_at' => $user->created_at
         ];
-        return response()->json([
-            'success' => true,
-            'data' => $data
-        ]);
+        return response()->json(['success' => true, 'data' => $data]);
     }
 
     /**
@@ -254,10 +282,10 @@ class ProfileService
      */
     public function settingsEdit($user, ?string $lang = 'uz'): ProfileSettingItem
     {
-        $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use($lang) {
+        $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use ($lang) {
             return Category::withTranslations($lang)->orderBy("order")->get();
         });
-        $regions = Cache::remember('regions_' . $lang, now()->addMinute(180), function () use($lang) {
+        $regions = Cache::remember('regions_' . $lang, now()->addMinute(180), function () use ($lang) {
             return Region::withTranslations($lang)->orderBy("id")->get();
         });
 
@@ -272,7 +300,7 @@ class ProfileService
             ->toArray();
         $item->sessions = Session::query()->where('user_id', $user->id)->get();
         $item->parser = Parser::create();
-        $item->user_categories = UserCategory::query()->where('user_id',$user->id)->pluck('category_id')->toArray();
+        $item->user_categories = UserCategory::query()->where('user_id', $user->id)->pluck('category_id')->toArray();
         $item->task = Task::query()->where('user_id', Auth::id())->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->count();
         return $item;
     }
@@ -310,8 +338,8 @@ class ProfileService
     public function storeProfilePhoto($files, $hasFile, $user): ?string
     {
         if ($hasFile) {
-            $filename = 'user-avatar/'.$files->getClientOriginalName().'_'.time() . ".jpg";
-            $files->move(public_path().'/storage/user-avatar/', $filename);
+            $filename = 'user-avatar/' . $files->getClientOriginalName() . '_' . time() . ".jpg";
+            $files->move(public_path() . '/storage/user-avatar/', $filename);
             $user->avatar = $filename;
             $user->save();
             return $filename;
@@ -355,8 +383,8 @@ class ProfileService
             ->limit(Review::TOP_USER)->pluck('id')->toArray();
         $item->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->latest()->get();
         $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->latest()->get();
-        $user_categories = UserCategory::query()->where('user_id',$user->id)->pluck('category_id')->toArray();
-        $item->user_category = Category::query()->whereIn('id',$user_categories)->get();
+        $user_categories = UserCategory::query()->where('user_id', $user->id)->pluck('category_id')->toArray();
+        $item->user_category = Category::query()->whereIn('id', $user_categories)->get();
         return $item;
     }
 
@@ -376,7 +404,7 @@ class ProfileService
         if (isset($performer)) {
             $reviews->where(['as_performer' => $performer]);
         }
-        switch ($review){
+        switch ($review) {
             case 'good' :
                 $reviews->where(['good_bad' => 1]);
                 break;
@@ -456,9 +484,9 @@ class ProfileService
     #[ArrayShape([])]
     public function videoStore($user, $link): array
     {
-        switch (true){
+        switch (true) {
             case str_starts_with($link, 'https://youtu.be/') :
-                $user->youtube_link =  str_replace('https://youtu.be', 'https://www.youtube.com/embed', $link);
+                $user->youtube_link = str_replace('https://youtu.be', 'https://www.youtube.com/embed', $link);
                 $user->save();
                 $message = trans('trans.Video added successfully.');
                 $success = true;
@@ -504,7 +532,7 @@ class ProfileService
             $balance = 0;
         $transactions = Transaction::query()->where(['transactionable_id' => $user->id])->where('state', 2);
 
-        switch ($type){
+        switch ($type) {
             case 'in' :
                 $transactions = $transactions->whereIn('payment_system', Transaction::METHODS);
                 break;
@@ -513,7 +541,7 @@ class ProfileService
                 break;
         }
         $now = Carbon::now();
-        switch (true){
+        switch (true) {
             case $period :
                 $transactions = match ($period) {
                     'month' => $transactions->where('created_at', '>', $now->subMonth()),
@@ -557,7 +585,7 @@ class ProfileService
             $phone_number = $user->phone_number;
             $user->verify_code = $message;
             $user->save();
-            SmsMobileService::sms_packages((new CustomService)->correctPhoneNumber($phone_number), config('app.name').' '. __("Код подтверждения") . ' ' . $message);
+            SmsMobileService::sms_packages((new CustomService)->correctPhoneNumber($phone_number), config('app.name') . ' ' . __("Код подтверждения") . ' ' . $message);
             $messages = trans('trans.Phone number updated successfully.');
             $success = true;
         }
@@ -612,7 +640,7 @@ class ProfileService
      */
     public function changeAvatar($filename, $user): void
     {
-        $destination = 'storage/'. $user->avatar;
+        $destination = 'storage/' . $user->avatar;
         if (File::exists($destination)) {
             File::delete($destination);
         }
@@ -649,7 +677,7 @@ class ProfileService
      */
     public function notifications($user, $notification): array|string
     {
-        switch ($notification){
+        switch ($notification) {
             case 1 :
                 $user->news_notification = 1;
                 $message = trans('trans.Notifications turned on.');
@@ -677,14 +705,14 @@ class ProfileService
     {
         $user->role_id = User::ROLE_PERFORMER;
         $user->save();
-        $user_exists = UserCategory::query()->where('user_id',$user->id)->get();
-        if($user_exists){
-            UserCategory::query()->where('user_id',$user->id)->delete();
+        $user_exists = UserCategory::query()->where('user_id', $user->id)->get();
+        if ($user_exists) {
+            UserCategory::query()->where('user_id', $user->id)->delete();
         }
         foreach ($categories as $category) {
             UserCategory::query()->create([
-                'user_id'=> $user->id,
-                'category_id'=>$category,
+                'user_id' => $user->id,
+                'category_id' => $category,
             ]);
         }
 
@@ -716,14 +744,14 @@ class ProfileService
      */
     public function verifyCategory($user, ?string $lang = 'uz'): VerificationCategoryItem
     {
-        $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use($lang) {
+        $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use ($lang) {
             return Category::withTranslations($lang)->orderBy("order")->get();
         });
 
         $item = new VerificationCategoryItem();
         $item->categories = collect($category)->where('parent_id', null)->all();
         $item->categories2 = collect($category)->where('parent_id', '!=', null)->all();
-        $item->user_categories = UserCategory::query()->where('user_id',$user->id)->pluck('category_id')->toArray();
+        $item->user_categories = UserCategory::query()->where('user_id', $user->id)->pluck('category_id')->toArray();
         return $item;
     }
 
@@ -734,7 +762,7 @@ class ProfileService
      */
     public function change_password($user, $data): RedirectResponse
     {
-        switch (true){
+        switch (true) {
             case !$data || (!isset($data['old_password']) && $user->password) :
                 Alert::error(__('Введите старый пароль'));
                 return redirect()->back();
@@ -892,10 +920,10 @@ class ProfileService
      */
     public function blocked_user($blocked_user_id): JsonResponse
     {
-        $blocked_user = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$blocked_user_id);
-        if($blocked_user->exists()){
+        $blocked_user = BlockedUser::query()->where('user_id', auth()->id())->where('blocked_user_id', $blocked_user_id);
+        if ($blocked_user->exists()) {
             $blocked_user->delete();
-        }else{
+        } else {
             BlockedUser::query()->updateOrCreate([
                 'user_id' => \auth()->id(),
                 'blocked_user_id' => $blocked_user_id,
@@ -928,7 +956,7 @@ class ProfileService
      */
     public function response_template_delete($user, $template): JsonResponse
     {
-        if((int)$user->id === (int)$template->user_id){
+        if ((int)$user->id === (int)$template->user_id) {
             $template->delete();
             return response()->json([
                 'success' => true,

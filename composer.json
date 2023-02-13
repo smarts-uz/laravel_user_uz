@@ -25,6 +25,7 @@
         "laravel/scout": "v9.4.12",
         "laravel/socialite": "v5.5.5",
         "laravel/tinker": "v2.7.2",
+        "league/flysystem": "3.12.2",
         "munafio/chatify": "v1.5.2",
         "pusher/pusher-php-server": "v7.0.2",
         "realrashid/sweet-alert": "v5.1.0",

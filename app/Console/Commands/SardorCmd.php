@@ -47,7 +47,8 @@ class SardorCmd extends Command
      */
     public function handle()
     {
-        (new ProfileService)->response_template(656);
+        $user = User::find(1245);
+        (new ProfileService)->index($user);
     }
 
     private function testTaskSearch() {
