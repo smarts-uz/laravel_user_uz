@@ -44,7 +44,12 @@ class ProfileService
 {
     public const MAX_TRANSACTIONS = 15;
 
-    public function index($user)
+    /**
+     * @param $user
+     * @return array[]
+     */
+    #[ArrayShape(['data' => "array"])]
+    public function index($user): array
     {
         if(isset($user->password)) {
             $socialPassword=false;
@@ -217,14 +222,6 @@ class ProfileService
         return ['data' => $data];
     }
 
-    public function makeAssets($collection){
-        $arr = [];
-        foreach ($collection as $item) {
-            $arr[] = asset('/storage/portfolio/'.$item);
-        }
-        return $arr;
-    }
-
     /**
      *
      * Function  uploadImageServ
@@ -248,7 +245,7 @@ class ProfileService
      * Function  settingsEdit
      * Mazkur metod sozlamalar bo'limida ma'lumotlarni chiqarib beradi
      * @param $user
-     * @param $lang
+     * @param string|null $lang
      * @return ProfileSettingItem
      * @throws FileNotFoundException
      */
@@ -285,7 +282,7 @@ class ProfileService
      * @param $user
      * @return mixed
      */
-    public function settingsUpdate($data, $user)
+    public function settingsUpdate($data, $user): mixed
     {
         if ($data['email'] !== $user->email) {
             $data['is_email_verified'] = 0;
@@ -302,7 +299,8 @@ class ProfileService
      *
      * Function  storeProfilePhoto
      * Mazkur metod user profilidagi rasmni tahrirlaydi
-     * @param $request
+     * @param $files
+     * @param $hasFile
      * @param $user
      * @return string|null
      */
@@ -492,7 +490,10 @@ class ProfileService
      *
      * Function  balance
      * Mazkur metod cash bladega balansni chiqaradi
-     * @param $request
+     * @param $period
+     * @param $from
+     * @param $to
+     * @param $type
      * @return array
      */
     #[ArrayShape([])]
@@ -713,6 +714,11 @@ class ProfileService
         return ($user && $user->walletBalance) ? ($user->walletBalance->balance) : (null);
     }
 
+    /**
+     * @param $user
+     * @param string|null $lang
+     * @return VerificationCategoryItem
+     */
     public function verifyCategory($user, ?string $lang = 'uz'): VerificationCategoryItem
     {
         $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use($lang) {
@@ -753,6 +759,11 @@ class ProfileService
         ]);
     }
 
+    /**
+     * @param $image
+     * @param Portfolio $portfolio
+     * @return bool
+     */
     public function deleteImage($image, Portfolio $portfolio): bool
     {
         File::delete(public_path() . '/storage/portfolio/' . $image);
@@ -763,6 +774,11 @@ class ProfileService
         return true;
     }
 
+    /**
+     * @param $data
+     * @param Portfolio $portfolio
+     * @return bool
+     */
     public function portfolioUpdate($data, Portfolio $portfolio): bool
     {
         $images = array_merge(json_decode(session()->has('images') ? session('images') : '[]'), json_decode($portfolio->image));
@@ -773,6 +789,10 @@ class ProfileService
         return true;
     }
 
+    /**
+     * @param $portfolio
+     * @return void
+     */
     public function portfolioGuard($portfolio): void
     {
         if ((int)$portfolio->user_id !== (int)auth()->user()->id) {
