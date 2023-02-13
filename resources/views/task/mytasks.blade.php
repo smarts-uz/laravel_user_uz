@@ -79,11 +79,7 @@
                                             @endif
                                         @endforeach
                                         <p class="text-sm text-gray-500"> {{__("Количество откликов :")}}
-                                            @if ($task->task_responses()->count() > 0)
-                                                {{  $task->task_responses()->count() }}
-                                            @else
-                                                0
-                                            @endif
+                                            {{  $task->task_responses()->count() }}
                                         </p>
                                     </div>
                                 </div>
@@ -147,11 +143,8 @@
                                                 </span>
                                             @endif
                                         @endforeach
-                                        <p class="text-sm text-gray-500"> {{__("Количество откликов :")}} @if ($task->task_responses()->count() > 0)
-                                                {{  $task->task_responses()->count() }}
-                                            @else
-                                                0
-                                            @endif
+                                        <p class="text-sm text-gray-500"> {{__("Количество откликов :")}}
+                                            {{  $task->task_responses()->count() }}
                                         </p>
                                     </div>
                                 </div>

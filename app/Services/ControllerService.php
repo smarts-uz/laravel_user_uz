@@ -64,19 +64,26 @@ class ControllerService
      *
      * Function  my_tasks
      * Mazkur metod my_task sahifasini ochib beradi
+     * @param $user
      * @param string|null $lang
      * @return  MyTaskItem
      */
-    public function my_tasks(?string $lang = 'uz'): MyTaskItem
+    public function my_tasks($user, ?string $lang = 'uz'): MyTaskItem
     {
         $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use($lang) {
             return Category::withTranslations($lang)->orderBy("order")->get();
         });
-
+        $statuses = [
+            Task::STATUS_OPEN,
+            Task::STATUS_RESPONSE,
+            Task::STATUS_IN_PROGRESS,
+            Task::STATUS_COMPLETE,
+            Task::STATUS_NOT_COMPLETED,
+            Task::STATUS_CANCELLED
+        ];
         $item = new MyTaskItem();
-        $item->user = auth()->user();
-        $item->tasks = $item->user->tasks()->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->orderBy('created_at', 'desc')->get();
-        $item->perform_tasks = $item->user->performer_tasks()->orderBy('created_at', 'desc')->get();
+        $item->tasks = Task::query()->where('user_id', $user->id)->whereIn('status', $statuses)->latest()->get();
+        $item->perform_tasks = Task::query()->where('performer_id', $user->id)->whereIn('status', $statuses)->latest()->get();
         $item->categories = collect($category)->where('parent_id', null)->all();
         $item->categories2 = collect($category)->where('parent_id', '!=', null)->all();
         return $item;
@@ -91,10 +98,17 @@ class ControllerService
      */
     public function user_info($user): UserInfoItem
     {
-
+        $statuses = [
+            Task::STATUS_OPEN,
+            Task::STATUS_RESPONSE,
+            Task::STATUS_IN_PROGRESS,
+            Task::STATUS_COMPLETE,
+            Task::STATUS_NOT_COMPLETED,
+            Task::STATUS_CANCELLED
+        ];
         $item = new UserInfoItem();
-        $item->tasks = Task::query()->where('user_id', $user)->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->latest()->get();
-        $item->performer_tasks = Task::query()->where('performer_id', $user)->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->latest()->get();
+        $item->tasks = Task::query()->where('user_id', $user)->whereIn('status', $statuses)->latest()->get();
+        $item->performer_tasks = Task::query()->where('performer_id', $user)->whereIn('status', $statuses)->latest()->get();
         $item->user_reviews = Review::query()->where('reviewer_id', $user)->latest()->get();
         $item->performer_reviews = Review::query()->where('user_id', $user)->latest()->get();
         $item->task_responses = TaskResponse::query()->where('performer_id', $user)->latest()->get();

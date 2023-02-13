@@ -37,8 +37,9 @@ class Controller extends BaseController
     public function my_tasks()
     {
         $lang = Session::get('lang');
+        $user = auth()->user();
         $service = new ControllerService();
-        $item = $service->my_tasks($lang);
+        $item = $service->my_tasks($user, $lang);
         return view('task.mytasks',
         [
             'categories' => $item->categories,
