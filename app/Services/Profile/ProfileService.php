@@ -254,11 +254,14 @@ class ProfileService
         $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use($lang) {
             return Category::withTranslations($lang)->orderBy("order")->get();
         });
+        $regions = Cache::remember('regions_' . $lang, now()->addMinute(180), function () use($lang) {
+            return Region::withTranslations($lang)->orderBy("id")->get();
+        });
 
         $item = new ProfileSettingItem();
         $item->categories = collect($category)->where('parent_id', null)->all();
         $item->categories2 = collect($category)->where('parent_id', '!=', null)->all();
-        $item->regions = Region::all();
+        $item->regions = collect($regions)->all();
         $item->top_users = User::query()
             ->where('role_id', User::ROLE_PERFORMER)
             ->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
@@ -266,11 +269,8 @@ class ProfileService
             ->toArray();
         $item->sessions = Session::query()->where('user_id', $user->id)->get();
         $item->parser = Parser::create();
-        $item->review_good = $user->review_good;
-        $item->review_bad = $user->review_bad;
-        $item->review_rating = $user->review_rating;
         $item->user_categories = UserCategory::query()->where('user_id',$user->id)->pluck('category_id')->toArray();
-        $item->task = Task::query()->where('user_id', Auth::id())->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->get();
+        $item->task = Task::query()->where('user_id', Auth::id())->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->count();
         return $item;
     }
 
@@ -326,16 +326,12 @@ class ProfileService
     public function profileCash($user): ProfileCashItem
     {
         $item = new ProfileCashItem();
-        $item->user = Auth()->user()->load('transactions');
-        $item->balance = $item->user->walletBalance;
-        $item->task = Task::query()->where('user_id', Auth::id())->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->get();
-        $item->transactions = $item->user->transactions()->paginate(self::MAX_TRANSACTIONS);
+        $item->balance = $user->walletBalance;
+        $item->task = Task::query()->where('user_id', Auth::id())->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->count();
+        $item->transactions = $user->transactions()->paginate(self::MAX_TRANSACTIONS);
         $item->top_users = User::query()->where('role_id', User::ROLE_PERFORMER)
             ->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(Review::TOP_USER)->pluck('id')->toArray();
-        $item->review_rating = $user->review_rating;
-        $item->review_good = $user->review_good;
-        $item->review_bad = $user->review_bad;
         return $item;
     }
 
@@ -349,15 +345,11 @@ class ProfileService
     public function profileData($user): ProfileDataItem
     {
         $item = new ProfileDataItem();
-        $item->task = Task::query()->where('user_id', Auth::id())->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->get();
+        $item->task = Task::query()->where('user_id', $user->id)->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->count();
         $item->portfolios = $user->portfolios()->where('image', '!=', null)->get();
         $item->top_users = User::query()->where('role_id', User::ROLE_PERFORMER)
             ->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(Review::TOP_USER)->pluck('id')->toArray();
-        $item->categories = Category::withTranslations(['ru', 'uz'])->get();
-        $item->review_bad = $user->review_bad;
-        $item->review_good = $user->review_good;
-        $item->review_rating = $user->review_rating;
         $item->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->latest()->get();
         $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->latest()->get();
         $user_categories = UserCategory::query()->where('user_id',$user->id)->pluck('category_id')->toArray();

@@ -48,13 +48,13 @@
                 @if ( session('lang') === 'ru' )
                     <p class="mt-2">{{__('Создал')}}
                         <a href="{{route('searchTask.mytasks')}}" class="text-blue-500 hover:text-red-600">
-                            <span>{{count($task??[])}}</span> {{__('задание')}}
+                            <span>{{$task??[]}}</span> {{__('задание')}}
                         </a>
                     </p>
                 @else
                     <p class="mt-2">
                         <a href="{{route('searchTask.mytasks')}}" class="text-blue-500 hover:text-red-600">
-                            <span>{{count($task??[])}}</span> {{__('задание')}}
+                            <span>{{$task??[]}}</span> {{__('задание')}}
                         </a>
                         {{__('Создал')}}
                     </p>
@@ -79,7 +79,7 @@
             </div>
             <div class="flex flex-row items-center mt-3" id="str1">
                 <div class="flex flex-row items-center"><p>{{__('Средняя оценка:')}}</p>
-                    <span id="review{{$user->id}}" class="mx-1">{{$review_rating}}</span>
+                    <span id="review{{$user->id}}" class="mx-1">{{$user->review_rating}}</span>
                 </div>
                 <div class="flex items-center ml-2" id="stars{{$user->id}}">
                 </div>

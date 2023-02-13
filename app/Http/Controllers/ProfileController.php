@@ -89,10 +89,7 @@ class ProfileController extends Controller
                 'top_users' => $item->top_users,
                 'user' => $user,
                 'portfolios' => $item->portfolios,
-                'review_good' => $item->review_good,
-                'review_bad' => $item->review_bad,
                 'task' => $item->task,
-                'review_rating' => $item->review_rating,
                 'goodReviews' => $item->goodReviews,
                 'badReviews' => $item->badReviews,
                 'user_category'=>$item->user_category
@@ -110,10 +107,7 @@ class ProfileController extends Controller
                 'task' => $item->task,
                 'top_users' => $item->top_users,
                 'transactions' => $item->transactions,
-                'user' => $item->user,
-                'review_good' => $item->review_good,
-                'review_bad' => $item->review_bad,
-                'review_rating' => $item->review_rating,
+                'user' => $user,
             ]);
     }
 
@@ -132,9 +126,6 @@ class ProfileController extends Controller
             'top_users' => $item->top_users,
             'sessions' => $item->sessions,
             'parser' => $item->parser,
-            'review_good' => $item->review_good,
-            'review_bad' => $item->review_bad,
-            'review_rating' => $item->review_rating,
             'task' => $item->task,
             'user_categories' => $item->user_categories,
         ]);
