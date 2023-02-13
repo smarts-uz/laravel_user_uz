@@ -53,7 +53,8 @@ class SearchTaskController extends VoyagerBaseController
     public function task(int $task_id, Request $request)
     {
         $task = Task::select('user_id')->find($task_id);
-        if (!$task->user_id) {
+        $empty = empty($task);
+        if ((!$empty && !$task->user_id) || $empty) {
             abort(404);
         }
 
