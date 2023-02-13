@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Services\CustomService;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -39,8 +40,8 @@ class UserInTaskResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'avatar' => asset('storage/'.$this->avatar),
-            //'phone_number' => correctPhoneNumber($this->phone_number),
-            //'degree' => $this->phone_number,
+            'phone_number' => (new CustomService)->correctPhoneNumber($this->phone_number),
+            'degree' => $this->phone_number,
             'likes' => $this->review_good,
             'dislikes' => $this->review_bad,
             'stars' => $this->review_rating,
