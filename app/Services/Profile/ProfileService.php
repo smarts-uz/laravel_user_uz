@@ -67,30 +67,31 @@ class ProfileService
 
         $user->locale = app()->getLocale();
 
-        $suffixAvatarMale = 'users/default_male.png';
-        $suffixAvatarFeMale = 'users/default_female.png';
         $dirStorage = public_path('storage');
 
         If (PHP_OS === 'Linux')
             $dirStorage = "/{$dirStorage}";
 
-        $dirUserProfile =  $dirStorage. "/portfolio/{$user->name}";
 
-    ProfileService::log($dirStorage );
-    ProfileService::log($dirUserProfile);
+        $suffixAvatarMale = 'users/default_male.png';
+        $suffixAvatarFeMale = 'users/default_female.png';
+
+
+    ProfileService::log('$dirStorage: ' .$dirStorage );
 
         $norms = new WhitespacePathNormalizer;
 
-        $dirUserProfile = $norms->normalizePath($dirUserProfile);
 
-        $fileAvatar = $dirUserProfile.'/'.$user->avatar;
+        $fileAvatar = $dirStorage.'/'.$user->avatar;
+        $fileAvatar = $norms->normalizePath($fileAvatar);
 
+        $fileAvatarMale = $dirStorage.'/'.$suffixAvatarMale;
+        $fileAvatarFeMale = $dirStorage.'/'.$suffixAvatarFeMale;
 
+        ProfileService::log('$fileAvatar: '.$fileAvatar );
+        ProfileService::log('$fileAvatarMale: '.$fileAvatarMale );
+        ProfileService::log('$fileAvatarFeMale: '.$fileAvatarFeMale );
 
-        $fileAvatarMale = $dirUserProfile.'/'.$suffixAvatarMale;
-        $fileAvatarFeMale = $dirUserProfile.'/'.$suffixAvatarFeMale;
-
-        ProfileService::log($fileAvatar );
 
         $wallet = WalletBalance::query()->where('user_id', $user->id)->first();
 
@@ -148,12 +149,13 @@ class ProfileService
         $lastReview = $goodReviews->get()->last();
         if ((int)$user->gender === 1) {
             $date_gender = __('Был онлайн');
-            $dirUserAvatar = $user->avatar ? "$dirStorage/{$user->avatar}" : $dirStorage."/{$suffixAvatarMale}";
+            $suffixAvatar =$suffixAvatarMale;
         } else {
             $date_gender = __('Была онлайн');
-            $dirUserAvatar = $user->avatar ? "$dirStorage/{$user->avatar}" : $dirStorage."/{$suffixAvatarFeMale}";
+            $suffixAvatar = $suffixAvatarFeMale;
         }
-        $dirUserAvatar = $norms->normalizePath($dirUserAvatar);
+        $suffixAvatar = $norms->normalizePath($suffixAvatar);
+
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
         if ($user->last_seen >= $date) {
             $lastSeen = __('В сети');
@@ -173,16 +175,16 @@ class ProfileService
         if (!$user_exists) {
             $blocked_user = 0;
 
-            ProfileService::log($dirUserAvatar);
+            ProfileService::log('$suffixAvatar: '.$suffixAvatar);
 
-            if (file_exists($dirUserAvatar))
+            if (file_exists($fileAvatar))
             {
-                ProfileService::log('$dirUserAvatar is Exists');
+                ProfileService::log('$fileAvatar is Exists');
                 $user_avatar = asset('storage/' . $user->avatar);
             } else {
 
-                ProfileService::log('$dirUserAvatar is Not Exists');
-                $user_avatar = ((int)$user->gender === 1) ? asset('storage/'.$suffixAvatarMale) : asset('storage/'.$suffixAvatarFeMale);
+                ProfileService::log('$fileAvatar does Not Exists');
+                $user_avatar = $suffixAvatar;
             }
 
             ProfileService::log( $user_avatar);
