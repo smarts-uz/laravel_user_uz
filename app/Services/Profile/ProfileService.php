@@ -369,7 +369,13 @@ class ProfileService
     public function profileData($user): ProfileDataItem
     {
         $item = new ProfileDataItem();
-        $item->task = Task::query()->where('user_id', $user->id)->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->count();
+        $item->task = Task::query()->where('user_id', $user->id)->whereIn('status', [
+            Task::STATUS_OPEN,
+            Task::STATUS_RESPONSE,
+            Task::STATUS_IN_PROGRESS,
+            Task::STATUS_COMPLETE,
+            Task::STATUS_NOT_COMPLETED,
+            Task::STATUS_CANCELLED])->count();
         $item->portfolios = $user->portfolios()->where('image', '!=', null)->get();
         $item->top_users = User::query()->where('role_id', User::ROLE_PERFORMER)
             ->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
