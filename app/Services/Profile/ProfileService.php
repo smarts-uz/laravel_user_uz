@@ -78,13 +78,6 @@ class ProfileService
         $fileAvatarMale = $dirUserProfile.'/'.$suffixAvatarMale;
         $fileAvatarFeMale = $dirUserProfile.'/users/default_female.jpg';
 
-        if (!file_exists($dirUserProfile)) {
-            File::makeDirectory($dirUserProfile);
-        }
-
-
-
-
         $wallet = WalletBalance::query()->where('user_id', $user->id)->first();
 
         if ($wallet !== null) {
