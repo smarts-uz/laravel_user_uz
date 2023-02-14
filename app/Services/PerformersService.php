@@ -9,6 +9,7 @@ use App\Http\Resources\ReviewIndexResource;
 use App\Item\PerformerPrefItem;
 use App\Item\PerformerServiceItem;
 use App\Item\PerformerUserItem;
+use App\Models\BlockedUser;
 use App\Models\Notification;
 use App\Models\Review;
 use App\Models\Task;
@@ -19,6 +20,7 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
+use League\Flysystem\WhitespacePathNormalizer;
 use TCG\Voyager\Models\Category;
 
 class PerformersService
@@ -187,19 +189,70 @@ class PerformersService
     /**
      * @param $online
      * @param $per_page
-     * @return AnonymousResourceCollection
+     * @return JsonResponse
      */
-    public function performers($online, $per_page): AnonymousResourceCollection
+    public function performers($online, $per_page)
     {
-        $performers = User::query()
-            ->where('role_id', User::ROLE_PERFORMER)
-            ->orderByDesc('review_rating')
-            ->orderByRaw('(review_good - review_bad) DESC');
         if (isset($online)) {
             $date = Carbon::now()->subMinutes(2)->toDateTimeString();
-            $performers = $performers->where('role_id', User::ROLE_PERFORMER)->where('last_seen', ">=", $date);
+            $performers = User::where('role_id', User::ROLE_PERFORMER)->where('last_seen', ">=", $date)->paginate($per_page);
+        } else {
+            $performers = User::where('role_id', User::ROLE_PERFORMER)->orderByDesc('review_rating')->orderByRaw('(review_good - review_bad) DESC')->paginate($per_page);
         }
-        return PerformerIndexResource::collection($performers->paginate($per_page));
+
+        foreach ($performers as $performer) {
+            $suffixAvatarMale = 'users/default_male.png';
+            $suffixAvatarFeMale = 'users/default_female.png';
+            $dirStorage = public_path('storage');
+            if((int)$performer->gender === 1){
+                $date_gender = __('Был онлайн');
+                $dirUserAvatar = $performer->avatar ? $dirStorage."/{$performer->avatar}" : $dirStorage."/{$suffixAvatarMale}";
+            }else{
+                $date_gender = __('Была онлайн');
+                $dirUserAvatar = $performer->avatar ? $dirStorage."/{$performer->avatar}" : $dirStorage."/{$suffixAvatarFeMale}";
+            }
+            $norms = new WhitespacePathNormalizer;
+            $dirUserAvatar = $norms->normalizePath($dirUserAvatar);
+            if ($performer->last_seen >= Carbon::now()->subMinutes(2)->toDateTimeString()) {
+                $lastSeen = __('В сети');
+            } else {
+                $seenDate = Carbon::parse($performer->last_seen);
+                $seenDate->locale(app()->getLocale() . '-' . app()->getLocale());
+                if(app()->getLocale()==='uz'){
+                    $lastSeen = $seenDate->diffForHumans().' saytda edi';
+                }else{
+                    $lastSeen = $date_gender. $seenDate->diffForHumans();
+                }
+            }
+            $user_exists = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$performer->id)->exists();
+            if(!$user_exists){
+                if (file_exists($dirUserAvatar))
+                {
+                    $user_avatar = asset('storage/' . $performer->avatar);
+                } else {
+                    $user_avatar = ((int)$user->gender === 1) ? asset('storage/'.$suffixAvatarMale) : asset('storage/'.$suffixAvatarFeMale);
+                }
+            }else{
+                $user_avatar = asset("images/block-user.jpg");
+            }
+
+            $data = [
+                'id' => $performer->id,
+                'name' => $performer->name,
+                'email' => $performer->email,
+                'avatar' => $user_avatar,
+                'phone_number' => (new CustomService)->correctPhoneNumber($performer->phone_number),
+                'location' => $performer->location,
+                'last_seen' => $lastSeen,
+                'likes' => $performer->review_good,
+                'dislikes' => $performer->review_bad,
+                'description' => $performer->description,
+                'stars' => $performer->review_rating,
+                'role_id' => $performer->role_id,
+                'views' => $performer->performer_views()->count(),
+            ];
+        }
+        return response()->json(['success' => true,'data' => $data]);
     }
 
     /**
