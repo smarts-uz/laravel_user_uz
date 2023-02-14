@@ -12,16 +12,20 @@ use App\Services\Task\CategoriesAPIService;
 use App\Services\Task\SearchService;
 use App\Services\Task\TaskService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
 class SardorCmd extends Command
 {
+
+    public $userId;
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'sardor:run';
+    protected $signature = 'sardor:run {userId}';
 
     /**
      * The console command description.
@@ -47,8 +51,24 @@ class SardorCmd extends Command
      */
     public function handle()
     {
-        $user = User::find(1245);
-        (new PerformersService)->performers(false, null);
+$response = $this->testProfileImage($this->userId);
+        $echo = $response->content();
+
+    
+dd($response->getData());
+dd(Arr::get($response, 'data')  );
+//dd($echo);
+    }
+
+    private function testProfileImage($userId = null) {
+        if (empty($userId))
+            $userId = 1088;
+
+        $user = User::find($userId);
+
+        $profileService= new ProfileService();
+        $data = $profileService->index($user);
+        return $data;
     }
 
     private function testTaskSearch() {
