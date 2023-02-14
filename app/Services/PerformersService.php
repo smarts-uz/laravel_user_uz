@@ -193,7 +193,7 @@ class PerformersService
      */
     public function performers($online, $per_page): JsonResponse
     {
-        //$per_page = $per_page ?? 1;
+        $per_page = $per_page ?? 20;
         if (isset($online) && $online !== false) {
             $date = Carbon::now()->subMinutes(2)->toDateTimeString();
             $performers = User::where('role_id', User::ROLE_PERFORMER)->where('last_seen', ">=", $date)->paginate($per_page);
