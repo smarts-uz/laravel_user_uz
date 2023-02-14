@@ -54,9 +54,13 @@ class SardorCmd extends Command
 $response = $this->testProfileImage($this->userId);
         $echo = $response->content();
 
-    
-dd($response->getData());
-dd(Arr::get($response, 'data')  );
+ //   $allData = $response->getData();
+ //   $data = $allData->data;
+  //  $avatar =$data->avatar;
+
+//    dd($data);
+ //   dd($avatar);
+//dd(Arr::get($allData->data, 'avatar')  );
 //dd($echo);
     }
 

@@ -47,6 +47,11 @@ class ProfileService
 {
     public const MAX_TRANSACTIONS = 15;
 
+
+    public static function log($data) {
+        if (PHP_SAPI === 'cli')
+            var_dump($data);
+    }
     /**
      * @param $user
      * @return JsonResponse
@@ -67,6 +72,9 @@ class ProfileService
         $dirStorage = public_path('storage');
         $dirUserProfile =  $dirStorage. "/portfolio/{$user->name}";
 
+    ProfileService::log($dirStorage );
+    ProfileService::log($dirUserProfile);
+
         $norms = new WhitespacePathNormalizer;
 
         $dirUserProfile = $norms->normalizePath($dirUserProfile);
@@ -76,7 +84,9 @@ class ProfileService
 
 
         $fileAvatarMale = $dirUserProfile.'/'.$suffixAvatarMale;
-        $fileAvatarFeMale = $dirUserProfile.'/users/default_female.jpg';
+        $fileAvatarFeMale = $dirUserProfile.'/'.$suffixAvatarFeMale;
+
+        ProfileService::log($fileAvatar );
 
         $wallet = WalletBalance::query()->where('user_id', $user->id)->first();
 
@@ -158,12 +168,20 @@ class ProfileService
 
         if (!$user_exists) {
             $blocked_user = 0;
+
+            ProfileService::log($dirUserAvatar);
+
             if (file_exists($dirUserAvatar))
             {
+                ProfileService::log('$dirUserAvatar is Exists');
                 $user_avatar = asset('storage/' . $user->avatar);
             } else {
+
+                ProfileService::log('$dirUserAvatar is Not Exists');
                 $user_avatar = ((int)$user->gender === 1) ? asset('storage/'.$suffixAvatarMale) : asset('storage/'.$suffixAvatarFeMale);
             }
+
+            ProfileService::log( $user_avatar);
 
         } else {
             $blocked_user = 1;
