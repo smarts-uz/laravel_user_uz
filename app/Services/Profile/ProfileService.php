@@ -70,6 +70,10 @@ class ProfileService
         $suffixAvatarMale = 'users/default_male.png';
         $suffixAvatarFeMale = 'users/default_female.png';
         $dirStorage = public_path('storage');
+
+        If (PHP_OS === 'Linux')
+            $dirStorage = "/{$dirStorage}";
+
         $dirUserProfile =  $dirStorage. "/portfolio/{$user->name}";
 
     ProfileService::log($dirStorage );
@@ -144,10 +148,10 @@ class ProfileService
         $lastReview = $goodReviews->get()->last();
         if ((int)$user->gender === 1) {
             $date_gender = __('Был онлайн');
-            $dirUserAvatar = $user->avatar ? "/$dirStorage/{$user->avatar}" : $dirStorage."/{$suffixAvatarMale}";
+            $dirUserAvatar = $user->avatar ? "$dirStorage/{$user->avatar}" : $dirStorage."/{$suffixAvatarMale}";
         } else {
             $date_gender = __('Была онлайн');
-            $dirUserAvatar = $user->avatar ? "/$dirStorage/{$user->avatar}" : $dirStorage."/{$suffixAvatarFeMale}";
+            $dirUserAvatar = $user->avatar ? "$dirStorage/{$user->avatar}" : $dirStorage."/{$suffixAvatarFeMale}";
         }
         $dirUserAvatar = $norms->normalizePath($dirUserAvatar);
         $date = Carbon::now()->subMinutes(2)->toDateTimeString();
