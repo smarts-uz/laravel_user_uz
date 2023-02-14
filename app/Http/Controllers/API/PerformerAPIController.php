@@ -55,7 +55,7 @@ class PerformerAPIController extends Controller
      * )
      *
      */
-    public function performers(Request $request): AnonymousResourceCollection
+    public function performers(Request $request): JsonResponse
     {
         $online = $request->online;
         $per_page = $request->get('per_page');

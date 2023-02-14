@@ -48,7 +48,7 @@ class SardorCmd extends Command
     public function handle()
     {
         $user = User::find(1245);
-        (new ProfileService)->index($user);
+        (new PerformersService)->performers(false, null);
     }
 
     private function testTaskSearch() {

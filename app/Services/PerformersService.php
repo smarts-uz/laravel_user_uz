@@ -191,15 +191,17 @@ class PerformersService
      * @param $per_page
      * @return JsonResponse
      */
-    public function performers($online, $per_page)
+    public function performers($online, $per_page): JsonResponse
     {
-        if (isset($online)) {
+        //$per_page = $per_page ?? 1;
+        if (isset($online) && $online !== false) {
             $date = Carbon::now()->subMinutes(2)->toDateTimeString();
             $performers = User::where('role_id', User::ROLE_PERFORMER)->where('last_seen', ">=", $date)->paginate($per_page);
         } else {
             $performers = User::where('role_id', User::ROLE_PERFORMER)->orderByDesc('review_rating')->orderByRaw('(review_good - review_bad) DESC')->paginate($per_page);
         }
 
+        $data = [];
         foreach ($performers as $performer) {
             $suffixAvatarMale = 'users/default_male.png';
             $suffixAvatarFeMale = 'users/default_female.png';
@@ -230,13 +232,13 @@ class PerformersService
                 {
                     $user_avatar = asset('storage/' . $performer->avatar);
                 } else {
-                    $user_avatar = ((int)$user->gender === 1) ? asset('storage/'.$suffixAvatarMale) : asset('storage/'.$suffixAvatarFeMale);
+                    $user_avatar = ((int)$performer->gender === 1) ? asset('storage/'.$suffixAvatarMale) : asset('storage/'.$suffixAvatarFeMale);
                 }
             }else{
                 $user_avatar = asset("images/block-user.jpg");
             }
 
-            $data = [
+            $data[] = [
                 'id' => $performer->id,
                 'name' => $performer->name,
                 'email' => $performer->email,
