@@ -65,13 +65,12 @@ class ProfileService
             $socialPassword = true;
         }
 
-        $user->locale = app()->getLocale();
+        $norms = new WhitespacePathNormalizer;
 
-        $dirStorage = public_path('storage');
-
+                $dirStorage = public_path('storage');
+        $dirStorage = $norms->normalizePath($dirStorage);
         If (PHP_OS === 'Linux')
             $dirStorage = "/{$dirStorage}";
-
 
         $suffixAvatarMale = 'users/default_male.png';
         $suffixAvatarFeMale = 'users/default_female.png';
@@ -79,12 +78,8 @@ class ProfileService
 
     ProfileService::log('$dirStorage: ' .$dirStorage );
 
-        $norms = new WhitespacePathNormalizer;
-
-
+        $user->locale = app()->getLocale();
         $fileAvatar = $dirStorage.'/'.$user->avatar;
-        $fileAvatar = $norms->normalizePath($fileAvatar);
-
         $fileAvatarMale = $dirStorage.'/'.$suffixAvatarMale;
         $fileAvatarFeMale = $dirStorage.'/'.$suffixAvatarFeMale;
 
