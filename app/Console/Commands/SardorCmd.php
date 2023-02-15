@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\PerformersService;
 use App\Services\Profile\ProfileService;
 use App\Services\Task\CategoriesAPIService;
+use App\Services\Task\CreateService;
 use App\Services\Task\SearchService;
 use App\Services\Task\TaskService;
 use Illuminate\Console\Command;
@@ -25,7 +26,7 @@ class SardorCmd extends Command
      *
      * @var string
      */
-    protected $signature = 'sardor:run {userId}';
+    protected $signature = 'sardor:run';
 
     /**
      * The console command description.
@@ -51,8 +52,9 @@ class SardorCmd extends Command
      */
     public function handle()
     {
-$response = $this->testProfileImage($this->userId);
-        $echo = $response->content();
+        (new CreateService)->syncCustomFields(2757);
+/*$response = $this->testProfileImage($this->userId);
+        $echo = $response->content();*/
 
  //   $allData = $response->getData();
  //   $data = $allData->data;
