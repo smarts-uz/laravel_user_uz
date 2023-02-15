@@ -524,7 +524,7 @@ class UpdateTaskService
             $data['docs'] = 0;
         }
         $task->update($data);
-        $this->service->syncCustomFields($task);
+        $this->service->syncCustomFields($task->id);
         Alert::success(__('Изменения сохранены'));
     }
 

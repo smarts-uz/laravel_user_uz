@@ -421,7 +421,7 @@ class CreateController extends Controller
      */
     public function verify($task_id, User $user)
     {
-        $task = Task::select('name')->first($task_id);
+        $task = Task::first($task_id);
         return view('create.verify', compact('task', 'user'));
     }
 
