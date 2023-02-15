@@ -5,10 +5,14 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ReviewRequest;
 use App\Http\Requests\Task\UpdateRequest;
+use App\Models\Task;
 use App\Services\Task\CreateService;
+use App\Services\Task\ReviewService;
 use App\Services\Task\UpdateTaskService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UpdateAPIController extends Controller
 {
@@ -165,8 +169,18 @@ class UpdateAPIController extends Controller
      * )
      */
 
-    public function sendReview($task_id, ReviewRequest $request): JsonResponse
+    public function sendReview(Task $task, ReviewRequest $request): JsonResponse
     {
-        return $this->updatetask->sendReview($task_id, $request, true);
+        (new UpdateTaskService)->taskGuard($task);
+        DB::beginTransaction();
+
+        try {
+            ReviewService::sendReview($task, $request);
+        } catch (Exception) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => __('Не удалось отправить')]);  //back();
+        }
+        DB::commit();
+        return response()->json(['success' => true, 'message' => __('Успешно отправлено')]);  //back();
     }
 }

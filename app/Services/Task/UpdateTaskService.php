@@ -18,8 +18,10 @@ use App\Services\CustomService;
 use App\Services\Response;
 use App\Services\VerificationService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -441,8 +443,8 @@ class UpdateTaskService
                 'end_date' => $task->end_date,
                 'budget' => $task->budget,
                 'description' => $task->description,
-                'phone' => $this->phone,
-                'performer_id' => $this->performer_id,
+                'phone' => $task->phone,
+                'performer_id' => $task->performer_id,
                 'performer' => new PerformerResponseResource($performer_response),
                 'other'=> $task->category->name === "Что-то другое" || $task->category->name === "Boshqa narsa",
                 'parent_category_name'=>$task->category->parent->getTranslatedAttribute('name', app()->getLocale(), 'ru'),
@@ -473,7 +475,7 @@ class UpdateTaskService
         return back();
     }
 
-    public function not_completed($task_id, $data, $api = false)
+    public function not_completed($task_id, $data, $api = false): JsonResponse|RedirectResponse
     {
         $task = Task::select('user_id', 'performer_id')->find($task_id);
         $this->taskGuardApi($task);
@@ -490,26 +492,6 @@ class UpdateTaskService
         }
         Alert::success(__('Успешно сохранено'));
         return back();
-    }
-
-    public function sendReview($task_id, $data, $api = false)
-    {
-        $task = Task::find($task_id);
-        $this->taskGuard($task);
-        if($api) {
-            DB::beginTransaction();
-            try {
-                ReviewService::sendReview($task, $data);
-            } catch (Exception) {
-                DB::rollBack();
-                return response()->json(['success' => false, 'message' => __('Не удалось отправить')]);  //back();
-            }
-            DB::commit();
-            return response()->json(['success' => true, 'message' => __('Успешно отправлено')]);  //back();
-        } else {
-
-        }
-
     }
 
     public function change($task_id, $request)
@@ -557,16 +539,4 @@ class UpdateTaskService
         $task->save();
     }
 
-    public function completed2($task_id)
-    {
-        $task = Task::select('user_id', 'performer_id')->find();
-        $data = [
-            'status' => Task::STATUS_COMPLETE
-        ];
-
-        ChMessage::where('from_id', $task->user_id)->where('to_id', $task->performer_id)
-            ->orWhere('from_id', $task->performer_id)->delete();
-
-        $task->update($data);
-    }
 }

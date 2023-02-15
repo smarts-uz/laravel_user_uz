@@ -4,22 +4,22 @@ namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\UpdateRequest;
-use App\Services\Task\CreateService;
+use App\Models\Task;
+use App\Services\Task\ReviewService;
 use App\Services\Task\UpdateTaskService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UpdateController extends Controller
 {
-    protected CreateService $service;
 
-    public UpdateTaskService $updateTask;
+    protected UpdateTaskService $updateTaskService;
 
-    public function __construct(UpdateTaskService $updateTaskService, CreateService $createService)
+    public function __construct()
     {
-        $this->updateTask = $updateTaskService;
-        $this->service = $createService;
+        $this->updateTaskService = new UpdateTaskService();
     }
 
     /**
@@ -31,7 +31,7 @@ class UpdateController extends Controller
      */
     public function change(UpdateRequest $request, int $task_id): RedirectResponse
     {
-        $this->updateTask->change($task_id, $request);
+        $this->updateTaskService->change($task_id, $request);
         return redirect()->route('searchTask.task', $task_id);
     }
 
@@ -45,7 +45,7 @@ class UpdateController extends Controller
     public function deleteImage(Request $request, int $task_id): bool
     {
         $img = $request->get('image');
-        $this->updateTask->deleteImage2($task_id, $img);
+        $this->updateTaskService->deleteImage2($task_id, $img);
         return true;
     }
 
@@ -55,9 +55,9 @@ class UpdateController extends Controller
      * @param int $task_id
      * @return  JsonResponse|RedirectResponse
      */
-    public function completed(int $task_id)
+    public function completed(int $task_id): JsonResponse|RedirectResponse
     {
-        return $this->updateTask->completed($task_id);
+        return $this->updateTaskService->completed($task_id);
     }
 
     /**
@@ -71,18 +71,25 @@ class UpdateController extends Controller
     {
         $request->validate(['reason' => 'required']);
         $data = $request->get('reason');
-        return $this->updatetask->not_completed($task_id, $data);
+        return $this->updateTaskService->not_completed($task_id, $data);
     }
 
     /**
      *
      * Function  sendReview
-     * @param int $task_id
+     * @param Task $task
      * @param Request $request
      * @return  mixed
      */
-    public function sendReview(int $task_id, Request $request)
+    public function sendReview(Task $task, Request $request): mixed
     {
-        return $this->updatetask->sendReview($task_id, $request);
+        (new UpdateTaskService)->taskGuard($task);
+
+        try {
+            ReviewService::sendReview($task, $request, true);
+        } catch (\Exception $e) {
+            DB::rollBack();
+        }
+        return back();
     }
 }
