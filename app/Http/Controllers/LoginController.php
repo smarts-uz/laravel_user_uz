@@ -9,6 +9,7 @@ use App\Models\Notification;
 use App\Models\User;
 use App\Models\WalletBalance;
 use App\Services\CustomService;
+use App\Services\LoginService;
 use App\Services\VerificationService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,6 +21,13 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class LoginController extends Controller
 {
+    public LoginService $service;
+
+    public function __construct()
+    {
+        $this->service = new LoginService();
+    }
+
     public function login()
     {
         return view('auth.signin');
@@ -28,14 +36,13 @@ class LoginController extends Controller
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws \Exception
      */
     public function loginPost(UserLoginRequest $request)
     {
         $data = $request->validated();
-        /** @var User $user */
-        $user = User::query()->where('email', $data['email'])
-            ->orWhere('phone_number', $data['email'])
-            ->first();
+
+        $user = $this->service->loginPost($data);
 
         if (!$user || !Hash::check($data['password'], $user->password)) {
             Alert::error(__('Пароль неверен'));
