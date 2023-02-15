@@ -51,7 +51,7 @@ class CreateService
      */
     public function syncCustomFields($task_id): void
     {
-        $task = Task::select('id')->find($task_id);
+        $task = Task::find($task_id);
         $task->custom_field_values()->delete();
         $this->attachCustomFields($task_id);
 
