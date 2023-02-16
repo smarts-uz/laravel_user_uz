@@ -2,41 +2,24 @@
 
 namespace App\Services\Profile;
 
-use App\Http\Resources\CategoryIndexResource;
-use App\Http\Resources\PortfolioIndexResource;
-use App\Http\Resources\ResponseTemplateResource;
-use App\Http\Resources\ReviewIndexResource;
-use App\Http\Resources\TransactionHistoryCollection;
-use App\Item\ProfileCashItem;
-use App\Item\ProfileDataItem;
-use App\Item\ProfileSettingItem;
-use App\Item\VerificationCategoryItem;
-use App\Models\BlockedUser;
-use App\Models\Region;
-use App\Models\ResponseTemplate;
-use App\Models\Review;
-use App\Models\Session;
-use App\Models\Task;
-use App\Models\Transaction;
-use App\Models\User;
-use App\Models\UserCategory;
-use App\Models\WalletBalance;
+use App\Http\Resources\{CategoryIndexResource,
+    PortfolioIndexResource,
+    ResponseTemplateResource,
+    ReviewIndexResource,
+    TransactionHistoryCollection,
+    UserCategoriesResource};
+use App\Item\{ProfileCashItem, ProfileDataItem, ProfileSettingItem, VerificationCategoryItem};
+use App\Models\{BlockedUser, Region,
+    ResponseTemplate, Review, Session,
+    Task, Transaction, User, UserCategory,
+    WalletBalance, Portfolio, Category};
 use App\Services\CustomService;
 use App\Services\SmsMobileService;
 use App\Services\VerificationService;
 use Carbon\Carbon;
-use Illuminate\Container\Util;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Portfolio;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\{JsonResponse, RedirectResponse, Resources\Json\AnonymousResourceCollection};
+use Illuminate\Support\{Facades\Auth, Facades\Cache, Facades\Hash, Facades\File};
 use JetBrains\PhpStorm\ArrayShape;
-use App\Models\Category;
 use League\Flysystem\WhitespacePathNormalizer;
 use RealRashid\SweetAlert\Facades\Alert;
 use UAParser\Exception\FileNotFoundException;
@@ -76,16 +59,16 @@ class ProfileService
         $suffixAvatarFeMale = 'users/default_female.png';
 
 
-    ProfileService::log('$dirStorage: ' .$dirStorage );
+        self::log('$dirStorage: ' .$dirStorage );
 
         $user->locale = app()->getLocale();
         $fileAvatar = $dirStorage.'/'.$user->avatar;
         $fileAvatarMale = $dirStorage.'/'.$suffixAvatarMale;
         $fileAvatarFeMale = $dirStorage.'/'.$suffixAvatarFeMale;
 
-        ProfileService::log('$fileAvatar: '.$fileAvatar );
-        ProfileService::log('$fileAvatarMale: '.$fileAvatarMale );
-        ProfileService::log('$fileAvatarFeMale: '.$fileAvatarFeMale );
+        self::log('$fileAvatar: '.$fileAvatar );
+        self::log('$fileAvatarMale: '.$fileAvatarMale );
+        self::log('$fileAvatarFeMale: '.$fileAvatarFeMale );
 
 
         $wallet = WalletBalance::query()->where('user_id', $user->id)->first();
@@ -170,19 +153,19 @@ class ProfileService
         if (!$user_exists) {
             $blocked_user = 0;
 
-            ProfileService::log('$suffixAvatar: '.$suffixAvatar);
+            self::log('$suffixAvatar: '.$suffixAvatar);
 
             if (file_exists($fileAvatar))
             {
-                ProfileService::log('$fileAvatar is Exists');
+                self::log('$fileAvatar is Exists');
                 $user_avatar = asset('storage/' . $user->avatar);
             } else {
 
-                ProfileService::log('$fileAvatar does Not Exists');
+                self::log('$fileAvatar does Not Exists');
                 $user_avatar = $suffixAvatar;
             }
 
-            ProfileService::log( $user_avatar);
+            self::log( $user_avatar);
 
         } else {
             $blocked_user = 1;
@@ -194,10 +177,13 @@ class ProfileService
             ->select('id', 'parent_id', 'name', 'ico')
             ->whereIn('id', $user_categories)
             ->get());
+        $user_category = UserCategory::query()->where('user_id', $user->id)->get()->groupBy(static function ($data){
+            return $data->category->parent->getTranslatedAttribute('name');
+        });
         $performed_tasks_count = [];
-        foreach ($categories as $category) {
+        foreach ($user_category as $category_name => $category) {
             $performed_tasks_count[] = [
-                'name' => $category->getTranslatedAttribute('name')
+                $category_name => UserCategoriesResource::collection($category)
             ];
         }
 
@@ -250,7 +236,6 @@ class ProfileService
             'portfolios' => PortfolioIndexResource::collection($user->portfolios),
             'portfolios_count' => Portfolio::where('user_id', $user->id)->get()->count(),
             'views' => $user->performer_views()->count(),
-       //     'directories' => $directories,
             'wallet_balance' => $balance,
             'work_experience' => $user->work_experience,
             'last_seen' => $lastSeen,
