@@ -21,7 +21,7 @@ class UserCategoriesResource extends JsonResource
     {
         return [
             'name' => $this->category->getTranslatedAttribute('name'),
-            'task_count' => $this->category->tasks()->where('performer_id',auth()->user()->id)->where('status',Task::STATUS_COMPLETE)->count(),
+            'task_count' => $this->category->tasks()->where('performer_id',$this->user_id)->where('status',Task::STATUS_COMPLETE)->count(),
         ];
     }
 }
