@@ -26,11 +26,11 @@ class NotificationService
      * @param bool $web
      * @return Collection
      */
-    public static function getNotifications($user, bool $web = true): Collection
+    public static function getNotifications($user): Collection
     {
         return Notification::with('user:id,name', 'task:id,budget')
-            ->whereIn('is_read', $web ? [0] : [0, 1])
-            ->where(function ($query) use ($user, $web) {
+            ->whereIn('is_read', [0])
+            ->where(function ($query) use ($user) {
                 $query->where(function ($query) use ($user) {
                     $query->where('performer_id', '=', $user->id)
                         ->whereIn('type', [
@@ -47,7 +47,7 @@ class NotificationService
                                 Notification::NEW_PASSWORD, Notification::WALLET_BALANCE,Notification::TEST_PUSHER_NOTIFICATION
                             ]);
                     });
-                if ((int)$user->role_id === User::ROLE_PERFORMER && $web)
+                if ((int)$user->role_id === User::ROLE_PERFORMER)
                     $query->orWhere(function ($query) use ($user) {
                         $query->where('performer_id', '=', $user->id)->where('type', '=', Notification::TASK_CREATED);
                     });
