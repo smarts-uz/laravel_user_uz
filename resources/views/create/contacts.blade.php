@@ -39,47 +39,34 @@
                     <div class="sm:w-9/12 w-11/12 mx-auto">
                         @guest()
                             <ul class="nav nav-tabs flex flex-col md:flex-row text-center flex-wrap list-none border-b-0 pl-0 mb-4 justify-center"
-                                id="tabs-tab3"
-                                role="tablist">
+                                id="tabs-tab3" role="tablist">
                                 <li class="nav-item w-1/2" role="presentation">
-                                    <a href="#tabs-home3"
-                                       class="nav-link w-full block font-medium text-xs
-                                        tab-name
-                                        @if(session("phone_another"))
-
-                                           @endif
-
+                                    <a href="#tabs-home3" class="nav-link w-full block font-medium text-xs tab-name
+                                        @if(session("phone_another")) error @endif
                                        leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 my-2 hover:border-transparent hover:bg-gray-100 focus:border-transparent active"
-                                       id="tabs-home-tab3" data-bs-toggle="pill" data-bs-target="#tabs-home3" role="tab"
-                                       aria-controls="tabs-home3"
-                                       aria-selected="true">{{__('Регистрация')}}</a>
+                                       id="tabs-home-tab3" data-bs-toggle="pill" data-bs-target="#tabs-home3" role="tab" aria-controls="tabs-home3"
+                                       aria-selected="true">{{__('Регистрация')}}
+                                    </a>
                                 </li>
                                 <li class="nav-item w-1/2" role="presentation">
-                                    <a href="#tabs-profile3"
-                                       class="nav-link w-full block font-medium text-xs leading-tight
-                                             @if(session("phone"))
-                                           error
-                                           @endif
+                                    <a href="#tabs-profile3" class="nav-link w-full block font-medium text-xs leading-tight
+                                       @if(session("phone"))  error @endif
                                         uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 my-2 hover:border-transparent
-                                         hover:bg-gray-100 focus:border-transparent tab-name  "
-                                       id="tabs-profile-tab3" data-bs-toggle="pill" data-bs-target="#tabs-profile3"
-                                       role="tab"
-                                       aria-controls="tabs-profile3"
-                                       aria-selected="false">{{__('Вход')}}</a>
+                                         hover:bg-gray-100 focus:border-transparent tab-name"
+                                       id="tabs-profile-tab3" data-bs-toggle="pill" data-bs-target="#tabs-profile3" role="tab"
+                                       aria-controls="tabs-profile3" aria-selected="false">{{__('Вход')}}
+                                    </a>
                                 </li>
                             </ul>
                         @endguest
-
-
                         <div class="tab-content" id="tabs-tabContent3">
-                            <div class="tab-pane fade show active    @if(session()->has('phone_another') ) error @endif" id="tabs-home3" role="tabpanel"
+                            <div class="tab-pane fade show active @if(session()->has('phone_another') ) error @endif" id="tabs-home3" role="tabpanel"
                                  aria-labelledby="tabs-home-tab3">
-                                <div class="py-4 mx-auto  text-left ">
+                                <div class="py-4 mx-auto text-left">
                                     <div class="mb-4">
                                         <div id="formulario" class="flex flex-col gap-y-4">
                                             <div>
                                                 <div class="mb-3 xl:w-full">
-
                                                     @auth()
                                                         <form action="{{route('task.create.contact.store.phone', $task->id)}}" method="post">
                                                             @csrf
@@ -113,7 +100,6 @@
                                                             </div>
                                                         </form>
                                                     @endauth
-
 
                                                     @guest
 
@@ -203,7 +189,6 @@
                                         <p class="text-red-500">{{ $message }}</p>
                                         @enderror
 
-
                                         <div class="mt-4">
                                             <div class="flex w-full mt-4">
                                                 <a onclick="myFunction()"
@@ -217,8 +202,7 @@
                                                         }
                                                     </script>
                                                 </a>
-                                                <input type="submit"
-                                                    style="background: linear-gradient(164.22deg, #FDC4A5 4.2%, #FE6D1D 87.72%);"
+                                                <input type="submit" style="background: linear-gradient(164.22deg, #FDC4A5 4.2%, #FE6D1D 87.72%);"
                                                     class="bg-yellow-500 hover:bg-yellow-600 m-4 cursor-pointer text-white font-normal text-2xl py-3 sm:px-14 px-10 rounded-2xl "
                                                     name="" value="{{__('Отправить')}}">
                                             </div>
@@ -230,11 +214,7 @@
                     </div>
                 </div>
             </div>
-
-
-                <x-faq/>
-
-
+            <x-faq/>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/index.min.js"></script>
@@ -279,9 +259,6 @@
         function setCaretToPos(input, pos) {
             setSelectionRange(input, pos, pos);
         }
-
-
-
 
     </script>
 

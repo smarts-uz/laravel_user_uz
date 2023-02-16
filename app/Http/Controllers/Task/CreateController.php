@@ -397,12 +397,12 @@ class CreateController extends Controller
     /**
      *
      * Function  contact_login
-     * @param $task_id
+     * @param int $task_id
      * @param UserPhoneRequest $request
      * @return  RedirectResponse
      * @throws Exception
      */
-    public function contact_login($task_id, UserPhoneRequest $request): RedirectResponse
+    public function contact_login(int $task_id, UserPhoneRequest $request): RedirectResponse
     {
         $request->validated();
         /** @var User $user */
@@ -416,12 +416,12 @@ class CreateController extends Controller
      *
      * Function  verify
      * @param $task_id
-     * @param User $user
+     * @param $user
      * @return  Application|Factory|View
      */
-    public function verify($task_id, User $user)
+    public function verify($task_id, $user)
     {
-        $task = Task::first($task_id);
+        $task = Task::find($task_id);
         return view('create.verify', compact('task', 'user'));
     }
 
