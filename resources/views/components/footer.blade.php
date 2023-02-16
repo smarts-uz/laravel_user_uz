@@ -88,7 +88,7 @@
 
     <div class="text-center h-12" style="background-color: #1B1B1C">
             <h1 class="text-center text-sm py-4" style="color: #857F7F">
-                © 2022 Universal Services (USer.Uz)
+                © 2023 Universal Services ({{config('app.name')}})
                 <a href="/terms" class="hover:text-blue-500">{{__('Правила сервиса')}}</a>
             </h1>
     </div>

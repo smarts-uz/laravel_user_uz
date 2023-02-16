@@ -600,10 +600,10 @@ class ProfileService
             $user->phone_number = $phoneNumber;
             $user->is_phone_number_verified = 0;
             $message = random_int(100000, 999999);
-            $phone_number = $user->phone_number;
+            $phone_number = (new CustomService)->correctPhoneNumber($user->phone_number);
             $user->verify_code = $message;
             $user->save();
-            SmsMobileService::sms_packages((new CustomService)->correctPhoneNumber($phone_number), config('app.name') . ' ' . __("Код подтверждения") . ' ' . $message);
+            SmsMobileService::sms_packages($phone_number, config('app.name') . ' ' . __("Код подтверждения") . ' ' . $message);
             $messages = trans('trans.Phone number updated successfully.');
             $success = true;
         }
