@@ -576,9 +576,7 @@ class ProfileAPIController extends Controller
         /** @var User $user */
         $user = auth()->user();
         $data = $request->validated();
-        $password = $data['password'];
-        $old_password = $data['old_password'];
-        return $this->profileService->changePassword($user, $password, $old_password);
+        return $this->profileService->changePassword($user, $data);
     }
 
     /**

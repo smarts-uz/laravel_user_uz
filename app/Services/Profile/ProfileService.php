@@ -183,7 +183,8 @@ class ProfileService
         $performed_tasks_count = [];
         foreach ($user_category as $category_name => $category) {
             $performed_tasks_count[] = [
-                $category_name => UserCategoriesResource::collection($category)
+                'name' => $category_name,
+                'childs'=> UserCategoriesResource::collection($category)
             ];
         }
 
@@ -605,15 +606,14 @@ class ProfileService
      * Function  changePassword
      * Mazkur metod passwordni tahrirlash
      * @param $user
-     * @param $password
-     * @param $old_password
+     * @param $data
      * @return JsonResponse
      */
-    public function changePassword($user, $password, $old_password): JsonResponse
+    public function changePassword($user, $data): JsonResponse
     {
         if (isset($user->password)) {
-            if (Hash::check($old_password, $user->password)) {
-                $user->update(['password' => Hash::make($password)]);
+            if (Hash::check($data['old_password'], $user->password)) {
+                $user->update(['password' => Hash::make($data['password'])]);
 
                 $message = trans('trans.Password updated successfully.');
                 $status = true;
@@ -622,7 +622,7 @@ class ProfileService
                 $status = false;
             }
         } else {
-            $user->update(['password' => Hash::make($password)]);
+            $user->update(['password' => Hash::make($data['password'])]);
 
             $message = trans('trans.Password updated successfully.');
             $status = true;
