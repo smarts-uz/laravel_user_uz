@@ -8,6 +8,7 @@ use App\Services\Task\TaskService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -1007,7 +1008,11 @@ class TaskAPIController extends Controller
     public function contacts(TaskContactsRequest $request): JsonResponse
     {
         $data = $request->validated();
-        return $this->success($this->create_task_service->contact_store($data));
+        /** @var User $user */
+        $user = auth()->user();
+        $user_id = ($user !== null) ? $user->id : 0;
+        /** @var Task $task */
+        return $this->success($this->create_task_service->contact_store($data, $user->id));
     }
 
     /**

@@ -385,27 +385,25 @@ class CreateTaskService
      * @return array //Value Returned
      */
     #[ArrayShape([])]
-    public function contact_store($data): array
+    public function contact_store($data, $user_id = 0): array
     {
-        /** @var User $user */
-        $user = auth()->user();
-        /** @var Task $task */
+        $user = User::find($user_id);
         $task = Task::findOrFail($data['task_id']);
         unset($data['task_id']);
-        $correctPhoneNumber = (new CustomService)->correctPhoneNumber($user->phone_number);
+        $correctPhoneNumber = (!empty($user)) ? (new CustomService)->correctPhoneNumber($user->phone_number) : '';
         switch (true) {
             case (!$user->is_phone_number_verified && $user->phone_number !== $data['phone_number']):
                 $data['is_phone_number_verified'] = 0;
                 $data['phone_number'] = $correctPhoneNumber;
                 $user->update($data);
                 VerificationService::send_verification('phone', $user, $correctPhoneNumber);
-                return $this->get_verify($data['task_id'], $user);
+                return $this->get_verify($task->id, $user);
             case ($user->phone_number !== $data['phone_number']) :
                 VerificationService::send_verification_for_task_phone($task, $correctPhoneNumber);
-                return $this->get_verify($data['task_id'], $user);
+                return $this->get_verify($task->id, $user);
             case (!$user->is_phone_number_verified) :
                 VerificationService::send_verification('phone', $user, $correctPhoneNumber);
-                return $this->get_verify($data['task_id'], $user);
+                return $this->get_verify($task->id, $user);
         }
 
         $task->status = 1;
