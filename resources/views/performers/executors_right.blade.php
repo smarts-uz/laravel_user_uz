@@ -38,7 +38,7 @@
         <ul>
             @foreach($user_category as $user_cat)
                 <li class="mt-2 text-gray-500">
-                    <a class="hover:text-red-500 underline underline-offset-4" href="{{route('categories',$user_cat->parent_id)}}">
+                    <a class="hover:text-red-500 underline underline-offset-4" href="{{route('categories',$user_cat->parent_id ?? 1)}}">
                         {{ $user_cat->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
                     </a>
                 </li>
