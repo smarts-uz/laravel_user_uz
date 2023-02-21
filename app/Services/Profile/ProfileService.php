@@ -40,8 +40,9 @@ class ProfileService
      * @return JsonResponse
      */
     #[ArrayShape(['data' => "array"])]
-    public function index($user): JsonResponse
+    public function index($user_id): JsonResponse
     {
+        $user = User::find($user_id);
         if (isset($user->password)) {
             $socialPassword = false;
         } else {
@@ -178,7 +179,7 @@ class ProfileService
             ->whereIn('id', $user_categories)
             ->get());
         $user_category = UserCategory::query()->where('user_id', $user->id)->get()->groupBy(static function ($data){
-            return $data->category->parent->getTranslatedAttribute('name');
+            return (!empty($data->category->parent)) ? $data->category->parent->getTranslatedAttribute('name') : '';
         });
         $performed_tasks_count = [];
         foreach ($user_category as $category_name => $category) {

@@ -58,7 +58,8 @@ class ProfileAPIController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return $this->profileService->index($user);
+        $user_id = ($user !== null) ? $user->id : 0;
+        return $this->profileService->index($user_id);
     }
 
 
@@ -874,8 +875,9 @@ class ProfileAPIController extends Controller
      */
     public function userProfile(User $user): JsonResponseAlias
     {
+        $user_id = ($user !== null) ? $user->id : 0;
         (new PerformersService)->setView($user);
-        return $this->profileService->index($user);
+        return $this->profileService->index($user_id);
     }
 
     /**

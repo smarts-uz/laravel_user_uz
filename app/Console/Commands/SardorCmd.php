@@ -52,7 +52,7 @@ class SardorCmd extends Command
      */
     public function handle()
     {
-        (new CreateService)->syncCustomFields(2757);
+        (new ProfileService)->index(1092);
 /*$response = $this->testProfileImage($this->userId);
         $echo = $response->content();*/
 
