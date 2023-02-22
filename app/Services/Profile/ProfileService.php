@@ -200,11 +200,11 @@ class ProfileService
 
         $data = [
             'id' => $user->id,
-            'name' => $user->name,
+            'nam' => $user->name,
             'social_password' => $socialPassword,
-            'last_name' => $user->last_name,
+            'last_n' => $user->last_name,
             'email' => $user->email,
-            'avatar' => $user_avatar,
+            'ava' => $user_avatar,
             'video' => $user->youtube_link,
             'active_task' => $user->active_task,
             'active_step' => $user->active_step,
