@@ -11,4 +11,9 @@ class BlockedUser extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'blocked_users';
     protected $guarded = [];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'blocked_user_id');
+    }
 }

@@ -2,7 +2,8 @@
 
 namespace App\Services\Profile;
 
-use App\Http\Resources\{CategoryIndexResource,
+use App\Http\Resources\{BlockUserListResourse,
+    CategoryIndexResource,
     PortfolioIndexResource,
     ResponseTemplateResource,
     ReviewIndexResource,
@@ -35,8 +36,9 @@ class ProfileService
         if (PHP_SAPI === 'cli')
             var_dump($data);
     }
+
     /**
-     * @param $user
+     * @param $user_id
      * @return JsonResponse
      */
     #[ArrayShape(['data' => "array"])]
@@ -920,16 +922,17 @@ class ProfileService
 
     /**
      * @param $blocked_user_id
+     * @param $user_id
      * @return JsonResponse
      */
-    public function blocked_user($blocked_user_id): JsonResponse
+    public function blocked_user($blocked_user_id, $user_id): JsonResponse
     {
-        $blocked_user = BlockedUser::query()->where('user_id', auth()->id())->where('blocked_user_id', $blocked_user_id);
+        $blocked_user = BlockedUser::query()->where('user_id', $user_id)->where('blocked_user_id', $blocked_user_id);
         if ($blocked_user->exists()) {
             $blocked_user->delete();
         } else {
             BlockedUser::query()->updateOrCreate([
-                'user_id' => \auth()->id(),
+                'user_id' => $user_id,
                 'blocked_user_id' => $blocked_user_id,
             ]);
         }
@@ -937,6 +940,20 @@ class ProfileService
         return response()->json([
             'success' => true,
             'message' => __('Успешно сохранено')
+        ]);
+    }
+
+    /**
+     * @param $user_id
+     * @return JsonResponse
+     */
+    public function blocked_user_list($user_id): JsonResponse
+    {
+        $data = BlockedUser::query()->where('user_id', $user_id)->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => BlockUserListResourse::collection($data)
         ]);
     }
 

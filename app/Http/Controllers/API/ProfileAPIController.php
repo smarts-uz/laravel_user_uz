@@ -13,6 +13,7 @@ use App\Http\Requests\Api\ProfileVideoRequest;
 use App\Http\Requests\Api\ResponseTemplateRequest;
 use App\Http\Requests\Api\UserReportRequest;
 use App\Http\Requests\UserBlockRequest;
+use App\Models\BlockedUser;
 use App\Models\Portfolio;
 use App\Models\ReportedUser;
 use App\Models\ResponseTemplate;
@@ -1216,29 +1217,40 @@ class ProfileAPIController extends Controller
      * )
      */
 
-     //public function block(UserBlockRequest $request): JsonResponseAlias
-    //    {
-    //        $data = $request->validated();
-    //        $blocked_user = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$data['blocked_user_id']);
-    //        if($blocked_user->exists()){
-    //            $blocked_user->delete();
-    //        }else{
-    //            BlockedUser::query()->updateOrCreate([
-    //                'user_id' => \auth()->id(),
-    //                'blocked_user_id' => $data['blocked_user_id'],
-    //            ]);
-    //        }
-    //
-    //        return response()->json([
-    //            'success' => true,
-    //            'message' => __('Успешно сохранено')
-    //        ]);
-    //    }
     public function block(UserBlockRequest $request): JsonResponseAlias
     {
         $data = $request->validated();
         $blocked_user_id = $data['blocked_user_id'];
-        return $this->profileService->blocked_user($blocked_user_id);
+        $user_id = auth()->id();
+        return $this->profileService->blocked_user($blocked_user_id, $user_id);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/profile/block-user-list",
+     *     tags={"Profile"},
+     *     summary="Block user list",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function block_user_list(): JsonResponseAlias
+    {
+        $user_id = auth()->id();
+        return $this->profileService->blocked_user_list($user_id);
     }
 
     /**
