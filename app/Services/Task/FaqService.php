@@ -5,7 +5,6 @@ namespace App\Services\Task;
 
 
 use App\Http\Resources\FaqResource;
-use App\Http\Resources\SettingResource;
 use App\Models\FaqCategories;
 use TCG\Voyager\Models\Setting;
 
@@ -14,20 +13,9 @@ class FaqService
     public function index()
     {
         $faqs = FaqCategories::query()->latest()->get();
-        if (!empty($faqs)) {
-            $data = [
-                'id' => $faqs->id,
-                'title' => $faqs->title,
-                'description' => $faqs->description,
-                'logo' => asset('storage/' . $faqs->logo),
-            ];
-        } else {
-            $data = [];
-        }
-
         return response()->json([
             'success' => true,
-            'data' => $data
+            'data' => FaqResource::collection($faqs)
         ]);
     }
 
