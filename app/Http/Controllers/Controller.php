@@ -8,12 +8,14 @@ use App\Services\Response;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Session;
 use App\Models\Massmedia;
 use App\Services\ControllerService;
 use App\Models\BlogNew;
 use App\Models\Privacy;
+use Jenssegers\Agent\Agent;
 
 class Controller extends BaseController
 {
@@ -125,17 +127,22 @@ class Controller extends BaseController
 
     public function terms()
     {
+        $agent = new Agent();
+        if ($agent->isMobile()) {
+            return view('auth.terms_mobile');
+        }
+
         return view('auth.terms');
     }
 
-    public function terms_mobile($lang)
+    public function terms_mobile($lang): RedirectResponse
     {
         Session::put('lang', $lang);
         if (auth()->check()) {
             app()->setLocale($lang);
             cache()->put('lang' . auth()->id(), $lang);
         }
-        return view('auth.terms_mobile');
+        return redirect()->route('terms_mobile_url');
     }
 
     public function paynet_mobile($lang)
@@ -145,11 +152,16 @@ class Controller extends BaseController
             app()->setLocale($lang);
             cache()->put('lang' . auth()->id(), $lang);
         }
-        return view('staticpages.paynet_mobile');
+        return redirect()->route('paynet_oplata_url');
     }
 
     public function paynet_oplata()
     {
+        $agent = new Agent();
+        if ($agent->isMobile()) {
+            return view('staticpages.paynet_mobile');
+        }
+
         return view('staticpages.paynet');
     }
 

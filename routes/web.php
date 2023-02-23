@@ -194,9 +194,9 @@ Route::post('send-review-user/{task}', [UpdateController::class, 'sendReview'])-
 Route::get('/categories/{id}', [Controller::class, 'category'])->name("categories");
 Route::get('/lang/{lang}', [Controller::class, 'lang'])->name('lang');
 Route::get('/', [Controller::class, 'home'])->name('home');
-Route::get('/terms',[Controller::class,'terms']);
+Route::get('/terms',[Controller::class,'terms'])->name('terms_mobile_url');
 Route::get('/terms/{lang}',[Controller::class,'terms_mobile']);
-Route::get('/paynet-oplata',[Controller::class,'paynet_oplata']);
+Route::get('/paynet-oplata',[Controller::class,'paynet_oplata'])->name('paynet_oplata_url');
 Route::get('/paynet-oplata/{lang}',[Controller::class,'paynet_mobile']);
 Route::get('/show-notification/{notification}', [NotificationController::class, 'show_notification'])->name('show_notification');
 Route::get('/show-notification-user/{notification}', [NotificationController::class, 'show_notification_user'])->name('show_notification_user');
