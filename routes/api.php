@@ -184,6 +184,7 @@ Route::post('/social-login', [SocialAPIController::class, 'login']); // fix
 
 //FAQ
 Route::get('/faq', [FaqController::class, 'index']); // fix
+Route::get('/faq/{faq_id}', [FaqController::class, 'faq']); // fix
 
 //Test notifications
 Route::post('/firebase-notification', [NotificationController::class, 'firebase_notification']);

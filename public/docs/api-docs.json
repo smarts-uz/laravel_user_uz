@@ -224,6 +224,35 @@
                 }
             }
         },
+        "\/api\/faq\/{faq_id}": {
+            "get": {
+                "tags": [
+                    "FAQ"
+                ],
+                "summary": "faqs id",
+                "operationId": "0f07137332016dcec2fdfb90dda6102a",
+                "parameters": [
+                    {
+                        "name": "faq_id",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
         "\/api\/settings\/get-all": {
             "get": {
                 "tags": [

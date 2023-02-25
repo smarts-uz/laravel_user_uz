@@ -4,18 +4,19 @@
 namespace App\Services\Task;
 
 
-use App\Http\Resources\FaqResource;
+use App\Http\Resources\FaqCategoryResource;
 use App\Models\FaqCategories;
+use Illuminate\Http\JsonResponse;
 use TCG\Voyager\Models\Setting;
 
 class FaqService
 {
-    public function index()
+    public function index(): JsonResponse
     {
         $faqs = FaqCategories::query()->latest()->get();
         return response()->json([
             'success' => true,
-            'data' => FaqResource::collection($faqs)
+            'data' => FaqCategoryResource::collection($faqs)
         ]);
     }
 

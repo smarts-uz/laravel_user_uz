@@ -5449,6 +5449,7 @@
                                 "is_read",
                                 "performer_id",
                                 "deleted_at",
+                                "news_id",
                                 "notification_belongsto_user_relationship",
                                 "notification_hasmany_service_relationship"
                             ],

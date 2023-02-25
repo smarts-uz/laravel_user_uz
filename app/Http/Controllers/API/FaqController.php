@@ -4,19 +4,14 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FaqResource;
-use App\Http\Resources\SettingResource;
 use App\Models\FaqCategories;
 use App\Services\Task\FaqService;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
-use TCG\Voyager\Models\Setting;
 
 class FaqController extends Controller
 {
 
-    public $service;
+    public FaqService $service;
 
     public function __construct(FaqService $faqService)
     {
@@ -45,6 +40,40 @@ class FaqController extends Controller
     public function index()
     {
         return $this->service->index();
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/faq/{faq_id}",
+     *     tags={"FAQ"},
+     *     summary="faqs id",
+     *     @OA\Parameter (
+     *          in="path",
+     *          name="faq_id",
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     * )
+     */
+    public function faq(FaqCategories $faq_id): JsonResponse
+    {
+        return response()->json([
+            'success' => true,
+            'data' => new FaqResource($faq_id)
+        ]);
     }
 
     /**
