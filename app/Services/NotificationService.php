@@ -23,7 +23,6 @@ class NotificationService
      * If that function used for api, Notification::TASK_CREATED type should be invisible
      *
      * @param $user // User model object
-     * @param bool $web
      * @return Collection
      */
     public static function getNotifications($user): Collection
@@ -122,10 +121,9 @@ class NotificationService
      * Send news, system notifications by websocket and firebase
      *
      * @param $not // Notification model object
-     * @param  $slug
      * @return void
      */
-    public static function sendNotification($not, $slug): void
+    public static function sendNotification($not): void
     {
         /** @var User $users */
         $users = User::query()->with('sessions')->where('news_notification', 1)->select('id')->get();
@@ -135,6 +133,7 @@ class NotificationService
                 'user_id' => $user->id,
                 'description' => $not->message ?? 'description',
                 "name_task" => $not->title,
+                "news_id" => $not->id,
                 "type" => Notification::NEWS_NOTIFICATION
             ]);
             self::pushNotification($user, [

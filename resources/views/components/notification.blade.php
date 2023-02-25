@@ -99,19 +99,19 @@
             element.text(String(count))
             element2.text(String(count2))
             $('#notifications').prepend(`
-            <li class="border-b-2 border-gray-500 flex gap-x-2 p-3 text-gray-800">
-                <div class="flex flex-col w-full">
-                    <p class="text-right text-sm">${data['created_date']}</p>
-                    <div class="w-full flex flex-row gap-x-4">
-                        <i class="fas fa-bell text-yellow-500 text-xl"></i>
-                        <div>
-                            <p>${data['title']}</p>
-                            <a class="hover:text-red-500" href=${data['url']}>
-                                ${data['description']}
-                            </a>
+            <li class="border-b-2 border-gray-500 flex gap-x-2 p-3 text-gray-800 hover:bg-yellow-200">
+                <a href=${data['url']}>
+                    <div class="flex flex-col w-full">
+                        <p class="text-right text-sm">${data['created_date']}</p>
+                        <div class="w-full flex flex-row gap-x-4">
+                            <i class="fas fa-bell text-yellow-500 text-xl"></i>
+                            <div>
+                                <p>${data['title']}</p>
+                                <p>${data['description']}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </li>
             `)
         });

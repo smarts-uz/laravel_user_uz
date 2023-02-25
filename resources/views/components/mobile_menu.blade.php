@@ -140,7 +140,6 @@
 
                 @if (Route::has('login'))
                     @auth
-
                         <li class="mb-1">
                             <a href="{{ route('searchTask.mytasks') }}"
                                class="mytask delete-task cursor-pointer block p-4 text-base rounded text-gray-500 hover:text-yellow-500">{{__('Мои заказы')}}</a>
@@ -186,7 +185,7 @@
                             <a href="{{ route('login.logout') }}" class="delete-task ml-4">{{__('Выход')}}</a>
                         </div>
 
-                    @else
+                @else
                         <div class="relative top-60 block w-[400px] ml-4">
                             <a href="{{ route('login') }}"
                                class="delete-task border-b border-black border-dotted hover:text-yellow-500 hover:border-yellow-500 ">{{__('Вход')}}
@@ -217,8 +216,8 @@
                                     @endif
                                 </div>
                             </div>
-            @endauth
-            @endif
+                    @endauth
+                @endif
         </div>
     </nav>
 </div>

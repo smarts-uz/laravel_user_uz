@@ -14,6 +14,7 @@ use TCG\Voyager\Traits\Translatable;
  * @property $name_task
  * @property $user
  * @property $type
+ * @property $news_id
  * @property $created_at
  *
  */

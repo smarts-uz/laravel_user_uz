@@ -129,7 +129,7 @@ class NotificationController extends VoyagerBaseController
     {
         $notification->update(['is_read' => 1]);
         return match ($notification->type) {
-            Notification::NEWS_NOTIFICATION || Notification::SYSTEM_NOTIFICATION => redirect('/news/' . $notification->id),
+            Notification::NEWS_NOTIFICATION => redirect('/news/' . $notification->news_id),
             Notification::NEW_PASSWORD => redirect('/profile/settings'),
             Notification::WALLET_BALANCE => redirect('/profile/cash'),
             Notification::TEST_PUSHER_NOTIFICATION => redirect('/'),
@@ -267,7 +267,6 @@ class NotificationController extends VoyagerBaseController
         // Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->addRows)->validate();
         $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
-
         event(new BreadDataAdded($dataType, $data));
 
         if (!$request->has('_tagging')) {
@@ -277,7 +276,7 @@ class NotificationController extends VoyagerBaseController
                 $redirect = redirect()->back();
             }
 
-            NotificationService::sendNotification($data, $slug);
+            NotificationService::sendNotification($data);
 
             return $redirect->with([
                 'message' => __('voyager::generic.successfully_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
