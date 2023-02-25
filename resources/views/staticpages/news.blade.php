@@ -8,7 +8,7 @@
             <div class="flex lg:flex-row  flex-col gap-x-4 my-10">
                 <div class="lg:w-1/2 w-full">
                     <a href="/news/{{$new->id}}">
-                        <img class="md:w-3/4 w-full mx-auto h-80 rounded-lg" src="{{ asset('storage/'.$new->img) }}" alt="#">
+                        <img class="md:w-3/4 w-full mx-auto h-80 rounded-lg" src="{{ asset('public/'.$new->img) }}" alt="#">
                     </a>
                 </div>
                 <div class="lg:w-1/2 w-full lg:mt-0 mt-4">
