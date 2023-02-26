@@ -7,21 +7,21 @@
         <a href="/admin/users" class="text-lg text-blue-500 hover:text-red-500 cursor-pointer mr-12">
             <i class="fas fa-arrow-left"></i> {{__('Вернитесь назад')}}
         </a>
-        @if(session('lang') === 'ru')
-            <a href="{{route('lang', ['lang'=>'uz'])}}" class="hover:text-red-500 mr-2">
-                UZ
+        @if (session('lang') === 'ru')
+            <a href="{{route('lang', ['lang'=>'uz'])}}" class="hover:text-red-500 mr-2 font-bold">
+                O'zbek
             </a>
             I
-            <a href="{{route('lang', ['lang'=>'ru'])}}" class="hover:text-red-500 text-red-500 ml-2">
-                RU
-            </a>
+            <p class="text-red-500 ml-2 font-bold">
+                Русский
+            </p>
         @else
-            <a href="{{route('lang', ['lang'=>'uz'])}}" class="hover:text-red-500 text-red-500 mr-2">
-                UZ
-            </a>
+            <p class="text-red-500 mr-2 font-bold">
+                O'zbek
+            </p>
             I
-            <a href="{{route('lang', ['lang'=>'ru'])}}" class="hover:text-red-500 ml-2">
-                RU
+            <a href="{{route('lang', ['lang'=>'ru'])}}" class="hover:text-red-500 ml-2 font-bold">
+                Русский
             </a>
         @endif
     </div>
@@ -58,16 +58,16 @@
     </div>
 
     <!-- Tab Contents -->
-    <div id="tab-contents" class="w-full md:col-span-3 col-span-4 border-2 rounded-xl mt-2">
-        <div id="first" class="p-4">
+    <div id="tab-contents" class="w-full md:col-span-3 col-span-4">
+        <div id="first" class="px-4">
             @if(!count($tasks))
                 <p class="">{{__('Этот пользователь не создал никаких задач')}}</p>
             @else
                 @foreach($tasks as $task)
-                    <div class="border-2 border-gray-500 rounded-xl bg-gray-50 hover:bg-blue-100 h-auto my-3 bg-gray-100">
+                    <div class="border-b border-gray-500 bg-gray-50 rounded-t-xl shadow-2xl hover:bg-blue-100 h-auto my-3">
                         <div class="grid grid-cols-5 w-11/12 mx-auto py-2">
                             <div class="sm:col-span-3 col-span-5 flex flex-row">
-                                <div class="sm:mr-6 mr-3 w-1/6">
+                                <div class="sm:mr-6 mr-3 w-1/6 my-auto">
                                     <img src="{{ asset('storage/'.$task->category->ico) }}"
                                          class="text-2xl float-left text-blue-400 sm:mr-14 mr-3 h-14 w-14 bg-blue-200 p-2 rounded-xl" />
                                 </div>
@@ -122,15 +122,15 @@
                 @endforeach
             @endif
         </div>
-        <div id="second" class="hidden p-4">
+        <div id="second" class="hidden px-4">
             @if(!count($performer_tasks))
                 <p class="">{{__('Этот пользователь не ответил на задание')}}</p>
             @else
                 @foreach($performer_tasks as $performer_task)
-                    <div class="border-2 border-gray-500 rounded-xl bg-gray-50 hover:bg-blue-100 h-auto my-3 bg-gray-100">
+                    <div class="border-b border-gray-500 bg-gray-50 rounded-t-xl shadow-2xl hover:bg-blue-100 h-auto my-3">
                         <div class="grid grid-cols-5 w-11/12 mx-auto py-2">
                             <div class="sm:col-span-3 col-span-5 flex flex-row">
-                                <div class="sm:mr-6 mr-3 w-1/6">
+                                <div class="sm:mr-6 mr-3 w-1/6 my-auto">
                                     <img src="{{ asset('storage/'.$performer_task->category->ico) }}"
                                          class="text-2xl float-left text-blue-400 sm:mr-14 mr-3 h-14 w-14 bg-blue-200 p-2 rounded-xl" />
                                 </div>
@@ -185,7 +185,7 @@
                 @endforeach
             @endif
         </div>
-        <div id="third" class="hidden p-4">
+        <div id="third" class="hidden px-4">
             @if(!count($user_reviews))
                 <p class="">{{__('Комментариев не осталось')}}</p>
             @else
@@ -225,7 +225,7 @@
                 @endforeach
             @endif
         </div>
-        <div id="fourth" class="hidden p-4">
+        <div id="fourth" class="hidden px-4">
             @if(!count($performer_reviews))
                 <p class="">{{__('Комментариев не осталось')}}</p>
             @else
@@ -265,7 +265,7 @@
                 @endforeach
             @endif
         </div>
-        <div id="five" class="hidden p-4">
+        <div id="five" class="hidden px-4">
             @if(!count($task_responses))
                 <p class="">{{__('Пользователь не оставил ответов')}}</p>
             @else
