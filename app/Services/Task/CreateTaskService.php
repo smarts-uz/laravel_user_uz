@@ -383,6 +383,7 @@ class CreateTaskService
      *
      * @param $data // Validated request data from mobile
      * @return array //Value Returned
+     * @throws \Exception
      */
     #[ArrayShape([])]
     public function contact_store($data, $user_id = 0): array
@@ -394,12 +395,12 @@ class CreateTaskService
         switch (true) {
             case (!$user->is_phone_number_verified && $user->phone_number !== $data['phone_number']):
                 $data['is_phone_number_verified'] = 0;
-                $data['phone_number'] = $correctPhoneNumber;
+                $data['phone_number'] = (new CustomService)->correctPhoneNumber($data['phone_number']);
                 $user->update($data);
                 VerificationService::send_verification('phone', $user, $correctPhoneNumber);
                 return $this->get_verify($task->id, $user);
             case ($user->phone_number !== $data['phone_number']) :
-                VerificationService::send_verification_for_task_phone($task, $correctPhoneNumber);
+                VerificationService::send_verification_for_task_phone($task, $data['phone_number']);
                 return $this->get_verify($task->id, $user);
             case (!$user->is_phone_number_verified) :
                 VerificationService::send_verification('phone', $user, $correctPhoneNumber);

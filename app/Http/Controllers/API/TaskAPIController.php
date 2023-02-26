@@ -2,43 +2,36 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\Api\TaskResponseRequest;
-use App\Http\Resources\ComplianceTypeResource;
-use App\Services\Task\TaskService;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controller;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use App\Models\User;
-use App\Models\Task;
-use App\Models\Compliance;
-use App\Services\Response;
-use App\Models\TaskResponse;
-use App\Models\ComplianceType;
-use App\Services\TelegramService;
-use App\Services\Task\CreateService;
-use App\Services\Task\ResponseService;
-use App\Services\Task\CreateTaskService;
-use App\Services\Task\FilterTaskService;
-use App\Http\Resources\SameTaskResource;
-use App\Services\Task\UpdateTaskService;
-use App\Http\Resources\TaskIndexResource;
-use App\Http\Requests\Api\TaskDateRequest;
-use App\Http\Requests\Api\TaskNameRequest;
-use App\Http\Requests\Api\TaskNoteRequest;
-use App\Http\Resources\TaskSingleResource;
-use App\Http\Resources\TaskResponseResource;
-use App\Http\Requests\Api\TaskRemoteRequest;
-use App\Http\Requests\Api\TaskBudgetRequest;
-use App\Http\Requests\Api\TaskCustomRequest;
-use App\Http\Requests\Api\TaskAddressRequest;
-use App\Http\Resources\TaskPaginationResource;
-use App\Http\Requests\Api\TaskContactsRequest;
-use App\Http\Requests\Api\TaskComplaintRequest;
-use App\Http\Requests\Api\TaskVerificationRequest;
+use App\Http\Requests\Api\{TaskAddressRequest,
+    TaskBudgetRequest,
+    TaskComplaintRequest,
+    TaskContactsRequest,
+    TaskCustomRequest,
+    TaskDateRequest,
+    TaskNameRequest,
+    TaskNoteRequest,
+    TaskRemoteRequest,
+    TaskResponseRequest,
+    TaskVerificationRequest};
+use App\Http\Resources\{ComplianceTypeResource,
+    SameTaskResource,
+    TaskSingleResource,
+    TaskResponseResource,
+    TaskPaginationResource};
+use Illuminate\{Http\Request,
+    Http\JsonResponse,
+    Routing\Controller,
+    Validation\ValidationException,
+    Http\Resources\Json\AnonymousResourceCollection};
+use App\Models\{User, Task, Compliance, TaskResponse, ComplianceType};
+use App\Services\{Task\TaskService,
+    Task\CreateService,
+    Task\ResponseService,
+    Task\CreateTaskService,
+    Task\FilterTaskService,
+    Task\UpdateTaskService,
+    Response,
+    TelegramService};
 
 class TaskAPIController extends Controller
 {
@@ -1012,7 +1005,7 @@ class TaskAPIController extends Controller
         $user = auth()->user();
         $user_id = ($user !== null) ? $user->id : 0;
         /** @var Task $task */
-        return $this->success($this->create_task_service->contact_store($data, $user->id));
+        return $this->success($this->create_task_service->contact_store($data, $user_id));
     }
 
     /**
