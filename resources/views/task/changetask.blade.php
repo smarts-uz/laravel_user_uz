@@ -31,7 +31,6 @@
                         @enderror
                     </label>
                 </div>
-
                 @foreach($task->category->custom_fields as $data)
                     @include('create.custom-fields')
                 @endforeach

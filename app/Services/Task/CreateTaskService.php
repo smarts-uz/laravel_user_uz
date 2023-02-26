@@ -447,11 +447,11 @@ class CreateTaskService
                         'task_id' => $task->id,
                         'route' => 'end',
                     ], 'Successfully verified');
-                } else {
-                    return $this->fail([
-                        'sms_otp' => ['expired_message']
-                    ], 'Validation errors');
                 }
+                return $this->fail([
+                    'sms_otp' => ['expired_message']
+                ], 'Validation errors');
+
             case $data['sms_otp'] === $task->verify_code :
                 if (strtotime($task->verify_expiration) >= strtotime(Carbon::now())) {
                     $task->update(['status' => 1, 'user_id' => $user->id]);
@@ -465,11 +465,11 @@ class CreateTaskService
                         'task_id' => $task->id,
                         'route' => 'end',
                     ], 'Successfully verified');
-                } else {
-                    return $this->fail([
-                        'sms_otp' => ['expired_message']
-                    ], 'Validation errors');
                 }
+                return $this->fail([
+                    'sms_otp' => ['expired_message']
+                ], 'Validation errors');
+
             default :
                 return $this->fail([
                     'sms_otp' => ['incorrect_message']
@@ -483,7 +483,7 @@ class CreateTaskService
      * @param int $task_id
      * @param string $routeName
      * @param $request
-     * @return  Builder|Builder|Collection|Model|null
+     * @return  Builder|Collection|Model|null
      */
     protected function attachCustomFieldsByRoute(int $task_id, string $routeName, $request)
     {

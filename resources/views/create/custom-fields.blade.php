@@ -139,15 +139,15 @@
                 {{ $data->getTranslatedAttribute('label') }}
                 <input placeholder="{{ $data->getTranslatedAttribute('placeholder') }}"
                     id="car_{{ $data['order'] }}" name="{{$data->name}}[]"
-                       @if($custom_field['required'] === 1)
+                       @if($data['required'] === 1)
                            required
                        @endif
-                       @if($custom_field['data_type'] === 'int')
-                           min="{{$custom_field['min']}}" max="{{$custom_field['max']}}" type="number"
-                       @elseif($custom_field['data_type'] === 'string')
-                           minlength="{{$custom_field['min']}}" maxlength="{{$custom_field['max']}}" type="text" onkeypress='validate(event)'
-                       @elseif($custom_field['data_type'] === 'double')
-                           min="{{$custom_field['min']}}" max="{{$custom_field['max']}}" type="number"
+                       @if($data['data_type'] === 'int')
+                           min="{{$data['min']}}" max="{{$data['max']}}" type="number"
+                       @elseif($data['data_type'] === 'string')
+                           minlength="{{$data['min']}}" maxlength="{{$data['max']}}" type="text" onkeypress='validate(event)'
+                       @elseif($data['data_type'] === 'double')
+                           min="{{$data['min']}}" max="{{$data['max']}}" type="number"
                        @endif
                     value="{{App\Services\Task\CustomFieldService::setInputValue($task, $data->id)}}"
                     class="shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500">
