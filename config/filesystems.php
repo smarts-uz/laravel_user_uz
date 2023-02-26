@@ -54,8 +54,8 @@ return [
 
         'voyager' => [
             'driver' => 'local',
-            'root' => public_path('/public'),
-            'url' => env('APP_URL').'/public',
+            'root' => public_path('/storage'),
+            'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
 
