@@ -3,23 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ModalNumberRequest;
+use App\Http\Requests\ResetCodeRequest;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
-use App\Models\Notification;
 use App\Models\User;
-use App\Models\WalletBalance;
 use App\Services\CustomService;
+use App\Services\User\LoginService;
 use App\Services\VerificationService;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class LoginController extends Controller
 {
+    protected LoginService $loginService;
+
+    public function __construct()
+    {
+        $this->loginService = new LoginService();
+    }
+
     public function login()
     {
         return view('auth.signin');
@@ -32,63 +37,22 @@ class LoginController extends Controller
     public function loginPost(UserLoginRequest $request)
     {
         $data = $request->validated();
-        /** @var User $user */
-        $user = User::query()->where('email', $data['email'])
-            ->orWhere('phone_number', $data['email'])
-            ->first();
-
-        if (!$user || !Hash::check($data['password'], $user->password)) {
-            Alert::error(__('Пароль неверен'));
-            return back();
-        }
-        if (!$user->isActive()) {
-            Alert::error(__('Аккаунт отключен'));
-            return back();
-        }
-
-        auth()->login($user);
-        if (!$user->is_email_verified)
-            VerificationService::send_verification('email', auth()->user());
-
-        $request->session()->regenerate();
-
-        if (session()->has('redirectTo')) {
-            $url = session()->get('redirectTo');
-            session()->forget('redirectTo');
-            return redirect($url);
-        }
-        return redirect()->intended('/profile');
+        $email =  $data['email'];
+        $password = $data['password'];
+        $session = $request->session();
+        $authUser = auth()->user();
+        return $this->loginService->login($email, $password, $session, $authUser);
 
     }
 
-
+    /**
+     * @throws \Exception
+     */
     public function customRegister(UserRegisterRequest $request)
     {
         $data = $request->validated();
-        $data['password'] = Hash::make($request->get('password'));
-        unset($data['password_confirmation']);
-        /** @var User $user */
-        $user = User::query()->create($data);
-        $user->phone_number = $data['phone_number'] . '_' . $user->id;
-        $user->save();
-        $wallBal = new WalletBalance();
-        $wallBal->balance = setting('admin.bonus');
-        $wallBal->user_id = $user->id;
-        $wallBal->save();
-        /** @var Notification $notification */
-        if(setting('admin.bonus')>0){
-            Notification::query()->create([
-                'user_id' => $user->id,
-                'description' => 'wallet',
-                'type' => Notification::WALLET_BALANCE,
-            ]);
-        }
-        auth()->login($user);
-
-        VerificationService::send_verification('email', auth()->user());
-
+        $this->loginService->customRegister($data);
         return redirect()->route('profile.profileData');
-
     }
 
 
@@ -103,59 +67,28 @@ class LoginController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-        VerificationService::send_verification('phone', $user, (new CustomService)->correctPhoneNumber($user->phone_number));
+        $phone_number = (new CustomService)->correctPhoneNumber($user->phone_number);
+        VerificationService::send_verification('phone', $user, $phone_number);
         return redirect()->back()->with([
             'code' => __('Код отправлен!')
         ]);
     }
 
-
-    public static function verifyColum($needle, $user, $hash)
-    {
-        $needle = 'is_' . $needle . "_verified";
-
-        $result = false;
-
-        if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-            if ($hash === $user->verify_code || $hash === setting('admin.CONFIRM_CODE')) {
-                $user->$needle = 1;
-                $user->save();
-                $result = true;
-                if ($needle !== 'is_phone_number_verified' && !$user->is_phone_number_verified) {
-                    VerificationService::send_verification('phone', $user, (new CustomService)->correctPhoneNumber($user->phone_number));
-                }
-            }
-        } else {
-            abort(419);
-        }
-        return $result;
-    }
-
-
     public function verifyAccount(User $user, $hash)
     {
-        self::verifyColum('email', $user, $hash);
+        LoginService::verifyColum('email', $user, $hash);
         auth()->login($user);
         Alert::success(__('Поздравляю'), __('Ваш адрес электронной почты успешно подтвержден'));
         return redirect()->route('profile.profileData');
 
     }
 
-    public function verify_phone(Request $request)
+    public function verify_phone(ResetCodeRequest $request)
     {
-        $request->validate([
-            'code' => 'required'
-        ]);
-        if (self::verifyColum('phone_number', auth()->user(), $request->code)) {
-            auth()->user()->phone_number = (new CustomService)->correctPhoneNumber(auth()->user()->phone_number);
-            auth()->user()->save();
-            Alert::success(__('Поздравляю'), __('Ваш телефон успешно подтвержден'));
-            return redirect()->route('profile.profileData');
-        }
-
-        return back()->with([
-            'code' => __('Неправильный код!')
-        ]);
+        $data = $request->validated();
+        $code = $data['code'];
+        $user = auth()->user();
+        return $this->loginService->verify_phone($code, $user);
     }
 
     public function change_email(Request $request)
@@ -187,7 +120,8 @@ class LoginController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-        if ($request->get('phone_number') === (new CustomService)->correctPhoneNumber($user->phone_number)) {
+        $phone_number = (new CustomService)->correctPhoneNumber($user->phone_number);
+        if ($request->get('phone_number') === $phone_number) {
             return back()->with([
                 'email-message' => 'Your phone',
                 'email' => $request->get('email')
@@ -198,7 +132,7 @@ class LoginController extends Controller
 
         $user->phone_number = $request->get('phone_number');
         $user->save();
-        VerificationService::send_verification('phone', $user, (new CustomService)->correctPhoneNumber($user->phone_number));
+        VerificationService::send_verification('phone', $user, $phone_number);
 
         return redirect()->back()->with([
             'code' => __('Код отправлен!')
