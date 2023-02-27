@@ -479,11 +479,15 @@ class PerformerAPIController extends Controller
      *          response=403,
      *          description="Forbidden"
      *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
      * )
      */
     public function performers_image($category_id): JsonResponse
     {
-        $images = $this->performer_service->performers_image($category_id);
+        $authId = \auth()->id();
+        $images = $this->performer_service->performers_image($category_id, $authId);
         return response()->json([
             'success' => true,
             'data' => $images,

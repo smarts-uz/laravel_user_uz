@@ -366,12 +366,13 @@ class PerformersService
 
     /**
      * @param $category_id
+     * @param $authId
      * @return array
      */
-    public function performers_image($category_id): array
+    public function performers_image($category_id, $authId): array
     {
         $user_cat = UserCategory::query()->where('category_id', $category_id)->pluck('user_id')->toArray();
-        $user_image = User::query()->whereIn('id', $user_cat)->take(3)->get();
+        $user_image = User::query()->whereIn('id', $user_cat)->WhereNot('id', $authId)->take(3)->get();
         $images = [];
         foreach ($user_image as $image) {
             $images[] = asset('storage/' . $image->avatar);
