@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CustomFieldController;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FaqsController;
@@ -33,7 +34,7 @@ use Teamprodev\LaravelPayment\PayUz;
 |
 */
 Route::get('/debug-sentry', function () {
-    throw new Exception('My first Sentry error!');
+    Log::channel('api')->info('api ishlamadi');
 });
 #region performers
 Route::get('/for_del_new_task/{task}', [CreateController::class, 'deleteTask']);

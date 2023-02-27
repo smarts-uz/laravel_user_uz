@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use JetBrains\PhpStorm\ArrayShape;
@@ -494,6 +495,7 @@ class CreateTaskService
             $value->task_id = $task_id;
             $value->custom_field_id = $data->id;
             $arr = $data->name !== null ? Arr::get($request, $data->name) : null;
+            Log::channel('api')->info($arr);
             $value->value = is_array($arr) ? json_encode($arr) : $arr;
             $value->save();
         }

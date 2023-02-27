@@ -48,9 +48,28 @@ return [
     */
 
     'channels' => [
+
+        'sentry' => [
+            'driver' => 'sentry',
+            'level' => env('LOG_LEVEL', 'error'),
+            'bubble' => true,
+        ],
+
+        'wabApp' => [
+            'driver' => 'stack',
+            'channels' => ['single', 'sentry'],
+            'name' => 'web'
+        ],
+
+        'api' => [
+            'driver' => 'stack',
+            'channels' => ['single', 'sentry'],
+            'name' => 'api2'
+        ],
+
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single', 'sentry'],
             'ignore_exceptions' => false,
         ],
 
