@@ -32,7 +32,9 @@ use Teamprodev\LaravelPayment\PayUz;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/debug-sentry', function () {
+    throw new Exception('My first Sentry error!');
+});
 #region performers
 Route::get('/for_del_new_task/{task}', [CreateController::class, 'deleteTask']);
 Route::post('del-notif', [PerformersController::class, 'del_all_notif']);
