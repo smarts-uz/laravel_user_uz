@@ -64,6 +64,7 @@ use Laravel\Passport\HasApiTokens;
  * @property $notification_to
  * @property $notification_from
  * @property $deleted_at
+ * @property $sessions
  */
 class User extends \TCG\Voyager\Models\User
 {

@@ -1548,7 +1548,7 @@ class ProfileAPIController extends Controller
      *                 @OA\Property (
      *                    property="notification_off",
      *                    type="integer",
-     *                    description="0 yoki 1, 0 bo'lsa o'chirish, 1 bo'lsa yoqish"
+     *                    description="0 yoki 1, 0 bo'lsa yoqish, 1 bo'lsa o'chirish"
      *                 ),
      *                 @OA\Property (
      *                    property="notification_to",

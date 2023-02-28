@@ -837,7 +837,12 @@
                     "403": {
                         "description": "Forbidden"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
             }
         },
         "\/api\/profile\/": {
@@ -2112,7 +2117,7 @@
                             "schema": {
                                 "properties": {
                                     "notification_off": {
-                                        "description": "0 yoki 1, 0 bo'lsa o'chirish, 1 bo'lsa yoqish",
+                                        "description": "0 yoki 1, 0 bo'lsa yoqish, 1 bo'lsa o'chirish",
                                         "type": "integer"
                                     },
                                     "notification_to": {
@@ -5317,13 +5322,13 @@
                                 "born_date",
                                 "work_experience",
                                 "email_old",
-                                "version",
                                 "phone_number_old",
                                 "system_notification",
                                 "news_notification",
                                 "notification_off",
                                 "notification_to",
                                 "notification_from",
+                                "version",
                                 "last_seen",
                                 "gender",
                                 "sms_notification",
@@ -11416,30 +11421,6 @@
                             "type": "string",
                             "example": "2020-01-01 00:00,,2021-06-01 00:00"
                         }
-                    },
-                    {
-                        "name": "filters[deleted_by]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[updated_by]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[created_by]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
                     }
                 ],
                 "responses": {
@@ -11721,10 +11702,7 @@
                                 "balance",
                                 "created_at",
                                 "user_id",
-                                "deleted_at",
-                                "deleted_by",
-                                "updated_by",
-                                "created_by"
+                                "deleted_at"
                             ]
                         }
                     },
@@ -11740,10 +11718,7 @@
                                     "balance",
                                     "created_at",
                                     "user_id",
-                                    "deleted_at",
-                                    "deleted_by",
-                                    "updated_by",
-                                    "created_by"
+                                    "deleted_at"
                                 ]
                             }
                         }
@@ -26275,18 +26250,6 @@
                         "type": "date-time",
                         "description": "Deleted At",
                         "example": "2021-05-17 00:00"
-                    },
-                    "deleted_by": {
-                        "type": "string",
-                        "description": "Deleted By"
-                    },
-                    "updated_by": {
-                        "type": "string",
-                        "description": "Updated By"
-                    },
-                    "created_by": {
-                        "type": "string",
-                        "description": "Created By"
                     }
                 }
             },
@@ -26320,18 +26283,6 @@
                         "type": "date-time",
                         "description": "Deleted At",
                         "example": "2021-05-17 00:00"
-                    },
-                    "deleted_by": {
-                        "type": "string",
-                        "description": "Deleted By"
-                    },
-                    "updated_by": {
-                        "type": "string",
-                        "description": "Updated By"
-                    },
-                    "created_by": {
-                        "type": "string",
-                        "description": "Created By"
                     }
                 }
             },
@@ -29613,18 +29564,6 @@
                                     "type": "date-time",
                                     "description": "Deleted At",
                                     "example": "2021-05-17 00:00"
-                                },
-                                "deleted_by": {
-                                    "type": "string",
-                                    "description": "Deleted By"
-                                },
-                                "updated_by": {
-                                    "type": "string",
-                                    "description": "Updated By"
-                                },
-                                "created_by": {
-                                    "type": "string",
-                                    "description": "Created By"
                                 }
                             }
                         }
@@ -29661,18 +29600,6 @@
                                     "type": "date-time",
                                     "description": "Deleted At",
                                     "example": "2021-05-17 00:00"
-                                },
-                                "deleted_by": {
-                                    "type": "string",
-                                    "description": "Deleted By"
-                                },
-                                "updated_by": {
-                                    "type": "string",
-                                    "description": "Updated By"
-                                },
-                                "created_by": {
-                                    "type": "string",
-                                    "description": "Created By"
                                 }
                             }
                         }
@@ -29709,18 +29636,6 @@
                                     "type": "date-time",
                                     "description": "Deleted At",
                                     "example": "2021-05-17 00:00"
-                                },
-                                "deleted_by": {
-                                    "type": "string",
-                                    "description": "Deleted By"
-                                },
-                                "updated_by": {
-                                    "type": "string",
-                                    "description": "Updated By"
-                                },
-                                "created_by": {
-                                    "type": "string",
-                                    "description": "Created By"
                                 }
                             }
                         }

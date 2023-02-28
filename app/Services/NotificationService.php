@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Mail\MessageEmail;
 use App\Models\Notification;
 use App\Models\UserCategory;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
@@ -453,27 +454,28 @@ class NotificationService
      */
     public static function pushNotification(User $user, $notification, $type, $model): void
     {
-        $notification['sound'] = "default";
-        foreach ($user->sessions as $session) {
-
-            if (!empty($session->firebase_token))
-                Http::withHeaders([
-                    'Content-Type' => 'application/json',
-                    'Authorization' => 'key=' . env('FCM_SERVER_KEY')
-                ])->post('https://fcm.googleapis.com/fcm/send',
-                    [
-                        "to" => $session->firebase_token,
-                        "notification" => $notification,
-                        "data" => [
-                            "type" => $type,
-                            "data" => $model,
-                            "click_action" => "FLUTTER_NOTIFICATION_CLICK",
-                            "sound" => "default",
-                        ],
-                        "sound" => "default",
-                        "click_action" => "FLUTTER_NOTIFICATION_CLICK"
-                    ]
-                )->body();
+        $NowTime = Carbon::now()->format('H:i:s');
+        if(($user->notification_from > $NowTime && $user->notification_to < $NowTime) || $user->notification_off !== 1){
+            $notification['sound'] = "default";
+            foreach ($user->sessions as $session) {
+                if (!empty($session->firebase_token)) {
+                    Http::withHeaders([
+                        'Content-Type' => 'application/json',
+                        'Authorization' => 'key=' . env('FCM_SERVER_KEY')
+                    ])->post('https://fcm.googleapis.com/fcm/send',
+                        [
+                            "to" => $session->firebase_token,
+                            "notification" => $notification,
+                            "data" => [
+                                "type" => $type,
+                                "data" => $model,
+                                "click_action" => "FLUTTER_NOTIFICATION_CLICK",
+                            ],
+                            "click_action" => "FLUTTER_NOTIFICATION_CLICK"
+                        ]
+                    )->body();
+                }
+            }
         }
     }
 
