@@ -40,7 +40,7 @@ class CustomFieldController extends VoyagerBaseController
      */
     public function save($request)
     {
-        $duration =  substr($request->options_rowOrder, -1);
+        $duration = $request->options_rowOrder ? substr($request->options_rowOrder, -1) : 0;
 
         $options = [];
         for ($i = 1; $i <= $duration; $i++) {
