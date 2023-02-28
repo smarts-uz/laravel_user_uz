@@ -455,26 +455,24 @@ class NotificationService
     public static function pushNotification(User $user, $notification, $type, $model): void
     {
         $NowTime = Carbon::now()->format('H:i:s');
-        if(($user->notification_from > $NowTime && $user->notification_to < $NowTime) || $user->notification_off !== 1){
-            $notification['sound'] = "default";
-            foreach ($user->sessions as $session) {
-                if (!empty($session->firebase_token)) {
-                    Http::withHeaders([
-                        'Content-Type' => 'application/json',
-                        'Authorization' => 'key=' . env('FCM_SERVER_KEY')
-                    ])->post('https://fcm.googleapis.com/fcm/send',
-                        [
-                            "to" => $session->firebase_token,
-                            "notification" => $notification,
-                            "data" => [
-                                "type" => $type,
-                                "data" => $model,
-                                "click_action" => "FLUTTER_NOTIFICATION_CLICK",
-                            ],
-                            "click_action" => "FLUTTER_NOTIFICATION_CLICK"
-                        ]
-                    )->body();
-                }
+        $notification['sound'] = "default";
+        foreach ($user->sessions as $session) {
+            if ($user->notification_off !== 1 || ($NowTime < $user->notification_from && $NowTime > $user->notification_to)) {
+                Http::withHeaders([
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'key=' . env('FCM_SERVER_KEY')
+                ])->post('https://fcm.googleapis.com/fcm/send',
+                    [
+                        "to" => $session->firebase_token,
+                        "notification" => $notification,
+                        "data" => [
+                            "type" => $type,
+                            "data" => $model,
+                            "click_action" => "FLUTTER_NOTIFICATION_CLICK",
+                        ],
+                        "click_action" => "FLUTTER_NOTIFICATION_CLICK"
+                    ]
+                )->body();
             }
         }
     }
