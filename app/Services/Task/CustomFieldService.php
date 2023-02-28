@@ -92,7 +92,7 @@ class CustomFieldService
         $data = [];
         foreach ($options as $key => $option) {
             $haystack = $values[$custom_field->id];
-            $select = $custom_field->type === 'select' || $custom_field->type === 'radio';
+            $select = $custom_field->type === 'select' || $custom_field->type === 'radio' || $custom_field->type === 'checkbox';
             $item['id'] = $key;
             if ($haystack === null) {$item['selected'] = false;} else{
                 $item['selected'] = $select ? in_array((string)$key, $haystack, true) : true;
