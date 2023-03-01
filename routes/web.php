@@ -117,7 +117,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'verification'], function () {
     Route::put('/verificationInfo/photo', [ProfileController::class, 'verificationPhotoStore'])->name('profile.verificationPhotoStore');
 
     Route::get('/verificationInfo/category', [ProfileController::class, 'verificationCategory'])->name('profile.verificationCategory');
-    Route::post('/verificationInfo/category', [ProfileController::class, 'getCategory'])->name('profile.getCategory');
+    Route::post('/verificationInfo/category', [ProfileController::class, 'personalCategory'])->name('profile.personalCategory');
 });
 #endregion
 

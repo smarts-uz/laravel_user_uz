@@ -142,6 +142,21 @@ class ProfileController extends Controller
         return redirect()->back();
     }
 
+    public function personalCategory(CategoryRequest $request){
+
+        $data = $request->validated();
+        /** @var User $user */
+        $user = auth()->user();
+        $categories = $data['category'];
+
+        $sms_notification = (int)$request->get('sms_notification');
+        $email_notification = (int)$request->get('email_notification');
+
+        $this->profileService->subscribeToCategory($categories, $user, $sms_notification, $email_notification);
+        Alert::success(__('Вы стали исполнителем'));
+        return redirect()->route('profile.profileData');
+    }
+
     //getCategory
     public function getCategory(CategoryRequest $request)
     {

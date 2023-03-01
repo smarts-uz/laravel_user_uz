@@ -15,9 +15,7 @@
     <div class="border-2 border-gray-400 p-2 rounded-lg my-2">
         <div class="my-3 flex flex-row">
             <div class="">
-                <img class="w-24 h-24 rounded-lg border-2"
-                    src='{{ auth()->user()->avatar? asset('storage/'.auth()->user()->avatar) : asset('images/avatar-avtor-image.png') }}'
-                    alt="avatar">
+                <img class="w-24 h-24 rounded-lg border-2" src='{{ asset('storage/'.auth()->user()->avatar) }}' alt="avatar">
             </div>
             <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
                 <a href="/profile" class="text-2xl text-blue-500 hover:text-red-500">
@@ -37,11 +35,8 @@
             </div>
             <div class="flex flex-row items-start">
                 @if (auth()->user()->is_email_verified && auth()->user()->is_phone_number_verified)
-                    <div data-tooltip-target="tooltip-animation-verified"
-                         class="mx-1 tooltip-1">
-                        <img
-                            src="{{asset('images/verify.png')}}"
-                            alt="" class="w-10">
+                    <div data-tooltip-target="tooltip-animation-verified" class="mx-1 tooltip-1">
+                        <img src="{{asset('images/verify.png')}}" alt="" class="w-10">
                         <div id="tooltip-animation-verified" role="tooltip"
                              class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                             <p class="text-center">
@@ -51,11 +46,8 @@
                         </div>
                     </div>
                 @else
-                    <div data-tooltip-target="tooltip-animation-not-verified"
-                         class="mx-1 tooltip-1">
-                        <img
-                            src="{{asset('images/verify_gray.png') }}"
-                            alt="" class="w-10">
+                    <div data-tooltip-target="tooltip-animation-not-verified" class="mx-1 tooltip-1">
+                        <img src="{{asset('images/verify_gray.png') }}" alt="" class="w-10">
                         <div id="tooltip-animation-not-verified" role="tooltip"
                              class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                             <p class="text-center">
@@ -66,8 +58,7 @@
                     </div>
                 @endif
                 @if(in_array(auth()->user()->id, $top_users))
-                    <div data-tooltip-target="tooltip-animation-on-2"
-                         class="mx-1 tooltip-2">
+                    <div data-tooltip-target="tooltip-animation-on-2" class="mx-1 tooltip-2">
                         <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
                         <div id="tooltip-animation-on-2" role="tooltip"
                              class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
@@ -78,8 +69,7 @@
                         </div>
                     </div>
                 @else
-                    <div data-tooltip-target="tooltip-animation-on-top"
-                         class="mx-1 tooltip-2">
+                    <div data-tooltip-target="tooltip-animation-on-top" class="mx-1 tooltip-2">
                         <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
                         <div id="tooltip-animation-on-top" role="tooltip"
                              class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
@@ -109,18 +99,20 @@
         <div class="mb-6">
             <div class="bg-gray-100 rounded-[10px] p-4">
                 <div class="ml-0">
-                    <div
-                        class="text-gray-500 font-semibold">{{__('Стоимость')}} {{ number_format($auth_response->price) }}
-                        UZS
+                    <div class="text-gray-500 font-semibold">
+                        {{__('Стоимость')}} {{ number_format($auth_response->price) }} UZS
+                    </div>
+                    <div class="text-[17px] text-gray-500 my-5">
+                        {{ $auth_response->description }}
                     </div>
 
-                    <div
-                        class="text-[17px] text-gray-500 my-5">{{ $auth_response->description }}
-                    </div>
-
-                    <div
-                        class="text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}}
-                         {{ auth()->user()->phone_number }}
+                    <div class="text-gray-500 font-semibold my-4">
+                        {{__('Телефон исполнителя:')}}
+                        @if($task->status === \App\Models\Task::STATUS_COMPLETE)
+                            *************
+                        @else
+                            {{ auth()->user()->phone_number }}
+                        @endif
                     </div>
                     @if ((int)$task->status === \App\Models\Task::STATUS_IN_PROGRESS && auth()->user()->id === $task->performer_id)
                         <div class="w-10/12 mx-auto">
@@ -177,27 +169,19 @@
         <div class="border-2 border-gray-400 p-2 rounded-lg my-2">
             <div class="my-6 flex flex-row">
                 <div class="">
-                    <img class="w-24 h-24 rounded-lg border-2"
-                        @if ($selected->performer->avatar == Null)
-                        src='{{asset("storage/images/default.jpg")}}'
-                        @else
-                        src="{{asset("storage/{$selected->performer->avatar}")}}"
-                        @endif alt="avatar">
+                    <img class="w-24 h-24 rounded-lg border-2" src="{{asset("storage/{$selected->performer->avatar}")}}" alt="avatar">
                 </div>
                 <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
                     @if (Auth::check() && Auth::user()->id === $selected->performer->id)
-                        <a href="/profile"
-                        class="text-2xl text-blue-500 hover:text-red-500">
+                        <a href="/profile" class="text-2xl text-blue-500 hover:text-red-500">
                         {{ $selected->performer->name }}
                         </a>
                     @else
-                        <a href="/performers/{{$selected->performer->id}}"
-                            class="text-blue-400 text-xl font-semibold hover:text-blue-500">
+                        <a href="/performers/{{$selected->performer->id}}" class="text-blue-400 text-xl font-semibold hover:text-blue-500">
                             {{ $selected->performer->name }}
                         </a>
                     @endif
-                    <input type="text" name="performer_id" class="hidden"
-                        value="{{ $selected->performer_id }}">
+                    <input type="text" name="performer_id" class="hidden" value="{{ $selected->performer_id }}">
                     <div class="text-gray-700 sm:mt-4 mt-2">
                         @if(session('lang') === 'ru')
                             <i class="fas fa-star text-yellow-500 mr-1"></i>{{$selected->performer->review_rating}}
@@ -210,11 +194,8 @@
                 </div>
                 <div class="flex flex-row items-start">
                     @if ($selected->performer->is_email_verified && $selected->performer->is_phone_number_verified)
-                        <div data-tooltip-target="tooltip-animation-verified"
-                             class="mx-1 tooltip-1">
-                            <img
-                                src="{{asset('images/verify.png')}}"
-                                alt="" class="w-10">
+                        <div data-tooltip-target="tooltip-animation-verified" class="mx-1 tooltip-1">
+                            <img src="{{asset('images/verify.png')}}" alt="" class="w-10">
                             <div id="tooltip-animation-verified" role="tooltip"
                                  class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                 <p class="text-center">
@@ -224,11 +205,8 @@
                             </div>
                         </div>
                     @else
-                        <div data-tooltip-target="tooltip-animation-not-verified"
-                             class="mx-1 tooltip-1">
-                            <img
-                                src="{{asset('images/verify_gray.png') }}"
-                                alt="" class="w-10">
+                        <div data-tooltip-target="tooltip-animation-not-verified" class="mx-1 tooltip-1">
+                            <img src="{{asset('images/verify_gray.png') }}" alt="" class="w-10">
                             <div id="tooltip-animation-not-verified" role="tooltip"
                                  class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                 <p class="text-center">
@@ -239,8 +217,7 @@
                         </div>
                     @endif
                     @if(in_array($selected->performer->id, $top_users))
-                        <div data-tooltip-target="tooltip-animation-on-2"
-                             class="mx-1 tooltip-2">
+                        <div data-tooltip-target="tooltip-animation-on-2" class="mx-1 tooltip-2">
                             <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
                             <div id="tooltip-animation-on-2" role="tooltip"
                                  class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
@@ -251,8 +228,7 @@
                             </div>
                         </div>
                     @else
-                        <div data-tooltip-target="tooltip-animation-on-top"
-                             class="mx-1 tooltip-2">
+                        <div data-tooltip-target="tooltip-animation-on-top" class="mx-1 tooltip-2">
                             <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
                             <div id="tooltip-animation-on-top" role="tooltip"
                                  class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
@@ -285,15 +261,17 @@
                         <div class="text-gray-500 font-semibold">
                             {{__('Стоимость')}} {{number_format($selected->price)}} UZS
                         </div>
-
-                        <div class="text-[17px] text-gray-500 my-5">{{$selected->description}}</div>
-
-
+                        <div class="text-gray-500 my-5">{{$selected->description}}</div>
                         @if((int)$selected->not_free === 1 || $task->user_id === auth()->id())
-                            <div
-                                class="text-gray-500 font-semibold my-4">{{__('Телефон исполнителя:')}} {{$selected->performer->phone_number}}</div>
+                            <div class="text-gray-500 font-semibold my-4">
+                                {{__('Телефон исполнителя:')}}
+                                @if($task->status === \App\Models\Task::STATUS_COMPLETE)
+                                    *************
+                                @else
+                                    {{$selected->performer->phone_number}}
+                                @endif
+                            </div>
                         @endif
-
 
                         @auth()
                             @if((int)$task->status === \App\Models\Task::STATUS_IN_PROGRESS && $selected->performer_id === $task->performer_id)
@@ -349,12 +327,7 @@
         <div class="border-2 border-gray-400 p-2 rounded-lg my-2">
             <div class="my-6 flex flex-row">
                 <div class="">
-                    <img class="w-24 h-24 rounded-lg border-2"
-                         @if ($response->performer->avatar == Null)
-                         src='{{asset("storage/images/default.jpg")}}'
-                         @else
-                         src="{{asset("storage/{$response->performer->avatar}")}}"
-                         @endif alt="avatar">
+                    <img class="w-24 h-24 rounded-lg border-2" src="{{asset("storage/{$response->performer->avatar}")}}" alt="avatar">
                 </div>
                 <div class="sm:ml-4 ml-0 flex flex-col sm:my-0 my-3">
                     @if (Auth::check() && Auth::user()->id === $response->performer->id)
@@ -379,8 +352,7 @@
                 </div>
                 <div class="flex flex-row items-start">
                     @if ($response->performer->is_email_verified && $response->performer->is_phone_number_verified)
-                        <div data-tooltip-target="tooltip-animation-verified"
-                             class="mx-1 tooltip-1">
+                        <div data-tooltip-target="tooltip-animation-verified" class="mx-1 tooltip-1">
                             <img src="{{asset('images/verify.png')}}" alt="" class="w-10">
                             <div id="tooltip-animation-verified" role="tooltip"
                                  class="inline-block sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
@@ -403,8 +375,7 @@
                         </div>
                     @endif
                     @if(in_array($response->performer->id, $top_users))
-                        <div data-tooltip-target="tooltip-animation-on-2"
-                             class="mx-1 tooltip-2">
+                        <div data-tooltip-target="tooltip-animation-on-2" class="mx-1 tooltip-2">
                             <img src="{{ asset('images/best.png') }}" alt="" class="w-10">
                             <div id="tooltip-animation-on-2" role="tooltip"
                                  class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
@@ -415,8 +386,7 @@
                             </div>
                         </div>
                     @else
-                        <div data-tooltip-target="tooltip-animation-on-top"
-                             class="mx-1 tooltip-2">
+                        <div data-tooltip-target="tooltip-animation-on-top" class="mx-1 tooltip-2">
                             <img src="{{ asset('images/best_gray.png') }}" alt="" class="w-10">
                             <div id="tooltip-animation-on-top" role="tooltip"
                                  class="inline-block  sm:w-2/12 w-1/2 absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
@@ -450,10 +420,15 @@
                             {{__('Стоимость')}} {{number_format($response->price)}} UZS
                         </div>
 
-                        <div class="text-[17px] text-gray-500 my-5">{{$response->description}}</div>
+                        <div class="text-gray-500 my-5">{{$response->description}}</div>
                         @if((int)$response->not_free === 1)
                             <div class="text-gray-500 font-semibold my-4">
-                                {{__('Телефон исполнителя:')}} {{$response->performer->phone_number}}
+                                {{__('Телефон исполнителя:')}}
+                                @if($task->status === \App\Models\Task::STATUS_COMPLETE)
+                                    *************
+                                @else
+                                    {{$response->performer->phone_number}}
+                                @endif
                             </div>
                         @endif
 

@@ -8,7 +8,7 @@
                 <p class="text-base text-center my-5">
                     {{__('Выберите категории заданий, в которых хотите работать. Можно сразу несколько — изменить их всегда можно в профиле.')}}
                 </p>
-                <form action="{{route('profile.getCategory')}}" method="post">
+                <form action="{{route('profile.personalCategory')}}" method="post">
                     @csrf
                     <div class="acordion mt-16">
                         @foreach ($categories as $category )
@@ -45,13 +45,11 @@
                     </div>
 
                     <div class="flex w-full gap-x-4 mt-4">
-                        <a onclick="myFunction()"
-                           class="w-1/3  border border-black-700 hover:border-black transition-colors rounded-lg py-2 text-center flex justify-center items-center gap-2">
+                        <a onclick="myFunction()" class="w-1/3  border border-black-700 hover:border-black transition-colors rounded-lg py-2 text-center flex justify-center items-center gap-2">
                             {{__('Назад')}}
                         </a>
-                        <input type="submit"
-                               class="bg-green-500 hover:bg-green-500 w-2/3 cursor-pointer text-white font-bold py-5 sm:px-5 px-1 rounded"
-                               name="" value="{{__('Стать исполнителем')}}">
+                        <input class="bg-green-500 hover:bg-green-500 w-2/3 cursor-pointer text-white font-bold py-5 sm:px-5 px-1 rounded"
+                               type="submit"  value="{{__('Стать исполнителем')}}">
                     </div>
                 </form>
             </div>
