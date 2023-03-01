@@ -27,7 +27,7 @@
 }
 
 .messenger-list-item td b{
-    background: {{ $messengerColor }};
+    background: blue;
 }
 
 .messenger-infoView nav a{
