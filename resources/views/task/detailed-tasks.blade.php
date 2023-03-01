@@ -185,10 +185,10 @@
                             <h1 class="font-medium text-3xl mt-3">{{__('Похожиe задания')}}</h1>
                             @foreach($same_tasks as $item)
                                 @if ($item->user_id !==null)
-                                    <div class="border-2 border-gray-500 rounded-xl bg-gray-50 hover:bg-blue-100 h-auto my-3">
+                                    <div class="border-b border-gray-500 bg-gray-50 rounded-t-xl shadow-2xl hover:bg-blue-100 h-auto my-3">
                                         <div class="grid grid-cols-5 w-11/12 mx-auto py-2">
                                             <div class="sm:col-span-3 col-span-5 flex flex-row">
-                                                <div class="sm:mr-6 mr-3 w-1/6">
+                                                <div class="sm:mr-6 mr-3 w-1/6 my-auto">
                                                     <img src="{{ asset('storage/'.$item->category->ico) }}"
                                                         class="text-2xl float-left text-blue-400 sm:mr-4 mr-3 h-14 w-14 bg-blue-200 p-2 rounded-xl"/>
                                                 </div>
