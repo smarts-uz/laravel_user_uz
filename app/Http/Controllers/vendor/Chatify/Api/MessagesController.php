@@ -170,10 +170,24 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
             ], 'chat', $messageData ?? []);
 
             $user = User::query()->findOrFail(\auth()->id());
+            $role = match ($user->role_id) {
+                User::ROLE_PERFORMER => 'Performer',
+                User::ROLE_USER => 'User',
+                default => 'Admin',
+            };
             if($request['id'] === setting('site.moderator_id')){
                 $bot = new Nutgram(setting('chat.TELEGRAM_TOKEN'));
+//            $send_message_text = setting('chat.send_message_text');
+//            $message = strtr($send_message_text, [
+//                '{message}'=> $request['message'],
+//                '{name}'=> $user->name,
+//                '{phone}'=>  $user->phone_number,
+//                '{role}'=> $role,
+//                '{link}'=> 'https://user.uz/chat/'.$user->id,
+//            ]);
                 $message = 'Xabar matni : ' . $request['message']. "\n" . 'Nomi: '. $user->name . "\n" . 'Telefon raqam: ' . $user->phone_number
-                    . "\n" . 'Foydalanuvchi role_id: '. $user->role_id . "\n" . 'Chat link: ' . 'https://user.uz/chat/'.$user->id;
+                    . "\n" . 'Foydalanuvchi roli: '. $role . "\n" . 'Chat link: ' . 'https://user.uz/chat/'.$user->id;
+
                 $bot->sendMessage($message, ['chat_id' => setting('chat.CHANNEL_ID')]);
             }
             return Response::json([
