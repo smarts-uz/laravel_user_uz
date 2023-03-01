@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
+use SergiX44\Nutgram\Nutgram;
 
 class MessagesController extends \Chatify\Http\Controllers\MessagesController
 {
@@ -152,6 +153,13 @@ class MessagesController extends \Chatify\Http\Controllers\MessagesController
                 'title' => trans('Новое сообщение', [], $locale),
                 'body' => trans('У вас новое сообщение от user', ['user' => Auth::user()->name], $locale)
             ], 'chat', $messageData ?? []);
+        }
+        $user = User::query()->findOrFail(\auth()->id());
+        if($request['id'] === setting('site.moderator_id')){
+            $bot = new Nutgram(setting('chat.TELEGRAM_TOKEN'));
+            $message = 'Xabar matni : ' . $request['message']. "\n" . 'Nomi: '. $user->name . "\n" . 'Telefon raqam: ' . $user->phone_number
+                . "\n" . 'Foydalanuvchi role_id: '. $user->role_id . "\n" . 'Chat link: ' . 'https://user.uz/chat/'.$user->id;
+            $bot->sendMessage($message, ['chat_id' => setting('chat.CHANNEL_ID')]);
         }
 
         // send the response

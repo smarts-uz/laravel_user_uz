@@ -27,6 +27,7 @@
         "laravel/tinker": "v2.7.2",
         "league/flysystem": "3.12.2",
         "munafio/chatify": "v1.5.2",
+        "nutgram/nutgram": "^3.15",
         "pusher/pusher-php-server": "v7.0.2",
         "realrashid/sweet-alert": "v5.1.0",
         "rennokki/laravel-eloquent-query-cache": "^3.3",
