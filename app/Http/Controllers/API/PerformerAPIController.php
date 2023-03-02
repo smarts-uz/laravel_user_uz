@@ -134,7 +134,10 @@ class PerformerAPIController extends Controller
      *     @OA\Response(
      *          response=403,
      *          description="Forbidden"
-     *     )
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
      * )
      *
      */

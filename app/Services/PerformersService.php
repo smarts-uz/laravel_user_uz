@@ -47,12 +47,20 @@ class PerformersService
             ->get();
         $item->categories = collect($category)->where('parent_id', null)->all();
         $item->categories2 = collect($category)->where('parent_id', '!=', null)->all();
-        $item->users = User::query()
-            ->where('role_id', User::ROLE_PERFORMER)
-            ->where('name', 'LIKE', "%{$search}%")
-            ->WhereNot('id', $authId)
-            ->orderByDesc('review_rating')
-            ->orderbyRaw('(review_good - review_bad) DESC')->paginate(50);
+        if ((int)setting('admin.PerformerSelfVisible') !== 1) {
+            $item->users = User::query()
+                ->where('role_id', User::ROLE_PERFORMER)
+                ->where('name', 'LIKE', "%{$search}%")
+                ->WhereNot('id', $authId)
+                ->orderByDesc('review_rating')
+                ->orderbyRaw('(review_good - review_bad) DESC')->paginate(50);
+        } else {
+            $item->users = User::query()
+                ->where('role_id', User::ROLE_PERFORMER)
+                ->where('name', 'LIKE', "%{$search}%")
+                ->orderByDesc('review_rating')
+                ->orderbyRaw('(review_good - review_bad) DESC')->paginate(50);
+        }
 
         $item->top_users = User::query()
             ->where('review_rating', '!=', 0)
@@ -110,13 +118,22 @@ class PerformersService
         $item->categories2 = Category::query()->where('parent_id', '<>', null)
             ->select('id', 'parent_id', 'name')->orderBy("order", "asc")->get();
         $item->user_categories = UserCategory::query()->where('category_id', $cf_id)->pluck('user_id')->toArray();
-        $item->users = User::query()
-            ->where('role_id', User::ROLE_PERFORMER)
-            ->where('name', 'LIKE', "%{$search}%")
-            ->WhereNot('id', $authId)
-            ->whereIn('id', $item->user_categories)
-            ->orderByDesc('review_rating')
-            ->orderbyRaw('(review_good - review_bad) DESC')->paginate(50);
+        if ((int)setting('admin.PerformerSelfVisible') !== 1) {
+            $item->users = User::query()
+                ->where('role_id', User::ROLE_PERFORMER)
+                ->where('name', 'LIKE', "%{$search}%")
+                ->WhereNot('id', $authId)
+                ->whereIn('id', $item->user_categories)
+                ->orderByDesc('review_rating')
+                ->orderbyRaw('(review_good - review_bad) DESC')->paginate(50);
+        } else {
+            $item->users = User::query()
+                ->where('role_id', User::ROLE_PERFORMER)
+                ->where('name', 'LIKE', "%{$search}%")
+                ->whereIn('id', $item->user_categories)
+                ->orderByDesc('review_rating')
+                ->orderbyRaw('(review_good - review_bad) DESC')->paginate(50);
+        }
         $item->top_users = User::query()
             ->where('review_rating', '!=', 0)
             ->where('role_id', User::ROLE_PERFORMER)->orderbyRaw('(review_good - review_bad) DESC')
@@ -136,9 +153,13 @@ class PerformersService
      */
     public function performer_filter($data, $authId): AnonymousResourceCollection
     {
-        $performers = User::query()
-            ->where('role_id', User::ROLE_PERFORMER)
-            ->WhereNot('id', $authId);
+        if ((int)setting('admin.PerformerSelfVisible') !== 1) {
+            $performers = User::query()
+                ->where('role_id', User::ROLE_PERFORMER)
+                ->WhereNot('id', $authId);
+        }else{
+            $performers = User::query()->where('role_id', User::ROLE_PERFORMER);
+        }
 
         if (isset($data['categories'])) {
             $categories = is_array($data['categories']) ? $data['categories'] : json_decode($data['categories']);

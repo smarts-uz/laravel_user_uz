@@ -14,10 +14,18 @@
     </div>
     <div class="w-4/5 ">
         <div class="flex sm:flex-row flex-col sm:items-center items-start">
-            <a class="user mr-6" href="/performers/{{$user->id}}">
-                <p class="text-2xl underline text-blue-500 performer-page{{$user->id}} hover:text-red-500"
-                   id="{{$user->id}}"> {{$user->name}} </p>
-            </a>
+            @if (Auth::check() && Auth::user()->id === $user->id)
+                <a href="/profile"
+                   class="lg:text-3xl mr-2 text-2xl underline text-blue-500 hover:text-red-500"
+                   id="{{$user->id}}">
+                    {{$user->name}}
+                </a>
+            @else
+                <a class="user mr-2" href="/performers/{{$user->id}}">
+                    <p class="text-2xl underline text-blue-500 performer-page{{$user->id}} hover:text-red-500"
+                       id="{{$user->id}}"> {{$user->name}} </p>
+                </a>
+            @endif
             <div class="flex items-center sm:my-0 my-2">
                 @if ($user->is_email_verified && $user->is_phone_number_verified)
                     <div data-tooltip-target="tooltip-animation-verified"
@@ -107,20 +115,28 @@
         </div>
         <div class="mt-2">
             @auth
-                @if($tasks->where('status', '<=', 2)->count() > 0)
-                    <a id="open{{$user->id}}">
-                        <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
-                                onclick="$('#performer_id').val({{$user->id}}); $('#performer_id_task').val({{$user->id}});">
+                @switch(true)
+                    @case ($tasks->where('status', '<=', 2)->count() > 0 && Auth::user()->id !== $user->id)
+                        <a id="open{{$user->id}}">
+                            <button class="cursor-pointer rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white"
+                                    onclick="$('#performer_id').val({{$user->id}}); $('#performer_id_task').val({{$user->id}});">
+                                {{__('Предложить задание')}}
+                            </button>
+                        </a>
+                        @break
+                    @case ($tasks->where('status', '<=', 2)->count() >= 0 && Auth::user()->id === $user->id)
+                        <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-gray-500 transition duration-300 text-white mt-3">
                             {{__('Предложить задание')}}
                         </button>
-                    </a>
-                @else
-                    <a onclick="toggleModal12('modal-id12')" class="">
-                        <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
-                            {{__('Предложить задание')}}
-                        </button>
-                    </a>
-                @endif
+                        @break
+                    @default
+                        <a onclick="toggleModal12('modal-id12')" class="">
+                            <button class="rounded-lg py-2 px-1 md:px-3 font-bold bg-yellow-500 hover:bg-yellow-600 transition duration-300 text-white mt-3">
+                                {{__('Предложить задание')}}
+                            </button>
+                        </a>
+                        @break
+                @endswitch
                 <input type="hidden" id="performer_id" value="">
             @endauth
         </div>
