@@ -4889,7 +4889,7 @@
                         }
                     },
                     {
-                        "name": "msg",
+                        "name": "message",
                         "in": "query",
                         "schema": {
                             "type": "string"

@@ -79,7 +79,7 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
      *     ),
      *     @OA\Parameter (
      *          in="query",
-     *          name="msg",
+     *          name="message",
      *          @OA\Schema (
      *              type="string"
      *          )
@@ -173,27 +173,29 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
             $role = match ($user->role_id) {
                 User::ROLE_PERFORMER => 'Performer',
                 User::ROLE_USER => 'User',
+                User::ROLE_MODERATOR => 'Moderator',
                 default => 'Admin',
             };
             if($request['id'] === setting('site.moderator_id')){
                 $bot = new Nutgram(setting('chat.TELEGRAM_TOKEN'));
-//            $send_message_text = setting('chat.send_message_text');
-//            $message = strtr($send_message_text, [
-//                '{message}'=> $request['message'],
-//                '{name}'=> $user->name,
-//                '{phone}'=>  $user->phone_number,
-//                '{role}'=> $role,
-//                '{link}'=> 'https://user.uz/chat/'.$user->id,
-//            ]);
-                $message = 'Xabar matni : ' . $request['message']. "\n" . 'Nomi: '. $user->name . "\n" . 'Telefon raqam: ' . $user->phone_number
-                    . "\n" . 'Foydalanuvchi roli: '. $role . "\n" . 'Chat link: ' . 'https://user.uz/chat/'.$user->id;
-
+                if ($locale === 'ru'){
+                    $send_message_text = setting('chat.send_message_text_ru');
+                }else{
+                    $send_message_text = setting('chat.send_message_text_uz');
+                }
+                $message = strtr($send_message_text, [
+                    '{message}'=> $request['message'],
+                    '{name}'=> $user->name,
+                    '{phone}'=>  $user->phone_number,
+                    '{role}'=> $role,
+                    '{link}'=> 'https://user.uz/chat/'.$user->id,
+                ]);
                 $bot->sendMessage($message, ['chat_id' => setting('chat.CHANNEL_ID')]);
             }
             return Response::json([
                 'success' => true,
                 'data' => $messageData ?? [],
-                'message' => 'Success',
+                'message' => 'Success'
             ]);
         }
 
