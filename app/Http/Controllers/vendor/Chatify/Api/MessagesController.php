@@ -176,7 +176,8 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
                 User::ROLE_MODERATOR => 'Moderator',
                 default => 'Admin',
             };
-            if($request['id'] === setting('site.moderator_id')){
+            $admins = User::query()->findOrFail($request['id']);
+            if($admins->hasPermission('admin_notifications')){
                 $bot = new Nutgram(setting('chat.TELEGRAM_TOKEN'));
                 if ($locale === 'ru'){
                     $send_message_text = setting('chat.send_message_text_ru');
