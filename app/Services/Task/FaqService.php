@@ -23,22 +23,10 @@ class FaqService
     public function get_all()
     {
         $setting = Setting::all();
-        if (!empty($setting)) {
-            $data = [
-                'id' => $setting->id,
-                'key' => $setting->key,
-                'display_name' => $setting->display_name,
-                'value' => $setting->value,
-                'type' => $setting->type,
-                'order' => $setting->order,
-                'group' => $setting->group,
-            ];
-        } else {
-            $data = [];
-        }
+
         return response()->json([
             'success' => true,
-            'data' => $data
+            'data' => $setting
         ]);
     }
 
