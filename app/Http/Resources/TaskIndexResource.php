@@ -4,6 +4,8 @@ namespace App\Http\Resources;
 
 use App\Models\TaskResponse;
 use App\Services\Task\CustomFieldService;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TaskIndexResource extends JsonResource
@@ -11,8 +13,8 @@ class TaskIndexResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @param Request $request
+     * @return array
      */
     public function toArray($request)
     {
@@ -38,9 +40,9 @@ class TaskIndexResource extends JsonResource
             'end_date' => $this->end_date,
             'budget' => $this->budget,
             'description' => $this->description,
-            //'phone' => $this->phone,
-            //'performer_id' => $this->performer_id,
-            //'performer' => new PerformerResponseResource($performer_response),
+            'phone' => $this->phone,
+            'performer_id' => $this->performer_id,
+            'performer' => new PerformerResponseResource($performer_response),
             'other'=> $this->category->name === "Что-то другое" || $this->category->name === "Boshqa narsa",
             'parent_category_name'=>$this->category->parent->getTranslatedAttribute('name', app()->getLocale(), 'ru'),
             'category_name' => $this->category->getTranslatedAttribute('name', app()->getLocale(), 'ru'),

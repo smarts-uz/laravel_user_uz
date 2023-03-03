@@ -48,18 +48,6 @@ class UpdateController extends Controller
         $this->updateTaskService->deleteImage2($task_id, $img);
         return true;
     }
-
-    /**
-     *
-     * Function  completed
-     * @param int $task_id
-     * @return  JsonResponse|RedirectResponse
-     */
-    public function completed(int $task_id): JsonResponse|RedirectResponse
-    {
-        return $this->updateTaskService->completed($task_id);
-    }
-
     /**
      *
      * Function  not_completed
@@ -71,7 +59,7 @@ class UpdateController extends Controller
     {
         $request->validate(['reason' => 'required']);
         $data = $request->get('reason');
-        return $this->updateTaskService->not_completed($task_id, $data);
+        return $this->updateTaskService->not_completed_web($task_id, $data);
     }
 
     /**

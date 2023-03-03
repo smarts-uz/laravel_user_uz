@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateAPIController extends Controller
 {
-    protected $service;
-    public $updatetask;
+    protected CreateService $service;
+    public UpdateTaskService $updatetask;
 
     public function __construct(CreateService $createService,UpdateTaskService $updateTaskService){
         $this->service = $createService;
@@ -63,7 +63,7 @@ class UpdateAPIController extends Controller
 
     public function completed(int $task_id): JsonResponse
     {
-        return $this->updatetask->completed($task_id,true);
+        return $this->updatetask->completed($task_id);
     }
 
     /**
@@ -114,7 +114,7 @@ class UpdateAPIController extends Controller
     {
         $request->validate(['reason' => 'required'], ['reason.required' => 'Reason is required']);
         $data = $request->get('reason');
-        return $this->updatetask->not_completed($task_id, $data, true);
+        return $this->updatetask->not_completed($task_id, $data);
     }
 
 

@@ -83,7 +83,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::post('/select-performer/{response}', [TaskAPIController::class, 'selectPerformer']); // fix
     Route::post('/task-status-update/{task}', [TaskAPIController::class, 'taskStatusUpdate']); // fix
     Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); // fix
-    Route::post('/tasks/{task}/not-complete', [UpdateAPIController::class, 'not_completed'])->name('update.not_completed'); // fix
+    Route::post('/tasks/{task}/not-complete', [UpdateAPIController::class, 'not_completed']); // fix
     Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); // fix
     Route::post('/give-task', [PerformerAPIController::class, 'give_task']); // fix
     Route::post('/become-performer', [PerformerAPIController::class, 'becomePerformerData']); // fix
