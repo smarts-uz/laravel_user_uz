@@ -75,4 +75,10 @@ class CategoriesAPIService
         }
         return $response;
     }
+
+    public function AllCategoriesChildsId(): array
+    {
+        $data = Category::query()->where('parent_id','!=',null)->pluck('id')->toArray();
+        return ['data' => $data];
+    }
 }

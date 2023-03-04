@@ -172,6 +172,7 @@ Route::get('/popular-categories', [CategoriesAPIController::class, 'popular']); 
 Route::get('/categories-parent', [CategoriesAPIController::class, 'parents']); // fix
 Route::get('/categories/{id}', [CategoriesAPIController::class, 'show']); // fix
 Route::get('/category/search', [CategoriesAPIController::class, 'search']); // fix
+Route::get('/all-categories-childs', [CategoriesAPIController::class, 'AllCategoriesChildsId']); // fix
 
 //Performers
 Route::get('/performers', [PerformerAPIController::class, 'performers']); // fix
