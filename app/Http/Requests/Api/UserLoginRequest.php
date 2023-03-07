@@ -22,8 +22,8 @@ class UserLoginRequest extends BaseRequest
             'password'=> 'required'
         ];
     }
-    public function authenticate(){
-
+    public function authenticate(): void
+    {
         $user = User::where('email',$this->email)
             ->orWhere('phone_number', $this->email)
             ->first();
@@ -41,8 +41,9 @@ class UserLoginRequest extends BaseRequest
             ]));
         }
         auth()->login($user);
-        if (!$user->is_email_verified)
+        if (!$user->is_email_verified  && $user->email) {
             VerificationService::send_verification('email', auth()->user());
+        }
     }
 
 

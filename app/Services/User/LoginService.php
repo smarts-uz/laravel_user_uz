@@ -45,7 +45,7 @@ class LoginService
         }
 
         auth()->login($user);
-        if (!$user->is_email_verified) {
+        if (!$user->is_email_verified && $user->email) {
             VerificationService::send_verification('email', $authUser);
         }
 
