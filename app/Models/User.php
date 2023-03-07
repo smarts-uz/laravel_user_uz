@@ -235,6 +235,7 @@ class User extends \TCG\Voyager\Models\User
             $user->email = '_' . $user->email . '_' . $user->id;
             $user->phone_number = '_' . $user->phone_number . '_' . $user->id;
             $user->google_id = '_' . $user->google_id . '_' . $user->id;
+            $user->firebase_token = '_' . $user->firebase_token . '_' . $user->id;
             $user->facebook_id = '_' . $user->facebook_id . '_' . $user->id;
             $user->apple_id = '_' . $user->apple_id . '_' . $user->id;
 
