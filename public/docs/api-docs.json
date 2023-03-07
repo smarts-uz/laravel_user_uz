@@ -5227,6 +5227,7 @@
                                 "required": [
                                     "name",
                                     "email",
+                                    "phone_number",
                                     "password",
                                     "password_confirmation"
                                 ],
@@ -5239,6 +5240,10 @@
                                         "type": "string",
                                         "format": "email",
                                         "example": "user001@user.com"
+                                    },
+                                    "phone_number": {
+                                        "type": "string",
+                                        "example": "+998949999999"
                                     },
                                     "password": {
                                         "type": "string",

@@ -14,7 +14,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
-use SergiX44\Nutgram\Nutgram;
 
 class MessagesController extends \Chatify\Http\Controllers\MessagesController
 {
@@ -87,6 +86,8 @@ class MessagesController extends \Chatify\Http\Controllers\MessagesController
      *
      * @param Request $request
      * @return JsonResponse response
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function send(Request $request): JsonResponse
     {
@@ -154,30 +155,15 @@ class MessagesController extends \Chatify\Http\Controllers\MessagesController
                 'body' => trans('У вас новое сообщение от user', ['user' => Auth::user()->name], $locale)
             ], 'chat', $messageData ?? []);
         }
-        $user = User::query()->findOrFail(\auth()->id());
-        $role = match ($user->role_id) {
-            User::ROLE_PERFORMER => 'Performer',
-            User::ROLE_USER => 'User',
-            User::ROLE_MODERATOR => 'Moderator',
-            default => 'Admin',
-        };
-        $admins = User::query()->findOrFail($request['id']);
-        if($admins->hasPermission('admin_notifications')){
-            $bot = new Nutgram(setting('chat.TELEGRAM_TOKEN'));
-            if (session('lang') === 'ru'){
-                $send_message_text = setting('chat.send_message_text_ru');
-            }else{
-                $send_message_text = setting('chat.send_message_text_uz');
-            }
-            $message = strtr($send_message_text, [
-                '{message}'=> $request['message'],
-                '{name}'=> $user->name,
-                '{phone}'=>  $user->phone_number,
-                '{role}'=> $role,
-                '{link}'=> 'https://user.uz/chat/'.$user->id,
-            ]);
-            $bot->sendMessage($message, ['chat_id' => setting('chat.CHANNEL_ID')]);
+        if (session('lang') === 'ru'){
+            $locale = 'ru';
+        }else{
+            $locale = 'uz';
         }
+        $request_id = $request['id'];
+        $message = $request['message'];
+        $AuthId = auth()->id();
+        (new ContactService)->telegramNotification($locale, $request_id, $message, $AuthId);
 
         // send the response
         return Response::json([

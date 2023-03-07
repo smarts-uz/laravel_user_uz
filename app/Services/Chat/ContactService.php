@@ -5,6 +5,9 @@ namespace App\Services\Chat;
 use App\Models\ChMessage;
 use App\Models\Task;
 use App\Models\User;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use SergiX44\Nutgram\Nutgram;
 
 class ContactService
 {
@@ -55,5 +58,42 @@ class ContactService
         }
 
         return $userIdsList;
+    }
+
+    /**
+     * @param $locale
+     * @param $request_id
+     * @param $message
+     * @param $AuthId
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function telegramNotification($locale, $request_id, $message, $AuthId): void
+    {
+        $admins = User::query()->findOrFail($request_id);
+        if($admins->hasPermission('admin_notifications')){
+            $bot = new Nutgram(setting('chat.TELEGRAM_TOKEN'));
+            if ($locale === 'ru'){
+                $send_message_text = setting('chat.send_message_text_ru');
+            }else{
+                $send_message_text = setting('chat.send_message_text_uz');
+            }
+            $user = User::query()->findOrFail($AuthId);
+            $role = match ($user->role_id) {
+                User::ROLE_PERFORMER => 'Performer',
+                User::ROLE_USER => 'User',
+                User::ROLE_MODERATOR => 'Moderator',
+                default => 'Admin',
+            };
+            $message = strtr($send_message_text, [
+                '{message}'=> $message,
+                '{name}'=> $user->name,
+                '{phone}'=>  $user->phone_number,
+                '{role}'=> $role,
+                '{link}'=> 'https://user.uz/chat/'.$user->id,
+            ]);
+            $bot->sendMessage($message, ['chat_id' => setting('chat.CHANNEL_ID')]);
+        }
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\SocialRequest;
 use App\Models\User;
 use App\Services\User\SocialService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
@@ -48,7 +49,7 @@ class SocialAPIController extends Controller
      *     ),
      * )
      */
-    public function login(SocialRequest $request): \Illuminate\Http\JsonResponse
+    public function login(SocialRequest $request): JsonResponse
     {
         $data = $request->validated();
         $provider = match ($data['type']) {

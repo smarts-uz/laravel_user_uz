@@ -15,7 +15,6 @@ use App\Models\Chat\ChatifyMessenger as Chatify;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use SergiX44\Nutgram\Nutgram;
 
 
 class MessagesController extends \Chatify\Http\Controllers\Api\MessagesController
@@ -169,30 +168,11 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
                 'body' => trans('У вас новое сообщение от user', ['user' => Auth::user()->name], $locale)
             ], 'chat', $messageData ?? []);
 
-            $user = User::query()->findOrFail(\auth()->id());
-            $role = match ($user->role_id) {
-                User::ROLE_PERFORMER => 'Performer',
-                User::ROLE_USER => 'User',
-                User::ROLE_MODERATOR => 'Moderator',
-                default => 'Admin',
-            };
-            $admins = User::query()->findOrFail($request['id']);
-            if($admins->hasPermission('admin_notifications')){
-                $bot = new Nutgram(setting('chat.TELEGRAM_TOKEN'));
-                if ($locale === 'ru'){
-                    $send_message_text = setting('chat.send_message_text_ru');
-                }else{
-                    $send_message_text = setting('chat.send_message_text_uz');
-                }
-                $message = strtr($send_message_text, [
-                    '{message}'=> $request['message'],
-                    '{name}'=> $user->name,
-                    '{phone}'=>  $user->phone_number,
-                    '{role}'=> $role,
-                    '{link}'=> 'https://user.uz/chat/'.$user->id,
-                ]);
-                $bot->sendMessage($message, ['chat_id' => setting('chat.CHANNEL_ID')]);
-            }
+            $request_id = $request['id'];
+            $message = $request['message'];
+            $AuthId = auth()->id();
+            (new ContactService)->telegramNotification($locale, $request_id, $message, $AuthId);
+
             return Response::json([
                 'success' => true,
                 'data' => $messageData ?? [],
