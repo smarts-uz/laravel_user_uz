@@ -40,8 +40,7 @@ class LoginController extends Controller
         $email =  $data['email'];
         $password = $data['password'];
         $session = $request->session();
-        $authUser = auth()->user();
-        return $this->loginService->login($email, $password, $session, $authUser);
+        return $this->loginService->login($email, $password, $session);
 
     }
 

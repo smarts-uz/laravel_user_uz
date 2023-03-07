@@ -3,7 +3,7 @@
 namespace App\Services\User;
 
 use App\Mail\VerifyEmail;
-use App\Models\{Session, Task, Transaction, User, WalletBalance};
+use App\Models\{Notification, Session, Task, Transaction, User, WalletBalance};
 use App\Services\{CustomService, NotificationService, SmsMobileService};
 use Carbon\Carbon;
 use Exception;
@@ -346,6 +346,25 @@ class UserService
         return response()->json([
             'transactions' => $data,
         ]);
+    }
+
+    /**
+     * @param $new_user
+     * @return void
+     */
+    public function new_user($new_user): void
+    {
+        $wallBal = new WalletBalance();
+        $wallBal->balance = setting('admin.bonus');
+        $wallBal->user_id = $new_user->id;
+        $wallBal->save();
+        if(setting('admin.bonus') > 0){
+            Notification::query()->create([
+                'user_id' => $new_user->id,
+                'description' => 'wallet',
+                'type' => Notification::WALLET_BALANCE,
+            ]);
+        }
     }
 
 }

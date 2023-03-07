@@ -35,8 +35,8 @@ class CustomFieldController extends VoyagerBaseController
     /**
      *
      * Function  save
-     * @param $customfield
      * @param $request
+     * @return mixed
      */
     public function save($request)
     {

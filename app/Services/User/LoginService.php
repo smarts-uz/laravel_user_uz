@@ -23,12 +23,11 @@ class LoginService
      * @param $email
      * @param $password
      * @param $session
-     * @param $authUser
      * @return Redirector|RedirectResponse|Application
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function login($email, $password, $session, $authUser): Redirector|RedirectResponse|Application
+    public function login($email, $password, $session): Redirector|RedirectResponse|Application
     {
         /** @var User $user */
         $user = User::query()->where('email', $email)
@@ -46,7 +45,7 @@ class LoginService
 
         auth()->login($user);
         if (!$user->is_email_verified && $user->email) {
-            VerificationService::send_verification('email', $authUser);
+            VerificationService::send_verification('email', $user);
         }
 
         $session->regenerate();

@@ -15,10 +15,12 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
+use TCG\Voyager\Http\Controllers\VoyagerBaseController;
 
 
-class UserController extends Controller
+class UserController extends VoyagerBaseController
 {
     public UserService $service;
 
@@ -127,6 +129,19 @@ class UserController extends Controller
         $user = auth()->user();
         $code = $data['code'];
         return $this->service->confirmationSelfDelete($user, $code);
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    final public function store(Request $request)
+    {
+        parent::store($request);
+        $new_user = User::query()->where('email', $request->email)->first();
+        (new UserService())->new_user($new_user);
+        return redirect('admin/users');
+
     }
 
 }
