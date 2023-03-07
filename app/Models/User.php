@@ -232,11 +232,11 @@ class User extends \TCG\Voyager\Models\User
             Notification::query()->where('user_id', $user->id)->orWhere('performer_id', $user->id)->delete();
 
             $user->walletBalance()->delete();
-            $user->email = '_' . $user->email . '_' . Carbon::now();
-            $user->phone_number = '_' . $user->phone_number . '_' . Carbon::now();
-            $user->google_id = '_' . $user->google_id . '_' . Carbon::now();
-            $user->facebook_id = '_' . $user->facebook_id . '_' . Carbon::now();
-            $user->apple_id = '_' . $user->apple_id . '_' . Carbon::now();
+            $user->email = '_' . $user->email . '_' . $user->id;
+            $user->phone_number = '_' . $user->phone_number . '_' . $user->id;
+            $user->google_id = '_' . $user->google_id . '_' . $user->id;
+            $user->facebook_id = '_' . $user->facebook_id . '_' . $user->id;
+            $user->apple_id = '_' . $user->apple_id . '_' . $user->id;
 
             $user->deleted_at = now();
             $user->deleted_by = Arr::get(auth()->user(), 'id');
