@@ -42,6 +42,7 @@ class SocialService
                     'name' => $providerUser->name ?? self::emailToName($providerUser->email),
                     'email' => $providerUser->email,
                     'is_email_verified' => 1,
+                    'is_active' => 1,
                     'avatar' => $provider !== 'apple' ? self::get_avatar($providerUser) : null
                 ]);
                 $wallBal = new WalletBalance();
