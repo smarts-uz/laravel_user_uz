@@ -6,26 +6,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
 use TCG\Voyager\Traits\Translatable;
 
 /**
- * @property $id
- * @property $name
- * @property $title
- * @property $type
- * @property $options
- * @property $values
- * @property $category_id
- * @property $route
- * @property $order
- * @property $description
- * @property $placeholder
- * @property $label
- * @property $options_ru
- * @property $created_at
- * @property Carbon $deleted_at
- * @property $deleted_by
+ * @property $id custom field id
+ * @property $name custom field name
+ * @property $title maxsus maydon sarlavhasi
+ * @property $type custom field turi
+ * @property $options custom field options qiymatlar
+ * @property $values custom field value
+ * @property $category_id custom field yaratilgan category id
+ * @property $route task create route
+ * @property $order custom field joylashuv o'rni
+ * @property $description custom field tavsifi
+ * @property $placeholder custom field type value placeholder
+ * @property $label  custom field label
+ * @property $created_at custom field kiritilgan vaqti
+ * @property $deleted_at custom field o'chirilgan vaqti
+ * @property $deleted_by custom fieldni o'chirgan user id
  */
 
 class CustomField extends Model

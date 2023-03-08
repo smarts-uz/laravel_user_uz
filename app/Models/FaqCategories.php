@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use TCG\Voyager\Traits\Translatable;
 
 /**
- * @property $id
- * @property $title
- * @property $description
- * @property $cat_author
- * @property $num_quest
- * @property $logo
- * @property $created_at
+ * @property $id faq id
+ * @property $title faq categoriyasi
+ * @property $description faq tavsifi
+ * @property $cat_author faq category yaratgan role
+ * @property $num_quest faq number
+ * @property $logo faq image
+ * @property $created_at faq kiritilgan vaqti
  */
 
 class FaqCategories extends Model

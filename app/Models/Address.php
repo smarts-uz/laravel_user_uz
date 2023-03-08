@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $location Taskka kiritilgan joylashuvi
  * @property $latitude Address kengligi koordinatasi
  * @property $longitude Address uzunligi koordinatasi
- * @property $default
+ * @property $default   Default address
  * @property $created_at  Address kiritilgan vaqti
  * @property $updated_at  Address o'zgartirilgan vaqti
  * @return array //Value Returned

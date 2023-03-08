@@ -21,8 +21,8 @@ use TCG\Voyager\Traits\Translatable;
  * @property $double_address ikkita adress kiritiladigan kategoriyalar
  * @property $remote masofadan ishlasa bo'ladigan kategoriyalar
  * @property $created_at Kategoriya kiritilgan vaqti
- * @property $deleted_at
- * @property $deleted_by
+ * @property $deleted_at Kategoriya o'chirilgan vaqti
+ * @property $deleted_by kategoriyani o'chirgan userning idsi
  */
 
 class Category extends Model

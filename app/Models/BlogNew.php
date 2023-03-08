@@ -10,8 +10,9 @@ use TCG\Voyager\Traits\Translatable;
 
 /**
  * @property $title Kiritilgan yangilik sarlavhasi
- * @property $text  Kiritilgan yangilik matni
+ * @property $text  Kiritilgan yangilik texti
  * @property $img  Kiritilgan yangilik rasmi
+ * @property $desc  Kiritilgan yangilik matni
  * @property $created_at Yangilik kiritilgan vaqti
  */
 

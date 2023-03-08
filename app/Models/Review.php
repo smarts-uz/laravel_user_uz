@@ -9,11 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- *  @property $user
- *  @property $good_bad
- *  @property $user_id
- *  @property $reviewer_id
- *  @property $reviewer_name
+ *  @property $id review id
+ *  @property $good_bad yaxshi yoki yomon review
+ *  @property $user_id rewiew qoldirgan user id
+ *  @property $description review tavsifi
+ *  @property $task_id review qoldirilgan task id
+ *  @property $as_performer review kimgaligi, performer yoki mijoz
+ *  @property $reviewer_id rewiew qoldirilgan user id
+ *  @property $reviewer_name rewiew qoldirilgan user name
  *  @property $created_at
  *
  */

@@ -9,22 +9,27 @@ use TCG\Voyager\Traits\Translatable;
 
 /**
  * @property $id
- * @property $user_id
- * @property $task_id
- * @property $name_task
- * @property $user
- * @property $type
- * @property $news_id
- * @property $created_at
+ * @property $user_id bildirishnoma yuborilgan user id
+ * @property $task_id task id bo'yicha yuborilgan bildirishnoma
+ * @property $name_task bildirishnoma yuborilgan task id
+ * @property $type bildirishnoma turi
+ * @property $news_id sayt yangilik haqidagi bildirishnomaning yangilik idsi
+ * @property $description bildirishnoma tavsifi
+ * @property $cat_id bildirishnoma yuborilgan task category id
+ * @property $status push bildirishnoma yuborilgan yoki yuborilmagani
+ * @property $is_read bildirishnoma o'qilgan yoki o'qilmagani
+ * @property $performer_id performer id
+ * @property $created_at bildirishnoma yaratilgan vaqti
  *
  */
+
 class Notification extends Model
 {
     use HasFactory;
     use Translatable;
 
     protected array $translatable = ['description'];
-    protected $fillable = ['user_id', 'performer_id', 'service_id', 'task_id', 'cat_id', 'description', 'name_task', 'type', 'is_read'];
+    protected $fillable = ['user_id', 'performer_id', 'service_id', 'task_id', 'cat_id', 'description', 'name_task', 'type', 'is_read','news_id'];
 
     public const TASK_CREATED = 1;
     public const NEWS_NOTIFICATION = 2;

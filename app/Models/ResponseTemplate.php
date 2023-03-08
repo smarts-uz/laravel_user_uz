@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @property $user_id
- * @property $title
- * @property $text
+ * @property $user_id response template user id
+ * @property $title response template title
+ * @property $text response template title
  */
 class ResponseTemplate extends Model
 {

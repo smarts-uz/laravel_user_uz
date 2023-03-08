@@ -8,11 +8,11 @@ use TCG\Voyager\Traits\Translatable;
 
 /**
  * @property $id
- * @property $question
- * @property $q_descript
- * @property $answer_text
- * @property $category_id
- * @property $created_at
+ * @property $question faq savoli
+ * @property $q_descript faq savol tavsiloti
+ * @property $answer_text faq javobi
+ * @property $category_id faq category id
+ * @property $created_at faq kiritilgan vaqti
  */
 
 class Faqs extends Model

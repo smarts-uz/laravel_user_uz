@@ -6,12 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @property $custom_field
- *
- *
- * @property $task_id
- * @property $custom_field_id
- * @property $value
+ * @property $task_id custom field task id
+ * @property $custom_field_id custom field id
+ * @property $value custom field value task id bo'yicha
  */
 class CustomFieldsValue extends Model
 {

@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property $id
- * @property $image
- * @property $user_id
+ * @property $image portfolio images
+ * @property $user_id portfolio yaratgan userning idsi
+ * @property $comment portfolio comment
+ * @property $description portfolio tavsifi
  */
 class Portfolio extends Model
 {

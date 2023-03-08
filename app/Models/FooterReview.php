@@ -8,11 +8,12 @@ use TCG\Voyager\Traits\Translatable;
 
 /**
  * @property $id
- * @property $name
- * @property $text
- * @property $image
- * @property $review_type
- * @property $created_at
+ * @property $name footer review user name
+ * @property $text footer review text
+ * @property $image footer review user image
+ * @property $review_type footer review type, 1 user, 2 performer
+ * @property $created_at footer review kiritilgan vaqti
+ * @property $site_link review qoldirilgan sayt url
  */
 
 class FooterReview extends Model

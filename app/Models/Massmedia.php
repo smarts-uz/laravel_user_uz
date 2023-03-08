@@ -8,10 +8,10 @@ use TCG\Voyager\Traits\Translatable;
 
 /**
  * @property $id
- * @property $title
- * @property $description
- * @property $link
- * @property $created_at
+ * @property $title massmedia sarlavhasi
+ * @property $description massmedia tavsifi
+ * @property $link  massmedia url
+ * @property $created_at massmedia kiritilgan vaqt
  */
 
 class Massmedia extends Model

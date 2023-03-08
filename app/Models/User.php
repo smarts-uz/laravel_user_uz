@@ -190,8 +190,7 @@ class User extends \TCG\Voyager\Models\User
 
     public function messages(): HasMany
     {
-
-        return $this->hasMany(\App\Models\ChMessage::class, '');
+        return $this->hasMany(ChMessage::class, '');
     }
 
     public function getBalanceAttribute()
@@ -207,6 +206,11 @@ class User extends \TCG\Voyager\Models\User
     public function compliances(): HasMany
     {
         return $this->hasMany(Compliance::class);
+    }
+
+    public function blockedUser(): HasMany
+    {
+        return $this->hasMany(BlockedUser::class,'blocked_user_id');
     }
 
     public static function boot ()
@@ -227,6 +231,7 @@ class User extends \TCG\Voyager\Models\User
 
             $user->portfolios()->delete();
             $user->compliances()->delete();
+            $user->blockedUser()->delete();
 
             ChMessage::query()->where('from_id', $user->id)->orWhere('to_id', $user->id)->delete();
             Notification::query()->where('user_id', $user->id)->orWhere('performer_id', $user->id)->delete();
