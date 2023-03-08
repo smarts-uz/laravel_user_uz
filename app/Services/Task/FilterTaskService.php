@@ -27,7 +27,7 @@ class FilterTaskService
      */
     public function filter($data): LengthAwarePaginator
     {
-        $tasks = Task::query()->where('status', '=',Task::STATUS_OPEN);
+        $tasks = Task::query()->where('status',Task::STATUS_OPEN);
 
         $tasks_items =  [];
         if (isset($data['lat'], $data['long'], $data['difference']) && !isset($data['is_remote']))
@@ -74,9 +74,7 @@ class FilterTaskService
         if (isset($data['s']))
         {
             $s = $data['s'];
-            $tasks->where('name','like',"%$s%")
-                ->orWhere('description', 'like',"%$s%")
-                ->orWhere('budget', 'like',"%$s%");
+            $tasks->where('name','like',"%$s%");
         }
 
         return $tasks->orderByDesc('created_at')->paginate(20);

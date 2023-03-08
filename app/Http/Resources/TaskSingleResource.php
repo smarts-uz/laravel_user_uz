@@ -24,11 +24,9 @@ class TaskSingleResource extends JsonResource
             'budget' => $this->budget,
             'remote' => $this->remote,
             'oplata' => $this->oplata,
+            'status' => $this->status,
             'category_icon' => asset('storage/'.$this->category->ico),
-            'viewed' => in_array(
-                $this->id,
-                Cache::get('user_viewed_tasks' . auth()->guard('api')->id()) ?? []
-                ) ?? false
+            'viewed' => in_array($this->id, Cache::get('user_viewed_tasks' . auth()->guard('api')->id()) ?? []) ?? false
         ];
     }
 }
