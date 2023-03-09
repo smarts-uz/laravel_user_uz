@@ -10,15 +10,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @property $id
- * @property $description
- * @property $user_id
- * @property $task_id
+ * @property $id task response id
+ * @property $description task response tavsifi
+ * @property $user_id vazifani yaratgan userning idsi
+ * @property $task_id otklik qoldirilgan vazifa idsi
  * @property $notificate
- * @property $price
- * @property $performer_id
- * @property $not_free
- * @property $created_at
+ * @property $price otklik narxi
+ * @property $performer_id vazifaga otklik qoldirgan ijrochining idsi
+ * @property $not_free pulli yoki tekin otklik
  *
  * @property $task
  * @property $user

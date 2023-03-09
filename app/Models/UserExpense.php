@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int $user_id
- * @property int $amount
- * @property int $order_id
- * @property int $service_id
+ * @property $user_id taskka otklik qoldirishda to'lov qilgan user idsi
+ * @property $task_id otklik qilingan task id
+ * @property $client_id taskni yaratgan user id
+ * @property $amount yechib olingan pul miqdori
  */
 class UserExpense extends Model
 {

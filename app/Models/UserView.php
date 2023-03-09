@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property $id
- * @property $user_id
- * @property $performer_id
- * @property $created_at
+ * @property $user_id profili ko'rilgan user idsi
+ * @property $performer_id profilni ko'rgan user idsi
+ * @property $created_at kiritilgan vaqti
  */
 
 class UserView extends Model {

@@ -6,12 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 
 /**
- * @property $balance
- * @property $user_id
- *
+ * @property $balance sayt tomonidan berilgan summa
+ * @property $user_id sayt tomonidan qaysi userga berilgani
  */
 class WalletBalance extends Model
 {

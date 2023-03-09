@@ -12,33 +12,33 @@ use Illuminate\Support\Arr;
 
 /**
  * @return array //Value Returned
- *@property $user
- * @property $performer
- * @property $reviews
- * @property object $category
- * @property $id
- * @property $name
- * @property $reviews_count
- * @property $responses_count
- * @property $status
- * @property $remote
- * @property $budget
- * @property $oplata
- * @property $addresses
- * @property $photos
- * @property $user_id
- * @property $category_id
- * @property $phone
- * @property $views
- * @property $start_date
- * @property $end_date End Date
- * @property $verify_code
- * @property $verify_expiration
- * @property $performer_id
- * @property $created_at
- * @property \Illuminate\Support\Carbon|mixed $deleted_at
- * @property mixed $deleted_by
- * @property mixed $description
+ * @property $id task id
+ * @property $name vazifa nomi
+ * @property $remote vazifa masofadan(1) yoki masofadan emasligi(0)
+ * @property $date_type vazifaning vaqtlari turi
+ * @property $start_date vazifa boshlash vaqti
+ * @property $end_date vazifa tugash vaqti
+ * @property $budget vazifa budjeti
+ * @property $description vazifa tavsifi
+ * @property $status vazifa statusi
+ * @property $photos vazifaga kiritilgan rasmlar
+ * @property $user_id vazifani yaratgan userning idsi
+ * @property $category_id vazifa yaratilgan category id
+ * @property $phone vazifa yaratuvchining telefon raqami
+ * @property $views vazifani ko'rishlar soni
+ * @property $performer_id vazifaning ijrochisi
+ * @property $performer_review vazifa ijrochisining sharh qoldirgan(1) yoki qoldirmagani(0)
+ * @property $coordinates vazifaning joylashuv koordinatasi
+ * @property $docs vazifani bajarish bo'yicha hujjat kerak(1) yoki kerak emasligi(0)
+ * @property $oplata vazifaning to'lov turi(naxt yoki karta orqali)
+ * @property $go_back 2ta manzilli vazifalarda orqaga ham qaytishni bildiradi(1)
+ * @property $responses_count otkliklari soni
+ * @property $verify_code vazifani yaratuvchining telefoniga yuborilgan tasdiqlash kodi
+ * @property $verify_expiration tasdiqlash kod amal qilish muddati
+ * @property $not_completed_reason vazifa bajarilmagani haqidagi tavsif
+ * @property $created_at vazifa yaratilgan vaqt
+ * @property $deleted_at vazifa o'chirilgan vaqt
+ * @property $deleted_by vazifani o'chirgan user idsi
  */
 class Task extends Model
 {
@@ -177,17 +177,12 @@ class Task extends Model
 
     public function getStatusTextAttribute()
     {
-        switch (true){
-            case (int)$this->status === self::STATUS_IN_PROGRESS :
-                return __('В исполнении');
-            case $this->status < self::STATUS_IN_PROGRESS  :
-                return __('Открыто');
-            case (int)$this->status === self::STATUS_NOT_COMPLETED :
-                return __('Не выполнено');
-            case (int)$this->status === self::STATUS_CANCELLED :
-                return __('Отменен');
-            default :
-                return __('Закрыто');
-        }
+        return match (true) {
+            (int)$this->status === self::STATUS_IN_PROGRESS => __('В исполнении'),
+            $this->status < self::STATUS_IN_PROGRESS => __('Открыто'),
+            (int)$this->status === self::STATUS_NOT_COMPLETED => __('Не выполнено'),
+            (int)$this->status === self::STATUS_CANCELLED => __('Отменен'),
+            default => __('Закрыто'),
+        };
     }
 }

@@ -12,10 +12,10 @@ use Laravel\Passport\HasApiTokens;
 
 /**
  * @return array //Value Returned
- *@property $is_phone_number_verified user raqamini tasdiqlash, 1 bo'lsa tasdiqlangan, null bo'lsa tasdiqlanmagan
+ * @property $is_phone_number_verified user raqamini tasdiqlash, 1 bo'lsa tasdiqlangan, null bo'lsa tasdiqlanmagan
  * @property $is_email_verified user emailini tasdiqlash, 1 bo'lsa tasdiqlangan, null bo'lsa tasdiqlanmagan
  * @property $born_date user tug'ilgan kunini kiritadi
- * @property $verify_expiration
+ * @property $verify_expiration tasdiqlash kodi yaroqlilik muddati
  * @property $verify_code tasdiqlash kodi
  * @property $phone_number userning telefon raqami
  * @property $phone_number_old userning avvalgi telefon raqami
@@ -35,36 +35,36 @@ use Laravel\Passport\HasApiTokens;
  * @property $last_name userning familyasi
  * @property $location userning joylashuvi
  * @property $gender userning jinsi
- * @property $dark_mode
+ * @property $dark_mode chat orqa foni
  * @property $password userning passwordi
  * @property $avatar userning profilidagi rasmi
  * @property $last_seen userning oxirgi aktiv vaqti
  * @property $description userning profilida o'zi haqida qoldirgan izohi
- * @property $district
+ * @property $district yashash joyi
  * @property $role_id userning role_idsi, (1-admin, 2-performer, 5-user)
  * @property $google_id google akkountdan kirgandagi id
  * @property $facebook_id facebook akkountdan kirgandagi id
  * @property $apple_id apple akkountdan kirgandagi id
  * @property $api_token api token
- * @property $remember_token
+ * @property $remember_token remember token
  * @property $reviews userga qoldirilgan izohlari soni
  * @property $tokens
  * @property $tasks
  * @property $taskResponses
  * @property $reviewsObj
- * @property $updated_password_at
- * @property $updated_password_by
- * @property $map
- * @property $active_task
- * @property $active_step
- * @property $work_experience
- * @property $deleted_by
- * @property $version
- * @property $notification_off
- * @property $notification_to
- * @property $notification_from
- * @property $deleted_at
- * @property $sessions
+ * @property $updated_password_at admin tomonidan password o'zgartirilgan vaqti
+ * @property $updated_password_by qaysi iddagi admin o'zgartirgani passwordni
+ * @property $active_task user yaratayotgan vazifa idsi
+ * @property $active_step user yaratayotgan vazifa qaysi bosqichdaligi
+ * @property $work_experience ish tajribasi
+ * @property $deleted_by qaysi user o'chirgani
+ * @property $version app versiya
+ * @property $notification_off push bildirishnomani o'chirib qo'yish
+ * @property $notification_to push bildirishnomani qachongacha o'chirish
+ * @property $notification_from push bildirishnomani qachondan o'chirish
+ * @property $deleted_at user profili o'chirilgan vaqti
+ * @property $sessions user sessiyalari
+ * @property $settings user adminkadagi tanlagan tili
  */
 class User extends \TCG\Voyager\Models\User
 {
@@ -100,11 +100,6 @@ class User extends \TCG\Voyager\Models\User
     public function getHasPasswordAttribute()
     {
         return ! empty($this->attributes['password']);
-    }
-
-    public function Socials(): HasMany
-    {
-        return $this->hasMany(Social::class);
     }
 
     public function scopeUpdateViews($query, $id)
