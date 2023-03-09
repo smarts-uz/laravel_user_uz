@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CustomFieldController;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FaqsController;
@@ -248,3 +249,12 @@ Route::any('/paynet', function () {
 });
 // Show transactions history
 Route::get('profile/transactions/history', [UserTransactionHistory::class, 'getTransactions'])->name('user.transactions.history')->middleware('auth');
+
+#region ios and android route
+Route::get('/a', static function (){
+   return Redirect::away('https://play.google.com/store/apps/details?id=uz.smart.useruz');
+});
+Route::get('/i', static function (){
+    return Redirect::away('https://apps.apple.com/app/useruz/id1645713842');
+});
+#endnregion

@@ -14,7 +14,7 @@ class TaskNotificationService extends NotificationService
      * @param $task
      * @return void
      */
-    public static function sendNotificationForCancelledTask($task)
+    public static function sendNotificationForCancelledTask($task): void
     {
         switch (true){
             case $task->performer_id :

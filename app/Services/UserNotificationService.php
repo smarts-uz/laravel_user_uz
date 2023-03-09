@@ -8,6 +8,7 @@ use App\Models\Notification;
 class UserNotificationService extends NotificationService
 {
     /**
+     * admin vazifani bekor qilganda ijrochiga bildisrishnoma yuboradi
      * @param $task
      * @param int $type
      * @return void
@@ -38,6 +39,7 @@ class UserNotificationService extends NotificationService
     }
 
     /**
+     * admin vazifani bekor qilganda userga bildisrishnoma yuboradi
      * @param $task
      * @param int $type
      * @return void

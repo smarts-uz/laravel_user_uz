@@ -29,6 +29,7 @@ class PerformersService
     /**
      *
      * Function  service
+     * Bu funksiya performerlar ro'yxatini chiqarib beradi
      * @link https://user.uz/performers
      * @param $authId
      * @param $search
@@ -73,6 +74,7 @@ class PerformersService
     /**
      *
      * Function  performer
+     *
      * @link https://user.uz/performers/354
      * @param $user
      * @param $authId
