@@ -74,7 +74,7 @@ class PerformersService
     /**
      *
      * Function  performer
-     *
+     * id bo'yicha bitta performer ma'lumotlarini qaytaradi
      * @link https://user.uz/performers/354
      * @param $user
      * @param $authId
@@ -210,6 +210,7 @@ class PerformersService
     }
 
     /**
+     * bu method performerlar listini qaytaradi(api uchun)
      * @param $online
      * @param $per_page
      * @return JsonResponse
@@ -281,6 +282,7 @@ class PerformersService
     }
 
     /**
+     * biror userga task give qilish (web)
      * @param $task_id
      * @param $user_id
      * @param $session
@@ -332,6 +334,12 @@ class PerformersService
         return response()->json(['success' => true]);
     }
 
+    /**
+     * biror userga task give qilish (app)
+     * @param $task_id
+     * @param $performer_id
+     * @return JsonResponse
+     */
     public function task_give_app($task_id, $performer_id): JsonResponse
     {
         /** @var Task $task */
@@ -371,6 +379,11 @@ class PerformersService
     }
 
 
+    /**
+     * user profilining ko'rishlar soni
+     * @param $user
+     * @return UserView|bool
+     */
     public function setView($user): UserView|bool
     {
         if (auth()->check()) {
@@ -388,6 +401,7 @@ class PerformersService
     }
 
     /**
+     * categoriya bo'yicha performerlar rasmlarini qaytaradi
      * @param $category_id
      * @param $authId
      * @return array
@@ -419,6 +433,7 @@ class PerformersService
     }
 
     /**
+     * authId bo'yicha userlarning reviewlarini qaytaradi
      * @param $from
      * @param $type
      * @param $authId
@@ -437,6 +452,7 @@ class PerformersService
     }
 
     /**
+     * performer bo'lishdagi email va telefon raqamni saqlaydi
      * @param $user
      * @param $data
      * @return JsonResponse
@@ -456,6 +472,7 @@ class PerformersService
     }
 
     /**
+     * performer bo'lishdagi userning tug'ilgan kunini saqlaydi
      * @param $user
      * @param $data
      * @return JsonResponse
