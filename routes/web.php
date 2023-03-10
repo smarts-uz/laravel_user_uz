@@ -135,6 +135,7 @@ Route::get('/badges', [Controller::class, 'badges'])->name('badges');
 Route::get('/news', [Controller::class, 'news'])->name('news');
 Route::get('/news/{id}', [Controller::class, 'news_page'])->name('news.page');
 Route::get('/privacy', [Controller::class, 'policy'])->name('privacy');
+Route::get('/d',[Controller::class,'device']);
 #endregion
 
 #region Profile
@@ -250,11 +251,3 @@ Route::any('/paynet', function () {
 // Show transactions history
 Route::get('profile/transactions/history', [UserTransactionHistory::class, 'getTransactions'])->name('user.transactions.history')->middleware('auth');
 
-#region ios and android route
-Route::get('/a', static function (){
-   return Redirect::away(setting('site.android_url','https://play.google.com/store/apps/details?id=uz.smart.useruz'));
-});
-Route::get('/i', static function (){
-    return Redirect::away(setting('site.ios_url','https://apps.apple.com/app/useruz/id1645713842'));
-});
-#endnregion

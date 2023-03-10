@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use App\Models\Massmedia;
 use App\Services\ControllerService;
@@ -178,6 +179,20 @@ class Controller extends BaseController
                 'task_responses' => $item->task_responses,
             ]
         );
+    }
+
+    public function device(): RedirectResponse
+    {
+        $agent = new Agent();
+        if ($agent->isAndroidOS()) {
+            return Redirect::away(setting('site.android_url','https://play.google.com/store/apps/details?id=uz.smart.useruz'));
+        }
+
+        if($agent->isIos()) {
+            return Redirect::away(setting('site.ios_url','https://apps.apple.com/app/useruz/id1645713842'));
+        }
+
+        return Redirect::away(setting('site.android_url','https://play.google.com/store/apps/details?id=uz.smart.useruz'));
     }
 
     public function routing($request)
