@@ -41,7 +41,8 @@
         "vemcogroup/laravel-translation": "v3.0.7",
         "yajra/laravel-datatables": "v9.0.0",
         "yajra/laravel-datatables-buttons": "v9.1.2",
-        "yajra/laravel-datatables-oracle": "^10.0"
+        "yajra/laravel-datatables-oracle": "^10.0",
+        "teamprodev/laravel-components": "dev-master"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest"

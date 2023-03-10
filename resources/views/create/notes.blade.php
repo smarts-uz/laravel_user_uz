@@ -111,7 +111,7 @@
         </div>
 
     </form>
-    <x-laravelUppy route="{{route('task.create.images.store', $task->id)}}"></x-laravelUppy>
+    <x-laravelUppy url="{{route('task.create.images.store', $task->id)}}" target="#photos" fieldName="images[]" height="400" width="1000"/>
 @endsection
 
 @push("javascript")

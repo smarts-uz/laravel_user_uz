@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Universal services </title>
+    @bukStyles(true)
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="/storage/{!!str_replace("\\","/",setting('site.image'))!!}"/>
@@ -30,7 +31,7 @@
     </style>
 </head>
 <body class=" text-xl">
-
+@bukScripts(true)
 @include('components.preloader')
 <x-navbar></x-navbar>
 @yield('content')
