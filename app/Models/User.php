@@ -208,6 +208,11 @@ class User extends \TCG\Voyager\Models\User
         return $this->hasMany(BlockedUser::class,'blocked_user_id');
     }
 
+    public function userCategory(): HasMany
+    {
+        return $this->hasMany(UserCategory::class);
+    }
+
     public static function boot ()
     {
         parent::boot();
@@ -227,6 +232,7 @@ class User extends \TCG\Voyager\Models\User
             $user->portfolios()->delete();
             $user->compliances()->delete();
             $user->blockedUser()->delete();
+            $user->userCategory()->delete();
 
             ChMessage::query()->where('from_id', $user->id)->orWhere('to_id', $user->id)->delete();
             Notification::query()->where('user_id', $user->id)->orWhere('performer_id', $user->id)->delete();
