@@ -4,7 +4,6 @@
 
 @section('content')
     <!-- Information section -->
-    <link href="https://releases.transloadit.com/uppy/v2.1.0/uppy.min.css" rel="stylesheet">
     <x-roadmap/>
     <form class="" action="{{route('task.create.note.store', $task->id)}}" method="post" enctype="multipart/form-data">
         @csrf
