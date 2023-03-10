@@ -30,6 +30,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use JsonException;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class CreateController extends Controller
@@ -240,7 +241,7 @@ class CreateController extends Controller
      * @param BudgetRequest $request
      * @return  RedirectResponse
      */
-    public function budget_store(int $task_id, BudgetRequest $request): \Illuminate\Http\RedirectResponse
+    public function budget_store(int $task_id, BudgetRequest $request): RedirectResponse
     {
         $task = $this->service->attachCustomFieldsByRoute($task_id, CustomField::ROUTE_BUDGET, $request->all());
 
@@ -255,10 +256,15 @@ class CreateController extends Controller
      * Function  images_store
      * @param Request $request
      * @param Task $task
+     * @throws JsonException
      */
     public function images_store(Request $request, Task $task): void
     {
-        $imgData = json_decode($task->photos) ?? [];
+        if($task->photos === null){
+            $imgData = [];
+        }else{
+            $imgData = json_decode($task->photos, false, 512, JSON_THROW_ON_ERROR);
+        }
         foreach ($request->file('images') as $uploadedImage) {
             $filename = time() . '_' . $uploadedImage->getClientOriginalName();
             $uploadedImage->move(public_path() . '/storage/uploads/', $filename);
