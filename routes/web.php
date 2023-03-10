@@ -135,7 +135,7 @@ Route::get('/badges', [Controller::class, 'badges'])->name('badges');
 Route::get('/news', [Controller::class, 'news'])->name('news');
 Route::get('/news/{id}', [Controller::class, 'news_page'])->name('news.page');
 Route::get('/privacy', [Controller::class, 'policy'])->name('privacy');
-Route::get('/d',[Controller::class,'device']);
+Route::get('/app',[Controller::class,'device']);
 #endregion
 
 #region Profile
