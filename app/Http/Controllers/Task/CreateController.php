@@ -260,7 +260,7 @@ class CreateController extends Controller
      */
     public function images_store(Request $request, Task $task): void
     {
-        if($task->photos === null){
+        if($task->photos == null){
             $imgData = [];
         }else{
             $imgData = json_decode($task->photos, false, 512, JSON_THROW_ON_ERROR);

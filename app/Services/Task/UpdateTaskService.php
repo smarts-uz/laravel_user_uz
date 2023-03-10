@@ -495,7 +495,7 @@ class UpdateTaskService
 
     public function deleteImage2($task_id, $image): void
     {
-        $task = Task::select('photos', 'performer_id', 'user_id')->find($task_id);
+        $task = Task::find($task_id);
         $this->taskGuard($task);
         File::delete(public_path() . '/storage/uploads/' . $image);
         $images = json_decode($task->photos);

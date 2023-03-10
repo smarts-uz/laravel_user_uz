@@ -207,7 +207,9 @@
                                         <img src="{{ asset('storage/uploads/' . $image) }}" alt="">
                                     </div>
                                 </a>
-                                <div class="absolute right-0 top-0 absolute"><i class=' text-red-600 text-2xl fas fa-times-circle img-delete' data-action="{{ $image }}"></i></div>
+                                <div class="absolute right-0 top-0">
+                                    <i class='cursor-pointer text-red-600 text-2xl fas fa-times-circle img-delete' data-action="{{ $image }}"></i>
+                                </div>
                             </div>
                         @endforeach
                     </div>
