@@ -4,9 +4,6 @@
 
 @section('content')
     <link rel="stylesheet" href="{{ asset('/css/tabs.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-          integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <!-- Information section -->
     <div class="mx-auto sm:w-9/12 w-11/12 my-16">
         <div class="grid md:grid-cols-3 lg:gap-x-20 md:gap-x-14">
@@ -70,13 +67,12 @@
                                                     @auth()
                                                         <form action="{{route('task.create.contact.store.phone', $task->id)}}" method="post">
                                                             @csrf
-                                                            <label class="text-sm text-gray-500 mb-2"
-                                                                   for="phone">{{__('Номер телефона')}}</label>
+                                                            <label class="text-sm text-gray-500 mb-2" for="phone">{{__('Номер телефона')}}</label>
                                                             <input type="text"  autofocus="autofocus" name="phone_number"
                                                                    value="{{auth()->user()->phone_number}}" placeholder="+998(00)000-00-00" id="phone"
-                                                                   class="shadow appearance-none border phone  phone-1 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500"/>
+                                                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-yellow-500"/>
                                                             @error('phone_number')
-                                                            <p>{{$message}}</p>
+                                                                <p class="text-red-500">{{$message}}</p>
                                                             @enderror
 
                                                             <div class="mt-4">
@@ -204,7 +200,7 @@
                                                 </a>
                                                 <input type="submit" style="background: linear-gradient(164.22deg, #FDC4A5 4.2%, #FE6D1D 87.72%);"
                                                        class="bg-yellow-500 hover:bg-yellow-600 m-4 cursor-pointer text-white font-normal text-2xl py-3 sm:px-14 px-10 rounded-2xl "
-                                                       name="" value="{{__('Отправить')}}">
+                                                       value="{{__('Отправить')}}">
                                             </div>
                                         </div>
                                     </form>
@@ -217,19 +213,14 @@
             <x-faq/>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/index.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
-
     <script src='https://cdnjs.cloudflare.com/ajax/libs/imask/6.4.3/imask.min.js'></script>
     <script>
         if ($('.tab-content').children(".error").length) {
             $('.tab-content').children('.tab-pane').removeClass('show active')
             $('.tab-name').removeClass('active')
             $('.error').addClass('show active')
-
         }
 
-        $("#phone").attr('placeholder', '+998(__)___-__-__');
         var element = document.getElementById('phone');
         var element2 = document.getElementById('phone2');
         var maskOptions = {
@@ -240,26 +231,8 @@
 
         if (element2)
         {
-            console.log(element2);
             var mask2 = new IMask(element2, maskOptions);
         }
-        function setSelectionRange(input, selectionStart, selectionEnd) {
-            if (input.setSelectionRange) {
-                input.focus();
-                input.setSelectionRange(selectionStart, selectionEnd);
-            } else if (input.createTextRange) {
-                var range = input.createTextRange();
-                range.collapse(true);
-                range.moveEnd('character', selectionEnd);
-                range.moveStart('character', selectionStart);
-                range.select();
-            }
-        }
-
-        function setCaretToPos(input, pos) {
-            setSelectionRange(input, pos, pos);
-        }
-
     </script>
 
 @endsection

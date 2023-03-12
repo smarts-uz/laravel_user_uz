@@ -27,7 +27,7 @@
         <!-- Tab Contents -->
 
         <div id="tab-contents" class="flex justify-center">
-            <div id="first" class="p-2   @if($errors->has('phone_number')) hidden @endif">
+            <div id="first" class="p-2 @if($errors->has('phone_number')) hidden @endif">
                 <form action="{{route('user.reset_submit_email')}}" method="POST">
                     @csrf
                     <div class="mx-auto flex items-center justify-center w-full">

@@ -62,9 +62,7 @@
                     </div>
                 </div>
                 <div class="ml-4 open-chat-mob">
-                    <a href="/chat">
-                        <i class="text-xl text-gray-500 hover:text-yellow-500 far fa-comment-alt"></i>
-                    </a>
+                    <i class="text-xl text-gray-500 hover:text-yellow-500 far fa-comment-alt"></i>
                 </div>
                 {{--  JS Panel--}}
                 <script>

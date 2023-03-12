@@ -68,7 +68,7 @@
                                  class="w-4 h-4 absolute rounded-full bg-red-500 ml-3 text-white text-xs text-center">
                                 {{$messages}}</div>
                         @endif
-                        <a class="delete-task">
+                        <a>
                             <i class="xl:text-2xl lg:text-xl text-gray-500 hover:text-yellow-500 far fa-comment-alt"></i>
                         </a>
                     </div>
