@@ -24,7 +24,7 @@ class CreateContactRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone_number' => 'required|unique:users|min:13',
+            'phone_number' => 'required|min:13|unique:users,phone_number,' . auth()->id(),
         ];
     }
     public function messages()

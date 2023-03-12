@@ -7,6 +7,13 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
 <style>.flatpickr-calendar{max-width: 300px; width: 100%;} </style>
+<style>
+    /* Toggle B */
+    input:checked ~ .dot {
+        transform: translateX(100%);
+        background-color: #48bb78;
+    }
+</style>
     <script>
         let userAddress;
         var myMap;
@@ -166,31 +173,39 @@
                             <input name="coordinates0" type="hidden" id="coordinate"
                                    value="{{ count($addresses) ? $addresses[0]->latitude . ',' . $addresses[0]->longitude:'' }}">
                         </div>
-                        <div>
-
-                            <div class="mb-4">
-                                <div id="formulario" class="flex flex-col gap-y-4">
-
-                                    <div id="addinput" class="flex gap-y-2 flex-col hover:bg-gray-100 ">
-
+                        <div class="mb-4">
+                            <div id="formulario" class="flex flex-col gap-y-4">
+                                <div id="addinput" class="flex gap-y-2 flex-col hover:bg-gray-100 ">
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <button id="addbtn" type="button" class="w-full bg-white hover:bg-gray-100 border-dashed border border-black rounded-lg py-2 text-center flex justify-center items-center gap-2" name="button">
+                                    <svg class="h-4 w-4 text-gray-500 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
+                                    <span class="text-base">{{__('Добавить ещё адрес')}}</span>
+                                </button>
+                                @if($task->category->parent->double_address)
+                                    <div class="my-3">
+                                        <label for="toggleB" class="flex items-center cursor-pointer">
+                                            <!-- toggle -->
+                                            <div class="relative">
+                                                <!-- input -->
+                                                <input type="checkbox" name="go_back" id="toggleB" class="sr-only">
+                                                <!-- line -->
+                                                <div class="block bg-gray-600 w-12 h-7 rounded-full"></div>
+                                                <!-- dot -->
+                                                <div class="dot absolute left-1 top-1 bg-white w-5 h-5 rounded-full transition"></div>
+                                            </div>
+                                            <!-- label -->
+                                            <div class="ml-3 text-gray-700 font-medium">
+                                                {{__('Вернуться в точку А')}}
+                                            </div>
+                                        </label>
                                     </div>
-
-                                </div>
-                                <div class="mt-4">
-                                    <button id="addbtn" type="button"
-                                            class="w-full bg-white hover:bg-gray-100 border-dashed border border-black rounded-lg py-2 text-center flex justify-center items-center gap-2"
-                                            name="button">
-                                        <svg class="h-4 w-4 text-gray-500 " fill="none" viewBox="0 0 24 24"
-                                             stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                        </svg>
-                                        <span class="text-base">{{__('Добавить ещё адрес')}}</span>
-                                    </button>
-                                    <div id="map" class="h-60 mt-4 rounded-lg w-full"></div>
-                                </div>
+                                @endif
+                                <div id="map" class="h-60 mt-4 rounded-lg w-full"></div>
                             </div>
                         </div>
                     </div>
@@ -302,6 +317,16 @@
         $('#budget').change(function() {
             $('#task_budget').val($(this).val())
         });
+        @if($task->go_back === 1)
+            $('#toggleB').prop("checked", true);
+        @endif
+        $('#toggleB').click(function (){
+            if($('#toggleB').is(":checked")){
+                $(this).val(1)
+            }else{
+                $(this).val(0)
+            }
+        })
         function ch_task(){
             var settings = {
                 "url": "{{ route('task.map', $task->id) }}",

@@ -27,7 +27,7 @@ class UserRequest extends FormRequest
     {
         session()->flash('phone_another');
         return [
-            'name' => 'required|string',
+            'name' => 'required',
             'email' => ['required','email','unique:users'],
             'phone_number' => 'required|unique:users|min:13',
             'password' => 'required|confirmed|min:8'
@@ -37,15 +37,15 @@ class UserRequest extends FormRequest
     public function messages()
     {
         return [
-                'name.required' => __('login.name.required'),
-                'name.unique' => __('login.name.unique'),
-                'phone_number.required' => __('login.phone_number.required'),
+                'name.required' => __('Требуется заполнение!'),
+                'phone_number.required' =>  __('Требуется заполнение!'),
                 'phone_number.regex' => __('login.phone_number.regex'),
-                'phone_number.unique' => __('login.phone_number.unique'),
-                'email.required' => __('login.email.required'),
-                'email.email' => __('login.email.email'),
+                'phone_number.unique' => __('Этот номер есть в системе!'),
+                'phone_number.min' => __('Неверный формат номера телефона!'),
+                'email.required' => __('Требуется заполнение!'),
+                'email.email' => __('Введите адрес электронной почты в правильном формате!'),
                 'email.unique' => __('login.email.unique'),
-                'password.required' => __('login.password.required'),
+                'password.required' => __('Требуется заполнение!'),
                 'password.min' => __('login.password.min'),
                 'password.confirmed' => __('login.password.confirmed'),
             ];
