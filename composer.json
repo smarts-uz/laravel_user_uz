@@ -13,6 +13,7 @@
         "babenkoivan/elastic-scout-driver": "v3.0.1",
         "babenkoivan/elastic-scout-driver-plus": "v4.1.0",
         "beyondcode/laravel-websockets": "v1.13.1",
+        "biscolab/laravel-recaptcha": "^6.0",
         "darkaonline/l5-swagger": "v8.4.1",
         "fruitcake/laravel-cors": "v2.2.0",
         "glhd/aire": "v2.6.0",

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ReCaptcha;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRegisterRequest extends FormRequest
@@ -26,7 +27,8 @@ class UserRegisterRequest extends FormRequest
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'phone_number' =>  'required|numeric|unique:users|min:13',
-            'password' => 'required|confirmed|min:8'
+            'password' => 'required|confirmed|min:8',
+            'g-recaptcha-response' => ['required', new ReCaptcha]
         ];
     }
     public function messages()
@@ -41,7 +43,8 @@ class UserRegisterRequest extends FormRequest
             'password.min' => trans('login.password.min'),
             'password.confirmed' => trans('login.password.confirmed'),
             'phone_number.required' => trans('login.phone_number.required'),
-            'phone_number.unique' => trans('login.phone_number.unique')
+            'phone_number.unique' => trans('login.phone_number.unique'),
+            'g-recaptcha-response.required' => __('Пожалуйста, заполните код')
         ];
     }
     public function getValidatorInstance()

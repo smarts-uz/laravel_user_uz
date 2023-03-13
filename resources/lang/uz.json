@@ -827,5 +827,7 @@
     "Что заказывают на «Universal Services» прямо сейчас": "Hozirda «User.uz»da nima buyurtma qilinmoqda",
     "Пометить, как прочитанное": "O'qilgan deb belgilamoq",
     "Срок действия кода истек": "Kod muddati tugagan",
-    "Вы стали исполнителем": "Siz ijrochi bo'ldingiz"
+    "Вы стали исполнителем": "Siz ijrochi bo'ldingiz",
+    "Пожалуйста, заполните код": "Iltimos, captcha-ni to'ldiring",
+    "Требуется Google Recaptcha.": "Google recaptcha talab qilinadi."
 }
