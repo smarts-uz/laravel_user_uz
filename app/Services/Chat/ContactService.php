@@ -2,16 +2,14 @@
 
 namespace App\Services\Chat;
 
-use App\Models\ChMessage;
-use App\Models\Task;
-use App\Models\User;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use App\Models\{ChMessage, Task, User};
+use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 use SergiX44\Nutgram\Nutgram;
 
 class ContactService
 {
     /**
+     * Bu method chatdagi userlarning ro'yxatini $authUserga qarab qaytaradi
      * @param $authUser
      * @return mixed
      */
@@ -61,6 +59,7 @@ class ContactService
     }
 
     /**
+     * Bu method user 'admin_notifications' permissioni berilgan adminga yozsa, telegramga bildirishnoma yuboradi
      * @param $locale
      * @param $request_id
      * @param $message

@@ -3,25 +3,15 @@
 
 namespace App\Services;
 
-use App\Http\Resources\NotificationResource;
-use App\Http\Resources\PerformerIndexResource;
-use App\Http\Resources\ReviewIndexResource;
-use App\Item\PerformerPrefItem;
-use App\Item\PerformerServiceItem;
-use App\Item\PerformerUserItem;
-use App\Models\BlockedUser;
-use App\Models\Notification;
-use App\Models\Review;
-use App\Models\Task;
-use App\Models\User;
-use App\Models\UserCategory;
-use App\Models\UserView;
+use App\Http\Resources\{NotificationResource, PerformerIndexResource, ReviewIndexResource};
+use App\Item\{PerformerPrefItem, PerformerServiceItem, PerformerUserItem};
+use App\Models\{BlockedUser, Notification, Review, Task, User, UserCategory, UserView, Category};
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
 use League\Flysystem\WhitespacePathNormalizer;
-use TCG\Voyager\Models\Category;
+
 
 class PerformersService
 {

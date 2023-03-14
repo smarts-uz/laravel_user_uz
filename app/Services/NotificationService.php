@@ -2,17 +2,12 @@
 
 namespace App\Services;
 
-use App\Mail\VerifyEmail;
-use App\Models\User;
-use App\Mail\MessageEmail;
-use App\Models\Notification;
-use App\Models\UserCategory;
+use App\Mail\{VerifyEmail, MessageEmail};
+use App\Models\{User, Notification, UserCategory};
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\{Collection, Facades\Http, Facades\Mail};
 use App\Events\SendNotificationEvent;
 use App\Http\Resources\NotificationResource;
 
@@ -254,6 +249,8 @@ class NotificationService
 
 
     /**
+     * Bu method yangi ro'yxatdan o'tib kirganida unga balans
+     * berilgani yoki parol o'rnatishi kerakligi haqida push bildirishnoma yuboradi
      * @param User $user
      * @param Notification $notification
      * @return void
@@ -477,6 +474,12 @@ class NotificationService
         }
     }
 
+    /**
+     * bu method notification turiga qarab titleni qaytaradi
+     * @param $type
+     * @param $locale
+     * @return string
+     */
     public static function titles($type, $locale = null): string
     {
         return match ($type) {
@@ -496,6 +499,12 @@ class NotificationService
         };
     }
 
+    /**
+     * bu method notification turiga qarab descriptionni qaytaradi
+     * @param $notification
+     * @param $locale
+     * @return string
+     */
     public static function descriptions($notification, $locale = null): string
     {
         return match ($notification->type) {
@@ -537,6 +546,11 @@ class NotificationService
         };
     }
 
+    /**
+     * bu method barcha notificationlarni o'qilgan qiladi
+     * @param $user_id
+     * @return Builder
+     */
     public static function readAllNotifications($user_id): Builder
     {
         $user_notify = Notification::query()->where('user_id', $user_id)->orWhere('performer_id', $user_id);
