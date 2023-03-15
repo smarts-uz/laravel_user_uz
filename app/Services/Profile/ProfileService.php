@@ -9,6 +9,7 @@ use App\Http\Resources\{BlockUserListResourse,
     ReviewIndexResource,
     TransactionHistoryCollection,
     UserCategoriesResource};
+use Exception;
 use JsonException;
 use App\Item\{ProfileCashItem, ProfileDataItem, ProfileSettingItem, VerificationCategoryItem};
 use App\Models\{BlockedUser, Region,
@@ -564,7 +565,7 @@ class ProfileService
      * @param $phoneNumber
      * @param $user
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     #[ArrayShape([])]
     public function phoneUpdate($phoneNumber, $user): array
@@ -820,7 +821,7 @@ class ProfileService
     }
 
     /**
-     * 
+     * $user ga tegishli portfolioni qaytaradi
      * @param $user
      * @return JsonResponse
      */
@@ -834,6 +835,7 @@ class ProfileService
     }
 
     /**
+     * tilni o'zgartirish uchun api
      * @param $lang
      * @param $version
      * @return JsonResponse
@@ -862,9 +864,10 @@ class ProfileService
     }
 
     /**
+     * profilni o'chirish uchun telefon raqamga kod yuboradi
      * @param $user
      * @return JsonResponse
-     * @throws \Exception
+     * @throws Exception
      */
     public function self_delete($user): JsonResponse
     {
@@ -884,6 +887,7 @@ class ProfileService
     }
 
     /**
+     * profilni o'chirish uchun telefon raqamga yuborilgan kodni tasdiqlash
      * @param $user
      * @param $code
      * @return JsonResponse
@@ -912,6 +916,7 @@ class ProfileService
     }
 
     /**
+     * userni block qilish apisi
      * @param $blocked_user_id
      * @param $user_id
      * @return JsonResponse
@@ -935,6 +940,7 @@ class ProfileService
     }
 
     /**
+     * block userlar listini qaytaradi
      * @param $user_id
      * @return JsonResponse
      */
@@ -949,6 +955,7 @@ class ProfileService
     }
 
     /**
+     * shablon otklikni qaytaradi
      * @param $user
      * @return JsonResponse
      */
@@ -962,6 +969,7 @@ class ProfileService
     }
 
     /**
+     * shablon otklikni o'chiradi
      * @param $user
      * @param $template
      * @return JsonResponse

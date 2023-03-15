@@ -11,6 +11,10 @@ use TCG\Voyager\Models\Setting;
 
 class FaqService
 {
+    /**
+     * faq category qiymatlarni qaytaradi
+     * @return JsonResponse
+     */
     public function index(): JsonResponse
     {
         $faqs = FaqCategories::query()->latest()->get();
@@ -20,7 +24,11 @@ class FaqService
         ]);
     }
 
-    public function get_all()
+    /**
+     * setting tabledan hamma qiymatni qaytaradi
+     * @return JsonResponse
+     */
+    public function get_all(): JsonResponse
     {
         $setting = Setting::all();
 
@@ -30,7 +38,12 @@ class FaqService
         ]);
     }
 
-    public function get_key($key)
+    /**
+     * Setting table dan $key bo'yicha qiymatarni qaytaradi
+     * @param $key
+     * @return JsonResponse
+     */
+    public function get_key($key): JsonResponse
     {
         $setting_key = Setting::query()->where('key', $key)->get();
         return response()->json([

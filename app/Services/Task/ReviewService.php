@@ -10,9 +10,18 @@ use App\Models\Task;
 use App\Models\User;
 use App\Services\CustomService;
 use App\Services\NotificationService;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class ReviewService
 {
+
+    /**
+     * task user review
+     * @param $task
+     * @param $request
+     * @return Notification
+     */
     public static function userReview($task, $request): Notification
     {
         $task->status = $request->status ? Task::STATUS_COMPLETE : Task::STATUS_NOT_COMPLETED;
@@ -53,6 +62,12 @@ class ReviewService
     }
 
 
+    /**
+     * task performer review
+     * @param $task
+     * @param $request
+     * @return Notification
+     */
     public static function performerReview($task, $request): Notification
     {
         Review::query()->create([
@@ -92,6 +107,15 @@ class ReviewService
         return $notification;
     }
 
+    /**
+     * Taskka review qoldirish
+     * @param $task
+     * @param $request
+     * @param $status
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public static function sendReview($task, $request, $status = false): void
     {
         switch (true) {

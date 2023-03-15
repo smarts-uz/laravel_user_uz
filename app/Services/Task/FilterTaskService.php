@@ -81,7 +81,15 @@ class FilterTaskService
     }
 
 
-    public function distance($lat1, $lon1, $lat2, $lon2) {
+    /**
+     * @param $lat1
+     * @param $lon1
+     * @param $lat2
+     * @param $lon2
+     * @return float
+     */
+    public function distance($lat1, $lon1, $lat2, $lon2): float
+    {
         $radlat1 =  pi() * $lat1/180;
         $radlat2 =  pi() * $lat2/180;
         $theta = $lon1-$lon2;
@@ -94,6 +102,10 @@ class FilterTaskService
     }
 
 
+    /**
+     * Navbar blade uchun categoriyalarni qaaytaradi
+     * @return array
+     */
     public static function categories(): array
     {
         $datas = Cache::remember('category-translations', now()->addMinute(180), function () {

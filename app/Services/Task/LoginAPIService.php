@@ -4,15 +4,21 @@ namespace App\Services\Task;
 
 
 use App\Models\User;
-use App\Services\CustomService;
-use App\Services\VerificationService;
+use App\Services\{CustomService, VerificationService};
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
+use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\{Auth, Cache};
 
 class LoginAPIService
 {
-    public function verifyCredentials($data)
+    /**
+     * email or phone verification
+     * @param $data
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function verifyCredentials($data): JsonResponse
     {
         $column = $data['type'];
         if (!User::query()
@@ -42,7 +48,13 @@ class LoginAPIService
         ]);
     }
 
-    public function verify_phone($user, $code)
+    /**
+     * Phone verification code
+     * @param $user
+     * @param $code
+     * @return JsonResponse
+     */
+    public function verify_phone($user, $code): JsonResponse
     {
         if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
             if ($code === $user->verify_code || $code === setting('admin.CONFIRM_CODE')) {
@@ -68,7 +80,13 @@ class LoginAPIService
         ]);
     }
 
-    public function verify_email($user, $code)
+    /**
+     * Email verification code
+     * @param $user
+     * @param $code
+     * @return JsonResponse
+     */
+    public function verify_email($user, $code): JsonResponse
     {
         if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
             if ($code === $user->verify_code || $code === setting('admin.CONFIRM_CODE')) {

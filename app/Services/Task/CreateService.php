@@ -4,27 +4,18 @@ namespace App\Services\Task;
 
 use App\Http\Resources\NotificationResource;
 use App\Item\CreateNameItem;
-use App\Models\Address;
-use App\Models\Category;
-use App\Models\CustomFieldsValue;
-use App\Models\Notification;
-use App\Models\Task;
-use App\Models\User;
-use App\Services\CustomService;
-use App\Services\NotificationService;
-use App\Services\SmsMobileService;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Session;
+use App\Models\{Address, Category, CustomFieldsValue, Notification, Task, User};
+use App\Services\{CustomService, NotificationService, SmsMobileService};
+use Illuminate\Database\Eloquent\{Builder, Collection, Model};
+use Illuminate\Support\{Arr, Facades\Cache};
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class CreateService
 {
 
     /**
-     *
+     * create task name bladega kerakli qiymatlarni qaytaradi
      * Function  name
      * @param $category_id
      * @param string|null $lang
@@ -77,12 +68,14 @@ class CreateService
             $value->save();
         }
     }
+
     /**
      *
      * Function  delete
      * Mazkur metod Taskni o'chirib tashlaydi
      * @param  $task
-     *
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function delete($task): void
     {
@@ -115,7 +108,7 @@ class CreateService
     }
 
     /**
-     *
+     * create task name store
      * Function  storeName
      * @param string $name
      * @param $category_id
@@ -188,6 +181,8 @@ class CreateService
      * @param $task $user
      * @param $user
      * @param $performer_id
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function perform_notification($task, $user, $performer_id): void
     {

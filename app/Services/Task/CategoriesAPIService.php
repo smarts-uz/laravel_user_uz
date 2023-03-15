@@ -4,14 +4,29 @@ namespace App\Services\Task;
 
 
 use App\Models\Category;
+use JetBrains\PhpStorm\ArrayShape;
 
 class CategoriesAPIService
 {
-    public function index() {
+    /**
+     * barcha kategoriyalarni qaytaradi
+     * @return array[]
+     */
+    public function index(): array
+    {
         $categories = Category::query()->select('id', 'parent_id', 'name', 'ico')->withTranslation(app()->getLocale())->whereNull('parent_id')->orderBy("order", "asc")->get();
         return $this->category($categories);
     }
-    public function show($category_id, $lang) {
+
+    /**
+     *
+     * @param $category_id
+     * @param $lang
+     * @return array[]
+     */
+    #[ArrayShape(['data' => "array"])]
+    public function show($category_id, $lang): array
+    {
         $category = Category::select('parent_id','name', 'ico', 'max', 'min', 'double_address')
         ->withTranslation($lang)->find($category_id);
         $data = (!empty($category)) ? [
@@ -26,12 +41,24 @@ class CategoriesAPIService
         return ['data' => $data];
     }
 
-    public function parents() {
+    /**
+     * Parent kategoriyalarni qaytaradi
+     * @return array[]
+     */
+    public function parents(): array
+    {
         $categories = Category::query()->whereNull('parent_id')->orderBy("order")->get();
         return $this->category($categories);
     }
 
-    public function search($parentId, $name) {
+    /**
+     * search qilganda categoriyalarni qaytaradi
+     * @param $parentId
+     * @param $name
+     * @return array[]
+     */
+    public function search($parentId, $name): array
+    {
 
         $categories = Category::query()->whereNotNull('parent_id')->orderBy("order");
         if ($parentId) {
@@ -43,7 +70,13 @@ class CategoriesAPIService
         return $this->category($categories->get());
     }
 
-    private function category($categories) {
+    /**
+     *
+     * @param $categories
+     * @return array[]
+     */
+    private function category($categories): array
+    {
         $data = [];
         foreach ($categories as $category) {
             $data[] = (!empty($categories)) ? [
@@ -58,6 +91,11 @@ class CategoriesAPIService
         return ['data' => $data];
     }
 
+    /**
+     * popular categoriyalarni qaytaradi
+     * @param $name
+     * @return array
+     */
     public function popular($name): array
     {
         $categories = Category::query()->select('id', 'parent_id', 'name', 'ico')->withCount('tasks')->withTranslation('uz')
@@ -76,6 +114,11 @@ class CategoriesAPIService
         return $response;
     }
 
+    /**
+     * barcha kategoriyalarning child idlarini qaytaradi
+     * @return array
+     */
+    #[ArrayShape(['data' => "mixed"])]
     public function AllCategoriesChildsId(): array
     {
         $data = Category::query()->where('parent_id','!=',null)->pluck('id')->toArray();

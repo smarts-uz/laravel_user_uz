@@ -2,24 +2,13 @@
 
 namespace App\Services\Task;
 
-use App\Models\Address;
-use App\Models\Category;
-use App\Models\CustomField;
-use App\Models\CustomFieldsValue;
-use App\Models\Task;
-use App\Models\User;
-use App\Services\CustomService;
-use App\Services\NotificationService;
-use App\Services\Response;
-use App\Services\VerificationService;
+use App\Models\{Address, Category, CustomField, CustomFieldsValue, Task, User};
+use App\Services\{CustomService, NotificationService, Response, VerificationService};
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\{Eloquent\Builder, Eloquent\Collection, Eloquent\Model};
+use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\{Arr, Facades\Log, Facades\Validator};
 use Illuminate\Validation\ValidationException;
 use JetBrains\PhpStorm\ArrayShape;
 
@@ -52,7 +41,7 @@ class CreateTaskService
     }
 
     /**
-     *
+     * save name requests
      * Function  name_store
      * @param string $name
      * @param int $category_id
@@ -170,7 +159,7 @@ class CreateTaskService
     /**
      * Retrieve next step with additional fields
      *
-     * @param object $task // Task model object
+     * @param int $task_id
      * @return array //Value Returned
      */
     #[ArrayShape(['route' => "string", 'address' => "int", 'steps' => "int", 'custom_fields' => "array"])]
@@ -222,7 +211,7 @@ class CreateTaskService
     /**
      * Retrieve next step with additional fields
      *
-     * @param $task // Task model object
+     * @param int $task_id
      * @return array //Value Returned
      */
     #[ArrayShape(['route' => "string", 'task_id' => "", 'steps' => "int", 'custom_fields' => "array"])]
@@ -256,7 +245,7 @@ class CreateTaskService
     /**
      * Retrieve next step with additional fields
      *
-     * @param $task // Task model object
+     * @param int $task_id
      * @return array //Value Returned
      */
     #[ArrayShape([])]
@@ -295,7 +284,7 @@ class CreateTaskService
     /**
      * Retrieve next step with additional fields
      *
-     * @param $task // Task model object
+     * @param int $task_id
      * @return array //Value Returned
      */
     #[ArrayShape([])]
@@ -367,7 +356,7 @@ class CreateTaskService
     /**
      * Retrieve next step with additional fields
      *
-     * @param $task // Task model object
+     * @param int $task_id
      * @return array //Value Returned
      */
     #[ArrayShape([])]
@@ -384,7 +373,7 @@ class CreateTaskService
      *
      * @param $data // Validated request data from mobile
      * @return array //Value Returned
-     * @throws \Exception
+     * @throws Exception
      */
     #[ArrayShape([])]
     public function contact_store($data, $user_id = 0): array
@@ -423,12 +412,23 @@ class CreateTaskService
         ];
     }
 
+    /**
+     * return get verify
+     * @param int $task_id
+     * @param $user
+     * @return array
+     */
     #[ArrayShape(['route' => "string", 'task_id' => "", 'user' => ""])]
     public function get_verify(int $task_id, $user): array
     {
         return ['route' => 'verify', 'task_id' => $task_id, 'user' => $user];
     }
 
+    /**
+     * task create api verification
+     * @param $data
+     * @return JsonResponse
+     */
     public function verification($data): JsonResponse
     {
         /** @var Task $task */
@@ -486,7 +486,7 @@ class CreateTaskService
      * @param $request
      * @return  Builder|Collection|Model|null
      */
-    protected function attachCustomFieldsByRoute(int $task_id, string $routeName, $request)
+    protected function attachCustomFieldsByRoute(int $task_id, string $routeName, $request): Model|Collection|Builder|null
     {
         $task = Task::with('category.custom_fields.custom_field_values')->find($task_id);
         $custom_fields = collect($task->category->custom_fields)->where('route', $routeName)->all();

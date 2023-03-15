@@ -2,17 +2,13 @@
 
 namespace App\Services\Task;
 
-use App\Http\Resources\PerformerResponseResource;
-use App\Http\Resources\TaskAddressResource;
 use App\Http\Resources\TaskIndexResource;
-use App\Http\Resources\UserInTaskResource;
 use App\Models\Address;
 use App\Models\Category;
 use App\Models\ChMessage;
 use App\Models\CustomField;
 use App\Models\CustomFieldsValue;
 use App\Models\Task;
-use App\Models\TaskResponse;
 use App\Models\User;
 use App\Services\CustomService;
 use App\Services\Response;
@@ -25,6 +21,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use JetBrains\PhpStorm\ArrayShape;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class UpdateTaskService
@@ -86,6 +84,10 @@ class UpdateTaskService
     }
 
 
+    /**
+     * @param $task
+     * @return array
+     */
     #[ArrayShape([])]
     public function get_remote($task): array
     {
@@ -95,6 +97,11 @@ class UpdateTaskService
         ];
     }
 
+    /**
+     * @param $task
+     * @param $data
+     * @return array
+     */
     public function updateRemote($task, $data): array
     {
         return match ($data['radio']) {
@@ -105,6 +112,10 @@ class UpdateTaskService
     }
 
 
+    /**
+     * @param $task
+     * @return array
+     */
     #[ArrayShape([])]
     public function get_address($task): array
     {
@@ -114,6 +125,13 @@ class UpdateTaskService
         return ['route' => 'address', 'address' => 1, 'steps' => 4, 'custom_fields' => []];
     }
 
+    /**
+     * @param $task
+     * @param $data
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function updateAddress($task, $data): array
     {
         $length = min(count($data['points']), setting('site.max_address'));
@@ -138,6 +156,10 @@ class UpdateTaskService
     }
 
 
+    /**
+     * @param $task
+     * @return array
+     */
     #[ArrayShape([])]
     public function get_date($task): array
     {
@@ -147,6 +169,13 @@ class UpdateTaskService
         ];
     }
 
+    /**
+     * @param $task
+     * @param $data
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function updateDate($task, $data): array
     {
         unset($data['task_id']);
@@ -155,6 +184,10 @@ class UpdateTaskService
     }
 
 
+    /**
+     * @param $task
+     * @return array
+     */
     #[ArrayShape([])]
     public function get_budget($task): array
     {
@@ -164,6 +197,13 @@ class UpdateTaskService
         ];
     }
 
+    /**
+     * @param $task
+     * @param $data
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function updateBudget($task, $data): array
     {
         (new CustomService)->updateCache('task_update_' . $task->id, 'budget', $data['amount']);
@@ -172,6 +212,10 @@ class UpdateTaskService
     }
 
 
+    /**
+     * @param $task
+     * @return array
+     */
     #[ArrayShape([])]
     public function get_note($task): array
     {
@@ -181,6 +225,13 @@ class UpdateTaskService
         return ['route' => 'note', 'task_id' => $task->id, 'steps' => 1, 'custom_fields' => $custom_fields];
     }
 
+    /**
+     * @param $task
+     * @param $data
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function updateNote($task, $data): array
     {
         unset($data['task_id']);
@@ -188,6 +239,10 @@ class UpdateTaskService
         return $this->get_contact($task);
     }
 
+    /**
+     * @param $task
+     * @return array
+     */
     #[ArrayShape([])]
     public function get_contact($task): array
     {
@@ -198,6 +253,12 @@ class UpdateTaskService
         ];
     }
 
+    /**
+     * @param $task_id
+     * @param $data
+     * @return array
+     * @throws \Exception
+     */
     public function updateContact($task_id, $data): array
     {
         /** @var User $user */
@@ -246,6 +307,12 @@ class UpdateTaskService
 
 
     // Update Image
+
+    /**
+     * @param $task
+     * @param $request
+     * @return JsonResponse
+     */
     public function updateImage($task, $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
@@ -276,6 +343,11 @@ class UpdateTaskService
         ]);
     }
 
+    /**
+     * @param $request
+     * @param $task
+     * @return JsonResponse
+     */
     public function deleteImage($request, $task): JsonResponse
     {
         $image = $request->get('image');
@@ -291,6 +363,11 @@ class UpdateTaskService
     }
 
 
+    /**
+     * @param $task_id
+     * @param $user
+     * @return array
+     */
     #[ArrayShape([])]
     public function get_verify($task_id, $user): array
     {
@@ -330,7 +407,13 @@ class UpdateTaskService
     }
 
 
-
+    /**
+     * @param $task
+     * @param $user
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     private function updateTask($task, $user): void
     {
         $cacheValues = cache()->get('task_update_' . $task->id);
@@ -371,6 +454,10 @@ class UpdateTaskService
         cache()->forget('task_update_' . $task->id);
     }
 
+    /**
+     * @param $data
+     * @return mixed
+     */
     public function getAddress($data)
     {
         $array = $this->service->addAdditionalAddress(request());
@@ -381,6 +468,10 @@ class UpdateTaskService
         return $data;
     }
 
+    /**
+     * @param $task
+     * @return void
+     */
     public function taskGuardApi($task): void
     {
         if ((int)$task->user_id !== auth()->id() && (int)$task->performer_id !== auth()->id()) {
@@ -390,6 +481,10 @@ class UpdateTaskService
         }
     }
 
+    /**
+     * @param $task
+     * @return void
+     */
     public function taskGuard($task): void
     {
         if ((int)$task->user_id !== (int)auth()->id() && (int)$task->performer_id !== (int)auth()->id()) {
@@ -397,6 +492,11 @@ class UpdateTaskService
         }
     }
 
+    /**
+     * @param int $task_id
+     * @param $data
+     * @return JsonResponse
+     */
     public function __invoke(int $task_id, $data)
     {
         $task = Task::select('user_id', 'performer_id')->find($task_id);
@@ -430,6 +530,11 @@ class UpdateTaskService
         ]);
     }
 
+    /**
+     * @param $task_id
+     * @param $data
+     * @return JsonResponse|RedirectResponse
+     */
     public function not_completed($task_id, $data): JsonResponse|RedirectResponse
     {
         $task = Task::find($task_id);
@@ -459,7 +564,12 @@ class UpdateTaskService
         return back();
     }
 
-    public function change($task_id, $request)
+    /**
+     * @param $task_id
+     * @param $request
+     * @return void
+     */
+    public function change($task_id, $request): void
     {
         $task = Task::find($task_id);
         $this->taskGuard($task);
@@ -493,6 +603,11 @@ class UpdateTaskService
         Alert::success(__('Изменения сохранены'));
     }
 
+    /**
+     * @param $task_id
+     * @param $image
+     * @return void
+     */
     public function deleteImage2($task_id, $image): void
     {
         $task = Task::find($task_id);
