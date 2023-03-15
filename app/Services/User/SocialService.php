@@ -16,6 +16,7 @@ use Laravel\Socialite\Facades\Socialite;
 class SocialService
 {
     /**
+     * Social login api
      * @param $provider
      * @param $token
      * @return JsonResponse
@@ -77,19 +78,30 @@ class SocialService
         }
     }
 
-    public static function get_avatar($user)
+    /**
+     * social loginda user avatarini qaytaradi
+     * @param $user
+     * @return string
+     */
+    public static function get_avatar($user): string
     {
         $fileContents = file_get_contents($user->getAvatar());
         File::put(public_path() . '/storage/user-avatar/' . $user->getId() . ".jpg", $fileContents);
         return 'user-avatar/' . $user->getId() . ".jpg";
     }
 
-    public static function emailToName($email) {
+    /**
+     * @param $email
+     * @return string
+     */
+    public static function emailToName($email): string
+    {
         $name = explode('@', $email);
         return ucfirst(Arr::get($name, '0'));
     }
 
     /**
+     * Social loginda password bo'lmasa notification create qilish
      * @param $findUser
      * @return void
      */
@@ -107,6 +119,7 @@ class SocialService
     }
 
     /**
+     * Social orqali ro'yxatdan o'tgan userga balance berish va parol o'rnatish haqida bildirishnoma yuborish
      * @param $new_user
      * @return void
      */

@@ -9,6 +9,7 @@ use App\Http\Resources\{BlockUserListResourse,
     ReviewIndexResource,
     TransactionHistoryCollection,
     UserCategoriesResource};
+use JsonException;
 use App\Item\{ProfileCashItem, ProfileDataItem, ProfileSettingItem, VerificationCategoryItem};
 use App\Models\{BlockedUser, Region,
     ResponseTemplate, Review, Session,
@@ -38,6 +39,7 @@ class ProfileService
     }
 
     /**
+     * user ma'lumotlarini qaytaradi api uchun
      * @param $user_id
      * @return JsonResponse
      */
@@ -255,7 +257,6 @@ class ProfileService
     }
 
     /**
-     *
      * Function  uploadImageServ
      * Mazkur metod user portfolioda rasmlarni saqlaydi
      * @param $uploadedImages
@@ -273,7 +274,6 @@ class ProfileService
     }
 
     /**
-     *
      * Function  settingsEdit
      * Mazkur metod sozlamalar bo'limida ma'lumotlarni chiqarib beradi
      * @param $user
@@ -307,7 +307,6 @@ class ProfileService
     }
 
     /**
-     *
      * Function  settingsUpdate
      * Mazkur metod sozlamalar bo'limida ma'lumotlarni tahrirlaydi
      * @param $data
@@ -328,7 +327,6 @@ class ProfileService
     }
 
     /**
-     *
      * Function  storeProfilePhoto
      * Mazkur metod user profilidagi rasmni tahrirlaydi
      * @param $files
@@ -349,7 +347,6 @@ class ProfileService
     }
 
     /**
-     *
      * Function  profileCash
      * Mazkur metod profile cash bo'limini ochib beradi
      * @param $user
@@ -368,7 +365,6 @@ class ProfileService
     }
 
     /**
-     *
      * Function  profileData
      * Mazkur metod profile  bo'limini ochib beradi
      * @param $user
@@ -396,7 +392,6 @@ class ProfileService
     }
 
     /**
-     *
      * Function  userReviews
      * Mazkur metod userga qoldirilgan reviewlar chiqarib beradi
      * @param $user
@@ -423,7 +418,6 @@ class ProfileService
     }
 
     /**
-     *
      * Function  createPortfolio
      * Mazkur metod portfolio tablega rasmlarni saqlash
      * @param $user
@@ -449,7 +443,6 @@ class ProfileService
     }
 
     /**
-     *
      * Function  updatePortfolio
      * Mazkur metod portfolio rasmlarni tahrirlash
      * @param $hasFile
@@ -458,7 +451,7 @@ class ProfileService
      * @param $description
      * @param $comment
      * @return PortfolioIndexResource
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function updatePortfolio($hasFile, $files, $portfolio, $description, $comment): PortfolioIndexResource
     {
@@ -481,7 +474,6 @@ class ProfileService
     }
 
     /**
-     *
      * Function  videoStore
      * Mazkur metod profilga video saqlash
      * @param $user
@@ -517,7 +509,6 @@ class ProfileService
     }
 
     /**
-     *
      * Function  balance
      * Mazkur metod cash bladega balansni chiqaradi
      * @param $period
@@ -568,7 +559,6 @@ class ProfileService
     }
 
     /**
-     *
      * Function  phoneUpdate
      * Mazkur metod telefon raqamni tahrirlaydi
      * @param $phoneNumber
@@ -605,7 +595,6 @@ class ProfileService
     }
 
     /**
-     *
      * Function  changePassword
      * Mazkur metod passwordni tahrirlash
      * @param $user
@@ -638,7 +627,6 @@ class ProfileService
     }
 
     /**
-     *
      * Function  changeAvatar
      * Mazkur metod profilda rasm tahrirlash
      * @param $filename
@@ -657,7 +645,6 @@ class ProfileService
     }
 
     /**
-     *
      * Function  updateSettings
      * Mazkur metod settingni tahrirlash
      * @param $validated
@@ -674,7 +661,6 @@ class ProfileService
     }
 
     /**
-     *
      * Function  notifications
      * Mazkur method setting notification api
      * @param $user
@@ -698,7 +684,6 @@ class ProfileService
     }
 
     /**
-     *
      * Function  subscribeToCategory
      * Mazkur metod setting categorylarni tahrirlash
      * @param array $categories
@@ -744,6 +729,7 @@ class ProfileService
     }
 
     /**
+     * Ijrochi bo'lish pagega categoriyalarni qaytaradi
      * @param $user
      * @param string|null $lang
      * @return VerificationCategoryItem
@@ -762,6 +748,7 @@ class ProfileService
     }
 
     /**
+     * Profileda passwordni o'zgartirish
      * @param $user
      * @param $data
      * @return RedirectResponse
@@ -789,6 +776,7 @@ class ProfileService
     }
 
     /**
+     * portfoliodan $image bo'yicha kelgan rasmni o'chiradi
      * @param $image
      * @param Portfolio $portfolio
      * @return bool
@@ -804,6 +792,7 @@ class ProfileService
     }
 
     /**
+     * porffolioga rasm qo'shadi
      * @param $data
      * @param Portfolio $portfolio
      * @return bool
@@ -819,6 +808,7 @@ class ProfileService
     }
 
     /**
+     * porfolio auth userga tegishliligini aniqlaydi
      * @param $portfolio
      * @return void
      */
@@ -830,6 +820,7 @@ class ProfileService
     }
 
     /**
+     * 
      * @param $user
      * @return JsonResponse
      */

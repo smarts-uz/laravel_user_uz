@@ -8,8 +8,7 @@ use App\Services\{CustomService, NotificationService, SmsMobileService};
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\{JsonResponse, RedirectResponse};
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\{Auth, Cache, Hash, Mail};
 use Illuminate\Support\Str;
@@ -18,6 +17,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 class UserService
 {
     /**
+     * Parolni tiklash uchun telefon raqamga sms kod yuborish
      * @param $phone_number
      * @throws Exception
      */
@@ -36,6 +36,7 @@ class UserService
     }
 
     /**
+     * Parolni tiklash uchun emailga kod yuborish
      * @param $email
      * @throws Exception
      */
@@ -56,6 +57,7 @@ class UserService
     }
 
     /**
+     * Tiklangan parolni saqlash
      * @param $session
      * @param $password
      * @return void
@@ -69,6 +71,7 @@ class UserService
     }
 
     /**
+     * Login qilish(api)
      * @param $user
      * @return JsonResponse
      */
@@ -100,6 +103,7 @@ class UserService
     }
 
     /**
+     * Parolni tiklash uchun telefon raqamga sms kod yuborish(api)
      * @param $phone_number
      * @throws Exception
      */
@@ -117,6 +121,7 @@ class UserService
     }
 
     /**
+     * O'zgartirilgan parolni saqlash
      * @param $phone_number
      * @param $password
      * @return JsonResponse
@@ -134,6 +139,7 @@ class UserService
     }
 
     /**
+     * Yuborilgan kodni tasdiqlash
      * @param $phone_number
      * @param $code
      * @return JsonResponse
@@ -154,6 +160,7 @@ class UserService
     }
 
     /**
+     * Register api
      * @param $data
      * @return JsonResponse
      */
@@ -178,6 +185,7 @@ class UserService
     }
 
     /**
+     * Admin settingdan kiritilgan moderatorni qiymatini qaytaradi
      * @return JsonResponse
      */
     public function getSupportId(): JsonResponse
@@ -196,6 +204,7 @@ class UserService
     }
 
     /**
+     * logout qilish(api)
      * @param $device_id
      * @return JsonResponse
      */
@@ -220,6 +229,7 @@ class UserService
     }
 
     /**
+     * yuborilgan kodni tasdiqlash(web)
      * @param $verifications
      * @param $code
      * @return RedirectResponse
@@ -240,6 +250,7 @@ class UserService
     }
 
     /**
+     * Profilni udalit qilish
      * @param $user
      * @param $code
      * @return Redirector|Application|RedirectResponse
@@ -261,6 +272,7 @@ class UserService
     }
 
     /**
+     * Task create qilishda nomerni verify qilish
      * @param $for_ver_func
      * @param $user
      * @param $sms_otp
@@ -304,6 +316,7 @@ class UserService
     }
 
     /**
+     * tranzaksiyalar bo'yicha filter
      * @param $user
      * @param $payment
      * @return JsonResponse
@@ -349,6 +362,7 @@ class UserService
     }
 
     /**
+     * Admin tompnidan yaratilgan userga balance bering va push notification jo'natish
      * @param $new_user
      * @return void
      */

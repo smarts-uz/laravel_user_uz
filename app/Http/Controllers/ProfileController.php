@@ -252,7 +252,6 @@ class ProfileController extends Controller
 
     public function verificationCategory()
     {
-
         /** @var User $user */
         $user = Auth::user();
         $lang = \Illuminate\Support\Facades\Session::get('lang');

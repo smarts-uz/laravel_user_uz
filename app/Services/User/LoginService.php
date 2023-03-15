@@ -8,6 +8,7 @@ use App\Models\WalletBalance;
 use App\Services\CustomService;
 use App\Services\VerificationService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
@@ -20,6 +21,7 @@ class LoginService
 {
 
     /**
+     * web orqali login qilish
      * @param $email
      * @param $password
      * @param $session
@@ -59,9 +61,10 @@ class LoginService
     }
 
     /**
+     * web register
      * @param $data
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function customRegister($data): void
     {
@@ -89,11 +92,12 @@ class LoginService
     }
 
     /**
+     * Telefon yoki emailni tasdiqlash
      * @param $needle
      * @param $user
      * @param $hash
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public static function verifyColum($needle, $user, $hash): bool
     {
@@ -117,10 +121,11 @@ class LoginService
     }
 
     /**
+     * telefonni tasdiqlash
      * @param $code
      * @param $user
      * @return RedirectResponse
-     * @throws \Exception
+     * @throws Exception
      */
     public function verify_phone($code, $user): RedirectResponse
     {
