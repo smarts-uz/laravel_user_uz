@@ -84,8 +84,8 @@ class TaskService
                 'custom_fields' => (new CustomFieldService())->getCustomFieldsByRoute($task->id, 'custom')['custom_fields'] ?? [],
                 'photos' => $photos,
                 'performer_review' => $task->performer_review,
-                'response_price' => setting('admin.pullik_otklik'),
-                'free_response' => setting('admin.bepul_otklik')
+                'response_price' => setting('admin.pullik_otklik',2000),
+                'free_response' => setting('admin.bepul_otklik',3000)
             ]];
             return $data;
 

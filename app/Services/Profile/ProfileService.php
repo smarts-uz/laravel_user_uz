@@ -246,7 +246,7 @@ class ProfileService
             'wallet_balance' => $balance,
             'work_experience' => $user->work_experience,
             'last_seen' => $lastSeen,
-            'last_version' => setting('admin.last_version'),
+            'last_version' => setting('admin.last_version','1.0.54'),
             'gender' => $user->gender,
             'blocked_user' => $blocked_user,
             'notification_to' => $user->notification_to,

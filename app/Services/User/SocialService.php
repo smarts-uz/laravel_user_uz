@@ -47,7 +47,7 @@ class SocialService
                     'avatar' => $provider !== 'apple' ? self::get_avatar($providerUser) : null
                 ]);
                 $wallBal = new WalletBalance();
-                $wallBal->balance = setting('admin.bonus');
+                $wallBal->balance = setting('admin.bonus',0);
                 $wallBal->user_id = $user->id;
                 $wallBal->save();
             }
@@ -126,7 +126,7 @@ class SocialService
     public function social_wallet($new_user): void
     {
         $wallBal = new WalletBalance();
-        $wallBal->balance = setting('admin.bonus');
+        $wallBal->balance = setting('admin.bonus',0);
         $wallBal->user_id = $new_user->id;
         $wallBal->save();
         /** @var Notification $notification */
@@ -135,7 +135,7 @@ class SocialService
             'description' => 'password',
             'type' => Notification::NEW_PASSWORD,
         ]);
-        if(setting('admin.bonus')>0){
+        if(setting('admin.bonus',0)>0){
             Notification::query()->create([
                 'user_id' => $new_user->id,
                 'description' => 'wallet',

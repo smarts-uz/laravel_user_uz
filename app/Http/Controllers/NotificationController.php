@@ -219,7 +219,7 @@ class NotificationController extends VoyagerBaseController
             ]
         );
 
-        if (setting('admin.bonus') > 0) {
+        if (setting('admin.bonus',0) > 0) {
            $push_notif = Notification::query()
                 ->where('user_id',$user->id)
                 ->where('type',Notification::WALLET_BALANCE)

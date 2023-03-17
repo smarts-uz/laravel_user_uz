@@ -57,7 +57,7 @@ class LoginAPIService
     public function verify_phone($user, $code): JsonResponse
     {
         if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-            if ($code === $user->verify_code || $code === setting('admin.CONFIRM_CODE')) {
+            if ($code === $user->verify_code || $code === setting('admin.CONFIRM_CODE',123456)) {
                 $user->phone_number = (new CustomService)->correctPhoneNumber(Cache::get($user->id . 'user_phone_number'));
                 $user->is_phone_number_verified = 1;
                 $user->save();
@@ -89,7 +89,7 @@ class LoginAPIService
     public function verify_email($user, $code): JsonResponse
     {
         if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-            if ($code === $user->verify_code || $code === setting('admin.CONFIRM_CODE')) {
+            if ($code === $user->verify_code || $code === setting('admin.CONFIRM_CODE',123456)) {
                 $user->email = Cache::get($user->id . 'user_email');
                 $user->is_email_verified = 1;
                 $user->save();

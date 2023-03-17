@@ -30,7 +30,7 @@ class TaskNotificationService extends NotificationService
 
                 foreach ($responses as $response) {
                     if ($response->not_free) {
-                        WalletBalance::walletBalanceUpdateOrCreate($response->performer_id, setting('admin.pullik_otklik'));
+                        WalletBalance::walletBalanceUpdateOrCreate($response->performer_id, setting('admin.pullik_otklik',2000));
                     }
                     $notification = Notification::query()->create([
                         'performer_id' => $response->performer_id,

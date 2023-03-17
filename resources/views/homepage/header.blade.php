@@ -61,16 +61,16 @@
                            {{__(' Заказать')}}
                         </a>
                         <div class="mt-8 float-left">
-                            <a href="{{ setting('site.instagram_url') }}">
+                            <a href="{{ setting('site.instagram_url','') }}">
                                 <i class="fab fa-instagram text-yellow-500 hover:text-yellow-600 mx-2"></i>
                             </a>
-                            <a href="{{ setting('site.telegram_url') }}">
+                            <a href="{{ setting('site.telegram_url','') }}">
                                 <i class="fab fa-telegram text-yellow-500 hover:text-yellow-600 mx-2"></i>
                             </a>
-                            <a href="{{ setting('site.youtube_url') }}">
+                            <a href="{{ setting('site.youtube_url','') }}">
                                 <i class="fab fa-youtube text-yellow-500 hover:text-yellow-600 mx-2"></i>
                             </a>
-                            <a href="{{ setting('site.facebook_url') }}">
+                            <a href="{{ setting('site.facebook_url','') }}">
                                 <i class="fab fa-facebook text-yellow-500 hover:text-yellow-600 mx-2"></i>
                             </a>
                         </div>

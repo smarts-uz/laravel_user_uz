@@ -540,7 +540,7 @@ class NotificationService
             ], $locale),
             Notification::NEW_PASSWORD => __('Чтобы не потерять доступ к вашему аккаунту, рекомендуем вам установить пароль. Сделать это можно в профиле, раздел "Настройки".', [], $locale),
             Notification::WALLET_BALANCE => __('USer.Uz предоставил вам бонус в размере default сумов.', [
-                'default' => setting('admin.bonus')
+                'default' => setting('admin.bonus',0)
             ], $locale),
             default => 'Description',
         };

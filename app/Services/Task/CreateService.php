@@ -155,7 +155,7 @@ class CreateService
         $data_inner = [];
         $dataMain = Arr::get($requestAll, 'coordinates0', '');
 
-        for ($i = 0; $i < setting('site.max_address') ?? 10; $i++) {
+        for ($i = 0; $i < setting('site.max_address',10); $i++) {
 
             $location = Arr::get($requestAll, 'location' . $i, '');
             $coordinates = Arr::get($requestAll, 'coordinates' . $i, '');

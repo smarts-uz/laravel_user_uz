@@ -42,9 +42,9 @@ class ResponseService
         if ($balance) {
             $freeResponsesCount = TaskResponse::query()->where(['performer_id' => $data['performer_id'], 'not_free' => 0])->get()->count();
             if ((int)$data['not_free'] === 1) {
-                $balanceSufficient = $balance->balance < setting('admin.pullik_otklik') + $freeResponsesCount * setting('admin.bepul_otklik');
+                $balanceSufficient = $balance->balance < setting('admin.pullik_otklik',2000) + $freeResponsesCount * setting('admin.bepul_otklik',3000);
             } else {
-                $balanceSufficient = $balance->balance < setting('admin.bepul_otklik') + $freeResponsesCount * setting('admin.bepul_otklik');
+                $balanceSufficient = $balance->balance < setting('admin.bepul_otklik',3000) + $freeResponsesCount * setting('admin.bepul_otklik',2000);
             }
             switch (true){
                 case $balanceSufficient :
@@ -60,17 +60,17 @@ class ResponseService
                     $message = __('Выполнено успешно');
                     TaskResponse::query()->create($data);
                     if ((int)$data['not_free'] === 1) {
-                        $balance->balance -= setting('admin.pullik_otklik');
+                        $balance->balance -= setting('admin.pullik_otklik',2000);
                         $balance->save();
                         UserExpense::query()->create([
                             'user_id' => $data['performer_id'],
                             'task_id' => $data['task_id'],
                             'client_id' => $data['user_id'],
-                            'amount' => setting('admin.pullik_otklik')
+                            'amount' => setting('admin.pullik_otklik',2000)
                         ]);
                         Transaction::query()->create(array(
                             'payment_system' => Transaction::DRIVER_TASK,
-                            'amount' => setting('admin.pullik_otklik'),
+                            'amount' => setting('admin.pullik_otklik',2000),
                             'system_transaction_id' => random_int(10000000000, 99999999999),
                             'currency_code' => 860,
                             'state' => Transaction::STATE_COMPLETED,
@@ -150,17 +150,17 @@ class ResponseService
         if ((int)$taskResponse->not_free === 0) {
             /** @var WalletBalance $balance */
             $balance = WalletBalance::query()->where('user_id', $performer->id)->first();
-            $balance->balance = $balance->balance - setting('admin.bepul_otklik');
+            $balance->balance -= setting('admin.bepul_otklik', 3000);
             $balance->save();
             UserExpense::query()->create([
                 'user_id' => $performer->id,
                 'task_id' => $task->id,
                 'client_id' => $response_user->id,
-                'amount' => setting('admin.bepul_otklik')
+                'amount' => setting('admin.bepul_otklik',3000)
             ]);
             Transaction::query()->create([
                 'payment_system' => Transaction::DRIVER_TASK,
-                'amount' => setting('admin.bepul_otklik'),
+                'amount' => setting('admin.bepul_otklik',3000),
                 'system_transaction_id' => random_int(10000000000, 99999999999),
                 'currency_code' => 860,
                 'state' => Transaction::STATE_COMPLETED,

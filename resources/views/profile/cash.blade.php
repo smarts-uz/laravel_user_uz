@@ -52,7 +52,7 @@
                             <input
                                 class="focus:outline-none focus:border-yellow-500  inline rounded-xl xl:ml-3 ring-1 text-2xl text-center h-18 w-36  pb-1"
                                 onkeyup="myText.value = this.value" oninput="inputCash()" onkeypress='validate(event)'
-                                id="myText1" type='text' min="{{setting('admin.min_amount')}}" maxlength="7" value="{{setting('admin.min_amount')}}" />
+                                id="myText1" type='text' min="{{setting('admin.min_amount',0)}}" maxlength="7" value="{{setting('admin.min_amount',0)}}" />
                             <span class="xl:ml-1 xl:text-xl lg:text-lg text-xl">UZS</span>
                             <button onclick="toggleModal()" type="submit" id="button2"
                                 class="md:inline block xl:ml-10 lg:ml-2 mx-auto mt-5 md:mt-0 h-10 rounded-xl ring-0 hover:bg-green-600 text-white bg-green-500 md:w-40 w-full">
@@ -167,7 +167,7 @@
                             </p>
                             <h4 class="font-medium text-lg mt-2 text-gray-700">
                                 {{__('Какая минимальная сумма для пополнения счета?')}}</h4>
-                            <p class="text-base">{{setting('admin.min_amount')}} UZS</p>
+                            <p class="text-base">{{setting('admin.min_amount',0)}} UZS</p>
                         </div>
                     </div>
                     {{-- cash end --}}
@@ -183,7 +183,7 @@
     </div>
     <script>
         let PAYMENT_TEST = '{{env('PAYMENT_TEST')}}' // Used in cash.js
-        let MIN_AMOUNT = '{{setting('admin.min_amount') ?? 4000}}' // Used in cash.js
+        let MIN_AMOUNT = '{{setting('admin.min_amount',0)}}' // Used in cash.js
     </script>
     <script src="{{ asset('js/profile/cash.js') }}"></script>
     <script>

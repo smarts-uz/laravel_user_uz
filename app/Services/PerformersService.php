@@ -38,7 +38,7 @@ class PerformersService
             ->get();
         $item->categories = collect($category)->where('parent_id', null)->all();
         $item->categories2 = collect($category)->where('parent_id', '!=', null)->all();
-        if ((int)setting('admin.PerformerSelfVisible') !== 1) {
+        if ((int)setting('admin.PerformerSelfVisible',1) !== 1) {
             $item->users = User::query()
                 ->where('role_id', User::ROLE_PERFORMER)
                 ->where('name', 'LIKE', "%{$search}%")
@@ -110,7 +110,7 @@ class PerformersService
         $item->categories2 = Category::query()->where('parent_id', '<>', null)
             ->select('id', 'parent_id', 'name')->orderBy("order", "asc")->get();
         $item->user_categories = UserCategory::query()->where('category_id', $cf_id)->pluck('user_id')->toArray();
-        if ((int)setting('admin.PerformerSelfVisible') !== 1) {
+        if ((int)setting('admin.PerformerSelfVisible',1) !== 1) {
             $item->users = User::query()
                 ->where('role_id', User::ROLE_PERFORMER)
                 ->where('name', 'LIKE', "%{$search}%")
@@ -145,7 +145,7 @@ class PerformersService
      */
     public function performer_filter($data, $authId): AnonymousResourceCollection
     {
-        if ((int)setting('admin.PerformerSelfVisible') !== 1) {
+        if ((int)setting('admin.PerformerSelfVisible',1) !== 1) {
             $performers = User::query()
                 ->where('role_id', User::ROLE_PERFORMER)
                 ->WhereNot('id', $authId);

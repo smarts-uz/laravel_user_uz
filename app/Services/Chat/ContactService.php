@@ -47,7 +47,7 @@ class ContactService
                      }) as $id) {
             $userIdsList[] = $id;
         }
-        $userIdsList[] = setting('site.moderator_id');
+        $userIdsList[] = setting('site.moderator_id',1);
 
         // get unique elements and remove current user from list
         $userIdsList = array_unique($userIdsList);
@@ -72,11 +72,11 @@ class ContactService
     {
         $admins = User::query()->findOrFail($request_id);
         if($admins->hasPermission('admin_notifications')){
-            $bot = new Nutgram(setting('chat.TELEGRAM_TOKEN'));
+            $bot = new Nutgram(setting('chat.TELEGRAM_TOKEN','5743173293:AAF33GAKELp-Id9y00EhIJRrpWI37umZ788'));
             if ($locale === 'ru'){
-                $send_message_text = setting('chat.send_message_text_ru');
+                $send_message_text = setting('chat.send_message_text_ru','');
             }else{
-                $send_message_text = setting('chat.send_message_text_uz');
+                $send_message_text = setting('chat.send_message_text_uz','');
             }
             $user = User::query()->findOrFail($AuthId);
             $role = match ($user->role_id) {
@@ -92,7 +92,7 @@ class ContactService
                 '{role}'=> $role,
                 '{link}'=> 'https://user.uz/chat/'.$user->id,
             ]);
-            $bot->sendMessage($message, ['chat_id' => setting('chat.CHANNEL_ID')]);
+            $bot->sendMessage($message, ['chat_id' => setting('chat.CHANNEL_ID','-1001548386291')]);
         }
     }
 }

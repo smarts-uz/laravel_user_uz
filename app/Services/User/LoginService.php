@@ -75,11 +75,11 @@ class LoginService
         $user->phone_number = $data['phone_number'] . '_' . $user->id;
         $user->save();
         $wallBal = new WalletBalance();
-        $wallBal->balance = setting('admin.bonus');
+        $wallBal->balance = setting('admin.bonus',0);
         $wallBal->user_id = $user->id;
         $wallBal->save();
         /** @var Notification $notification */
-        if(setting('admin.bonus')>0){
+        if(setting('admin.bonus',0)>0){
             Notification::query()->create([
                 'user_id' => $user->id,
                 'description' => 'wallet',
@@ -106,7 +106,7 @@ class LoginService
         $result = false;
 
         if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-            if ($hash === $user->verify_code || $hash === setting('admin.CONFIRM_CODE')) {
+            if ($hash === $user->verify_code || $hash === setting('admin.CONFIRM_CODE',123456)) {
                 $user->$needle = 1;
                 $user->save();
                 $result = true;

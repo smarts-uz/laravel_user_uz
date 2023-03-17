@@ -134,7 +134,7 @@ class UpdateTaskService
      */
     public function updateAddress($task, $data): array
     {
-        $length = min(count($data['points']), setting('site.max_address'));
+        $length = min(count($data['points']), setting('site.max_address',10));
         $addresses = [];
         for ($i = 0; $i < $length; $i++) {
             $address = [

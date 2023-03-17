@@ -184,7 +184,7 @@ class CreateTaskService
     public function address_store($data): array
     {
         $task = Task::query()->findOrFail($data['task_id']);
-        $length = min(count($data['points']), setting('site.max_address'));
+        $length = min(count($data['points']), setting('site.max_address',10));
         for ($i = 0; $i < $length; $i++) {
             $address = [
                 'task_id' => $data['task_id'],

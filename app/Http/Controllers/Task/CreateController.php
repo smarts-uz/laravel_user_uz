@@ -386,10 +386,10 @@ class CreateController extends Controller
         $user->phone_number = $data['phone_number'] . '_' . $user->id;
         $user->save();
         $wallBal = new WalletBalance();
-        $wallBal->balance = setting('admin.bonus');
+        $wallBal->balance = setting('admin.bonus',0);
         $wallBal->user_id = $user->id;
         $wallBal->save();
-        if(setting('admin.bonus')>0){
+        if(setting('admin.bonus',0)>0){
             Notification::query()->create([
                 'user_id' => $user->id,
                 'description' => 'wallet',

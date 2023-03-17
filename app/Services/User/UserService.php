@@ -172,7 +172,7 @@ class UserService
         $user = User::query()->create($data);
         $user->update(['phone_number' => $data['phone_number'] . '_' . $user->id]);
         $wallBal = new WalletBalance();
-        $wallBal->balance = setting('admin.bonus');
+        $wallBal->balance = setting('admin.bonus',0);
         $wallBal->user_id = $user->id;
         $wallBal->save();
         $user->api_token = Str::random(60);
@@ -191,7 +191,7 @@ class UserService
     public function getSupportId(): JsonResponse
     {
         /** @var User $user */
-        $user = User::query()->findOrFail(setting('site.moderator_id'));
+        $user = User::query()->findOrFail(setting('site.moderator_id',1));
         return response()->json([
             'success' => true,
             'data' => [
@@ -369,10 +369,10 @@ class UserService
     public function new_user($new_user): void
     {
         $wallBal = new WalletBalance();
-        $wallBal->balance = setting('admin.bonus');
+        $wallBal->balance = setting('admin.bonus',0);
         $wallBal->user_id = $new_user->id;
         $wallBal->save();
-        if(setting('admin.bonus') > 0){
+        if(setting('admin.bonus',0) > 0){
             Notification::query()->create([
                 'user_id' => $new_user->id,
                 'description' => 'wallet',
