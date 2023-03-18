@@ -359,7 +359,6 @@ class CreateTaskService
      * @param int $task_id
      * @return array //Value Returned
      */
-    #[ArrayShape([])]
     public function get_contact(int $task_id): array
     {
         return [
@@ -375,19 +374,18 @@ class CreateTaskService
      * @return array //Value Returned
      * @throws Exception
      */
-    #[ArrayShape([])]
-    public function contact_store($data, $user_id = 0): array
+    public function contact_store($data, $user): array
     {
-        $user = User::find($user_id);
         $task = Task::findOrFail($data['task_id']);
         unset($data['task_id']);
         $correctPhoneNumber = (!empty($user)) ? (new CustomService)->correctPhoneNumber($user->phone_number) : '';
         switch (true) {
             case (!$user->is_phone_number_verified && $user->phone_number !== $data['phone_number']):
                 $data['is_phone_number_verified'] = 0;
-                $data['phone_number'] = (new CustomService)->correctPhoneNumber($data['phone_number']);
-                $user->update($data);
-                VerificationService::send_verification('phone', $user, $correctPhoneNumber);
+                $phone_number = (new CustomService)->correctPhoneNumber($data['phone_number']);
+                $task->phone = $phone_number;
+                $task->save();
+                VerificationService::send_verification('phone', $user, $phone_number);
                 return $this->get_verify($task->id, $user);
             case ($user->phone_number !== $data['phone_number']) :
                 VerificationService::send_verification_for_task_phone($task, $data['phone_number']);
@@ -439,8 +437,13 @@ class CreateTaskService
         switch (true) {
             case !$user->is_phone_number_verified && $data['sms_otp'] === $user->verify_code :
                 if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
-                    $user->update(['is_phone_number_verified' => 1, 'active_step' => null, 'active_task' => null]);
-                    $task->update(['status' => 1, 'user_id' => $user->id, 'phone' => $user->phone_number]);
+                    $user->update([
+                        'is_phone_number_verified' => 1,
+                        'phone_number' => $task->phone,
+                        'active_step' => null,
+                        'active_task' => null,
+                    ]);
+                    $task->update(['status' => 1, 'user_id' => $user->id, 'phone' => $task->phone]);
                     // send notification
                     NotificationService::sendTaskNotification($task, $user->id);
 

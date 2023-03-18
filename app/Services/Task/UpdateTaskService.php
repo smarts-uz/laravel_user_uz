@@ -257,7 +257,8 @@ class UpdateTaskService
      * @param $task_id
      * @param $data
      * @return array
-     * @throws \Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function updateContact($task_id, $data): array
     {
@@ -393,17 +394,16 @@ class UpdateTaskService
                     'task_id' => $task_id,
                     'route' => 'end',
                 ], __('Ваш телефон успешно подтвержден'));
-            } else {
-                return $this->fail([
-                    'sms_otp' => ['expired_message']
-                ],  __('Срок действия номера истек'));
             }
-        }
-        else {
+
             return $this->fail([
-                'sms_otp' => ['incorrect_message']
-            ],  __('Неправильный код!'));
+                'sms_otp' => ['expired_message']
+            ],  __('Срок действия номера истек'));
         }
+
+        return $this->fail([
+            'sms_otp' => ['incorrect_message']
+        ],  __('Неправильный код!'));
     }
 
 

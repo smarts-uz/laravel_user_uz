@@ -997,15 +997,14 @@ class TaskAPIController extends Controller
      *         {"token": {}}
      *     },
      * )
+     * @throws \Exception
      */
     public function contacts(TaskContactsRequest $request): JsonResponse
     {
         $data = $request->validated();
         /** @var User $user */
         $user = auth()->user();
-        $user_id = ($user !== null) ? $user->id : 0;
-        /** @var Task $task */
-        return $this->success($this->create_task_service->contact_store($data, $user_id));
+        return $this->success($this->create_task_service->contact_store($data, $user));
     }
 
     /**

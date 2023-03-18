@@ -31,13 +31,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use JsonException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class CreateController extends Controller
 {
     protected CreateService $service;
     protected CustomFieldService $custom_field_service;
-    public $updatetask;
+    public UpdateTaskService $updatetask;
     public function __construct()
     {
         $this->updatetask = new UpdateTaskService;
@@ -333,7 +335,8 @@ class CreateController extends Controller
      * @param int $task_id
      * @param CreateContactRequest $request
      * @return  RedirectResponse
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function contact_store(int $task_id, CreateContactRequest $request): RedirectResponse
     {
