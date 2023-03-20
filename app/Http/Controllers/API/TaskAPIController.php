@@ -255,7 +255,8 @@ class TaskAPIController extends Controller
         }
         $this->response_service->selectPerformer($response);
         return response()->json([
-            'success' => true
+            'success' => true,
+            'data' => $response
         ]);
     }
 
@@ -290,7 +291,7 @@ class TaskAPIController extends Controller
      * )
      */
 
-    public function taskStatusUpdate(Task $task)
+    public function taskStatusUpdate(Task $task): JsonResponse
     {
         if ($task->user_id !== auth()->id()){
             return response()->json([
@@ -302,7 +303,8 @@ class TaskAPIController extends Controller
         $task->save();
         return response()->json([
             'success' => true,
-            'message' => __('Создано успешно')
+            'message' => __('Создано успешно'),
+            'data' => $task->status
         ]);
     }
 
@@ -1713,7 +1715,8 @@ class TaskAPIController extends Controller
             (new TelegramService())->sendMessage($data);
         return response()->json([
             'success' => true,
-            'message' => trans('trans.Complaint is sent.')
+            'message' => trans('trans.Complaint is sent.'),
+            'data' => $data
         ]);
     }
 

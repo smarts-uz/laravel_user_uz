@@ -15,7 +15,7 @@ class CategoriesAPIController extends Controller
     /**
      * @var CategoriesAPIService
      */
-    public $service;
+    public CategoriesAPIService $service;
 
     public function __construct(CategoriesAPIService $categoriesAPIService)
     {

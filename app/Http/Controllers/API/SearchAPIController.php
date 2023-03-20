@@ -52,7 +52,8 @@ class SearchAPIController extends Controller
         $task->save();
         return response()->json([
             'success' => true,
-            'message' => __('Успешно отменено')
+            'message' => __('Успешно отменено'),
+            'data' => $task
         ]);
     }
 

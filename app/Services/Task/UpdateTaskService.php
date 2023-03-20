@@ -545,7 +545,8 @@ class UpdateTaskService
 
         return response()->json([
             'success' => true,
-            'message' => __('Успешно сохранено')
+            'message' => __('Успешно сохранено'),
+            'data' => $task
         ]);
     }
 

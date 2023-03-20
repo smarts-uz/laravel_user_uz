@@ -505,7 +505,8 @@ class ProfileService
 
         return [
             'success' => $success,
-            'message' => $message
+            'message' => $message,
+            'data'=> $link
         ];
     }
 
@@ -623,7 +624,7 @@ class ProfileService
         return response()->json([
             'status' => $status,
             'message' => $message,
-            'data' => []
+            'data' => $data
         ]);
     }
 
@@ -935,7 +936,8 @@ class ProfileService
 
         return response()->json([
             'success' => true,
-            'message' => __('Успешно сохранено')
+            'message' => __('Успешно сохранено'),
+            'data' => $blocked_user
         ]);
     }
 

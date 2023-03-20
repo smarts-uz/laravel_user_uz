@@ -69,7 +69,11 @@ class UserAPIController extends Controller
         $data = $request->validated();
         $phone_number = $data['phone_number'];
         $this->service->reset_submit_api($phone_number);
-        return response()->json(['success' => true, 'message' => __('СМС-код отправлен!')]);
+        return response()->json([
+            'success' => true,
+            'message' => __('СМС-код отправлен!'),
+            'data' => $data
+        ]);
     }
 
 
@@ -182,7 +186,7 @@ class UserAPIController extends Controller
         $user = User::query()->where('id', $id)->firstOrFail();
         $user->update($data);
 
-        return response()->json(['success' => true, 'message' => __('Данные пользователя обновлены!')]);
+        return response()->json(['success' => true, 'message' => __('Данные пользователя обновлены!'), 'data'=>$data]);
     }
 
     /**

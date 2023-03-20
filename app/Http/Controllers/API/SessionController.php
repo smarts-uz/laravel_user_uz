@@ -7,6 +7,7 @@ use App\Http\Requests\Api\SessionDeleteRequest;
 use App\Http\Resources\SessionResource;
 use App\Models\Session;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 
 class SessionController extends Controller
 {
@@ -72,7 +73,7 @@ class SessionController extends Controller
      *     },
      * )
      */
-    public function clearSessions(SessionDeleteRequest $request)
+    public function clearSessions(SessionDeleteRequest $request): JsonResponse
     {
         /** @var User $user */
         $user = auth()->user();

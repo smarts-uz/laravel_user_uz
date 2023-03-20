@@ -3,17 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoriesRequest;
-use App\Http\Requests\BecomePerformerEmailPhone;
-use App\Http\Requests\BecomePerformerRequest;
-use App\Http\Requests\GiveTaskRequest;
-use App\Models\User;
-use App\Models\UserCategory;
-use App\Services\Profile\ProfileService;
-use App\Services\PerformersService;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use App\Http\Requests\{CategoriesRequest, BecomePerformerEmailPhone, BecomePerformerRequest, GiveTaskRequest};
+use App\Models\{User, UserCategory};
+use App\Services\{Profile\ProfileService, PerformersService};
+use Illuminate\Http\{JsonResponse, Request, Resources\Json\AnonymousResourceCollection};
 use Illuminate\Support\Facades\Auth;
 
 class PerformerAPIController extends Controller
@@ -191,9 +184,8 @@ class PerformerAPIController extends Controller
         $data = $request->validated();
         $task_id = $data['task_id'];
         $performer_id = $data['performer_id'];
-        $this->performer_service->task_give_app($task_id, $performer_id);
 
-        return response()->json(['success' => true, 'message' => 'Success']);
+        return $this->performer_service->task_give_app($task_id, $performer_id);
     }
 
     /**
@@ -334,7 +326,7 @@ class PerformerAPIController extends Controller
         $filename = $request->file('avatar');
         $this->profileService->changeAvatar($filename, $user);
 
-        return response()->json(['success' => true, 'message' => 'true']);
+        return response()->json(['success' => true, 'message' => 'success', 'data' => $filename]);
 
 
     }

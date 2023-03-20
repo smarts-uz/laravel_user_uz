@@ -365,7 +365,12 @@ class PerformersService
             'body' => NotificationService::descriptions($notification, $locale)
         ], 'notification', new NotificationResource($notification));
 
-        return response()->json(['success' => true]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Success',
+            'data'=> $performer
+
+        ]);
     }
 
 
@@ -458,7 +463,11 @@ class PerformersService
             $user->is_email_verified = 0;
         }
         $user->save();
-        return response()->json(['success' => 'true', 'message' => __('Успешно обновлено')]);
+        return response()->json([
+            'success' => 'true',
+            'message' => __('Успешно обновлено'),
+            'data'=> $data
+        ]);
     }
 
     /**
@@ -472,7 +481,11 @@ class PerformersService
         $data['born_date'] = Carbon::parse($data['born_date'])->format('Y-m-d');
         $user->update($data);
 
-        return response()->json(['success' => 'true', 'message' => __('Успешно обновлено')]);
+        return response()->json([
+            'success' => 'true',
+            'message' => __('Успешно обновлено'),
+            'data' => $data
+        ]);
     }
 
 }

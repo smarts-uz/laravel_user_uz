@@ -3,24 +3,19 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\CategoryRequest;
-use App\Http\Requests\Api\PortfolioRequest;
-use App\Http\Requests\Api\ProfileAvatarRequest;
-use App\Http\Requests\Api\ProfilePasswordRequest;
-use App\Http\Requests\Api\ProfilePhoneRequest;
-use App\Http\Requests\Api\ProfileSettingsRequest;
-use App\Http\Requests\Api\ProfileVideoRequest;
-use App\Http\Requests\Api\ResponseTemplateRequest;
-use App\Http\Requests\Api\UserReportRequest;
-use App\Http\Requests\UserBlockRequest;
-use App\Models\BlockedUser;
-use App\Models\Portfolio;
-use App\Models\ReportedUser;
-use App\Models\ResponseTemplate;
-use App\Models\User;
-use App\Services\CustomService;
-use App\Services\PerformersService;
-use App\Services\Profile\ProfileService;
+use App\Http\Requests\{Api\CategoryRequest,
+    Api\PortfolioRequest,
+    Api\ProfileAvatarRequest,
+    Api\ProfilePasswordRequest,
+    Api\ProfilePhoneRequest,
+    Api\ProfileSettingsRequest,
+    Api\ProfileVideoRequest,
+    Api\ResponseTemplateRequest,
+    Api\UserReportRequest,
+    UserBlockRequest};
+use JsonException;
+use App\Models\{Portfolio, ReportedUser, ResponseTemplate, User};
+use App\Services\{CustomService, PerformersService, Profile\ProfileService};
 use Illuminate\Http\JsonResponse as JsonResponseAlias;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -244,7 +239,7 @@ class ProfileAPIController extends Controller
      *         {"token": {}}
      *     },
      * )
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function portfolioUpdate(PortfolioRequest $request, Portfolio $portfolio): JsonResponseAlias
     {
@@ -699,7 +694,8 @@ class ProfileAPIController extends Controller
         $message = trans('trans.Settings updated successfully.');
         return response()->json([
             'success' => true,
-            'message' => $message
+            'message' => $message,
+            'data' => $validated
         ]);
     }
 
@@ -1177,7 +1173,8 @@ class ProfileAPIController extends Controller
         ]);
         return response()->json([
             'success' => true,
-            'message' => __('Сохранено')
+            'message' => __('Сохранено'),
+            'data' => $data
         ]);
     }
 
@@ -1302,7 +1299,8 @@ class ProfileAPIController extends Controller
         $this->profileService->deleteImage($image,$portfolio);
         return response()->json([
             'success' => true,
-            'message' => __('Успешно удалено')
+            'message' => __('Успешно удалено'),
+            'data' => $image
         ]);
     }
 
@@ -1440,6 +1438,7 @@ class ProfileAPIController extends Controller
         return response()->json([
             'success' => true,
             'message' => __('Успешно сохранено'),
+            'data' => $data
         ]);
     }
 
@@ -1494,6 +1493,7 @@ class ProfileAPIController extends Controller
         return response()->json([
             'success' => true,
             'message' => __('Успешно сохранено'),
+            'data' => $data
         ]);
     }
 
