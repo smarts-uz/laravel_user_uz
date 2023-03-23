@@ -4,17 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\FirebaseTokenRequest;
 use App\Http\Resources\NotificationResource;
-use App\Models\Notification;
-use App\Models\Session;
-use App\Models\User;
-use App\Services\NotificationService;
-use App\Services\Response;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Routing\Redirector;
+use App\Models\{Notification, Session, User};
+use App\Services\{NotificationService, Response};
+use Illuminate\Http\{JsonResponse, RedirectResponse, Request};
 use Illuminate\Support\Str;
-use TCG\Voyager\Events\BreadDataAdded;
-use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Http\Controllers\VoyagerBaseController;
+use TCG\Voyager\{Events\BreadDataAdded, Facades\Voyager, Http\Controllers\VoyagerBaseController};
 
 class NotificationController extends VoyagerBaseController
 {
@@ -63,6 +59,7 @@ class NotificationController extends VoyagerBaseController
      *     summary="Read notifications",
      *     @OA\Parameter (
      *          in="path",
+     *          description="Notification id kiritiladi",
      *          name="notification",
      *          required=true,
      *          @OA\Schema (
@@ -122,10 +119,11 @@ class NotificationController extends VoyagerBaseController
         return response()->json([
             'success' => true,
             'message' => __('success'),
+            'data' => $user->id
         ]);
     }
 
-    public function show_notification(Notification $notification)
+    public function show_notification(Notification $notification): Redirector|Application|RedirectResponse
     {
         $notification->update(['is_read' => 1]);
         return match ($notification->type) {
@@ -146,7 +144,7 @@ class NotificationController extends VoyagerBaseController
     }
 
 
-    public function show_notification_user(Notification $notification)
+    public function show_notification_user(Notification $notification): Redirector|Application|RedirectResponse
     {
         $notification->update(['is_read' => 1]);
         return redirect('/performers/' . $notification->user_id);
@@ -156,7 +154,7 @@ class NotificationController extends VoyagerBaseController
     /**
      * @OA\Post(
      *     path="/api/firebase-token",
-     *     tags={"Profile"},
+     *     tags={"Notifications"},
      *     summary="Firebase token",
      *     @OA\RequestBody (
      *         required=true,
@@ -330,20 +328,24 @@ class NotificationController extends VoyagerBaseController
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
+     *                    description="push notif jo'natiladigan user id, bunga qiymat kiritilsa role tanlanmasiligi kerak",
      *                    property="user_id",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
+     *                    description="push notif jo'natiladigan role, agar role tanlansa user id kiritilmaydi",
      *                    property="type",
      *                    type="string",
      *                    default="default",
      *                    enum={"all", "role_user","role_performer","role_admin"}
      *                 ),
      *                 @OA\Property (
+     *                    description="push notif title",
      *                    property="title",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
+     *                    description="push notif text",
      *                    property="text",
      *                    type="string",
      *                 ),
@@ -388,20 +390,24 @@ class NotificationController extends VoyagerBaseController
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
+     *                    description="pusher orqali notif jo'natiladigan user id, bunga qiymat kiritilsa role tanlanmasiligi kerak",
      *                    property="user_id",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
+     *                    description="pusher orqali notif jo'natiladigan role, agar role tanlansa user id kiritilmaydi",
      *                    property="type",
      *                    type="string",
      *                    default="",
      *                    enum={"all", "role_user","role_performer","role_admin"}
      *                 ),
      *                 @OA\Property (
+     *                    description="pusher notif title",
      *                    property="title",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
+     *                    description="pusher notif title",
      *                    property="text",
      *                    type="string",
      *                 ),
@@ -447,16 +453,19 @@ class NotificationController extends VoyagerBaseController
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
+     *                    description="sms notif jo'natiladigan user id, bunga qiymat kiritilsa role tanlanmasiligi kerak",
      *                    property="user_id",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
+     *                    description="sms notif jo'natiladigan role, agar role tanlansa user id kiritilmaydi",
      *                    property="type",
      *                    type="string",
      *                    default="",
      *                    enum={"all", "role_user","role_performer","role_admin"}
      *                 ),
      *                 @OA\Property (
+     *                    description="sms notif text",
      *                    property="text",
      *                    type="string",
      *                 ),
@@ -500,16 +509,19 @@ class NotificationController extends VoyagerBaseController
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
+     *                    description="email notif jo'natiladigan user id, bunga qiymat kiritilsa role tanlanmasiligi kerak",
      *                    property="user_id",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
+     *                    description="email notif jo'natiladigan role, agar role tanlansa user id kiritilmaydi",
      *                    property="type",
      *                    type="string",
      *                    default="",
      *                    enum={"all", "role_user","role_performer","role_admin"}
      *                 ),
      *                 @OA\Property (
+     *                    description="email notif text",
      *                    property="text",
      *                    type="string",
      *                 ),
@@ -553,22 +565,27 @@ class NotificationController extends VoyagerBaseController
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
+     *                    description="create task id",
      *                    property="id",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
+     *                    description="task name",
      *                    property="name",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
+     *                    description="task category id, masalan 31",
      *                    property="category_id",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
+     *                    description="task create qilganda push notif uchun title",
      *                    property="title",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
+     *                    description="task create qilganda push notif uchun body",
      *                    property="body",
      *                    type="string",
      *                 ),

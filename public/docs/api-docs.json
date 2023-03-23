@@ -21,7 +21,7 @@
                 "tags": [
                     "Blog News"
                 ],
-                "summary": "Blogs",
+                "summary": "Barcha yangiliklarni olish uchun api",
                 "operationId": "3b7ff65ea7f758f5cd712df2a0e2ed2f",
                 "responses": {
                     "200": {
@@ -41,12 +41,13 @@
                 "tags": [
                     "Blog News"
                 ],
-                "summary": "Blogs",
+                "summary": "Yangilikni kiritilgan idga qarab olish",
                 "operationId": "d903254e072b5efc2e7e395a3340c9e8",
                 "parameters": [
                     {
                         "name": "blogNew",
                         "in": "path",
+                        "description": "Kerakli yangilik idsi kiritiladi",
                         "schema": {
                             "type": "integer"
                         }
@@ -4371,6 +4372,7 @@
                     {
                         "name": "notification",
                         "in": "path",
+                        "description": "Notification id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -4423,7 +4425,7 @@
         "\/api\/firebase-token": {
             "post": {
                 "tags": [
-                    "Profile"
+                    "Notifications"
                 ],
                 "summary": "Firebase token",
                 "operationId": "c221d40772a6cf70fa55b76c08d8a03f",
@@ -4507,9 +4509,11 @@
                             "schema": {
                                 "properties": {
                                     "user_id": {
+                                        "description": "push notif jo'natiladigan user id, bunga qiymat kiritilsa role tanlanmasiligi kerak",
                                         "type": "string"
                                     },
                                     "type": {
+                                        "description": "push notif jo'natiladigan role, agar role tanlansa user id kiritilmaydi",
                                         "type": "string",
                                         "default": "default",
                                         "enum": [
@@ -4520,9 +4524,11 @@
                                         ]
                                     },
                                     "title": {
+                                        "description": "push notif title",
                                         "type": "string"
                                     },
                                     "text": {
+                                        "description": "push notif text",
                                         "type": "string"
                                     }
                                 },
@@ -4562,9 +4568,11 @@
                             "schema": {
                                 "properties": {
                                     "user_id": {
+                                        "description": "pusher orqali notif jo'natiladigan user id, bunga qiymat kiritilsa role tanlanmasiligi kerak",
                                         "type": "string"
                                     },
                                     "type": {
+                                        "description": "pusher orqali notif jo'natiladigan role, agar role tanlansa user id kiritilmaydi",
                                         "type": "string",
                                         "default": "",
                                         "enum": [
@@ -4575,9 +4583,11 @@
                                         ]
                                     },
                                     "title": {
+                                        "description": "pusher notif title",
                                         "type": "string"
                                     },
                                     "text": {
+                                        "description": "pusher notif title",
                                         "type": "string"
                                     }
                                 },
@@ -4617,9 +4627,11 @@
                             "schema": {
                                 "properties": {
                                     "user_id": {
+                                        "description": "sms notif jo'natiladigan user id, bunga qiymat kiritilsa role tanlanmasiligi kerak",
                                         "type": "string"
                                     },
                                     "type": {
+                                        "description": "sms notif jo'natiladigan role, agar role tanlansa user id kiritilmaydi",
                                         "type": "string",
                                         "default": "",
                                         "enum": [
@@ -4630,6 +4642,7 @@
                                         ]
                                     },
                                     "text": {
+                                        "description": "sms notif text",
                                         "type": "string"
                                     }
                                 },
@@ -4669,9 +4682,11 @@
                             "schema": {
                                 "properties": {
                                     "user_id": {
+                                        "description": "email notif jo'natiladigan user id, bunga qiymat kiritilsa role tanlanmasiligi kerak",
                                         "type": "string"
                                     },
                                     "type": {
+                                        "description": "email notif jo'natiladigan role, agar role tanlansa user id kiritilmaydi",
                                         "type": "string",
                                         "default": "",
                                         "enum": [
@@ -4682,6 +4697,7 @@
                                         ]
                                     },
                                     "text": {
+                                        "description": "email notif text",
                                         "type": "string"
                                     }
                                 },
@@ -4721,18 +4737,23 @@
                             "schema": {
                                 "properties": {
                                     "id": {
+                                        "description": "create task id",
                                         "type": "integer"
                                     },
                                     "name": {
+                                        "description": "task name",
                                         "type": "string"
                                     },
                                     "category_id": {
+                                        "description": "task category id, masalan 31",
                                         "type": "integer"
                                     },
                                     "title": {
+                                        "description": "task create qilganda push notif uchun title",
                                         "type": "string"
                                     },
                                     "body": {
+                                        "description": "task create qilganda push notif uchun body",
                                         "type": "string"
                                     }
                                 },
@@ -4770,6 +4791,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -4805,6 +4827,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -4840,6 +4863,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"

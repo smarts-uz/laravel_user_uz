@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Notification;
-use App\Models\Task;
-use App\Services\Task\CreateService;
-use App\Services\TaskNotificationService;
-use App\Services\UserNotificationService;
+use App\Models\{Notification, Task};
+use App\Services\{Task\CreateService, TaskNotificationService, UserNotificationService};
+use Illuminate\Contracts\{Foundation\Application, View\Factory, View\View};
+use Illuminate\Http\RedirectResponse;
 
 
 class VoyagerTaskController extends Controller
@@ -18,7 +17,7 @@ class VoyagerTaskController extends Controller
         $this->service = new CreateService();
     }
 
-    public function reported_tasks()
+    public function reported_tasks(): Factory|View|Application
     {
         abort_if(!auth()->user()->hasPermission('reported_task_view'),403);
         $tasks = Task::query()->where('status',Task::STATUS_NOT_COMPLETED)->with(['reviews','user','performer'])
@@ -29,7 +28,7 @@ class VoyagerTaskController extends Controller
         return view('task.reported-tasks',compact('tasks'));
     }
 
-    public function complete_task(Task $task)
+    public function complete_task(Task $task): RedirectResponse
     {
         abort_if(!auth()->user()->hasPermission('reported_task_complete'),403);
         $task->status = Task::STATUS_COMPLETE;
@@ -43,7 +42,7 @@ class VoyagerTaskController extends Controller
         return redirect()->route('admin.tasks.reported');
     }
 
-    public function delete_task(Task $task)
+    public function delete_task(Task $task): RedirectResponse
     {
         abort_if(!auth()->user()->hasPermission('delete_tasks'),403);
         $task->update(['status' => Task::STATUS_CANCELLED]);
@@ -51,7 +50,7 @@ class VoyagerTaskController extends Controller
         return redirect()->route('admin.tasks.reported');
     }
 
-    public function cancelTask(Task $task)
+    public function cancelTask(Task $task): RedirectResponse
     {
         TaskNotificationService::sendNotificationForCancelledTask($task);
         $task->update(['status' => Task::STATUS_CANCELLED]);
@@ -65,6 +64,7 @@ class VoyagerTaskController extends Controller
      *     summary="complete task notifications",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -88,7 +88,7 @@ class VoyagerTaskController extends Controller
      *     },
      * )
      */
-    public function test_complete_task(Task $task)
+    public function test_complete_task(Task $task): array
     {
         if (auth()->user()->hasPermission('reported_task_complete')){
             $task->status = Task::STATUS_COMPLETE;
@@ -99,7 +99,7 @@ class VoyagerTaskController extends Controller
 
             UserNotificationService::sendNotificationToPerformer($task, Notification::ADMIN_COMPLETE_TASK);
 
-            return ['success' => true];
+            return ['success' => true, 'data' => $task];
         }
         return ['success' => false];
     }
@@ -112,6 +112,7 @@ class VoyagerTaskController extends Controller
      *     summary="delete task notifications",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -135,13 +136,13 @@ class VoyagerTaskController extends Controller
      *     },
      * )
      */
-    public function test_delete_task(Task $task)
+    public function test_delete_task(Task $task): array
     {
 
         if (auth()->user()->hasPermission('delete_tasks')){
             $task->update(['status' => Task::STATUS_CANCELLED]);
             TaskNotificationService::sendNotificationForCancelledTask($task);
-            return ['success' => true];
+            return ['success' => true, 'data' => $task];
         }
 
         return ['success' => false];
@@ -155,6 +156,7 @@ class VoyagerTaskController extends Controller
      *     summary="cencel task notifications",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -178,10 +180,10 @@ class VoyagerTaskController extends Controller
      *     },
      * )
      */
-    public function test_cancel_task(Task $task)
+    public function test_cancel_task(Task $task): array
     {
         TaskNotificationService::sendNotificationForCancelledTask($task);
         $task->update(['status' => Task::STATUS_CANCELLED]);
-        return ['success' => true];
+        return ['success' => true, 'data' => $task];
     }
 }

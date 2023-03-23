@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use App\Mail\{VerifyEmail, MessageEmail};
 use App\Models\{User, Notification, UserCategory};
 use Carbon\Carbon;
@@ -65,6 +67,8 @@ class NotificationService
      * @param $task // Task model object
      * @param  $user_id
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public static function sendTaskNotification($task, $user_id): void
     {
@@ -167,6 +171,8 @@ class NotificationService
      *
      * @param $task // Task model object
      * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public static function sendResponseToTaskNotification($task): bool
     {
@@ -233,6 +239,8 @@ class NotificationService
      * @param $payment_system
      * @param $transaction_id
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public static function sendBalanceReplenished($user_id, $amount, $payment_system, $transaction_id): void
     {
@@ -254,6 +262,8 @@ class NotificationService
      * @param User $user
      * @param Notification $notification
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public static function pushNoti(User $user, Notification $notification): void
     {
@@ -279,7 +289,6 @@ class NotificationService
      */
     public function firebase_notif($type, $title, $text, $user_id): array
     {
-
         $users = match ($type) {
             'all' => User::all(),
             'role_user' => User::query()->where('role_id', User::ROLE_USER)->get(),
@@ -287,7 +296,7 @@ class NotificationService
             'role_admin' => User::query()->where('role_id', User::ROLE_ADMIN)->get(),
             default => null,
         };
-        if ($users !== null){
+        if ($users !== null && $user_id === null){
             foreach ($users as $user) {
                 $notification = [
                     'user_id' => $user->id,
@@ -300,7 +309,7 @@ class NotificationService
                 ], 'notification', $notification);
             }
         }
-        if ($user_id !== null){
+        if ($user_id !== null && $users === null){
             $user = User::query()->findOrFail($user_id);
             $notification = [
                 'user_id' => $user->id,
@@ -313,7 +322,16 @@ class NotificationService
             ], 'notification', $notification);
         }
 
-        return ['success' => true, 'message' => 'success'];
+        return [
+            'success' => true,
+            'message' => 'success',
+            'data' => [
+                'type' => $type,
+                'title' => $title,
+                'text' => $text,
+                'user_id' => $user_id
+            ]
+        ];
     }
 
     /**
@@ -333,7 +351,7 @@ class NotificationService
             'role_admin' => User::query()->where('role_id', User::ROLE_ADMIN)->get(),
             default => null,
         };
-        if ($users !== null){
+        if ($users !== null && $user_id === null){
             foreach ($users as $user) {
                 self::sendNotificationRequest([$user->id], [
                     'created_date' => '29 Jan',
@@ -344,7 +362,7 @@ class NotificationService
                 ]);
             }
         }
-        if ($user_id !== null){
+        if ($user_id !== null && $users === null){
             $user = User::query()->findOrFail($user_id);
             self::sendNotificationRequest([$user->id], [
                 'created_date' => '29 Jan',
@@ -355,7 +373,16 @@ class NotificationService
             ]);
         }
 
-        return ['success' => true, 'message' => 'success'];
+        return [
+            'success' => true,
+            'message' => 'success',
+            'data' => [
+                'type' => $type,
+                'title' => $title,
+                'text' => $text,
+                'user_id' => $user_id
+            ]
+        ];
     }
 
     /**
@@ -374,19 +401,27 @@ class NotificationService
             'role_admin' => User::query()->where('role_id', User::ROLE_ADMIN)->get(),
             default => null,
         };
-        if ($users !== null){
+        if ($users !== null && $user_id === null){
             foreach ($users as $user) {
                 $phone_number = (new CustomService)->correctPhoneNumber($user->phone_number);
                 SmsMobileService::sms_packages($phone_number, $text);
             }
         }
-        if ($user_id !== null){
+        if ($user_id !== null && $users === null){
             $user = User::query()->findOrFail($user_id);
             $phone_number = (new CustomService)->correctPhoneNumber($user->phone_number);
             SmsMobileService::sms_packages($phone_number, $text);
         }
 
-        return ['success' => true, 'message' => 'success'];
+        return [
+            'success' => true,
+            'message' => 'success',
+            'data' => [
+                'type' => $type,
+                'text' => $text,
+                'user_id' => $user_id
+            ]
+        ];
     }
 
     /**
@@ -405,19 +440,37 @@ class NotificationService
             'role_admin' => User::query()->where('role_id', User::ROLE_ADMIN)->get(),
             default => null,
         };
-        if ($users !== null){
+        if ($users !== null && $user_id === null){
             foreach ($users as $user) {
                 Mail::to($user->email)->send(new VerifyEmail($text));
             }
         }
-        if ($user_id !== null){
+        if ($user_id !== null && $users === null){
             $user = User::query()->findOrFail($user_id);
             Mail::to($user->email)->send(new VerifyEmail($text));
         }
 
-        return ['success' => true, 'message' => 'success'];
+        return [
+            'success' => true,
+            'message' => 'success',
+            'data' => [
+               'type' => $type,
+               'text' => $text,
+               'user_id' => $user_id
+            ]
+        ];
     }
 
+    /**
+     * Test task create notification
+     * @param $user
+     * @param $task_id
+     * @param $task_name
+     * @param $task_category_id
+     * @param $title
+     * @param $body
+     * @return JsonResponse
+     */
     public function task_create_notification($user, $task_id, $task_name, $task_category_id, $title, $body): JsonResponse
     {
         $user_cat_ids = UserCategory::query()->where('category_id', $task_category_id)->pluck('user_id')->toArray();
@@ -426,7 +479,7 @@ class NotificationService
             $notification = [
                 'user_id' => $user->id,
                 'performer_id' => $performer->id,
-                'description' => 'description',
+                'description' => $title,
                 'task_id' => $task_id,
                 "cat_id" => $task_category_id,
                 "name_task" => $task_name,
@@ -438,7 +491,11 @@ class NotificationService
             ], 'notification', $notification);
         }
 
-        return response()->json(['success' => true, 'message' => 'success']);
+        return response()->json([
+            'success' => true,
+            'message' => 'success',
+            'data' => $notification
+        ]);
     }
 
     /**

@@ -13,7 +13,7 @@ class BlogController extends Controller
      * @OA\Get(
      *     path="/api/blog-news",
      *     tags={"Blog News"},
-     *     summary="Blogs",
+     *     summary="Barcha yangiliklarni olish uchun api",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -40,9 +40,10 @@ class BlogController extends Controller
      * @OA\Get(
      *     path="/api/blog-news/{blogNew}",
      *     tags={"Blog News"},
-     *     summary="Blogs",
+     *     summary="Yangilikni kiritilgan idga qarab olish",
      *     @OA\Parameter (
      *          in="path",
+     *          description="Kerakli yangilik idsi kiritiladi",
      *          name="blogNew",
      *          @OA\Schema (
      *              type="integer"

@@ -152,7 +152,7 @@ Route::get('/settings/{key}', [FaqController::class, 'get_key']); // fix
 Route::post('login', [UserAPIController::class, 'login']); // fix
 Route::post('register', [UserAPIController::class, 'register']); // fix
 Route::post('/reset', [UserAPIController::class, 'reset_submit']); // fix
-Route::post('/reset/password', [UserAPIController::class, 'reset_password_save'])->name('user.reset_password_save'); // fix
+Route::post('/reset/password', [UserAPIController::class, 'reset_password_save']); // fix
 Route::post('/code', [UserAPIController::class, 'reset_code'])->name('user.reset_code'); // fix
 Route::get('/support-admin', [UserAPIController::class, "getSupportId"]); // fix
 
