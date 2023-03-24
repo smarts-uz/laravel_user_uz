@@ -2,22 +2,17 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\Api\{TaskAddressRequest,
-    TaskBudgetRequest, TaskComplaintRequest,
-    TaskContactsRequest, TaskCustomRequest,
-    TaskDateRequest, TaskNameRequest,
-    TaskNoteRequest, TaskRemoteRequest,
-    TaskResponseRequest, TaskVerificationRequest};
+use App\Http\Requests\Api\{TaskAddressRequest, TaskBudgetRequest, TaskComplaintRequest,
+    TaskContactsRequest, TaskCustomRequest, TaskDateRequest, TaskNameRequest,
+    TaskNoteRequest, TaskRemoteRequest, TaskResponseRequest, TaskVerificationRequest};
 use App\Http\Resources\{ComplianceTypeResource,
     TaskSingleResource, TaskPaginationResource};
 use Illuminate\{Http\Request,
     Http\JsonResponse, Routing\Controller,
     Validation\ValidationException, Http\Resources\Json\AnonymousResourceCollection};
-use App\Models\{User, Task, Compliance, TaskResponse, ComplianceType};
-use App\Services\{Task\TaskService,
-    Task\ResponseService, Task\CreateTaskService,
-    Task\FilterTaskService, Task\UpdateTaskService,
-    Response, TelegramService};
+use App\Models\{User, Task, TaskResponse, ComplianceType};
+use App\Services\{Task\TaskService, Task\ResponseService,
+    Task\CreateTaskService, Task\FilterTaskService, Task\UpdateTaskService, Response};
 
 class TaskAPIController extends Controller
 {
@@ -219,9 +214,10 @@ class TaskAPIController extends Controller
      * @OA\Post(
      *     path="/api/task-status-update/{task}",
      *     tags={"Task"},
-     *     summary="Cancel Status Open",
+     *     summary="Task Status changed from cancel to open",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task idsi kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -248,19 +244,8 @@ class TaskAPIController extends Controller
 
     public function taskStatusUpdate(Task $task): JsonResponse
     {
-        if ($task->user_id !== auth()->id()){
-            return response()->json([
-                'success' => false,
-                "message" => __('Задача не найдена')
-            ], 403);
-        }
-        $task->status = Task::STATUS_OPEN;
-        $task->save();
-        return response()->json([
-            'success' => true,
-            'message' => __('Создано успешно'),
-            'data' => $task->status
-        ]);
+        $authId = auth()->id();
+        return $this->task_service->taskStatusUpdate($task, $authId);
     }
 
     /**
@@ -286,6 +271,7 @@ class TaskAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
+     *          description="latitude bo'yicha filter",
      *          name="lat",
      *          @OA\Schema (
      *              type="string"
@@ -293,6 +279,7 @@ class TaskAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
+     *          description="longitude bo'yicha filter",
      *          name="long",
      *          @OA\Schema (
      *              type="string"
@@ -300,6 +287,7 @@ class TaskAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
+     *          description="task budgeti kiritiladi",
      *          name="budget",
      *          @OA\Schema (
      *              type="integer"
@@ -307,6 +295,7 @@ class TaskAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
+     *          description="remote task bo'lsa true, bo'lmasa false bo'ladi",
      *          name="is_remote",
      *          @OA\Schema (
      *              type="boolean"
@@ -314,6 +303,7 @@ class TaskAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
+     *          description="otklik tashlangan task bo'lsa true, bo'lmasa false bo'ladi",
      *          name="without_response",
      *          @OA\Schema (
      *              type="boolean"
@@ -321,6 +311,7 @@ class TaskAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
+     *          description="difference bo'yicha filter",
      *          name="difference",
      *          @OA\Schema (
      *              type="integer"
@@ -328,12 +319,12 @@ class TaskAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
+     *          description="task nomi bo'yicha qidirish",
      *          name="s",
      *          @OA\Schema (
      *              type="string"
      *          )
      *     ),
-     *
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -351,7 +342,6 @@ class TaskAPIController extends Controller
     public function filter(Request $request): AnonymousResourceCollection
     {
         $tasks = $this->filter_service->filter($request->all());
-
         return TaskSingleResource::collection($tasks);
     }
 
@@ -362,6 +352,7 @@ class TaskAPIController extends Controller
      *     summary="Get Task By ID",
      *     @OA\Parameter(
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema(
@@ -396,9 +387,10 @@ class TaskAPIController extends Controller
      * @OA\Post (
      *     path="/api/user/{user}",
      *     tags={"Task"},
-     *     summary="User active task and step null",
+     *     summary="User active task and active step null",
      *     @OA\Parameter (
      *          in="path",
+     *          description="user id kiritiladi",
      *          name="user",
      *          required=true,
      *          @OA\Schema (
@@ -421,7 +413,6 @@ class TaskAPIController extends Controller
      */
     public function active_task_null(User $user): JsonResponse
     {
-
         $user->active_step = null;
         $user->active_task = null;
         $user->save();
@@ -439,6 +430,7 @@ class TaskAPIController extends Controller
      *     summary="Get My Tasks Count",
      *     @OA\Parameter(
      *          in="query",
+     *          description="0 yoki 1, 0 bo'lsa user create qilgan tasklari, 1 bo'lsa performer bo'lgan tasklari",
      *          name="is_performer",
      *          required=false,
      *          @OA\Schema(
@@ -468,17 +460,7 @@ class TaskAPIController extends Controller
         $user = auth()->user();
         $is_performer = $request->get('is_performer');
 
-        $column = $is_performer ? 'performer_id' : 'user_id';
-
-        $open_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_OPEN)->count(), 'status' => Task::STATUS_OPEN];
-        $in_process_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_IN_PROGRESS)->count(), 'status' => Task::STATUS_IN_PROGRESS];
-        $complete_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_COMPLETE)->count(), 'status' => Task::STATUS_COMPLETE];
-        $cancelled_tasks = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_CANCELLED)->count(), 'status' => Task::STATUS_CANCELLED];
-        $without_reviews = ['count' => Task::query()->where($column, $user->id)->where('status', Task::STATUS_NOT_COMPLETED)->count(), 'status' => Task::STATUS_NOT_COMPLETED];
-        $all = ['count' => $open_tasks['count'] + $in_process_tasks['count'] + $complete_tasks['count'] + $cancelled_tasks['count'] + $without_reviews['count'], 'status' => 0];
-
-
-        return response()->json(['success' => true, 'data' => compact('open_tasks', 'in_process_tasks', 'complete_tasks', 'cancelled_tasks', 'without_reviews', 'all')]);
+        return $this->task_service->my_tasks_count($user, $is_performer);
     }
 
     /**
@@ -488,6 +470,7 @@ class TaskAPIController extends Controller
      *     summary="Get My Tasks",
      *     @OA\Parameter(
      *          in="query",
+     *          description="0 yoki 1, 0 bo'lsa user create qilgan tasklari, 1 bo'lsa performer bo'lgan tasklari",
      *          name="is_performer",
      *          required=false,
      *          @OA\Schema(
@@ -496,6 +479,7 @@ class TaskAPIController extends Controller
      *     ),
      *     @OA\Parameter(
      *          in="query",
+     *          description="task statusi kiritiladi",
      *          name="status",
      *          required=true,
      *          @OA\Schema(
@@ -528,16 +512,7 @@ class TaskAPIController extends Controller
         $user = auth()->user();
         $is_performer = $request->get('is_performer');
         $status = $request->get('status');
-
-        $column = $is_performer ? 'performer_id' : 'user_id';
-        $tasks = Task::query()->where($column, $user->id);
-
-        if ($status)
-            $tasks = $tasks->where('status', $status);
-        else
-            $tasks = $tasks->where('status', '!=', 0);
-
-        return new TaskPaginationResource($tasks->orderByDesc('created_at')->paginate());
+        return $this->task_service->my_tasks_all($user, $is_performer, $status);
     }
 
     /**
@@ -1614,6 +1589,7 @@ class TaskAPIController extends Controller
      *     summary="Task complain",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -1658,22 +1634,7 @@ class TaskAPIController extends Controller
         $data = $request->validated();
         /** @var User $user */
         $user = auth()->user();
-        $data['task_id'] = $task->id;
-        $data['user_id'] = $user->id;
-        /** @var Compliance $compliant */
-        $compliant = Compliance::query()->create($data);
-        $data['id'] = $compliant->id;
-        $data['complaint'] = $compliant->text;
-        $data['user_name'] = $user->name;
-        $data['task_name'] = $task->name;
-        if (setting('site.bot_token','') && setting('site.channel_username','')) {
-            (new TelegramService())->sendMessage($data);
-        }
-        return response()->json([
-            'success' => true,
-            'message' => trans('trans.Complaint is sent.'),
-            'data' => $data
-        ]);
+        return $this->task_service->taskComplain($data, $user, $task);
     }
 
     /**
@@ -1746,18 +1707,9 @@ class TaskAPIController extends Controller
      */
     public function performer_tasks(Request $request): TaskPaginationResource
     {
-
         $user_id = $request->get('user_id');
         $status = $request->get('status');
-
-        if((int)$status === 1){
-            $tasks = Task::where('user_id', $user_id)->where('status', Task::STATUS_COMPLETE);
-        }else{
-            $tasks = Task::where('performer_id', $user_id)->where('status', Task::STATUS_COMPLETE);
-        }
-
-        return new TaskPaginationResource($tasks->orderByDesc('created_at')->paginate());
-
+        return $this->task_service->performer_tasks($user_id, $status);
     }
 
     /**
@@ -1793,16 +1745,6 @@ class TaskAPIController extends Controller
     public function all_tasks(Request $request): TaskPaginationResource
     {
         $user_id = $request->get('user_id');
-        $statuses = [
-            Task::STATUS_OPEN,
-            Task::STATUS_RESPONSE,
-            Task::STATUS_IN_PROGRESS,
-            Task::STATUS_COMPLETE,
-            Task::STATUS_NOT_COMPLETED,
-            Task::STATUS_CANCELLED];
-        $tasks = Task::where('user_id', $user_id)->whereIn('status', $statuses);
-
-        return new TaskPaginationResource($tasks->orderByDesc('created_at')->paginate());
-
+        return $this->task_service->all_tasks($user_id);
     }
 }
