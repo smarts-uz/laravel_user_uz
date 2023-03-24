@@ -3,50 +3,35 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Requests\Api\{TaskAddressRequest,
-    TaskBudgetRequest,
-    TaskComplaintRequest,
-    TaskContactsRequest,
-    TaskCustomRequest,
-    TaskDateRequest,
-    TaskNameRequest,
-    TaskNoteRequest,
-    TaskRemoteRequest,
-    TaskResponseRequest,
-    TaskVerificationRequest};
+    TaskBudgetRequest, TaskComplaintRequest,
+    TaskContactsRequest, TaskCustomRequest,
+    TaskDateRequest, TaskNameRequest,
+    TaskNoteRequest, TaskRemoteRequest,
+    TaskResponseRequest, TaskVerificationRequest};
 use App\Http\Resources\{ComplianceTypeResource,
-    SameTaskResource,
-    TaskSingleResource,
-    TaskResponseResource,
-    TaskPaginationResource};
+    TaskSingleResource, TaskPaginationResource};
 use Illuminate\{Http\Request,
-    Http\JsonResponse,
-    Routing\Controller,
-    Validation\ValidationException,
-    Http\Resources\Json\AnonymousResourceCollection};
+    Http\JsonResponse, Routing\Controller,
+    Validation\ValidationException, Http\Resources\Json\AnonymousResourceCollection};
 use App\Models\{User, Task, Compliance, TaskResponse, ComplianceType};
 use App\Services\{Task\TaskService,
-    Task\CreateService,
-    Task\ResponseService,
-    Task\CreateTaskService,
-    Task\FilterTaskService,
-    Task\UpdateTaskService,
-    Response,
-    TelegramService};
+    Task\ResponseService, Task\CreateTaskService,
+    Task\FilterTaskService, Task\UpdateTaskService,
+    Response, TelegramService};
 
 class TaskAPIController extends Controller
 {
     use Response;
 
-    private CreateService $service;
+    private TaskService $task_service;
     private ResponseService $response_service;
     private FilterTaskService $filter_service;
     private CreateTaskService $create_task_service;
     private UpdateTaskService $update_task_service;
-    public const SOME_TASK_LIMIT = 10;
 
     public function __construct()
     {
-        $this->service = new CreateService();
+        $this->task_service = new TaskService();
         $this->filter_service = new FilterTaskService();
         $this->response_service = new ResponseService();
         $this->create_task_service = new CreateTaskService();
@@ -60,6 +45,7 @@ class TaskAPIController extends Controller
      *     summary="Same tasks by Task ID",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task id yoziladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -82,9 +68,7 @@ class TaskAPIController extends Controller
      */
     public function same_tasks(Task $task): AnonymousResourceCollection
     {
-        $tasks = $task->category->tasks()->where('id', '!=', $task->id);
-        $tasks = $tasks->where('status', Task::STATUS_OPEN)->take(self::SOME_TASK_LIMIT)->orderByDesc('created_at')->get();
-        return SameTaskResource::collection($tasks);
+        return $this->task_service->same_tasks($task);
     }
 
     /**
@@ -94,10 +78,11 @@ class TaskAPIController extends Controller
      *     summary="Response tasks",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task id yoziladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
-     *              type="string"
+     *              type="integer"
      *          )
      *     ),
      *     @OA\Response (
@@ -119,28 +104,8 @@ class TaskAPIController extends Controller
      */
     public function responses(Request $request, Task $task): AnonymousResourceCollection
     {
-        if ($task->user_id === auth()->id()) {
-            switch ($request->get('filter')) {
-                case 'rating' :
-                    $responses = TaskResponse::query()->select('task_responses.*')->join('users', 'task_responses.performer_id', '=', 'users.id')
-                        ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating');
-                    break;
-                case 'date' :
-                    $responses = $task->responses()->orderByDesc('created_at');
-                    break;
-                case 'price' :
-                    $responses = $task->responses()->orderBy('price');
-                    break;
-                default :
-                    $responses = $task->responses();
-                    break;
-            }
-        } else {
-            $responses = $task->responses()->where('performer_id', auth()->id());
-        }
-        $responses->where('performer_id', '!=', $task->performer_id);
-        return TaskResponseResource::collection($responses->paginate(5));
-
+       $filter = $request->get('filter');
+       return $this->task_service->responses($filter, $task);
     }
 
     /**
@@ -150,6 +115,7 @@ class TaskAPIController extends Controller
      *     summary="Send Response",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task id yoziladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -163,10 +129,12 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="description",
+     *                    description="otklik tavsifi yoziladi",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="price",
+     *                    description="otklik narxi yoziladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
@@ -198,21 +166,8 @@ class TaskAPIController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-
-        switch (true) {
-            case ((int)$task->user_id === (int)$user->id) :
-                return $this->fail(null, trans('trans.your task'));
-            case ((int)$user->role_id !== User::ROLE_PERFORMER) :
-                return $this->fail(1, trans('trans.not performer')); // 1 -> for open become performer page in app
-            case (!($user->is_phone_number_verified)) :
-                return $this->fail(null, trans('trans.verify phone'));
-        }
         $data = $request->validated();
-        /** @var User $auth_user */
-        $auth_user = auth()->user();
-        $response = $this->response_service->store($data, $task, $auth_user);
-
-        return response()->json($response);
+        return $this->task_service->response_store($task, $user, $data);
     }
 
     /**
@@ -1711,8 +1666,9 @@ class TaskAPIController extends Controller
         $data['complaint'] = $compliant->text;
         $data['user_name'] = $user->name;
         $data['task_name'] = $task->name;
-        if (setting('site.bot_token','') && setting('site.channel_username',''))
+        if (setting('site.bot_token','') && setting('site.channel_username','')) {
             (new TelegramService())->sendMessage($data);
+        }
         return response()->json([
             'success' => true,
             'message' => trans('trans.Complaint is sent.'),

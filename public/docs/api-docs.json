@@ -73,16 +73,6 @@
                 ],
                 "summary": "Get list of Category",
                 "operationId": "f923daf680ac66deb18bd56437ca2a23",
-                "parameters": [
-                    {
-                        "name": "lang",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -107,6 +97,7 @@
                     {
                         "name": "category",
                         "in": "query",
+                        "description": "Category name kiritiladi",
                         "schema": {
                             "type": "string"
                         }
@@ -136,6 +127,7 @@
                     {
                         "name": "name",
                         "in": "query",
+                        "description": "Category name kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -160,7 +152,7 @@
                 "tags": [
                     "CategoryAPI"
                 ],
-                "summary": "Get All Categories",
+                "summary": "Get All Parent Categories",
                 "operationId": "e8afb8bb1052e6310214fc871fcbe225",
                 "responses": {
                     "200": {
@@ -186,6 +178,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Category id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -235,7 +228,7 @@
                 "tags": [
                     "FAQ"
                 ],
-                "summary": "faqs",
+                "summary": "Get list of Faqs",
                 "operationId": "57c4fa7ceebfb20a59c69528a9a7067e",
                 "responses": {
                     "200": {
@@ -255,12 +248,13 @@
                 "tags": [
                     "FAQ"
                 ],
-                "summary": "faqs id",
+                "summary": "Get faq by show ID",
                 "operationId": "0f07137332016dcec2fdfb90dda6102a",
                 "parameters": [
                     {
                         "name": "faq_id",
                         "in": "path",
+                        "description": "faq id kiritiladi",
                         "schema": {
                             "type": "integer"
                         }
@@ -284,7 +278,7 @@
                 "tags": [
                     "Setting"
                 ],
-                "summary": "setting all",
+                "summary": "Get list of setting",
                 "operationId": "f7ca8adc84c1dcad0668ef47ae66d2c9",
                 "responses": {
                     "200": {
@@ -309,12 +303,13 @@
                 "tags": [
                     "Setting"
                 ],
-                "summary": "setting key",
+                "summary": "Get setting by show key",
                 "operationId": "1d06abedf33b9519a93b56cb564f43df",
                 "parameters": [
                     {
                         "name": "key",
                         "in": "path",
+                        "description": "Adminkadan yaratilgan kerakli settingning keyi kiritiladi",
                         "schema": {
                             "type": "string"
                         }
@@ -2414,6 +2409,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id yoziladi",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -2444,9 +2440,10 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id yoziladi",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -2479,6 +2476,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id yoziladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2492,9 +2490,11 @@
                             "schema": {
                                 "properties": {
                                     "description": {
+                                        "description": "otklik tavsifi yoziladi",
                                         "type": "string"
                                     },
                                     "price": {
+                                        "description": "otklik narxi yoziladi",
                                         "type": "integer"
                                     },
                                     "not_free": {

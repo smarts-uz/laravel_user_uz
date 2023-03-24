@@ -3,7 +3,14 @@
 namespace App\Services\Task;
 
 
-use App\Http\Resources\{PerformerResponseResource, TaskAddressResource, UserInTaskResource};
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use App\Http\Resources\{PerformerResponseResource,
+    SameTaskResource,
+    TaskAddressResource,
+    TaskResponseResource,
+    UserInTaskResource};
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use App\Models\{Task, TaskResponse, User};
 use App\Services\Response;
 use Illuminate\Http\JsonResponse;
@@ -13,6 +20,7 @@ class TaskService
 {
     use Response;
     public ResponseService $response_service;
+    public const SOME_TASK_LIMIT = 10;
 
     public function __construct()
     {
@@ -57,7 +65,7 @@ class TaskService
                 ->where('performer_id', $task->performer_id)
                 ->first();
 
-            $data = ['data' => [
+            return ['data' => [
                 'id' => $task->id,
                 'name' => $task->name,
                 'address' => (!empty($task->addresses)) ? TaskAddressResource::collection($task->addresses) : [],
@@ -87,7 +95,6 @@ class TaskService
                 'response_price' => setting('admin.pullik_otklik',2000),
                 'free_response' => setting('admin.bepul_otklik',3000)
             ]];
-            return $data;
 
         }
 
@@ -99,66 +106,61 @@ class TaskService
     }
 
     /**
-     *
-     * Function
-     * @param $address
-     * @return  array
+     * Shu $task categoriyasiga oid o'xshash tasklarni qaytaradi
+     * @param $task
+     * @return AnonymousResourceCollection
      */
-    public function address($address): array
+    public function same_tasks($task): AnonymousResourceCollection
     {
-        return [
-            'location' => $address->location,
-            'longitude' => $address->longitude,
-            'latitude' => $address->latitude,
-        ];
+        $tasks = $task->category->tasks()->where('id', '!=', $task->id);
+        $tasks = $tasks->where('status', Task::STATUS_OPEN)->take(self::SOME_TASK_LIMIT)->orderByDesc('created_at')->get();
+        return SameTaskResource::collection($tasks);
     }
 
     /**
-     *
-     * Function  responses
-     * @param $task_id
-     * @param $auth_id
+     * Shu $taskga otklik qilganlarni userlarni qaytaradi
      * @param $filter
-     * @return  array[]
+     * @param $task
+     * @return AnonymousResourceCollection
      */
-    public function responses($task_id, $auth_id, $filter): array
+    public function responses($filter, $task): AnonymousResourceCollection
     {
-        $task = Task::select('user_id', 'id', 'performer_id')->find($task_id);
-        if ($task->user_id === $auth_id) {
-            switch ($filter) {
-                case 'rating' :
-                    $responses = TaskResponse::query()->select('task_responses.*')->join('users', 'task_responses.performer_id', '=', 'users.id')
-                        ->where('task_responses.task_id', '=', $task_id)->orderByDesc('users.review_rating');
-                    break;
-                case 'date' :
-                    $responses = $task->responses()->orderByDesc('created_at');
-                    break;
-                case 'price' :
-                    $responses = $task->responses()->orderBy('price');
-                    break;
-                default :
-                    $responses = $task->responses();
-                    break;
-            }
+        if ($task->user_id === auth()->id()) {
+            $responses = match ($filter) {
+                'rating' => TaskResponse::query()->select('task_responses.*')->join('users', 'task_responses.performer_id', '=', 'users.id')
+                    ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating'),
+                'date' => $task->responses()->orderByDesc('created_at'),
+                'price' => $task->responses()->orderBy('price'),
+                default => $task->responses(),
+            };
         } else {
-            $responses = $task->responses()->where('performer_id', $auth_id);
+            $responses = $task->responses()->where('performer_id', auth()->id());
         }
-        $responses->where('performer_id', '!=', $task->performer_id)->paginate(5);
-
-        $data = [];
-        foreach ($responses as $respons) {
-            $data = [
-                'id' => $respons->id,
-                'user' => new UserInTaskResource($respons->performer),
-                'budget' => $respons->price,
-                'description' =>$respons->description,
-                'created_at' =>$respons->created,
-                'not_free' => $respons->not_free
-            ];
-        }
-
-        return ['data' => $data];
+        $responses->where('performer_id', '!=', $task->performer_id);
+        return TaskResponseResource::collection($responses->paginate(5));
     }
 
+    /**
+     * Bu method app orqali taskka otklik tashlash
+     * @param $task
+     * @param $user
+     * @param $data
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function response_store($task, $user, $data): JsonResponse
+    {
+        switch (true) {
+            case ((int)$task->user_id === (int)$user->id) :
+                return $this->fail(null, trans('trans.your task'));
+            case ((int)$user->role_id !== User::ROLE_PERFORMER) :
+                return $this->fail(1, trans('trans.not performer')); // 1 -> for open become performer page in app
+            case (!($user->is_phone_number_verified)) :
+                return $this->fail(null, trans('trans.verify phone'));
+        }
+        $response = $this->response_service->store($data, $task, $user);
 
+        return response()->json($response);
+    }
 }

@@ -22,7 +22,7 @@ class FaqController extends Controller
      * @OA\Get(
      *     path="/api/faq",
      *     tags={"FAQ"},
-     *     summary="faqs",
+     *     summary="Get list of Faqs",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -46,9 +46,10 @@ class FaqController extends Controller
      * @OA\Get(
      *     path="/api/faq/{faq_id}",
      *     tags={"FAQ"},
-     *     summary="faqs id",
+     *     summary="Get faq by show ID",
      *     @OA\Parameter (
      *          in="path",
+     *          description="faq id kiritiladi",
      *          name="faq_id",
      *          @OA\Schema (
      *              type="integer"
@@ -80,7 +81,7 @@ class FaqController extends Controller
      * @OA\Get(
      *     path="/api/settings/get-all",
      *     tags={"Setting"},
-     *     summary="setting all",
+     *     summary="Get list of setting",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -107,9 +108,10 @@ class FaqController extends Controller
      * @OA\Get(
      *     path="/api/settings/{key}",
      *     tags={"Setting"},
-     *     summary="setting key",
+     *     summary="Get setting by show key",
      *     @OA\Parameter (
      *          in="path",
+     *          description="Adminkadan yaratilgan kerakli settingning keyi kiritiladi",
      *          name="key",
      *          @OA\Schema (
      *              type="string"

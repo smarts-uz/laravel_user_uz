@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Resources\CategoryIndexResource;
-use App\Http\Resources\CategoryShowResource;
-use App\Models\Category;
 use App\Services\Task\CategoriesAPIService;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
 
 class CategoriesAPIController extends Controller
@@ -27,14 +23,6 @@ class CategoriesAPIController extends Controller
      *     path="/api/categories",
      *     tags={"CategoryAPI"},
      *     summary="Get list of Category",
-     *     @OA\Parameter(
-     *          in="query",
-     *          name="lang",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          ),
-     *     ),
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -61,6 +49,7 @@ class CategoriesAPIController extends Controller
      *     summary="Popular categories",
      *     @OA\Parameter(
      *          in="query",
+     *          description="Category name kiritiladi",
      *          name="category",
      *          @OA\Schema(
      *              type="string"
@@ -93,6 +82,7 @@ class CategoriesAPIController extends Controller
      *     summary="Search Category by name",
      *     @OA\Parameter(
      *          in="query",
+     *          description="Category name kiritiladi",
      *          name="name",
      *          required=true,
      *          @OA\Schema(
@@ -124,7 +114,7 @@ class CategoriesAPIController extends Controller
      * @OA\Get(
      *     path="/api/categories-parent",
      *     tags={"CategoryAPI"},
-     *     summary="Get All Categories",
+     *     summary="Get All Parent Categories",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -144,7 +134,6 @@ class CategoriesAPIController extends Controller
         return $this->service->parents();
     }
 
-
     /**
      * @OA\Get(
      *     path="/api/categories/{id}",
@@ -152,6 +141,7 @@ class CategoriesAPIController extends Controller
      *     summary="Get category by show ID",
      *     @OA\Parameter(
      *          in="path",
+     *          description="Category id kiritiladi",
      *          name="id",
      *          required=true,
      *          @OA\Schema(
@@ -172,10 +162,9 @@ class CategoriesAPIController extends Controller
      *     )
      * )
      */
-    public function show($category_id, Request $request)
+    public function show($category_id): array
     {
-        $lang = $request->get('lang');
-        return $this->service->show($category_id, $lang);
+        return $this->service->show($category_id);
     }
 
     /**

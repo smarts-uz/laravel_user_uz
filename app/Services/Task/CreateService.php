@@ -33,12 +33,12 @@ class CreateService
         $item->child_categories = collect($category)->where('parent_id', '!=', null)->all();
         return $item;
     }
+
     /**
      *
      * Function  syncCustomFields
      * Mazkur metod Task obyektiga unga tegishli bo'lgan custom fieldslarni o'chirib beradi
-     * @param Task $task Task Object
-     *
+     * @param $task_id
      */
     public function syncCustomFields($task_id): void
     {
@@ -52,8 +52,7 @@ class CreateService
      *
      * Function  attachCustomFields
      * Mazkur metod Task obyektiga, unga tegishli bo'lgan custom fieldslarni qo'shib beradi
-     * @param Task $task Task Object
-     *
+     * @param $task_id
      */
 
     public function attachCustomFields($task_id): void
@@ -127,9 +126,9 @@ class CreateService
      * @param int $task_id
      * @param string $routeName
      * @param $request
-     * @return  Builder|Builder|Collection|Model|null
+     * @return  Builder|Collection|Model|null
      */
-    public function attachCustomFieldsByRoute(int $task_id, string $routeName, $request)
+    public function attachCustomFieldsByRoute(int $task_id, string $routeName, $request): Model|Collection|Builder|null
     {
         $task = Task::with('category.custom_fields')->find($task_id);
         foreach ($task->category->custom_fields()->where('route', $routeName)->get() as $data) {

@@ -15,6 +15,9 @@ use App\Models\WalletBalance;
 use App\Services\CustomService;
 use App\Services\NotificationService;
 use App\Services\SmsMobileService;
+use Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class ResponseService
 {
@@ -26,7 +29,8 @@ class ResponseService
      * @param $task
      * @param $auth_user
      * @return array
-     * @throws \Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function store($data, $task, $auth_user): array
     {
@@ -96,7 +100,7 @@ class ResponseService
      * Mazkur metod taskka tashlangan otkliklar orasidan ispolnitelni tanlashda ishlatiladi
      * @param $response
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function selectPerformer($response): array
     {

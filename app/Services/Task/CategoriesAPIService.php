@@ -21,14 +21,12 @@ class CategoriesAPIService
     /**
      *
      * @param $category_id
-     * @param $lang
      * @return array[]
      */
     #[ArrayShape(['data' => "array"])]
-    public function show($category_id, $lang): array
+    public function show($category_id): array
     {
-        $category = Category::select('parent_id','name', 'ico', 'max', 'min', 'double_address')
-        ->withTranslation($lang)->find($category_id);
+        $category = Category::select('parent_id','name', 'ico', 'max', 'min', 'double_address')->find($category_id);
         $data = (!empty($category)) ? [
             'id' => $category_id,
             'parent_id' => $category->parent_id,
