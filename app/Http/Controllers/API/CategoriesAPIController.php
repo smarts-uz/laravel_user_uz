@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Services\Task\CategoriesAPIService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use JetBrains\PhpStorm\ArrayShape;
 
 class CategoriesAPIController extends Controller
 {
@@ -189,6 +190,7 @@ class CategoriesAPIController extends Controller
      *     )
      * )
      */
+    #[ArrayShape(['data' => "mixed"])]
     public function AllCategoriesChildsId(): array
     {
         return  $this->service->AllCategoriesChildsId();

@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ModalNumberRequest;
-use App\Http\Requests\ResetCodeRequest;
-use App\Http\Requests\UserLoginRequest;
-use App\Http\Requests\UserRegisterRequest;
+use App\Http\Requests\{ModalNumberRequest, ResetCodeRequest, UserLoginRequest, UserRegisterRequest};
 use App\Models\User;
 use App\Services\CustomService;
 use App\Services\User\LoginService;
 use App\Services\VerificationService;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -25,7 +28,7 @@ class LoginController extends Controller
         $this->loginService = new LoginService();
     }
 
-    public function login()
+    public function login(): Factory|View|Application
     {
         return view('auth.signin');
     }
@@ -34,7 +37,7 @@ class LoginController extends Controller
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function loginPost(UserLoginRequest $request)
+    public function loginPost(UserLoginRequest $request): Redirector|Application|RedirectResponse
     {
         $data = $request->validated();
         $email =  $data['email'];
@@ -45,9 +48,9 @@ class LoginController extends Controller
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function customRegister(UserRegisterRequest $request)
+    public function customRegister(UserRegisterRequest $request): RedirectResponse
     {
         $data = $request->validated();
         $this->loginService->customRegister($data);
@@ -55,14 +58,20 @@ class LoginController extends Controller
     }
 
 
-    public function send_email_verification()
+    /**
+     * @throws Exception
+     */
+    public function send_email_verification(): RedirectResponse
     {
         VerificationService::send_verification('email', auth()->user());
         Alert::info(__('Ваша ссылка для подтверждения успешно отправлена!'));
         return redirect()->route('profile.profileData');
     }
 
-    public function send_phone_verification()
+    /**
+     * @throws Exception
+     */
+    public function send_phone_verification(): RedirectResponse
     {
         /** @var User $user */
         $user = auth()->user();
@@ -73,7 +82,10 @@ class LoginController extends Controller
         ]);
     }
 
-    public function verifyAccount(User $user, $hash)
+    /**
+     * @throws Exception
+     */
+    public function verifyAccount(User $user, $hash): RedirectResponse
     {
         LoginService::verifyColum('email', $user, $hash);
         auth()->login($user);
@@ -82,7 +94,10 @@ class LoginController extends Controller
 
     }
 
-    public function verify_phone(ResetCodeRequest $request)
+    /**
+     * @throws Exception
+     */
+    public function verify_phone(ResetCodeRequest $request): RedirectResponse
     {
         $data = $request->validated();
         $code = $data['code'];
@@ -90,7 +105,10 @@ class LoginController extends Controller
         return $this->loginService->verify_phone($code, $user);
     }
 
-    public function change_email(Request $request)
+    /**
+     * @throws Exception
+     */
+    public function change_email(Request $request): RedirectResponse
     {
         /** @var User $user */
         $user = auth()->user();
@@ -115,7 +133,10 @@ class LoginController extends Controller
         return redirect()->back();
     }
 
-    public function change_phone_number(ModalNumberRequest $request)
+    /**
+     * @throws Exception
+     */
+    public function change_phone_number(ModalNumberRequest $request): RedirectResponse
     {
         /** @var User $user */
         $user = auth()->user();
@@ -138,7 +159,7 @@ class LoginController extends Controller
         ]);
     }
 
-    public function logout()
+    public function logout(): Redirector|Application|RedirectResponse
     {
         Auth::logout();
         return redirect('/');

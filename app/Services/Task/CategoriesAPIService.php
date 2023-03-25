@@ -12,6 +12,7 @@ class CategoriesAPIService
      * barcha kategoriyalarni qaytaradi
      * @return array[]
      */
+    #[ArrayShape(['data' => "array"])]
     public function index(): array
     {
         $categories = Category::query()->select('id', 'parent_id', 'name', 'ico')->withTranslation(app()->getLocale())->whereNull('parent_id')->orderBy("order", "asc")->get();
@@ -43,6 +44,7 @@ class CategoriesAPIService
      * Parent kategoriyalarni qaytaradi
      * @return array[]
      */
+    #[ArrayShape(['data' => "array"])]
     public function parents(): array
     {
         $categories = Category::query()->whereNull('parent_id')->orderBy("order")->get();
@@ -55,6 +57,7 @@ class CategoriesAPIService
      * @param $name
      * @return array[]
      */
+    #[ArrayShape(['data' => "array"])]
     public function search($parentId, $name): array
     {
 
@@ -73,6 +76,7 @@ class CategoriesAPIService
      * @param $categories
      * @return array[]
      */
+    #[ArrayShape(['data' => "array"])]
     private function category($categories): array
     {
         $data = [];

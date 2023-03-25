@@ -4,10 +4,12 @@ namespace App\Services\Task;
 
 use App\Http\Resources\NotificationResource;
 use App\Item\CreateNameItem;
-use App\Models\{Address, Category, CustomFieldsValue, Notification, Task, User};
-use App\Services\{CustomService, NotificationService, SmsMobileService};
+use App\Models\{Address, Category, CustomFieldsValue, Notification, Task, User, WalletBalance};
+use App\Services\{CustomService, NotificationService, SmsMobileService, VerificationService};
 use Illuminate\Database\Eloquent\{Builder, Collection, Model};
-use Illuminate\Support\{Arr, Facades\Cache};
+use Illuminate\Support\{Arr, Facades\Cache, Facades\Hash, Facades\Session};
+use Exception;
+use Illuminate\Http\RedirectResponse;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -219,7 +221,76 @@ class CreateService
         ], 'notification', new NotificationResource($notification));
 
         session()->forget('performer_id_for_task');
+    }
 
+    /**
+     * task create contact store
+     * @param $user
+     * @param $data
+     * @param $task_id
+     * @return RedirectResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws Exception
+     */
+    public function contact_store($user, $data, $task_id): RedirectResponse
+    {
+        $task = Task::find($task_id);
+        if (!($user->is_phone_number_verified && $user->phone_number === $data['phone_number'])) {
+            VerificationService::send_verification('phone', $user, $data['phone_number']);
+            $task->phone = $data['phone_number'];
+            if ($user->phone_number === null) {
+                $user->phone_number = $task->phone;
+                $user->save();
+            }
+            $task->save();
+            return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
+        }
+
+        $task->status = Task::STATUS_OPEN;
+        $task->user_id = $user->id;
+        $task->phone = $data['phone_number'];
+        $performer_id = Session::get('performer_id_for_task');
+        if ($performer_id) {
+            $this->perform_notification($task, $user ,$performer_id);
+        } else {
+            NotificationService::sendTaskNotification($task, $user->id);
+        }
+        $task->save();
+        return redirect()->route('searchTask.task', $task->id);
+    }
+
+    /**
+     * @param $task_id
+     * @param $data
+     * @param $password
+     * @return RedirectResponse
+     * @throws Exception
+     */
+    public function contact_register($task_id, $data, $password): RedirectResponse
+    {
+        $task = Task::first($task_id);
+        $data['password'] = Hash::make($password);
+        unset($data['password_confirmation']);
+        $task->phone = $data['phone_number'];
+        $task->save();
+        /** @var User $user */
+        $user = User::query()->create($data);
+        $user->phone_number = $data['phone_number'] . '_' . $user->id;
+        $user->save();
+        $wallBal = new WalletBalance();
+        $wallBal->balance = setting('admin.bonus',0);
+        $wallBal->user_id = $user->id;
+        $wallBal->save();
+        if(setting('admin.bonus',0)>0){
+            Notification::query()->create([
+                'user_id' => $user->id,
+                'description' => 'wallet',
+                'type' => Notification::WALLET_BALANCE,
+            ]);
+        }
+        VerificationService::send_verification('phone', $user, $user->phone_number);
+        return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
     }
 
 }

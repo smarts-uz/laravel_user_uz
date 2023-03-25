@@ -8,10 +8,12 @@ use App\Models\User;
 use App\Models\WalletBalance;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Laravel\Socialite\Facades\Socialite;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class SocialService
 {
@@ -145,4 +147,98 @@ class SocialService
         Auth::login($new_user);
     }
 
+    /**
+     * facebook orqali login qilish(web)
+     * @return RedirectResponse
+     */
+    public function loginFacebook(): RedirectResponse
+    {
+        $user = Socialite::driver('facebook')->setScopes(['name','email'])->user();
+        /** @var User $findUser */
+        $findUser = User::query()->where('email', $user->email)->first();
+
+        if (!$user->email) {
+            $findUser = User::query()->where('facebook_id', $user->id)->first();
+        }
+        if ($findUser) {
+            $findUser->facebook_id = $user->id;
+            $findUser->save();
+            Alert::success(__('Успешно'), __('Вы успешно связали свой аккаунт Facebook'));
+            (new self)->password_notif($findUser);
+        } else {
+            $new_user = new User();
+            $new_user->name = $user->name;
+            $new_user->email = $user->email;
+            $new_user->facebook_id = $user->id;
+            $new_user->avatar = self::get_avatar($user);
+            $new_user->save();
+            (new self)->social_wallet($new_user);
+        }
+        return redirect()->route('profile.profileData');
+    }
+
+    /**
+     * google orqali login qilish(web)
+     * @return RedirectResponse
+     */
+    public function loginGoogle(): RedirectResponse
+    {
+        $user = Socialite::driver('google')->setScopes(['openid', 'email'])->user();
+
+        /** @var User $findUser */
+        $findUser = User::query()->where('email', $user->email)->first();
+
+        if (!$user->email) {
+            $findUser = User::query()->where('google_id', $user->id)->first();
+        }
+        if ($findUser) {
+            $findUser->google_id = $user->id;
+            $findUser->save();
+            Alert::success(__('Успешно'), __('Вы успешно связали свой аккаунт Google'));
+            (new self)->password_notif($findUser);
+        } else {
+            $new_user = new User();
+            $new_user->name = $user->name;
+            $new_user->email = $user->email;
+            $new_user->google_id = $user->id;
+            $new_user->avatar = self::get_avatar($user);
+            $new_user->is_email_verified = 1;
+            $new_user->save();
+            (new self)->social_wallet($new_user);
+        }
+
+        return redirect()->route('profile.profileData');
+    }
+
+    /**
+     * apple orqali login qilish(web)
+     * @return RedirectResponse
+     */
+    public function loginApple(): RedirectResponse
+    {
+        $user = Socialite::driver('apple')->user();
+
+        /** @var User $findUser */
+        $findUser = User::query()->where('email', $user->email)->first();
+        if (!$user->email) {
+            $findUser = User::query()->where('apple_id', $user->id)->first();
+        }
+
+        if ($findUser) {
+            $findUser->apple_id = $user->id;
+            $findUser->save();
+            Alert::success(__('Успешно'), __('Вы успешно связали свой аккаунт Google'));
+            (new self)->password_notif($findUser);
+        } else {
+            $new_user = new User();
+            $new_user->name = $user->name ?? self::emailToName($user->email);
+            $new_user->email = $user->email;
+            $new_user->apple_id = $user->id;
+            $new_user->is_email_verified = 1;
+            $new_user->save();
+            (new self)->social_wallet($new_user);
+        }
+
+        return redirect()->route('profile.profileData');
+    }
 }

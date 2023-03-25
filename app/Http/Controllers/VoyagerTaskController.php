@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Notification, Task};
+use JetBrains\PhpStorm\ArrayShape;
 use App\Services\{Task\CreateService, TaskNotificationService, UserNotificationService};
 use Illuminate\Contracts\{Foundation\Application, View\Factory, View\View};
 use Illuminate\Http\RedirectResponse;
+use App\Models\{Notification, Task};
 
 
 class VoyagerTaskController extends Controller
@@ -180,6 +181,7 @@ class VoyagerTaskController extends Controller
      *     },
      * )
      */
+    #[ArrayShape(['success' => "bool", 'data' => Task::class])]
     public function test_cancel_task(Task $task): array
     {
         TaskNotificationService::sendNotificationForCancelledTask($task);

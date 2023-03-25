@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Api\CategoryRequest;
-use App\Http\Requests\Api\ProfileVideoRequest;
-use App\Http\Requests\PersonalInfoRequest;
-use App\Http\Requests\PortfolioRequest;
-use App\Http\Requests\User\PerformerCreateRequest;
-use App\Http\Requests\UserPasswordRequest;
-use App\Http\Requests\UserUpdateDataRequest;
-use App\Models\Session;
-use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\{Api\CategoryRequest,
+    Api\ProfileVideoRequest,
+    PersonalInfoRequest,
+    PortfolioRequest,
+    User\PerformerCreateRequest,
+    UserPasswordRequest,
+    UserUpdateDataRequest};
+use App\Models\{Session, Portfolio, User};
+use Illuminate\Http\{RedirectResponse, Request};
 use Jenssegers\Agent\Agent;
-use App\Models\Portfolio;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Services\Profile\ProfileService;

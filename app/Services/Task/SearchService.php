@@ -7,12 +7,15 @@ use App\Models\Address;
 use App\Models\ComplianceType;
 use App\Models\Task;
 use App\Models\Category;
+use App\Models\TaskElastic;
 use App\Models\User;
 use App\Models\Compliance;
 use App\Models\Review;
 use App\Services\CustomService;
 use App\Services\TelegramService;
+use Elastic\ScoutDriverPlus\Support\Query;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -285,5 +288,24 @@ class SearchService
             'success' => true,
             'message' => __('Успешно сохранено')
         ]);
+    }
+
+    /**
+     * homepageda elastic searchda task nomlarini qaytaradi
+     * @param $name
+     * @return string
+     */
+    public function taskNames($name): string
+    {
+        $query = Query::wildcard()
+            ->field('name')
+            ->value('*' . $name . '*');
+        $searchResult = TaskElastic::searchQuery($query)->execute();
+        $tasks = $searchResult->models();
+        $options = "";
+        foreach ($tasks as $task) {
+            $options .= "<option value='$task->name' id='$task->category_id'>$task->name</option>";
+        }
+        return $options;
     }
 }

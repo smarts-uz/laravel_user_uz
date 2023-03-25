@@ -8,6 +8,8 @@ use App\Models\Task;
 use App\Models\TaskResponse;
 use App\Models\User;
 use App\Services\Task\ResponseService;
+use Exception;
+use Illuminate\Http\RedirectResponse;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ResponseController extends Controller
@@ -19,7 +21,7 @@ class ResponseController extends Controller
         $this->service = new ResponseService();
     }
 
-    public function store(TaskResponseRequest $request, Task $task)
+    public function store(TaskResponseRequest $request, Task $task): RedirectResponse
     {
         $data = $request->validated();
         /** @var User $auth_user */
@@ -34,7 +36,10 @@ class ResponseController extends Controller
         return back();
     }
 
-    public function selectPerformer(TaskResponse $response)
+    /**
+     * @throws Exception
+     */
+    public function selectPerformer(TaskResponse $response): RedirectResponse
     {
         $responses = $this->service->selectPerformer($response);
         return back()->with($responses);

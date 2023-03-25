@@ -694,6 +694,7 @@ class ProfileService
      * @param int $email_notification
      * @return array
      */
+    #[ArrayShape(['success' => "bool", 'data' => "array"])]
     public function subscribeToCategory(array $categories, $user, int $sms_notification, int $email_notification): array
     {
         $user->role_id = User::ROLE_PERFORMER;

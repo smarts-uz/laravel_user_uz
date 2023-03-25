@@ -39,6 +39,7 @@ use Illuminate\Support\Arr;
  * @property $created_at vazifa yaratilgan vaqt
  * @property $deleted_at vazifa o'chirilgan vaqt
  * @property $deleted_by vazifani o'chirgan user idsi
+ * @property mixed $addresses
  */
 class Task extends Model
 {

@@ -7,10 +7,11 @@ use App\Http\Requests\Task\UpdateRequest;
 use App\Models\Task;
 use App\Services\Task\ReviewService;
 use App\Services\Task\UpdateTaskService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class UpdateController extends Controller
 {
@@ -68,6 +69,8 @@ class UpdateController extends Controller
      * @param Task $task
      * @param Request $request
      * @return  mixed
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function sendReview(Task $task, Request $request): mixed
     {

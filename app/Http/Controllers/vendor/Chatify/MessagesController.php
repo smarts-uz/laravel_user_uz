@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class MessagesController extends \Chatify\Http\Controllers\MessagesController
 {
@@ -34,7 +36,7 @@ class MessagesController extends \Chatify\Http\Controllers\MessagesController
      * @return JsonResponse|\Illuminate\Http\Response
      */
 
-    public function pusherAuth(Request $request)
+    public function pusherAuth(Request $request): \Illuminate\Http\Response|JsonResponse
     {
         // Auth data
         /** @var User $user */
@@ -86,8 +88,8 @@ class MessagesController extends \Chatify\Http\Controllers\MessagesController
      *
      * @param Request $request
      * @return JsonResponse response
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function send(Request $request): JsonResponse
     {
@@ -178,9 +180,9 @@ class MessagesController extends \Chatify\Http\Controllers\MessagesController
      * fetch [user/group] messages from database
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse response
+     * @return JsonResponse response
      */
-    public function fetch(Request $request)
+    public function fetch(Request $request): JsonResponse
     {
         $query = $this->chatify->fetchMessagesQuery($request['id'])->latest();
         $messages = $query->paginate($request->per_page ?? $this->perPage);
@@ -217,9 +219,9 @@ class MessagesController extends \Chatify\Http\Controllers\MessagesController
      * Make messages as seen
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function seen(Request $request)
+    public function seen(Request $request): JsonResponse
     {
         // make as seen
         $seen = $this->chatify->makeSeen($request['id']);
@@ -233,9 +235,9 @@ class MessagesController extends \Chatify\Http\Controllers\MessagesController
      * Get contacts list
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse response
+     * @return JsonResponse response
      */
-    public function getContacts(Request $request)
+    public function getContacts(Request $request): JsonResponse
     {
         $userIdsList = ContactService::contactsList(Auth::user()->id);
         $chatItem = new Chatify();
@@ -262,9 +264,9 @@ class MessagesController extends \Chatify\Http\Controllers\MessagesController
      * Get favorites list
      *
      * @param Request $request
-     * @return JsonResponse|void
+     * @return JsonResponse
      */
-    public function getFavorites(Request $request)
+    public function getFavorites(Request $request): JsonResponse
     {
         // send the response
         return Response::json([
@@ -277,9 +279,9 @@ class MessagesController extends \Chatify\Http\Controllers\MessagesController
      * Update user's list item data
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse response
+     * @return JsonResponse response
      */
-    public function updateContactItem(Request $request)
+    public function updateContactItem(Request $request): JsonResponse
     {
         // Get user data
         $user = User::where('id', $request['user_id'])->first();
@@ -303,7 +305,7 @@ class MessagesController extends \Chatify\Http\Controllers\MessagesController
      * @param Request $request
      * @return JsonResponse
      */
-    public function search(Request $request)
+    public function search(Request $request): JsonResponse
     {
         $getRecords = null;
         $input = trim(filter_var($request['input'], FILTER_SANITIZE_STRING));
@@ -340,13 +342,13 @@ class MessagesController extends \Chatify\Http\Controllers\MessagesController
      * @param Request $request
      * @return JsonResponse
      */
-    public function sharedPhotos(Request $request)
+    public function sharedPhotos(Request $request): JsonResponse
     {
         $shared = $this->chatify->getSharedPhotos($request['user_id']);
         $sharedPhotos = null;
 
         // shared with its template
-        for ($i = 0; $i < count($shared); $i++) {
+        for ($i = 0, $iMax = count($shared); $i < $iMax; $i++) {
             $sharedPhotos .= view('Chatify::layouts.listItem', [
                 'get' => 'sharedPhoto',
                 'image' => asset('storage/attachments/' . $shared[$i]),
@@ -363,7 +365,8 @@ class MessagesController extends \Chatify\Http\Controllers\MessagesController
      *
      * @return int
      */
-    public static function unseenCount() {
+    public static function unseenCount(): int
+    {
         return ChMessage::query()->where('to_id', Auth::id())->where('seen', 0)->count();
     }
 }

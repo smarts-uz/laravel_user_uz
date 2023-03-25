@@ -2,20 +2,12 @@
 
 namespace App\Http\Controllers\Task;
 
-use App\Models\TaskElastic;
 use App\Models\Task;
-use App\Services\Task\UpdateTaskService;
-use Elastic\ScoutDriverPlus\Support\Query;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
+use App\Services\Task\{UpdateTaskService, SearchService};
+use Illuminate\Contracts\{Foundation\Application, View\Factory, View\View};
+use Illuminate\Http\{JsonResponse, RedirectResponse, Request};
 use Illuminate\Support\Facades\Session;
-use TCG\Voyager\Models\Category;
-use Illuminate\Http\Request;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
-use App\Services\Task\SearchService;
 use Jenssegers\Agent\Agent;
 
 class SearchTaskController extends VoyagerBaseController
@@ -27,30 +19,15 @@ class SearchTaskController extends VoyagerBaseController
         $this->service = new SearchService();
     }
 
-    /**
-     * @param Request $request
-     * @return string
-     */
+
     public function taskNames(Request $request): string
     {
         $name = $request->get('name');
-        $query = Query::wildcard()
-            ->field('name')
-            ->value('*' . $name . '*');
-        $searchResult = TaskElastic::searchQuery($query)->execute();
-        $tasks = $searchResult->models();
-        $options = "";
-        foreach ($tasks as $task) {
-            $options .= "<option value='$task->name' id='$task->category_id'>$task->name</option>";
-        }
-        return $options;
+        return $this->service->taskNames($name);
     }
 
-    /**
-     * @param $task
-     * @param Request $request
-     */
-    public function task(int $task_id, Request $request)
+
+    public function task(int $task_id, Request $request): Factory|View|Application
     {
         $task = Task::select('user_id')->find($task_id);
         $empty = empty($task);
@@ -82,26 +59,14 @@ class SearchTaskController extends VoyagerBaseController
             ]);
     }
 
-    /**
-     *
-     * Function  compliance_save
-     * @param Request $request
-     * @return  RedirectResponse
-     */
-    public function compliance_save(Request $request)
+    public function compliance_save(Request $request): RedirectResponse
     {
         $data = $request->all();
         $this->service->comlianse_saveS($data);
         return redirect()->back();
     }
 
-    /**
-     *
-     * Function  task_map
-     * @param Task $task
-     * @return  mixed
-     */
-    public function task_map(Task $task)
+    public function task_map(Task $task): mixed
     {
         return $task->addresses;
     }
@@ -119,13 +84,7 @@ class SearchTaskController extends VoyagerBaseController
         return redirect()->back();
     }
 
-    /**
-     *
-     * Function  changeTask
-     * @param Task $task
-     * @return  Application|Factory|View
-     */
-    public function changeTask(Task $task)
+    public function changeTask(Task $task): View|Factory|Application
     {
         (new UpdateTaskService)->taskGuard($task);
         if ($task->responses_count) {
@@ -135,12 +94,8 @@ class SearchTaskController extends VoyagerBaseController
         return view('task.changetask', compact('task', 'addresses'));
     }
 
-    /**
-     *
-     * Function  search_new
-     * @return  Application|Factory|View
-     */
-    public function search_new()
+
+    public function search_new(): Factory|View|Application
     {
         $lang = Session::get('lang');
         $allCategories = $this->service->search_new($lang);
@@ -155,13 +110,8 @@ class SearchTaskController extends VoyagerBaseController
         return view('search_task.new_search', compact('categories', 'categories2'));
     }
 
-    /**
-     *
-     * Function  search_new2
-     * @param Request $request
-     * @return  JsonResponse
-     */
-    public function search_new2(Request $request): \Illuminate\Http\JsonResponse
+
+    public function search_new2(Request $request): JsonResponse
     {
         $data = collect($request->get('data'))->keyBy('name');
         $filter = $data['filter']['value'] ?? null;

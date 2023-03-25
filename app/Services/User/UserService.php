@@ -12,6 +12,8 @@ use Illuminate\Http\{JsonResponse, RedirectResponse};
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\{Auth, Cache, Hash, Mail};
 use Illuminate\Support\Str;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class UserService
@@ -277,6 +279,8 @@ class UserService
      * @param $user
      * @param $sms_otp
      * @return RedirectResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function verifyProfile($for_ver_func, $user, $sms_otp): RedirectResponse
     {
@@ -397,6 +401,50 @@ class UserService
         return response()->json([
             'success' => true,
             'message' => __('Успешно удалено'),
+        ]);
+    }
+
+    /**
+     * Adminkadan user parolini o'zgartirish
+     * @param $data
+     * @param $user
+     * @return Redirector|Application|RedirectResponse
+     */
+    public function resetPassword_store($data, $user): Redirector|Application|RedirectResponse
+    {
+        unset($data['password_confirmation']);
+        $user->update($data);
+        $user->password = Hash::make($data['password']);
+        $user->updated_password_at = Carbon::now();
+        $user->updated_password_by = Auth::id();
+        $user->save();
+        return redirect('/admin/users');
+    }
+
+    /**
+     * Usern adminkadan active yoki nonactive qilish
+     * @param $user
+     * @param $authUser
+     * @return RedirectResponse
+     */
+    public function activity($user, $authUser): RedirectResponse
+    {
+        if (!$authUser->hasPermission("change_activeness")) {
+            return back()->with([
+                'message' => "Sizga ruxsat etilmagan!",
+                'alert-type' => 'error',
+            ]);
+        }
+        if ($user->is_active) {
+            Session::query()->where('user_id', $user->id)->delete();
+            $user->tokens->each(function ($token, $key) {
+                $token->delete();
+            });
+        }
+        $user->is_active = $user->is_active ? 0 : 1;
+        $user->save();
+        return back()->with([
+            'message' => "Muvafaqiyatli o'zgartirildi!"
         ]);
     }
 

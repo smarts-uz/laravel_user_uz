@@ -4,35 +4,17 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\BudgetRequest;
-use App\Http\Requests\CreateContactRequest;
-use App\Http\Requests\CreateNameRequest;
-use App\Http\Requests\NoteRequest;
-use App\Http\Requests\TaskDateRequest;
-use App\Http\Requests\UserPhoneRequest;
-use App\Http\Requests\UserRequest;
-use App\Models\CustomField;
-use App\Models\CustomFieldsValue;
-use App\Models\Notification;
-use App\Models\Task;
-use App\Models\User;
-use App\Models\WalletBalance;
-use App\Services\NotificationService;
-use App\Services\Task\CreateService;
-use App\Services\Task\CustomFieldService;
-use App\Services\Task\UpdateTaskService;
-use App\Services\VerificationService;
-use Exception;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
-use JsonException;
+use App\Http\Requests\{BudgetRequest, CreateContactRequest,
+    CreateNameRequest, NoteRequest, TaskDateRequest, UserPhoneRequest, UserRequest};
+use App\Models\{CustomField, CustomFieldsValue, Task, User};
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use App\Services\{Task\CreateService, Task\CustomFieldService, Task\UpdateTaskService, VerificationService};
+use Exception;
+use Illuminate\Contracts\{Foundation\Application, View\Factory, View\View};
+use Illuminate\Http\{RedirectResponse, Request};
+use Illuminate\Support\Facades\{Hash, Session};
+use JsonException;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class CreateController extends Controller
@@ -42,11 +24,10 @@ class CreateController extends Controller
     public UpdateTaskService $updatetask;
     public function __construct()
     {
-        $this->updatetask = new UpdateTaskService;
+        $this->updatetask = new UpdateTaskService();
         $this->service = new CreateService();
         $this->custom_field_service = new CustomFieldService();
     }
-
 
     /**
      *
@@ -54,7 +35,7 @@ class CreateController extends Controller
      * @param Request $request
      * @return  Application|Factory|View
      */
-    public function name(Request $request)
+    public function name(Request $request): View|Factory|Application
     {
         $lang = Session::get('lang');
         $category_id = $request->get('category_id');
@@ -87,7 +68,7 @@ class CreateController extends Controller
      * @param int $task_id
      * @return  Application|Factory|View|RedirectResponse
      */
-    public function custom_get(int $task_id)
+    public function custom_get(int $task_id): View|Factory|RedirectResponse|Application
     {
         $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_CUSTOM);
         $task = $result['task'];
@@ -124,7 +105,7 @@ class CreateController extends Controller
      * @param int $task_id
      * @return  Application|Factory|View
      */
-    public function remote_get(int $task_id)
+    public function remote_get(int $task_id): View|Factory|Application
     {
         $task = Task::with('category.custom_fields')->find($task_id);
         return view('create.remote', compact('task'));
@@ -160,7 +141,7 @@ class CreateController extends Controller
      * @param int $task_id
      * @return  Application|Factory|View
      */
-    public function address(int $task_id)
+    public function address(int $task_id): View|Factory|Application
     {
         $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_ADDRESS);
         $task = $result['task'];
@@ -179,9 +160,9 @@ class CreateController extends Controller
     {
         $task = Task::select('id')->find($task_id);
         $requestAll = $request->all();
-        $cordinates = $this->service->addAdditionalAddress($task_id, $requestAll);
+        $coordinates = $this->service->addAdditionalAddress($task_id, $requestAll);
         $task->update([
-            'coordinates' => $cordinates,
+            'coordinates' => $coordinates,
             'go_back'=> $request->get('go_back')
         ]);
 
@@ -196,7 +177,7 @@ class CreateController extends Controller
      * @param int $task_id
      * @return  Application|Factory|View
      */
-    public function date(int $task_id)
+    public function date(int $task_id): View|Factory|Application
     {
         $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_DATE);
         $task = $result['task'];
@@ -209,7 +190,7 @@ class CreateController extends Controller
      *
      * Function  date_store
      * @param TaskDateRequest $request
-     * @param $task_id
+     * @param int $task_id
      * @return  RedirectResponse
      */
     public function date_store(TaskDateRequest $request, int $task_id): RedirectResponse
@@ -227,7 +208,7 @@ class CreateController extends Controller
      * @param int $task_id
      * @return  Application|Factory|View
      */
-    public function budget(int $task_id)
+    public function budget(int $task_id): View|Factory|Application
     {
         $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_BUDGET);
         $category = $result['category'];
@@ -282,7 +263,7 @@ class CreateController extends Controller
      * @param int $task_id
      * @return  Application|Factory|View
      */
-    public function note(int $task_id)
+    public function note(int $task_id): View|Factory|Application
     {
         $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_NOTE);
         $task = $result['task'];
@@ -319,7 +300,7 @@ class CreateController extends Controller
      * @param int $task_id
      * @return  Application|Factory|View
      */
-    public function contact(int $task_id)
+    public function contact(int $task_id): View|Factory|Application
     {
         $result = $this->custom_field_service->getCustomFieldsByRoute($task_id, CustomField::ROUTE_CONTACTS);
         $task = $result['task'];
@@ -340,32 +321,10 @@ class CreateController extends Controller
      */
     public function contact_store(int $task_id, CreateContactRequest $request): RedirectResponse
     {
-        $task = Task::find($task_id);
         /** @var User $user */
         $user = auth()->user();
         $data = $request->validated();
-        if (!($user->is_phone_number_verified && $user->phone_number === $data['phone_number'])) {
-            VerificationService::send_verification('phone', $user, $data['phone_number']);
-            $task->phone = $data['phone_number'];
-            if ($user->phone_number === null) {
-                $user->phone_number = $task->phone;
-                $user->save();
-            }
-            $task->save();
-            return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
-        }
-
-        $task->status = Task::STATUS_OPEN;
-        $task->user_id = $user->id;
-        $task->phone = $data['phone_number'];
-        $performer_id = Session::get('performer_id_for_task');
-        if ($performer_id) {
-            $this->service->perform_notification($task, $user ,$performer_id);
-        } else {
-            NotificationService::sendTaskNotification($task, $user->id);
-        }
-        $task->save();
-        return redirect()->route('searchTask.task', $task->id);
+        return $this->service->contact_store($user, $data, $task_id);
     }
 
     /**
@@ -378,29 +337,9 @@ class CreateController extends Controller
      */
     public function contact_register(int $task_id, UserRequest $request): RedirectResponse
     {
-        $task = Task::select('phone')->first($task_id);
         $data = $request->validated();
-        $data['password'] = Hash::make($request->get('password'));
-        unset($data['password_confirmation']);
-        $task->phone = $data['phone_number'];
-        $task->save();
-        /** @var User $user */
-        $user = User::query()->create($data);
-        $user->phone_number = $data['phone_number'] . '_' . $user->id;
-        $user->save();
-        $wallBal = new WalletBalance();
-        $wallBal->balance = setting('admin.bonus',0);
-        $wallBal->user_id = $user->id;
-        $wallBal->save();
-        if(setting('admin.bonus',0)>0){
-            Notification::query()->create([
-                'user_id' => $user->id,
-                'description' => 'wallet',
-                'type' => Notification::WALLET_BALANCE,
-            ]);
-        }
-        VerificationService::send_verification('phone', $user, $user->phone_number);
-        return redirect()->route('task.create.verify', ['task' => $task->id, 'user' => $user->id]);
+        $password = $request->get('password');
+        return $this->service->contact_register($task_id, $data, $password);
     }
 
     /**
@@ -415,10 +354,9 @@ class CreateController extends Controller
     {
         $request->validated();
         /** @var User $user */
-        $user = User::select('id', 'phone_number', 'email')->where('phone_number', $request->get('phone_number'))->first();
+        $user = User::where('phone_number', $request->get('phone_number'))->first();
         VerificationService::send_verification('phone', $user, $user->phone_number);
         return redirect()->route('task.create.verify', ['task' => $task_id, 'user' => $user->id])->with(['not-show', 'true']);
-
     }
 
     /**
@@ -428,7 +366,7 @@ class CreateController extends Controller
      * @param $user
      * @return  Application|Factory|View
      */
-    public function verify($task_id, $user)
+    public function verify($task_id, $user): View|Factory|Application
     {
         $task = Task::find($task_id);
         return view('create.verify', compact('task', 'user'));
