@@ -2,20 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CustomField;
-use App\Models\FooterReview;
-use App\Services\Response;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
+use App\Models\{CustomField, FooterReview, Massmedia, BlogNew, Privacy};
+use App\Services\{Response, ControllerService};
+use Illuminate\Foundation\{Auth\Access\AuthorizesRequests, Bus\DispatchesJobs, Validation\ValidatesRequests};
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Session;
-use App\Models\Massmedia;
-use App\Services\ControllerService;
-use App\Models\BlogNew;
-use App\Models\Privacy;
+use Illuminate\Support\Facades\{Redirect, Session};
 use Jenssegers\Agent\Agent;
 
 class Controller extends BaseController

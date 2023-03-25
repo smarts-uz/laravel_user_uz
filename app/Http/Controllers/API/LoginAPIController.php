@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\VerifyCredentialsRequest;
 use App\Models\User;
 use App\Services\Task\LoginAPIService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -57,7 +58,7 @@ class LoginAPIController extends Controller
      *         {"token": {}}
      *     },
      * )
-     * @throws \Exception
+     * @throws Exception
      */
     public function verifyCredentials(VerifyCredentialsRequest $request): JsonResponse
     {

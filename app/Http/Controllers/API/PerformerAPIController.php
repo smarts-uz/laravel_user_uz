@@ -50,7 +50,7 @@ class PerformerAPIController extends Controller
      */
     public function performers(Request $request): JsonResponse
     {
-        $online = $request->online;
+        $online = $request->get('online');
         $per_page = $request->get('per_page');
         return $this->performer_service->performers($online, $per_page);
     }
@@ -410,8 +410,8 @@ class PerformerAPIController extends Controller
         $reviews = $this->performer_service->reviews($from, $type, $authId);
         return response()->json([
             'success' => true,
-            'data' => $reviews,
-            'message' => 'Success'
+            'message' => 'Success',
+            'data' => $reviews
         ]);
     }
 
@@ -481,7 +481,7 @@ class PerformerAPIController extends Controller
      */
     public function performers_image($category_id): JsonResponse
     {
-        $authId = \auth()->id();
+        $authId = auth()->id();
         $images = $this->performer_service->performers_image($category_id, $authId);
         return response()->json([
             'success' => true,

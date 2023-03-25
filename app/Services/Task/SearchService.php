@@ -7,12 +7,12 @@ use App\Models\Address;
 use App\Models\ComplianceType;
 use App\Models\Task;
 use App\Models\Category;
-use App\Models\TaskResponse;
 use App\Models\User;
 use App\Models\Compliance;
 use App\Models\Review;
 use App\Services\CustomService;
 use App\Services\TelegramService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -218,5 +218,72 @@ class SearchService
         });
 
         return [$tasks, $dataForMap];
+    }
+
+    /**
+     * cancel task status
+     * @param $task
+     * @param $authId
+     * @return JsonResponse
+     */
+    public function cancelTask($task, $authId): JsonResponse
+    {
+        if ($task->user_id !== $authId){
+            return response()->json([
+                'success' => false,
+                "message" => __("Отсутствует разрешение")
+            ], 403);
+        }
+        $task->status = Task::STATUS_CANCELLED;
+        $task->save();
+        return response()->json([
+            'success' => true,
+            'message' => __('Успешно отменено'),
+            'data' => $task
+        ]);
+    }
+
+    /**
+     * Task delete
+     * @param $task
+     * @param $user
+     * @return JsonResponse
+     */
+    public function delete_task($task, $user): JsonResponse
+    {
+        if ($task->user_id !== $user->id){
+            return response()->json([
+                'success' => false,
+                "message" => __("Отсутствует разрешение")
+            ], 403);
+        }
+        $task->delete();
+
+        $user->active_step = null;
+        $user->active_task = null;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => __('Успешно удалено')
+        ]);
+    }
+
+    public function task_cancel($task, $user): JsonResponse
+    {
+        if ($task->user_id !== $user->id){
+            return response()->json([
+                'success' => false,
+                "message" => __("Отсутствует разрешение")
+            ], 403);
+        }
+
+        $user->active_task = $task->id;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => __('Успешно сохранено')
+        ]);
     }
 }

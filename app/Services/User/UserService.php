@@ -381,4 +381,23 @@ class UserService
         }
     }
 
+    /**
+     * @param $user
+     * @param $session_id
+     * @return mixed
+     */
+    public function clearSessions($user, $session_id): mixed
+    {
+        Session::query()->where('user_id', $user->id)->whereNot('id', $session_id)->delete();
+        $user->tokens->each(function ($token, $key) use ($user) {
+            if ((int)$token->id !== (int)$user->token()->id) {
+                $token->delete();
+            }
+        });
+        return response()->json([
+            'success' => true,
+            'message' => __('Успешно удалено'),
+        ]);
+    }
+
 }

@@ -7,10 +7,18 @@ use App\Http\Requests\Api\SessionDeleteRequest;
 use App\Http\Resources\SessionResource;
 use App\Models\Session;
 use App\Models\User;
+use App\Services\User\UserService;
 use Illuminate\Http\JsonResponse;
 
 class SessionController extends Controller
 {
+    public UserService $service;
+
+    public function __construct(UserService $userService)
+    {
+        $this->service = $userService;
+    }
+
     /**
      * @OA\Get(
      *     path="/api/profile/sessions",
@@ -77,12 +85,7 @@ class SessionController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-        Session::query()->where('user_id', $user->id)->whereNot('id', $request->get('session_id'))->delete();
-        $user->tokens->each(function ($token, $key) use ($user) {
-            if ((int)$token->id !== (int)$user->token()->id) {
-                $token->delete();
-            }
-        });
-        return $this->success('', __('Успешно удалено'));
+        $session_id = $request->get('session_id');
+        return $this->service->clearSessions($user, $session_id);
     }
 }

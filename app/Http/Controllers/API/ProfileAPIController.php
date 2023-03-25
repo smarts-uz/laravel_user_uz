@@ -3,16 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\{Api\CategoryRequest,
-    Api\PortfolioRequest,
-    Api\ProfileAvatarRequest,
-    Api\ProfilePasswordRequest,
-    Api\ProfilePhoneRequest,
-    Api\ProfileSettingsRequest,
-    Api\ProfileVideoRequest,
-    Api\ResponseTemplateRequest,
-    Api\UserReportRequest,
-    UserBlockRequest};
+use App\Http\Requests\{Api\CategoryRequest, Api\PortfolioRequest, Api\ProfileAvatarRequest,
+    Api\ProfilePasswordRequest, Api\ProfilePhoneRequest, Api\ProfileSettingsRequest, Api\ProfileVideoRequest,
+    Api\ResponseTemplateRequest, Api\UserReportRequest, UserBlockRequest};
 use JsonException;
 use App\Models\{Portfolio, ReportedUser, ResponseTemplate, User};
 use App\Services\{CustomService, PerformersService, Profile\ProfileService};
@@ -872,7 +865,7 @@ class ProfileAPIController extends Controller
      */
     public function userProfile(User $user): JsonResponseAlias
     {
-        $user_id = ($user !== null) ? $user->id : 0;
+        $user_id = $user->id;
         (new PerformersService)->setView($user);
         return $this->profileService->index($user_id);
     }

@@ -5,10 +5,19 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Task;
 use App\Models\User;
+use App\Services\Task\SearchService;
+use Illuminate\Http\JsonResponse;
 
 
 class SearchAPIController extends Controller
 {
+
+    protected SearchService $search_service;
+
+    public function __construct()
+    {
+        $this->search_service = new SearchService();
+    }
 
     /**
      * @OA\Post(
@@ -40,21 +49,10 @@ class SearchAPIController extends Controller
      *     },
      * )
      */
-    public function cancelTask(Task $task)
+    public function cancelTask(Task $task): JsonResponse
     {
-        if ($task->user_id !== auth()->id()){
-            return response()->json([
-                'success' => false,
-                "message" => __("Отсутствует разрешение")
-            ], 403);
-        }
-        $task->status = Task::STATUS_CANCELLED;
-        $task->save();
-        return response()->json([
-            'success' => true,
-            'message' => __('Успешно отменено'),
-            'data' => $task
-        ]);
+        $authId = auth()->id();
+        return $this->search_service->cancelTask($task, $authId);
     }
 
     /**
@@ -95,24 +93,9 @@ class SearchAPIController extends Controller
      *     )
      * )
      */
-    public function delete_task(Task $task,User $user)
+    public function delete_task(Task $task,User $user): JsonResponse
     {
-        if ($task->user_id !== $user->id){
-            return response()->json([
-                'success' => false,
-                "message" => __("Отсутствует разрешение")
-            ], 403);
-        }
-        $task->delete();
-
-        $user->active_step = null;
-        $user->active_task = null;
-        $user->save();
-
-        return response()->json([
-            'success' => true,
-            'message' => __('Успешно удалено')
-        ]);
+      return $this->search_service->delete_task($task, $user);
     }
 
     /**
@@ -145,22 +128,10 @@ class SearchAPIController extends Controller
      *     )
      * )
      */
-    public function task_cancel(Task $task)
+    public function task_cancel(Task $task): JsonResponse
     {
-        if ($task->user_id !== auth()->id()){
-            return response()->json([
-                'success' => false,
-                "message" => __("Отсутствует разрешение")
-            ], 403);
-        }
-
-        auth()->user()->active_task = $task->id;
-        auth()->user()->save();
-
-        return response()->json([
-            'success' => true,
-            'message' => __('Успешно сохранено')
-        ]);
+        $user = auth()->user();
+        return $this->search_service->task_cancel($task, $user);
     }
 
 }
