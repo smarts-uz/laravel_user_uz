@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\{Api\ResetCodeRequest,
     Api\ResetPasswordRequest, PhoneNumberRequest,
-    Api\UserLoginRequest, UserRegisterRequest};
+    Api\UserLoginRequest, Api\UserRegisterRequest};
 use App\Models\User;
 use Exception;
 use App\Services\{Response, User\UserService};
