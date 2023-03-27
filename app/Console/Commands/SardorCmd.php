@@ -26,6 +26,9 @@ class SardorCmd extends Command
     /**
      * The name and signature of the console command.
      *
+     * @option --user_id sms notif jo'natiladigan user id, bunga qiymat kiritilsa type tanlanmasiligi kerak
+     * @option --type sms notif jo'natiladigan role, agar role tanlansa user id kiritilmaydi
+     * @option --text sms text
      * @var string
      */
     protected $signature = 'sardor:run {--user_id=} {--type=} {--text=}';
