@@ -7,6 +7,7 @@ use App\Models\BlogNew;
 use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
+use App\Services\NotificationService;
 use App\Services\PerformersService;
 use App\Services\Profile\ProfileService;
 use App\Services\Task\CategoriesAPIService;
@@ -27,7 +28,7 @@ class SardorCmd extends Command
      *
      * @var string
      */
-    protected $signature = 'sardor:run';
+    protected $signature = 'sardor:run {--user_id=} {--type=} {--text=}';
 
     /**
      * The console command description.
@@ -49,23 +50,16 @@ class SardorCmd extends Command
     /**
      * Execute the console command.
      *
-     * @return int
+     * @return array
      */
     public function handle()
     {
-        $news = BlogNew::latest()->get();
-        (new ProfileService)->index(1092);
-/*$response = $this->testProfileImage($this->userId);
-        $echo = $response->content();*/
+        $notificationService = new NotificationService();
+        $user_id = $this->option("user_id");
+        $type = $this->option("type");
+        $text = $this->option("text");
 
- //   $allData = $response->getData();
- //   $data = $allData->data;
-  //  $avatar =$data->avatar;
-
-//    dd($data);
- //   dd($avatar);
-//dd(Arr::get($allData->data, 'avatar')  );
-//dd($echo);
+        return $notificationService->sms_notif($type, $text, $user_id);
     }
 
     private function testProfileImage($userId = null) {
