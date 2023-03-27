@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\Auth;
 
 class SardorCmd extends Command
 {
-
     public $userId;
 
     /**
