@@ -111,12 +111,12 @@ class ReviewService
      * Taskka review qoldirish
      * @param $task
      * @param $request
-     * @param $status
+     * @param bool $status
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public static function sendReview($task, $request, $status = false): void
+    public static function sendReview($task, $request, bool $status = false): void
     {
         switch (true) {
             case $task->user_id === auth()->id() :

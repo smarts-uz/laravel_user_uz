@@ -3,15 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\ReviewRequest;
-use App\Http\Requests\Task\UpdateRequest;
+use App\Http\Requests\{Api\ReviewRequest, Task\UpdateRequest};
 use App\Models\Task;
-use App\Services\Task\CreateService;
-use App\Services\Task\ReviewService;
-use App\Services\Task\UpdateTaskService;
+use App\Services\Task\{CreateService, ReviewService, UpdateTaskService};
 use Exception;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\{JsonResponse, Request};
 use Illuminate\Support\Facades\DB;
 
 class UpdateAPIController extends Controller
@@ -37,6 +33,7 @@ class UpdateAPIController extends Controller
      *     summary="Complete Task",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -73,6 +70,7 @@ class UpdateAPIController extends Controller
      *     summary="Task status not complete",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -125,6 +123,7 @@ class UpdateAPIController extends Controller
      *     summary="Complete task",
      *     @OA\Parameter (
      *          in="path",
+     *          description="review qoldirmoqchi bo'lgan task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -138,14 +137,17 @@ class UpdateAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="comment",
+     *                    description="review uchun tavsif yoziladi",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="good",
+     *                    description="1 bo'lsa good, 0 bo'lsa bad",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
      *                    property="status",
+     *                    description="task statusi kiritiladi(4 yoki 5)",
      *                    type="integer",
      *                 ),
      *             ),

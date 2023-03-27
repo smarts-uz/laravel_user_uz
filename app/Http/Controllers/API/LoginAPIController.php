@@ -79,6 +79,7 @@ class LoginAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="code",
+     *                    description="Telefon raqamga yuborilgan kod kiritiladi",
      *                    type="string",
      *                 ),
      *             ),
@@ -125,6 +126,7 @@ class LoginAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="code",
+     *                    description="Emailga yuborilgan kod kiritiladi",
      *                    type="integer",
      *                 ),
      *             ),

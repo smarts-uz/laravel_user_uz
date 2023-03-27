@@ -392,6 +392,7 @@
                             "schema": {
                                 "properties": {
                                     "code": {
+                                        "description": "Telefon raqamga yuborilgan kod kiritiladi",
                                         "type": "string"
                                     }
                                 },
@@ -432,6 +433,7 @@
                             "schema": {
                                 "properties": {
                                     "code": {
+                                        "description": "Emailga yuborilgan kod kiritiladi",
                                         "type": "integer"
                                     }
                                 },
@@ -469,6 +471,7 @@
                     {
                         "name": "online",
                         "in": "query",
+                        "description": "true bo'lsa online performerlar qiymatini qaytaradi",
                         "schema": {
                             "type": "boolean"
                         }
@@ -498,6 +501,7 @@
                     {
                         "name": "search",
                         "in": "query",
+                        "description": "performerlarni name bo'yicha search qilish",
                         "schema": {
                             "type": "string"
                         }
@@ -505,6 +509,7 @@
                     {
                         "name": "categories",
                         "in": "query",
+                        "description": "performerlarni tanlagan parent kategoriyasi bo'yicha qaytaradi([2,3,7] - manashu formatda kiritiladi)",
                         "schema": {
                             "type": "string"
                         }
@@ -512,6 +517,7 @@
                     {
                         "name": "child_categories",
                         "in": "query",
+                        "description": "performerlarni tanlagan child kategoriyasi bo'yicha qaytaradi([23,24,25] - manashu formatda kiritiladi)",
                         "schema": {
                             "type": "string"
                         }
@@ -519,6 +525,7 @@
                     {
                         "name": "online",
                         "in": "query",
+                        "description": "true bo'lsa online performerlar qiymatini qaytaradi",
                         "schema": {
                             "type": "boolean"
                         }
@@ -526,6 +533,7 @@
                     {
                         "name": "alphabet",
                         "in": "query",
+                        "description": "true bo'lsa alphabet bo'yicha performerlar qiymatini qaytaradi",
                         "schema": {
                             "type": "boolean"
                         }
@@ -533,6 +541,7 @@
                     {
                         "name": "review",
                         "in": "query",
+                        "description": "true bo'lsa review bo'yicha performerlar qiymatini qaytaradi",
                         "schema": {
                             "type": "boolean"
                         }
@@ -540,6 +549,7 @@
                     {
                         "name": "desc",
                         "in": "query",
+                        "description": "true bo'lsa review,online,alphabet qiymatini kamayish bo'yicha performerlar qiymatini qaytaradi",
                         "schema": {
                             "type": "boolean"
                         }
@@ -547,6 +557,7 @@
                     {
                         "name": "asc",
                         "in": "query",
+                        "description": "true bo'lsa review,online,alphabet qiymatini o'sish bo'yicha performerlar qiymatini qaytaradi",
                         "schema": {
                             "type": "boolean"
                         }
@@ -584,9 +595,11 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
+                                        "description": "user performerga give qilmoqchi bo'lgan task idsini kiritadi",
                                         "type": "integer"
                                     },
                                     "performer_id": {
+                                        "description": "give qilmoqchi bo'lgan performer idsi kiritiladi",
                                         "type": "integer"
                                     }
                                 },
@@ -627,12 +640,15 @@
                             "schema": {
                                 "properties": {
                                     "name": {
+                                        "description": "Performer bo'lmoqchi user o'zining nomini kiritadi",
                                         "type": "string"
                                     },
                                     "location": {
+                                        "description": "Performer bo'lmoqchi user o'zining manzilini kiritadi",
                                         "type": "string"
                                     },
                                     "born_date": {
+                                        "description": "Performer bo'lmoqchi user o'zining tug'ilgan kunini kiritad.('2000-03-19'-shu formatda)",
                                         "type": "number"
                                     }
                                 },
@@ -673,10 +689,12 @@
                             "schema": {
                                 "properties": {
                                     "email": {
+                                        "description": "Performer bo'lmoqchi user o'zining emailini kiritadi",
                                         "type": "string",
                                         "format": "email"
                                     },
                                     "phone_number": {
+                                        "description": "Performer bo'lmoqchi user o'zining telefon raqamini kiritadi",
                                         "type": "string"
                                     }
                                 },
@@ -717,6 +735,7 @@
                             "schema": {
                                 "properties": {
                                     "avatar": {
+                                        "description": "Performer bo'lmoqchi user o'zining rasmini kiritadi",
                                         "type": "file"
                                     }
                                 },
@@ -757,6 +776,7 @@
                             "schema": {
                                 "properties": {
                                     "category_id": {
+                                        "description": "Child category id kiritiladi.(masalan - '31,32,33')",
                                         "type": "string"
                                     }
                                 },
@@ -819,6 +839,7 @@
                     {
                         "name": "category_id",
                         "in": "path",
+                        "description": "child category id kiritiladi",
                         "schema": {
                             "type": "integer"
                         }
@@ -848,6 +869,7 @@
                     {
                         "name": "category_id",
                         "in": "path",
+                        "description": "child category id kiritiladi",
                         "schema": {
                             "type": "integer"
                         }
@@ -4059,6 +4081,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -4094,6 +4117,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -4145,6 +4169,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "review qoldirmoqchi bo'lgan task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -4158,12 +4183,15 @@
                             "schema": {
                                 "properties": {
                                     "comment": {
+                                        "description": "review uchun tavsif yoziladi",
                                         "type": "string"
                                     },
                                     "good": {
+                                        "description": "1 bo'lsa good, 0 bo'lsa bad",
                                         "type": "integer"
                                     },
                                     "status": {
+                                        "description": "task statusi kiritiladi(4 yoki 5)",
                                         "type": "integer"
                                     }
                                 },
@@ -4201,6 +4229,7 @@
                     {
                         "name": "phone_number",
                         "in": "query",
+                        "description": "Telefon raqam kiritiladi(masalan,'998949999999')",
                         "schema": {
                             "type": "string"
                         }
@@ -4230,6 +4259,7 @@
                     {
                         "name": "phone_number",
                         "in": "query",
+                        "description": "Telefon raqam kiritiladi",
                         "schema": {
                             "type": "string"
                         }
@@ -4237,6 +4267,7 @@
                     {
                         "name": "password",
                         "in": "query",
+                        "description": "Yangi parol kiritiladi",
                         "schema": {
                             "type": "string"
                         }
@@ -4244,6 +4275,7 @@
                     {
                         "name": "password_confirmation",
                         "in": "query",
+                        "description": "Yangi parol takror kiritiladi",
                         "schema": {
                             "type": "string"
                         }
@@ -4276,9 +4308,11 @@
                             "schema": {
                                 "properties": {
                                     "code": {
+                                        "description": "telefon raqamga yuborilgan kod kiritiladi",
                                         "type": "number"
                                     },
                                     "phone_number": {
+                                        "description": "telefon raqam kiritiladi",
                                         "type": "number"
                                     }
                                 },

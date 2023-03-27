@@ -3,17 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\ResetCodeRequest;
-use App\Http\Requests\Api\ResetPasswordRequest;
-use App\Http\Requests\Api\UserUpdateRequest;
-use App\Http\Requests\PhoneNumberRequest;
-use App\Http\Requests\Api\UserLoginRequest;
-use App\Http\Requests\UserRegisterRequest;
+use App\Http\Requests\{Api\ResetCodeRequest,
+    Api\ResetPasswordRequest, PhoneNumberRequest,
+    Api\UserLoginRequest, UserRegisterRequest};
 use App\Models\User;
-use App\Services\Response;
-use App\Services\User\UserService;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Exception;
+use App\Services\{Response, User\UserService};
+use Illuminate\Http\{JsonResponse, Request};
 use Illuminate\Validation\ValidationException;
 
 class UserAPIController extends Controller
@@ -44,6 +40,7 @@ class UserAPIController extends Controller
      *     summary="Reset password by phone - sending code",
      *     @OA\Parameter (
      *          in="query",
+     *          description="Telefon raqam kiritiladi(masalan,'998949999999')",
      *          name="phone_number",
      *          @OA\Schema (
      *              type="string"
@@ -62,7 +59,7 @@ class UserAPIController extends Controller
      *          description="Forbidden"
      *     ),
      * )
-     * @throws \Exception
+     * @throws Exception
      */
     public function reset_submit(PhoneNumberRequest $request): JsonResponse
     {
@@ -84,6 +81,7 @@ class UserAPIController extends Controller
      *     summary="Enter a New password",
      *     @OA\Parameter (
      *          in="query",
+     *          description="Telefon raqam kiritiladi",
      *          name="phone_number",
      *          @OA\Schema (
      *              type="string"
@@ -91,6 +89,7 @@ class UserAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
+     *          description="Yangi parol kiritiladi",
      *          name="password",
      *          @OA\Schema (
      *              type="string"
@@ -98,6 +97,7 @@ class UserAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
+     *          description="Yangi parol takror kiritiladi",
      *          name="password_confirmation",
      *          @OA\Schema (
      *              type="string"
@@ -138,10 +138,12 @@ class UserAPIController extends Controller
      *             @OA\Schema (
      *                 @OA\Property (
      *                     property="code",
+     *                     description="telefon raqamga yuborilgan kod kiritiladi",
      *                     type="number",
      *                 ),
      *                 @OA\Property (
      *                     property="phone_number",
+     *                     description="telefon raqam kiritiladi",
      *                     type="number",
      *                 ),
      *             ),
@@ -177,16 +179,6 @@ class UserAPIController extends Controller
         } catch (ValidationException $e) {
             return response()->json(array_values($e->errors()));
         }
-    }
-
-
-    public function update(UserUpdateRequest $request, $id): JsonResponse
-    {
-        $data = $request->validated();
-        $user = User::query()->where('id', $id)->firstOrFail();
-        $user->update($data);
-
-        return response()->json(['success' => true, 'message' => __('Данные пользователя обновлены!'), 'data'=>$data]);
     }
 
     /**

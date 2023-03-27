@@ -28,6 +28,7 @@ class PerformerAPIController extends Controller
      *     summary="Get All Performers",
      *     @OA\Parameter (
      *          in="query",
+     *          description="true bo'lsa online performerlar qiymatini qaytaradi",
      *          name="online",
      *          @OA\Schema (
      *              type="boolean"
@@ -62,6 +63,7 @@ class PerformerAPIController extends Controller
      *     summary="Performers Filter",
      *     @OA\Parameter (
      *          in="query",
+     *          description="performerlarni name bo'yicha search qilish",
      *          name="search",
      *          @OA\Schema (
      *              type="string"
@@ -69,6 +71,7 @@ class PerformerAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
+     *          description="performerlarni tanlagan parent kategoriyasi bo'yicha qaytaradi([2,3,7] - manashu formatda kiritiladi)",
      *          name="categories",
      *          @OA\Schema (
      *              type="string"
@@ -76,6 +79,7 @@ class PerformerAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
+     *          description="performerlarni tanlagan child kategoriyasi bo'yicha qaytaradi([23,24,25] - manashu formatda kiritiladi)",
      *          name="child_categories",
      *          @OA\Schema (
      *              type="string"
@@ -83,6 +87,7 @@ class PerformerAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
+     *          description="true bo'lsa online performerlar qiymatini qaytaradi",
      *          name="online",
      *          @OA\Schema (
      *              type="boolean"
@@ -90,6 +95,7 @@ class PerformerAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
+     *          description="true bo'lsa alphabet bo'yicha performerlar qiymatini qaytaradi",
      *          name="alphabet",
      *          @OA\Schema (
      *              type="boolean"
@@ -97,6 +103,7 @@ class PerformerAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
+     *          description="true bo'lsa review bo'yicha performerlar qiymatini qaytaradi",
      *          name="review",
      *          @OA\Schema (
      *              type="boolean"
@@ -104,6 +111,7 @@ class PerformerAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
+     *          description="true bo'lsa review,online,alphabet qiymatini kamayish bo'yicha performerlar qiymatini qaytaradi",
      *          name="desc",
      *          @OA\Schema (
      *              type="boolean"
@@ -111,6 +119,7 @@ class PerformerAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
+     *          description="true bo'lsa review,online,alphabet qiymatini o'sish bo'yicha performerlar qiymatini qaytaradi",
      *          name="asc",
      *          @OA\Schema (
      *              type="boolean"
@@ -153,10 +162,12 @@ class PerformerAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
+     *                    description="user performerga give qilmoqchi bo'lgan task idsini kiritadi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
      *                    property="performer_id",
+     *                    description="give qilmoqchi bo'lgan performer idsi kiritiladi",
      *                    type="integer",
      *                 ),
      *             ),
@@ -200,14 +211,17 @@ class PerformerAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="name",
+     *                    description="Performer bo'lmoqchi user o'zining nomini kiritadi",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="location",
+     *                    description="Performer bo'lmoqchi user o'zining manzilini kiritadi",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="born_date",
+     *                    description="Performer bo'lmoqchi user o'zining tug'ilgan kunini kiritad.('2000-03-19'-shu formatda)",
      *                    type="number",
      *                 ),
      *             ),
@@ -250,11 +264,13 @@ class PerformerAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="email",
+     *                    description="Performer bo'lmoqchi user o'zining emailini kiritadi",
      *                    type="string",
      *                    format="email",
      *                 ),
      *                 @OA\Property (
      *                    property="phone_number",
+     *                    description="Performer bo'lmoqchi user o'zining telefon raqamini kiritadi",
      *                    type="string",
      *                 ),
      *             ),
@@ -297,6 +313,7 @@ class PerformerAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="avatar",
+     *                    description="Performer bo'lmoqchi user o'zining rasmini kiritadi",
      *                    type="file",
      *                 ),
      *             ),
@@ -343,6 +360,7 @@ class PerformerAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="category_id",
+     *                    description="Child category id kiritiladi.(masalan - '31,32,33')",
      *                    type="string",
      *                 ),
      *             ),
@@ -422,6 +440,7 @@ class PerformerAPIController extends Controller
      *     summary="Performer count",
      *     @OA\Parameter (
      *          in="path",
+     *          description="child category id kiritiladi",
      *          name="category_id",
      *          @OA\Schema (
      *              type="integer"
@@ -457,6 +476,7 @@ class PerformerAPIController extends Controller
      *     summary="Performer image",
      *     @OA\Parameter (
      *          in="path",
+     *          description="child category id kiritiladi",
      *          name="category_id",
      *          @OA\Schema (
      *              type="integer"
