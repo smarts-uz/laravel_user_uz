@@ -957,12 +957,15 @@
                             "schema": {
                                 "properties": {
                                     "images": {
+                                        "description": "portfolio uchun rasm kiritiladi",
                                         "type": "file"
                                     },
                                     "comment": {
+                                        "description": "portfolio uchun comment yoziladi",
                                         "type": "string"
                                     },
                                     "description": {
+                                        "description": "portfolio uchun tavsif yoziladi",
                                         "type": "string"
                                     }
                                 },
@@ -1000,6 +1003,7 @@
                     {
                         "name": "portfolio",
                         "in": "path",
+                        "description": "portfolio id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1035,6 +1039,7 @@
                     {
                         "name": "portfolio",
                         "in": "path",
+                        "description": "portfolio id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1048,12 +1053,15 @@
                             "schema": {
                                 "properties": {
                                     "comment": {
+                                        "description": "portfolio uchun comment yoziladi",
                                         "type": "string"
                                     },
                                     "description": {
+                                        "description": "portfolio uchun tavsif yoziladi",
                                         "type": "string"
                                     },
                                     "image": {
+                                        "description": "portfolio uchun rasm kiritiladi",
                                         "type": "file"
                                     }
                                 },
@@ -1094,6 +1102,7 @@
                             "schema": {
                                 "properties": {
                                     "link": {
+                                        "description": "youtobe video link yoziladi(masalan https:\/\/www.youtube.com\/watch?v=iU-Uk5CEG1k&ab_channel=KunUZ)",
                                         "type": "string"
                                     }
                                 },
@@ -1270,6 +1279,7 @@
                             "schema": {
                                 "properties": {
                                     "phone_number": {
+                                        "description": "phone_number yoziladi",
                                         "type": "string"
                                     }
                                 },
@@ -1310,14 +1320,17 @@
                             "schema": {
                                 "properties": {
                                     "old_password": {
+                                        "description": "avvalgi parol yoziladi",
                                         "type": "string",
                                         "format": "password"
                                     },
                                     "password": {
+                                        "description": "yangi parol yoziladi",
                                         "type": "string",
                                         "format": "password"
                                     },
                                     "password_confirmation": {
+                                        "description": "yangi parol yoziladi",
                                         "type": "string",
                                         "format": "password"
                                     }
@@ -1359,6 +1372,7 @@
                             "schema": {
                                 "properties": {
                                     "avatar": {
+                                        "description": "Profile uchun rasm kiritiladi",
                                         "type": "file"
                                     }
                                 },
@@ -1399,6 +1413,7 @@
                             "schema": {
                                 "properties": {
                                     "name": {
+                                        "description": "name kiritiladi",
                                         "type": "string"
                                     },
                                     "gender": {
@@ -1410,14 +1425,16 @@
                                         "type": "string"
                                     },
                                     "age": {
+                                        "description": "yoshi kiritiladi",
                                         "type": "integer"
                                     },
                                     "email": {
+                                        "description": "email kiritiladi",
                                         "type": "string",
                                         "format": "email"
                                     },
                                     "location": {
-                                        "description": "Bo`sh qoldirsa boladi",
+                                        "description": "yashash manzili kiritiladi (bo`sh qoldirsa boladi)",
                                         "type": "string"
                                     }
                                 },
@@ -1483,6 +1500,7 @@
                             "schema": {
                                 "properties": {
                                     "description": {
+                                        "description": "profili uchun tavsif yoziladi",
                                         "type": "string"
                                     }
                                 },
@@ -1561,6 +1579,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "user id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -1591,6 +1610,7 @@
                     {
                         "name": "user",
                         "in": "path",
+                        "description": "user id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -1621,6 +1641,7 @@
                     {
                         "name": "user",
                         "in": "path",
+                        "description": "user id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -1653,10 +1674,16 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
+                                    "category": {
+                                        "description": "child category idlar kiritiladi(array formatda)",
+                                        "type": "object"
+                                    },
                                     "sms_notification": {
+                                        "description": "sms_notificationni yoqish uchun 1, o'chirish uchun 0 yoziladi",
                                         "type": "integer"
                                     },
                                     "email_notification": {
+                                        "description": "email_notificationni yoqish uchun 1, o'chirish uchun 0 yoziladi",
                                         "type": "integer"
                                     }
                                 },
@@ -1701,6 +1728,7 @@
                                         "type": "string"
                                     },
                                     "version": {
+                                        "description": "app versiya kiritiladi (masalan 1.0.45)",
                                         "type": "string"
                                     }
                                 },
@@ -1915,6 +1943,7 @@
                     {
                         "name": "portfolio",
                         "in": "path",
+                        "description": "portfolio id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1928,7 +1957,7 @@
                             "schema": {
                                 "properties": {
                                     "image": {
-                                        "description": "Ozodbek\/1675856445_image_2023-02-07_11-00-21.png shunday ko'rinishda img url kiritiladi",
+                                        "description": "Username\/1675856445_image_2023-02-07_11-00-21.png shunday ko'rinishda img url kiritiladi",
                                         "type": "string"
                                     }
                                 },
@@ -1969,6 +1998,7 @@
                             "schema": {
                                 "properties": {
                                     "work_experience": {
+                                        "description": "ish tajribasi kiritiladi(necha yilligi)",
                                         "type": "integer"
                                     }
                                 },
@@ -2031,6 +2061,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "response template id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2044,9 +2075,11 @@
                             "schema": {
                                 "properties": {
                                     "title": {
+                                        "description": "response template title",
                                         "type": "string"
                                     },
                                     "text": {
+                                        "description": "response template text",
                                         "type": "string"
                                     }
                                 },
@@ -2087,9 +2120,11 @@
                             "schema": {
                                 "properties": {
                                     "title": {
+                                        "description": "response template title",
                                         "type": "string"
                                     },
                                     "text": {
+                                        "description": "response template text",
                                         "type": "string"
                                     }
                                 },
@@ -2127,6 +2162,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "response template id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2169,9 +2205,11 @@
                                         "type": "integer"
                                     },
                                     "notification_to": {
+                                        "description": "vaqt kiritiladi",
                                         "type": "string"
                                     },
                                     "notification_from": {
+                                        "description": "vaqt kiritiladi",
                                         "type": "string"
                                     }
                                 },
@@ -2209,6 +2247,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2244,6 +2283,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2252,6 +2292,7 @@
                     {
                         "name": "user",
                         "in": "path",
+                        "description": "user id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2287,6 +2328,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2391,6 +2433,7 @@
                             "schema": {
                                 "properties": {
                                     "type": {
+                                        "description": "variantlardan biri tanlanadi",
                                         "type": "string",
                                         "enum": [
                                             "google",
@@ -2550,7 +2593,7 @@
         "\/api\/select-performer\/{response}": {
             "post": {
                 "tags": [
-                    "Task"
+                    "Responses"
                 ],
                 "summary": "Select performer",
                 "operationId": "9dd3e944aa88b5922c3327499f09f3d5",
@@ -2558,6 +2601,7 @@
                     {
                         "name": "response",
                         "in": "path",
+                        "description": "task response id yoziladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2914,6 +2958,7 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
+                                        "description": "task id kiritiladi",
                                         "type": "integer"
                                     }
                                 },
@@ -2954,10 +2999,11 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
+                                        "description": "task id kiritiladi",
                                         "type": "integer"
                                     },
                                     "radio": {
-                                        "description": "Agar udallonna bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
+                                        "description": "Agar masofaviy bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
                                         "type": "string"
                                     }
                                 },
@@ -2998,6 +3044,7 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
+                                        "description": "task id kiritiladi",
                                         "type": "integer"
                                     },
                                     "points[]": {
@@ -3005,12 +3052,15 @@
                                         "items": {
                                             "properties": {
                                                 "location": {
+                                                    "description": "location kiritiladi",
                                                     "type": "string"
                                                 },
                                                 "latitude": {
+                                                    "description": "latitude kiritiladi",
                                                     "type": "number"
                                                 },
                                                 "longitude": {
+                                                    "description": "longitude kiritiladi",
                                                     "type": "number"
                                                 }
                                             },
@@ -3055,6 +3105,7 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
+                                        "description": "task id kiritiladi",
                                         "type": "integer"
                                     },
                                     "date_type": {
@@ -3107,6 +3158,7 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
+                                        "description": "task id kiritiladi",
                                         "type": "integer"
                                     },
                                     "amount": {
@@ -3155,9 +3207,11 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
+                                        "description": "task id kiritiladi",
                                         "type": "integer"
                                     },
                                     "description": {
+                                        "description": "task uchun tavsif yoziladi",
                                         "type": "string"
                                     },
                                     "docs": {
@@ -3202,9 +3256,11 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
+                                        "description": "task id kiritiladi",
                                         "type": "integer"
                                     },
                                     "images": {
+                                        "description": "task uchun rasm kiritiladi",
                                         "type": "file"
                                     }
                                 },
@@ -3245,9 +3301,11 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
+                                        "description": "task id kiritiladi",
                                         "type": "integer"
                                     },
                                     "phone_number": {
+                                        "description": "telefon raqam kiritiladi",
                                         "type": "string"
                                     }
                                 },
@@ -3288,9 +3346,11 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
+                                        "description": "task id kiritiladi",
                                         "type": "integer"
                                     },
                                     "phone_number": {
+                                        "description": "telefon raqam kiritiladi",
                                         "type": "integer"
                                     },
                                     "sms_otp": {
@@ -3332,6 +3392,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3345,9 +3406,11 @@
                             "schema": {
                                 "properties": {
                                     "name": {
+                                        "description": "task name kiritiladi",
                                         "type": "string"
                                     },
                                     "category_id": {
+                                        "description": "task child category_id kiritiladi",
                                         "type": "integer"
                                     }
                                 },
@@ -3385,6 +3448,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3420,6 +3484,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3432,11 +3497,8 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "task_id": {
-                                        "type": "integer"
-                                    },
                                     "radio": {
-                                        "description": "Agar udallonna bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
+                                        "description": "Agar masofaviy ish bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
                                         "type": "string"
                                     }
                                 },
@@ -3474,6 +3536,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3486,16 +3549,16 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "task_id": {
-                                        "type": "integer"
-                                    },
                                     "location": {
+                                        "description": "task location kiritiladi",
                                         "type": "string"
                                     },
                                     "latitude": {
+                                        "description": "task latitude kiritiladi",
                                         "type": "number"
                                     },
                                     "longitude": {
+                                        "description": "task longitude kiritiladi",
                                         "type": "number"
                                     }
                                 },
@@ -3533,6 +3596,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3545,9 +3609,6 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "task_id": {
-                                        "type": "integer"
-                                    },
                                     "date_type": {
                                         "description": "1 dan 3 gacha bersa bo`ladi",
                                         "type": "integer"
@@ -3595,6 +3656,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3607,13 +3669,12 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "task_id": {
-                                        "type": "integer"
-                                    },
                                     "amount": {
+                                        "description": "Narxi",
                                         "type": "number"
                                     },
                                     "budget_type": {
+                                        "description": "Naqt yoki plastik (0 yoki 1)",
                                         "type": "integer"
                                     }
                                 },
@@ -3651,6 +3712,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3663,10 +3725,8 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "task_id": {
-                                        "type": "integer"
-                                    },
                                     "description": {
+                                        "description": "task uchun tavsif kiritiladi",
                                         "type": "string"
                                     },
                                     "docs": {
@@ -3708,6 +3768,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3720,10 +3781,8 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "task_id": {
-                                        "type": "integer"
-                                    },
                                     "images": {
+                                        "description": "task uchun rasm kiritiladi",
                                         "type": "file"
                                     }
                                 },
@@ -3761,6 +3820,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3773,10 +3833,8 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "task_id": {
-                                        "type": "integer"
-                                    },
                                     "phone_number": {
+                                        "description": "task phone_number kiritiladi",
                                         "type": "string"
                                     }
                                 },
@@ -3814,6 +3872,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3826,10 +3885,8 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "task_id": {
-                                        "type": "integer"
-                                    },
                                     "phone_number": {
+                                        "description": "task phone_number kiritiladi",
                                         "type": "integer"
                                     },
                                     "sms_otp": {
@@ -3871,6 +3928,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3883,11 +3941,9 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "task_id": {
-                                        "type": "integer"
-                                    },
                                     "images": {
-                                        "type": "file"
+                                        "description": "delete qilinadigan image url kiritiladi",
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -3938,9 +3994,11 @@
                             "schema": {
                                 "properties": {
                                     "compliance_type_id": {
+                                        "description": "shikoyat turi idsi kiritiladi",
                                         "type": "integer"
                                     },
                                     "text": {
+                                        "description": "shikoyat matni kiritiladi",
                                         "type": "string"
                                     }
                                 },
@@ -4003,6 +4061,7 @@
                     {
                         "name": "user_id",
                         "in": "query",
+                        "description": "user id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -4011,6 +4070,7 @@
                     {
                         "name": "status",
                         "in": "query",
+                        "description": "status kiritiladi(1 yoki 0)",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -4046,6 +4106,7 @@
                     {
                         "name": "user_id",
                         "in": "query",
+                        "description": "user id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -5408,6 +5469,7 @@
                                 "notification_type",
                                 "socails",
                                 "location",
+                                "message_id",
                                 "views",
                                 "last_name",
                                 "g-recaptcha-response",

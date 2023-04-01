@@ -25,6 +25,7 @@ class SocialAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="type",
+     *                    description="variantlardan biri tanlanadi",
      *                    type="string",
      *                    enum={"google", "facebook","apple"}
      *                 ),

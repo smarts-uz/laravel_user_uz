@@ -4,12 +4,11 @@ namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskResponseRequest;
-use App\Models\Task;
-use App\Models\TaskResponse;
-use App\Models\User;
+use App\Models\{Task, TaskResponse, User};
 use App\Services\Task\ResponseService;
-use Exception;
 use Illuminate\Http\RedirectResponse;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ResponseController extends Controller
@@ -37,7 +36,10 @@ class ResponseController extends Controller
     }
 
     /**
-     * @throws Exception
+     * @param TaskResponse $response
+     * @return RedirectResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function selectPerformer(TaskResponse $response): RedirectResponse
     {

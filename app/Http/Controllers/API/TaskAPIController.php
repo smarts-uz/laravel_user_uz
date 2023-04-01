@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
+use Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use App\Http\Requests\Api\{TaskAddressRequest, TaskBudgetRequest, TaskComplaintRequest,
     TaskContactsRequest, TaskCustomRequest, TaskDateRequest, TaskNameRequest,
     TaskNoteRequest, TaskRemoteRequest, TaskResponseRequest, TaskVerificationRequest};
@@ -168,10 +171,11 @@ class TaskAPIController extends Controller
     /**
      * @OA\Post(
      *     path="/api/select-performer/{response}",
-     *     tags={"Task"},
+     *     tags={"Responses"},
      *     summary="Select performer",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task response id yoziladi",
      *          name="response",
      *          required=true,
      *          @OA\Schema (
@@ -197,7 +201,7 @@ class TaskAPIController extends Controller
      */
     public function selectPerformer(TaskResponse $response): JsonResponse
     {
-        if (!$response->task) {
+        if (!$response->task || auth()->id() === $response->performer_id) {
             return response()->json([
                 'success' => false,
                 'message' => __('Задача не найдена')
@@ -577,6 +581,7 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
+     *                    description="task id kiritiladi",
      *                    type="integer",
      *                 ),
      *             ),
@@ -616,11 +621,12 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
+     *                    description="task id kiritiladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
      *                    property="radio",
-     *                    description="Agar udallonna bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
+     *                    description="Agar masofaviy bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
      *                    type="string",
      *                 ),
      *             ),
@@ -660,6 +666,7 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
+     *                    description="task id kiritiladi",
      *                    type="integer",
      *                 ),
      *                  @OA\Property (
@@ -667,9 +674,21 @@ class TaskAPIController extends Controller
      *                    type="array",
      *                    @OA\Items(
      *                      type="object",
-     *                      @OA\Property(property="location", type="string"),
-     *                      @OA\Property(property="latitude", type="number"),
-     *                      @OA\Property(property="longitude", type="number"),
+     *                      @OA\Property(
+     *                          property="location",
+     *                          description="location kiritiladi",
+     *                          type="string"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="latitude",
+     *                          description="latitude kiritiladi",
+     *                          type="number"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="longitude",
+     *                          description="longitude kiritiladi",
+     *                          type="number"
+     *                      ),
      *                   ),
      *                 )
      *             ),
@@ -709,6 +728,7 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
+     *                    description="task id kiritiladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
@@ -763,6 +783,7 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
+     *                    description="task id kiritiladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
@@ -812,10 +833,12 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
+     *                    description="task id kiritiladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
      *                    property="description",
+     *                    description="task uchun tavsif yoziladi",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
@@ -860,10 +883,12 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
+     *                    description="task id kiritiladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
      *                    property="images",
+     *                    description="task uchun rasm kiritiladi",
      *                    type="file",
      *                 ),
      *             ),
@@ -904,10 +929,12 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
+     *                    description="task id kiritiladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
      *                    property="phone_number",
+     *                    description="telefon raqam kiritiladi",
      *                    type="string",
      *                 ),
      *             ),
@@ -929,7 +956,10 @@ class TaskAPIController extends Controller
      *         {"token": {}}
      *     },
      * )
-     * @throws \Exception
+     * @param TaskContactsRequest $request
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function contacts(TaskContactsRequest $request): JsonResponse
     {
@@ -951,10 +981,12 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
+     *                    description="task id kiritiladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
      *                    property="phone_number",
+     *                    description="telefon raqam kiritiladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
@@ -996,6 +1028,7 @@ class TaskAPIController extends Controller
      *      summary="Task update name",
      *      @OA\Parameter (
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -1009,10 +1042,12 @@ class TaskAPIController extends Controller
      *              @OA\Schema(
      *                  @OA\Property (
      *                      property="name",
+     *                      description="task name kiritiladi",
      *                      type="string",
      *                  ),
      *                  @OA\Property (
      *                      property="category_id",
+     *                      description="task child category_id kiritiladi",
      *                      type="integer",
      *                  ),
      *              )
@@ -1051,6 +1086,7 @@ class TaskAPIController extends Controller
      *     summary="Update task custom fields",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -1087,6 +1123,7 @@ class TaskAPIController extends Controller
      *     summary="Task update remote",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -1099,12 +1136,8 @@ class TaskAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
-     *                    property="task_id",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
      *                    property="radio",
-     *                    description="Agar udallonna bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
+     *                    description="Agar masofaviy ish bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
      *                    type="string",
      *                 ),
      *             ),
@@ -1140,6 +1173,7 @@ class TaskAPIController extends Controller
      *     summary="Task update address",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -1152,19 +1186,18 @@ class TaskAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
-     *                    property="task_id",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
      *                    property="location",
+     *                    description="task location kiritiladi",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="latitude",
+     *                    description="task latitude kiritiladi",
      *                    type="number",
      *                 ),
      *                 @OA\Property (
      *                    property="longitude",
+     *                    description="task longitude kiritiladi",
      *                    type="number",
      *                 ),
      *             ),
@@ -1200,6 +1233,7 @@ class TaskAPIController extends Controller
      *     summary="Task update date",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -1211,10 +1245,6 @@ class TaskAPIController extends Controller
      *         @OA\MediaType (
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="task_id",
-     *                    type="integer",
-     *                 ),
      *                 @OA\Property (
      *                    property="date_type",
      *                    description="1 dan 3 gacha bersa bo`ladi",
@@ -1263,6 +1293,7 @@ class TaskAPIController extends Controller
      *     summary="Task update budget",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -1275,14 +1306,12 @@ class TaskAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
-     *                    property="task_id",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
+     *                    description="Narxi",
      *                    property="amount",
      *                    type="number",
      *                 ),
      *                 @OA\Property (
+     *                    description="Naqt yoki plastik (0 yoki 1)",
      *                    property="budget_type",
      *                    type="integer",
      *                 ),
@@ -1319,6 +1348,7 @@ class TaskAPIController extends Controller
      *     summary="Task update note",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -1331,11 +1361,8 @@ class TaskAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
-     *                    property="task_id",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
      *                    property="description",
+     *                    description="task uchun tavsif kiritiladi",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
@@ -1376,6 +1403,7 @@ class TaskAPIController extends Controller
      *     summary="Task update images",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -1388,11 +1416,8 @@ class TaskAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
-     *                    property="task_id",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
      *                    property="images",
+     *                    description="task uchun rasm kiritiladi",
      *                    type="file",
      *                 ),
      *             ),
@@ -1428,6 +1453,7 @@ class TaskAPIController extends Controller
      *     summary="Task update contacts",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -1440,11 +1466,8 @@ class TaskAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
-     *                    property="task_id",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
      *                    property="phone_number",
+     *                    description="task phone_number kiritiladi",
      *                    type="string",
      *                 ),
      *             ),
@@ -1480,6 +1503,7 @@ class TaskAPIController extends Controller
      *     summary="Task update verify",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -1492,11 +1516,8 @@ class TaskAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
-     *                    property="task_id",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
      *                    property="phone_number",
+     *                    description="task phone_number kiritiladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
@@ -1537,6 +1558,7 @@ class TaskAPIController extends Controller
      *     summary="Task delete images",
      *     @OA\Parameter (
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -1549,12 +1571,9 @@ class TaskAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
-     *                    property="task_id",
-     *                    type="integer",
-     *                 ),
-     *                 @OA\Property (
      *                    property="images",
-     *                    type="file",
+     *                    description="delete qilinadigan image url kiritiladi",
+     *                    type="string",
      *                 ),
      *             ),
      *         ),
@@ -1603,10 +1622,12 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="compliance_type_id",
+     *                    description="shikoyat turi idsi kiritiladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
      *                    property="text",
+     *                    description="shikoyat matni kiritiladi",
      *                    type="string",
      *                 ),
      *             ),
@@ -1674,6 +1695,7 @@ class TaskAPIController extends Controller
      *     summary="Get Performer Tasks",
      *     @OA\Parameter(
      *          in="query",
+     *          description="user id kiritiladi",
      *          name="user_id",
      *          required=true,
      *          @OA\Schema(
@@ -1682,6 +1704,7 @@ class TaskAPIController extends Controller
      *     ),
      *     @OA\Parameter(
      *          in="query",
+     *          description="status kiritiladi(1 yoki 0)",
      *          name="status",
      *          required=true,
      *          @OA\Schema(
@@ -1719,6 +1742,7 @@ class TaskAPIController extends Controller
      *     summary="Get Performer all Tasks",
      *     @OA\Parameter(
      *          in="query",
+     *          description="user id kiritiladi",
      *          name="user_id",
      *          required=true,
      *          @OA\Schema(

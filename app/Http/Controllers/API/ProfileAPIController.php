@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\{Api\CategoryRequest, Api\PortfolioRequest, Api\ProfileAvatarRequest,
     Api\ProfilePasswordRequest, Api\ProfilePhoneRequest, Api\ProfileSettingsRequest, Api\ProfileVideoRequest,
     Api\ResponseTemplateRequest, Api\UserReportRequest, UserBlockRequest};
+use Exception;
 use JsonException;
 use App\Models\{Portfolio, ReportedUser, ResponseTemplate, User};
 use App\Services\{CustomService, PerformersService, Profile\ProfileService};
@@ -93,14 +94,17 @@ class ProfileAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="images",
+     *                    description="portfolio uchun rasm kiritiladi",
      *                    type="file",
      *                 ),
      *                 @OA\Property (
      *                    property="comment",
+     *                    description="portfolio uchun comment yoziladi",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="description",
+     *                    description="portfolio uchun tavsif yoziladi",
      *                    type="string",
      *                 ),
      *             ),
@@ -145,6 +149,7 @@ class ProfileAPIController extends Controller
      *     summary="Delete Portfolio",
      *     @OA\Parameter(
      *          in="path",
+     *          description="portfolio id kiritiladi",
      *          name="portfolio",
      *          required=true,
      *          @OA\Schema(
@@ -190,6 +195,7 @@ class ProfileAPIController extends Controller
      *     summary="Portfolio Update",
      *     @OA\Parameter(
      *          in="path",
+     *          description="portfolio id kiritiladi",
      *          name="portfolio",
      *          required=true,
      *          @OA\Schema(
@@ -203,14 +209,17 @@ class ProfileAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="comment",
+     *                    description="portfolio uchun comment yoziladi",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="description",
+     *                    description="portfolio uchun tavsif yoziladi",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="image",
+     *                    description="portfolio uchun rasm kiritiladi",
      *                    type="file",
      *                 ),
      *             ),
@@ -260,6 +269,7 @@ class ProfileAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="link",
+     *                    description="youtobe video link yoziladi(masalan https://www.youtube.com/watch?v=iU-Uk5CEG1k&ab_channel=KunUZ)",
      *                    type="string",
      *                 ),
      *             ),
@@ -482,6 +492,7 @@ class ProfileAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="phone_number",
+     *                    description="phone_number yoziladi",
      *                    type="string",
      *                 ),
      *             ),
@@ -503,7 +514,7 @@ class ProfileAPIController extends Controller
      *         {"token": {}}
      *     },
      * )
-     * @throws \Exception
+     * @throws Exception
      */
     public function phoneUpdate(ProfilePhoneRequest $request): JsonResponseAlias
     {
@@ -527,16 +538,19 @@ class ProfileAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
+     *                    description="avvalgi parol yoziladi",
      *                    property="old_password",
      *                    type="string",
      *                    format="password",
      *                 ),
      *                 @OA\Property (
+     *                    description="yangi parol yoziladi",
      *                    property="password",
      *                    type="string",
      *                    format="password",
      *                 ),
      *                 @OA\Property (
+     *                    description="yangi parol yoziladi",
      *                    property="password_confirmation",
      *                    type="string",
      *                    format="password",
@@ -580,6 +594,7 @@ class ProfileAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
+     *                    description="Profile uchun rasm kiritiladi",
      *                    property="avatar",
      *                    type="file",
      *                 ),
@@ -631,6 +646,7 @@ class ProfileAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="name",
+     *                    description="name kiritiladi",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
@@ -645,16 +661,18 @@ class ProfileAPIController extends Controller
      *                 ),
      *                 @OA\Property (
      *                    property="age",
+     *                    description="yoshi kiritiladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
+     *                    description="email kiritiladi",
      *                    property="email",
      *                    type="string",
      *                    format="email",
      *                 ),
      *                 @OA\Property (
      *                    property="location",
-     *                    description="Bo`sh qoldirsa boladi",
+     *                    description="yashash manzili kiritiladi (bo`sh qoldirsa boladi)",
      *                    type="string",
      *                 ),
      *             ),
@@ -746,6 +764,7 @@ class ProfileAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
+     *                    description="profili uchun tavsif yoziladi",
      *                    property="description",
      *                    type="string",
      *                 ),
@@ -843,6 +862,7 @@ class ProfileAPIController extends Controller
      *     summary="Get Profile By ID",
      *     @OA\Parameter(
      *          in="path",
+     *          description="user id kiritiladi",
      *          name="id",
      *          required=true,
      *          @OA\Schema(
@@ -877,6 +897,7 @@ class ProfileAPIController extends Controller
      *     summary="User Portfolios",
      *     @OA\Parameter(
      *          in="path",
+     *          description="user id kiritiladi",
      *          name="user",
      *          required=true,
      *          @OA\Schema(
@@ -909,6 +930,7 @@ class ProfileAPIController extends Controller
      *     summary="User Reviews",
      *     @OA\Parameter(
      *          in="path",
+     *          description="user id kiritiladi",
      *          name="user",
      *          required=true,
      *          @OA\Schema(
@@ -952,11 +974,18 @@ class ProfileAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                  @OA\Property (
+     *                    property="category",
+     *                    description="child category idlar kiritiladi(array formatda)",
+     *                    type="object",
+     *                  ),
+     *                  @OA\Property (
      *                    property="sms_notification",
+     *                    description="sms_notificationni yoqish uchun 1, o'chirish uchun 0 yoziladi",
      *                    type="integer",
      *                 ),
      *                  @OA\Property (
      *                    property="email_notification",
+     *                    description="email_notificationni yoqish uchun 1, o'chirish uchun 0 yoziladi",
      *                    type="integer",
      *                 ),
      *             ),
@@ -1013,6 +1042,7 @@ class ProfileAPIController extends Controller
      *                 ),
      *                 @OA\Property (
      *                    property="version",
+     *                    description="app versiya kiritiladi (masalan 1.0.45)",
      *                    type="string",
      *                 ),
      *             ),
@@ -1063,7 +1093,7 @@ class ProfileAPIController extends Controller
      *         {"token": {}}
      *     },
      * )
-     * @throws \Exception
+     * @throws Exception
      */
     public function selfDelete(): JsonResponseAlias
     {
@@ -1250,6 +1280,7 @@ class ProfileAPIController extends Controller
      *     summary="Profile delete image",
      *     @OA\Parameter(
      *          in="path",
+     *          description="portfolio id kiritiladi",
      *          name="portfolio",
      *          required=true,
      *          @OA\Schema(
@@ -1263,7 +1294,7 @@ class ProfileAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="image",
-     *                    description="Ozodbek/1675856445_image_2023-02-07_11-00-21.png shunday ko'rinishda img url kiritiladi",
+     *                    description="Username/1675856445_image_2023-02-07_11-00-21.png shunday ko'rinishda img url kiritiladi",
      *                    type="string",
      *                 ),
      *             ),
@@ -1309,6 +1340,7 @@ class ProfileAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="work_experience",
+     *                    description="ish tajribasi kiritiladi(necha yilligi)",
      *                    type="integer",
      *                 ),
      *             ),
@@ -1384,6 +1416,7 @@ class ProfileAPIController extends Controller
      *     summary="Profile response template edit",
      *     @OA\Parameter(
      *          in="path",
+     *          description="response template id kiritiladi",
      *          name="id",
      *          required=true,
      *          @OA\Schema(
@@ -1397,10 +1430,12 @@ class ProfileAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="title",
+     *                    description="response template title",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="text",
+     *                    description="response template text",
      *                    type="string",
      *                 ),
      *             ),
@@ -1447,10 +1482,12 @@ class ProfileAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="title",
+     *                    description="response template title",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="text",
+     *                    description="response template text",
      *                    type="string",
      *                 ),
      *             ),
@@ -1497,6 +1534,7 @@ class ProfileAPIController extends Controller
      *     tags={"Profile"},
      *     summary="Profile response template delete",
      *     @OA\Parameter(
+     *          description="response template id kiritiladi",
      *          in="path",
      *          name="id",
      *          required=true,
@@ -1541,13 +1579,15 @@ class ProfileAPIController extends Controller
      *                 @OA\Property (
      *                    property="notification_off",
      *                    type="integer",
-     *                    description="0 yoki 1, 0 bo'lsa yoqish, 1 bo'lsa o'chirish"
+     *                    description="0 yoki 1, 0 bo'lsa yoqish, 1 bo'lsa o'chirish",
      *                 ),
      *                 @OA\Property (
+     *                    description="vaqt kiritiladi",
      *                    property="notification_to",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
+     *                    description="vaqt kiritiladi",
      *                    property="notification_from",
      *                    type="string",
      *                 ),

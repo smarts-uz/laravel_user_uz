@@ -70,6 +70,7 @@
                                 "notification_type",
                                 "socails",
                                 "location",
+                                "message_id",
                                 "views",
                                 "last_name",
                                 "g-recaptcha-response",
