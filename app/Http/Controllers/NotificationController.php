@@ -611,14 +611,13 @@ class NotificationController extends VoyagerBaseController
      */
     public function task_create_notification(Request $request): JsonResponse
     {
-        /** @var User $user */
-        $user = auth()->user();
+        $user_id = auth()->id();
         $task_id = $request->get('id');
         $task_name = $request->get('name');
         $task_category_id = $request->get('category_id');
         $title = $request->get('title');
         $body = $request->get('body');
-        return $this->notificationService->task_create_notification($user, $task_id, $task_name, $task_category_id, $title, $body);
+        return $this->notificationService->task_create_notification($user_id, $task_id, $task_name, $task_category_id, $title, $body);
     }
 
 

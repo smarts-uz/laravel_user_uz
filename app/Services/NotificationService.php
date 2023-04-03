@@ -463,7 +463,7 @@ class NotificationService
 
     /**
      * Test task create notification
-     * @param $user
+     * @param $user_id
      * @param $task_id
      * @param $task_name
      * @param $task_category_id
@@ -471,13 +471,13 @@ class NotificationService
      * @param $body
      * @return JsonResponse
      */
-    public function task_create_notification($user, $task_id, $task_name, $task_category_id, $title, $body): JsonResponse
+    public function task_create_notification($user_id, $task_id, $task_name, $task_category_id, $title, $body): JsonResponse
     {
         $user_cat_ids = UserCategory::query()->where('category_id', $task_category_id)->pluck('user_id')->toArray();
         $performers = User::query()->whereIn('id', $user_cat_ids)->get();
         foreach ($performers as $performer) {
             $notification = [
-                'user_id' => $user->id,
+                'user_id' => $user_id,
                 'performer_id' => $performer->id,
                 'description' => $title,
                 'task_id' => $task_id,
