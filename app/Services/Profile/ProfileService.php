@@ -733,11 +733,10 @@ class ProfileService
 
     /**
      * Ijrochi bo'lish pagega categoriyalarni qaytaradi
-     * @param $user
      * @param string|null $lang
      * @return VerificationCategoryItem
      */
-    public function verifyCategory($user, ?string $lang = 'uz'): VerificationCategoryItem
+    public function verifyCategory(?string $lang = 'uz'): VerificationCategoryItem
     {
         $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use ($lang) {
             return Category::withTranslations($lang)->orderBy("order")->get();
@@ -746,7 +745,6 @@ class ProfileService
         $item = new VerificationCategoryItem();
         $item->categories = collect($category)->where('parent_id', null)->all();
         $item->categories2 = collect($category)->where('parent_id', '!=', null)->all();
-        $item->user_categories = UserCategory::query()->where('user_id', $user->id)->pluck('category_id')->toArray();
         return $item;
     }
 

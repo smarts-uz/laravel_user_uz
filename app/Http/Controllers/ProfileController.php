@@ -249,15 +249,12 @@ class ProfileController extends Controller
 
     public function verificationCategory()
     {
-        /** @var User $user */
-        $user = Auth::user();
         $lang = \Illuminate\Support\Facades\Session::get('lang');
-        $item = $this->profileService->verifyCategory($user, $lang);
+        $item = $this->profileService->verifyCategory($lang);
 
         return view('personalinfo.personalcategoriya',[
             'categories' => $item->categories,
-            'categories2' => $item->categories2,
-            'user_categories' => $item->user_categories,
+            'categories2' => $item->categories2
         ]);
     }
 

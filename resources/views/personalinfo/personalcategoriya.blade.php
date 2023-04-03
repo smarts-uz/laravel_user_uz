@@ -31,10 +31,7 @@
                                     @foreach ($categories2 as $category2)
                                         @if($category2->parent_id === $category->id)
                                             <label class="block for_check{{$category->id}} cursor-pointer">
-                                                @php
-                                                    $res_c_arr = in_array($category2->id, $user_categories, true);
-                                                @endphp
-                                                <input type="checkbox" @if($res_c_arr !== false) checked @endif name="category[]" value="{{$category2->id}}"
+                                                <input type="checkbox" checked name="category[]" value="{{$category2->id}}"
                                                        class="checkbox{{$category->id}} mr-2 required:border-yellow-500">{{ $category2->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale') }}
                                             </label>
                                         @endif
