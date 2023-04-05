@@ -12,7 +12,7 @@ class SMSNotifCommand extends Command
      *
      * @var string
      */
-    protected $signature = "SMSNotifCommand:run {--user_id : sms notif jo'natiladigan user id, bunga qiymat kiritilsa type yozilmasligi kerak} {--type : sms notif jo'natiladigan role, agar role yozilsa user id kiritilmaydi} {--text : sms text}";
+    protected $signature = "SMSNotifCommand:run {--user_id= : sms notif jo'natiladigan user id, bunga qiymat kiritilsa type yozilmasligi kerak} {--type= : sms notif jo'natiladigan role, agar role yozilsa user id kiritilmaydi} {--text= : sms text}";
 
     /**
      * The console command description.

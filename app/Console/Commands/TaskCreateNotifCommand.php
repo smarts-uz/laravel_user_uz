@@ -13,7 +13,7 @@ class TaskCreateNotifCommand extends Command
      *
      * @var string
      */
-    protected $signature = "TaskCreateNotifCommand:run {--user_id : task create qiladigan user id} {--id : create task id} {--name : task nomi} {--category_id : child category id} {--title : task title} {--body : task body}";
+    protected $signature = "TaskCreateNotifCommand:run {--user_id= : task create qiladigan user id} {--id= : create task id} {--name= : task nomi} {--category_id= : child category id} {--title= : task title} {--body= : task body}";
 
     /**
      * The console command description.
