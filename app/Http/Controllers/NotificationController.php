@@ -6,6 +6,7 @@ use App\Http\Requests\Api\FirebaseTokenRequest;
 use App\Http\Resources\NotificationResource;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Routing\Redirector;
+use JetBrains\PhpStorm\ArrayShape;
 use App\Models\{Notification, Session, User};
 use App\Services\{NotificationService, Response};
 use Illuminate\Http\{JsonResponse, RedirectResponse, Request};
@@ -609,7 +610,8 @@ class NotificationController extends VoyagerBaseController
      *     },
      * )
      */
-    public function task_create_notification(Request $request): JsonResponse
+    #[ArrayShape(['success' => "bool", 'message' => "string", 'data' => "array"])]
+    public function task_create_notification(Request $request): array
     {
         $user_id = auth()->id();
         $task_id = $request->get('id');

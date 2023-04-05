@@ -25,7 +25,7 @@ class TaskCreateNotifCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return JsonResponse
+     * @return array
      */
     public function handle()
     {

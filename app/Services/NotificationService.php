@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use JetBrains\PhpStorm\ArrayShape;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use App\Mail\{VerifyEmail, MessageEmail};
@@ -469,9 +470,10 @@ class NotificationService
      * @param $task_category_id
      * @param $title
      * @param $body
-     * @return JsonResponse
+     * @return array
      */
-    public function task_create_notification($user_id, $task_id, $task_name, $task_category_id, $title, $body): JsonResponse
+    #[ArrayShape(['success' => "bool", 'message' => "string", 'data' => "array"])]
+    public function task_create_notification($user_id, $task_id, $task_name, $task_category_id, $title, $body): array
     {
         $user_cat_ids = UserCategory::query()->where('category_id', $task_category_id)->pluck('user_id')->toArray();
         $performers = User::query()->whereIn('id', $user_cat_ids)->get();
@@ -491,11 +493,11 @@ class NotificationService
             ], 'notification', $notification);
         }
 
-        return response()->json([
+        return [
             'success' => true,
             'message' => 'success',
             'data' => $notification
-        ]);
+        ];
     }
 
     /**
