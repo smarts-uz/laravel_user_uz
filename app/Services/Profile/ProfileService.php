@@ -194,6 +194,12 @@ class ProfileService
             ];
         }
 
+        if($user->is_phone_number_verified){
+            $phone_number = (new CustomService)->correctPhoneNumber($user->phone_number);
+        }else{
+            $phone_number = '';
+        }
+
         $statuses = [
             Task::STATUS_OPEN,
             Task::STATUS_RESPONSE,
@@ -215,7 +221,7 @@ class ProfileService
             'active_step' => $user->active_step,
             'tasks_count' => $performed_tasks_count,
             'achievements' => $achievements,
-            'phone_number' => (new CustomService)->correctPhoneNumber($user->phone_number),
+            'phone_number' => $phone_number,
             'location' => $user->location,
             'district' => $user->district,
             'age' => $age,
@@ -871,7 +877,7 @@ class ProfileService
      */
     public function self_delete($user): JsonResponse
     {
-        if ($user->phone_number && strlen($user->phone_number) === 13) {
+        if ($user->phone_number && strlen($user->phone_number) === 13  && $user->is_phone_number_verified) {
             VerificationService::send_verification('phone', $user, $user->phone_number);
             return response()->json([
                 'success' => true,
