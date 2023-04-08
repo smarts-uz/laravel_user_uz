@@ -22,7 +22,6 @@ class ReportController extends Controller
 
     public function report()
     {
-
         return (new ReportService())->report();
     }
 
