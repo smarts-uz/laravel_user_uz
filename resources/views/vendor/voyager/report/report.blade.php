@@ -29,12 +29,18 @@
                 <th class="border border-dark" rowspan="2">Категории</th>
                 <th class="border border-dark" rowspan="2">Подкатегории</th>
                 <th class="border border-dark" style="text-align: center" colspan="2">Открытые</th>
+                <th class="border border-dark" style="text-align: center" colspan="2">Открытые Ответ</th>
                 <th class="border border-dark" style="text-align: center" colspan="2">В исполнении</th>
                 <th class="border border-dark" style="text-align: center" colspan="2">Закрытые</th>
+                <th class="border border-dark" style="text-align: center" colspan="2">Не завершено</th>
                 <th class="border border-dark" style="text-align: center" colspan="2" >Отмененные</th>
                 <th class="border border-dark" style="text-align: center" colspan="2">Всего</th>
             </tr>
             <tr>
+                <th class="border border-dark">Кол-во</th>
+                <th class="border border-dark">Сумма</th>
+                <th class="border border-dark">Кол-во</th>
+                <th class="border border-dark">Сумма</th>
                 <th class="border border-dark">Кол-во</th>
                 <th class="border border-dark">Сумма</th>
                 <th class="border border-dark">Кол-во</th>
@@ -59,16 +65,21 @@
                         return data + ' открытых';
                     case 5:
                     case 6:
-                        return data + ' в исполнении';
+                        return data + ' открытых ответ';
                     case 7:
                     case 8:
-                        return data + ' закрытых';
+                        return data + ' в исполнении';
                     case 9:
                     case 10:
-                        return data + ' отмененных';
+                        return data + ' закрытых';
                     case 11:
-                        return 'Общее ' + data;
                     case 12:
+                        return data + ' не завершено';
+                    case 13:
+                    case 14:
+                        return data + ' отмененных';
+                    case 15:
+                    case 16:
                         return 'Общая ' + data;
                     default:
                         return data;
@@ -116,12 +127,16 @@
                     },
                     {data: 'open_count', name: 'open_count'},
                     {data: 'open_sum', name: 'open_sum'},
+                    {data: 'response_count', name: 'response_count'},
+                    {data: 'response_sum', name: 'response_sum'},
                     {data: 'process_count', name: 'process_count'},
                     {data: 'process_sum', name: 'process_sum'},
                     {data: 'finished_count', name: 'finished_count'},
                     {data: 'finished_sum', name: 'finished_sum'},
-                    {data: 'cencelled_count', name: 'cencelled_count'},
-                    {data: 'cencelled_sum', name: 'cencelled_sum'},
+                    {data: 'not_complete_count', name: 'not_complete_count'},
+                    {data: 'not_complete_sum', name: 'not_complete_sum'},
+                    {data: 'cancelled_count', name: 'cancelled_count'},
+                    {data: 'cancelled_sum', name: 'cancelled_sum'},
                     {data: 'total_count', name: 'total_count'},
                     {data: 'total_sum', name: 'total_sum'},
 
