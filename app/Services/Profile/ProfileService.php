@@ -486,6 +486,9 @@ class ProfileService
      * @param $user
      * @param $link
      * @return array
+     * https://www.youtube.com/watch?v=nseUTjLfSz4&ab_channel=TeacherAzam
+     * https://youtu.be/nseUTjLfSz4
+     * https://www.youtube.com/embed/nseUTjLfSz4
      */
     #[ArrayShape([])]
     public function videoStore($user, $link): array
@@ -498,7 +501,8 @@ class ProfileService
                 $success = true;
                 break;
             case str_starts_with($link, 'https://www.youtube.com/') :
-                $user->youtube_link = str_replace('watch?v=', 'embed/', $link);
+                $youtube_link = str_replace('https://www.youtube.com/watch?v=', '', $link);
+                $user->youtube_link = 'https://www.youtube.com/embed/'. substr($youtube_link,0,11);
                 $user->save();
                 $message = trans('trans.Video added successfully.');
                 $success = true;
