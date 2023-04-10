@@ -10,13 +10,11 @@
                     <span class="flex w-full flex-row items-center sm:my-2 my-1">
                         <img src="{{asset('storage/'.$category2->ico) }}" alt="" class="h-8 w-8"></i>
                         @if ($category2->id === $choosed_category->id)
-                            <a href="{{route('categories', ['id'=> $category2->id])}}"
-                            class="sm:ml-4 ml-2 sm:text-base text-xs text-yellow-500">
+                            <a href="#childCategory" class="sm:ml-4 ml-2 sm:text-base text-xs text-yellow-500">
                                 {{ $category2->getTranslatedAttribute('name', Session::get('lang') , 'fallbackLocale' )}}
                             </a>
                         @else
-                            <a href="{{route('categories', ['id'=> $category2->id])}}"
-                            class="sm:ml-4 ml-2 sm:text-base text-xs text-gray-600 hover:text-yellow-500">
+                            <a href="{{route('categories', ['id'=> $category2->id])}}#childCategory" class="sm:ml-4 ml-2 sm:text-base text-xs text-gray-600 hover:text-yellow-500">
                                 {{ $category2->getTranslatedAttribute('name', Session::get('lang') , 'fallbackLocale' )}}
                             </a>
                         @endif
@@ -30,11 +28,11 @@
                         <span class="flex w-full flex-wrap content-center items-center">
                             <img src="{{asset('storage/'.$category->ico) }}" alt="" class="h-8 w-8">
                             @if ($category->id === $choosed_category->id)
-                                <a class="text-yellow-500 text-sm p-1" href="{{route('categories',['id'=>$category->id])}}">
+                                <a class="text-yellow-500 text-sm p-1" href="#childCategory">
                                     {{$category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}
                                 </a>
                             @else
-                                <a class="text-sm p-1" href="{{route('categories',['id'=>$category->id])}}">
+                                <a class="text-sm p-1" href="{{route('categories',['id'=>$category->id])}}#childCategory">
                                     {{$category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}
                                 </a>
                             @endif
@@ -43,10 +41,10 @@
                     </button>
                 @endforeach
             </div>
-
         </div>
+        <div class="pt-24" id="childCategory"></div>
         <div class="w-full ml-4 md:text-left md:m-0">
-            <h4 class="font-bold sm:text-3xl text-2xl mt-14 ">{{$choosed_category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}</h4>
+            <h4 class="font-bold sm:text-3xl text-2xl">{{$choosed_category->getTranslatedAttribute('name',Session::get('lang') , 'fallbackLocale')}}</h4>
         </div>
         <div class="flex flex-wrap  mt-8">
             @foreach($child_categories as $category)
