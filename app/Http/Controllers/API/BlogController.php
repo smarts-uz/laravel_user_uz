@@ -14,7 +14,7 @@ class BlogController extends Controller
      * @OA\Get(
      *     path="/api/blog-news",
      *     tags={"Blog News"},
-     *     description="https://t.me/c/1334612640/164",
+     *     description="[**Telegram :** https://t.me/c/1334612640/164](https://t.me/c/1334612640/164).",
      *     summary="Barcha yangiliklarni olish uchun api",
      *     @OA\Response (
      *          response=200,
@@ -42,7 +42,7 @@ class BlogController extends Controller
      * @OA\Get(
      *     path="/api/blog-news/{newsId}",
      *     tags={"Blog News"},
-     *     description="https://t.me/c/1334612640/165",
+     *     description="[**Telegram :** https://t.me/c/1334612640/165](https://t.me/c/1334612640/165).",
      *     summary="Yangilikni kiritilgan idga qarab olish",
      *     @OA\Parameter (
      *          in="path",

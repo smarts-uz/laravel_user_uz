@@ -22,7 +22,7 @@ class FaqController extends Controller
      * @OA\Get(
      *     path="/api/faq",
      *     tags={"FAQ"},
-     *     description="https://t.me/c/1334612640/255",
+     *     description="[**Telegram :** https://t.me/c/1334612640/255](https://t.me/c/1334612640/255).",
      *     summary="Tez-tez beriladigan savollar ro'yxatini olish",
      *     @OA\Response (
      *          response=200,
@@ -47,7 +47,7 @@ class FaqController extends Controller
      * @OA\Get(
      *     path="/api/faq/{faqId}",
      *     tags={"FAQ"},
-     *     description="https://t.me/c/1334612640/253",
+     *     description="[**Telegram :** https://t.me/c/1334612640/253](https://t.me/c/1334612640/253).",
      *     summary="Get faq by show ID",
      *     @OA\Parameter (
      *          in="path",
@@ -84,7 +84,7 @@ class FaqController extends Controller
      * @OA\Get(
      *     path="/api/settings/get-all",
      *     tags={"Setting"},
-     *     description="https://t.me/c/1334612640/160",
+     *     description="[**Telegram :** https://t.me/c/1334612640/160](https://t.me/c/1334612640/160).",
      *     summary="Get list of setting",
      *     @OA\Response (
      *          response=200,
@@ -112,7 +112,7 @@ class FaqController extends Controller
      * @OA\Get(
      *     path="/api/settings/{settingKey}",
      *     tags={"Setting"},
-     *     description="https://t.me/c/1334612640/163",
+     *     description="[**Telegram :** https://t.me/c/1334612640/163](https://t.me/c/1334612640/163).",
      *     summary="Get setting by show key",
      *     @OA\Parameter (
      *          in="path",

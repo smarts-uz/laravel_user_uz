@@ -24,7 +24,7 @@ class CategoriesAPIController extends Controller
      *     path="/api/popular-categories",
      *     tags={"CategoryAPI"},
      *     summary="Popular categories",
-     *     description="https://t.me/c/1334612640/207",
+     *     description="[**Telegram :** https://t.me/c/1334612640/207](https://t.me/c/1334612640/207).",
      *     @OA\Parameter(
      *          in="query",
      *          description="Kategoriya nomi kiritiladi",
@@ -57,7 +57,7 @@ class CategoriesAPIController extends Controller
      * @OA\Get(
      *     path="/api/category/search",
      *     tags={"CategoryAPI"},
-     *     description="https://t.me/c/1334612640/167",
+     *     description="[**Telegram :** https://t.me/c/1334612640/167](https://t.me/c/1334612640/167).",
      *     summary="Search Category by name",
      *     @OA\Parameter(
      *          in="query",
@@ -94,7 +94,7 @@ class CategoriesAPIController extends Controller
      * @OA\Get(
      *     path="/api/categories-parent",
      *     tags={"CategoryAPI"},
-     *     description="https://t.me/c/1334612640/168",
+     *     description="[**Telegram :** https://t.me/c/1334612640/168](https://t.me/c/1334612640/168).",
      *     summary="Get All Parent Categories",
      *     @OA\Response (
      *          response=200,
@@ -119,7 +119,7 @@ class CategoriesAPIController extends Controller
      * @OA\Get(
      *     path="/api/categories/{id}",
      *     tags={"CategoryAPI"},
-     *     description="https://t.me/c/1334612640/169",
+     *     description="[**Telegram :** https://t.me/c/1334612640/169](https://t.me/c/1334612640/169).",
      *     summary="Get category by show ID",
      *     @OA\Parameter(
      *          in="path",
@@ -153,7 +153,7 @@ class CategoriesAPIController extends Controller
      * @OA\Get(
      *     path="/api/all-categories-childs",
      *     tags={"CategoryAPI"},
-     *     description="https://t.me/c/1334612640/254",
+     *     description="[**Telegram :** https://t.me/c/1334612640/254](https://t.me/c/1334612640/254).",
      *     summary="All Categories Childs Id",
      *     security={
      *         {"token": {}}

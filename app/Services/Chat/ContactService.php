@@ -85,14 +85,14 @@ class ContactService
                 User::ROLE_MODERATOR => 'Moderator',
                 default => 'Admin',
             };
-            $message = strtr($send_message_text, [
+            $messages = strtr($send_message_text, [
                 '{message}'=> $message,
                 '{name}'=> $user->name,
                 '{phone}'=>  $user->phone_number,
                 '{role}'=> $role,
                 '{link}'=> 'https://user.uz/chat/'.$user->id,
             ]);
-            $bot->sendMessage($message, ['chat_id' => setting('chat.CHANNEL_ID','-1001548386291')]);
+            $bot->sendMessage($messages, ['chat_id' => setting('chat.CHANNEL_ID','-1001548386291')]);
         }
     }
 }

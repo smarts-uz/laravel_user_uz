@@ -22,7 +22,7 @@
                     "Blog News"
                 ],
                 "summary": "Barcha yangiliklarni olish uchun api",
-                "description": "https:\/\/t.me\/c\/1334612640\/164",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/164](https:\/\/t.me\/c\/1334612640\/164).",
                 "operationId": "3b7ff65ea7f758f5cd712df2a0e2ed2f",
                 "responses": {
                     "200": {
@@ -43,7 +43,7 @@
                     "Blog News"
                 ],
                 "summary": "Yangilikni kiritilgan idga qarab olish",
-                "description": "https:\/\/t.me\/c\/1334612640\/165",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/165](https:\/\/t.me\/c\/1334612640\/165).",
                 "operationId": "e259a417be096ec295ff49e6ec41985b",
                 "parameters": [
                     {
@@ -75,7 +75,7 @@
                     "CategoryAPI"
                 ],
                 "summary": "Popular categories",
-                "description": "https:\/\/t.me\/c\/1334612640\/207",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/207](https:\/\/t.me\/c\/1334612640\/207).",
                 "operationId": "1a11cd9bd17ab12cfcd763ebd95993fb",
                 "parameters": [
                     {
@@ -106,7 +106,7 @@
                     "CategoryAPI"
                 ],
                 "summary": "Search Category by name",
-                "description": "https:\/\/t.me\/c\/1334612640\/167",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/167](https:\/\/t.me\/c\/1334612640\/167).",
                 "operationId": "c177ab8a25cbaa55ef98e7ebdbc848a7",
                 "parameters": [
                     {
@@ -138,7 +138,7 @@
                     "CategoryAPI"
                 ],
                 "summary": "Get All Parent Categories",
-                "description": "https:\/\/t.me\/c\/1334612640\/168",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/168](https:\/\/t.me\/c\/1334612640\/168).",
                 "operationId": "e8afb8bb1052e6310214fc871fcbe225",
                 "responses": {
                     "200": {
@@ -159,7 +159,7 @@
                     "CategoryAPI"
                 ],
                 "summary": "Get category by show ID",
-                "description": "https:\/\/t.me\/c\/1334612640\/169",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/169](https:\/\/t.me\/c\/1334612640\/169).",
                 "operationId": "87e7cd6fb3ae11d4904e035f70299857",
                 "parameters": [
                     {
@@ -191,7 +191,7 @@
                     "CategoryAPI"
                 ],
                 "summary": "All Categories Childs Id",
-                "description": "https:\/\/t.me\/c\/1334612640\/254",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/254](https:\/\/t.me\/c\/1334612640\/254).",
                 "operationId": "b1a0a63bc4bb39a960198eeac9a45eaf",
                 "responses": {
                     "200": {
@@ -217,7 +217,7 @@
                     "FAQ"
                 ],
                 "summary": "Tez-tez beriladigan savollar ro'yxatini olish",
-                "description": "https:\/\/t.me\/c\/1334612640\/255",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/255](https:\/\/t.me\/c\/1334612640\/255).",
                 "operationId": "57c4fa7ceebfb20a59c69528a9a7067e",
                 "responses": {
                     "200": {
@@ -238,7 +238,7 @@
                     "FAQ"
                 ],
                 "summary": "Get faq by show ID",
-                "description": "https:\/\/t.me\/c\/1334612640\/253",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/253](https:\/\/t.me\/c\/1334612640\/253).",
                 "operationId": "655aee3507f90d108921e479acdec59b",
                 "parameters": [
                     {
@@ -270,7 +270,7 @@
                     "Setting"
                 ],
                 "summary": "Get list of setting",
-                "description": "https:\/\/t.me\/c\/1334612640\/160",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/160](https:\/\/t.me\/c\/1334612640\/160).",
                 "operationId": "f7ca8adc84c1dcad0668ef47ae66d2c9",
                 "responses": {
                     "200": {
@@ -296,7 +296,7 @@
                     "Setting"
                 ],
                 "summary": "Get setting by show key",
-                "description": "https:\/\/t.me\/c\/1334612640\/163",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/163](https:\/\/t.me\/c\/1334612640\/163).",
                 "operationId": "4c3cc17560325ff7a515c8cf62741b28",
                 "parameters": [
                     {
