@@ -22,6 +22,7 @@
                     "Blog News"
                 ],
                 "summary": "Barcha yangiliklarni olish uchun api",
+                "description": "https:\/\/t.me\/c\/1334612640\/164",
                 "operationId": "3b7ff65ea7f758f5cd712df2a0e2ed2f",
                 "responses": {
                     "200": {
@@ -36,43 +37,25 @@
                 }
             }
         },
-        "\/api\/blog-news\/{blogNew}": {
+        "\/api\/blog-news\/{newsId}": {
             "get": {
                 "tags": [
                     "Blog News"
                 ],
                 "summary": "Yangilikni kiritilgan idga qarab olish",
-                "operationId": "d903254e072b5efc2e7e395a3340c9e8",
+                "description": "https:\/\/t.me\/c\/1334612640\/165",
+                "operationId": "e259a417be096ec295ff49e6ec41985b",
                 "parameters": [
                     {
-                        "name": "blogNew",
+                        "name": "newsId",
                         "in": "path",
                         "description": "Kerakli yangilik idsi kiritiladi",
+                        "required": true,
                         "schema": {
                             "type": "integer"
                         }
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                }
-            }
-        },
-        "\/api\/categories": {
-            "get": {
-                "tags": [
-                    "CategoryAPI"
-                ],
-                "summary": "Get list of Category",
-                "operationId": "f923daf680ac66deb18bd56437ca2a23",
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -92,12 +75,13 @@
                     "CategoryAPI"
                 ],
                 "summary": "Popular categories",
+                "description": "https:\/\/t.me\/c\/1334612640\/207",
                 "operationId": "1a11cd9bd17ab12cfcd763ebd95993fb",
                 "parameters": [
                     {
                         "name": "category",
                         "in": "query",
-                        "description": "Category name kiritiladi",
+                        "description": "Kategoriya nomi kiritiladi",
                         "schema": {
                             "type": "string"
                         }
@@ -122,6 +106,7 @@
                     "CategoryAPI"
                 ],
                 "summary": "Search Category by name",
+                "description": "https:\/\/t.me\/c\/1334612640\/167",
                 "operationId": "c177ab8a25cbaa55ef98e7ebdbc848a7",
                 "parameters": [
                     {
@@ -153,6 +138,7 @@
                     "CategoryAPI"
                 ],
                 "summary": "Get All Parent Categories",
+                "description": "https:\/\/t.me\/c\/1334612640\/168",
                 "operationId": "e8afb8bb1052e6310214fc871fcbe225",
                 "responses": {
                     "200": {
@@ -173,15 +159,16 @@
                     "CategoryAPI"
                 ],
                 "summary": "Get category by show ID",
+                "description": "https:\/\/t.me\/c\/1334612640\/169",
                 "operationId": "87e7cd6fb3ae11d4904e035f70299857",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "Category id kiritiladi",
+                        "description": "Kategoriya id kiritiladi",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -204,6 +191,7 @@
                     "CategoryAPI"
                 ],
                 "summary": "All Categories Childs Id",
+                "description": "https:\/\/t.me\/c\/1334612640\/254",
                 "operationId": "b1a0a63bc4bb39a960198eeac9a45eaf",
                 "responses": {
                     "200": {
@@ -228,7 +216,8 @@
                 "tags": [
                     "FAQ"
                 ],
-                "summary": "Get list of Faqs",
+                "summary": "Tez-tez beriladigan savollar ro'yxatini olish",
+                "description": "https:\/\/t.me\/c\/1334612640\/255",
                 "operationId": "57c4fa7ceebfb20a59c69528a9a7067e",
                 "responses": {
                     "200": {
@@ -243,18 +232,20 @@
                 }
             }
         },
-        "\/api\/faq\/{faq_id}": {
+        "\/api\/faq\/{faqId}": {
             "get": {
                 "tags": [
                     "FAQ"
                 ],
                 "summary": "Get faq by show ID",
-                "operationId": "0f07137332016dcec2fdfb90dda6102a",
+                "description": "https:\/\/t.me\/c\/1334612640\/253",
+                "operationId": "655aee3507f90d108921e479acdec59b",
                 "parameters": [
                     {
-                        "name": "faq_id",
+                        "name": "faqId",
                         "in": "path",
-                        "description": "faq id kiritiladi",
+                        "description": "Tez-tez beriladigan savollar idsi kiritiladi",
+                        "required": true,
                         "schema": {
                             "type": "integer"
                         }
@@ -279,6 +270,7 @@
                     "Setting"
                 ],
                 "summary": "Get list of setting",
+                "description": "https:\/\/t.me\/c\/1334612640\/160",
                 "operationId": "f7ca8adc84c1dcad0668ef47ae66d2c9",
                 "responses": {
                     "200": {
@@ -298,18 +290,20 @@
                 ]
             }
         },
-        "\/api\/settings\/{key}": {
+        "\/api\/settings\/{settingKey}": {
             "get": {
                 "tags": [
                     "Setting"
                 ],
                 "summary": "Get setting by show key",
-                "operationId": "1d06abedf33b9519a93b56cb564f43df",
+                "description": "https:\/\/t.me\/c\/1334612640\/163",
+                "operationId": "4c3cc17560325ff7a515c8cf62741b28",
                 "parameters": [
                     {
-                        "name": "key",
+                        "name": "settingKey",
                         "in": "path",
                         "description": "Adminkadan yaratilgan kerakli settingning keyi kiritiladi",
+                        "required": true,
                         "schema": {
                             "type": "string"
                         }
@@ -5008,6 +5002,7 @@
                     {
                         "name": "id",
                         "in": "query",
+                        "description": "user id kiritiladi",
                         "schema": {
                             "type": "integer"
                         }
@@ -5036,12 +5031,13 @@
                 "tags": [
                     "Chat"
                 ],
-                "summary": "",
+                "summary": "Chat send message",
                 "operationId": "6d158f296101e86e16ec71247600a663",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "query",
+                        "description": "xabar yuborilayotgan user id kiritiladi",
                         "schema": {
                             "type": "integer"
                         }
@@ -5049,6 +5045,7 @@
                     {
                         "name": "message",
                         "in": "query",
+                        "description": "xabar matni kiritiladi",
                         "schema": {
                             "type": "string"
                         }
@@ -5083,6 +5080,7 @@
                     {
                         "name": "id",
                         "in": "query",
+                        "description": "xabar yuborilayotgan user id kiritiladi",
                         "schema": {
                             "type": "integer"
                         }
@@ -5111,12 +5109,13 @@
                 "tags": [
                     "Chat"
                 ],
-                "summary": "",
+                "summary": "Chat make seen",
                 "operationId": "c078d17b4efaa29b1b8617a5600b8b52",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "query",
+                        "description": "xabar o'qilgan userning idsi kiritiladi",
                         "schema": {
                             "type": "integer"
                         }
@@ -5176,6 +5175,7 @@
                     {
                         "name": "name",
                         "in": "query",
+                        "description": "search qilinmoqchi bo'lgan user name kiritiladi",
                         "schema": {
                             "type": "string"
                         }
@@ -5469,7 +5469,6 @@
                                 "notification_type",
                                 "socails",
                                 "location",
-                                "message_id",
                                 "views",
                                 "last_name",
                                 "g-recaptcha-response",
@@ -5624,6 +5623,14 @@
                     },
                     {
                         "name": "filters[work_experience]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[verify_code]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -5954,11 +5961,10 @@
                                 "role_id",
                                 "user_belongsto_role_relationship",
                                 "phone_number",
-                                "g-recaptcha-response",
                                 "description",
                                 "work_experience",
-                                "born_date",
-                                "version"
+                                "verify_code",
+                                "born_date"
                             ]
                         }
                     },
@@ -5978,11 +5984,10 @@
                                     "role_id",
                                     "user_belongsto_role_relationship",
                                     "phone_number",
-                                    "g-recaptcha-response",
                                     "description",
                                     "work_experience",
-                                    "born_date",
-                                    "version"
+                                    "verify_code",
+                                    "born_date"
                                 ]
                             }
                         }
@@ -7296,6 +7301,242 @@
                                     "properties": {
                                         "message": {
                                             "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/categories": {
+            "get": {
+                "tags": [
+                    "Core | categories"
+                ],
+                "summary": "categories index",
+                "operationId": "categories_index",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Global search",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "length",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "description": "Sort by column",
+                        "required": false,
+                        "schema": {
+                            "enum": [
+                                "id",
+                                "parent_id",
+                                "order",
+                                "name",
+                                "custom_route_title",
+                                "max",
+                                "min",
+                                "slug",
+                                "ico",
+                                "ico_mini",
+                                "double_address",
+                                "remote",
+                                "created_at",
+                                "created_by",
+                                "updated_at",
+                                "updated_by",
+                                "deleted_at",
+                                "deleted_by"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort_order",
+                        "in": "query",
+                        "description": "Sort by direction",
+                        "required": false,
+                        "schema": {
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "10,,20"
+                        }
+                    },
+                    {
+                        "name": "filters[name]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[order]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[ico]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[max]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "10,,20"
+                        }
+                    },
+                    {
+                        "name": "filters[double_address]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[remote]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[deleted_by]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[updated_by]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[deleted_at]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#\/components\/schemas\/VoyagerCategoriesBrowseResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "$ref": "#\/components\/schemas\/Links"
+                                        },
+                                        "meta": {
+                                            "$ref": "#\/components\/schemas\/Meta"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Core | categories"
+                ],
+                "summary": "categories store",
+                "operationId": "categories_store",
+                "requestBody": {
+                    "$ref": "#\/components\/requestBodies\/VoyagerCategoriesStoreRequest"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#\/components\/schemas\/VoyagerCategoriesReadResource"
                                         }
                                     }
                                 }
@@ -10322,6 +10563,7 @@
                                 "longitude",
                                 "default",
                                 "task_id",
+                                "deleted_at",
                                 "address_belongsto_user_relationship"
                             ],
                             "type": "string"
@@ -10338,6 +10580,14 @@
                                 "desc"
                             ],
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "showSoftDeleted",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
                         }
                     },
                     {
@@ -13925,8 +14175,8 @@
                 "tags": [
                     "Core | regions"
                 ],
-                "summary": "sys index",
-                "operationId": "sys_index",
+                "summary": "regions index",
+                "operationId": "regions_index",
                 "parameters": [
                     {
                         "name": "q",
@@ -13959,7 +14209,12 @@
                         "description": "Sort by column",
                         "required": false,
                         "schema": {
-                            "enum": [],
+                            "enum": [
+                                "id",
+                                "name",
+                                "created_at",
+                                "updated_at"
+                            ],
                             "type": "string"
                         }
                     },
@@ -14013,7 +14268,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#\/components\/schemas\/VoyagerSysBrowseResource"
+                                                "$ref": "#\/components\/schemas\/VoyagerRegionsBrowseResource"
                                             }
                                         },
                                         "links": {
@@ -14047,7 +14302,7 @@
                 "summary": "regions store",
                 "operationId": "regions_store",
                 "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerSysStoreRequest"
+                    "$ref": "#\/components\/requestBodies\/VoyagerRegionsStoreRequest"
                 },
                 "responses": {
                     "200": {
@@ -14058,7 +14313,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerSysReadResource"
+                                            "$ref": "#\/components\/schemas\/VoyagerRegionsReadResource"
                                         }
                                     }
                                 }
@@ -14084,8 +14339,8 @@
                 "tags": [
                     "Core | regions"
                 ],
-                "summary": "sys create",
-                "operationId": "sys_create",
+                "summary": "regions create",
+                "operationId": "regions_create",
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -14140,7 +14395,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerSysReadResource"
+                                            "$ref": "#\/components\/schemas\/VoyagerRegionsReadResource"
                                         }
                                     }
                                 }
@@ -14177,7 +14432,7 @@
                     }
                 ],
                 "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerSysUpdateRequest"
+                    "$ref": "#\/components\/requestBodies\/VoyagerRegionsUpdateRequest"
                 },
                 "responses": {
                     "200": {
@@ -14188,7 +14443,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerSysReadResource"
+                                            "$ref": "#\/components\/schemas\/VoyagerRegionsReadResource"
                                         }
                                     }
                                 }
@@ -14300,7 +14555,7 @@
                     }
                 ],
                 "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerSysSingleUpdateRequest"
+                    "$ref": "#\/components\/requestBodies\/VoyagerRegionsSingleUpdateRequest"
                 },
                 "responses": {
                     "200": {
@@ -14311,7 +14566,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerSysReadResource"
+                                            "$ref": "#\/components\/schemas\/VoyagerRegionsReadResource"
                                         }
                                     }
                                 }
@@ -14358,7 +14613,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerSysReadResource"
+                                            "$ref": "#\/components\/schemas\/VoyagerRegionsReadResource"
                                         }
                                     }
                                 }
@@ -21699,6 +21954,10 @@
                         "type": "string",
                         "description": "Work Experience"
                     },
+                    "verify_code": {
+                        "type": "string",
+                        "description": "Verify Code"
+                    },
                     "born_date": {
                         "type": "string",
                         "description": "Born Date"
@@ -21753,10 +22012,6 @@
                         "type": "string",
                         "description": "Phone Number"
                     },
-                    "g-recaptcha-response": {
-                        "type": "string",
-                        "description": "G-recaptcha-response"
-                    },
                     "description": {
                         "type": "string",
                         "description": "Description"
@@ -21764,6 +22019,10 @@
                     "work_experience": {
                         "type": "string",
                         "description": "Work Experience"
+                    },
+                    "verify_code": {
+                        "type": "string",
+                        "description": "Verify Code"
                     },
                     "born_date": {
                         "type": "string",
@@ -23036,7 +23295,7 @@
                     }
                 }
             },
-            "VoyagerSysBrowseResource": {
+            "VoyagerRegionsBrowseResource": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -23055,7 +23314,7 @@
                     }
                 }
             },
-            "VoyagerSysReadResource": {
+            "VoyagerRegionsReadResource": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -23899,10 +24158,6 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
-                                "g-recaptcha-response": {
-                                    "type": "string",
-                                    "description": "G-recaptcha-response"
-                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
@@ -23914,10 +24169,6 @@
                                 "born_date": {
                                     "type": "string",
                                     "description": "Born Date"
-                                },
-                                "version": {
-                                    "type": "string",
-                                    "description": "Version"
                                 }
                             }
                         }
@@ -23964,10 +24215,6 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
-                                "g-recaptcha-response": {
-                                    "type": "string",
-                                    "description": "G-recaptcha-response"
-                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
@@ -23976,13 +24223,13 @@
                                     "type": "string",
                                     "description": "Work Experience"
                                 },
+                                "verify_code": {
+                                    "type": "string",
+                                    "description": "Verify Code"
+                                },
                                 "born_date": {
                                     "type": "string",
                                     "description": "Born Date"
-                                },
-                                "version": {
-                                    "type": "string",
-                                    "description": "Version"
                                 }
                             }
                         }
@@ -24029,10 +24276,6 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
-                                "g-recaptcha-response": {
-                                    "type": "string",
-                                    "description": "G-recaptcha-response"
-                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
@@ -24041,13 +24284,13 @@
                                     "type": "string",
                                     "description": "Work Experience"
                                 },
+                                "verify_code": {
+                                    "type": "string",
+                                    "description": "Verify Code"
+                                },
                                 "born_date": {
                                     "type": "string",
                                     "description": "Born Date"
-                                },
-                                "version": {
-                                    "type": "string",
-                                    "description": "Version"
                                 }
                             }
                         }
@@ -26144,7 +26387,7 @@
                 },
                 "required": true
             },
-            "VoyagerSysStoreRequest": {
+            "VoyagerRegionsStoreRequest": {
                 "content": {
                     "application\/x-www-form-urlencoded": {
                         "schema": {
@@ -26164,7 +26407,7 @@
                 },
                 "required": true
             },
-            "VoyagerSysUpdateRequest": {
+            "VoyagerRegionsUpdateRequest": {
                 "content": {
                     "application\/x-www-form-urlencoded": {
                         "schema": {
@@ -26190,7 +26433,7 @@
                 },
                 "required": true
             },
-            "VoyagerSysSingleUpdateRequest": {
+            "VoyagerRegionsSingleUpdateRequest": {
                 "content": {
                     "application\/x-www-form-urlencoded": {
                         "schema": {

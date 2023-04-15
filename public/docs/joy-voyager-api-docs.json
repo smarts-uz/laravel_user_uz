@@ -70,7 +70,6 @@
                                 "notification_type",
                                 "socails",
                                 "location",
-                                "message_id",
                                 "views",
                                 "last_name",
                                 "g-recaptcha-response",
@@ -225,6 +224,14 @@
                     },
                     {
                         "name": "filters[work_experience]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[verify_code]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -555,11 +562,10 @@
                                 "role_id",
                                 "user_belongsto_role_relationship",
                                 "phone_number",
-                                "g-recaptcha-response",
                                 "description",
                                 "work_experience",
-                                "born_date",
-                                "version"
+                                "verify_code",
+                                "born_date"
                             ]
                         }
                     },
@@ -579,11 +585,10 @@
                                     "role_id",
                                     "user_belongsto_role_relationship",
                                     "phone_number",
-                                    "g-recaptcha-response",
                                     "description",
                                     "work_experience",
-                                    "born_date",
-                                    "version"
+                                    "verify_code",
+                                    "born_date"
                                 ]
                             }
                         }
@@ -5552,6 +5557,7 @@
                                 "longitude",
                                 "default",
                                 "task_id",
+                                "deleted_at",
                                 "address_belongsto_user_relationship"
                             ],
                             "type": "string"
@@ -5568,6 +5574,14 @@
                                 "desc"
                             ],
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "showSoftDeleted",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
                         }
                     },
                     {
@@ -9155,8 +9169,8 @@
                 "tags": [
                     "Core | regions"
                 ],
-                "summary": "sys index",
-                "operationId": "sys_index",
+                "summary": "regions index",
+                "operationId": "regions_index",
                 "parameters": [
                     {
                         "name": "q",
@@ -9189,7 +9203,12 @@
                         "description": "Sort by column",
                         "required": false,
                         "schema": {
-                            "enum": [],
+                            "enum": [
+                                "id",
+                                "name",
+                                "created_at",
+                                "updated_at"
+                            ],
                             "type": "string"
                         }
                     },
@@ -9243,7 +9262,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#\/components\/schemas\/VoyagerSysBrowseResource"
+                                                "$ref": "#\/components\/schemas\/VoyagerRegionsBrowseResource"
                                             }
                                         },
                                         "links": {
@@ -9277,7 +9296,7 @@
                 "summary": "regions store",
                 "operationId": "regions_store",
                 "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerSysStoreRequest"
+                    "$ref": "#\/components\/requestBodies\/VoyagerRegionsStoreRequest"
                 },
                 "responses": {
                     "200": {
@@ -9288,7 +9307,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerSysReadResource"
+                                            "$ref": "#\/components\/schemas\/VoyagerRegionsReadResource"
                                         }
                                     }
                                 }
@@ -9314,8 +9333,8 @@
                 "tags": [
                     "Core | regions"
                 ],
-                "summary": "sys create",
-                "operationId": "sys_create",
+                "summary": "regions create",
+                "operationId": "regions_create",
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -9370,7 +9389,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerSysReadResource"
+                                            "$ref": "#\/components\/schemas\/VoyagerRegionsReadResource"
                                         }
                                     }
                                 }
@@ -9407,7 +9426,7 @@
                     }
                 ],
                 "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerSysUpdateRequest"
+                    "$ref": "#\/components\/requestBodies\/VoyagerRegionsUpdateRequest"
                 },
                 "responses": {
                     "200": {
@@ -9418,7 +9437,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerSysReadResource"
+                                            "$ref": "#\/components\/schemas\/VoyagerRegionsReadResource"
                                         }
                                     }
                                 }
@@ -9530,7 +9549,7 @@
                     }
                 ],
                 "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerSysSingleUpdateRequest"
+                    "$ref": "#\/components\/requestBodies\/VoyagerRegionsSingleUpdateRequest"
                 },
                 "responses": {
                     "200": {
@@ -9541,7 +9560,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerSysReadResource"
+                                            "$ref": "#\/components\/schemas\/VoyagerRegionsReadResource"
                                         }
                                     }
                                 }
@@ -9588,7 +9607,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerSysReadResource"
+                                            "$ref": "#\/components\/schemas\/VoyagerRegionsReadResource"
                                         }
                                     }
                                 }
@@ -17083,6 +17102,10 @@
                         "type": "string",
                         "description": "Work Experience"
                     },
+                    "verify_code": {
+                        "type": "string",
+                        "description": "Verify Code"
+                    },
                     "born_date": {
                         "type": "string",
                         "description": "Born Date"
@@ -17137,10 +17160,6 @@
                         "type": "string",
                         "description": "Phone Number"
                     },
-                    "g-recaptcha-response": {
-                        "type": "string",
-                        "description": "G-recaptcha-response"
-                    },
                     "description": {
                         "type": "string",
                         "description": "Description"
@@ -17148,6 +17167,10 @@
                     "work_experience": {
                         "type": "string",
                         "description": "Work Experience"
+                    },
+                    "verify_code": {
+                        "type": "string",
+                        "description": "Verify Code"
                     },
                     "born_date": {
                         "type": "string",
@@ -18420,7 +18443,7 @@
                     }
                 }
             },
-            "VoyagerSysBrowseResource": {
+            "VoyagerRegionsBrowseResource": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -18439,7 +18462,7 @@
                     }
                 }
             },
-            "VoyagerSysReadResource": {
+            "VoyagerRegionsReadResource": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -19275,10 +19298,6 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
-                                "g-recaptcha-response": {
-                                    "type": "string",
-                                    "description": "G-recaptcha-response"
-                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
@@ -19290,10 +19309,6 @@
                                 "born_date": {
                                     "type": "string",
                                     "description": "Born Date"
-                                },
-                                "version": {
-                                    "type": "string",
-                                    "description": "Version"
                                 }
                             }
                         }
@@ -19340,10 +19355,6 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
-                                "g-recaptcha-response": {
-                                    "type": "string",
-                                    "description": "G-recaptcha-response"
-                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
@@ -19352,13 +19363,13 @@
                                     "type": "string",
                                     "description": "Work Experience"
                                 },
+                                "verify_code": {
+                                    "type": "string",
+                                    "description": "Verify Code"
+                                },
                                 "born_date": {
                                     "type": "string",
                                     "description": "Born Date"
-                                },
-                                "version": {
-                                    "type": "string",
-                                    "description": "Version"
                                 }
                             }
                         }
@@ -19405,10 +19416,6 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
-                                "g-recaptcha-response": {
-                                    "type": "string",
-                                    "description": "G-recaptcha-response"
-                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
@@ -19417,13 +19424,13 @@
                                     "type": "string",
                                     "description": "Work Experience"
                                 },
+                                "verify_code": {
+                                    "type": "string",
+                                    "description": "Verify Code"
+                                },
                                 "born_date": {
                                     "type": "string",
                                     "description": "Born Date"
-                                },
-                                "version": {
-                                    "type": "string",
-                                    "description": "Version"
                                 }
                             }
                         }
@@ -21520,7 +21527,7 @@
                 },
                 "required": true
             },
-            "VoyagerSysStoreRequest": {
+            "VoyagerRegionsStoreRequest": {
                 "content": {
                     "application\/x-www-form-urlencoded": {
                         "schema": {
@@ -21540,7 +21547,7 @@
                 },
                 "required": true
             },
-            "VoyagerSysUpdateRequest": {
+            "VoyagerRegionsUpdateRequest": {
                 "content": {
                     "application\/x-www-form-urlencoded": {
                         "schema": {
@@ -21566,7 +21573,7 @@
                 },
                 "required": true
             },
-            "VoyagerSysSingleUpdateRequest": {
+            "VoyagerRegionsSingleUpdateRequest": {
                 "content": {
                     "application\/x-www-form-urlencoded": {
                         "schema": {
