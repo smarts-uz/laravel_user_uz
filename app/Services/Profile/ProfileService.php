@@ -194,6 +194,12 @@ class ProfileService
             ];
         }
 
+        if($user->is_phone_number_verified){
+            $phone_number = (new CustomService)->correctPhoneNumber($user->phone_number);
+        }else{
+            $phone_number = '';
+        }
+
         $statuses = [
             Task::STATUS_OPEN,
             Task::STATUS_RESPONSE,
@@ -215,7 +221,7 @@ class ProfileService
             'active_step' => $user->active_step,
             'tasks_count' => $performed_tasks_count,
             'achievements' => $achievements,
-            'phone_number' => (new CustomService)->correctPhoneNumber($user->phone_number),
+            'phone_number' => $phone_number,
             'location' => $user->location,
             'district' => $user->district,
             'age' => $age,
@@ -480,6 +486,9 @@ class ProfileService
      * @param $user
      * @param $link
      * @return array
+     * https://www.youtube.com/watch?v=nseUTjLfSz4&ab_channel=TeacherAzam
+     * https://youtu.be/nseUTjLfSz4
+     * https://www.youtube.com/embed/nseUTjLfSz4
      */
     #[ArrayShape([])]
     public function videoStore($user, $link): array
@@ -492,7 +501,8 @@ class ProfileService
                 $success = true;
                 break;
             case str_starts_with($link, 'https://www.youtube.com/') :
-                $user->youtube_link = str_replace('watch?v=', 'embed/', $link);
+                $youtube_link = str_replace('https://www.youtube.com/watch?v=', '', $link);
+                $user->youtube_link = 'https://www.youtube.com/embed/'. substr($youtube_link,0,11);
                 $user->save();
                 $message = trans('trans.Video added successfully.');
                 $success = true;
@@ -733,11 +743,10 @@ class ProfileService
 
     /**
      * Ijrochi bo'lish pagega categoriyalarni qaytaradi
-     * @param $user
      * @param string|null $lang
      * @return VerificationCategoryItem
      */
-    public function verifyCategory($user, ?string $lang = 'uz'): VerificationCategoryItem
+    public function verifyCategory(?string $lang = 'uz'): VerificationCategoryItem
     {
         $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use ($lang) {
             return Category::withTranslations($lang)->orderBy("order")->get();
@@ -746,7 +755,6 @@ class ProfileService
         $item = new VerificationCategoryItem();
         $item->categories = collect($category)->where('parent_id', null)->all();
         $item->categories2 = collect($category)->where('parent_id', '!=', null)->all();
-        $item->user_categories = UserCategory::query()->where('user_id', $user->id)->pluck('category_id')->toArray();
         return $item;
     }
 
@@ -873,7 +881,7 @@ class ProfileService
      */
     public function self_delete($user): JsonResponse
     {
-        if ($user->phone_number && strlen($user->phone_number) === 13) {
+        if ($user->phone_number && strlen($user->phone_number) === 13  && $user->is_phone_number_verified) {
             VerificationService::send_verification('phone', $user, $user->phone_number);
             return response()->json([
                 'success' => true,

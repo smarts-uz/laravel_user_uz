@@ -11,6 +11,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\{Arr, Facades\Log, Facades\Validator};
 use Illuminate\Validation\ValidationException;
 use JetBrains\PhpStorm\ArrayShape;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class CreateTaskService
 {
@@ -371,8 +373,10 @@ class CreateTaskService
      * Save remote s values by request
      *
      * @param $data // Validated request data from mobile
+     * @param $user
      * @return array //Value Returned
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function contact_store($data, $user): array
     {

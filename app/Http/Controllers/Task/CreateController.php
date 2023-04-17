@@ -13,7 +13,7 @@ use App\Services\{Task\CreateService, Task\CustomFieldService, Task\UpdateTaskSe
 use Exception;
 use Illuminate\Contracts\{Foundation\Application, View\Factory, View\View};
 use Illuminate\Http\{RedirectResponse, Request};
-use Illuminate\Support\Facades\{Hash, Session};
+use Illuminate\Support\Facades\{Auth, Hash, Session};
 use JsonException;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -306,7 +306,12 @@ class CreateController extends Controller
         $task = $result['task'];
         $custom_fields = $result['custom_fields'];
 
+        if (Auth::check()){
+            return view('create.contacts2', compact('task', 'custom_fields'));
+        }
+
         return view('create.contacts', compact('task', 'custom_fields'));
+
     }
 
 

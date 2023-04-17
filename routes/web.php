@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\CustomFieldController;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FaqsController;

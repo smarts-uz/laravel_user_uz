@@ -146,7 +146,7 @@ Route::get('/profile/{user}/reviews', [ProfileAPIController::class, 'userReviews
 
 //Setting
 Route::get('/settings/get-all', [FaqController::class, 'get_all']); // fix
-Route::get('/settings/{key}', [FaqController::class, 'get_key']); // fix
+Route::get('/settings/{settingKey}', [FaqController::class, 'get_key']); // fix
 
 //User Routes
 Route::post('login', [UserAPIController::class, 'login']); // fix
@@ -158,7 +158,7 @@ Route::get('/support-admin', [UserAPIController::class, "getSupportId"]); // fix
 
 //Blog News
 Route::get('/blog-news', [BlogController::class, 'index']); // fix
-Route::get('/blog-news/{blogNew}', [BlogController::class, 'show']); // fix
+Route::get('/blog-news/{newsId}', [BlogController::class, 'show']); // fix
 
 //Tasks
 Route::get('task/{task}', [TaskAPIController::class, 'task']); // fix
@@ -185,7 +185,7 @@ Route::post('/social-login', [SocialAPIController::class, 'login']); // fix
 
 //FAQ
 Route::get('/faq', [FaqController::class, 'index']); // fix
-Route::get('/faq/{faq_id}', [FaqController::class, 'faq']); // fix
+Route::get('/faq/{faqId}', [FaqController::class, 'faq']); // fix
 
 //Test notifications
 Route::post('/firebase-notification', [NotificationController::class, 'firebase_notification']);

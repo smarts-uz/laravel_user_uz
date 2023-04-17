@@ -36,6 +36,7 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
      *     summary="Chat Delete Conversation",
      *     @OA\Parameter (
      *          in="query",
+     *          description="user id kiritiladi",
      *          name="id",
      *          @OA\Schema (
      *              type="integer"
@@ -68,9 +69,10 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
      * @OA\Post(
      *     path="/api/chat/sendMessage",
      *     tags={"Chat"},
-     *     summary="",
+     *     summary="Chat send message",
      *     @OA\Parameter (
      *          in="query",
+     *          description="xabar yuborilayotgan user id kiritiladi",
      *          name="id",
      *          @OA\Schema (
      *              type="integer"
@@ -78,6 +80,7 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
      *     ),
      *     @OA\Parameter (
      *          in="query",
+     *          description="xabar matni kiritiladi",
      *          name="message",
      *          @OA\Schema (
      *              type="string"
@@ -194,6 +197,7 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
      *     summary="Chat Fetch Messages",
      *     @OA\Parameter (
      *          in="query",
+     *          description="xabar yuborilayotgan user id kiritiladi",
      *          name="id",
      *          @OA\Schema (
      *              type="integer"
@@ -233,9 +237,10 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
      * @OA\Post(
      *     path="/api/chat/makeSeen",
      *     tags={"Chat"},
-     *     summary="",
+     *     summary="Chat make seen",
      *     @OA\Parameter (
      *          in="query",
+     *          description="xabar o'qilgan userning idsi kiritiladi",
      *          name="id",
      *          @OA\Schema (
      *              type="integer"
@@ -322,6 +327,7 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
      *     summary="Chat search",
      *     @OA\Parameter (
      *          in="query",
+     *          description="search qilinmoqchi bo'lgan user name kiritiladi",
      *          name="name",
      *          @OA\Schema (
      *              type="string"

@@ -26,6 +26,7 @@ class SearchAPIController extends Controller
      *     summary="Cancel task",
      *     @OA\Parameter(
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema(
@@ -65,6 +66,7 @@ class SearchAPIController extends Controller
      *     },
      *     @OA\Parameter(
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema(
@@ -73,6 +75,7 @@ class SearchAPIController extends Controller
      *     ),
      *     @OA\Parameter(
      *          in="path",
+     *          description="user id kiritiladi",
      *          name="user",
      *          required=true,
      *          @OA\Schema(
@@ -108,6 +111,7 @@ class SearchAPIController extends Controller
      *     },
      *     @OA\Parameter(
      *          in="path",
+     *          description="task id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema(

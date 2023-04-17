@@ -22,6 +22,7 @@
                     "Blog News"
                 ],
                 "summary": "Barcha yangiliklarni olish uchun api",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/164](https:\/\/t.me\/c\/1334612640\/164).",
                 "operationId": "3b7ff65ea7f758f5cd712df2a0e2ed2f",
                 "responses": {
                     "200": {
@@ -36,43 +37,25 @@
                 }
             }
         },
-        "\/api\/blog-news\/{blogNew}": {
+        "\/api\/blog-news\/{newsId}": {
             "get": {
                 "tags": [
                     "Blog News"
                 ],
                 "summary": "Yangilikni kiritilgan idga qarab olish",
-                "operationId": "d903254e072b5efc2e7e395a3340c9e8",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/165](https:\/\/t.me\/c\/1334612640\/165).",
+                "operationId": "e259a417be096ec295ff49e6ec41985b",
                 "parameters": [
                     {
-                        "name": "blogNew",
+                        "name": "newsId",
                         "in": "path",
                         "description": "Kerakli yangilik idsi kiritiladi",
+                        "required": true,
                         "schema": {
                             "type": "integer"
                         }
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                }
-            }
-        },
-        "\/api\/categories": {
-            "get": {
-                "tags": [
-                    "CategoryAPI"
-                ],
-                "summary": "Get list of Category",
-                "operationId": "f923daf680ac66deb18bd56437ca2a23",
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -92,12 +75,13 @@
                     "CategoryAPI"
                 ],
                 "summary": "Popular categories",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/207](https:\/\/t.me\/c\/1334612640\/207).",
                 "operationId": "1a11cd9bd17ab12cfcd763ebd95993fb",
                 "parameters": [
                     {
                         "name": "category",
                         "in": "query",
-                        "description": "Category name kiritiladi",
+                        "description": "Kategoriya nomi kiritiladi",
                         "schema": {
                             "type": "string"
                         }
@@ -122,6 +106,7 @@
                     "CategoryAPI"
                 ],
                 "summary": "Search Category by name",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/167](https:\/\/t.me\/c\/1334612640\/167).",
                 "operationId": "c177ab8a25cbaa55ef98e7ebdbc848a7",
                 "parameters": [
                     {
@@ -153,6 +138,7 @@
                     "CategoryAPI"
                 ],
                 "summary": "Get All Parent Categories",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/168](https:\/\/t.me\/c\/1334612640\/168).",
                 "operationId": "e8afb8bb1052e6310214fc871fcbe225",
                 "responses": {
                     "200": {
@@ -173,15 +159,16 @@
                     "CategoryAPI"
                 ],
                 "summary": "Get category by show ID",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/169](https:\/\/t.me\/c\/1334612640\/169).",
                 "operationId": "87e7cd6fb3ae11d4904e035f70299857",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "Category id kiritiladi",
+                        "description": "Kategoriya id kiritiladi",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -204,6 +191,7 @@
                     "CategoryAPI"
                 ],
                 "summary": "All Categories Childs Id",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/254](https:\/\/t.me\/c\/1334612640\/254).",
                 "operationId": "b1a0a63bc4bb39a960198eeac9a45eaf",
                 "responses": {
                     "200": {
@@ -228,7 +216,8 @@
                 "tags": [
                     "FAQ"
                 ],
-                "summary": "Get list of Faqs",
+                "summary": "Tez-tez beriladigan savollar ro'yxatini olish",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/255](https:\/\/t.me\/c\/1334612640\/255).",
                 "operationId": "57c4fa7ceebfb20a59c69528a9a7067e",
                 "responses": {
                     "200": {
@@ -243,18 +232,20 @@
                 }
             }
         },
-        "\/api\/faq\/{faq_id}": {
+        "\/api\/faq\/{faqId}": {
             "get": {
                 "tags": [
                     "FAQ"
                 ],
                 "summary": "Get faq by show ID",
-                "operationId": "0f07137332016dcec2fdfb90dda6102a",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/253](https:\/\/t.me\/c\/1334612640\/253).",
+                "operationId": "655aee3507f90d108921e479acdec59b",
                 "parameters": [
                     {
-                        "name": "faq_id",
+                        "name": "faqId",
                         "in": "path",
-                        "description": "faq id kiritiladi",
+                        "description": "Tez-tez beriladigan savollar idsi kiritiladi",
+                        "required": true,
                         "schema": {
                             "type": "integer"
                         }
@@ -279,6 +270,7 @@
                     "Setting"
                 ],
                 "summary": "Get list of setting",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/160](https:\/\/t.me\/c\/1334612640\/160).",
                 "operationId": "f7ca8adc84c1dcad0668ef47ae66d2c9",
                 "responses": {
                     "200": {
@@ -298,18 +290,20 @@
                 ]
             }
         },
-        "\/api\/settings\/{key}": {
+        "\/api\/settings\/{settingKey}": {
             "get": {
                 "tags": [
                     "Setting"
                 ],
                 "summary": "Get setting by show key",
-                "operationId": "1d06abedf33b9519a93b56cb564f43df",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/163](https:\/\/t.me\/c\/1334612640\/163).",
+                "operationId": "4c3cc17560325ff7a515c8cf62741b28",
                 "parameters": [
                     {
-                        "name": "key",
+                        "name": "settingKey",
                         "in": "path",
                         "description": "Adminkadan yaratilgan kerakli settingning keyi kiritiladi",
+                        "required": true,
                         "schema": {
                             "type": "string"
                         }
@@ -957,12 +951,15 @@
                             "schema": {
                                 "properties": {
                                     "images": {
+                                        "description": "portfolio uchun rasm kiritiladi",
                                         "type": "file"
                                     },
                                     "comment": {
+                                        "description": "portfolio uchun comment yoziladi",
                                         "type": "string"
                                     },
                                     "description": {
+                                        "description": "portfolio uchun tavsif yoziladi",
                                         "type": "string"
                                     }
                                 },
@@ -1000,6 +997,7 @@
                     {
                         "name": "portfolio",
                         "in": "path",
+                        "description": "portfolio id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1035,6 +1033,7 @@
                     {
                         "name": "portfolio",
                         "in": "path",
+                        "description": "portfolio id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1048,12 +1047,15 @@
                             "schema": {
                                 "properties": {
                                     "comment": {
+                                        "description": "portfolio uchun comment yoziladi",
                                         "type": "string"
                                     },
                                     "description": {
+                                        "description": "portfolio uchun tavsif yoziladi",
                                         "type": "string"
                                     },
                                     "image": {
+                                        "description": "portfolio uchun rasm kiritiladi",
                                         "type": "file"
                                     }
                                 },
@@ -1094,6 +1096,7 @@
                             "schema": {
                                 "properties": {
                                     "link": {
+                                        "description": "youtobe video link yoziladi(masalan https:\/\/www.youtube.com\/watch?v=iU-Uk5CEG1k&ab_channel=KunUZ)",
                                         "type": "string"
                                     }
                                 },
@@ -1270,6 +1273,7 @@
                             "schema": {
                                 "properties": {
                                     "phone_number": {
+                                        "description": "phone_number yoziladi",
                                         "type": "string"
                                     }
                                 },
@@ -1310,14 +1314,17 @@
                             "schema": {
                                 "properties": {
                                     "old_password": {
+                                        "description": "avvalgi parol yoziladi",
                                         "type": "string",
                                         "format": "password"
                                     },
                                     "password": {
+                                        "description": "yangi parol yoziladi",
                                         "type": "string",
                                         "format": "password"
                                     },
                                     "password_confirmation": {
+                                        "description": "yangi parol yoziladi",
                                         "type": "string",
                                         "format": "password"
                                     }
@@ -1359,6 +1366,7 @@
                             "schema": {
                                 "properties": {
                                     "avatar": {
+                                        "description": "Profile uchun rasm kiritiladi",
                                         "type": "file"
                                     }
                                 },
@@ -1399,6 +1407,7 @@
                             "schema": {
                                 "properties": {
                                     "name": {
+                                        "description": "name kiritiladi",
                                         "type": "string"
                                     },
                                     "gender": {
@@ -1410,14 +1419,16 @@
                                         "type": "string"
                                     },
                                     "age": {
+                                        "description": "yoshi kiritiladi",
                                         "type": "integer"
                                     },
                                     "email": {
+                                        "description": "email kiritiladi",
                                         "type": "string",
                                         "format": "email"
                                     },
                                     "location": {
-                                        "description": "Bo`sh qoldirsa boladi",
+                                        "description": "yashash manzili kiritiladi (bo`sh qoldirsa boladi)",
                                         "type": "string"
                                     }
                                 },
@@ -1483,6 +1494,7 @@
                             "schema": {
                                 "properties": {
                                     "description": {
+                                        "description": "profili uchun tavsif yoziladi",
                                         "type": "string"
                                     }
                                 },
@@ -1561,6 +1573,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "user id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -1591,6 +1604,7 @@
                     {
                         "name": "user",
                         "in": "path",
+                        "description": "user id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -1621,6 +1635,7 @@
                     {
                         "name": "user",
                         "in": "path",
+                        "description": "user id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -1653,10 +1668,16 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
+                                    "category": {
+                                        "description": "child category idlar kiritiladi(array formatda)",
+                                        "type": "object"
+                                    },
                                     "sms_notification": {
+                                        "description": "sms_notificationni yoqish uchun 1, o'chirish uchun 0 yoziladi",
                                         "type": "integer"
                                     },
                                     "email_notification": {
+                                        "description": "email_notificationni yoqish uchun 1, o'chirish uchun 0 yoziladi",
                                         "type": "integer"
                                     }
                                 },
@@ -1701,6 +1722,7 @@
                                         "type": "string"
                                     },
                                     "version": {
+                                        "description": "app versiya kiritiladi (masalan 1.0.45)",
                                         "type": "string"
                                     }
                                 },
@@ -1915,6 +1937,7 @@
                     {
                         "name": "portfolio",
                         "in": "path",
+                        "description": "portfolio id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1928,7 +1951,7 @@
                             "schema": {
                                 "properties": {
                                     "image": {
-                                        "description": "Ozodbek\/1675856445_image_2023-02-07_11-00-21.png shunday ko'rinishda img url kiritiladi",
+                                        "description": "Username\/1675856445_image_2023-02-07_11-00-21.png shunday ko'rinishda img url kiritiladi",
                                         "type": "string"
                                     }
                                 },
@@ -1969,6 +1992,7 @@
                             "schema": {
                                 "properties": {
                                     "work_experience": {
+                                        "description": "ish tajribasi kiritiladi(necha yilligi)",
                                         "type": "integer"
                                     }
                                 },
@@ -2031,6 +2055,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "response template id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2044,9 +2069,11 @@
                             "schema": {
                                 "properties": {
                                     "title": {
+                                        "description": "response template title",
                                         "type": "string"
                                     },
                                     "text": {
+                                        "description": "response template text",
                                         "type": "string"
                                     }
                                 },
@@ -2087,9 +2114,11 @@
                             "schema": {
                                 "properties": {
                                     "title": {
+                                        "description": "response template title",
                                         "type": "string"
                                     },
                                     "text": {
+                                        "description": "response template text",
                                         "type": "string"
                                     }
                                 },
@@ -2127,6 +2156,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "response template id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2169,9 +2199,11 @@
                                         "type": "integer"
                                     },
                                     "notification_to": {
+                                        "description": "vaqt kiritiladi",
                                         "type": "string"
                                     },
                                     "notification_from": {
+                                        "description": "vaqt kiritiladi",
                                         "type": "string"
                                     }
                                 },
@@ -2209,6 +2241,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2244,6 +2277,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2252,6 +2286,7 @@
                     {
                         "name": "user",
                         "in": "path",
+                        "description": "user id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2287,6 +2322,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2391,6 +2427,7 @@
                             "schema": {
                                 "properties": {
                                     "type": {
+                                        "description": "variantlardan biri tanlanadi",
                                         "type": "string",
                                         "enum": [
                                             "google",
@@ -2550,7 +2587,7 @@
         "\/api\/select-performer\/{response}": {
             "post": {
                 "tags": [
-                    "Task"
+                    "Responses"
                 ],
                 "summary": "Select performer",
                 "operationId": "9dd3e944aa88b5922c3327499f09f3d5",
@@ -2558,6 +2595,7 @@
                     {
                         "name": "response",
                         "in": "path",
+                        "description": "task response id yoziladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2914,6 +2952,7 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
+                                        "description": "task id kiritiladi",
                                         "type": "integer"
                                     }
                                 },
@@ -2954,10 +2993,11 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
+                                        "description": "task id kiritiladi",
                                         "type": "integer"
                                     },
                                     "radio": {
-                                        "description": "Agar udallonna bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
+                                        "description": "Agar masofaviy bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
                                         "type": "string"
                                     }
                                 },
@@ -2998,6 +3038,7 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
+                                        "description": "task id kiritiladi",
                                         "type": "integer"
                                     },
                                     "points[]": {
@@ -3005,12 +3046,15 @@
                                         "items": {
                                             "properties": {
                                                 "location": {
+                                                    "description": "location kiritiladi",
                                                     "type": "string"
                                                 },
                                                 "latitude": {
+                                                    "description": "latitude kiritiladi",
                                                     "type": "number"
                                                 },
                                                 "longitude": {
+                                                    "description": "longitude kiritiladi",
                                                     "type": "number"
                                                 }
                                             },
@@ -3055,6 +3099,7 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
+                                        "description": "task id kiritiladi",
                                         "type": "integer"
                                     },
                                     "date_type": {
@@ -3107,6 +3152,7 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
+                                        "description": "task id kiritiladi",
                                         "type": "integer"
                                     },
                                     "amount": {
@@ -3155,9 +3201,11 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
+                                        "description": "task id kiritiladi",
                                         "type": "integer"
                                     },
                                     "description": {
+                                        "description": "task uchun tavsif yoziladi",
                                         "type": "string"
                                     },
                                     "docs": {
@@ -3202,9 +3250,11 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
+                                        "description": "task id kiritiladi",
                                         "type": "integer"
                                     },
                                     "images": {
+                                        "description": "task uchun rasm kiritiladi",
                                         "type": "file"
                                     }
                                 },
@@ -3245,9 +3295,11 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
+                                        "description": "task id kiritiladi",
                                         "type": "integer"
                                     },
                                     "phone_number": {
+                                        "description": "telefon raqam kiritiladi",
                                         "type": "string"
                                     }
                                 },
@@ -3288,9 +3340,11 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
+                                        "description": "task id kiritiladi",
                                         "type": "integer"
                                     },
                                     "phone_number": {
+                                        "description": "telefon raqam kiritiladi",
                                         "type": "integer"
                                     },
                                     "sms_otp": {
@@ -3332,6 +3386,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3345,9 +3400,11 @@
                             "schema": {
                                 "properties": {
                                     "name": {
+                                        "description": "task name kiritiladi",
                                         "type": "string"
                                     },
                                     "category_id": {
+                                        "description": "task child category_id kiritiladi",
                                         "type": "integer"
                                     }
                                 },
@@ -3385,6 +3442,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3420,6 +3478,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3432,11 +3491,8 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "task_id": {
-                                        "type": "integer"
-                                    },
                                     "radio": {
-                                        "description": "Agar udallonna bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
+                                        "description": "Agar masofaviy ish bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
                                         "type": "string"
                                     }
                                 },
@@ -3474,6 +3530,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3486,16 +3543,16 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "task_id": {
-                                        "type": "integer"
-                                    },
                                     "location": {
+                                        "description": "task location kiritiladi",
                                         "type": "string"
                                     },
                                     "latitude": {
+                                        "description": "task latitude kiritiladi",
                                         "type": "number"
                                     },
                                     "longitude": {
+                                        "description": "task longitude kiritiladi",
                                         "type": "number"
                                     }
                                 },
@@ -3533,6 +3590,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3545,9 +3603,6 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "task_id": {
-                                        "type": "integer"
-                                    },
                                     "date_type": {
                                         "description": "1 dan 3 gacha bersa bo`ladi",
                                         "type": "integer"
@@ -3595,6 +3650,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3607,13 +3663,12 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "task_id": {
-                                        "type": "integer"
-                                    },
                                     "amount": {
+                                        "description": "Narxi",
                                         "type": "number"
                                     },
                                     "budget_type": {
+                                        "description": "Naqt yoki plastik (0 yoki 1)",
                                         "type": "integer"
                                     }
                                 },
@@ -3651,6 +3706,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3663,10 +3719,8 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "task_id": {
-                                        "type": "integer"
-                                    },
                                     "description": {
+                                        "description": "task uchun tavsif kiritiladi",
                                         "type": "string"
                                     },
                                     "docs": {
@@ -3708,6 +3762,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3720,10 +3775,8 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "task_id": {
-                                        "type": "integer"
-                                    },
                                     "images": {
+                                        "description": "task uchun rasm kiritiladi",
                                         "type": "file"
                                     }
                                 },
@@ -3761,6 +3814,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3773,10 +3827,8 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "task_id": {
-                                        "type": "integer"
-                                    },
                                     "phone_number": {
+                                        "description": "task phone_number kiritiladi",
                                         "type": "string"
                                     }
                                 },
@@ -3814,6 +3866,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3826,10 +3879,8 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "task_id": {
-                                        "type": "integer"
-                                    },
                                     "phone_number": {
+                                        "description": "task phone_number kiritiladi",
                                         "type": "integer"
                                     },
                                     "sms_otp": {
@@ -3871,6 +3922,7 @@
                     {
                         "name": "task",
                         "in": "path",
+                        "description": "task id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3883,11 +3935,9 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "task_id": {
-                                        "type": "integer"
-                                    },
                                     "images": {
-                                        "type": "file"
+                                        "description": "delete qilinadigan image url kiritiladi",
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -3938,9 +3988,11 @@
                             "schema": {
                                 "properties": {
                                     "compliance_type_id": {
+                                        "description": "shikoyat turi idsi kiritiladi",
                                         "type": "integer"
                                     },
                                     "text": {
+                                        "description": "shikoyat matni kiritiladi",
                                         "type": "string"
                                     }
                                 },
@@ -4003,6 +4055,7 @@
                     {
                         "name": "user_id",
                         "in": "query",
+                        "description": "user id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -4011,6 +4064,7 @@
                     {
                         "name": "status",
                         "in": "query",
+                        "description": "status kiritiladi(1 yoki 0)",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -4046,6 +4100,7 @@
                     {
                         "name": "user_id",
                         "in": "query",
+                        "description": "user id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -4947,6 +5002,7 @@
                     {
                         "name": "id",
                         "in": "query",
+                        "description": "user id kiritiladi",
                         "schema": {
                             "type": "integer"
                         }
@@ -4975,12 +5031,13 @@
                 "tags": [
                     "Chat"
                 ],
-                "summary": "",
+                "summary": "Chat send message",
                 "operationId": "6d158f296101e86e16ec71247600a663",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "query",
+                        "description": "xabar yuborilayotgan user id kiritiladi",
                         "schema": {
                             "type": "integer"
                         }
@@ -4988,6 +5045,7 @@
                     {
                         "name": "message",
                         "in": "query",
+                        "description": "xabar matni kiritiladi",
                         "schema": {
                             "type": "string"
                         }
@@ -5022,6 +5080,7 @@
                     {
                         "name": "id",
                         "in": "query",
+                        "description": "xabar yuborilayotgan user id kiritiladi",
                         "schema": {
                             "type": "integer"
                         }
@@ -5050,12 +5109,13 @@
                 "tags": [
                     "Chat"
                 ],
-                "summary": "",
+                "summary": "Chat make seen",
                 "operationId": "c078d17b4efaa29b1b8617a5600b8b52",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "query",
+                        "description": "xabar o'qilgan userning idsi kiritiladi",
                         "schema": {
                             "type": "integer"
                         }
@@ -5115,6 +5175,7 @@
                     {
                         "name": "name",
                         "in": "query",
+                        "description": "search qilinmoqchi bo'lgan user name kiritiladi",
                         "schema": {
                             "type": "string"
                         }
@@ -5569,6 +5630,14 @@
                         }
                     },
                     {
+                        "name": "filters[verify_code]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "filters[born_date]",
                         "in": "query",
                         "required": false,
@@ -5892,11 +5961,10 @@
                                 "role_id",
                                 "user_belongsto_role_relationship",
                                 "phone_number",
-                                "g-recaptcha-response",
                                 "description",
                                 "work_experience",
-                                "born_date",
-                                "version"
+                                "verify_code",
+                                "born_date"
                             ]
                         }
                     },
@@ -5916,11 +5984,10 @@
                                     "role_id",
                                     "user_belongsto_role_relationship",
                                     "phone_number",
-                                    "g-recaptcha-response",
                                     "description",
                                     "work_experience",
-                                    "born_date",
-                                    "version"
+                                    "verify_code",
+                                    "born_date"
                                 ]
                             }
                         }
@@ -7234,6 +7301,242 @@
                                     "properties": {
                                         "message": {
                                             "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/categories": {
+            "get": {
+                "tags": [
+                    "Core | categories"
+                ],
+                "summary": "categories index",
+                "operationId": "categories_index",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Global search",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "length",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "description": "Sort by column",
+                        "required": false,
+                        "schema": {
+                            "enum": [
+                                "id",
+                                "parent_id",
+                                "order",
+                                "name",
+                                "custom_route_title",
+                                "max",
+                                "min",
+                                "slug",
+                                "ico",
+                                "ico_mini",
+                                "double_address",
+                                "remote",
+                                "created_at",
+                                "created_by",
+                                "updated_at",
+                                "updated_by",
+                                "deleted_at",
+                                "deleted_by"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort_order",
+                        "in": "query",
+                        "description": "Sort by direction",
+                        "required": false,
+                        "schema": {
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "10,,20"
+                        }
+                    },
+                    {
+                        "name": "filters[name]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[order]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[ico]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[max]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "10,,20"
+                        }
+                    },
+                    {
+                        "name": "filters[double_address]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[remote]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[deleted_by]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[updated_by]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[deleted_at]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#\/components\/schemas\/VoyagerCategoriesBrowseResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "$ref": "#\/components\/schemas\/Links"
+                                        },
+                                        "meta": {
+                                            "$ref": "#\/components\/schemas\/Meta"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Core | categories"
+                ],
+                "summary": "categories store",
+                "operationId": "categories_store",
+                "requestBody": {
+                    "$ref": "#\/components\/requestBodies\/VoyagerCategoriesStoreRequest"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#\/components\/schemas\/VoyagerCategoriesReadResource"
                                         }
                                     }
                                 }
@@ -10260,6 +10563,7 @@
                                 "longitude",
                                 "default",
                                 "task_id",
+                                "deleted_at",
                                 "address_belongsto_user_relationship"
                             ],
                             "type": "string"
@@ -10276,6 +10580,14 @@
                                 "desc"
                             ],
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "showSoftDeleted",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
                         }
                     },
                     {
@@ -13863,8 +14175,8 @@
                 "tags": [
                     "Core | regions"
                 ],
-                "summary": "sys index",
-                "operationId": "sys_index",
+                "summary": "regions index",
+                "operationId": "regions_index",
                 "parameters": [
                     {
                         "name": "q",
@@ -13897,7 +14209,12 @@
                         "description": "Sort by column",
                         "required": false,
                         "schema": {
-                            "enum": [],
+                            "enum": [
+                                "id",
+                                "name",
+                                "created_at",
+                                "updated_at"
+                            ],
                             "type": "string"
                         }
                     },
@@ -13951,7 +14268,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#\/components\/schemas\/VoyagerSysBrowseResource"
+                                                "$ref": "#\/components\/schemas\/VoyagerRegionsBrowseResource"
                                             }
                                         },
                                         "links": {
@@ -13985,7 +14302,7 @@
                 "summary": "regions store",
                 "operationId": "regions_store",
                 "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerSysStoreRequest"
+                    "$ref": "#\/components\/requestBodies\/VoyagerRegionsStoreRequest"
                 },
                 "responses": {
                     "200": {
@@ -13996,7 +14313,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerSysReadResource"
+                                            "$ref": "#\/components\/schemas\/VoyagerRegionsReadResource"
                                         }
                                     }
                                 }
@@ -14022,8 +14339,8 @@
                 "tags": [
                     "Core | regions"
                 ],
-                "summary": "sys create",
-                "operationId": "sys_create",
+                "summary": "regions create",
+                "operationId": "regions_create",
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -14078,7 +14395,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerSysReadResource"
+                                            "$ref": "#\/components\/schemas\/VoyagerRegionsReadResource"
                                         }
                                     }
                                 }
@@ -14115,7 +14432,7 @@
                     }
                 ],
                 "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerSysUpdateRequest"
+                    "$ref": "#\/components\/requestBodies\/VoyagerRegionsUpdateRequest"
                 },
                 "responses": {
                     "200": {
@@ -14126,7 +14443,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerSysReadResource"
+                                            "$ref": "#\/components\/schemas\/VoyagerRegionsReadResource"
                                         }
                                     }
                                 }
@@ -14238,7 +14555,7 @@
                     }
                 ],
                 "requestBody": {
-                    "$ref": "#\/components\/requestBodies\/VoyagerSysSingleUpdateRequest"
+                    "$ref": "#\/components\/requestBodies\/VoyagerRegionsSingleUpdateRequest"
                 },
                 "responses": {
                     "200": {
@@ -14249,7 +14566,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerSysReadResource"
+                                            "$ref": "#\/components\/schemas\/VoyagerRegionsReadResource"
                                         }
                                     }
                                 }
@@ -14296,7 +14613,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#\/components\/schemas\/VoyagerSysReadResource"
+                                            "$ref": "#\/components\/schemas\/VoyagerRegionsReadResource"
                                         }
                                     }
                                 }
@@ -21637,6 +21954,10 @@
                         "type": "string",
                         "description": "Work Experience"
                     },
+                    "verify_code": {
+                        "type": "string",
+                        "description": "Verify Code"
+                    },
                     "born_date": {
                         "type": "string",
                         "description": "Born Date"
@@ -21691,10 +22012,6 @@
                         "type": "string",
                         "description": "Phone Number"
                     },
-                    "g-recaptcha-response": {
-                        "type": "string",
-                        "description": "G-recaptcha-response"
-                    },
                     "description": {
                         "type": "string",
                         "description": "Description"
@@ -21702,6 +22019,10 @@
                     "work_experience": {
                         "type": "string",
                         "description": "Work Experience"
+                    },
+                    "verify_code": {
+                        "type": "string",
+                        "description": "Verify Code"
                     },
                     "born_date": {
                         "type": "string",
@@ -22974,7 +23295,7 @@
                     }
                 }
             },
-            "VoyagerSysBrowseResource": {
+            "VoyagerRegionsBrowseResource": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -22993,7 +23314,7 @@
                     }
                 }
             },
-            "VoyagerSysReadResource": {
+            "VoyagerRegionsReadResource": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -23837,10 +24158,6 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
-                                "g-recaptcha-response": {
-                                    "type": "string",
-                                    "description": "G-recaptcha-response"
-                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
@@ -23852,10 +24169,6 @@
                                 "born_date": {
                                     "type": "string",
                                     "description": "Born Date"
-                                },
-                                "version": {
-                                    "type": "string",
-                                    "description": "Version"
                                 }
                             }
                         }
@@ -23902,10 +24215,6 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
-                                "g-recaptcha-response": {
-                                    "type": "string",
-                                    "description": "G-recaptcha-response"
-                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
@@ -23914,13 +24223,13 @@
                                     "type": "string",
                                     "description": "Work Experience"
                                 },
+                                "verify_code": {
+                                    "type": "string",
+                                    "description": "Verify Code"
+                                },
                                 "born_date": {
                                     "type": "string",
                                     "description": "Born Date"
-                                },
-                                "version": {
-                                    "type": "string",
-                                    "description": "Version"
                                 }
                             }
                         }
@@ -23967,10 +24276,6 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
-                                "g-recaptcha-response": {
-                                    "type": "string",
-                                    "description": "G-recaptcha-response"
-                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
@@ -23979,13 +24284,13 @@
                                     "type": "string",
                                     "description": "Work Experience"
                                 },
+                                "verify_code": {
+                                    "type": "string",
+                                    "description": "Verify Code"
+                                },
                                 "born_date": {
                                     "type": "string",
                                     "description": "Born Date"
-                                },
-                                "version": {
-                                    "type": "string",
-                                    "description": "Version"
                                 }
                             }
                         }
@@ -26082,7 +26387,7 @@
                 },
                 "required": true
             },
-            "VoyagerSysStoreRequest": {
+            "VoyagerRegionsStoreRequest": {
                 "content": {
                     "application\/x-www-form-urlencoded": {
                         "schema": {
@@ -26102,7 +26407,7 @@
                 },
                 "required": true
             },
-            "VoyagerSysUpdateRequest": {
+            "VoyagerRegionsUpdateRequest": {
                 "content": {
                     "application\/x-www-form-urlencoded": {
                         "schema": {
@@ -26128,7 +26433,7 @@
                 },
                 "required": true
             },
-            "VoyagerSysSingleUpdateRequest": {
+            "VoyagerRegionsSingleUpdateRequest": {
                 "content": {
                     "application\/x-www-form-urlencoded": {
                         "schema": {

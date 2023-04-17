@@ -1,0 +1,38 @@
+html{
+    padding: 0 5px 0 5px;
+}
+#example_filter{
+    display: none;
+}
+#example_paginate{
+    display: none;
+}
+#example_info{
+    display: none;
+}
+.dt-buttons{
+    width: 60%;
+    justify-content: center;
+    column-gap: 10px;
+}
+.dataTables_length{
+    width: 20%;
+}
+.dataTables_length label select{
+    width: 33% !important;
+}
+.dataTables_filter{
+    width: 20%;
+}
+.database_length, .dt-buttons, .dataTables_filter{
+    margin-bottom: 12px;
+}
+.buttons-html5, .buttons-print{
+    font-size: 1.1rem;
+}
+.z-index{
+    z-index: 1000;
+}
+.dtsb-searchBuilder{
+    width: fit-content;
+}

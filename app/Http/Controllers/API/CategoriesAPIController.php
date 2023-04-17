@@ -21,36 +21,13 @@ class CategoriesAPIController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/categories",
-     *     tags={"CategoryAPI"},
-     *     summary="Get list of Category",
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     )
-     * )
-     */
-    public function index()
-    {
-        return $this->service->index();
-    }
-
-    /**
-     * @OA\Get(
      *     path="/api/popular-categories",
      *     tags={"CategoryAPI"},
      *     summary="Popular categories",
+     *     description="[**Telegram :** https://t.me/c/1334612640/207](https://t.me/c/1334612640/207).",
      *     @OA\Parameter(
      *          in="query",
-     *          description="Category name kiritiladi",
+     *          description="Kategoriya nomi kiritiladi",
      *          name="category",
      *          @OA\Schema(
      *              type="string"
@@ -80,6 +57,7 @@ class CategoriesAPIController extends Controller
      * @OA\Get(
      *     path="/api/category/search",
      *     tags={"CategoryAPI"},
+     *     description="[**Telegram :** https://t.me/c/1334612640/167](https://t.me/c/1334612640/167).",
      *     summary="Search Category by name",
      *     @OA\Parameter(
      *          in="query",
@@ -104,7 +82,8 @@ class CategoriesAPIController extends Controller
      *     )
      * )
      */
-    public function search(Request $request)
+    #[ArrayShape(['data' => "array"])]
+    public function search(Request $request): array
     {
         $parentId = (!empty($request->get('parent_id'))) ? $request->get('parent_id') : '';
         $name = $request->get('name');
@@ -115,6 +94,7 @@ class CategoriesAPIController extends Controller
      * @OA\Get(
      *     path="/api/categories-parent",
      *     tags={"CategoryAPI"},
+     *     description="[**Telegram :** https://t.me/c/1334612640/168](https://t.me/c/1334612640/168).",
      *     summary="Get All Parent Categories",
      *     @OA\Response (
      *          response=200,
@@ -139,14 +119,15 @@ class CategoriesAPIController extends Controller
      * @OA\Get(
      *     path="/api/categories/{id}",
      *     tags={"CategoryAPI"},
+     *     description="[**Telegram :** https://t.me/c/1334612640/169](https://t.me/c/1334612640/169).",
      *     summary="Get category by show ID",
      *     @OA\Parameter(
      *          in="path",
-     *          description="Category id kiritiladi",
+     *          description="Kategoriya id kiritiladi",
      *          name="id",
      *          required=true,
      *          @OA\Schema(
-     *              type="string"
+     *              type="integer"
      *          ),
      *     ),
      *     @OA\Response (
@@ -172,6 +153,7 @@ class CategoriesAPIController extends Controller
      * @OA\Get(
      *     path="/api/all-categories-childs",
      *     tags={"CategoryAPI"},
+     *     description="[**Telegram :** https://t.me/c/1334612640/254](https://t.me/c/1334612640/254).",
      *     summary="All Categories Childs Id",
      *     security={
      *         {"token": {}}

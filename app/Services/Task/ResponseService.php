@@ -16,6 +16,7 @@ use App\Services\CustomService;
 use App\Services\NotificationService;
 use App\Services\SmsMobileService;
 use Exception;
+use JetBrains\PhpStorm\ArrayShape;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -100,8 +101,10 @@ class ResponseService
      * Mazkur metod taskka tashlangan otkliklar orasidan ispolnitelni tanlashda ishlatiladi
      * @param $response
      * @return array
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
+    #[ArrayShape(['success' => "bool", 'message' => "mixed", 'data' => "array"])]
     public function selectPerformer($response): array
     {
         $task = $response->task;

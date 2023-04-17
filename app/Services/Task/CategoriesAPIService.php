@@ -8,16 +8,6 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class CategoriesAPIService
 {
-    /**
-     * barcha kategoriyalarni qaytaradi
-     * @return array[]
-     */
-    #[ArrayShape(['data' => "array"])]
-    public function index(): array
-    {
-        $categories = Category::query()->select('id', 'parent_id', 'name', 'ico')->withTranslation(app()->getLocale())->whereNull('parent_id')->orderBy("order", "asc")->get();
-        return $this->category($categories);
-    }
 
     /**
      *
