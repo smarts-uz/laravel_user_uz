@@ -175,10 +175,9 @@ Route::get('/category/search', [CategoriesAPIController::class, 'search']); // f
 Route::get('/all-categories-childs', [CategoriesAPIController::class, 'AllCategoriesChildsId']); // fix
 
 //Performers
-Route::get('/performers', [PerformerAPIController::class, 'performers']); // fix
 Route::get('/performers-filter', [PerformerAPIController::class, 'performer_filter']); // fix
-Route::get('/performers-count/{category_id}', [PerformerAPIController::class, 'performers_count']); // fix
-Route::get('/performers-image/{category_id}', [PerformerAPIController::class, 'performers_image']); // fix
+Route::get('/performers-count/{categoryId}', [PerformerAPIController::class, 'performers_count']); // fix
+Route::get('/performers-image/{categoryId}', [PerformerAPIController::class, 'performers_image']); // fix
 
 //Social
 Route::post('/social-login', [SocialAPIController::class, 'login']); // fix

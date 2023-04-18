@@ -332,7 +332,8 @@
                 "tags": [
                     "Verification"
                 ],
-                "summary": "Verify account",
+                "summary": "Profilni tasdiqlash uchun api",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/205](https:\/\/t.me\/c\/1334612640\/205).",
                 "operationId": "8787a513ac7945b24e6123d90215b324",
                 "parameters": [
                     {
@@ -377,7 +378,8 @@
                 "tags": [
                     "Verification"
                 ],
-                "summary": "Verification phone",
+                "summary": "Telefon raqamni tasdiqlash",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/170](https:\/\/t.me\/c\/1334612640\/170).",
                 "operationId": "3fe3e97c01c6204997ab62e7f3323789",
                 "requestBody": {
                     "required": true,
@@ -418,7 +420,8 @@
                 "tags": [
                     "Verification"
                 ],
-                "summary": "Verification email",
+                "summary": "Emailni tasdiqlash",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/239](https:\/\/t.me\/c\/1334612640\/239).",
                 "operationId": "f36c8a03fbc01724dbd41ebae6666cf1",
                 "requestBody": {
                     "required": true,
@@ -454,42 +457,13 @@
                 ]
             }
         },
-        "\/api\/performers": {
-            "get": {
-                "tags": [
-                    "Performers"
-                ],
-                "summary": "Get All Performers",
-                "operationId": "027b7e9a6cbc132daad2697f1621a24d",
-                "parameters": [
-                    {
-                        "name": "online",
-                        "in": "query",
-                        "description": "true bo'lsa online performerlar qiymatini qaytaradi",
-                        "schema": {
-                            "type": "boolean"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                }
-            }
-        },
         "\/api\/performers-filter": {
             "get": {
                 "tags": [
                     "Performers"
                 ],
                 "summary": "Performers Filter",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/196](https:\/\/t.me\/c\/1334612640\/196).",
                 "operationId": "7ddc065fff9fd7ac64fe0157f29d04dd",
                 "parameters": [
                     {
@@ -581,6 +555,7 @@
                     "Task"
                 ],
                 "summary": "Give task by task ID and perfomer ID",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/137](https:\/\/t.me\/c\/1334612640\/137).",
                 "operationId": "0e31576c4838d8c9e29c2b0bcee2c3d6",
                 "requestBody": {
                     "required": true,
@@ -626,6 +601,7 @@
                     "Become a perfomer"
                 ],
                 "summary": "Initial Data",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/140](https:\/\/t.me\/c\/1334612640\/140).",
                 "operationId": "fe1fd424a52f6bd274c86a35afdb3af3",
                 "requestBody": {
                     "required": true,
@@ -675,6 +651,7 @@
                     "Become a perfomer"
                 ],
                 "summary": "Email and phone",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/186](https:\/\/t.me\/c\/1334612640\/186).",
                 "operationId": "4e36926672cf6bed00d3fb3ef9dfd4a5",
                 "requestBody": {
                     "required": true,
@@ -721,6 +698,7 @@
                     "Become a perfomer"
                 ],
                 "summary": "Avator",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/187](https:\/\/t.me\/c\/1334612640\/187).",
                 "operationId": "a6e205e8c105f40204264bda896100e3",
                 "requestBody": {
                     "required": true,
@@ -762,6 +740,7 @@
                     "Become a perfomer"
                 ],
                 "summary": "Categories",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/188](https:\/\/t.me\/c\/1334612640\/188).",
                 "operationId": "8623a4ddae7b115758739689a990bac0",
                 "requestBody": {
                     "required": true,
@@ -797,41 +776,17 @@
                 ]
             }
         },
-        "\/api\/reviews": {
-            "get": {
-                "tags": [
-                    "Performers"
-                ],
-                "summary": "Performer reviews",
-                "operationId": "39fe6b6c9cc58a3d62c2fcc1afb079a5",
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
-        "\/api\/performers-count\/{category_id}": {
+        "\/api\/performers-count\/{categoryId}": {
             "get": {
                 "tags": [
                     "Performers"
                 ],
                 "summary": "Performer count",
-                "operationId": "c60990f1f4df8d7dd40bd56accb91bf8",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/162](https:\/\/t.me\/c\/1334612640\/162).",
+                "operationId": "81a0e6bae3acdf3899a394dad45562c1",
                 "parameters": [
                     {
-                        "name": "category_id",
+                        "name": "categoryId",
                         "in": "path",
                         "description": "child category id kiritiladi",
                         "schema": {
@@ -852,13 +807,14 @@
                 }
             }
         },
-        "\/api\/performers-image\/{category_id}": {
+        "\/api\/performers-image\/{categoryId}": {
             "get": {
                 "tags": [
                     "Performers"
                 ],
                 "summary": "Performer image",
-                "operationId": "121025c8201c775d9c1ce8c52e609a79",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/231](https:\/\/t.me\/c\/1334612640\/231).",
+                "operationId": "0ce7e60523da2749561cb6b7f9e4c48d",
                 "parameters": [
                     {
                         "name": "category_id",
@@ -16509,6 +16465,242 @@
                                     "properties": {
                                         "message": {
                                             "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "\/api\/reviews": {
+            "get": {
+                "tags": [
+                    "Core | reviews"
+                ],
+                "summary": "reviews index",
+                "operationId": "reviews_index",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Global search",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "length",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "description": "Sort by column",
+                        "required": false,
+                        "schema": {
+                            "enum": [
+                                "id",
+                                "user_id",
+                                "description",
+                                "good_bad",
+                                "reviewer_id",
+                                "task_id",
+                                "as_performer",
+                                "created_at",
+                                "updated_at",
+                                "reviewer_name",
+                                "deleted_at"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort_order",
+                        "in": "query",
+                        "description": "Sort by direction",
+                        "required": false,
+                        "schema": {
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "showSoftDeleted",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "filters[id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[user_id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[description]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[good_bad]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[created_at]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
+                        }
+                    },
+                    {
+                        "name": "filters[reviewer_id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[as_performer]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[task_id]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[reviewer_name]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[deleted_at]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#\/components\/schemas\/VoyagerReviewsBrowseResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "$ref": "#\/components\/schemas\/Links"
+                                        },
+                                        "meta": {
+                                            "$ref": "#\/components\/schemas\/Meta"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Core | reviews"
+                ],
+                "summary": "reviews store",
+                "operationId": "reviews_store",
+                "requestBody": {
+                    "$ref": "#\/components\/requestBodies\/VoyagerReviewsStoreRequest"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#\/components\/schemas\/VoyagerReviewsReadResource"
                                         }
                                     }
                                 }

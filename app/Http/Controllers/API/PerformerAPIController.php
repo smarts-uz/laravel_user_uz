@@ -23,44 +23,10 @@ class PerformerAPIController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/performers",
-     *     tags={"Performers"},
-     *     summary="Get All Performers",
-     *     @OA\Parameter (
-     *          in="query",
-     *          description="true bo'lsa online performerlar qiymatini qaytaradi",
-     *          name="online",
-     *          @OA\Schema (
-     *              type="boolean"
-     *          )
-     *     ),
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     )
-     * )
-     *
-     */
-    public function performers(Request $request): JsonResponse
-    {
-        $online = $request->get('online');
-        $per_page = $request->get('per_page');
-        return $this->performer_service->performers($online, $per_page);
-    }
-
-    /**
-     * @OA\Get(
      *     path="/api/performers-filter",
      *     tags={"Performers"},
      *     summary="Performers Filter",
+     *     description="[**Telegram :** https://t.me/c/1334612640/196](https://t.me/c/1334612640/196).",
      *     @OA\Parameter (
      *          in="query",
      *          description="performerlarni name bo'yicha search qilish",
@@ -155,6 +121,7 @@ class PerformerAPIController extends Controller
      *     path="/api/give-task",
      *     tags={"Task"},
      *     summary="Give task by task ID and perfomer ID",
+     *     description="[**Telegram :** https://t.me/c/1334612640/137](https://t.me/c/1334612640/137).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -204,6 +171,7 @@ class PerformerAPIController extends Controller
      *     path="/api/become-performer",
      *     tags={"Become a perfomer"},
      *     summary="Initial Data",
+     *     description="[**Telegram :** https://t.me/c/1334612640/140](https://t.me/c/1334612640/140).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -257,6 +225,7 @@ class PerformerAPIController extends Controller
      *     path="/api/become-performer-phone",
      *     tags={"Become a perfomer"},
      *     summary="Email and phone",
+     *     description="[**Telegram :** https://t.me/c/1334612640/186](https://t.me/c/1334612640/186).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -306,6 +275,7 @@ class PerformerAPIController extends Controller
      *     path="/api/become-performer-avatar",
      *     tags={"Become a perfomer"},
      *     summary="Avator",
+     *     description="[**Telegram :** https://t.me/c/1334612640/187](https://t.me/c/1334612640/187).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -353,6 +323,7 @@ class PerformerAPIController extends Controller
      *     path="/api/become-performer-category",
      *     tags={"Become a perfomer"},
      *     summary="Categories",
+     *     description="[**Telegram :** https://t.me/c/1334612640/188](https://t.me/c/1334612640/188).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -397,51 +368,16 @@ class PerformerAPIController extends Controller
 
     }
 
-
     /**
      * @OA\Get(
-     *     path="/api/reviews",
-     *     tags={"Performers"},
-     *     summary="Performer reviews",
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
-    public function reviews(Request $request): JsonResponse
-    {
-        $from = $request->get('from');
-        $type = $request->get('type');
-        $authId = Auth::id();
-        $reviews = $this->performer_service->reviews($from, $type, $authId);
-        return response()->json([
-            'success' => true,
-            'message' => 'Success',
-            'data' => $reviews
-        ]);
-    }
-
-    /**
-     * @OA\Get(
-     *     path="/api/performers-count/{category_id}",
+     *     path="/api/performers-count/{categoryId}",
      *     tags={"Performers"},
      *     summary="Performer count",
+     *     description="[**Telegram :** https://t.me/c/1334612640/162](https://t.me/c/1334612640/162).",
      *     @OA\Parameter (
      *          in="path",
      *          description="child category id kiritiladi",
-     *          name="category_id",
+     *          name="categoryId",
      *          @OA\Schema (
      *              type="integer"
      *          )
@@ -460,9 +396,9 @@ class PerformerAPIController extends Controller
      *     ),
      * )
      */
-    public function performers_count($category_id): JsonResponse
+    public function performers_count($categoryId): JsonResponse
     {
-        $user_category = UserCategory::query()->where('category_id', $category_id)->count();
+        $user_category = UserCategory::query()->where('category_id', $categoryId)->count();
         return response()->json([
             'success' => true,
             'data' => $user_category,
@@ -471,9 +407,10 @@ class PerformerAPIController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/performers-image/{category_id}",
+     *     path="/api/performers-image/{categoryId}",
      *     tags={"Performers"},
      *     summary="Performer image",
+     *     description="[**Telegram :** https://t.me/c/1334612640/231](https://t.me/c/1334612640/231).",
      *     @OA\Parameter (
      *          in="path",
      *          description="child category id kiritiladi",
@@ -499,10 +436,10 @@ class PerformerAPIController extends Controller
      *     },
      * )
      */
-    public function performers_image($category_id): JsonResponse
+    public function performers_image($categoryId): JsonResponse
     {
         $authId = auth()->id();
-        $images = $this->performer_service->performers_image($category_id, $authId);
+        $images = $this->performer_service->performers_image($categoryId, $authId);
         return response()->json([
             'success' => true,
             'data' => $images,
