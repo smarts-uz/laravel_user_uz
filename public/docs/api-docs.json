@@ -462,7 +462,7 @@
                 "tags": [
                     "Performers"
                 ],
-                "summary": "Performers Filter",
+                "summary": "Ijrochilarni filter qilish uchun api",
                 "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/196](https:\/\/t.me\/c\/1334612640\/196).",
                 "operationId": "7ddc065fff9fd7ac64fe0157f29d04dd",
                 "parameters": [
@@ -477,7 +477,7 @@
                     {
                         "name": "categories",
                         "in": "query",
-                        "description": "performerlarni tanlagan parent kategoriyasi bo'yicha qaytaradi([2,3,7] - manashu formatda kiritiladi)",
+                        "description": "ijrochilarni tanlagan parent kategoriyasi bo'yicha qaytaradi([2,3,7] - manashu formatda kiritiladi)",
                         "schema": {
                             "type": "string"
                         }
@@ -485,7 +485,7 @@
                     {
                         "name": "child_categories",
                         "in": "query",
-                        "description": "performerlarni tanlagan child kategoriyasi bo'yicha qaytaradi([23,24,25] - manashu formatda kiritiladi)",
+                        "description": "ijrochilarni tanlagan child kategoriyasi bo'yicha qaytaradi([23,24,25] - manashu formatda kiritiladi)",
                         "schema": {
                             "type": "string"
                         }
@@ -493,7 +493,7 @@
                     {
                         "name": "online",
                         "in": "query",
-                        "description": "true bo'lsa online performerlar qiymatini qaytaradi",
+                        "description": "true bo'lsa onlayn ijrochilar qiymatini qaytaradi",
                         "schema": {
                             "type": "boolean"
                         }
@@ -501,7 +501,7 @@
                     {
                         "name": "alphabet",
                         "in": "query",
-                        "description": "true bo'lsa alphabet bo'yicha performerlar qiymatini qaytaradi",
+                        "description": "true bo'lsa alphabet bo'yicha ijrochilar qiymatini qaytaradi",
                         "schema": {
                             "type": "boolean"
                         }
@@ -509,7 +509,7 @@
                     {
                         "name": "review",
                         "in": "query",
-                        "description": "true bo'lsa review bo'yicha performerlar qiymatini qaytaradi",
+                        "description": "true bo'lsa review bo'yicha ijrochilar qiymatini qaytaradi",
                         "schema": {
                             "type": "boolean"
                         }
@@ -517,7 +517,7 @@
                     {
                         "name": "desc",
                         "in": "query",
-                        "description": "true bo'lsa review,online,alphabet qiymatini kamayish bo'yicha performerlar qiymatini qaytaradi",
+                        "description": "true bo'lsa review,online,alphabet qiymatini kamayish bo'yicha ijrochilar qiymatini qaytaradi",
                         "schema": {
                             "type": "boolean"
                         }
@@ -525,7 +525,7 @@
                     {
                         "name": "asc",
                         "in": "query",
-                        "description": "true bo'lsa review,online,alphabet qiymatini o'sish bo'yicha performerlar qiymatini qaytaradi",
+                        "description": "true bo'lsa review,online,alphabet qiymatini o'sish bo'yicha ijrochilar qiymatini qaytaradi",
                         "schema": {
                             "type": "boolean"
                         }
@@ -564,11 +564,11 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
-                                        "description": "user performerga give qilmoqchi bo'lgan task idsini kiritadi",
+                                        "description": "foydalanuvchi ijrochiga bajartirmoqchi bo'lgan vazifasi idsini kiritadi",
                                         "type": "integer"
                                     },
                                     "performer_id": {
-                                        "description": "give qilmoqchi bo'lgan performer idsi kiritiladi",
+                                        "description": "bajartirmoqchi bo'lgan ijrochining idsi kiritiladi",
                                         "type": "integer"
                                     }
                                 },
@@ -600,7 +600,7 @@
                 "tags": [
                     "Become a perfomer"
                 ],
-                "summary": "Initial Data",
+                "summary": "Ijrochi bo'lishda shaxsiy ma'lumotlarni kiritish uchun api",
                 "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/140](https:\/\/t.me\/c\/1334612640\/140).",
                 "operationId": "fe1fd424a52f6bd274c86a35afdb3af3",
                 "requestBody": {
@@ -610,15 +610,15 @@
                             "schema": {
                                 "properties": {
                                     "name": {
-                                        "description": "Performer bo'lmoqchi user o'zining nomini kiritadi",
+                                        "description": "Ijrochi bo'lmoqchi bo'lgan foydalanuvchi o'zining nomini kiritadi",
                                         "type": "string"
                                     },
                                     "location": {
-                                        "description": "Performer bo'lmoqchi user o'zining manzilini kiritadi",
+                                        "description": "Ijrochi bo'lmoqchi bo'lgan foydalanuvchi o'zining manzilini kiritadi",
                                         "type": "string"
                                     },
                                     "born_date": {
-                                        "description": "Performer bo'lmoqchi user o'zining tug'ilgan kunini kiritad.('2000-03-19'-shu formatda)",
+                                        "description": "Ijrochi bo'lmoqchi bo'lgan foydalanuvchi o'zining tug'ilgan kunini kiritad.('2000-03-19'-shu formatda)",
                                         "type": "number"
                                     }
                                 },
@@ -650,7 +650,7 @@
                 "tags": [
                     "Become a perfomer"
                 ],
-                "summary": "Email and phone",
+                "summary": "Ijrochi bo'lishda telefon raqam va email kiritish uchun api",
                 "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/186](https:\/\/t.me\/c\/1334612640\/186).",
                 "operationId": "4e36926672cf6bed00d3fb3ef9dfd4a5",
                 "requestBody": {
@@ -660,12 +660,12 @@
                             "schema": {
                                 "properties": {
                                     "email": {
-                                        "description": "Performer bo'lmoqchi user o'zining emailini kiritadi",
+                                        "description": "Ijrochi bo'lmoqchi bo'lgan foydalanuvchi o'zining emailini kiritadi",
                                         "type": "string",
                                         "format": "email"
                                     },
                                     "phone_number": {
-                                        "description": "Performer bo'lmoqchi user o'zining telefon raqamini kiritadi",
+                                        "description": "Ijrochi bo'lmoqchi bo'lgan foydalanuvchi o'zining telefon raqamini kiritadi",
                                         "type": "string"
                                     }
                                 },
@@ -697,7 +697,7 @@
                 "tags": [
                     "Become a perfomer"
                 ],
-                "summary": "Avator",
+                "summary": "Ijrochi bo'lishda profiliga rasm qo'yish uchun api",
                 "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/187](https:\/\/t.me\/c\/1334612640\/187).",
                 "operationId": "a6e205e8c105f40204264bda896100e3",
                 "requestBody": {
@@ -707,7 +707,7 @@
                             "schema": {
                                 "properties": {
                                     "avatar": {
-                                        "description": "Performer bo'lmoqchi user o'zining rasmini kiritadi",
+                                        "description": "Ijrochi bo'lmoqchi bo'lgan foydalanuvchi o'zining rasmini kiritadi",
                                         "type": "file"
                                     }
                                 },
@@ -739,7 +739,7 @@
                 "tags": [
                     "Become a perfomer"
                 ],
-                "summary": "Categories",
+                "summary": "Ijrochi bo'lishda kategoriya kiritish uchun api",
                 "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/188](https:\/\/t.me\/c\/1334612640\/188).",
                 "operationId": "8623a4ddae7b115758739689a990bac0",
                 "requestBody": {
@@ -781,14 +781,15 @@
                 "tags": [
                     "Performers"
                 ],
-                "summary": "Performer count",
+                "summary": "Ijrochilarning ma'lum kategoriya bo'yicha soni",
                 "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/162](https:\/\/t.me\/c\/1334612640\/162).",
                 "operationId": "81a0e6bae3acdf3899a394dad45562c1",
                 "parameters": [
                     {
                         "name": "categoryId",
                         "in": "path",
-                        "description": "child category id kiritiladi",
+                        "description": "child kategoriya id kiritiladi",
+                        "required": true,
                         "schema": {
                             "type": "integer"
                         }
@@ -812,14 +813,15 @@
                 "tags": [
                     "Performers"
                 ],
-                "summary": "Performer image",
+                "summary": "Ijrochilarning ma'lum kategoriya bo'yicha rasmlari uchun api",
                 "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/231](https:\/\/t.me\/c\/1334612640\/231).",
                 "operationId": "0ce7e60523da2749561cb6b7f9e4c48d",
                 "parameters": [
                     {
-                        "name": "category_id",
+                        "name": "categoryId",
                         "in": "path",
-                        "description": "child category id kiritiladi",
+                        "description": "child kategoriya id kiritiladi",
+                        "required": true,
                         "schema": {
                             "type": "integer"
                         }
@@ -849,6 +851,7 @@
                     "Profile"
                 ],
                 "summary": "Profile index",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/127](https:\/\/t.me\/c\/1334612640\/127).",
                 "operationId": "19ddc09c48f45c607be87bb06f16e8e5",
                 "responses": {
                     "200": {
@@ -874,6 +877,7 @@
                     "Profile"
                 ],
                 "summary": "Profile portfolios",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/128](https:\/\/t.me\/c\/1334612640\/128).",
                 "operationId": "b08af21d9d4afac7fda0837d32bed96a",
                 "responses": {
                     "200": {
@@ -899,6 +903,7 @@
                     "Profile"
                 ],
                 "summary": "Portfolio Create",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/129](https:\/\/t.me\/c\/1334612640\/129).",
                 "operationId": "c316161132765a3101ed0f60d41eb4b0",
                 "requestBody": {
                     "required": true,
@@ -906,10 +911,6 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "images": {
-                                        "description": "portfolio uchun rasm kiritiladi",
-                                        "type": "file"
-                                    },
                                     "comment": {
                                         "description": "portfolio uchun comment yoziladi",
                                         "type": "string"
@@ -917,6 +918,17 @@
                                     "description": {
                                         "description": "portfolio uchun tavsif yoziladi",
                                         "type": "string"
+                                    },
+                                    "images[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "image": {
+                                                    "description": "portfolio uchun rasm kiritiladi"
+                                                }
+                                            },
+                                            "type": "file"
+                                        }
                                     }
                                 },
                                 "type": "object"
@@ -942,16 +954,17 @@
                 ]
             }
         },
-        "\/api\/profile\/portfolio\/{portfolio}\/delete": {
+        "\/api\/profile\/portfolio\/{portfolioId}\/delete": {
             "delete": {
                 "tags": [
                     "Profile"
                 ],
                 "summary": "Delete Portfolio",
-                "operationId": "3411ccc81d6cb44d1272bb437de49340",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/172](https:\/\/t.me\/c\/1334612640\/172).",
+                "operationId": "04392cea6dcc33eafc3947775d63a922",
                 "parameters": [
                     {
-                        "name": "portfolio",
+                        "name": "portfolioId",
                         "in": "path",
                         "description": "portfolio id kiritiladi",
                         "required": true,
@@ -978,13 +991,14 @@
                 ]
             }
         },
-        "\/api\/portfolio\/{portfolio}\/update": {
+        "\/api\/portfolio\/{portfolioId}\/update": {
             "post": {
                 "tags": [
                     "Profile"
                 ],
                 "summary": "Portfolio Update",
-                "operationId": "6758dab46aaff08b0a2c1941a644db24",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/227](https:\/\/t.me\/c\/1334612640\/227).",
+                "operationId": "1169796c40c6ddf530a839c20b6d786c",
                 "parameters": [
                     {
                         "name": "portfolio",
@@ -1010,9 +1024,16 @@
                                         "description": "portfolio uchun tavsif yoziladi",
                                         "type": "string"
                                     },
-                                    "image": {
-                                        "description": "portfolio uchun rasm kiritiladi",
-                                        "type": "file"
+                                    "image[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "image": {
+                                                    "description": "portfolio uchun rasm kiritiladi"
+                                                }
+                                            },
+                                            "type": "file"
+                                        }
                                     }
                                 },
                                 "type": "object"
@@ -1044,6 +1065,7 @@
                     "Profile"
                 ],
                 "summary": "Profile Video Store",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/130](https:\/\/t.me\/c\/1334612640\/130).",
                 "operationId": "875497f3ddebc235c38fec2108481b13",
                 "requestBody": {
                     "required": true,
@@ -1085,6 +1107,7 @@
                     "Profile"
                 ],
                 "summary": "Profile video delete",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/195](https:\/\/t.me\/c\/1334612640\/195).",
                 "operationId": "8fa2ad0b628f81d0a4f380ca2c372b98",
                 "responses": {
                     "200": {
@@ -1110,6 +1133,7 @@
                     "Profile"
                 ],
                 "summary": "Profile reviews",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/131](https:\/\/t.me\/c\/1334612640\/131).",
                 "operationId": "c02ca91f7f8ebd758830ee20374f4359",
                 "responses": {
                     "200": {
@@ -1135,6 +1159,7 @@
                     "Profile"
                 ],
                 "summary": "Profile balance",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/132](https:\/\/t.me\/c\/1334612640\/132).",
                 "operationId": "ffb780005820a138a39000733724063e",
                 "parameters": [
                     {
@@ -1142,7 +1167,11 @@
                         "in": "query",
                         "description": "in yoki out kiritiladi",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [
+                                "in",
+                                "out"
+                            ]
                         }
                     },
                     {
@@ -1150,13 +1179,18 @@
                         "in": "query",
                         "description": "month, week yoki year kiritiladi",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [
+                                "month",
+                                "week",
+                                "year"
+                            ]
                         }
                     },
                     {
                         "name": "from",
                         "in": "query",
-                        "description": "boshlang'ich vaqti kiritiladi(2022-11-01  shu formatda)",
+                        "description": "boshlang'ich vaqti kiritiladi(2022-11-01 shu formatda)",
                         "schema": {
                             "type": "string",
                             "format": "date-time"
@@ -1165,7 +1199,7 @@
                     {
                         "name": "to",
                         "in": "query",
-                        "description": "oxirgi vaqti kiritiladi(2022-12-01  shu formatda)",
+                        "description": "oxirgi vaqti kiritiladi(2022-12-01 shu formatda)",
                         "schema": {
                             "type": "string",
                             "format": "date-time"
@@ -1196,6 +1230,7 @@
                     "Profile Settings"
                 ],
                 "summary": "Phone",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/148](https:\/\/t.me\/c\/1334612640\/148).",
                 "operationId": "a3ac77aaf9402239a257a48f9d80bfbd",
                 "responses": {
                     "200": {
@@ -1221,6 +1256,7 @@
                     "Profile Settings"
                 ],
                 "summary": "Phone edit",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/149](https:\/\/t.me\/c\/1334612640\/149).",
                 "operationId": "8a03e4fd8a84f96e1588b87a09233f57",
                 "requestBody": {
                     "required": true,
@@ -1262,6 +1298,7 @@
                     "Profile Settings"
                 ],
                 "summary": "Change password",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/150](https:\/\/t.me\/c\/1334612640\/150).",
                 "operationId": "dc0486c41591cf176514f18ee69fce2e",
                 "requestBody": {
                     "required": true,
@@ -1314,6 +1351,7 @@
                     "Profile Settings"
                 ],
                 "summary": "Change Avator",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/151](https:\/\/t.me\/c\/1334612640\/151).",
                 "operationId": "0eed7901dca85c5175305075ba95f121",
                 "requestBody": {
                     "required": true,
@@ -1355,6 +1393,7 @@
                     "Profile Settings"
                 ],
                 "summary": "Update settings",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/152](https:\/\/t.me\/c\/1334612640\/152).",
                 "operationId": "827c0d8a45f51d307cc762dd318efd27",
                 "requestBody": {
                     "required": true,
@@ -1363,12 +1402,16 @@
                             "schema": {
                                 "properties": {
                                     "name": {
-                                        "description": "name kiritiladi",
+                                        "description": "foydalanuvchi nomi kiritiladi",
                                         "type": "string"
                                     },
                                     "gender": {
                                         "description": "1 yoki 0",
-                                        "type": "integer"
+                                        "type": "string",
+                                        "enum": [
+                                            "0",
+                                            "1"
+                                        ]
                                     },
                                     "born_date": {
                                         "description": "2022-06-03 - manashu formatda kiritiladi",
@@ -1417,6 +1460,7 @@
                     "Profile Settings"
                 ],
                 "summary": "Your profile data",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/153](https:\/\/t.me\/c\/1334612640\/153).",
                 "operationId": "149dc7b997029ed7e11d952595dd9023",
                 "responses": {
                     "200": {
@@ -1442,6 +1486,7 @@
                     "Profile"
                 ],
                 "summary": "Profile edit description",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/133](https:\/\/t.me\/c\/1334612640\/133).",
                 "operationId": "0f09bde9de7481991dbfc16f79d4bc68",
                 "requestBody": {
                     "required": true,
@@ -1483,6 +1528,7 @@
                     "Profile Settings"
                 ],
                 "summary": "Profile edit news notifications",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/154](https:\/\/t.me\/c\/1334612640\/154).",
                 "operationId": "895f5a03086cd836dad741774d397045",
                 "requestBody": {
                     "required": true,
@@ -1491,8 +1537,12 @@
                             "schema": {
                                 "properties": {
                                     "notification": {
-                                        "description": "0 yoki 1 kiritiladi, 0 bo'lsa o'chiriladi, 1 bo'lsa yoqiladi",
-                                        "type": "integer"
+                                        "description": "0 yoki 1 tanlanadi, 0 bo'lsa o'chiriladi, 1 bo'lsa yoqiladi",
+                                        "type": "string",
+                                        "enum": [
+                                            "0",
+                                            "1"
+                                        ]
                                     }
                                 },
                                 "type": "object"
@@ -1518,18 +1568,19 @@
                 ]
             }
         },
-        "\/api\/profile\/{id}": {
+        "\/api\/profile\/{userId}": {
             "get": {
                 "tags": [
                     "Profile"
                 ],
                 "summary": "Get Profile By ID",
-                "operationId": "62efd8334f3e8c1a8cab4873f37ff991",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/134](https:\/\/t.me\/c\/1334612640\/134).",
+                "operationId": "d86a0ff08d6a425f20cb7932fc402c1b",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "userId",
                         "in": "path",
-                        "description": "user id kiritiladi",
+                        "description": "foydalanuvchi idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -1549,18 +1600,19 @@
                 }
             }
         },
-        "\/api\/profile\/{user}\/portfolios": {
+        "\/api\/profile\/{userId}\/portfolios": {
             "get": {
                 "tags": [
                     "Profile"
                 ],
                 "summary": "User Portfolios",
-                "operationId": "661f056cfbfce5a26b547cfce303e0f1",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/135](https:\/\/t.me\/c\/1334612640\/135).",
+                "operationId": "36fbca8dec96a3e9fc8b5dbba2c36bc5",
                 "parameters": [
                     {
-                        "name": "user",
+                        "name": "userId",
                         "in": "path",
-                        "description": "user id kiritiladi",
+                        "description": "foydalanuvchi idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -1580,18 +1632,19 @@
                 }
             }
         },
-        "\/api\/profile\/{user}\/reviews": {
+        "\/api\/profile\/{userId}\/reviews": {
             "get": {
                 "tags": [
                     "Profile"
                 ],
                 "summary": "User Reviews",
-                "operationId": "8388b31fa583afb948fcf3b06da0cad0",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/136](https:\/\/t.me\/c\/1334612640\/136).",
+                "operationId": "62d2d3f0d90078d5efdad588ba2ffe3e",
                 "parameters": [
                     {
-                        "name": "user",
+                        "name": "userId",
                         "in": "path",
-                        "description": "user id kiritiladi",
+                        "description": "foydalanuvchi idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -1617,6 +1670,7 @@
                     "Profile"
                 ],
                 "summary": "Category subscribe",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/162](https:\/\/t.me\/c\/1334612640\/162).",
                 "operationId": "ed40fa4dc77c64d3c7eec3ca05bd6c49",
                 "requestBody": {
                     "required": true,
@@ -1625,16 +1679,24 @@
                             "schema": {
                                 "properties": {
                                     "category": {
-                                        "description": "child category idlar kiritiladi(array formatda)",
-                                        "type": "object"
+                                        "description": "child kategoriya idlar kiritiladi",
+                                        "type": "string"
                                     },
                                     "sms_notification": {
-                                        "description": "sms_notificationni yoqish uchun 1, o'chirish uchun 0 yoziladi",
-                                        "type": "integer"
+                                        "description": "sms_notificationni yoqish uchun 1, o'chirish uchun 0",
+                                        "type": "string",
+                                        "enum": [
+                                            "0",
+                                            "1"
+                                        ]
                                     },
                                     "email_notification": {
-                                        "description": "email_notificationni yoqish uchun 1, o'chirish uchun 0 yoziladi",
-                                        "type": "integer"
+                                        "description": "email_notificationni yoqish uchun 1, o'chirish uchun 0",
+                                        "type": "string",
+                                        "enum": [
+                                            "0",
+                                            "1"
+                                        ]
                                     }
                                 },
                                 "type": "object"
@@ -1665,7 +1727,8 @@
                 "tags": [
                     "Profile Settings"
                 ],
-                "summary": "Change lang",
+                "summary": "Change language",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/155](https:\/\/t.me\/c\/1334612640\/155).",
                 "operationId": "191e78550fc415c74b5e6074f70b6c35",
                 "requestBody": {
                     "required": true,
@@ -1675,7 +1738,11 @@
                                 "properties": {
                                     "lang": {
                                         "description": "ru yoki uz",
-                                        "type": "string"
+                                        "type": "string",
+                                        "enum": [
+                                            "ru",
+                                            "uz"
+                                        ]
                                     },
                                     "version": {
                                         "description": "app versiya kiritiladi (masalan 1.0.45)",
@@ -1711,6 +1778,7 @@
                     "Profile"
                 ],
                 "summary": "Self delete",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/215](https:\/\/t.me\/c\/1334612640\/215).",
                 "operationId": "7dc0f630957b354ddd34abcf6e8485df",
                 "responses": {
                     "200": {
@@ -1736,6 +1804,7 @@
                     "Profile"
                 ],
                 "summary": "Confirmation self delete",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/256](https:\/\/t.me\/c\/1334612640\/256).",
                 "operationId": "d772f044c8eb16987d7aac64b23149a5",
                 "requestBody": {
                     "required": true,
@@ -1777,6 +1846,7 @@
                     "Profile"
                 ],
                 "summary": "Report user",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/216](https:\/\/t.me\/c\/1334612640\/216).",
                 "operationId": "a6eef80807926aa7db5e178e24a565f7",
                 "requestBody": {
                     "required": true,
@@ -1822,6 +1892,7 @@
                     "Profile"
                 ],
                 "summary": "Block user",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/217](https:\/\/t.me\/c\/1334612640\/217).",
                 "operationId": "c7b81d487d2c5f4060e59cd029263ad7",
                 "requestBody": {
                     "required": true,
@@ -1863,6 +1934,7 @@
                     "Profile"
                 ],
                 "summary": "Block user list",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/252](https:\/\/t.me\/c\/1334612640\/252).",
                 "operationId": "d7e103dcdbc5cc19f9c19caee50813eb",
                 "responses": {
                     "200": {
@@ -1882,16 +1954,17 @@
                 ]
             }
         },
-        "\/api\/profile\/portfolio\/{portfolio}\/delete-image": {
+        "\/api\/profile\/portfolio\/{portfolioId}\/delete-image": {
             "post": {
                 "tags": [
                     "Profile"
                 ],
                 "summary": "Profile delete image",
-                "operationId": "c29e7a7f6d2e915b569038d403785376",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/218](https:\/\/t.me\/c\/1334612640\/218).",
+                "operationId": "b625419303ba4c0aa1179227151c17e8",
                 "parameters": [
                     {
-                        "name": "portfolio",
+                        "name": "portfolioId",
                         "in": "path",
                         "description": "portfolio id kiritiladi",
                         "required": true,
@@ -1907,7 +1980,7 @@
                             "schema": {
                                 "properties": {
                                     "image": {
-                                        "description": "Username\/1675856445_image_2023-02-07_11-00-21.png shunday ko'rinishda img url kiritiladi",
+                                        "description": "Username\/1675856445_image_2023-02-07_11-00-21.png shunday ko'rinishda rasm url kiritiladi",
                                         "type": "string"
                                     }
                                 },
@@ -1940,6 +2013,7 @@
                     "Profile"
                 ],
                 "summary": "Profile work experience",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/202](https:\/\/t.me\/c\/1334612640\/202).",
                 "operationId": "ebe7949259ef86002b5b0908cb65b370",
                 "requestBody": {
                     "required": true,
@@ -1981,6 +2055,7 @@
                     "Profile"
                 ],
                 "summary": "Profile response template",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/244](https:\/\/t.me\/c\/1334612640\/244).",
                 "operationId": "5f3561c0ad90709e4b6a1017b66dae31",
                 "responses": {
                     "200": {
@@ -2000,18 +2075,19 @@
                 ]
             }
         },
-        "\/api\/profile\/response-template\/edit\/{id}": {
+        "\/api\/profile\/response-template\/edit\/{templateId}": {
             "post": {
                 "tags": [
                     "Profile"
                 ],
                 "summary": "Profile response template edit",
-                "operationId": "1df9530c95e4729823ef9fcf6e598541",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/162](https:\/\/t.me\/c\/1334612640\/162).",
+                "operationId": "e6a1fdd3eb0b40877c04a9abaa362fbe",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "templateId",
                         "in": "path",
-                        "description": "response template id kiritiladi",
+                        "description": "Javob qoldirish shabloni idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2062,6 +2138,7 @@
                     "Profile"
                 ],
                 "summary": "Profile response template create",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/246](https:\/\/t.me\/c\/1334612640\/246).",
                 "operationId": "1fb698eaa7f9eef2e57fe3f956ced1e3",
                 "requestBody": {
                     "required": true,
@@ -2101,18 +2178,19 @@
                 ]
             }
         },
-        "\/api\/profile\/response-template\/delete\/{id}": {
+        "\/api\/profile\/response-template\/delete\/{templateId}": {
             "delete": {
                 "tags": [
                     "Profile"
                 ],
                 "summary": "Profile response template delete",
-                "operationId": "d0a01694396e01739660d94ef7bb2c6b",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/248](https:\/\/t.me\/c\/1334612640\/248).",
+                "operationId": "e4fbac4694ab0a343d2dcc4f10a26c3d",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "templateId",
                         "in": "path",
-                        "description": "response template id kiritiladi",
+                        "description": "Javob qoldirish shabloni idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2143,6 +2221,7 @@
                     "Profile"
                 ],
                 "summary": "Notification on or off",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/251](https:\/\/t.me\/c\/1334612640\/251).",
                 "operationId": "49284b654f05cb73ab86cf158a0069e9",
                 "requestBody": {
                     "required": true,
@@ -2186,18 +2265,19 @@
                 ]
             }
         },
-        "\/api\/cancel-task\/{task}": {
+        "\/api\/cancel-task\/{taskId}": {
             "post": {
                 "tags": [
                     "Task"
                 ],
                 "summary": "Cancel task",
-                "operationId": "fed267bec0a8895ac584aa2122fa66d1",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/138](https:\/\/t.me\/c\/1334612640\/138).",
+                "operationId": "622f16b2c9fe5d63d0593bc6a387375f",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
-                        "description": "task id kiritiladi",
+                        "description": "vazifa idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2222,27 +2302,28 @@
                 ]
             }
         },
-        "\/api\/delete-task\/{task}\/{user}": {
+        "\/api\/delete-task\/{taskId}\/{userId}": {
             "delete": {
                 "tags": [
                     "Task"
                 ],
                 "summary": "Delete Task",
-                "operationId": "74f9f577251b9eb63b150a1dfb7764bd",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/139](https:\/\/t.me\/c\/1334612640\/139).",
+                "operationId": "6ee1b97f413eebdfa654891d7d647023",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
-                        "description": "task id kiritiladi",
+                        "description": "vazifa idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
                         }
                     },
                     {
-                        "name": "user",
+                        "name": "userId",
                         "in": "path",
-                        "description": "user id kiritiladi",
+                        "description": "foydalanuvchi idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2267,16 +2348,17 @@
                 ]
             }
         },
-        "\/api\/task-cancel\/{task}": {
+        "\/api\/task-cancel\/{taskId}": {
             "post": {
                 "tags": [
                     "Task"
                 ],
                 "summary": "Task Cancel",
-                "operationId": "8b7e63ad7248256f80ed003f7c499fac",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/225](https:\/\/t.me\/c\/1334612640\/225).",
+                "operationId": "f41ae98885b856330c07f0f48d8debd7",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
                         "description": "task id kiritiladi",
                         "required": true,
@@ -2309,6 +2391,7 @@
                     "Profile"
                 ],
                 "summary": "Get all sessions",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/219](https:\/\/t.me\/c\/1334612640\/219).",
                 "operationId": "0e6aca50933f7d4e8ab544ae8cc5f298",
                 "responses": {
                     "200": {
@@ -2334,6 +2417,7 @@
                     "Profile"
                 ],
                 "summary": "Clear sessions without current session",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/220](https:\/\/t.me\/c\/1334612640\/220).",
                 "operationId": "d4fee904baed9a7e54d6501e3da45fa3",
                 "requestBody": {
                     "required": true,
@@ -2374,7 +2458,8 @@
                 "tags": [
                     "Socials"
                 ],
-                "summary": "Socials Google and Facebook",
+                "summary": "Socials Google, Facebook and Apple",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/233](https:\/\/t.me\/c\/1334612640\/233).",
                 "operationId": "35999b01d9fe87e696c04c8f0c0ab6be",
                 "requestBody": {
                     "required": true,
@@ -4081,18 +4166,19 @@
                 ]
             }
         },
-        "\/api\/task\/{task}\/complete": {
+        "\/api\/task\/{taskId}\/complete": {
             "post": {
                 "tags": [
                     "Responses"
                 ],
                 "summary": "Complete Task",
-                "operationId": "34274bcd311837ea8443d39da123d261",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/223](https:\/\/t.me\/c\/1334612640\/223).",
+                "operationId": "cf061c9de1c7d2d2e4d5fd91f2fa1bb3",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
-                        "description": "task id kiritiladi",
+                        "description": "vazifa idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -4117,18 +4203,19 @@
                 ]
             }
         },
-        "\/api\/tasks\/{task}\/not-complete": {
+        "\/api\/tasks\/{taskId}\/not-complete": {
             "post": {
                 "tags": [
                     "Task"
                 ],
                 "summary": "Task status not complete",
-                "operationId": "ed2c35b243bfe1419fb5c258046ee957",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/221](https:\/\/t.me\/c\/1334612640\/221).",
+                "operationId": "140dd677dc93dd18942d32af0959cb60",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
-                        "description": "task id kiritiladi",
+                        "description": "vazifa idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -4169,18 +4256,19 @@
                 ]
             }
         },
-        "\/api\/send-review-user\/{task}": {
+        "\/api\/send-review-user\/{taskId}": {
             "post": {
                 "tags": [
                     "Responses"
                 ],
                 "summary": "Complete task",
-                "operationId": "f440159070ac0fc1e2b350969e9ad62d",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/224](https:\/\/t.me\/c\/1334612640\/224).",
+                "operationId": "70f971d7e6e8bc6b89049a8aa236499c",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
-                        "description": "review qoldirmoqchi bo'lgan task id kiritiladi",
+                        "description": "review qoldirmoqchi bo'lgan vazifa idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -4199,11 +4287,19 @@
                                     },
                                     "good": {
                                         "description": "1 bo'lsa good, 0 bo'lsa bad",
-                                        "type": "integer"
+                                        "type": "string",
+                                        "enum": [
+                                            "1",
+                                            "0"
+                                        ]
                                     },
                                     "status": {
-                                        "description": "task statusi kiritiladi(4 yoki 5)",
-                                        "type": "integer"
+                                        "description": "vazifa statusi kiritiladi(4 yoki 5)",
+                                        "type": "string",
+                                        "enum": [
+                                            "4",
+                                            "5"
+                                        ]
                                     }
                                 },
                                 "type": "object"
@@ -4235,6 +4331,7 @@
                     "Reset Password"
                 ],
                 "summary": "Reset password by phone - sending code",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/191](https:\/\/t.me\/c\/1334612640\/191).",
                 "operationId": "56a1d9813d571e101444350e67d6dd7d",
                 "parameters": [
                     {
@@ -4265,6 +4362,7 @@
                     "Reset Password"
                 ],
                 "summary": "Enter a New password",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/192](https:\/\/t.me\/c\/1334612640\/192).",
                 "operationId": "235c0c336670eb4e95abc202257cb924",
                 "parameters": [
                     {
@@ -4311,6 +4409,7 @@
                     "Reset Password"
                 ],
                 "summary": "Submit SMS code",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/193](https:\/\/t.me\/c\/1334612640\/193).",
                 "operationId": "3f40aa2d8aa65af2ec2afb498a175340",
                 "requestBody": {
                     "required": true,
@@ -4351,6 +4450,7 @@
                     "Chat"
                 ],
                 "summary": "Support admin",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/206](https:\/\/t.me\/c\/1334612640\/206).",
                 "operationId": "07cbce19d91b78bd9872333b4d9ead01",
                 "responses": {
                     "200": {
@@ -4376,6 +4476,7 @@
                     "UserAPI"
                 ],
                 "summary": "User logout",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/190](https:\/\/t.me\/c\/1334612640\/190).",
                 "operationId": "755cf3bc351a4bb58a6c9bce9f16e4fb",
                 "responses": {
                     "200": {

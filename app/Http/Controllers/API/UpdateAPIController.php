@@ -28,13 +28,14 @@ class UpdateAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/task/{task}/complete",
+     *     path="/api/task/{taskId}/complete",
      *     tags={"Responses"},
      *     summary="Complete Task",
+     *     description="[**Telegram :** https://t.me/c/1334612640/223](https://t.me/c/1334612640/223).",
      *     @OA\Parameter (
      *          in="path",
-     *          description="task id kiritiladi",
-     *          name="task",
+     *          description="vazifa idsi kiritiladi",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="string"
@@ -65,13 +66,14 @@ class UpdateAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/tasks/{task}/not-complete",
+     *     path="/api/tasks/{taskId}/not-complete",
      *     tags={"Task"},
      *     summary="Task status not complete",
+     *     description="[**Telegram :** https://t.me/c/1334612640/221](https://t.me/c/1334612640/221).",
      *     @OA\Parameter (
      *          in="path",
-     *          description="task id kiritiladi",
-     *          name="task",
+     *          description="vazifa idsi kiritiladi",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -118,13 +120,14 @@ class UpdateAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/send-review-user/{task}",
+     *     path="/api/send-review-user/{taskId}",
      *     tags={"Responses"},
      *     summary="Complete task",
+     *     description="[**Telegram :** https://t.me/c/1334612640/224](https://t.me/c/1334612640/224).",
      *     @OA\Parameter (
      *          in="path",
-     *          description="review qoldirmoqchi bo'lgan task id kiritiladi",
-     *          name="task",
+     *          description="review qoldirmoqchi bo'lgan vazifa idsi kiritiladi",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="string"
@@ -143,12 +146,14 @@ class UpdateAPIController extends Controller
      *                 @OA\Property (
      *                    property="good",
      *                    description="1 bo'lsa good, 0 bo'lsa bad",
-     *                    type="integer",
+     *                    enum={"1","0"},
+     *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="status",
-     *                    description="task statusi kiritiladi(4 yoki 5)",
-     *                    type="integer",
+     *                    description="vazifa statusi kiritiladi(4 yoki 5)",
+     *                    enum={"4","5"},
+     *                    type="string",
      *                 ),
      *             ),
      *         ),

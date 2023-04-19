@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use App\Http\Requests\Api\{TaskAddressRequest, TaskBudgetRequest, TaskComplaintRequest,

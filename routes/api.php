@@ -74,24 +74,24 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::get('/my-tasks', [TaskAPIController::class, 'my_tasks_all']); // fix
     Route::get('/performer-tasks', [TaskAPIController::class, 'performer_tasks']); // fix
     Route::get('/all-tasks', [TaskAPIController::class, 'all_tasks']); // fix
-    Route::post('/cancel-task/{task}', [SearchAPIController::class, 'cancelTask']); // fix
-    Route::delete('/delete-task/{task}/{user}', [SearchAPIController::class, 'delete_task']); // fix
+    Route::post('/cancel-task/{taskId}', [SearchAPIController::class, 'cancelTask']); // fix
+    Route::delete('/delete-task/{taskId}/{userId}', [SearchAPIController::class, 'delete_task']); // fix
     Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']); // fix
     Route::get('/responses/{task}', [TaskAPIController::class, 'responses']); // fix
     Route::get('/complain/types', [TaskAPIController::class, 'complainTypes']); // fix
     Route::post('/task/{task}/complain', [TaskAPIController::class, 'complain']); // fix
     Route::post('/select-performer/{response}', [TaskAPIController::class, 'selectPerformer']); // fix
     Route::post('/task-status-update/{task}', [TaskAPIController::class, 'taskStatusUpdate']); // fix
-    Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); // fix
-    Route::post('/tasks/{task}/not-complete', [UpdateAPIController::class, 'not_completed']); // fix
-    Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); // fix
+    Route::post('/task/{taskId}/complete', [UpdateAPIController::class, 'completed']); // fix
+    Route::post('/tasks/{taskId}/not-complete', [UpdateAPIController::class, 'not_completed']); // fix
+    Route::post('/send-review-user/{taskId}', [UpdateAPIController::class, 'sendReview']); // fix
     Route::post('/give-task', [PerformerAPIController::class, 'give_task']); // fix
     Route::post('/become-performer', [PerformerAPIController::class, 'becomePerformerData']); // fix
     Route::post('/become-performer-phone', [PerformerAPIController::class, 'becomePerformerEmailPhone']); // fix
     Route::post('/become-performer-avatar', [PerformerAPIController::class, 'becomePerformerAvatar']); // fix
     Route::post('/become-performer-category', [PerformerAPIController::class, 'becomePerformerCategory']); // fix
     Route::get('/reviews', [PerformerAPIController::class, 'reviews']); // fix
-    Route::post('/task-cancel/{task}', [SearchAPIController::class, 'task_cancel']); // fix
+    Route::post('/task-cancel/{taskId}', [SearchAPIController::class, 'task_cancel']); // fix
 
     //Verification
     Route::get('account/verify', [LoginAPIController::class, 'verifyCredentials']); // fix
@@ -104,9 +104,9 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
         Route::get('/', [ProfileAPIController::class, 'index']); // fix
         Route::get('/portfolios', [ProfileAPIController::class, 'portfolios']); // fix
         Route::post('/portfolio/create', [ProfileAPIController::class, 'portfolioCreate']); // fix
-        Route::post('/portfolio/{portfolio}/update', [ProfileAPIController::class, 'portfolioUpdate']); // fix
-        Route::delete('/portfolio/{portfolio}/delete', [ProfileAPIController::class, 'portfolioDelete']); // fix
-        Route::post('/portfolio/{portfolio}/delete-image', [ProfileAPIController::class, 'deleteImage']); // fix
+        Route::post('/portfolio/{portfolioId}/update', [ProfileAPIController::class, 'portfolioUpdate']); // fix
+        Route::delete('/portfolio/{portfolioId}/delete', [ProfileAPIController::class, 'portfolioDelete']); // fix
+        Route::post('/portfolio/{portfolioId}/delete-image', [ProfileAPIController::class, 'deleteImage']); // fix
         Route::get('/reviews', [ProfileAPIController::class, 'reviews']); // fix
         Route::post('/video', [ProfileAPIController::class, 'videoStore']); // fix
         Route::delete('/video/delete', [ProfileAPIController::class, 'videoDelete']); // fix
@@ -114,9 +114,9 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
         Route::post('/confirmation-self-delete', [ProfileAPIController::class, 'confirmationSelfDelete']); // fix
         Route::get('/balance', [ProfileAPIController::class, 'balance']); // fix
         Route::get('/response-template', [ProfileAPIController::class, 'response_template']); // fix
-        Route::post('/response-template/edit/{id}', [ProfileAPIController::class, 'response_template_edit']); // fix
+        Route::post('/response-template/edit/{templateId}', [ProfileAPIController::class, 'response_template_edit']); // fix
         Route::post('/response-template/create', [ProfileAPIController::class, 'response_template_create']); // fix
-        Route::delete('/response-template/delete/{template}', [ProfileAPIController::class, 'response_template_delete']); // fix
+        Route::delete('/response-template/delete/{templateId}', [ProfileAPIController::class, 'response_template_delete']); // fix
         Route::post('/description/edit', [ProfileAPIController::class, 'editDescription']); // fix
         Route::post('/work-experience', [ProfileAPIController::class, 'work_experience']); // fix
         Route::post('/categories-subscribe', [ProfileAPIController::class, 'subscribeToCategory']); // fix
@@ -139,9 +139,9 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     });
 });
 Route::post('/profile/settings/change-lang', [ProfileAPIController::class, 'changeLanguage']); // fix
-Route::get('/profile/{user}', [ProfileAPIController::class, 'userProfile']); // fix
-Route::get('/profile/{user}/portfolios', [ProfileAPIController::class, 'userPortfolios']); // fix
-Route::get('/profile/{user}/reviews', [ProfileAPIController::class, 'userReviews']); // fix
+Route::get('/profile/{userId}', [ProfileAPIController::class, 'userProfile']); // fix
+Route::get('/profile/{userId}/portfolios', [ProfileAPIController::class, 'userPortfolios']); // fix
+Route::get('/profile/{userId}/reviews', [ProfileAPIController::class, 'userReviews']); // fix
 
 
 //Setting
