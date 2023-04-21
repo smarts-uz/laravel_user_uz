@@ -53,17 +53,17 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::post('create-task/contacts', [TaskAPIController::class, 'contacts']); // fix
     Route::post('create-task/verify', [TaskAPIController::class, 'verify']); // fix
     //Task Update
-    Route::post('update-task/{task}/name', [TaskAPIController::class, 'updateName']); // fix
-    Route::post('update-task/{task}/custom', [TaskAPIController::class, 'updateCustom']); // fix
-    Route::post('update-task/{task}/remote', [TaskAPIController::class, 'updateRemote']); // fix
-    Route::post('update-task/{task}/address', [TaskAPIController::class, 'updateAddress']); // fix
-    Route::post('update-task/{task}/date', [TaskAPIController::class, 'updateDate']); // fix
-    Route::post('update-task/{task}/budget', [TaskAPIController::class, 'updateBudget']); // fix
-    Route::post('update-task/{task}/note', [TaskAPIController::class, 'updateNote']); // fix
-    Route::post('update-task/{task}/images', [TaskAPIController::class, 'updateUploadImages']); // fix
-    Route::post('update-task/{task}/contacts', [TaskAPIController::class, 'updateContacts']); // fix
-    Route::post('update-task/{task}/verify', [TaskAPIController::class, 'updateVerify']); // fix
-    Route::post('update-task/{task}/delete-image', [TaskAPIController::class, 'deleteImage']); // fix
+    Route::post('update-task/{taskId}/name', [TaskAPIController::class, 'updateName']); // fix
+    Route::post('update-task/{taskId}/custom', [TaskAPIController::class, 'updateCustom']); // fix
+    Route::post('update-task/{taskId}/remote', [TaskAPIController::class, 'updateRemote']); // fix
+    Route::post('update-task/{taskId}/address', [TaskAPIController::class, 'updateAddress']); // fix
+    Route::post('update-task/{taskId}/date', [TaskAPIController::class, 'updateDate']); // fix
+    Route::post('update-task/{taskId}/budget', [TaskAPIController::class, 'updateBudget']); // fix
+    Route::post('update-task/{taskId}/note', [TaskAPIController::class, 'updateNote']); // fix
+    Route::post('update-task/{taskId}/images', [TaskAPIController::class, 'updateUploadImages']); // fix
+    Route::post('update-task/{taskId}/contacts', [TaskAPIController::class, 'updateContacts']); // fix
+    Route::post('update-task/{taskId}/verify', [TaskAPIController::class, 'updateVerify']); // fix
+    Route::post('update-task/{taskId}/delete-image', [TaskAPIController::class, 'deleteImage']); // fix
 
     Route::get('/notifications', [NotificationController::class, 'getNotifications']); // fix
     Route::get('/count/notifications', [NotificationController::class, 'count']); // fix
@@ -76,12 +76,12 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::get('/all-tasks', [TaskAPIController::class, 'all_tasks']); // fix
     Route::post('/cancel-task/{taskId}', [SearchAPIController::class, 'cancelTask']); // fix
     Route::delete('/delete-task/{taskId}/{userId}', [SearchAPIController::class, 'delete_task']); // fix
-    Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']); // fix
-    Route::get('/responses/{task}', [TaskAPIController::class, 'responses']); // fix
+    Route::post("/task/{taskId}/response", [TaskAPIController::class, 'response_store']); // fix
+    Route::get('/responses/{taskId}', [TaskAPIController::class, 'responses']); // fix
     Route::get('/complain/types', [TaskAPIController::class, 'complainTypes']); // fix
-    Route::post('/task/{task}/complain', [TaskAPIController::class, 'complain']); // fix
-    Route::post('/select-performer/{response}', [TaskAPIController::class, 'selectPerformer']); // fix
-    Route::post('/task-status-update/{task}', [TaskAPIController::class, 'taskStatusUpdate']); // fix
+    Route::post('/task/{taskId}/complain', [TaskAPIController::class, 'complain']); // fix
+    Route::post('/select-performer/{responseId}', [TaskAPIController::class, 'selectPerformer']); // fix
+    Route::post('/task-status-update/{taskId}', [TaskAPIController::class, 'taskStatusUpdate']); // fix
     Route::post('/task/{taskId}/complete', [UpdateAPIController::class, 'completed']); // fix
     Route::post('/tasks/{taskId}/not-complete', [UpdateAPIController::class, 'not_completed']); // fix
     Route::post('/send-review-user/{taskId}', [UpdateAPIController::class, 'sendReview']); // fix
@@ -161,10 +161,10 @@ Route::get('/blog-news', [BlogController::class, 'index']); // fix
 Route::get('/blog-news/{newsId}', [BlogController::class, 'show']); // fix
 
 //Tasks
-Route::get('task/{task}', [TaskAPIController::class, 'task']); // fix
-Route::post('user/{user}', [TaskAPIController::class, 'active_task_null']); // fix
+Route::get('task/{taskId}', [TaskAPIController::class, 'task']); // fix
+Route::post('user/{userId}', [TaskAPIController::class, 'active_task_null']); // fix
 Route::get('tasks-filter', [TaskAPIController::class, 'filter']); // fix
-Route::get('same-tasks/{task}', [TaskAPIController::class, 'same_tasks']); // fix
+Route::get('same-tasks/{taskId}', [TaskAPIController::class, 'same_tasks']); // fix
 
 //CategoryAPI
 Route::get('/categories', [CategoriesAPIController::class, 'index']); // fix
@@ -192,6 +192,6 @@ Route::post('/pusher-notification', [NotificationController::class, 'pusher_noti
 Route::post('/sms-notification', [NotificationController::class, 'sms_notification']);
 Route::post('/email-notification', [NotificationController::class, 'email_notification']);
 Route::post('/task-create-notification', [NotificationController::class, 'task_create_notification']);
-Route::get('/test-complete-task/{task}', [VoyagerTaskController::class, 'test_complete_task']);
-Route::get('/test-delete-task/{task}', [VoyagerTaskController::class, 'test_delete_task']);
-Route::get('/test-cancel-task/{task}', [VoyagerTaskController::class, 'test_cancel_task']);
+Route::get('/test-complete-task/{taskId}', [VoyagerTaskController::class, 'test_complete_task']);
+Route::get('/test-delete-task/{taskId}', [VoyagerTaskController::class, 'test_delete_task']);
+Route::get('/test-cancel-task/{taskId}', [VoyagerTaskController::class, 'test_cancel_task']);

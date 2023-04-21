@@ -2498,18 +2498,19 @@
                 }
             }
         },
-        "\/api\/same-tasks\/{task}": {
+        "\/api\/same-tasks\/{taskId}": {
             "get": {
                 "tags": [
                     "Task"
                 ],
                 "summary": "Same tasks by Task ID",
-                "operationId": "120ccd09ca7a2be2153ee7a0f2655447",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/177](https:\/\/t.me\/c\/1334612640\/177).",
+                "operationId": "4b339fd0cf3eee09d4967c51952c616e",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
-                        "description": "task id yoziladi",
+                        "description": "vazifa idsi yoziladi",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -2529,18 +2530,19 @@
                 }
             }
         },
-        "\/api\/responses\/{task}": {
+        "\/api\/responses\/{taskId}": {
             "get": {
                 "tags": [
                     "Task"
                 ],
                 "summary": "Response tasks",
-                "operationId": "e40467954638499de8484738d2359d0c",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/180](https:\/\/t.me\/c\/1334612640\/180).",
+                "operationId": "98397b87d75fbecb460f46ffb0d5fbf3",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
-                        "description": "task id yoziladi",
+                        "description": "vazifa idsi yoziladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2565,18 +2567,19 @@
                 ]
             }
         },
-        "\/api\/task\/{task}\/response": {
+        "\/api\/task\/{taskId}\/response": {
             "post": {
                 "tags": [
                     "Responses"
                 ],
                 "summary": "Send Response",
-                "operationId": "72b3712b916c380767bb13875dd42339",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/222](https:\/\/t.me\/c\/1334612640\/222).",
+                "operationId": "820fb37b5ed110676a9f3af62644ab16",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
-                        "description": "task id yoziladi",
+                        "description": "vazifa idsi yoziladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2590,16 +2593,20 @@
                             "schema": {
                                 "properties": {
                                     "description": {
-                                        "description": "otklik tavsifi yoziladi",
+                                        "description": "javob tavsifi yoziladi",
                                         "type": "string"
                                     },
                                     "price": {
-                                        "description": "otklik narxi yoziladi",
+                                        "description": "javob narxi yoziladi",
                                         "type": "integer"
                                     },
                                     "not_free": {
                                         "description": "0 - bepul, 1 - pullik",
-                                        "type": "integer"
+                                        "type": "string",
+                                        "enum": [
+                                            "0",
+                                            "1"
+                                        ]
                                     }
                                 },
                                 "type": "object"
@@ -2625,18 +2632,19 @@
                 ]
             }
         },
-        "\/api\/select-performer\/{response}": {
+        "\/api\/select-performer\/{responseId}": {
             "post": {
                 "tags": [
                     "Responses"
                 ],
                 "summary": "Select performer",
-                "operationId": "9dd3e944aa88b5922c3327499f09f3d5",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/181](https:\/\/t.me\/c\/1334612640\/181).",
+                "operationId": "be78fba6f21651f8d9bca3689cbc8e28",
                 "parameters": [
                     {
-                        "name": "response",
+                        "name": "responseId",
                         "in": "path",
-                        "description": "task response id yoziladi",
+                        "description": "vazifaga qoldirilgan javob idsi yoziladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2661,18 +2669,19 @@
                 ]
             }
         },
-        "\/api\/task-status-update\/{task}": {
+        "\/api\/task-status-update\/{taskId}": {
             "post": {
                 "tags": [
                     "Task"
                 ],
                 "summary": "Task Status changed from cancel to open",
-                "operationId": "79d9075a6ad30708fa4006689a779a3c",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/182](https:\/\/t.me\/c\/1334612640\/182).",
+                "operationId": "3b2a4f7f29fd09643ad36fd444c66151",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
-                        "description": "task idsi kiritiladi",
+                        "description": "vazifa idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2703,6 +2712,7 @@
                     "Task"
                 ],
                 "summary": "Task filter",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/158](https:\/\/t.me\/c\/1334612640\/158).",
                 "operationId": "01811c7639caa6a28b67d031f8c8be43",
                 "parameters": [
                     {
@@ -2724,7 +2734,7 @@
                     {
                         "name": "lat",
                         "in": "query",
-                        "description": "latitude bo'yicha filter",
+                        "description": "kenglik bo'yicha filter",
                         "schema": {
                             "type": "string"
                         }
@@ -2732,7 +2742,7 @@
                     {
                         "name": "long",
                         "in": "query",
-                        "description": "longitude bo'yicha filter",
+                        "description": "uzunlik bo'yicha filter",
                         "schema": {
                             "type": "string"
                         }
@@ -2740,7 +2750,7 @@
                     {
                         "name": "budget",
                         "in": "query",
-                        "description": "task budgeti kiritiladi",
+                        "description": "vazifa budjeti kiritiladi",
                         "schema": {
                             "type": "integer"
                         }
@@ -2748,7 +2758,7 @@
                     {
                         "name": "is_remote",
                         "in": "query",
-                        "description": "remote task bo'lsa true, bo'lmasa false bo'ladi",
+                        "description": "masofaviy vazifa bo'lsa true, bo'lmasa false bo'ladi",
                         "schema": {
                             "type": "boolean"
                         }
@@ -2756,7 +2766,7 @@
                     {
                         "name": "without_response",
                         "in": "query",
-                        "description": "otklik tashlangan task bo'lsa true, bo'lmasa false bo'ladi",
+                        "description": "javob qoldirilgan vazifa bo'lsa true, bo'lmasa false bo'ladi",
                         "schema": {
                             "type": "boolean"
                         }
@@ -2764,7 +2774,7 @@
                     {
                         "name": "difference",
                         "in": "query",
-                        "description": "difference bo'yicha filter",
+                        "description": "radius bo'yicha filter",
                         "schema": {
                             "type": "integer"
                         }
@@ -2772,7 +2782,7 @@
                     {
                         "name": "s",
                         "in": "query",
-                        "description": "task nomi bo'yicha qidirish",
+                        "description": "vazifa nomi bo'yicha qidirish",
                         "schema": {
                             "type": "string"
                         }
@@ -2791,18 +2801,19 @@
                 }
             }
         },
-        "\/api\/task\/{task}": {
+        "\/api\/task\/{taskId}": {
             "get": {
                 "tags": [
                     "Task"
                 ],
                 "summary": "Get Task By ID",
-                "operationId": "f81261f5febbe5e9edecf62e8b165e8f",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/175](https:\/\/t.me\/c\/1334612640\/175).",
+                "operationId": "38b6a999ca21393f71b5e050a59d0953",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
-                        "description": "task id kiritiladi",
+                        "description": "vazifa idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2822,18 +2833,19 @@
                 }
             }
         },
-        "\/api\/user\/{user}": {
+        "\/api\/user\/{userId}": {
             "post": {
                 "tags": [
                     "Task"
                 ],
                 "summary": "User active task and active step null",
-                "operationId": "af0b037eafa1da0e41f83607558c4686",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/176](https:\/\/t.me\/c\/1334612640\/176).",
+                "operationId": "efb59a5c0885daa129431553f546fc46",
                 "parameters": [
                     {
-                        "name": "user",
+                        "name": "userId",
                         "in": "path",
-                        "description": "user id kiritiladi",
+                        "description": "Foydaluvchi idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2859,15 +2871,20 @@
                     "Task"
                 ],
                 "summary": "Get My Tasks Count",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/183](https:\/\/t.me\/c\/1334612640\/183).",
                 "operationId": "72718dc806703c197699e0f060cb0935",
                 "parameters": [
                     {
                         "name": "is_performer",
                         "in": "query",
-                        "description": "0 yoki 1, 0 bo'lsa user create qilgan tasklari, 1 bo'lsa performer bo'lgan tasklari",
+                        "description": "0 yoki 1, 0 bo'lsa foydalanuvchi yaratgan vazifalari, 1 bo'lsa ijrochi bo'lgan vazifalari",
                         "required": false,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [
+                                "0",
+                                "1"
+                            ]
                         }
                     }
                 ],
@@ -2895,21 +2912,26 @@
                     "Task"
                 ],
                 "summary": "Get My Tasks",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/184](https:\/\/t.me\/c\/1334612640\/184).",
                 "operationId": "1a716f0c34b249580b5d4194baa5f168",
                 "parameters": [
                     {
                         "name": "is_performer",
                         "in": "query",
-                        "description": "0 yoki 1, 0 bo'lsa user create qilgan tasklari, 1 bo'lsa performer bo'lgan tasklari",
+                        "description": "0 yoki 1, 0 bo'lsa foydalanuvchi yaratgan vazifalari, 1 bo'lsa ijrochi bo'lgan vazifalari",
                         "required": false,
                         "schema": {
-                            "type": "integer"
+                            "type": "string",
+                            "enum": [
+                                "0",
+                                "1"
+                            ]
                         }
                     },
                     {
                         "name": "status",
                         "in": "query",
-                        "description": "task statusi kiritiladi",
+                        "description": "vazifa holati kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2940,6 +2962,7 @@
                     "Task Create"
                 ],
                 "summary": "Task create name",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/117](https:\/\/t.me\/c\/1334612640\/117).",
                 "operationId": "2b3304f727d506c6f5e2b2f18620fad4",
                 "requestBody": {
                     "required": true,
@@ -2948,11 +2971,11 @@
                             "schema": {
                                 "properties": {
                                     "name": {
-                                        "description": "Taskning nomi kiritiladi",
+                                        "description": "vazifaning nomi kiritiladi",
                                         "type": "string"
                                     },
                                     "category_id": {
-                                        "description": "Category id yoziladi (faqat parent_idsi bor bo'lishi kerak)",
+                                        "description": "Child kategoriya id yoziladi",
                                         "type": "integer"
                                     }
                                 },
@@ -2985,6 +3008,7 @@
                     "Task Create"
                 ],
                 "summary": "Task create custom",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/118](https:\/\/t.me\/c\/1334612640\/118).",
                 "operationId": "b3c4b3eed494f92d6f21515814270c5f",
                 "requestBody": {
                     "required": true,
@@ -2993,7 +3017,7 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
-                                        "description": "task id kiritiladi",
+                                        "description": "vazifa id kiritiladi",
                                         "type": "integer"
                                     }
                                 },
@@ -3026,6 +3050,7 @@
                     "Task Create"
                 ],
                 "summary": "Task create remote",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/119](https:\/\/t.me\/c\/1334612640\/119).",
                 "operationId": "f63a7fc1a92d1ac0de6a19861ed0ff02",
                 "requestBody": {
                     "required": true,
@@ -3034,12 +3059,16 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
-                                        "description": "task id kiritiladi",
+                                        "description": "vazifa id kiritiladi",
                                         "type": "integer"
                                     },
                                     "radio": {
-                                        "description": "Agar masofaviy bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
-                                        "type": "string"
+                                        "description": "Agar masofaviy bo'lsa - remote, manzil bo`yicha bo`lsa - address tanlanadi",
+                                        "type": "string",
+                                        "enum": [
+                                            "remote",
+                                            "address"
+                                        ]
                                     }
                                 },
                                 "type": "object"
@@ -3071,6 +3100,7 @@
                     "Task Create"
                 ],
                 "summary": "Task create address",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/120](https:\/\/t.me\/c\/1334612640\/120).",
                 "operationId": "43ea22831bbc2e1f7f952dd6d595d686",
                 "requestBody": {
                     "required": true,
@@ -3079,7 +3109,7 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
-                                        "description": "task id kiritiladi",
+                                        "description": "vazifa id kiritiladi",
                                         "type": "integer"
                                     },
                                     "points[]": {
@@ -3087,15 +3117,15 @@
                                         "items": {
                                             "properties": {
                                                 "location": {
-                                                    "description": "location kiritiladi",
+                                                    "description": "Manzil kiritiladi",
                                                     "type": "string"
                                                 },
                                                 "latitude": {
-                                                    "description": "latitude kiritiladi",
+                                                    "description": "kenglik kiritiladi",
                                                     "type": "number"
                                                 },
                                                 "longitude": {
-                                                    "description": "longitude kiritiladi",
+                                                    "description": "uzunlik kiritiladi",
                                                     "type": "number"
                                                 }
                                             },
@@ -3132,6 +3162,7 @@
                     "Task Create"
                 ],
                 "summary": "Task create date",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/121](https:\/\/t.me\/c\/1334612640\/121).",
                 "operationId": "2c0799ac97b6e370ccf3fd2c7b950543",
                 "requestBody": {
                     "required": true,
@@ -3140,12 +3171,17 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
-                                        "description": "task id kiritiladi",
+                                        "description": "vazifa idsi kiritiladi",
                                         "type": "integer"
                                     },
                                     "date_type": {
-                                        "description": "1 dan 3 gacha bersa bo`ladi",
-                                        "type": "integer"
+                                        "description": "vazifa boshlanish vaqti kiritilsa 1, tugash vaqti kiritilsa 2, ikkalasi ham kiritilsa 3 tanlanadi",
+                                        "type": "string",
+                                        "enum": [
+                                            "1",
+                                            "2",
+                                            "3"
+                                        ]
                                     },
                                     "start_date": {
                                         "description": "2022-06-03 12:00:0 - manashu formatda kiritiladi",
@@ -3185,6 +3221,7 @@
                     "Task Create"
                 ],
                 "summary": "Task create budget",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/122](https:\/\/t.me\/c\/1334612640\/122).",
                 "operationId": "d549c5a1835dd9e9de6fc88580c9a09b",
                 "requestBody": {
                     "required": true,
@@ -3193,16 +3230,20 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
-                                        "description": "task id kiritiladi",
+                                        "description": "vazifa idsi kiritiladi",
                                         "type": "integer"
                                     },
                                     "amount": {
-                                        "description": "Narxi",
+                                        "description": "Vazifa uchun narx kiritiladi",
                                         "type": "number"
                                     },
                                     "budget_type": {
                                         "description": "Naqt yoki plastik (0 yoki 1)",
-                                        "type": "integer"
+                                        "type": "string",
+                                        "enum": [
+                                            "0",
+                                            "1"
+                                        ]
                                     }
                                 },
                                 "type": "object"
@@ -3234,6 +3275,7 @@
                     "Task Create"
                 ],
                 "summary": "Task create note",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/123](https:\/\/t.me\/c\/1334612640\/123).",
                 "operationId": "2f27920cad19f7e030fad94789966187",
                 "requestBody": {
                     "required": true,
@@ -3242,16 +3284,20 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
-                                        "description": "task id kiritiladi",
+                                        "description": "vazifa id kiritiladi",
                                         "type": "integer"
                                     },
                                     "description": {
-                                        "description": "task uchun tavsif yoziladi",
+                                        "description": "vazifa uchun tavsif yoziladi",
                                         "type": "string"
                                     },
                                     "docs": {
-                                        "description": "true - 1, false - 0",
-                                        "type": "integer"
+                                        "description": "hujjatlar olinishi kerak bo'lsa - 1,kerak bo'lmasa - 0 tanlanadi",
+                                        "type": "string",
+                                        "enum": [
+                                            "0",
+                                            "1"
+                                        ]
                                     }
                                 },
                                 "type": "object"
@@ -3283,6 +3329,7 @@
                     "Task Create"
                 ],
                 "summary": "Task create images",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/124](https:\/\/t.me\/c\/1334612640\/124).",
                 "operationId": "0a245f8d9ae4a7502c9b42ba20ef460e",
                 "requestBody": {
                     "required": true,
@@ -3291,12 +3338,19 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
-                                        "description": "task id kiritiladi",
+                                        "description": "vazifa id kiritiladi",
                                         "type": "integer"
                                     },
-                                    "images": {
-                                        "description": "task uchun rasm kiritiladi",
-                                        "type": "file"
+                                    "images[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "images": {
+                                                    "description": "vazifa uchun rasm kiritiladi"
+                                                }
+                                            },
+                                            "type": "file"
+                                        }
                                     }
                                 },
                                 "type": "object"
@@ -3328,6 +3382,7 @@
                     "Task Create"
                 ],
                 "summary": "Task create contacts",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/125](https:\/\/t.me\/c\/1334612640\/125).",
                 "operationId": "02fdcf7814dd7330f8b8aee563d8c488",
                 "requestBody": {
                     "required": true,
@@ -3336,7 +3391,7 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
-                                        "description": "task id kiritiladi",
+                                        "description": "vazifa idsi kiritiladi",
                                         "type": "integer"
                                     },
                                     "phone_number": {
@@ -3373,6 +3428,7 @@
                     "Task Create"
                 ],
                 "summary": "Task create verify",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/126](https:\/\/t.me\/c\/1334612640\/126).",
                 "operationId": "5c30ad02ae60c0326cff97b318c14178",
                 "requestBody": {
                     "required": true,
@@ -3381,7 +3437,7 @@
                             "schema": {
                                 "properties": {
                                     "task_id": {
-                                        "description": "task id kiritiladi",
+                                        "description": "vazifa id kiritiladi",
                                         "type": "integer"
                                     },
                                     "phone_number": {
@@ -3389,7 +3445,7 @@
                                         "type": "integer"
                                     },
                                     "sms_otp": {
-                                        "description": "Telefonga kelgan SMS code",
+                                        "description": "Telefonga kelgan SMS kod kiritiladi",
                                         "type": "integer"
                                     }
                                 },
@@ -3416,18 +3472,19 @@
                 ]
             }
         },
-        "\/api\/update-task\/{task}\/name": {
+        "\/api\/update-task\/{taskId}\/name": {
             "post": {
                 "tags": [
                     "Task Update"
                 ],
                 "summary": "Task update name",
-                "operationId": "01ba07b06489fb80b56b7d4ccd021d00",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/141](https:\/\/t.me\/c\/1334612640\/141).",
+                "operationId": "91222ee840159d2f1e5ad32e879b6be2",
                 "parameters": [
                     {
                         "name": "task",
                         "in": "path",
-                        "description": "task id kiritiladi",
+                        "description": "vazifa id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3441,11 +3498,11 @@
                             "schema": {
                                 "properties": {
                                     "name": {
-                                        "description": "task name kiritiladi",
+                                        "description": "vazifa nomi kiritiladi",
                                         "type": "string"
                                     },
                                     "category_id": {
-                                        "description": "task child category_id kiritiladi",
+                                        "description": "vazifa uchun child kategoriya idsi kiritiladi",
                                         "type": "integer"
                                     }
                                 },
@@ -3472,18 +3529,19 @@
                 ]
             }
         },
-        "\/api\/update-task\/{task}\/custom": {
+        "\/api\/update-task\/{taskId}\/custom": {
             "post": {
                 "tags": [
                     "Task Update"
                 ],
                 "summary": "Update task custom fields",
-                "operationId": "6d2ea2ac629840b489e9d8204435961d",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/185](https:\/\/t.me\/c\/1334612640\/185).",
+                "operationId": "ac813cfb7b45b3cb108a1873e381cdd6",
                 "parameters": [
                     {
                         "name": "task",
                         "in": "path",
-                        "description": "task id kiritiladi",
+                        "description": "vazifa id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3508,18 +3566,19 @@
                 ]
             }
         },
-        "\/api\/update-task\/{task}\/remote": {
+        "\/api\/update-task\/{taskId}\/remote": {
             "post": {
                 "tags": [
                     "Task Update"
                 ],
                 "summary": "Task update remote",
-                "operationId": "b22dace447e9e3b5e97303692ce94035",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/142](https:\/\/t.me\/c\/1334612640\/142).",
+                "operationId": "63bbfddfc9838867d518f0717b1fa3f6",
                 "parameters": [
                     {
                         "name": "task",
                         "in": "path",
-                        "description": "task id kiritiladi",
+                        "description": "vazifa id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3533,8 +3592,12 @@
                             "schema": {
                                 "properties": {
                                     "radio": {
-                                        "description": "Agar masofaviy ish bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
-                                        "type": "string"
+                                        "description": "Agar masofaviy ish bolsa - remote, manzil bo`yicha bo`lsa - address kiritiladi",
+                                        "type": "string",
+                                        "enum": [
+                                            "remote",
+                                            "address"
+                                        ]
                                     }
                                 },
                                 "type": "object"
@@ -3560,18 +3623,19 @@
                 ]
             }
         },
-        "\/api\/update-task\/{task}\/address": {
+        "\/api\/update-task\/{taskId}\/address": {
             "post": {
                 "tags": [
                     "Task Update"
                 ],
                 "summary": "Task update address",
-                "operationId": "e27a0257c8a292d549b1ba74b5cee07b",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/](https:\/\/t.me\/c\/1334612640\/).",
+                "operationId": "8a43a5339bd4714df6df8db16d8f1783",
                 "parameters": [
                     {
                         "name": "task",
                         "in": "path",
-                        "description": "task id kiritiladi",
+                        "description": "vazifa id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3585,15 +3649,15 @@
                             "schema": {
                                 "properties": {
                                     "location": {
-                                        "description": "task location kiritiladi",
+                                        "description": "vazifa manzili kiritiladi",
                                         "type": "string"
                                     },
                                     "latitude": {
-                                        "description": "task latitude kiritiladi",
+                                        "description": "vazifa joylashgan koordinata kengligi kiritiladi",
                                         "type": "number"
                                     },
                                     "longitude": {
-                                        "description": "task longitude kiritiladi",
+                                        "description": "vazifa joylashgan koordinata uzunligi kiritiladi",
                                         "type": "number"
                                     }
                                 },
@@ -3620,18 +3684,19 @@
                 ]
             }
         },
-        "\/api\/update-task\/{task}\/date": {
+        "\/api\/update-task\/{taskId}\/date": {
             "post": {
                 "tags": [
                     "Task Update"
                 ],
                 "summary": "Task update date",
-                "operationId": "72daf2dbd3ef6c374439a5abe9dbf4c3",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/143](https:\/\/t.me\/c\/1334612640\/143).",
+                "operationId": "f63a0d6c8e7412203b4498455e23d766",
                 "parameters": [
                     {
                         "name": "task",
                         "in": "path",
-                        "description": "task id kiritiladi",
+                        "description": "vazifa idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3645,8 +3710,13 @@
                             "schema": {
                                 "properties": {
                                     "date_type": {
-                                        "description": "1 dan 3 gacha bersa bo`ladi",
-                                        "type": "integer"
+                                        "description": "vazifa boshlanish vaqti kiritilsa 1, tugash vaqti kiritilsa 2, ikkalasi ham kiritilsa 3 tanlanadi",
+                                        "type": "string",
+                                        "enum": [
+                                            "1",
+                                            "2",
+                                            "3"
+                                        ]
                                     },
                                     "start_date": {
                                         "description": "2022-06-03 12:00:0 - manashu formatda kiritiladi",
@@ -3680,18 +3750,19 @@
                 ]
             }
         },
-        "\/api\/update-task\/{task}\/budget": {
+        "\/api\/update-task\/{taskId}\/budget": {
             "post": {
                 "tags": [
                     "Task Update"
                 ],
                 "summary": "Task update budget",
-                "operationId": "1bcbf434f63bd2bd250529afca61a8b2",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/144](https:\/\/t.me\/c\/1334612640\/144).",
+                "operationId": "3f7bd41b9b1aced12c241fe8fa0d6b6f",
                 "parameters": [
                     {
                         "name": "task",
                         "in": "path",
-                        "description": "task id kiritiladi",
+                        "description": "vazifa idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3705,12 +3776,16 @@
                             "schema": {
                                 "properties": {
                                     "amount": {
-                                        "description": "Narxi",
+                                        "description": "Narxi yoziladi",
                                         "type": "number"
                                     },
                                     "budget_type": {
                                         "description": "Naqt yoki plastik (0 yoki 1)",
-                                        "type": "integer"
+                                        "type": "string",
+                                        "enum": [
+                                            "0",
+                                            "1"
+                                        ]
                                     }
                                 },
                                 "type": "object"
@@ -3736,18 +3811,19 @@
                 ]
             }
         },
-        "\/api\/update-task\/{task}\/note": {
+        "\/api\/update-task\/{taskId}\/note": {
             "post": {
                 "tags": [
                     "Task Update"
                 ],
                 "summary": "Task update note",
-                "operationId": "5d1f767fcba09f5ed34253c47068ae0c",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/145](https:\/\/t.me\/c\/1334612640\/145).",
+                "operationId": "8b7c57f52988d6a1bd57712848a67fd3",
                 "parameters": [
                     {
                         "name": "task",
                         "in": "path",
-                        "description": "task id kiritiladi",
+                        "description": "vazifa idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3761,12 +3837,16 @@
                             "schema": {
                                 "properties": {
                                     "description": {
-                                        "description": "task uchun tavsif kiritiladi",
+                                        "description": "vazifa uchun tavsif kiritiladi",
                                         "type": "string"
                                     },
                                     "docs": {
-                                        "description": "true - 1, false - 0",
-                                        "type": "boolean"
+                                        "description": "hujjatlar olinishi kerak bo'lsa - 1,kerak bo'lmasa - 0 tanlanadi",
+                                        "type": "string",
+                                        "enum": [
+                                            "0",
+                                            "1"
+                                        ]
                                     }
                                 },
                                 "type": "object"
@@ -3792,18 +3872,19 @@
                 ]
             }
         },
-        "\/api\/update-task\/{task}\/images": {
+        "\/api\/update-task\/{taskId}\/images": {
             "post": {
                 "tags": [
                     "Task Update"
                 ],
                 "summary": "Task update images",
-                "operationId": "4247b7515333190d9d6653f7cd641c9d",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/146](https:\/\/t.me\/c\/1334612640\/146).",
+                "operationId": "69b5d0726db1adb5fb66c1e3eef9e8e9",
                 "parameters": [
                     {
                         "name": "task",
                         "in": "path",
-                        "description": "task id kiritiladi",
+                        "description": "vazifa id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3816,9 +3897,16 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "images": {
-                                        "description": "task uchun rasm kiritiladi",
-                                        "type": "file"
+                                    "images[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "images": {
+                                                    "description": "vazifa uchun rasm kiritiladi"
+                                                }
+                                            },
+                                            "type": "file"
+                                        }
                                     }
                                 },
                                 "type": "object"
@@ -3844,18 +3932,19 @@
                 ]
             }
         },
-        "\/api\/update-task\/{task}\/contacts": {
+        "\/api\/update-task\/{taskId}\/contacts": {
             "post": {
                 "tags": [
                     "Task Update"
                 ],
                 "summary": "Task update contacts",
-                "operationId": "c3114b25878e38dec562d0d2b92ac7a2",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/147](https:\/\/t.me\/c\/1334612640\/147).",
+                "operationId": "68cedc41e9e018064f1c8a393e4571b6",
                 "parameters": [
                     {
                         "name": "task",
                         "in": "path",
-                        "description": "task id kiritiladi",
+                        "description": "vazifa idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3869,7 +3958,7 @@
                             "schema": {
                                 "properties": {
                                     "phone_number": {
-                                        "description": "task phone_number kiritiladi",
+                                        "description": "vazifaga telefon raqaam kiritiladi",
                                         "type": "string"
                                     }
                                 },
@@ -3896,18 +3985,19 @@
                 ]
             }
         },
-        "\/api\/update-task\/{task}\/verify": {
+        "\/api\/update-task\/{taskId}\/verify": {
             "post": {
                 "tags": [
                     "Task Update"
                 ],
                 "summary": "Task update verify",
-                "operationId": "fccd8760adf34c624bcb308f3930f830",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/](https:\/\/t.me\/c\/1334612640\/).",
+                "operationId": "7a5112ce987a12fa90efea9def70b21a",
                 "parameters": [
                     {
                         "name": "task",
                         "in": "path",
-                        "description": "task id kiritiladi",
+                        "description": "vazifa idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3921,11 +4011,11 @@
                             "schema": {
                                 "properties": {
                                     "phone_number": {
-                                        "description": "task phone_number kiritiladi",
-                                        "type": "integer"
+                                        "description": "vazifa uchun telefon raqam kiritiladi",
+                                        "type": "string"
                                     },
                                     "sms_otp": {
-                                        "description": "Telefonga kelgan SMS code",
+                                        "description": "Telefonga kelgan SMS kod kiritiladi",
                                         "type": "integer"
                                     }
                                 },
@@ -3952,18 +4042,19 @@
                 ]
             }
         },
-        "\/api\/update-task\/{task}\/delete-image": {
+        "\/api\/update-task\/{taskId}\/delete-image": {
             "post": {
                 "tags": [
                     "Task Update"
                 ],
                 "summary": "Task delete images",
-                "operationId": "2a8f5044c4abc87e2b72f0f990604c9f",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/](https:\/\/t.me\/c\/1334612640\/).",
+                "operationId": "6b34d5ecfb9f5e6c586162e6d262c44e",
                 "parameters": [
                     {
                         "name": "task",
                         "in": "path",
-                        "description": "task id kiritiladi",
+                        "description": "vazifa idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3977,7 +4068,7 @@
                             "schema": {
                                 "properties": {
                                     "images": {
-                                        "description": "delete qilinadigan image url kiritiladi",
+                                        "description": "o'chiriladigan rasm url manzili kiritiladi",
                                         "type": "string"
                                     }
                                 },
@@ -4004,18 +4095,19 @@
                 ]
             }
         },
-        "\/api\/task\/{task}\/complain": {
+        "\/api\/task\/{taskId}\/complain": {
             "post": {
                 "tags": [
                     "Complains"
                 ],
                 "summary": "Task complain",
-                "operationId": "e7c08bf1f346280ffd69969a4a72f3a1",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/174](https:\/\/t.me\/c\/1334612640\/174).",
+                "operationId": "7784b0c0652a5e1ec35adac6ba1b8f8f",
                 "parameters": [
                     {
                         "name": "task",
                         "in": "path",
-                        "description": "task id kiritiladi",
+                        "description": "vazifa id kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -4066,6 +4158,7 @@
                     "Complains"
                 ],
                 "summary": "Task complains types",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/173](https:\/\/t.me\/c\/1334612640\/173).",
                 "operationId": "29df1bde5fe8cf5904bf08cf7e6701c5",
                 "responses": {
                     "200": {
@@ -4091,12 +4184,13 @@
                     "Task"
                 ],
                 "summary": "Get Performer Tasks",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/179](https:\/\/t.me\/c\/1334612640\/179).",
                 "operationId": "54c6ff338336a06d5391292f6b93fa24",
                 "parameters": [
                     {
                         "name": "user_id",
                         "in": "query",
-                        "description": "user id kiritiladi",
+                        "description": "foydalanuvchi idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -4105,10 +4199,14 @@
                     {
                         "name": "status",
                         "in": "query",
-                        "description": "status kiritiladi(1 yoki 0)",
+                        "description": "vazifa holati kiritiladi(1 yoki 0)",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "string",
+                            "enum": [
+                                "1",
+                                "0"
+                            ]
                         }
                     }
                 ],
@@ -4136,12 +4234,13 @@
                     "Task"
                 ],
                 "summary": "Get Performer all Tasks",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/228](https:\/\/t.me\/c\/1334612640\/228).",
                 "operationId": "94c194d04e8489c78ff39703aabab8be",
                 "parameters": [
                     {
                         "name": "user_id",
                         "in": "query",
-                        "description": "user id kiritiladi",
+                        "description": "foydalanuvchi idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
