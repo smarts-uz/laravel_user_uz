@@ -161,12 +161,12 @@ class NotificationService
             'description' => self::descriptions($notification)
         ];
 
-        $response = broadcast(
+        broadcast(
             new SendNotificationEvent(json_encode($data, JSON_THROW_ON_ERROR), $user_id)
         )->toOthers();
 
-        $notification->response = $response;
-        $notification->save();
+//        $notification->response = $response;
+//        $notification->save();
     }
 
     /**
