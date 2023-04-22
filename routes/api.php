@@ -161,7 +161,7 @@ Route::get('/blog-news', [BlogController::class, 'index']); // fix
 Route::get('/blog-news/{newsId}', [BlogController::class, 'show']); // fix
 
 //Tasks
-Route::get('task/{task}', [TaskAPIController::class, 'task']); // fix
+Route::get('task/{taskId}', [TaskAPIController::class, 'task']); // fix
 Route::post('user/{user}', [TaskAPIController::class, 'active_task_null']); // fix
 Route::get('tasks-filter', [TaskAPIController::class, 'filter']); // fix
 Route::get('same-tasks/{task}', [TaskAPIController::class, 'same_tasks']); // fix

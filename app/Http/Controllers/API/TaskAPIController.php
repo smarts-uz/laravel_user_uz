@@ -384,14 +384,14 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function task($task)
+    public function task($taskId)
     {
         if (auth()->guard('api')->check()) {
             $user_id = auth()->guard('api')->id();
-            (new TaskService)->taskIncrement($user_id, $task);
+            (new TaskService)->taskIncrement($user_id, $taskId);
         }
 
-        return (new TaskService)->taskIndex($task);
+        return (new TaskService)->taskIndex($taskId);
     }
 
     /**
