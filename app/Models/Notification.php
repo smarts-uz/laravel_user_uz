@@ -28,6 +28,10 @@ class Notification extends Model
     use HasFactory;
     use Translatable;
 
+    /**
+     * @var mixed|string
+     */
+    public mixed $response;
     protected array $translatable = ['description'];
     protected $fillable = ['user_id', 'performer_id', 'service_id', 'task_id', 'cat_id', 'description', 'name_task', 'type', 'is_read','news_id'];
 
@@ -65,7 +69,7 @@ class Notification extends Model
 
     public function scopeNewTask($query, $user)
     {
-        if ($user->role_id == 2) {
+        if ((int)$user->role_id === User::ROLE_PERFORMER) {
             return $query->orWhere('type', 1);
         }
         return $query;
