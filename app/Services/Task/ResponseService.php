@@ -103,6 +103,7 @@ class ResponseService
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws \JsonException
      */
     #[ArrayShape(['success' => "bool", 'message' => "mixed", 'data' => "array"])]
     public function selectPerformer($response): array
@@ -143,12 +144,7 @@ class ResponseService
             'description' => '123',
             'type' => Notification::SELECT_PERFORMER,
         ]);
-        NotificationService::sendNotificationRequest([$performer->id], [
-            'created_date' => $notification->created_at->format('d M'),
-            'title' => NotificationService::titles($notification->type),
-            'url' => route('show_notification', [$notification]),
-            'description' => NotificationService::descriptions($notification)
-        ]);
+        NotificationService::sendNotificationRequest($performer->id, $notification);
         NotificationService::pushNotification($performer, [
             'title' => NotificationService::titles($notification->type, $locale),
             'body' => NotificationService::descriptions($notification, $locale)

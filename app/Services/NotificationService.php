@@ -3,13 +3,13 @@
 namespace App\Services;
 
 use JetBrains\PhpStorm\ArrayShape;
+use JsonException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use App\Mail\{VerifyEmail, MessageEmail};
 use App\Models\{User, Notification, UserCategory};
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\{Collection, Facades\Http, Facades\Mail};
 use App\Events\SendNotificationEvent;
 use App\Http\Resources\NotificationResource;
@@ -70,6 +70,7 @@ class NotificationService
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws JsonException
      */
     public static function sendTaskNotification($task, $user_id): void
     {
@@ -93,12 +94,7 @@ class NotificationService
                 'body' => self::descriptions($notification)
             ], 'notification', new NotificationResource($notification));
 
-            self::sendNotificationRequest([$performer->id], [
-                'created_date' => $notification->created_at->format('d M'),
-                'title' => self::titles($notification->type),
-                'url' => route('show_notification', [$notification]),
-                'description' => self::descriptions($notification)
-            ]);
+            self::sendNotificationRequest($performer->id,$notification);
 
             $subject = __('Новая задания', [], $locale);
             $message = $subject . "\n" . __('task_name  №task_id с бюджетом до task_budget', [
@@ -123,6 +119,7 @@ class NotificationService
      *
      * @param $not // Notification model object
      * @return void
+     * @throws JsonException
      */
     public static function sendNotification($not): void
     {
@@ -141,12 +138,7 @@ class NotificationService
                 'title' => self::titles($notification->type),
                 'body' => self::descriptions($notification)
             ], 'notification', new NotificationResource($notification));
-            self::sendNotificationRequest([$user->id], [
-                'created_date' => $notification->created_at->format('d M'),
-                'title' => self::titles($notification->type),
-                'url' => route('show_notification', [$notification]),
-                'description' => self::descriptions($notification)
-            ]);
+            self::sendNotificationRequest($user->id, $notification);
         }
 
     }
@@ -154,17 +146,27 @@ class NotificationService
     /**
      * Function for use send websocket notification by user ids
      *
-     * @param $user_ids // User ids array
-     * @param  $data
+     * @param $user_id
+     * @param Notification $notification
      * @return void
+     * @throws JsonException
      */
-    public static function sendNotificationRequest($user_ids, $data): void
+    public static function sendNotificationRequest($user_id, Notification $notification): void
     {
-        foreach ($user_ids as $user_id) {
-            broadcast(
-                new SendNotificationEvent(json_encode($data, true), $user_id)
-            )->toOthers();
-        }
+
+        $data = [
+            'created_date' => $notification->created_at->format('d M'),
+            'title' => self::titles($notification->type),
+            'url' => route('show_notification', [$notification]),
+            'description' => self::descriptions($notification)
+        ];
+
+        $response = broadcast(
+            new SendNotificationEvent(json_encode($data, JSON_THROW_ON_ERROR), $user_id)
+        )->toOthers();
+
+        $notification->response = $response;
+        $notification->save();
     }
 
     /**
@@ -174,6 +176,7 @@ class NotificationService
      * @return bool
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws JsonException
      */
     public static function sendResponseToTaskNotification($task): bool
     {
@@ -191,12 +194,7 @@ class NotificationService
             "type" => Notification::RESPONSE_TO_TASK
         ]);
 
-        self::sendNotificationRequest([$user->id], [
-            'created_date' => $notification->created_at->format('d M'),
-            'title' => self::titles($notification->type),
-            'url' => route('show_notification', [$notification]),
-            'description' => self::descriptions($notification)
-        ]);
+        self::sendNotificationRequest($user->id, $notification);
 
         self::pushNotification($user, [
             'title' => self::titles($notification->type, $locale),
@@ -217,12 +215,7 @@ class NotificationService
 
         $locale = (new CustomService)->cacheLang($task->user_id);
 
-        self::sendNotificationRequest([$task->user_id], [
-            'created_date' => $notification->created_at->format('d M'),
-            'title' => self::titles($notification->type),
-            'url' => route('show_notification', [$notification]),
-            'description' => self::descriptions($notification)
-        ]);
+        self::sendNotificationRequest($task->user_id, $notification);
 
         self::pushNotification($task->user, [
             'title' => self::titles($notification->type, $locale),
@@ -342,6 +335,7 @@ class NotificationService
      * @param $text
      * @param $user_id
      * @return array
+     * @throws JsonException
      */
     public function pusher_notif($type, $title, $text, $user_id): array
     {
@@ -352,26 +346,21 @@ class NotificationService
             'role_admin' => User::query()->where('role_id', User::ROLE_ADMIN)->get(),
             default => null,
         };
+        $notification = [
+            'created_date' => '29 Jan',
+            'title' => $title,
+            'url' => route('show_notification', [111232]),
+            'description' => $text,
+            'type'=> Notification::TEST_PUSHER_NOTIFICATION
+        ];
         if ($users !== null && $user_id === null){
             foreach ($users as $user) {
-                self::sendNotificationRequest([$user->id], [
-                    'created_date' => '29 Jan',
-                    'title' => $title,
-                    'url' => route('show_notification', [111232]),
-                    'description' => $text,
-                    'type'=> Notification::TEST_PUSHER_NOTIFICATION
-                ]);
+                self::sendNotificationRequest($user->id, $notification);
             }
         }
         if ($user_id !== null && $users === null){
             $user = User::query()->findOrFail($user_id);
-            self::sendNotificationRequest([$user->id], [
-                'created_date' => '29 Jan',
-                'title' => $title,
-                'url' => route('show_notification', [111232]),
-                'description' => $text,
-                'type'=> Notification::TEST_PUSHER_NOTIFICATION
-            ]);
+            self::sendNotificationRequest($user->id, $notification);
         }
 
         return [
@@ -529,6 +518,7 @@ class NotificationService
                         "click_action" => "FLUTTER_NOTIFICATION_CLICK"
                     ]
                 )->body();
+
             }
         }
     }
