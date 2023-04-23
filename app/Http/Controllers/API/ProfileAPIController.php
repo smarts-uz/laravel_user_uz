@@ -917,11 +917,11 @@ class ProfileAPIController extends Controller
      *     )
      * )
      */
-    public function userProfile(User $user): JsonResponseAlias
+    public function userProfile($userId): JsonResponseAlias
     {
-        $user_id = $user->id;
+        $user = User::find($userId);
         (new PerformersService)->setView($user);
-        return $this->profileService->index($user_id);
+        return $this->profileService->index($userId);
     }
 
     /**
