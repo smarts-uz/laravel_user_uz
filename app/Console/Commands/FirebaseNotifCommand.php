@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Services\NotificationService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class FirebaseNotifCommand extends Command
 {
@@ -39,6 +40,9 @@ class FirebaseNotifCommand extends Command
         $text = $this->option("text");
         $title = $this->option("title");
 
-        return $notificationService->firebase_notif($type, $title, $text, $user_id);
+        $return =  $notificationService->firebase_notif($type, $title, $text, $user_id);
+Log::info( $return);
+    // var_dump($return);
+        return $return;
     }
 }

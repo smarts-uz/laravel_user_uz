@@ -7,7 +7,7 @@ use JsonException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use App\Mail\{VerifyEmail, MessageEmail};
-use App\Models\{User, Notification, UserCategory};
+use App\Models\{BlogNew, User, Notification, UserCategory};
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\{Collection, Facades\Http, Facades\Mail};
@@ -117,19 +117,27 @@ class NotificationService
     /**
      * Send news, system notifications by websocket and firebase
      *
-     * @param $not // Notification model object
+     * @param BlogNew $not // Notification model object
+     * @param bool $testMode
      * @return void
      * @throws JsonException
      */
-    public static function sendNotification($not): void
+    public static function sendNotification(BlogNew $not, bool $testMode = false): void
     {
         /** @var User $users */
-        $users = User::query()->with('sessions')->where('news_notification', 1)->select('id')->get();
+
+        if (!$testMode) {
+            $users = User::query()->with('sessions')->where('news_notification', 1)->select('id')->get();
+        }
+        else {
+            $users = User::query()->with('sessions')->whereIn('id', [1482, 1, 1374, 1662])->select('id')->get();
+        }
+
         foreach ($users as $user) {
             /** @var Notification $notification */
             $notification = Notification::query()->create([
                 'user_id' => $user->id,
-                'description' => $not->message ?? 'description',
+                'description' => $not->desc ?? 'description',
                 "name_task" => $not->title,
                 "news_id" => $not->id,
                 "type" => Notification::NEWS_NOTIFICATION
@@ -137,7 +145,8 @@ class NotificationService
             self::pushNotification($user, [
                 'title' => self::titles($notification->type),
                 'body' => self::descriptions($notification)
-            ], 'notification', new NotificationResource($notification));
+            ], 'notification', new NotificationResource($notification), $notification);
+
             self::sendNotificationRequest($user->id, $notification);
         }
 
@@ -497,13 +506,15 @@ class NotificationService
      * @param $type // for notification or chat. Values - e.g. "chat", "notification"
      * @param $model // data for handling in mobile
      */
-    public static function pushNotification(User $user, $notification, $type, $model): void
+    public static function pushNotification(User $user, $notification, $type, $model, Notification $notifModel = null): void
     {
         $NowTime = Carbon::now()->format('H:i:s');
         $notification['sound'] = "default";
+
+        $responses = null;
         foreach ($user->sessions as $session) {
             if ($user->notification_off !== 1 || ($NowTime < $user->notification_from && $NowTime > $user->notification_to)) {
-                Http::withHeaders([
+                $response = Http::withHeaders([
                     'Content-Type' => 'application/json',
                     'Authorization' => 'key=' . env('FCM_SERVER_KEY')
                 ])->post('https://fcm.googleapis.com/fcm/send',
@@ -519,7 +530,13 @@ class NotificationService
                     ]
                 )->body();
 
+                $responses .= $response . PHP_EOL . PHP_EOL;
             }
+        }
+
+        If ($notifModel !== null) {
+                $notifModel->response = $responses;
+                $notifModel->save();
         }
     }
 
