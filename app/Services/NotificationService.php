@@ -534,7 +534,7 @@ class NotificationService
             }
         }
 
-        If ($notifModel !== null) {
+        if ($notifModel !== null) {
                 $notifModel->response = $responses;
                 $notifModel->save();
         }
