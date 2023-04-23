@@ -74,8 +74,8 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::get('/my-tasks', [TaskAPIController::class, 'my_tasks_all']); // fix
     Route::get('/performer-tasks', [TaskAPIController::class, 'performer_tasks']); // fix
     Route::get('/all-tasks', [TaskAPIController::class, 'all_tasks']); // fix
-    Route::post('/cancel-task/{taskId}', [SearchAPIController::class, 'cancelTask']); // fix
-    Route::delete('/delete-task/{taskId}/{userId}', [SearchAPIController::class, 'delete_task']); // fix
+    Route::post('/cancel-task/{task}', [SearchAPIController::class, 'cancelTask']); // fix
+    Route::delete('/delete-task/{task}/{user}', [SearchAPIController::class, 'delete_task']); // fix
     Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']); // fix
     Route::get('/responses/{task}', [TaskAPIController::class, 'responses']); // fix
     Route::get('/complain/types', [TaskAPIController::class, 'complainTypes']); // fix
@@ -84,14 +84,14 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::post('/task-status-update/{task}', [TaskAPIController::class, 'taskStatusUpdate']); // fix
     Route::post('/task/{taskId}/complete', [UpdateAPIController::class, 'completed']); // fix
     Route::post('/tasks/{taskId}/not-complete', [UpdateAPIController::class, 'not_completed']); // fix
-    Route::post('/send-review-user/{taskId}', [UpdateAPIController::class, 'sendReview']); // fix
+    Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); // fix
     Route::post('/give-task', [PerformerAPIController::class, 'give_task']); // fix
     Route::post('/become-performer', [PerformerAPIController::class, 'becomePerformerData']); // fix
     Route::post('/become-performer-phone', [PerformerAPIController::class, 'becomePerformerEmailPhone']); // fix
     Route::post('/become-performer-avatar', [PerformerAPIController::class, 'becomePerformerAvatar']); // fix
     Route::post('/become-performer-category', [PerformerAPIController::class, 'becomePerformerCategory']); // fix
     Route::get('/reviews', [PerformerAPIController::class, 'reviews']); // fix
-    Route::post('/task-cancel/{taskId}', [SearchAPIController::class, 'task_cancel']); // fix
+    Route::post('/task-cancel/{task}', [SearchAPIController::class, 'task_cancel']); // fix
 
     //Verification
     Route::get('account/verify', [LoginAPIController::class, 'verifyCredentials']); // fix

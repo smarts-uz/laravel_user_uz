@@ -59,9 +59,9 @@ class UpdateAPIController extends Controller
      * )
      */
 
-    public function completed(int $task_id): JsonResponse
+    public function completed(int $taskId): JsonResponse
     {
-        return $this->updatetask->completed($task_id);
+        return $this->updatetask->completed($taskId);
     }
 
     /**
@@ -110,11 +110,11 @@ class UpdateAPIController extends Controller
      * )
      */
 
-    public function not_completed(Request $request, int $task_id): JsonResponse
+    public function not_completed(Request $request, int $taskId): JsonResponse
     {
         $request->validate(['reason' => 'required'], ['reason.required' => 'Reason is required']);
         $data = $request->get('reason');
-        return $this->updatetask->not_completed($task_id, $data);
+        return $this->updatetask->not_completed($taskId, $data);
     }
 
 

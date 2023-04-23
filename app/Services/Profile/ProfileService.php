@@ -401,14 +401,14 @@ class ProfileService
     /**
      * Function  userReviews
      * Mazkur metod userga qoldirilgan reviewlar chiqarib beradi
-     * @param $user
+     * @param $userId
      * @param $performer
      * @param $review
      * @return AnonymousResourceCollection
      */
-    public static function userReviews($user, $performer, $review): AnonymousResourceCollection
+    public static function userReviews($userId, $performer, $review): AnonymousResourceCollection
     {
-        $reviews = Review::query()->whereHas('task')->where(['user_id' => $user->id]);
+        $reviews = Review::query()->whereHas('task')->where(['user_id' => $userId]);
 
         if (isset($performer)) {
             $reviews->where(['as_performer' => $performer]);
