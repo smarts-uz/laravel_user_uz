@@ -46,7 +46,7 @@ class VoyagerUserController extends BaseVoyagerUserController
     public function blogNews($newsId): RedirectResponse
     {
         $blogNew = BlogNew::find($newsId);
-        NotificationService::sendNotification($blogNew,true);
+        NotificationService::sendNotification($blogNew);
         Alert::success(__('Уведомления успешно отправлены'));
         return redirect()->back();
     }
