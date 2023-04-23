@@ -4355,17 +4355,17 @@
                 ]
             }
         },
-        "\/api\/send-review-user\/{taskId}": {
+        "\/api\/send-review-user\/{task}": {
             "post": {
                 "tags": [
                     "Responses"
                 ],
                 "summary": "Complete task",
                 "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/224](https:\/\/t.me\/c\/1334612640\/224).",
-                "operationId": "70f971d7e6e8bc6b89049a8aa236499c",
+                "operationId": "f440159070ac0fc1e2b350969e9ad62d",
                 "parameters": [
                     {
-                        "name": "taskId",
+                        "name": "task",
                         "in": "path",
                         "description": "review qoldirmoqchi bo'lgan vazifa idsi kiritiladi",
                         "required": true,
