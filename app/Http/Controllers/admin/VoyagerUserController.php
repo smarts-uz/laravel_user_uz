@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Models\BlogNew;
 use App\Models\User;
+use App\Services\NotificationService;
 use App\Services\User\UserService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -10,6 +12,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use App\Http\Requests\AdminPasswordResetRequest;
+use JetBrains\PhpStorm\ArrayShape;
+use RealRashid\SweetAlert\Facades\Alert;
 use TCG\Voyager\Http\Controllers\VoyagerUserController as BaseVoyagerUserController;
 
 class VoyagerUserController extends BaseVoyagerUserController
@@ -37,5 +41,13 @@ class VoyagerUserController extends BaseVoyagerUserController
     {
         $authUser = auth()->user();
         return $this->userService->activity($user, $authUser);
+    }
+
+    public function blogNews($newsId): RedirectResponse
+    {
+        $blogNew = BlogNew::find($newsId);
+        NotificationService::sendNotification($blogNew,true);
+        Alert::success(__('Уведомления успешно отправлены'));
+        return redirect()->back();
     }
 }

@@ -83,6 +83,8 @@ Route::group(['prefix' => 'admin'], static function () {
         Route::put('/custom-fields/{id}/update',[CustomFieldController::class,'update'])->name('voyager.custom-fields.update');
         Route::get('/info/{user}',[Controller::class,'user_info'])->name('user.info');
         Route::post('/users/store',[UserController::class,'store'])->name('voyager.users.store');
+        Route::get('/blogNew/{newsId}',[VoyagerUserController::class,'blogNews'])->name('blogNews');
+
     });
 });
 #endregion
