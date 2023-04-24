@@ -401,14 +401,14 @@ class ProfileService
     /**
      * Function  userReviews
      * Mazkur metod userga qoldirilgan reviewlar chiqarib beradi
-     * @param $user
+     * @param $userId
      * @param $performer
      * @param $review
      * @return AnonymousResourceCollection
      */
-    public static function userReviews($user, $performer, $review): AnonymousResourceCollection
+    public static function userReviews($userId, $performer, $review): AnonymousResourceCollection
     {
-        $reviews = Review::query()->whereHas('task')->where(['user_id' => $user->id]);
+        $reviews = Review::query()->whereHas('task')->where(['user_id' => $userId]);
 
         if (isset($performer)) {
             $reviews->where(['as_performer' => $performer]);
@@ -832,12 +832,12 @@ class ProfileService
 
     /**
      * $user ga tegishli portfolioni qaytaradi
-     * @param $user
+     * @param $userId
      * @return JsonResponse
      */
-    public function portfolios($user): JsonResponse
+    public function portfolios($userId): JsonResponse
     {
-        $portfolio = Portfolio::query()->where(['user_id' => $user])->get();
+        $portfolio = Portfolio::query()->where(['user_id' => $userId])->get();
         return response()->json([
             'success' => true,
             'data' => PortfolioIndexResource::collection($portfolio)
@@ -982,13 +982,13 @@ class ProfileService
     /**
      * shablon otklikni o'chiradi
      * @param $user
-     * @param $template
+     * @param $templateId
      * @return JsonResponse
      */
-    public function response_template_delete($user, $template): JsonResponse
+    public function response_template_delete($user, $templateId): JsonResponse
     {
-        if ((int)$user->id === (int)$template->user_id) {
-            $template->delete();
+        if ((int)$user->id === (int)$templateId->user_id) {
+            $templateId->delete();
             return response()->json([
                 'success' => true,
                 'message' => 'success',

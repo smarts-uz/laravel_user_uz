@@ -12,6 +12,9 @@ class UserNotificationService extends NotificationService
      * @param $task
      * @param int $type
      * @return void
+     * @throws \JsonException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public static function sendNotificationToPerformer($task, int $type = Notification::ADMIN_CANCEL_TASK): void
     {
@@ -25,12 +28,7 @@ class UserNotificationService extends NotificationService
             "type" => $type
         ]);
 
-        self::sendNotificationRequest([$task->performer_id], [
-            'created_date' => $notification->created_at->format('d M'),
-            'title' => self::titles($notification->type),
-            'url' => route('show_notification', [$notification]),
-            'description' => self::descriptions($notification)
-        ]);
+        self::sendNotificationRequest($task->performer_id, $notification);
         $locale = (new CustomService)->cacheLang($task->performer_id);
         self::pushNotification($task->performer, [
             'title' => self::titles($type, $locale),
@@ -43,6 +41,9 @@ class UserNotificationService extends NotificationService
      * @param $task
      * @param int $type
      * @return void
+     * @throws \JsonException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public static function sendNotificationToUser($task, int $type = Notification::ADMIN_CANCEL_TASK): void
     {
@@ -56,12 +57,7 @@ class UserNotificationService extends NotificationService
             "type" => $type
         ]);
 
-        self::sendNotificationRequest([$task->user_id], [
-            'created_date' => $notification->created_at->format('d M'),
-            'title' => self::titles($notification->type),
-            'url' => route('show_notification', [$notification]),
-            'description' => self::descriptions($notification)
-        ]);
+        self::sendNotificationRequest($task->user_id, $notification);
 
         $locale = (new CustomService)->cacheLang($task->user_id);
         self::pushNotification($task->user, [

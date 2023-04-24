@@ -21,13 +21,14 @@ class SearchAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/cancel-task/{task}",
+     *     path="/api/cancel-task/{taskId}",
      *     tags={"Task"},
      *     summary="Cancel task",
+     *     description="[**Telegram :** https://t.me/c/1334612640/138](https://t.me/c/1334612640/138).",
      *     @OA\Parameter(
      *          in="path",
-     *          description="task id kiritiladi",
-     *          name="task",
+     *          description="vazifa idsi kiritiladi",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema(
      *              type="integer"
@@ -58,16 +59,17 @@ class SearchAPIController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/delete-task/{task}/{user}",
+     *     path="/api/delete-task/{taskId}/{userId}",
      *     tags={"Task"},
      *     summary="Delete Task",
+     *     description="[**Telegram :** https://t.me/c/1334612640/139](https://t.me/c/1334612640/139).",
      *     security={
      *         {"token": {}}
      *     },
      *     @OA\Parameter(
      *          in="path",
-     *          description="task id kiritiladi",
-     *          name="task",
+     *          description="vazifa idsi kiritiladi",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema(
      *              type="integer"
@@ -75,8 +77,8 @@ class SearchAPIController extends Controller
      *     ),
      *     @OA\Parameter(
      *          in="path",
-     *          description="user id kiritiladi",
-     *          name="user",
+     *          description="foydalanuvchi idsi kiritiladi",
+     *          name="userId",
      *          required=true,
      *          @OA\Schema(
      *              type="integer"
@@ -103,16 +105,17 @@ class SearchAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/task-cancel/{task}",
+     *     path="/api/task-cancel/{taskId}",
      *     tags={"Task"},
      *     summary="Task Cancel",
+     *     description="[**Telegram :** https://t.me/c/1334612640/225](https://t.me/c/1334612640/225).",
      *     security={
      *         {"token": {}}
      *     },
      *     @OA\Parameter(
      *          in="path",
      *          description="task id kiritiladi",
-     *          name="task",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema(
      *              type="integer"

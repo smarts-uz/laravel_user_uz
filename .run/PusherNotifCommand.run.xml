@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="PusherNotifCommand" type="PhpLocalRunConfigurationType" factoryName="PHP Console" singleton="false" path="$PROJECT_DIR$/artisan" scriptParameters="PusherNotifCommand:run --user_id=1 --title=asdf --text=adsfg">
+    <method v="2" />
+  </configuration>
+</component>

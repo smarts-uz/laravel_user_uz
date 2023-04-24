@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TaskCreateNotifCommand" type="PhpLocalRunConfigurationType" factoryName="PHP Console" singleton="false" path="$PROJECT_DIR$/artisan" scriptParameters="TaskCreateNotifCommand:run --user_id=1 --id=1234 --name=task --category_id=adsf --title=asdfg --body=sadfg">
+    <method v="2" />
+  </configuration>
+</component>

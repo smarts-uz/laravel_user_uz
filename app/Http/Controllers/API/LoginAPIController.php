@@ -23,7 +23,8 @@ class LoginAPIController extends Controller
      * @OA\Get(
      *     path="/api/account/verify",
      *     tags={"Verification"},
-     *     summary="Verify account",
+     *     summary="Profilni tasdiqlash uchun api",
+     *     description="[**Telegram :** https://t.me/c/1334612640/205](https://t.me/c/1334612640/205).",
      *     @OA\Parameter(
      *          in="query",
      *          name="type",
@@ -71,7 +72,8 @@ class LoginAPIController extends Controller
      * @OA\Post(
      *     path="/api/account/verification/phone",
      *     tags={"Verification"},
-     *     summary="Verification phone",
+     *     summary="Telefon raqamni tasdiqlash",
+     *     description="[**Telegram :** https://t.me/c/1334612640/170](https://t.me/c/1334612640/170).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -118,7 +120,8 @@ class LoginAPIController extends Controller
      * @OA\Post(
      *     path="/api/account/verification/email",
      *     tags={"Verification"},
-     *     summary="Verification email",
+     *     summary="Emailni tasdiqlash",
+     *     description="[**Telegram :** https://t.me/c/1334612640/239](https://t.me/c/1334612640/239).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (

@@ -21,6 +21,7 @@ class ReviewService
      * @param $task
      * @param $request
      * @return Notification
+     * @throws \JsonException
      */
     public static function userReview($task, $request): Notification
     {
@@ -51,12 +52,7 @@ class ReviewService
             'description' => 1,
             'type' => Notification::SEND_REVIEW
         ]);
-        NotificationService::sendNotificationRequest([$task->performer_id], [
-            'created_date' => $notification->created_at->format('d M'),
-            'title' => NotificationService::titles($notification->type),
-            'url' => route('show_notification', [$notification]),
-            'description' => NotificationService::descriptions($notification)
-        ]);
+        NotificationService::sendNotificationRequest($task->performer_id, $notification);
 
         return $notification;
     }
@@ -67,6 +63,7 @@ class ReviewService
      * @param $task
      * @param $request
      * @return Notification
+     * @throws \JsonException
      */
     public static function performerReview($task, $request): Notification
     {
@@ -87,12 +84,7 @@ class ReviewService
             'description' => 1,
             'type' => Notification::SEND_REVIEW_PERFORMER
         ]);
-        NotificationService::sendNotificationRequest([$task->user_id], [
-            'created_date' => $notification->created_at->format('d M'),
-            'title' => NotificationService::titles($notification->type),
-            'url' => route('show_notification', [$notification]),
-            'description' => NotificationService::descriptions($notification)
-        ]);
+        NotificationService::sendNotificationRequest($task->user_id, $notification);
 
         $user = User::query()->find($task->user_id);
         if ((int)$request->good === 1) {

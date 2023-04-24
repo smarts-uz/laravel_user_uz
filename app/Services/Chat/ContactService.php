@@ -16,8 +16,8 @@ class ContactService
     public static function contactsList($authUser): mixed
     {
         // get not deleted archive chat user ids
-        $messages = ChMessage::query()->select('from_id', 'to_id', 'created_at','deleted_at')
-            ->where('deleted_at',null)
+        $messages = ChMessage::query()->select('from_id', 'to_id', 'created_at', 'deleted_at')
+            ->where('deleted_at', null)
             ->where('to_id', $authUser)
             ->orWhere('from_id', $authUser)
             ->orderByDesc('created_at')->distinct()->get()->toArray();
@@ -47,7 +47,7 @@ class ContactService
                      }) as $id) {
             $userIdsList[] = $id;
         }
-        $userIdsList[] = setting('site.moderator_id',1);
+        $userIdsList[] = setting('site.moderator_id', 1);
 
         // get unique elements and remove current user from list
         $userIdsList = array_unique($userIdsList);
@@ -71,13 +71,14 @@ class ContactService
     public function telegramNotification($locale, $request_id, $message, $AuthId): void
     {
         $admins = User::query()->findOrFail($request_id);
-        if($admins->hasPermission('admin_notifications')){
-            $bot = new Nutgram(setting('chat.TELEGRAM_TOKEN','5743173293:AAF33GAKELp-Id9y00EhIJRrpWI37umZ788'));
-            if ($locale === 'ru'){
-                $send_message_text = setting('chat.send_message_text_ru','');
-            }else{
-                $send_message_text = setting('chat.send_message_text_uz','');
+        if ($admins->hasPermission('admin_notifications')) {
+            $bot = new Nutgram(setting('chat.TELEGRAM_TOKEN', '5743173293:AAF33GAKELp-Id9y00EhIJRrpWI37umZ788'));
+            if ($locale === 'ru') {
+                $send_message_text = setting('chat.send_message_text_ru', '');
+            } else {
+                $send_message_text = setting('chat.send_message_text_uz', '');
             }
+
             $user = User::query()->findOrFail($AuthId);
             $role = match ($user->role_id) {
                 User::ROLE_PERFORMER => 'Performer',
@@ -85,14 +86,19 @@ class ContactService
                 User::ROLE_MODERATOR => 'Moderator',
                 default => 'Admin',
             };
-            $messages = strtr($send_message_text, [
-                '{message}'=> $message,
-                '{name}'=> $user->name,
-                '{phone}'=>  $user->phone_number,
-                '{role}'=> $role,
-                '{link}'=> 'https://user.uz/chat/'.$user->id,
-            ]);
-            $bot->sendMessage($messages, ['chat_id' => setting('chat.CHANNEL_ID','-1001548386291')]);
+
+            $tg_user = User::where('id', $AuthId)->where('discussion_post_tg_id', '!=', null)->firstOr(function ($bot) use ($role, $user, $send_message_text) {
+                $message = strtr($send_message_text, [
+                    '{name}' => $user->name,
+                    '{phone}' => $user->phone_number,
+                    '{role}' => $role,
+                    '{link}' => 'https://user.uz/chat/' . $user->id,
+                ]);
+                $bot->sendMessage($message, ['chat_id' => setting('chat.CHANNEL_ID', '-1001548386291')]);
+
+            });
+
+
         }
     }
 }

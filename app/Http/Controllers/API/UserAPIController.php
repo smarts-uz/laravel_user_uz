@@ -38,6 +38,7 @@ class UserAPIController extends Controller
      *     path="/api/reset",
      *     tags={"Reset Password"},
      *     summary="Reset password by phone - sending code",
+     *     description="[**Telegram :** https://t.me/c/1334612640/191](https://t.me/c/1334612640/191).",
      *     @OA\Parameter (
      *          in="query",
      *          description="Telefon raqam kiritiladi(masalan,'998949999999')",
@@ -79,6 +80,7 @@ class UserAPIController extends Controller
      *     path="/api/reset/password",
      *     tags={"Reset Password"},
      *     summary="Enter a New password",
+     *     description="[**Telegram :** https://t.me/c/1334612640/192](https://t.me/c/1334612640/192).",
      *     @OA\Parameter (
      *          in="query",
      *          description="Telefon raqam kiritiladi",
@@ -131,6 +133,7 @@ class UserAPIController extends Controller
      *     path="/api/code",
      *     tags={"Reset Password"},
      *     summary="Submit SMS code",
+     *     description="[**Telegram :** https://t.me/c/1334612640/193](https://t.me/c/1334612640/193).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -186,6 +189,7 @@ class UserAPIController extends Controller
      *     path="/api/support-admin",
      *     tags={"Chat"},
      *     summary="Support admin",
+     *     description="[**Telegram :** https://t.me/c/1334612640/206](https://t.me/c/1334612640/206).",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -213,6 +217,7 @@ class UserAPIController extends Controller
      *     path="/api/logout",
      *     tags={"UserAPI"},
      *     summary="User logout",
+     *     description="[**Telegram :** https://t.me/c/1334612640/190](https://t.me/c/1334612640/190).",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"

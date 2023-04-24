@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CustomFieldController;
+use App\Services\Chat\TelegramService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
@@ -36,6 +37,9 @@ use Teamprodev\LaravelPayment\PayUz;
 Route::get('/debug-sentry', function () {
     Log::channel('api')->info('api ishlamadi');
 });
+
+Route::post('/webhook', [TelegramService::class, 'web']);
+
 #region performers
 Route::get('/for_del_new_task/{task}', [CreateController::class, 'deleteTask']);
 Route::post('del-notif', [PerformersController::class, 'del_all_notif']);
@@ -79,6 +83,8 @@ Route::group(['prefix' => 'admin'], static function () {
         Route::put('/custom-fields/{id}/update',[CustomFieldController::class,'update'])->name('voyager.custom-fields.update');
         Route::get('/info/{user}',[Controller::class,'user_info'])->name('user.info');
         Route::post('/users/store',[UserController::class,'store'])->name('voyager.users.store');
+        Route::get('/blogNew/{newsId}',[VoyagerUserController::class,'blogNews'])->name('blogNews');
+
     });
 });
 #endregion

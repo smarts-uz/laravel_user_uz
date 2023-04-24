@@ -509,12 +509,12 @@ class UpdateTaskService
     }
 
     /**
-     * @param $task_id
+     * @param $taskId
      * @return JsonResponse|RedirectResponse
      */
-    public function completed($task_id): JsonResponse|RedirectResponse
+    public function completed($taskId): JsonResponse|RedirectResponse
     {
-        $task = Task::with('category')->find($task_id);
+        $task = Task::with('category')->find($taskId);
         $this->taskGuardApi($task);
         $data = [
             'status' => Task::STATUS_COMPLETE
@@ -531,13 +531,13 @@ class UpdateTaskService
     }
 
     /**
-     * @param $task_id
+     * @param $taskId
      * @param $data
      * @return JsonResponse|RedirectResponse
      */
-    public function not_completed($task_id, $data): JsonResponse|RedirectResponse
+    public function not_completed($taskId, $data): JsonResponse|RedirectResponse
     {
-        $task = Task::find($task_id);
+        $task = Task::find($taskId);
         $this->taskGuardApi($task);
         ChMessage::query()->where('from_id', $task->user_id)->where('to_id', $task->performer_id)->delete();
         ChMessage::query()->where('to_id', $task->user_id)->where('from_id', $task->performer_id)->delete();

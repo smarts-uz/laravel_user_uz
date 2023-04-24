@@ -6,14 +6,14 @@ use App\Models\BlogNew;
 use App\Services\NotificationService;
 use Illuminate\Console\Command;
 
-class NotifyCmd extends Command
+class BlogNewNotify extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'Notify:Cmd';
+    protected $signature = 'BlogNewNotify:run';
 
     /**
      * The console command description.
@@ -27,6 +27,7 @@ class NotifyCmd extends Command
      * Execute the console command.
      *
      * @return int
+     * @throws \JsonException
      */
     public function handle()
     {

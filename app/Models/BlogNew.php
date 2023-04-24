@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
@@ -22,4 +23,18 @@ class BlogNew extends Model
     protected $table = "blog_new";
 
     protected $translatable = ['title','text','desc'];
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class,'news_id');
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        self::deleting(static function (BlogNew $blogNew){
+            $blogNew->notifications()->delete();
+        });
+    }
 }

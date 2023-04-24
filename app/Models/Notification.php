@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use TCG\Voyager\Traits\Translatable;
 
 /**
- * @property $id
+ * @property $id  bildirishnoma idsi
  * @property $user_id bildirishnoma yuborilgan user id
  * @property $task_id task id bo'yicha yuborilgan bildirishnoma
  * @property $name_task bildirishnoma yuborilgan task id
@@ -19,6 +19,7 @@ use TCG\Voyager\Traits\Translatable;
  * @property $status push bildirishnoma yuborilgan yoki yuborilmagani
  * @property $is_read bildirishnoma o'qilgan yoki o'qilmagani
  * @property $performer_id performer id
+ * @property $response bildirishnoma yuborilganda qaytaradigan qiymat
  * @property $created_at bildirishnoma yaratilgan vaqti
  *
  */
@@ -27,6 +28,10 @@ class Notification extends Model
 {
     use HasFactory;
     use Translatable;
+
+    /**
+     * @var mixed|string
+     */
 
     protected array $translatable = ['description'];
     protected $fillable = ['user_id', 'performer_id', 'service_id', 'task_id', 'cat_id', 'description', 'name_task', 'type', 'is_read','news_id'];
@@ -65,7 +70,7 @@ class Notification extends Model
 
     public function scopeNewTask($query, $user)
     {
-        if ($user->role_id == 2) {
+        if ((int)$user->role_id === User::ROLE_PERFORMER) {
             return $query->orWhere('type', 1);
         }
         return $query;
