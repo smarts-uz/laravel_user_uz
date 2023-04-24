@@ -3063,7 +3063,7 @@
                                         "type": "integer"
                                     },
                                     "radio": {
-                                        "description": "Agar masofaviy bo'lsa - remote, manzil bo`yicha bo`lsa - address tanlanadi",
+                                        "description": "Agar masofaviy bo'lsa - remote, manzil bo'yicha bo'lsa - address tanlanadi",
                                         "type": "string",
                                         "enum": [
                                             "remote",
@@ -3122,11 +3122,11 @@
                                                 },
                                                 "latitude": {
                                                     "description": "kenglik kiritiladi",
-                                                    "type": "number"
+                                                    "type": "string"
                                                 },
                                                 "longitude": {
                                                     "description": "uzunlik kiritiladi",
-                                                    "type": "number"
+                                                    "type": "string"
                                                 }
                                             },
                                             "type": "object"
@@ -3629,7 +3629,7 @@
                     "Task Update"
                 ],
                 "summary": "Task update address",
-                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/](https:\/\/t.me\/c\/1334612640\/).",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/257](https:\/\/t.me\/c\/1334612640\/257).",
                 "operationId": "8a43a5339bd4714df6df8db16d8f1783",
                 "parameters": [
                     {
@@ -3991,7 +3991,7 @@
                     "Task Update"
                 ],
                 "summary": "Task update verify",
-                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/](https:\/\/t.me\/c\/1334612640\/).",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/258](https:\/\/t.me\/c\/1334612640\/258).",
                 "operationId": "7a5112ce987a12fa90efea9def70b21a",
                 "parameters": [
                     {
@@ -4048,7 +4048,7 @@
                     "Task Update"
                 ],
                 "summary": "Task delete images",
-                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/](https:\/\/t.me\/c\/1334612640\/).",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/259](https:\/\/t.me\/c\/1334612640\/259).",
                 "operationId": "6b34d5ecfb9f5e6c586162e6d262c44e",
                 "parameters": [
                     {
@@ -4355,17 +4355,17 @@
                 ]
             }
         },
-        "\/api\/send-review-user\/{task}": {
+        "\/api\/send-review-user\/{taskId}": {
             "post": {
                 "tags": [
                     "Responses"
                 ],
                 "summary": "Complete task",
                 "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/224](https:\/\/t.me\/c\/1334612640\/224).",
-                "operationId": "f440159070ac0fc1e2b350969e9ad62d",
+                "operationId": "70f971d7e6e8bc6b89049a8aa236499c",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
                         "description": "review qoldirmoqchi bo'lgan vazifa idsi kiritiladi",
                         "required": true,
@@ -4620,16 +4620,16 @@
                 ]
             }
         },
-        "\/api\/read-notification\/{notification}": {
+        "\/api\/read-notification\/{notificationId}": {
             "post": {
                 "tags": [
                     "Notifications"
                 ],
                 "summary": "Read notifications",
-                "operationId": "97f7d76ff0f0ea630efedcfc0a2c46ff",
+                "operationId": "91bb89f6ef5df399ca1a7b03c047d9ab",
                 "parameters": [
                     {
-                        "name": "notification",
+                        "name": "notificationId",
                         "in": "path",
                         "description": "Notification id kiritiladi",
                         "required": true,
@@ -5039,16 +5039,16 @@
                 ]
             }
         },
-        "\/api\/test-complete-task\/{task}": {
+        "\/api\/test-complete-task\/{taskId}": {
             "get": {
                 "tags": [
                     "Notifications"
                 ],
                 "summary": "complete task notifications",
-                "operationId": "c02ef5267610de872cffb373698bed46",
+                "operationId": "6c507df5e6fa7e9ddf301f86f92f5ff8",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
                         "description": "task id kiritiladi",
                         "required": true,
@@ -5075,16 +5075,16 @@
                 ]
             }
         },
-        "\/api\/test-delete-task\/{task}": {
+        "\/api\/test-delete-task\/{taskId}": {
             "get": {
                 "tags": [
                     "Notifications"
                 ],
                 "summary": "delete task notifications",
-                "operationId": "3786573f53513f632a24c7919a153d49",
+                "operationId": "09df6fa1cb1586f7acffae76c13cbc3a",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
                         "description": "task id kiritiladi",
                         "required": true,
@@ -5111,16 +5111,16 @@
                 ]
             }
         },
-        "\/api\/test-cancel-task\/{task}": {
+        "\/api\/test-cancel-task\/{taskId}": {
             "get": {
                 "tags": [
                     "Notifications"
                 ],
                 "summary": "cencel task notifications",
-                "operationId": "59bd6d8203bb7f0522340f2f4dcac4c8",
+                "operationId": "f7eae8b55c4a773fb3e7f1055947e972",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
                         "description": "task id kiritiladi",
                         "required": true,

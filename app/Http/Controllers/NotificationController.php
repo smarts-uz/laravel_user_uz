@@ -57,13 +57,13 @@ class NotificationController extends VoyagerBaseController
 
     /**
      * @OA\Post(
-     *     path="/api/read-notification/{notification}",
+     *     path="/api/read-notification/{notificationId}",
      *     tags={"Notifications"},
      *     summary="Read notifications",
      *     @OA\Parameter (
      *          in="path",
      *          description="Notification id kiritiladi",
-     *          name="notification",
+     *          name="notificationId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"

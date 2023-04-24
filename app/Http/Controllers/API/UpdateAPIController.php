@@ -120,14 +120,14 @@ class UpdateAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/send-review-user/{task}",
+     *     path="/api/send-review-user/{taskId}",
      *     tags={"Responses"},
      *     summary="Complete task",
      *     description="[**Telegram :** https://t.me/c/1334612640/224](https://t.me/c/1334612640/224).",
      *     @OA\Parameter (
      *          in="path",
      *          description="review qoldirmoqchi bo'lgan vazifa idsi kiritiladi",
-     *          name="task",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="string"

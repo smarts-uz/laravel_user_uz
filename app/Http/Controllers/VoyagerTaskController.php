@@ -60,13 +60,13 @@ class VoyagerTaskController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/test-complete-task/{task}",
+     *     path="/api/test-complete-task/{taskId}",
      *     tags={"Notifications"},
      *     summary="complete task notifications",
      *     @OA\Parameter (
      *          in="path",
      *          description="task id kiritiladi",
-     *          name="task",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -108,13 +108,13 @@ class VoyagerTaskController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/test-delete-task/{task}",
+     *     path="/api/test-delete-task/{taskId}",
      *     tags={"Notifications"},
      *     summary="delete task notifications",
      *     @OA\Parameter (
      *          in="path",
      *          description="task id kiritiladi",
-     *          name="task",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -152,13 +152,13 @@ class VoyagerTaskController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/test-cancel-task/{task}",
+     *     path="/api/test-cancel-task/{taskId}",
      *     tags={"Notifications"},
      *     summary="cencel task notifications",
      *     @OA\Parameter (
      *          in="path",
      *          description="task id kiritiladi",
-     *          name="task",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"

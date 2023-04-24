@@ -641,7 +641,7 @@ class TaskAPIController extends Controller
      *                 ),
      *                 @OA\Property (
      *                    property="radio",
-     *                    description="Agar masofaviy bo'lsa - remote, manzil bo`yicha bo`lsa - address tanlanadi",
+     *                    description="Agar masofaviy bo'lsa - remote, manzil bo'yicha bo'lsa - address tanlanadi",
      *                    enum={"remote","address"},
      *                    type="string",
      *                 ),
@@ -699,12 +699,12 @@ class TaskAPIController extends Controller
      *                      @OA\Property(
      *                          property="latitude",
      *                          description="kenglik kiritiladi",
-     *                          type="number"
+     *                          type="string"
      *                      ),
      *                      @OA\Property(
      *                          property="longitude",
      *                          description="uzunlik kiritiladi",
-     *                          type="number"
+     *                          type="string"
      *                      ),
      *                   ),
      *                 )
@@ -1207,7 +1207,7 @@ class TaskAPIController extends Controller
      *     path="/api/update-task/{taskId}/address",
      *     tags={"Task Update"},
      *     summary="Task update address",
-     *     description="[**Telegram :** https://t.me/c/1334612640/](https://t.me/c/1334612640/).",
+     *     description="[**Telegram :** https://t.me/c/1334612640/257](https://t.me/c/1334612640/257).",
      *     @OA\Parameter (
      *          in="path",
      *          description="vazifa id kiritiladi",
@@ -1552,7 +1552,7 @@ class TaskAPIController extends Controller
      *     path="/api/update-task/{taskId}/verify",
      *     tags={"Task Update"},
      *     summary="Task update verify",
-     *     description="[**Telegram :** https://t.me/c/1334612640/](https://t.me/c/1334612640/).",
+     *     description="[**Telegram :** https://t.me/c/1334612640/258](https://t.me/c/1334612640/258).",
      *     @OA\Parameter (
      *          in="path",
      *          description="vazifa idsi kiritiladi",
@@ -1608,7 +1608,7 @@ class TaskAPIController extends Controller
      *     path="/api/update-task/{taskId}/delete-image",
      *     tags={"Task Update"},
      *     summary="Task delete images",
-     *     description="[**Telegram :** https://t.me/c/1334612640/](https://t.me/c/1334612640/).",
+     *     description="[**Telegram :** https://t.me/c/1334612640/259](https://t.me/c/1334612640/259).",
      *     @OA\Parameter (
      *          in="path",
      *          description="vazifa idsi kiritiladi",
