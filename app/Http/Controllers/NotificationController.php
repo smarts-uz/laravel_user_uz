@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\FirebaseTokenRequest;
 use App\Http\Resources\NotificationResource;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Routing\Redirector;
 use JetBrains\PhpStorm\ArrayShape;
+use JsonException;
 use App\Models\{Notification, Session, User};
 use App\Services\{NotificationService, Response};
 use Illuminate\Http\{JsonResponse, RedirectResponse, Request};
@@ -255,6 +257,10 @@ class NotificationController extends VoyagerBaseController
         return $this->success($session);
     }
 
+    /**
+     * @throws AuthorizationException
+     * @throws JsonException
+     */
     public function store(Request $request)
     {
         $slug = $this->getSlug($request);

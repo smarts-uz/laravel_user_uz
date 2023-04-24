@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SMSNotifCommand" type="PhpLocalRunConfigurationType" factoryName="PHP Console" singleton="false" path="$PROJECT_DIR$/artisan" scriptParameters="SMSNotifCommand:run --user_id=1 --text=sadfg">
+    <method v="2" />
+  </configuration>
+</component>

@@ -72,8 +72,8 @@ Route::group(['prefix' => 'admin'], static function () {
     Voyager::routes();
     Route::group(['middleware' => 'auth'], static function () {
         Route::get('report', [ReportController::class, "index"])->name("index");
-        Route::get('report/get', [ReportController::class, "report"])->name("report");
-        Route::get('report/get/child', [ReportController::class, "report_sub"])->name("report_sub");
+        Route::post('report/get', [ReportController::class, "report"])->name("report");
+        Route::post('report/get/child', [ReportController::class, "report_sub"])->name("report_sub");
         Route::get('report/{id}', [ReportController::class, "index_sub"])->name("index_sub");
         Route::get('users/activity/{user}', [VoyagerUserController::class, "activity"])->name("voyagerUser.activity");
         Route::get('tasks/cancel/{task}', [VoyagerTaskController::class, "cancelTask"])->name("voyagerTask.cancel");
@@ -83,6 +83,8 @@ Route::group(['prefix' => 'admin'], static function () {
         Route::put('/custom-fields/{id}/update',[CustomFieldController::class,'update'])->name('voyager.custom-fields.update');
         Route::get('/info/{user}',[Controller::class,'user_info'])->name('user.info');
         Route::post('/users/store',[UserController::class,'store'])->name('voyager.users.store');
+        Route::get('/blogNew/{newsId}',[VoyagerUserController::class,'blogNews'])->name('blogNews');
+
     });
 });
 #endregion

@@ -59,9 +59,9 @@ class UpdateAPIController extends Controller
      * )
      */
 
-    public function completed(int $task_id): JsonResponse
+    public function completed(int $taskId): JsonResponse
     {
-        return $this->updatetask->completed($task_id);
+        return $this->updatetask->completed($taskId);
     }
 
     /**
@@ -110,24 +110,24 @@ class UpdateAPIController extends Controller
      * )
      */
 
-    public function not_completed(Request $request, int $task_id): JsonResponse
+    public function not_completed(Request $request, int $taskId): JsonResponse
     {
         $request->validate(['reason' => 'required'], ['reason.required' => 'Reason is required']);
         $data = $request->get('reason');
-        return $this->updatetask->not_completed($task_id, $data);
+        return $this->updatetask->not_completed($taskId, $data);
     }
 
 
     /**
      * @OA\Post(
-     *     path="/api/send-review-user/{taskId}",
+     *     path="/api/send-review-user/{task}",
      *     tags={"Responses"},
      *     summary="Complete task",
      *     description="[**Telegram :** https://t.me/c/1334612640/224](https://t.me/c/1334612640/224).",
      *     @OA\Parameter (
      *          in="path",
      *          description="review qoldirmoqchi bo'lgan vazifa idsi kiritiladi",
-     *          name="taskId",
+     *          name="task",
      *          required=true,
      *          @OA\Schema (
      *              type="string"

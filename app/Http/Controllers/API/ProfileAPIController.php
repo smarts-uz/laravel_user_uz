@@ -385,10 +385,10 @@ class ProfileAPIController extends Controller
      */
     public function reviews(Request $request): JsonResponseAlias
     {
-        $user = auth()->user();
+        $userId = auth()->id();
         $performer = $request->get('performer');
         $review = $request->get('review');
-        $reviews = ProfileService::userReviews($user, $performer, $review);
+        $reviews = ProfileService::userReviews($userId, $performer, $review);
         return response()->json([
             'success' => true,
             'data' => $reviews
@@ -917,11 +917,11 @@ class ProfileAPIController extends Controller
      *     )
      * )
      */
-    public function userProfile(User $user): JsonResponseAlias
+    public function userProfile($userId): JsonResponseAlias
     {
-        $user_id = $user->id;
+        $user = User::find($userId);
         (new PerformersService)->setView($user);
-        return $this->profileService->index($user_id);
+        return $this->profileService->index($userId);
     }
 
     /**
@@ -987,11 +987,11 @@ class ProfileAPIController extends Controller
      *     )
      * )
      */
-    public function userReviews(Request $request, User $user): JsonResponseAlias
+    public function userReviews(Request $request, $userId): JsonResponseAlias
     {
         $performer = $request->get('performer');
         $review = $request->get('review');
-        $reviews = ProfileService::userReviews($user, $performer, $review);
+        $reviews = ProfileService::userReviews($userId, $performer, $review);
         return response()->json([
             'success' => true,
             'data' => $reviews

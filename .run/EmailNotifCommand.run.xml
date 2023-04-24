@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="EmailNotifCommand" type="PhpLocalRunConfigurationType" factoryName="PHP Console" singleton="false" path="$PROJECT_DIR$/artisan" scriptParameters="EmailNotifCommand:run --user_id=1 --text=asfdsgdbf">
+    <method v="2" />
+  </configuration>
+</component>

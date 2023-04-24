@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use JsonException;
 use App\Http\Resources\{NotificationResource, PerformerIndexResource, ReviewIndexResource};
 use App\Item\{PerformerPrefItem, PerformerServiceItem, PerformerUserItem};
 use App\Models\{BlockedUser, Notification, Review, Task, User, UserCategory, UserView, Category};
@@ -11,6 +12,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
 use League\Flysystem\WhitespacePathNormalizer;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 
 class PerformersService
@@ -205,8 +208,9 @@ class PerformersService
      * @param $user_id
      * @param $session
      * @return JsonResponse
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws JsonException
      */
     public function task_give_web($task_id, $user_id, $session): JsonResponse
     {
@@ -236,12 +240,7 @@ class PerformersService
                 'type' => Notification::GIVE_TASK,
             ]);
 
-            NotificationService::sendNotificationRequest([$users_id], [
-                'created_date' => $notification->created_at->format('d M'),
-                'title' => NotificationService::titles($notification->type),
-                'url' => route('show_notification', [$notification]),
-                'description' => NotificationService::descriptions($notification)
-            ]);
+            NotificationService::sendNotificationRequest($users_id, $notification);
             $locale = (new CustomService)->cacheLang($performer->id);
             NotificationService::pushNotification($performer, [
                 'title' => __('Предложение', [], $locale), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
@@ -259,6 +258,9 @@ class PerformersService
      * @param $task_id
      * @param $performer_id
      * @return JsonResponse
+     * @throws JsonException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function task_give_app($task_id, $performer_id): JsonResponse
     {
@@ -283,12 +285,7 @@ class PerformersService
             'type' => Notification::GIVE_TASK,
         ]);
 
-        NotificationService::sendNotificationRequest([$performer_id], [
-            'created_date' => $notification->created_at->format('d M'),
-            'title' => NotificationService::titles($notification->type),
-            'url' => route('show_notification', [$notification]),
-            'description' => NotificationService::descriptions($notification)
-        ]);
+        NotificationService::sendNotificationRequest($performer_id, $notification);
 
         NotificationService::pushNotification($performer, [
             'title' => NotificationService::titles($notification->type, $locale),

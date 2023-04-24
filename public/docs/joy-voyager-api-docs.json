@@ -4882,6 +4882,7 @@
                                 "performer_id",
                                 "deleted_at",
                                 "news_id",
+                                "response",
                                 "notification_belongsto_user_relationship",
                                 "notification_hasmany_service_relationship"
                             ],
