@@ -69,7 +69,7 @@ Route::group(['prefix' => 'admin'], static function () {
     Route::group(['middleware' => 'auth'], static function () {
         Route::get('report', [ReportController::class, "index"])->name("index");
         Route::post('report/get', [ReportController::class, "report"])->name("report");
-        Route::get('report/get/child', [ReportController::class, "report_sub"])->name("report_sub");
+        Route::post('report/get/child', [ReportController::class, "report_sub"])->name("report_sub");
         Route::get('report/{id}', [ReportController::class, "index_sub"])->name("index_sub");
         Route::get('users/activity/{user}', [VoyagerUserController::class, "activity"])->name("voyagerUser.activity");
         Route::get('tasks/cancel/{task}', [VoyagerTaskController::class, "cancelTask"])->name("voyagerTask.cancel");
