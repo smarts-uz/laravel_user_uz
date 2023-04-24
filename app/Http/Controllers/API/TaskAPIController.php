@@ -991,6 +991,7 @@ class TaskAPIController extends Controller
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws \JsonException
      */
     public function contacts(TaskContactsRequest $request): JsonResponse
     {
@@ -1062,7 +1063,7 @@ class TaskAPIController extends Controller
      *      @OA\Parameter (
      *          in="path",
      *          description="vazifa id kiritiladi",
-     *          name="task",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1107,9 +1108,9 @@ class TaskAPIController extends Controller
      *
      *
      */
-    public function updateName(TaskNameRequest $request, Task $task): JsonResponse
+    public function updateName(TaskNameRequest $request, $taskId): JsonResponse
     {
-        return $this->success($this->update_task_service->updateName($task, $request->validated()));
+        return $this->success($this->update_task_service->updateName($taskId, $request->validated()));
     }
 
     /**
@@ -1121,7 +1122,7 @@ class TaskAPIController extends Controller
      *     @OA\Parameter (
      *          in="path",
      *          description="vazifa id kiritiladi",
-     *          name="task",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1144,9 +1145,9 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateCustom(Request $request, Task $task): JsonResponse
+    public function updateCustom(Request $request, $taskId): JsonResponse
     {
-        return $this->success($this->update_task_service->updateCustom($task, $request));
+        return $this->success($this->update_task_service->updateCustom($taskId, $request));
     }
 
 
@@ -1159,7 +1160,7 @@ class TaskAPIController extends Controller
      *     @OA\Parameter (
      *          in="path",
      *          description="vazifa id kiritiladi",
-     *          name="task",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1172,7 +1173,7 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="radio",
-     *                    description="Agar masofaviy ish bolsa - remote, manzil bo`yicha bo`lsa - address kiritiladi",
+     *                    description="Agar masofaviy ish bolsa - remote, manzil bo'yicha bo'lsa - address kiritiladi",
      *                    enum={"remote","address"},
      *                    type="string",
      *                 ),
@@ -1196,9 +1197,9 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateRemote(TaskRemoteRequest $request, Task $task): JsonResponse
+    public function updateRemote(TaskRemoteRequest $request, $taskId): JsonResponse
     {
-        return $this->success($this->update_task_service->updateRemote($task, $request->validated()));
+        return $this->success($this->update_task_service->updateRemote($taskId, $request->validated()));
     }
 
 
@@ -1211,7 +1212,7 @@ class TaskAPIController extends Controller
      *     @OA\Parameter (
      *          in="path",
      *          description="vazifa id kiritiladi",
-     *          name="task",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1257,9 +1258,9 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateAddress(TaskAddressRequest $request, Task $task): JsonResponse
+    public function updateAddress(TaskAddressRequest $request, $taskId): JsonResponse
     {
-        return $this->success($this->update_task_service->updateAddress($task, $request->validated()));
+        return $this->success($this->update_task_service->updateAddress($taskId, $request->validated()));
     }
 
 
@@ -1272,7 +1273,7 @@ class TaskAPIController extends Controller
      *     @OA\Parameter (
      *          in="path",
      *          description="vazifa idsi kiritiladi",
-     *          name="task",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1319,9 +1320,9 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateDate(TaskDateRequest $request, Task $task): JsonResponse
+    public function updateDate(TaskDateRequest $request, $taskId): JsonResponse
     {
-        return $this->success($this->update_task_service->updateDate($task, $request->validated()));
+        return $this->success($this->update_task_service->updateDate($taskId, $request->validated()));
     }
 
 
@@ -1334,7 +1335,7 @@ class TaskAPIController extends Controller
      *     @OA\Parameter (
      *          in="path",
      *          description="vazifa idsi kiritiladi",
-     *          name="task",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1376,9 +1377,9 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateBudget(TaskBudgetRequest $request, Task $task): JsonResponse
+    public function updateBudget(TaskBudgetRequest $request, $taskId): JsonResponse
     {
-        return $this->success($this->update_task_service->updateBudget($task, $request->validated()));
+        return $this->success($this->update_task_service->updateBudget($taskId, $request->validated()));
     }
 
 
@@ -1391,7 +1392,7 @@ class TaskAPIController extends Controller
      *     @OA\Parameter (
      *          in="path",
      *          description="vazifa idsi kiritiladi",
-     *          name="task",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1433,9 +1434,9 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateNote(TaskNoteRequest $request, Task $task): JsonResponse
+    public function updateNote(TaskNoteRequest $request, $taskId): JsonResponse
     {
-        return $this->success($this->update_task_service->updateNote($task, $request->validated()));
+        return $this->success($this->update_task_service->updateNote($taskId, $request->validated()));
     }
 
 
@@ -1448,7 +1449,7 @@ class TaskAPIController extends Controller
      *     @OA\Parameter (
      *          in="path",
      *          description="vazifa id kiritiladi",
-     *          name="task",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1490,9 +1491,9 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateUploadImages(Request $request, Task $task): JsonResponse
+    public function updateUploadImages(Request $request, $taskId): JsonResponse
     {
-        return $this->update_task_service->updateImage($task, $request);
+        return $this->update_task_service->updateImage($taskId, $request);
     }
 
 
@@ -1505,7 +1506,7 @@ class TaskAPIController extends Controller
      *     @OA\Parameter (
      *          in="path",
      *          description="vazifa idsi kiritiladi",
-     *          name="task",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1541,9 +1542,9 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateContacts(TaskContactsRequest $request, $task_id): JsonResponse
+    public function updateContacts(TaskContactsRequest $request, $taskId): JsonResponse
     {
-        return $this->success($this->update_task_service->updateContact($task_id, $request->validated()));
+        return $this->success($this->update_task_service->updateContact($taskId, $request->validated()));
     }
 
 
@@ -1556,7 +1557,7 @@ class TaskAPIController extends Controller
      *     @OA\Parameter (
      *          in="path",
      *          description="vazifa idsi kiritiladi",
-     *          name="task",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1597,10 +1598,10 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateVerify(TaskVerificationRequest $request, $task_id): JsonResponse
+    public function updateVerify(TaskVerificationRequest $request, $taskId): JsonResponse
     {
         $data = $request->validated();
-        return $this->update_task_service->verification($task_id, $data);
+        return $this->update_task_service->verification($taskId, $data);
     }
 
     /**
@@ -1612,7 +1613,7 @@ class TaskAPIController extends Controller
      *     @OA\Parameter (
      *          in="path",
      *          description="vazifa idsi kiritiladi",
-     *          name="task",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1624,7 +1625,7 @@ class TaskAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
-     *                    property="images",
+     *                    property="image",
      *                    description="o'chiriladigan rasm url manzili kiritiladi",
      *                    type="string",
      *                 ),
@@ -1648,9 +1649,9 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function deleteImage(Request $request, Task $task): JsonResponse
+    public function deleteImage(Request $request, $taskId): JsonResponse
     {
-        return $this->update_task_service->deleteImage($request, $task);
+        return $this->update_task_service->deleteImage($request, $taskId);
     }
 
 

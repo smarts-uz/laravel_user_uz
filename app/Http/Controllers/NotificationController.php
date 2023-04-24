@@ -86,8 +86,9 @@ class NotificationController extends VoyagerBaseController
      *     },
      * )
      */
-    public function read_notification(Notification $notification): JsonResponse
+    public function read_notification($notificationId): JsonResponse
     {
+        $notification = Notification::find($notificationId);
         $notification->update(['is_read' => 1]);
         return $this->success($notification);
     }

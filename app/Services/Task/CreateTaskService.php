@@ -377,6 +377,7 @@ class CreateTaskService
      * @return array //Value Returned
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws \JsonException
      */
     public function contact_store($data, $user): array
     {
@@ -430,6 +431,9 @@ class CreateTaskService
      * task create api verification
      * @param $data
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws \JsonException
      */
     public function verification($data): JsonResponse
     {

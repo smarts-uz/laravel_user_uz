@@ -13,7 +13,7 @@ class TaskContactsRequest extends BaseRequest
                 'required',
                 Rule::unique('users')->ignore(auth()->id())
             ],
-            'task_id' => 'required',
+            'taskId' => 'required',
         ];
     }
 
@@ -37,9 +37,9 @@ class TaskContactsRequest extends BaseRequest
     public function messages()
     {
         return [
-            "phone_number.required" => __('Требуется заполнение!'),
+            "phone_number.required" => __('Требуется заполнение! phone'),
             "phone_number.unique" => __('Этот номер есть в системе!'),
-            "task_id.required" => __('Требуется заполнение!'),
+            "taskId.required" => __('Требуется заполнение!'),
         ];
     }
 }

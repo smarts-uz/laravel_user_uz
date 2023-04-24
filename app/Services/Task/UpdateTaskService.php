@@ -44,17 +44,18 @@ class UpdateTaskService
         $this->custom_field_service = new CustomFieldService();
     }
 
-    public function updateName($task, $data): array
+    public function updateName($taskId, $data): array
     {
-        (new CustomService)->updateCache('task_update_' . $task->id, 'name', $data['name']);
-        (new CustomService)->updateCache('task_update_' . $task->id, 'category_id', $data['category_id']);
+        (new CustomService)->updateCache('task_update_' . $taskId, 'name', $data['name']);
+        (new CustomService)->updateCache('task_update_' . $taskId, 'category_id', $data['category_id']);
 
-        return $this->get_custom($task);
+        return $this->get_custom($taskId);
     }
 
     #[ArrayShape([])]
-    public function get_custom($task): array
+    public function get_custom($taskId): array
     {
+        $task = Task::find($taskId);
         $result = $this->custom_field_service->getCustomFieldsByRoute($task->id, CustomField::ROUTE_CUSTOM);
         $custom_fields = $result['custom_fields'];
         if (!$task->category->customFieldsInCustom->count()) {
@@ -66,8 +67,9 @@ class UpdateTaskService
         return ['route' => 'custom', 'task_id' => $task->id, 'steps' => 6, 'custom_fields' => $custom_fields];
     }
 
-    public function updateCustom($task, $request): array
+    public function updateCustom($taskId, $request): array
     {
+        $task = Task::find($taskId);
         $customFields = [];
         foreach ($task->category->custom_fields()->where('route', CustomField::ROUTE_CUSTOM)->get() as $customField) {
             $value['custom_field_id'] = $customField->id;
@@ -98,12 +100,13 @@ class UpdateTaskService
     }
 
     /**
-     * @param $task
+     * @param $taskId
      * @param $data
      * @return array
      */
-    public function updateRemote($task, $data): array
+    public function updateRemote($taskId, $data): array
     {
+        $task = Task::find($taskId);
         return match ($data['radio']) {
             CustomField::ROUTE_ADDRESS => $this->get_address($task),
             CustomField::ROUTE_REMOTE => $this->get_date($task),
@@ -126,19 +129,19 @@ class UpdateTaskService
     }
 
     /**
-     * @param $task
+     * @param $taskId
      * @param $data
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateAddress($task, $data): array
+    public function updateAddress($taskId, $data): array
     {
         $length = min(count($data['points']), setting('site.max_address',10));
         $addresses = [];
         for ($i = 0; $i < $length; $i++) {
             $address = [
-                'task_id' => $task->id,
+                'task_id' => $taskId,
                 'location' => $data['points'][$i]['location'],
                 'latitude' => $data['points'][$i]['latitude'],
                 'longitude' => $data['points'][$i]['longitude']
@@ -149,23 +152,23 @@ class UpdateTaskService
             $addresses[] = $address;
         }
 
-        (new CustomService)->updateCache('task_update_' . $task->id, 'addresses', $addresses);
+        (new CustomService)->updateCache('task_update_' . $taskId, 'addresses', $addresses);
 
-        return $this->get_date($task);
+        return $this->get_date($taskId);
 
     }
 
 
     /**
-     * @param $task
+     * @param $taskId
      * @return array
      */
     #[ArrayShape([])]
-    public function get_date($task): array
+    public function get_date($taskId): array
     {
         return [
-            'route' => 'date', 'task_id' => $task->id, 'steps' => 3,
-            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task->id, CustomField::ROUTE_DATE)['custom_fields']
+            'route' => 'date', 'task_id' => $taskId, 'steps' => 3,
+            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($taskId, CustomField::ROUTE_DATE)['custom_fields']
         ];
     }
 
@@ -176,39 +179,40 @@ class UpdateTaskService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateDate($task, $data): array
+    public function updateDate($taskId, $data): array
     {
         unset($data['task_id']);
-        (new CustomService)->updateCache('task_update_' . $task->id, 'date', $data);
-        return $this->get_budget($task);
+        (new CustomService)->updateCache('task_update_' . $taskId, 'date', $data);
+        return $this->get_budget($taskId);
     }
 
 
     /**
-     * @param $task
+     * @param $taskId
      * @return array
      */
     #[ArrayShape([])]
-    public function get_budget($task): array
+    public function get_budget($taskId): array
     {
+        $task = Task::find($taskId);
         return [
-            'route' => 'budget', 'task_id' => $task->id, 'steps' => 2, 'price' => Category::query()->findOrFail($task->category_id)->max,
-            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task->id, CustomField::ROUTE_BUDGET)['custom_fields']
+            'route' => 'budget', 'task_id' => $taskId, 'steps' => 2, 'price' => Category::query()->findOrFail($task->category_id)->max,
+            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($taskId, CustomField::ROUTE_BUDGET)['custom_fields']
         ];
     }
 
     /**
-     * @param $task
+     * @param $taskId
      * @param $data
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateBudget($task, $data): array
+    public function updateBudget($taskId, $data): array
     {
-        (new CustomService)->updateCache('task_update_' . $task->id, 'budget', $data['amount']);
-        (new CustomService)->updateCache('task_update_' . $task->id, 'oplata', $data['budget_type']);
-        return $this->get_note($task);
+        (new CustomService)->updateCache('task_update_' . $taskId, 'budget', $data['amount']);
+        (new CustomService)->updateCache('task_update_' . $taskId, 'oplata', $data['budget_type']);
+        return $this->get_note($taskId);
     }
 
 
@@ -217,12 +221,12 @@ class UpdateTaskService
      * @return array
      */
     #[ArrayShape([])]
-    public function get_note($task): array
+    public function get_note($taskId): array
     {
-        $result = $this->custom_field_service->getCustomFieldsByRoute($task->id, CustomField::ROUTE_NOTE);
+        $result = $this->custom_field_service->getCustomFieldsByRoute($taskId, CustomField::ROUTE_NOTE);
         $custom_fields = $result['custom_fields'];
 
-        return ['route' => 'note', 'task_id' => $task->id, 'steps' => 1, 'custom_fields' => $custom_fields];
+        return ['route' => 'note', 'task_id' => $taskId, 'steps' => 1, 'custom_fields' => $custom_fields];
     }
 
     /**
@@ -232,11 +236,11 @@ class UpdateTaskService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateNote($task, $data): array
+    public function updateNote($taskId, $data): array
     {
         unset($data['task_id']);
-        (new CustomService)->updateCache('task_update_' . $task->id, 'note', $data);
-        return $this->get_contact($task);
+        (new CustomService)->updateCache('task_update_' . $taskId, 'note', $data);
+        return $this->get_contact($taskId);
     }
 
     /**
@@ -244,12 +248,13 @@ class UpdateTaskService
      * @return array
      */
     #[ArrayShape([])]
-    public function get_contact($task): array
+    public function get_contact($taskId): array
     {
+        $task = Task::find($taskId);
         return [
-            'route' => 'contact', 'task_id' => $task->id, 'steps' => 0,
+            'route' => 'contact', 'task_id' => $taskId, 'steps' => 0,
             'phone' => $task->phone ? (new CustomService)->correctPhoneNumber($task->phone) : null,
-            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task->id, CustomField::ROUTE_CONTACTS)['custom_fields']
+            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($taskId, CustomField::ROUTE_CONTACTS)['custom_fields']
         ];
     }
 
@@ -265,7 +270,7 @@ class UpdateTaskService
         /** @var User $user */
         $user = auth()->user();
         unset($data['task_id']);
-        $task = TAsk::select('id','phone', 'verify_code', 'verify_expiration', 'status', 'user_id')->find($task_id);
+        $task = Task::find($task_id);
         $correct = (new CustomService)->correctPhoneNumber($data['phone_number']);
         $correctUser = (new CustomService)->correctPhoneNumber($user->phone_number);
         switch (true) {
@@ -303,6 +308,7 @@ class UpdateTaskService
         return [
             'task_id' => $task->id,
             'route' => 'end',
+            'data' => $data
         ];
     }
 
@@ -310,12 +316,13 @@ class UpdateTaskService
     // Update Image
 
     /**
-     * @param $task
+     * @param $taskId
      * @param $request
      * @return JsonResponse
      */
-    public function updateImage($task, $request): JsonResponse
+    public function updateImage($taskId, $request): JsonResponse
     {
+        $task = Task::find($taskId);
         $validator = Validator::make($request->all(), [
             'task_id' => 'required',
             'images.*' => 'required|image:jpeg,jpg,png,gif|max:10000'
@@ -346,11 +353,12 @@ class UpdateTaskService
 
     /**
      * @param $request
-     * @param $task
+     * @param $taskId
      * @return JsonResponse
      */
-    public function deleteImage($request, $task): JsonResponse
+    public function deleteImage($request, $taskId): JsonResponse
     {
+        $task = Task::find($taskId);
         $image = $request->get('image');
         File::delete(public_path() . '/storage/uploads/' . $image);
         $images = json_decode($task->photos);
@@ -359,7 +367,8 @@ class UpdateTaskService
         $task->save();
         return response()->json([
             'success' => true,
-            'message' => 'Successfully deleted'
+            'message' => 'Successfully deleted',
+            'data' => $task->photos
         ]);
     }
 

@@ -3482,7 +3482,7 @@
                 "operationId": "91222ee840159d2f1e5ad32e879b6be2",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
                         "description": "vazifa id kiritiladi",
                         "required": true,
@@ -3539,7 +3539,7 @@
                 "operationId": "ac813cfb7b45b3cb108a1873e381cdd6",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
                         "description": "vazifa id kiritiladi",
                         "required": true,
@@ -3576,7 +3576,7 @@
                 "operationId": "63bbfddfc9838867d518f0717b1fa3f6",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
                         "description": "vazifa id kiritiladi",
                         "required": true,
@@ -3592,7 +3592,7 @@
                             "schema": {
                                 "properties": {
                                     "radio": {
-                                        "description": "Agar masofaviy ish bolsa - remote, manzil bo`yicha bo`lsa - address kiritiladi",
+                                        "description": "Agar masofaviy ish bolsa - remote, manzil bo'yicha bo'lsa - address kiritiladi",
                                         "type": "string",
                                         "enum": [
                                             "remote",
@@ -3633,7 +3633,7 @@
                 "operationId": "8a43a5339bd4714df6df8db16d8f1783",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
                         "description": "vazifa id kiritiladi",
                         "required": true,
@@ -3694,7 +3694,7 @@
                 "operationId": "f63a0d6c8e7412203b4498455e23d766",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
                         "description": "vazifa idsi kiritiladi",
                         "required": true,
@@ -3760,7 +3760,7 @@
                 "operationId": "3f7bd41b9b1aced12c241fe8fa0d6b6f",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
                         "description": "vazifa idsi kiritiladi",
                         "required": true,
@@ -3821,7 +3821,7 @@
                 "operationId": "8b7c57f52988d6a1bd57712848a67fd3",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
                         "description": "vazifa idsi kiritiladi",
                         "required": true,
@@ -3882,7 +3882,7 @@
                 "operationId": "69b5d0726db1adb5fb66c1e3eef9e8e9",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
                         "description": "vazifa id kiritiladi",
                         "required": true,
@@ -3942,7 +3942,7 @@
                 "operationId": "68cedc41e9e018064f1c8a393e4571b6",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
                         "description": "vazifa idsi kiritiladi",
                         "required": true,
@@ -3995,7 +3995,7 @@
                 "operationId": "7a5112ce987a12fa90efea9def70b21a",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
                         "description": "vazifa idsi kiritiladi",
                         "required": true,
@@ -4052,7 +4052,7 @@
                 "operationId": "6b34d5ecfb9f5e6c586162e6d262c44e",
                 "parameters": [
                     {
-                        "name": "task",
+                        "name": "taskId",
                         "in": "path",
                         "description": "vazifa idsi kiritiladi",
                         "required": true,
@@ -4067,7 +4067,7 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "images": {
+                                    "image": {
                                         "description": "o'chiriladigan rasm url manzili kiritiladi",
                                         "type": "string"
                                     }

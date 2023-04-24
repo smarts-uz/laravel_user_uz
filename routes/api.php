@@ -53,21 +53,21 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::post('create-task/contacts', [TaskAPIController::class, 'contacts']); // fix
     Route::post('create-task/verify', [TaskAPIController::class, 'verify']); // fix
     //Task Update
-    Route::post('update-task/{task}/name', [TaskAPIController::class, 'updateName']); // fix
-    Route::post('update-task/{task}/custom', [TaskAPIController::class, 'updateCustom']); // fix
-    Route::post('update-task/{task}/remote', [TaskAPIController::class, 'updateRemote']); // fix
-    Route::post('update-task/{task}/address', [TaskAPIController::class, 'updateAddress']); // fix
-    Route::post('update-task/{task}/date', [TaskAPIController::class, 'updateDate']); // fix
-    Route::post('update-task/{task}/budget', [TaskAPIController::class, 'updateBudget']); // fix
-    Route::post('update-task/{task}/note', [TaskAPIController::class, 'updateNote']); // fix
-    Route::post('update-task/{task}/images', [TaskAPIController::class, 'updateUploadImages']); // fix
-    Route::post('update-task/{task}/contacts', [TaskAPIController::class, 'updateContacts']); // fix
-    Route::post('update-task/{task}/verify', [TaskAPIController::class, 'updateVerify']); // fix
-    Route::post('update-task/{task}/delete-image', [TaskAPIController::class, 'deleteImage']); // fix
+    Route::post('update-task/{taskId}/name', [TaskAPIController::class, 'updateName']); // fix
+    Route::post('update-task/{taskId}/custom', [TaskAPIController::class, 'updateCustom']); // fix
+    Route::post('update-task/{taskId}/remote', [TaskAPIController::class, 'updateRemote']); // fix
+    Route::post('update-task/{taskId}/address', [TaskAPIController::class, 'updateAddress']); // fix
+    Route::post('update-task/{taskId}/date', [TaskAPIController::class, 'updateDate']); // fix
+    Route::post('update-task/{taskId}/budget', [TaskAPIController::class, 'updateBudget']); // fix
+    Route::post('update-task/{taskId}/note', [TaskAPIController::class, 'updateNote']); // fix
+    Route::post('update-task/{taskId}/images', [TaskAPIController::class, 'updateUploadImages']); // fix
+    Route::post('update-task/{taskId}/contacts', [TaskAPIController::class, 'updateContacts']); // fix
+    Route::post('update-task/{taskId}/verify', [TaskAPIController::class, 'updateVerify']); // fix
+    Route::post('update-task/{taskId}/delete-image', [TaskAPIController::class, 'deleteImage']); // fix
 
     Route::get('/notifications', [NotificationController::class, 'getNotifications']); // fix
     Route::get('/count/notifications', [NotificationController::class, 'count']); // fix
-    Route::post('/read-notification/{notification}', [NotificationController::class, 'read_notification']); // fix
+    Route::post('/read-notification/{notificationId}', [NotificationController::class, 'read_notification']); // fix
     Route::post('/read-all-notification', [NotificationController::class, 'read_all_mobile_notification']); // fix
 
     Route::get('/my-tasks-count', [TaskAPIController::class, 'my_tasks_count']); // fix
@@ -76,7 +76,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::get('/all-tasks', [TaskAPIController::class, 'all_tasks']); // fix
     Route::post('/cancel-task/{task}', [SearchAPIController::class, 'cancelTask']); // fix
     Route::delete('/delete-task/{task}/{user}', [SearchAPIController::class, 'delete_task']); // fix
-    Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']); // fix
+    Route::post('/task/{task}/response', [TaskAPIController::class, 'response_store']); // fix
     Route::get('/responses/{task}', [TaskAPIController::class, 'responses']); // fix
     Route::get('/complain/types', [TaskAPIController::class, 'complainTypes']); // fix
     Route::post('/task/{task}/complain', [TaskAPIController::class, 'complain']); // fix
