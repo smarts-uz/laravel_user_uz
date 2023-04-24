@@ -2,12 +2,21 @@
 
 namespace App\Services\Chat;
 
+use App\Models\Chat\ChatifyMessenger as Chatify;
 use App\Models\{ChMessage, Task, User};
 use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
+use Illuminate\Support\Facades\Auth;
 use SergiX44\Nutgram\Nutgram;
 
 class ContactService
 {
+    private Chatify $chatify;
+
+    public function __construct()
+    {
+        $this->chatify = new Chatify();
+    }
+
     /**
      * Bu method chatdagi userlarning ro'yxatini $authUserga qarab qaytaradi
      * @param $authUser
@@ -68,7 +77,7 @@ class ContactService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function telegramNotification($locale, $request_id, $message, $AuthId): void
+    public function telegramNotification($locale, $request_id, $ch_message, $AuthId): void
     {
         $admins = User::query()->findOrFail($request_id);
         if ($admins->hasPermission('admin_notifications')) {
@@ -87,18 +96,41 @@ class ContactService
                 default => 'Admin',
             };
 
-            $tg_user = User::where('id', $AuthId)->where('discussion_post_tg_id', '!=', null)->firstOr(function ($bot) use ($role, $user, $send_message_text) {
+            if ($user->discussion_post_id === null) {
                 $message = strtr($send_message_text, [
                     '{name}' => $user->name,
                     '{phone}' => $user->phone_number,
                     '{role}' => $role,
                     '{link}' => 'https://user.uz/chat/' . $user->id,
                 ]);
-                $bot->sendMessage($message, ['chat_id' => setting('chat.CHANNEL_ID', '-1001548386291')]);
+                $message = $bot->sendMessage($message, ['chat_id' => setting('chat.CHANNEL_ID', '-1001548386291')]);
+                User::where('id', $AuthId)->update([
+                    "post_id" => $message->message_id,
+                    "reply_message" => $ch_message
+                ]);
+            } else {
+                $reply_id = User::where('id', $AuthId)->value('discussion_post_id');
 
-            });
+                $bot->sendMessage($ch_message, ['chat_id' => setting('chat.GROUP_ID', '-1001852856557'), "reply_to_message_id" => $reply_id]);
 
+            }
 
         }
+    }
+
+    public function sendFromTelegram($user_id, $message, $attachment = null){
+
+        $messageID = mt_rand(9, 999999999) + time();
+        $this->chatify->newMessage([
+            'id' => $messageID,
+            'type' => 'user',
+            'from_id' => setting('site.moderator_id', 1),
+            'to_id' => $user_id,
+            'body' => htmlentities(trim($message), ENT_QUOTES, 'UTF-8'),
+            'attachment' => ($attachment) ? json_encode((object)[
+                'new_name' => $attachment,
+                'old_name' => htmlentities(trim($attachment_title = ''), ENT_QUOTES, 'UTF-8'),
+            ], JSON_THROW_ON_ERROR) : null,
+        ]);
     }
 }
