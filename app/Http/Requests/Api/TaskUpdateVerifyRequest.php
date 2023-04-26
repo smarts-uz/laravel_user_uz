@@ -15,7 +15,8 @@ class TaskUpdateVerifyRequest extends BaseRequest
     public function messages()
     {
         return [
-            'sms_otp.required' => 'Требуется заполнение!'
+            'sms_otp.required' => 'Требуется заполнение!',
+            'phone_number.required' => 'Требуется заполнение!'
         ];
     }
 }

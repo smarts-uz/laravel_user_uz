@@ -11,4 +11,11 @@ class TaskUpdateNoteRequest extends BaseRequest
             'docs' => ''
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'description.required' => 'Требуется заполнение!',
+        ];
+    }
 }

@@ -12,4 +12,12 @@ class TaskNoteRequest extends BaseRequest
             'docs' => ''
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'description.required' => 'Требуется заполнение!',
+            'task_id.required' => 'Требуется заполнение!',
+        ];
+    }
 }
