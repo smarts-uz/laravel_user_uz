@@ -5,25 +5,15 @@ namespace App\Services\Task;
 
 
 use App\Http\Resources\NotificationResource;
-use App\Models\Notification;
-use App\Models\Task;
-use App\Models\TaskResponse;
-use App\Models\Transaction;
-use App\Models\User;
-use App\Models\UserExpense;
-use App\Models\WalletBalance;
-use App\Services\CustomService;
-use App\Services\NotificationService;
-use App\Services\SmsMobileService;
-use Exception;
+use JsonException;
+use App\Models\{Notification, Task, TaskResponse, Transaction, User, UserExpense, WalletBalance};
+use App\Services\{CustomService, NotificationService, SmsMobileService};
 use JetBrains\PhpStorm\ArrayShape;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 
 class ResponseService
 {
     /**
-     *
      * Function  store
      * Mazkur metod taskka otklik tashlaganda ishlaydi
      * @param $data
@@ -32,6 +22,7 @@ class ResponseService
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws JsonException
      */
     public function store($data, $task, $auth_user): array
     {
@@ -96,14 +87,13 @@ class ResponseService
     }
 
     /**
-     *
      * Function  selectPerformer
      * Mazkur metod taskka tashlangan otkliklar orasidan ispolnitelni tanlashda ishlatiladi
      * @param $response
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws \JsonException
+     * @throws JsonException
      */
     #[ArrayShape(['success' => "bool", 'message' => "mixed", 'data' => "array"])]
     public function selectPerformer($response): array

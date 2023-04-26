@@ -30,7 +30,6 @@ class TaskService
     }
 
     /**
-     *
      * Function  taskIncrement
      * @param int $user_id
      * @param int $task_id
@@ -47,7 +46,6 @@ class TaskService
     }
 
     /**
-     *
      * Function  taskIndex
      * @param int $task_id
      * @return  array[]|JsonResponse

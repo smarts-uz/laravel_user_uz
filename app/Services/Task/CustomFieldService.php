@@ -30,23 +30,6 @@ class CustomFieldService
 
     /**
      *
-     * Function  getCustomFields
-     * @param $task
-     * @return  array
-     */
-    public function getCustomFields($task): array
-    {
-        $custom_fields = $task->category->custom_fields;
-        $result = [];
-        $values = $this->getValuesOfTask($task);
-        foreach ($custom_fields as $custom_field) {
-            $result[] = $this->initCustomField($custom_field, $task, $values);
-        }
-        return $result;
-    }
-
-    /**
-     *
      * Function  initCustomField
      * @param $custom_field
      * @param $task
@@ -119,27 +102,6 @@ class CustomFieldService
                     ->value('value'));
         }
         return $data;
-    }
-
-
-    /**
-     *
-     * Function  showOptions
-     * @param $task
-     * @param $data_id
-     * @param $key
-     * @param $option
-     * @return  bool
-     */
-    public static function showOptions($task, $data_id, $key, $option): bool
-    {
-        if (isset($task)) {
-            $field = $task->custom_field_values()->where('custom_field_id', $data_id)->first();
-            if ($field && is_array(json_decode($field->value)) && in_array($option, json_decode($field->value))) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

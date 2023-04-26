@@ -4,9 +4,24 @@ namespace App\Http\Controllers\API;
 
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use App\Http\Requests\Api\{TaskAddressRequest, TaskBudgetRequest, TaskComplaintRequest,
-    TaskContactsRequest, TaskCustomRequest, TaskDateRequest, TaskNameRequest,
-    TaskNoteRequest, TaskRemoteRequest, TaskResponseRequest, TaskVerificationRequest};
+use App\Http\Requests\Api\{TaskAddressRequest,
+    TaskBudgetRequest,
+    TaskComplaintRequest,
+    TaskContactsRequest,
+    TaskCustomRequest,
+    TaskDateRequest,
+    TaskNameRequest,
+    TaskNoteRequest,
+    TaskRemoteRequest,
+    TaskResponseRequest,
+    TaskUpdateAddressRequest,
+    TaskUpdateBudgetRequest,
+    TaskUpdateContactRequest,
+    TaskUpdateDateRequest,
+    TaskUpdateNoteRequest,
+    TaskUpdateRemoteRequest,
+    TaskUpdateVerifyRequest,
+    TaskVerificationRequest};
 use App\Http\Resources\{ComplianceTypeResource,
     TaskSingleResource, TaskPaginationResource};
 use Illuminate\{Http\Request,
@@ -1197,9 +1212,10 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateRemote(TaskRemoteRequest $request, $taskId): JsonResponse
+    public function updateRemote(TaskUpdateRemoteRequest $request, $taskId): JsonResponse
     {
-        return $this->success($this->update_task_service->updateRemote($taskId, $request->validated()));
+        $data = $request->validated();
+        return $this->success($this->update_task_service->updateRemote($taskId, $data));
     }
 
 
@@ -1223,21 +1239,28 @@ class TaskAPIController extends Controller
      *         @OA\MediaType (
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="location",
-     *                    description="vazifa manzili kiritiladi",
-     *                    type="string",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="latitude",
-     *                    description="vazifa joylashgan koordinata kengligi kiritiladi",
-     *                    type="number",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="longitude",
-     *                    description="vazifa joylashgan koordinata uzunligi kiritiladi",
-     *                    type="number",
-     *                 ),
+     *                  @OA\Property (
+     *                    property="points[]",
+     *                    type="array",
+     *                    @OA\Items(
+     *                      type="object",
+     *                      @OA\Property(
+     *                          property="location",
+     *                          description="Manzil kiritiladi",
+     *                          type="string"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="latitude",
+     *                          description="kenglik kiritiladi",
+     *                          type="numeric"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="longitude",
+     *                          description="uzunlik kiritiladi",
+     *                          type="numeric"
+     *                      ),
+     *                   ),
+     *                 )
      *             ),
      *         ),
      *     ),
@@ -1258,9 +1281,10 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateAddress(TaskAddressRequest $request, $taskId): JsonResponse
+    public function updateAddress(TaskUpdateAddressRequest $request, $taskId): JsonResponse
     {
-        return $this->success($this->update_task_service->updateAddress($taskId, $request->validated()));
+        $data = $request->validated();
+        return $this->success($this->update_task_service->updateAddress($taskId, $data));
     }
 
 
@@ -1320,7 +1344,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateDate(TaskDateRequest $request, $taskId): JsonResponse
+    public function updateDate(TaskUpdateDateRequest $request, $taskId): JsonResponse
     {
         return $this->success($this->update_task_service->updateDate($taskId, $request->validated()));
     }
@@ -1377,7 +1401,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateBudget(TaskBudgetRequest $request, $taskId): JsonResponse
+    public function updateBudget(TaskUpdateBudgetRequest $request, $taskId): JsonResponse
     {
         return $this->success($this->update_task_service->updateBudget($taskId, $request->validated()));
     }
@@ -1434,7 +1458,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateNote(TaskNoteRequest $request, $taskId): JsonResponse
+    public function updateNote(TaskUpdateNoteRequest $request, $taskId): JsonResponse
     {
         return $this->success($this->update_task_service->updateNote($taskId, $request->validated()));
     }
@@ -1542,7 +1566,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateContacts(TaskContactsRequest $request, $taskId): JsonResponse
+    public function updateContacts(TaskUpdateContactRequest $request, $taskId): JsonResponse
     {
         return $this->success($this->update_task_service->updateContact($taskId, $request->validated()));
     }
@@ -1598,7 +1622,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateVerify(TaskVerificationRequest $request, $taskId): JsonResponse
+    public function updateVerify(TaskUpdateVerifyRequest $request, $taskId): JsonResponse
     {
         $data = $request->validated();
         return $this->update_task_service->verification($taskId, $data);

@@ -10,7 +10,7 @@ class CategoriesAPIService
 {
 
     /**
-     *
+     * all categories show
      * @param $category_id
      * @return array[]
      */

@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\{Arr, Facades\Log, Facades\Validator};
 use Illuminate\Validation\ValidationException;
 use JetBrains\PhpStorm\ArrayShape;
+use JsonException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -63,7 +64,7 @@ class CreateTaskService
     }
 
     /**
-     *
+     * create task custom get
      * Function  get_custom
      * @param int $task_id
      * @return  array
@@ -117,9 +118,8 @@ class CreateTaskService
     }
 
     /**
-     * Retrieve next step with additional fields
-     *
-     * @param object $task // Task model object
+     * task create remote get
+     * @param int $task_id
      * @return array //Value Returned
      */
     #[ArrayShape(['route' => "string", 'task_id' => "int", 'steps' => "int", 'custom_fields' => "array"])]
@@ -132,8 +132,7 @@ class CreateTaskService
     }
 
     /**
-     * Save remote s values by request
-     *
+     * task create remote store
      * @param $data // Validated request data from mobile
      * @return array //Value Returned
      */
@@ -159,8 +158,7 @@ class CreateTaskService
     }
 
     /**
-     * Retrieve next step with additional fields
-     *
+     * task create address get
      * @param int $task_id
      * @return array //Value Returned
      */
@@ -177,8 +175,7 @@ class CreateTaskService
     }
 
     /**
-     * Save remote s values by request
-     *
+     * task create address store
      * @param $data // Validated request data from mobile
      * @return array //Value Returned
      */
@@ -211,8 +208,7 @@ class CreateTaskService
     }
 
     /**
-     * Retrieve next step with additional fields
-     *
+     * task create date get
      * @param int $task_id
      * @return array //Value Returned
      */
@@ -226,8 +222,7 @@ class CreateTaskService
     }
 
     /**
-     * Save remote s values by request
-     *
+     * task create date store
      * @param $data // Validated request data from mobile
      * @return array //Value Returned
      */
@@ -245,8 +240,7 @@ class CreateTaskService
     }
 
     /**
-     * Retrieve next step with additional fields
-     *
+     * task create budget get
      * @param int $task_id
      * @return array //Value Returned
      */
@@ -263,8 +257,7 @@ class CreateTaskService
     }
 
     /**
-     * Save remote s values by request
-     *
+     * task create budget store
      * @param $data // Validated request data from mobile
      * @return array //Value Returned
      */
@@ -284,8 +277,7 @@ class CreateTaskService
     }
 
     /**
-     * Retrieve next step with additional fields
-     *
+     * task create note get
      * @param int $task_id
      * @return array //Value Returned
      */
@@ -297,8 +289,7 @@ class CreateTaskService
     }
 
     /**
-     * Save remote s values by request
-     *
+     * task create note store
      * @param $data // Validated request data from mobile
      * @return array //Value Returned
      */
@@ -316,8 +307,7 @@ class CreateTaskService
     }
 
     /**
-     * Save remote s values by request
-     *
+     * task create image store
      * @param $request
      * @return JsonResponse //Value Returned
      * @throws ValidationException
@@ -356,8 +346,7 @@ class CreateTaskService
     }
 
     /**
-     * Retrieve next step with additional fields
-     *
+     * task create get contact
      * @param int $task_id
      * @return array //Value Returned
      */
@@ -370,14 +359,13 @@ class CreateTaskService
     }
 
     /**
-     * Save remote s values by request
-     *
+     * task create contact store
      * @param $data // Validated request data from mobile
      * @param $user
      * @return array //Value Returned
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function contact_store($data, $user): array
     {
@@ -433,7 +421,7 @@ class CreateTaskService
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function verification($data): JsonResponse
     {
@@ -490,7 +478,6 @@ class CreateTaskService
     }
 
     /**
-     *
      * Function  attachCustomFieldsByRoute
      * @param int $task_id
      * @param string $routeName

@@ -3648,17 +3648,25 @@
                         "multipart\/form-data": {
                             "schema": {
                                 "properties": {
-                                    "location": {
-                                        "description": "vazifa manzili kiritiladi",
-                                        "type": "string"
-                                    },
-                                    "latitude": {
-                                        "description": "vazifa joylashgan koordinata kengligi kiritiladi",
-                                        "type": "number"
-                                    },
-                                    "longitude": {
-                                        "description": "vazifa joylashgan koordinata uzunligi kiritiladi",
-                                        "type": "number"
+                                    "points[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "location": {
+                                                    "description": "Manzil kiritiladi",
+                                                    "type": "string"
+                                                },
+                                                "latitude": {
+                                                    "description": "kenglik kiritiladi",
+                                                    "type": "numeric"
+                                                },
+                                                "longitude": {
+                                                    "description": "uzunlik kiritiladi",
+                                                    "type": "numeric"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
                                     }
                                 },
                                 "type": "object"

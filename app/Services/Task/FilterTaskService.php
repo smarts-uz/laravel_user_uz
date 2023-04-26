@@ -82,6 +82,7 @@ class FilterTaskService
 
 
     /**
+     * task filter uchun radius qiymatni qaytaradi
      * @param $lat1
      * @param $lon1
      * @param $lat2

@@ -35,6 +35,8 @@ class GenerateDocsCommand extends Command
      * Execute the console command.
      *
      * @return int
+     * @throws \cebe\openapi\exceptions\IOException
+     * @throws \cebe\openapi\exceptions\TypeErrorException
      */
     public function handle()
     {
@@ -49,6 +51,8 @@ class GenerateDocsCommand extends Command
      * Generate voyager docs json.
      *
      * @return void
+     * @throws \cebe\openapi\exceptions\IOException
+     * @throws \cebe\openapi\exceptions\TypeErrorException
      */
     protected function generateVoyagerDocsJson()
     {

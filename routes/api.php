@@ -16,7 +16,11 @@ use App\Http\Controllers\API\{
     SearchAPIController,
     FaqController
 };
-use App\Http\Controllers\{NotificationController, vendor\Chatify\Api\MessagesController, VoyagerTaskController};
+use App\Http\Controllers\{
+    NotificationController,
+    vendor\Chatify\Api\MessagesController,
+    VoyagerTaskController
+};
 
 
 /*

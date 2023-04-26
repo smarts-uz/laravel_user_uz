@@ -39,7 +39,6 @@ class SearchService
     }
 
     /**
-     *
      * Function  comlianse_saveS
      * Mazkur metod taskka qoldirilgan shikoyatlarni tablega yozib beradi va telegramga yuboradi
      * @param $data
@@ -63,12 +62,13 @@ class SearchService
     }
 
     /**
-     *
      * Function  task_service
      * Mazkur metod yaratilgan barcha tasklarni korsatib berad va kerakli ma'lumotlarni yuboradi
      * @param  $auth_response , $userId, $task Object
      * @param $userId
-     * @param $task
+     * @param $task_id
+     * @param $filter
+     * @return array
      */
     public function task_service($auth_response, $userId, $task_id, $filter)
     {
@@ -118,7 +118,6 @@ class SearchService
     }
 
     /**
-     *
      * Function  search_new_service
      * Mazkur metod search task bladega ma'lumotlarni chiqarib beradi
      * @param  $arr_check , $filter, $suggest, $price, $remjob, $noresp, $radius,$lat,$lon,$filterByStartDate Object
@@ -224,7 +223,7 @@ class SearchService
     }
 
     /**
-     * cancel task status
+     * task status change cancelled
      * @param $task
      * @param $authId
      * @return JsonResponse
@@ -272,6 +271,12 @@ class SearchService
         ]);
     }
 
+    /**
+     * user active_task task id save
+     * @param $task
+     * @param $user
+     * @return JsonResponse
+     */
     public function task_cancel($task, $user): JsonResponse
     {
         if ($task->user_id !== $user->id){

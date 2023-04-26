@@ -3,15 +3,10 @@
 namespace App\Services\Task;
 
 use App\Http\Resources\NotificationResource;
-use App\Models\ChMessage;
-use App\Models\Notification;
-use App\Models\Review;
-use App\Models\Task;
-use App\Models\User;
-use App\Services\CustomService;
-use App\Services\NotificationService;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use App\Models\{ChMessage, Notification, Review, Task, User};
+use App\Services\{CustomService, NotificationService};
+use JsonException;
+use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 
 class ReviewService
 {
@@ -21,7 +16,7 @@ class ReviewService
      * @param $task
      * @param $request
      * @return Notification
-     * @throws \JsonException
+     * @throws JsonException
      */
     public static function userReview($task, $request): Notification
     {
@@ -63,7 +58,7 @@ class ReviewService
      * @param $task
      * @param $request
      * @return Notification
-     * @throws \JsonException
+     * @throws JsonException
      */
     public static function performerReview($task, $request): Notification
     {
@@ -107,6 +102,7 @@ class ReviewService
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws JsonException
      */
     public static function sendReview($task, $request, bool $status = false): void
     {
