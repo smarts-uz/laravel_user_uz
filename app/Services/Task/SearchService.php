@@ -224,12 +224,13 @@ class SearchService
 
     /**
      * task status change cancelled
-     * @param $task
+     * @param $taskId
      * @param $authId
      * @return JsonResponse
      */
-    public function cancelTask($task, $authId): JsonResponse
+    public function cancelTask($taskId, $authId): JsonResponse
     {
+        $task = Task::find($taskId);
         if ($task->user_id !== $authId){
             return response()->json([
                 'success' => false,
@@ -247,12 +248,14 @@ class SearchService
 
     /**
      * Task delete
-     * @param $task
-     * @param $user
+     * @param $taskId
+     * @param $userId
      * @return JsonResponse
      */
-    public function delete_task($task, $user): JsonResponse
+    public function delete_task($taskId, $userId): JsonResponse
     {
+        $task = Task::find($taskId);
+        $user = User::find($userId);
         if ($task->user_id !== $user->id){
             return response()->json([
                 'success' => false,
@@ -273,12 +276,13 @@ class SearchService
 
     /**
      * user active_task task id save
-     * @param $task
+     * @param $taskId
      * @param $user
      * @return JsonResponse
      */
-    public function task_cancel($task, $user): JsonResponse
+    public function task_cancel($taskId, $user): JsonResponse
     {
+        $task = Task::find($taskId);
         if ($task->user_id !== $user->id){
             return response()->json([
                 'success' => false,
@@ -286,7 +290,7 @@ class SearchService
             ], 403);
         }
 
-        $user->active_task = $task->id;
+        $user->active_task = $taskId;
         $user->save();
 
         return response()->json([

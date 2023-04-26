@@ -51,10 +51,10 @@ class SearchAPIController extends Controller
      *     },
      * )
      */
-    public function cancelTask(Task $task): JsonResponse
+    public function cancelTask($taskId): JsonResponse
     {
         $authId = auth()->id();
-        return $this->search_service->cancelTask($task, $authId);
+        return $this->search_service->cancelTask($taskId, $authId);
     }
 
     /**
@@ -98,9 +98,9 @@ class SearchAPIController extends Controller
      *     )
      * )
      */
-    public function delete_task(Task $task,User $user): JsonResponse
+    public function delete_task($taskId, $userId): JsonResponse
     {
-      return $this->search_service->delete_task($task, $user);
+      return $this->search_service->delete_task($taskId, $userId);
     }
 
     /**
@@ -135,10 +135,10 @@ class SearchAPIController extends Controller
      *     )
      * )
      */
-    public function task_cancel(Task $task): JsonResponse
+    public function task_cancel($taskId): JsonResponse
     {
         $user = auth()->user();
-        return $this->search_service->task_cancel($task, $user);
+        return $this->search_service->task_cancel($taskId, $user);
     }
 
 }

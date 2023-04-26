@@ -176,8 +176,9 @@ class UpdateAPIController extends Controller
      * )
      */
 
-    public function sendReview(Task $task, ReviewRequest $request): JsonResponse
+    public function sendReview($taskId, ReviewRequest $request): JsonResponse
     {
+        $task = Task::find($taskId);
         (new UpdateTaskService)->taskGuard($task);
         DB::beginTransaction();
 

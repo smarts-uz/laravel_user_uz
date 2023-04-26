@@ -454,14 +454,15 @@ class ProfileService
      * Mazkur metod portfolio rasmlarni tahrirlash
      * @param $hasFile
      * @param $files
-     * @param $portfolio
+     * @param $portfolioId
      * @param $description
      * @param $comment
      * @return PortfolioIndexResource
      * @throws JsonException
      */
-    public function updatePortfolio($hasFile, $files, $portfolio, $description, $comment): PortfolioIndexResource
+    public function updatePortfolio($hasFile, $files, $portfolioId, $description, $comment): PortfolioIndexResource
     {
+        $portfolio = Portfolio::find($portfolioId);
         $user = $portfolio->user;
         $imgData = $portfolio->image ? json_decode($portfolio->image) : [];
         if ($hasFile) {
@@ -789,15 +790,17 @@ class ProfileService
     /**
      * portfoliodan $image bo'yicha kelgan rasmni o'chiradi
      * @param $image
-     * @param Portfolio $portfolio
+     * @param $portfolioId
      * @return bool
+     * @throws JsonException
      */
-    public function deleteImage($image, Portfolio $portfolio): bool
+    public function deleteImage($image, $portfolioId): bool
     {
+        $portfolio = Portfolio::find($portfolioId);
         File::delete(public_path() . '/storage/portfolio/' . $image);
-        $images = json_decode($portfolio->image);
+        $images = json_decode($portfolio->image, false, 512, JSON_THROW_ON_ERROR);
         $updatedImages = array_diff($images, [$image]);
-        $portfolio->image = json_encode(array_values($updatedImages));
+        $portfolio->image = json_encode(array_values($updatedImages), JSON_THROW_ON_ERROR);
         $portfolio->save();
         return true;
     }

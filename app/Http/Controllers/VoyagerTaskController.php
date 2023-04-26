@@ -89,8 +89,9 @@ class VoyagerTaskController extends Controller
      *     },
      * )
      */
-    public function test_complete_task(Task $task): array
+    public function test_complete_task($taskId): array
     {
+        $task = Task::find($taskId);
         if (auth()->user()->hasPermission('reported_task_complete')){
             $task->status = Task::STATUS_COMPLETE;
             $task->save();
@@ -137,9 +138,9 @@ class VoyagerTaskController extends Controller
      *     },
      * )
      */
-    public function test_delete_task(Task $task): array
+    public function test_delete_task($taskId): array
     {
-
+        $task = Task::find($taskId);
         if (auth()->user()->hasPermission('delete_tasks')){
             $task->update(['status' => Task::STATUS_CANCELLED]);
             TaskNotificationService::sendNotificationForCancelledTask($task);
@@ -182,8 +183,9 @@ class VoyagerTaskController extends Controller
      * )
      */
     #[ArrayShape(['success' => "bool", 'data' => Task::class])]
-    public function test_cancel_task(Task $task): array
+    public function test_cancel_task($taskId): array
     {
+        $task = Task::find($taskId);
         TaskNotificationService::sendNotificationForCancelledTask($task);
         $task->update(['status' => Task::STATUS_CANCELLED]);
         return ['success' => true, 'data' => $task];

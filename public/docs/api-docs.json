@@ -1001,7 +1001,7 @@
                 "operationId": "1169796c40c6ddf530a839c20b6d786c",
                 "parameters": [
                     {
-                        "name": "portfolio",
+                        "name": "portfolioId",
                         "in": "path",
                         "description": "portfolio id kiritiladi",
                         "required": true,

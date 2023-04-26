@@ -183,8 +183,9 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function portfolioDelete(Portfolio $portfolio): JsonResponseAlias
+    public function portfolioDelete($portfolioId): JsonResponseAlias
     {
+        $portfolio = Portfolio::find($portfolioId);
         (new ProfileService)->portfolioGuard($portfolio);
         $portfolio->delete();
         $message = trans('trans.Portfolio deleted successfully.');
@@ -207,7 +208,7 @@ class ProfileAPIController extends Controller
      *     @OA\Parameter(
      *          in="path",
      *          description="portfolio id kiritiladi",
-     *          name="portfolio",
+     *          name="portfolioId",
      *          required=true,
      *          @OA\Schema(
      *              type="integer"
@@ -260,13 +261,13 @@ class ProfileAPIController extends Controller
      * )
      * @throws JsonException
      */
-    public function portfolioUpdate(PortfolioRequest $request, Portfolio $portfolio): JsonResponseAlias
+    public function portfolioUpdate(PortfolioRequest $request, $portfolioId): JsonResponseAlias
     {
         $hasFile = $request->hasFile('images');
         $files = $request->file('images');
         $description = $request->get('description');
         $comment = $request->get('comment');
-        $portfolios = $this->profileService->updatePortfolio($hasFile, $files, $portfolio, $description, $comment);
+        $portfolios = $this->profileService->updatePortfolio($hasFile, $files, $portfolioId, $description, $comment);
         return response()->json([
             'success' => true,
             'data' => $portfolios
@@ -1363,11 +1364,12 @@ class ProfileAPIController extends Controller
      *         {"token": {}}
      *     },
      * )
+     * @throws JsonException
      */
-    public function deleteImage(Request $request, Portfolio $portfolio): JsonResponseAlias
+    public function deleteImage(Request $request, $portfolioId): JsonResponseAlias
     {
         $image = $request->get('image');
-        $this->profileService->deleteImage($image,$portfolio);
+        $this->profileService->deleteImage($image,$portfolioId);
         return response()->json([
             'success' => true,
             'message' => __('Успешно удалено'),

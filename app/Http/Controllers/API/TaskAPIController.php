@@ -79,9 +79,9 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function same_tasks(Task $task): AnonymousResourceCollection
+    public function same_tasks($taskId): AnonymousResourceCollection
     {
-        return $this->task_service->same_tasks($task);
+        return $this->task_service->same_tasks($taskId);
     }
 
     /**
@@ -116,10 +116,10 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function responses(Request $request, Task $task): AnonymousResourceCollection
+    public function responses(Request $request, $taskId): AnonymousResourceCollection
     {
        $filter = $request->get('filter');
-       return $this->task_service->responses($filter, $task);
+       return $this->task_service->responses($filter, $taskId);
     }
 
     /**
@@ -178,12 +178,12 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function response_store(Task $task, TaskResponseRequest $request): JsonResponse
+    public function response_store($taskId, TaskResponseRequest $request): JsonResponse
     {
         /** @var User $user */
         $user = auth()->user();
         $data = $request->validated();
-        return $this->task_service->response_store($task, $user, $data);
+        return $this->task_service->response_store($taskId, $user, $data);
     }
 
     /**
@@ -218,8 +218,9 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function selectPerformer(TaskResponse $response): JsonResponse
+    public function selectPerformer($responseId): JsonResponse
     {
+        $response = TaskResponse::find($responseId);
         if (!$response->task || auth()->id() === $response->performer_id) {
             return response()->json([
                 'success' => false,
@@ -266,10 +267,10 @@ class TaskAPIController extends Controller
      * )
      */
 
-    public function taskStatusUpdate(Task $task): JsonResponse
+    public function taskStatusUpdate($taskId): JsonResponse
     {
         $authId = auth()->id();
-        return $this->task_service->taskStatusUpdate($task, $authId);
+        return $this->task_service->taskStatusUpdate($taskId, $authId);
     }
 
     /**
@@ -438,8 +439,9 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function active_task_null(User $user): JsonResponse
+    public function active_task_null($userId): JsonResponse
     {
+        $user = User::find($userId);
         $user->active_step = null;
         $user->active_task = null;
         $user->save();
@@ -1729,12 +1731,12 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function complain(TaskComplaintRequest $request, Task $task): JsonResponse
+    public function complain(TaskComplaintRequest $request, $taskId): JsonResponse
     {
         $data = $request->validated();
         /** @var User $user */
         $user = auth()->user();
-        return $this->task_service->taskComplain($data, $user, $task);
+        return $this->task_service->taskComplain($data, $user, $taskId);
     }
 
     /**
