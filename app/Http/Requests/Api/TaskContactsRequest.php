@@ -13,7 +13,7 @@ class TaskContactsRequest extends BaseRequest
                 'required',
                 Rule::unique('users')->ignore(auth()->id())
             ],
-            'taskId' => 'required',
+            'task_id' => 'required',
         ];
     }
 
