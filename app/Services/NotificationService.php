@@ -45,18 +45,21 @@ class NotificationService
                                 Notification::NEW_PASSWORD, Notification::WALLET_BALANCE,Notification::TEST_PUSHER_NOTIFICATION
                             ]);
                     });
-                if ((int)$user->role_id === User::ROLE_PERFORMER)
+                if ((int)$user->role_id === User::ROLE_PERFORMER) {
                     $query->orWhere(function ($query) use ($user) {
                         $query->where('performer_id', '=', $user->id)->where('type', '=', Notification::TASK_CREATED);
                     });
-                if ($user->system_notification)
+                }
+                if ($user->system_notification) {
                     $query->orWhere(function ($query) use ($user) {
                         $query->where('user_id', '=', $user->id)->where('type', '=', Notification::NEWS_NOTIFICATION);
                     });
-                if ($user->news_notification)
+                }
+                if ($user->news_notification) {
                     $query->orWhere(function ($query) use ($user) {
                         $query->where('user_id', '=', $user->id)->where('type', '=', Notification::SYSTEM_NOTIFICATION);
                     });
+                }
             })
             ->orderByDesc('created_at')
             ->get();
