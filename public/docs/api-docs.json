@@ -4609,6 +4609,7 @@
                     "Notifications"
                 ],
                 "summary": "Get notifications",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/189](https:\/\/t.me\/c\/1334612640\/189).",
                 "operationId": "955f0fc2425cb971c9b3bdd768fc2a04",
                 "responses": {
                     "200": {
@@ -4634,12 +4635,13 @@
                     "Notifications"
                 ],
                 "summary": "Read notifications",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/201](https:\/\/t.me\/c\/1334612640\/201).",
                 "operationId": "91bb89f6ef5df399ca1a7b03c047d9ab",
                 "parameters": [
                     {
                         "name": "notificationId",
                         "in": "path",
-                        "description": "Notification id kiritiladi",
+                        "description": "Bildirishnoma idsi kiritiladi",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -4670,6 +4672,7 @@
                     "Notifications"
                 ],
                 "summary": "Read all notifications",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/249](https:\/\/t.me\/c\/1334612640\/249).",
                 "operationId": "7c84847394b7aa6a32c8da6d91145a7e",
                 "responses": {
                     "200": {
@@ -4695,6 +4698,7 @@
                     "Notifications"
                 ],
                 "summary": "Firebase token",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/199](https:\/\/t.me\/c\/1334612640\/199).",
                 "operationId": "c221d40772a6cf70fa55b76c08d8a03f",
                 "requestBody": {
                     "required": true,
@@ -4744,6 +4748,7 @@
                     "Notifications"
                 ],
                 "summary": "Notifications count",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/200](https:\/\/t.me\/c\/1334612640\/200).",
                 "operationId": "3d76d779c655ce923cba405fca8b544b",
                 "responses": {
                     "200": {
@@ -4769,6 +4774,7 @@
                     "Notifications"
                 ],
                 "summary": "firebase notification",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/235](https:\/\/t.me\/c\/1334612640\/235).",
                 "operationId": "ae12f93ac3a12733474d5cb1b7dcab91",
                 "requestBody": {
                     "content": {
@@ -4828,6 +4834,7 @@
                     "Notifications"
                 ],
                 "summary": "pusher notification",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/236](https:\/\/t.me\/c\/1334612640\/236).",
                 "operationId": "78d456995f51e557e2c6db9d33d84464",
                 "requestBody": {
                     "content": {
@@ -4887,6 +4894,7 @@
                     "Notifications"
                 ],
                 "summary": "sms notification",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/237](https:\/\/t.me\/c\/1334612640\/237).",
                 "operationId": "1907d00346f0f3ba2b2dad9288f434d8",
                 "requestBody": {
                     "content": {
@@ -4942,6 +4950,7 @@
                     "Notifications"
                 ],
                 "summary": "email notification",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/238](https:\/\/t.me\/c\/1334612640\/238).",
                 "operationId": "71fb7c6ac39ab2283ff730d62f27d6c2",
                 "requestBody": {
                     "content": {
@@ -4997,6 +5006,7 @@
                     "Notifications"
                 ],
                 "summary": "task create notification",
+                "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/250](https:\/\/t.me\/c\/1334612640\/250).",
                 "operationId": "1b0fc1e30dff527d7a609630748965f8",
                 "requestBody": {
                     "content": {

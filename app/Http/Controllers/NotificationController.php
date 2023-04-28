@@ -31,6 +31,7 @@ class NotificationController extends VoyagerBaseController
      *     path="/api/notifications",
      *     tags={"Notifications"},
      *     summary="Get notifications",
+     *     description="[**Telegram :** https://t.me/c/1334612640/189](https://t.me/c/1334612640/189).",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -60,9 +61,10 @@ class NotificationController extends VoyagerBaseController
      *     path="/api/read-notification/{notificationId}",
      *     tags={"Notifications"},
      *     summary="Read notifications",
+     *     description="[**Telegram :** https://t.me/c/1334612640/201](https://t.me/c/1334612640/201).",
      *     @OA\Parameter (
      *          in="path",
-     *          description="Notification id kiritiladi",
+     *          description="Bildirishnoma idsi kiritiladi",
      *          name="notificationId",
      *          required=true,
      *          @OA\Schema (
@@ -98,6 +100,7 @@ class NotificationController extends VoyagerBaseController
      *     path="/api/read-all-notification",
      *     tags={"Notifications"},
      *     summary="Read all notifications",
+     *     description="[**Telegram :** https://t.me/c/1334612640/249](https://t.me/c/1334612640/249).",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -160,6 +163,7 @@ class NotificationController extends VoyagerBaseController
      *     path="/api/firebase-token",
      *     tags={"Notifications"},
      *     summary="Firebase token",
+     *     description="[**Telegram :** https://t.me/c/1334612640/199](https://t.me/c/1334612640/199).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -298,6 +302,7 @@ class NotificationController extends VoyagerBaseController
      *     path="/api/count/notifications",
      *     tags={"Notifications"},
      *     summary="Notifications count",
+     *     description="[**Telegram :** https://t.me/c/1334612640/200](https://t.me/c/1334612640/200).",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -331,6 +336,7 @@ class NotificationController extends VoyagerBaseController
      *     path="/api/firebase-notification",
      *     tags={"Notifications"},
      *     summary="firebase notification",
+     *     description="[**Telegram :** https://t.me/c/1334612640/235](https://t.me/c/1334612640/235).",
      *     @OA\RequestBody (
      *         @OA\MediaType (
      *             mediaType="multipart/form-data",
@@ -393,6 +399,7 @@ class NotificationController extends VoyagerBaseController
      *     path="/api/pusher-notification",
      *     tags={"Notifications"},
      *     summary="pusher notification",
+     *     description="[**Telegram :** https://t.me/c/1334612640/236](https://t.me/c/1334612640/236).",
      *     @OA\RequestBody (
      *         @OA\MediaType (
      *             mediaType="multipart/form-data",
@@ -456,6 +463,7 @@ class NotificationController extends VoyagerBaseController
      *     path="/api/sms-notification",
      *     tags={"Notifications"},
      *     summary="sms notification",
+     *     description="[**Telegram :** https://t.me/c/1334612640/237](https://t.me/c/1334612640/237).",
      *     @OA\RequestBody (
      *         @OA\MediaType (
      *             mediaType="multipart/form-data",
@@ -512,6 +520,7 @@ class NotificationController extends VoyagerBaseController
      *     path="/api/email-notification",
      *     tags={"Notifications"},
      *     summary="email notification",
+     *     description="[**Telegram :** https://t.me/c/1334612640/238](https://t.me/c/1334612640/238).",
      *     @OA\RequestBody (
      *         @OA\MediaType (
      *             mediaType="multipart/form-data",
@@ -568,6 +577,7 @@ class NotificationController extends VoyagerBaseController
      *     path="/api/task-create-notification",
      *     tags={"Notifications"},
      *     summary="task create notification",
+     *     description="[**Telegram :** https://t.me/c/1334612640/250](https://t.me/c/1334612640/250).",
      *     @OA\RequestBody (
      *         @OA\MediaType (
      *             mediaType="multipart/form-data",

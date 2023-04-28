@@ -134,6 +134,7 @@ class NotificationService
         }
 
         foreach ($users as $user) {
+            sleep(0.2);
             /** @var Notification $notification */
             $notification = Notification::query()->create([
                 'user_id' => $user->id,
