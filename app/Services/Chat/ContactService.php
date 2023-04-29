@@ -126,7 +126,6 @@ class ContactService
      */
     public function sendFromTelegram($user_id, $message, $attachment = null): void
     {
-
         $messageID = random_int(9, 999999999) + time();
         $this->chatify->newMessage([
             'id' => $messageID,
