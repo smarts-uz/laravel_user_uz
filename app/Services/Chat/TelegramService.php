@@ -3,12 +3,11 @@
 namespace App\Services\Chat;
 
 
-use App\Models\ChMessage;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Webhook;
-use SergiX44\Nutgram\Telegram\Attributes\MessageTypes;
 use TCG\Voyager\Models\User;
-use function Clue\StreamFilter\fun;
 
 class TelegramService
 {
@@ -16,6 +15,10 @@ class TelegramService
 
     public ContactService $contact_service;
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function __construct()
     {
         $this->nutgram = new Nutgram(env('GROUP_BOT_TOKEN'));

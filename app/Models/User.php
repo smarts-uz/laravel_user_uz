@@ -65,6 +65,9 @@ use Laravel\Passport\HasApiTokens;
  * @property $deleted_at user profili o'chirilgan vaqti
  * @property $sessions user sessiyalari
  * @property $settings user adminkadagi tanlagan tili
+ * @property $post_id
+ * @property $discussion_post_id
+ * @property $reply_message
  */
 class User extends \TCG\Voyager\Models\User
 {

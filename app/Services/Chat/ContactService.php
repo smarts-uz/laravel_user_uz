@@ -5,7 +5,8 @@ namespace App\Services\Chat;
 use App\Models\Chat\ChatifyMessenger as Chatify;
 use App\Models\{ChMessage, Task, User};
 use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
-use Illuminate\Support\Facades\Auth;
+use Exception;
+use JsonException;
 use SergiX44\Nutgram\Nutgram;
 
 class ContactService
@@ -71,7 +72,7 @@ class ContactService
      * Bu method user 'admin_notifications' permissioni berilgan adminga yozsa, telegramga bildirishnoma yuboradi
      * @param $locale
      * @param $request_id
-     * @param $message
+     * @param $ch_message
      * @param $AuthId
      * @return void
      * @throws ContainerExceptionInterface
@@ -100,6 +101,7 @@ class ContactService
                 $message = strtr($send_message_text, [
                     '{name}' => $user->name,
                     '{phone}' => $user->phone_number,
+                    '{email}' => $user->email,
                     '{role}' => $role,
                     '{link}' => 'https://user.uz/chat/' . $user->id,
                 ]);
@@ -118,9 +120,14 @@ class ContactService
         }
     }
 
-    public function sendFromTelegram($user_id, $message, $attachment = null){
+    /**
+     * @throws JsonException
+     * @throws Exception
+     */
+    public function sendFromTelegram($user_id, $message, $attachment = null): void
+    {
 
-        $messageID = mt_rand(9, 999999999) + time();
+        $messageID = random_int(9, 999999999) + time();
         $this->chatify->newMessage([
             'id' => $messageID,
             'type' => 'user',
