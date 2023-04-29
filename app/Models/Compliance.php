@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 
 /**
  * Retrieve next step with additional fields
@@ -25,4 +26,24 @@ class Compliance extends Model
         'task_id',
         'text'
     ];
+
+
+    public static function boot():void
+    {
+        parent::boot();
+
+        // updating updated_by when model is updated
+        static::updating(static function ($model) {
+            if (!$model->isDirty('updated_by')) {
+                $model->updated_by = Arr::get(auth()->user(), 'id');
+            }
+        });
+
+        self::deleting(static function ($model) {
+            $model->deleted_at = now();
+            $model->deleted_by =  Arr::get(auth()->user(), 'id');
+            $model->save();
+        });
+
+    }
 }

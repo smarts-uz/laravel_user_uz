@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 use Rennokki\QueryCache\Traits\QueryCacheable;
 
 /**
@@ -18,11 +20,30 @@ use Rennokki\QueryCache\Traits\QueryCacheable;
 
 class Content extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     use QueryCacheable;
 
     public $cacheFor = 3600;
 
     public $cacheTags = ['content'];
+
+    public static function boot():void
+    {
+        parent::boot();
+
+        // updating updated_by when model is updated
+        static::updating(static function ($model) {
+            if (!$model->isDirty('updated_by')) {
+                $model->updated_by = Arr::get(auth()->user(), 'id');
+            }
+        });
+
+        self::deleting(static function ($model) {
+            $model->deleted_at = now();
+            $model->deleted_by =  Arr::get(auth()->user(), 'id');
+            $model->save();
+        });
+
+    }
 }
