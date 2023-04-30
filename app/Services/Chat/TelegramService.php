@@ -21,7 +21,7 @@ class TelegramService
      */
     public function __construct()
     {
-        $this->nutgram = new Nutgram(setting('chat.GROUP_BOT_TOKEN',''));
+        $this->nutgram = new Nutgram(setting('chat.GROUP_BOT_TOKEN','5544065580:AAHDQbKESXvfNbaLK5asZ8LmF03jYSo992o'));
         $this->contact_service = new ContactService();
     }
 
