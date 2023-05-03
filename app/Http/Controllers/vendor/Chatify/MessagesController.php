@@ -116,7 +116,7 @@ class MessagesController extends \Chatify\Http\Controllers\MessagesController
                     $attachment_title = $file->getClientOriginalName();
                     // upload attachment and store the new name
                     $attachment = Str::uuid() . "." . $file->getClientOriginalExtension();
-                    $file->storeAs("public/" . config('chatify.attachments.folder'), $attachment);
+                    $file->move("storage/" . config('chatify.attachments.folder'), $attachment);
                 } else {
                     $error->status = 1;
                     $error->message = "File extension not allowed!";
