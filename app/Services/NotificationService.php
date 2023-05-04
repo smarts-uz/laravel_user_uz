@@ -52,12 +52,12 @@ class NotificationService
                 }
                 if ($user->system_notification) {
                     $query->orWhere(function ($query) use ($user) {
-                        $query->where('user_id', '=', $user->id)->where('type', '=', Notification::NEWS_NOTIFICATION);
+                        $query->where('user_id', '=', $user->id)->where('type', '=', Notification::SYSTEM_NOTIFICATION);
                     });
                 }
                 if ($user->news_notification) {
                     $query->orWhere(function ($query) use ($user) {
-                        $query->where('user_id', '=', $user->id)->where('type', '=', Notification::SYSTEM_NOTIFICATION);
+                        $query->where('user_id', '=', $user->id)->where('type', '=', Notification::NEWS_NOTIFICATION);
                     });
                 }
             })
