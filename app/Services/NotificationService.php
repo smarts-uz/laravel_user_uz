@@ -7,7 +7,7 @@ use JsonException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use App\Mail\{VerifyEmail, MessageEmail};
-use App\Models\{BlogNew, User, Notification, UserCategory};
+use App\Models\{BlogNew, User, Notification, UserCategory, UserNotification};
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\{Collection, Facades\Http, Facades\Mail};
@@ -146,10 +146,14 @@ class NotificationService
                 "news_id" => $not->id,
                 "type" => Notification::NEWS_NOTIFICATION
             ]);
+            $notifId = UserNotification::query()->create([
+                'user_id' => $user->id,
+                'notification_id' => $notification->id,
+            ]);
             self::pushNotification($user, [
                 'title' => self::titles($notification->type),
                 'body' => self::descriptions($notification)
-            ], 'notification', new NotificationResource($notification), $notification);
+            ], 'notification', new NotificationResource($notification),$notifId);
 
             self::sendNotificationRequest($user->id, $notification);
         }
@@ -178,8 +182,6 @@ class NotificationService
             new SendNotificationEvent(json_encode($data, JSON_THROW_ON_ERROR), $user_id)
         )->toOthers();
 
-//        $notification->response = $response;
-//        $notification->save();
     }
 
     /**
@@ -510,12 +512,11 @@ class NotificationService
      * @param $type // for notification or chat. Values - e.g. "chat", "notification"
      * @param $model // data for handling in mobile
      */
-    public static function pushNotification(User $user, $notification, $type, $model, Notification $notifModel = null): void
+    public static function pushNotification(User $user, $notification, $type, $model, UserNotification $notifId = null): void
     {
         $NowTime = Carbon::now()->format('H:i:s');
         $notification['sound'] = "default";
 
-        $responses = null;
         foreach ($user->sessions as $session) {
             if ($user->notification_off !== 1 || ($NowTime < $user->notification_from && $NowTime > $user->notification_to)) {
                 $response = Http::withHeaders([
@@ -534,14 +535,13 @@ class NotificationService
                     ]
                 )->body();
 
-                $responses .= $response . PHP_EOL . PHP_EOL;
+                if ($notifId !== null) {
+                    $notifId->response = $response;
+                    $notifId->save();
+                }
             }
         }
 
-        if ($notifModel !== null) {
-                $notifModel->response = $responses;
-                $notifModel->save();
-        }
     }
 
     /**
