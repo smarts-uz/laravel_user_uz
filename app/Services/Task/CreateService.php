@@ -261,7 +261,7 @@ class CreateService
      */
     public function contact_register($task_id, $data, $password): RedirectResponse
     {
-        $task = Task::first($task_id);
+        $task = Task::find($task_id);
         $data['password'] = Hash::make($password);
         unset($data['password_confirmation']);
         $task->phone = $data['phone_number'];

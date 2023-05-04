@@ -281,6 +281,7 @@ class UserService
      * @return RedirectResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws \JsonException
      */
     public function verifyProfile($for_ver_func, $user, $sms_otp): RedirectResponse
     {
