@@ -39,7 +39,6 @@ class CreateTaskService
 
     public function __construct()
     {
-        $this->service = new CreateService();
         $this->custom_field_service = new CustomFieldService();
     }
 
@@ -75,7 +74,7 @@ class CreateTaskService
         if (!$task->category->customFieldsInCustom->count()) {
             if (!is_null($task->category->parent) && $task->category->parent->remote) {
                 return [
-                    'route' => 'remote', 'task_id' => $task->id, 'steps' => self::Create_Remote,
+                    'route' => 'remote', 'task_id' => $task_id, 'steps' => self::Create_Remote,
                     'custom_fields' => $custom_fields
                 ];
             }
