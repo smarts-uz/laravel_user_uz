@@ -49,13 +49,11 @@ class CreateTaskService
      * @param string $name
      * @param int $category_id
      * @param $user
-     * @param int $user_id
      * @return  array
      */
-    public function name_store(string $name, int $category_id, $user, int $user_id): array
+    public function name_store(string $name, int $category_id, $user): array
     {
-        $data = ["name" => $name, "category_id" => $category_id];
-        $data['user_id'] = $user_id;
+        $data = ["name" => $name, "category_id" => $category_id, 'user_id'=> Arr::get($user, 'id')];
         $task = Task::create($data);
         $user->active_task = $task->id;
         $user->active_step = self::Create_Name;

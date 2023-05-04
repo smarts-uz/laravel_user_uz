@@ -113,7 +113,7 @@ class CreateService
      */
     public function storeName(string $name, $category_id): int
     {
-        $data = ['name' => $name, 'category_id' => $category_id];
+        $data = ['name' => $name, 'category_id' => $category_id, 'user_id'=> Arr::get(auth()->user(), 'id')];
         $task = Task::query()->create($data);
         return (int)$task->id;
     }

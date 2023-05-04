@@ -595,8 +595,7 @@ class TaskAPIController extends Controller
         $name = $data['name'];
         $category_id = $data['category_id'];
         $user = auth()->user();
-        $user_id = auth()->id();
-        return $this->success($this->create_task_service->name_store($name, $category_id, $user, $user_id));
+        return $this->success($this->create_task_service->name_store($name, $category_id, $user));
     }
 
     /**
