@@ -86,16 +86,20 @@ class NotificationService
                 'performer_id' => $performer->id,
                 'description' => 'description',
                 'task_id' => $task->id,
-                "cat_id" => $task->category_id,
-                "name_task" => $task->name,
-                "type" => Notification::TASK_CREATED
+                'cat_id' => $task->category_id,
+                'name_task' => $task->name,
+                'type' => Notification::TASK_CREATED
             ]);
             $locale = (new CustomService)->cacheLang($performer->id);
             $price = number_format($task->budget, 0, '.', ' ');
+            $notifId = UserNotification::query()->create([
+                'user_id' => $performer->id,
+                'notification_id' => $notification->id,
+            ]);
             self::pushNotification($performer, [
                 'title' => self::titles($notification->type),
                 'body' => self::descriptions($notification)
-            ], 'notification', new NotificationResource($notification));
+            ], 'notification', new NotificationResource($notification),$notifId);
 
             self::sendNotificationRequest($performer->id,$notification);
 
