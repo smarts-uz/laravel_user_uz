@@ -1282,7 +1282,7 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateAddress(TaskUpdateAddressRequest $request, $taskId): JsonResponse
+    public function updateAddress(TaskUpdateAddressRequest $request, int $taskId): JsonResponse
     {
         $data = $request->validated();
         return $this->success($this->update_task_service->updateAddress($taskId, $data));

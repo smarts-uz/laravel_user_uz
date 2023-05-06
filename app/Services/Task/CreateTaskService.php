@@ -6,7 +6,6 @@ use App\Models\{Address, Category, CustomField, CustomFieldsValue, Task, User};
 use App\Services\{CustomService, NotificationService, Response, VerificationService};
 use Carbon\Carbon;
 use Illuminate\Database\{Eloquent\Builder, Eloquent\Collection, Eloquent\Model};
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\{Arr, Facades\Log, Facades\Validator};
 use Illuminate\Validation\ValidationException;

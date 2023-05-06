@@ -33,13 +33,13 @@ class UpdateTaskService
 
     /**
      * Update task name
-     * @param $taskId
+     * @param int $taskId
      * @param $data
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateName($taskId, $data): array
+    public function updateName(int $taskId, $data): array
     {
         (new CustomService)->updateCache('task_update_' . $taskId, 'name', $data['name']);
         (new CustomService)->updateCache('task_update_' . $taskId, 'category_id', $data['category_id']);
@@ -49,11 +49,11 @@ class UpdateTaskService
 
     /**
      * update task get custom
-     * @param $taskId
+     * @param int $taskId
      * @return array
      */
     #[ArrayShape([])]
-    public function get_custom($taskId): array
+    public function get_custom(int $taskId): array
     {
         $task = Task::find($taskId);
         $result = $this->custom_field_service->getCustomFieldsByRoute($task->id, CustomField::ROUTE_CUSTOM);
@@ -64,18 +64,18 @@ class UpdateTaskService
             }
             return $this->get_address($task);
         }
-        return ['route' => 'custom', 'task_id' => $task->id, 'steps' => 6, 'custom_fields' => $custom_fields];
+        return ['route' => 'custom', 'task_id' => $taskId, 'steps' => 6, 'custom_fields' => $custom_fields];
     }
 
     /**
      * task update custom
-     * @param $taskId
+     * @param int $taskId
      * @param $request
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateCustom($taskId, $request): array
+    public function updateCustom(int $taskId, $request): array
     {
         $task = Task::find($taskId);
         $customFields = [];
@@ -85,7 +85,7 @@ class UpdateTaskService
             $value['value'] = is_array($requestValue) ? json_encode($requestValue) : $requestValue;
             $customFields[] = $value;
         }
-        (new CustomService)->updateCache('task_update_' . $task->id, 'custom_fields', $customFields);
+        (new CustomService)->updateCache('task_update_' . $taskId, 'custom_fields', $customFields);
 
         if ($task->category->parent->remote) {
             return $this->get_remote($task);
@@ -141,13 +141,13 @@ class UpdateTaskService
 
     /**
      * task update address
-     * @param $taskId
+     * @param int $taskId
      * @param $data
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateAddress($taskId, $data): array
+    public function updateAddress(int $taskId, $data): array
     {
         $length = min(count($data['points']), setting('site.max_address',10));
         $addresses = [];
@@ -173,11 +173,11 @@ class UpdateTaskService
 
     /**
      * task update date get
-     * @param $taskId
+     * @param int $taskId
      * @return array
      */
     #[ArrayShape([])]
-    public function get_date($taskId): array
+    public function get_date(int $taskId): array
     {
         return [
             'route' => 'date', 'task_id' => $taskId, 'steps' => 3,
@@ -187,13 +187,13 @@ class UpdateTaskService
 
     /**
      * task update date
-     * @param $taskId
+     * @param int $taskId
      * @param $data
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateDate($taskId, $data): array
+    public function updateDate(int $taskId, $data): array
     {
         unset($data['task_id']);
         (new CustomService)->updateCache('task_update_' . $taskId, 'date', $data);
@@ -203,11 +203,11 @@ class UpdateTaskService
 
     /**
      * task update budget get
-     * @param $taskId
+     * @param int $taskId
      * @return array
      */
     #[ArrayShape([])]
-    public function get_budget($taskId): array
+    public function get_budget(int $taskId): array
     {
         $task = Task::find($taskId);
         return [
@@ -218,13 +218,13 @@ class UpdateTaskService
 
     /**
      * task update budget
-     * @param $taskId
+     * @param int $taskId
      * @param $data
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateBudget($taskId, $data): array
+    public function updateBudget(int $taskId, $data): array
     {
         (new CustomService)->updateCache('task_update_' . $taskId, 'budget', $data['amount']);
         (new CustomService)->updateCache('task_update_' . $taskId, 'oplata', $data['budget_type']);
@@ -234,11 +234,11 @@ class UpdateTaskService
 
     /**
      * task update note get
-     * @param $taskId
+     * @param int $taskId
      * @return array
      */
     #[ArrayShape([])]
-    public function get_note($taskId): array
+    public function get_note(int $taskId): array
     {
         $result = $this->custom_field_service->getCustomFieldsByRoute($taskId, CustomField::ROUTE_NOTE);
         $custom_fields = $result['custom_fields'];
@@ -248,13 +248,13 @@ class UpdateTaskService
 
     /**
      * task update note
-     * @param $taskId
+     * @param int $taskId
      * @param $data
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateNote($taskId, $data): array
+    public function updateNote(int $taskId, $data): array
     {
         unset($data['task_id']);
         (new CustomService)->updateCache('task_update_' . $taskId, 'note', $data);
@@ -263,11 +263,11 @@ class UpdateTaskService
 
     /**
      * task update contact get
-     * @param $taskId
+     * @param int $taskId
      * @return array
      */
     #[ArrayShape([])]
-    public function get_contact($taskId): array
+    public function get_contact(int $taskId): array
     {
         $task = Task::find($taskId);
         return [
@@ -279,13 +279,13 @@ class UpdateTaskService
 
     /**
      * task update contact
-     * @param $taskId
+     * @param int $taskId
      * @param $data
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateContact($taskId, $data): array
+    public function updateContact(int $taskId, $data): array
     {
         /** @var User $user */
         $user = auth()->user();
@@ -337,11 +337,11 @@ class UpdateTaskService
 
     /**
      * task update image
-     * @param $taskId
+     * @param int $taskId
      * @param $request
      * @return JsonResponse
      */
-    public function updateImage($taskId, $request): JsonResponse
+    public function updateImage(int $taskId, $request): JsonResponse
     {
         $task = Task::find($taskId);
         $validator = Validator::make($request->all(), [
@@ -375,10 +375,10 @@ class UpdateTaskService
     /**
      * task delete image
      * @param $request
-     * @param $taskId
+     * @param int $taskId
      * @return JsonResponse
      */
-    public function deleteImage($request, $taskId): JsonResponse
+    public function deleteImage($request, int $taskId): JsonResponse
     {
         $task = Task::find($taskId);
         $image = $request->get('image');
@@ -397,25 +397,25 @@ class UpdateTaskService
 
     /**
      * task update verify get
-     * @param $task_id
+     * @param int $task_id
      * @param $user
      * @return array
      */
     #[ArrayShape([])]
-    public function get_verify($task_id, $user): array
+    public function get_verify(int $task_id, $user): array
     {
         return ['route' => 'verify', 'task_id' => $task_id, 'user' => $user];
     }
 
     /**
      * task update verify
-     * @param $task_id
+     * @param int $task_id
      * @param $data
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function verification($task_id, $data): JsonResponse
+    public function verification(int $task_id, $data): JsonResponse
     {
         $correct = (new CustomService)->correctPhoneNumber($data['phone_number']);
         /** @var User $user */

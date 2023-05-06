@@ -768,6 +768,11 @@ class ProfileAPIController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
+        if($user->is_phone_number_verified){
+            $phone_number = (new CustomService)->correctPhoneNumber($user->phone_number);
+        }else{
+            $phone_number = '';
+        }
         $data = [
             'name' => $user->name,
             'last_name' => $user->last_name,
@@ -775,7 +780,7 @@ class ProfileAPIController extends Controller
             'location' => $user->location,
             'date_of_birth' => $user->born_date,
             'email' => $user->email,
-            'phone' => (new CustomService)->correctPhoneNumber($user->phone_number),
+            'phone' => $phone_number,
             'gender' => $user->gender,
         ];
         return response()->json([
