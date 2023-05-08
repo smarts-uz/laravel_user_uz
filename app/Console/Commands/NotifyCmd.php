@@ -42,7 +42,7 @@ class NotifyCmd extends Command
         $news->title = 'title';
         $news->desc = 'desc';
 
-        NotificationService::sendNotification($news, true);
+        NotificationService::sendNotification($news);
     }
 
 //    /**

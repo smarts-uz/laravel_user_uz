@@ -125,19 +125,22 @@ class NotificationService
      * Send news, system notifications by websocket and firebase
      *
      * @param BlogNew $not // Notification model object
-     * @param bool $testMode
      * @return void
      * @throws JsonException
      */
-    public static function sendNotification(BlogNew $not, bool $testMode = false): void
+    public static function sendNotification(BlogNew $not): void
     {
         /** @var User $users */
 
-        if (!$testMode) {
-            $users = User::query()->with('sessions')->where('news_notification', 1)->select('id')->get();
+        if((int)setting('admin.user_notifications_test','') !== 1){
+            $users = User::query()->with('sessions')
+                ->where('news_notification', 1)
+                ->select('id')->get();
         }
-        else {
-            $users = User::query()->with('sessions')->whereIn('id', [1482, 1, 1374, 1662])->select('id')->get();
+        else{
+            $users = User::query()->with('sessions')
+                ->where('user_notifications_test', 1)
+                ->select('id')->get();
         }
 
         foreach ($users as $user) {
