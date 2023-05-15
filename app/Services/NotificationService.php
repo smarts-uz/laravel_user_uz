@@ -158,8 +158,8 @@ class NotificationService
                 'notification_id' => $notification->id,
             ]);
             self::pushNotification($user, [
-                'title' => self::titles($notification->type),
-                'body' => self::descriptions($notification)
+                'title' => $not->title,
+                'body' => $not->text
             ], 'notification', new NotificationResource($notification),$notifId);
 
             self::sendNotificationRequest($user->id, $notification);
