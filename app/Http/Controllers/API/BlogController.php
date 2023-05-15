@@ -18,7 +18,13 @@ class BlogController extends Controller
      *     summary="Barcha yangiliklarni olish uchun api",
      *     @OA\Response (
      *          response=200,
-     *          description="Successful operation"
+     *          description="Successful operation",
+     *       @OA\JsonContent(
+     *          type="object",
+     *          @OA\Property(
+     *             property="data"
+     *          ),
+     *       )
      *     ),
      *     @OA\Response(
      *          response=401,
