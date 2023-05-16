@@ -1005,4 +1005,18 @@ class ProfileService
         ]);
     }
 
+    /**
+     * Ushbu metod foydalanuvchi tomonidan tanlangan kategoriyalarni qaytaradi
+     * @param $userId
+     * @return AnonymousResourceCollection
+     */
+    public function userCategory($userId): AnonymousResourceCollection
+    {
+        $user_categories = UserCategory::query()->where('user_id', $userId)->pluck('category_id')->toArray();
+        return CategoryIndexResource::collection(Category::query()
+            ->select('id', 'parent_id', 'name', 'ico')
+            ->whereIn('id', $user_categories)
+            ->get());
+    }
+
 }

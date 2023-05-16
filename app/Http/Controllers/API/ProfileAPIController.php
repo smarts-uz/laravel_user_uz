@@ -7,6 +7,7 @@ use App\Http\Requests\{Api\CategoryRequest, Api\PortfolioRequest, Api\ProfileAva
     Api\ProfilePasswordRequest, Api\ProfilePhoneRequest, Api\ProfileSettingsRequest, Api\ProfileVideoRequest,
     Api\ResponseTemplateRequest, Api\UserReportRequest, UserBlockRequest};
 use Exception;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use JsonException;
 use App\Models\{Portfolio, ReportedUser, ResponseTemplate, User};
 use App\Services\{CustomService, PerformersService, Profile\ProfileService};
@@ -1682,6 +1683,35 @@ class ProfileAPIController extends Controller
             'success' => true,
             'message' => __('Успешно сохранено'),
         ]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/profile/categories",
+     *     tags={"Profile"},
+     *     summary="Profile categories",
+     *     description="[**Telegram :** https://t.me/c/1334612640/260](https://t.me/c/1334612640/260).",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function userCategory(): AnonymousResourceCollection
+    {
+        $userId = \auth()->id();
+        return $this->profileService->userCategory($userId);
     }
 
 
