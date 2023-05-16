@@ -3127,16 +3127,16 @@
                                         "items": {
                                             "properties": {
                                                 "location": {
-                                                    "description": "Manzil kiritiladi",
+                                                    "description": "Manzil nomi kiritiladi",
                                                     "type": "string"
                                                 },
                                                 "latitude": {
-                                                    "description": "kenglik kiritiladi",
-                                                    "type": "string"
+                                                    "description": "koordinata kengligi kiritiladi",
+                                                    "type": "number"
                                                 },
                                                 "longitude": {
-                                                    "description": "uzunlik kiritiladi",
-                                                    "type": "string"
+                                                    "description": "koordinata uzunligi kiritiladi",
+                                                    "type": "number"
                                                 }
                                             },
                                             "type": "object"
@@ -4118,7 +4118,7 @@
                 "tags": [
                     "Complains"
                 ],
-                "summary": "Task complain",
+                "summary": "Vazifaga shikoyat qoldirish uchun api",
                 "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/174](https:\/\/t.me\/c\/1334612640\/174).",
                 "operationId": "7784b0c0652a5e1ec35adac6ba1b8f8f",
                 "parameters": [
@@ -4175,7 +4175,7 @@
                 "tags": [
                     "Complains"
                 ],
-                "summary": "Task complains types",
+                "summary": "Vazifaga shikoyat qoldirish turlari",
                 "description": "[**Telegram :** https:\/\/t.me\/c\/1334612640\/173](https:\/\/t.me\/c\/1334612640\/173).",
                 "operationId": "29df1bde5fe8cf5904bf08cf7e6701c5",
                 "responses": {

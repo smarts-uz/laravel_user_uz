@@ -709,18 +709,18 @@ class TaskAPIController extends Controller
      *                      type="object",
      *                      @OA\Property(
      *                          property="location",
-     *                          description="Manzil kiritiladi",
+     *                          description="Manzil nomi kiritiladi",
      *                          type="string"
      *                      ),
      *                      @OA\Property(
      *                          property="latitude",
-     *                          description="kenglik kiritiladi",
-     *                          type="string"
+     *                          description="koordinata kengligi kiritiladi",
+     *                          type="number"
      *                      ),
      *                      @OA\Property(
      *                          property="longitude",
-     *                          description="uzunlik kiritiladi",
-     *                          type="string"
+     *                          description="koordinata uzunligi kiritiladi",
+     *                          type="number"
      *                      ),
      *                   ),
      *                 )
@@ -1684,7 +1684,7 @@ class TaskAPIController extends Controller
      * @OA\Post(
      *     path="/api/task/{taskId}/complain",
      *     tags={"Complains"},
-     *     summary="Task complain",
+     *     summary="Vazifaga shikoyat qoldirish uchun api",
      *     description="[**Telegram :** https://t.me/c/1334612640/174](https://t.me/c/1334612640/174).",
      *     @OA\Parameter (
      *          in="path",
@@ -1742,7 +1742,7 @@ class TaskAPIController extends Controller
      * @OA\Get (
      *     path="/api/complain/types",
      *     tags={"Complains"},
-     *     summary="Task complains types",
+     *     summary="Vazifaga shikoyat qoldirish turlari",
      *     description="[**Telegram :** https://t.me/c/1334612640/173](https://t.me/c/1334612640/173).",
      *     @OA\Response (
      *          response=200,
