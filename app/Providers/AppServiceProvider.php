@@ -33,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
         Voyager::addAction(\App\Actions\InfoAction::class);
         Voyager::addAction(\App\Actions\PasswordResetAction::class);
         Voyager::addAction(\App\Actions\NewsNotifAction::class);
+        Voyager::addAction(\App\Actions\ChatAction::class);
         foreach (glob(__DIR__.'/../Helpers/*.php') as $filename) {
             require_once $filename;
         }

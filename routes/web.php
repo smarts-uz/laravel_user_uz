@@ -47,7 +47,7 @@ Route::get('perf-ajax/{id}', [PerformersController::class, 'perf_ajax'])->name('
 Route::get('active-performers', [PerformersController::class, 'ajaxAP'])->name('performers.active_performers');
 Route::post('give-task', [PerformersController::class, 'give_task']);
 Route::get('/performers_portfolio/{portfolio}',[PerformersController::class,'performers_portfolio'])->name('performers.performers_portfolio');
-Route::group(['prefix' => 'performers'], function () {
+Route::group(['prefix' => 'performers'], static function () {
     Route::get('/', [PerformersController::class, 'service'])->name('performers.service');
     Route::get('/{user}', [PerformersController::class, 'performer'])->name('performers.performer');
     Route::get('performer/list', [PerformersController::class, 'getPerformers'])->name('performers.list');
@@ -55,7 +55,7 @@ Route::group(['prefix' => 'performers'], function () {
 #endregion
 
 #region chat
-Route::group(['prefix' => 'chat'], function (){
+Route::group(['prefix' => 'chat'], static function (){
     Route::get('/getContacts', [MessagesController::class, 'getContacts'])->name('contacts.get');
     Route::get('/search', [MessagesController::class, 'search'])->name('search');
     Route::post('/favorites', [MessagesController::class, 'getFavorites'])->name('favorites');
@@ -90,7 +90,7 @@ Route::group(['prefix' => 'admin'], static function () {
 #endregion
 
 #region tasks
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth'], static function () {
     Route::get('/my-tasks', [Controller::class, 'my_tasks'])->name('searchTask.mytasks');
 });
 Route::get('/completed-task-names', [SearchTaskController::class, 'taskNames'])->name('search.task_name');
@@ -111,7 +111,7 @@ Route::get('task/{task}/map', [SearchTaskController::class, 'task_map'])->name('
 #endregion
 
 #region verificationInfo
-Route::group(['middleware' => 'auth', 'prefix' => 'verification'], function () {
+Route::group(['middleware' => 'auth', 'prefix' => 'verification'], static function () {
     Route::get('/', [ProfileController::class, 'verificationIndex'])->name('verification');
 
     Route::get('/verificationInfo', [ProfileController::class, 'verificationInfo'])->name('profile.verificationInfo');
@@ -144,7 +144,7 @@ Route::get('/app',[Controller::class,'device']);
 #endregion
 
 #region Profile
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth'], static function () {
     Route::prefix('profile')->group(function () {
         Route::post('/youtube_link', [ProfileController::class, 'youtube_link'])->name('youtube_link');
         Route::get('youtube_link_delete',[ProfileController::class,'youtube_link_delete'])->name('youtube_link_delete');
@@ -250,7 +250,7 @@ Route::post('/confirmation-self-delete', [UserController::class, 'confirmationSe
 Route::post('/account/password/change', [ProfileController::class, 'change_password'])->name('profile.change_password');
 #endregion
 
-Route::any('/paynet', function () {
+Route::any('/paynet', static function () {
     (new PayUz)->driver('paynet')->handle();
 });
 // Show transactions history
