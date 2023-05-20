@@ -28,7 +28,7 @@ class MessageResource extends JsonResource
             'id' => $this->id,
             'from_id' => $this->from_id,
             'to_id' => $this->to_id,
-            'message' => $this->body,
+            'message' => html_entity_decode($this->body),
             'attachment' => $attachment,
             'seen' => $this->seen,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
