@@ -1461,8 +1461,8 @@ class ProfileAPIController extends Controller
     public function response_template(): JsonResponseAlias
     {
         /** @var User $user */
-        $user = auth()->user();
-        return $this->profileService->response_template($user);
+        $userId = auth()->id();
+        return $this->profileService->response_template($userId);
     }
 
     /**
@@ -1621,8 +1621,8 @@ class ProfileAPIController extends Controller
     public function response_template_delete(ResponseTemplate $templateId): JsonResponseAlias
     {
         /** @var User $user */
-        $user = auth()->user();
-        return $this->profileService->response_template_delete($user, $templateId);
+        $userId = auth()->id();
+        return $this->profileService->response_template_delete($userId, $templateId);
     }
 
     /**

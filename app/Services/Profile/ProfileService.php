@@ -972,12 +972,12 @@ class ProfileService
 
     /**
      * shablon otklikni qaytaradi
-     * @param $user
+     * @param $userId
      * @return JsonResponse
      */
-    public function response_template($user): JsonResponse
+    public function response_template($userId): JsonResponse
     {
-        $data = ResponseTemplate::query()->where(['user_id' => $user->id])->get();
+        $data = ResponseTemplate::query()->where(['user_id' => $userId])->get();
         return response()->json([
             'success' => true,
             'data' => ResponseTemplateResource::collection($data)
@@ -986,13 +986,13 @@ class ProfileService
 
     /**
      * shablon otklikni o'chiradi
-     * @param $user
+     * @param $userId
      * @param $templateId
      * @return JsonResponse
      */
-    public function response_template_delete($user, $templateId): JsonResponse
+    public function response_template_delete($userId, $templateId): JsonResponse
     {
-        if ((int)$user->id === (int)$templateId->user_id) {
+        if ((int)$userId === (int)$templateId->user_id) {
             $templateId->delete();
             return response()->json([
                 'success' => true,
