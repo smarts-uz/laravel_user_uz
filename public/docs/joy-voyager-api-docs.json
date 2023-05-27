@@ -68,7 +68,6 @@
                                 "api_token",
                                 "device_token",
                                 "notification_type",
-                                "user_notifications_test",
                                 "socails",
                                 "location",
                                 "views",
@@ -91,6 +90,7 @@
                                 "phone_number_old",
                                 "system_notification",
                                 "news_notification",
+                                "user_notifications_test",
                                 "notification_off",
                                 "notification_to",
                                 "notification_from",
@@ -211,7 +211,7 @@
                         }
                     },
                     {
-                        "name": "filters[g-recaptcha-response]",
+                        "name": "filters[location]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -243,6 +243,14 @@
                         }
                     },
                     {
+                        "name": "filters[user_notifications_test]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "filters[born_date]",
                         "in": "query",
                         "required": false,
@@ -251,7 +259,7 @@
                         }
                     },
                     {
-                        "name": "filters[version]",
+                        "name": "filters[news_notification]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -259,27 +267,12 @@
                         }
                     },
                     {
-                        "name": "filters[created_by]",
+                        "name": "filters[last_seen]",
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[updated_by]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "filters[deleted_by]",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "2020-01-01 00:00,,2021-06-01 00:00"
                         }
                     }
                 ],
@@ -562,13 +555,17 @@
                                 "name",
                                 "email",
                                 "password",
+                                "active_task",
+                                "active_step",
                                 "avatar",
                                 "role_id",
                                 "user_belongsto_role_relationship",
                                 "phone_number",
+                                "location",
                                 "description",
                                 "work_experience",
                                 "verify_code",
+                                "user_notifications_test",
                                 "born_date"
                             ]
                         }
@@ -585,13 +582,17 @@
                                     "name",
                                     "email",
                                     "password",
+                                    "active_task",
+                                    "active_step",
                                     "avatar",
                                     "role_id",
                                     "user_belongsto_role_relationship",
                                     "phone_number",
+                                    "location",
                                     "description",
                                     "work_experience",
                                     "verify_code",
+                                    "user_notifications_test",
                                     "born_date"
                                 ]
                             }
@@ -2044,6 +2045,14 @@
                         }
                     },
                     {
+                        "name": "filters[ico_mini]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "filters[double_address]",
                         "in": "query",
                         "required": false,
@@ -2061,6 +2070,14 @@
                     },
                     {
                         "name": "filters[deleted_by]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[created_by]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -2368,10 +2385,12 @@
                                 "slug",
                                 "ico",
                                 "max",
+                                "ico_mini",
                                 "min",
                                 "double_address",
                                 "remote",
                                 "deleted_by",
+                                "created_by",
                                 "updated_by",
                                 "deleted_at"
                             ]
@@ -2393,10 +2412,12 @@
                                     "slug",
                                     "ico",
                                     "max",
+                                    "ico_mini",
                                     "min",
                                     "double_address",
                                     "remote",
                                     "deleted_by",
+                                    "created_by",
                                     "updated_by",
                                     "deleted_at"
                                 ]
@@ -4234,6 +4255,14 @@
                         }
                     },
                     {
+                        "name": "filters[go_back]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "filters[user_id]",
                         "in": "query",
                         "required": false,
@@ -4282,6 +4311,14 @@
                         }
                     },
                     {
+                        "name": "filters[created_by]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "filters[deleted_at]",
                         "in": "query",
                         "required": false,
@@ -4292,6 +4329,22 @@
                     },
                     {
                         "name": "filters[not_completed_reason]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[updated_by]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters[deleted_by]",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -4590,6 +4643,7 @@
                                 "performer_review",
                                 "task_hasmany_custom_field_relationship",
                                 "oplata",
+                                "go_back",
                                 "user_id",
                                 "task_belongsto_category_relationship",
                                 "docs",
@@ -4598,8 +4652,11 @@
                                 "is_phone_verified",
                                 "verify_code",
                                 "verify_expiration",
+                                "created_by",
                                 "deleted_at",
-                                "not_completed_reason"
+                                "not_completed_reason",
+                                "updated_by",
+                                "deleted_by"
                             ]
                         }
                     },
@@ -4627,6 +4684,7 @@
                                     "performer_review",
                                     "task_hasmany_custom_field_relationship",
                                     "oplata",
+                                    "go_back",
                                     "user_id",
                                     "task_belongsto_category_relationship",
                                     "docs",
@@ -4635,8 +4693,11 @@
                                     "is_phone_verified",
                                     "verify_code",
                                     "verify_expiration",
+                                    "created_by",
                                     "deleted_at",
-                                    "not_completed_reason"
+                                    "not_completed_reason",
+                                    "updated_by",
+                                    "deleted_by"
                                 ]
                             }
                         }
@@ -11514,9 +11575,9 @@
                         "type": "string",
                         "description": "Phone Number"
                     },
-                    "g-recaptcha-response": {
+                    "location": {
                         "type": "string",
-                        "description": "G-recaptcha-response"
+                        "description": "Location"
                     },
                     "description": {
                         "type": "string",
@@ -11530,25 +11591,23 @@
                         "type": "string",
                         "description": "Verify Code"
                     },
+                    "user_notifications_test": {
+                        "type": "string",
+                        "description": "User Notifications Test"
+                    },
                     "born_date": {
                         "type": "string",
                         "description": "Born Date"
                     },
-                    "version": {
+                    "news_notification": {
                         "type": "string",
-                        "description": "Version"
+                        "description": "News Notification"
                     },
-                    "created_by": {
-                        "type": "string",
-                        "description": "Created By"
-                    },
-                    "updated_by": {
-                        "type": "string",
-                        "description": "Updated By"
-                    },
-                    "deleted_by": {
-                        "type": "string",
-                        "description": "Deleted By"
+                    "last_seen": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Last Seen",
+                        "example": "2021-05-17 00:00"
                     }
                 }
             },
@@ -11584,6 +11643,10 @@
                         "type": "string",
                         "description": "Phone Number"
                     },
+                    "location": {
+                        "type": "string",
+                        "description": "Location"
+                    },
                     "description": {
                         "type": "string",
                         "description": "Description"
@@ -11596,25 +11659,23 @@
                         "type": "string",
                         "description": "Verify Code"
                     },
+                    "user_notifications_test": {
+                        "type": "string",
+                        "description": "User Notifications Test"
+                    },
                     "born_date": {
                         "type": "string",
                         "description": "Born Date"
                     },
-                    "version": {
+                    "news_notification": {
                         "type": "string",
-                        "description": "Version"
+                        "description": "News Notification"
                     },
-                    "created_by": {
-                        "type": "string",
-                        "description": "Created By"
-                    },
-                    "updated_by": {
-                        "type": "string",
-                        "description": "Updated By"
-                    },
-                    "deleted_by": {
-                        "type": "string",
-                        "description": "Deleted By"
+                    "last_seen": {
+                        "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
+                        "type": "date-time",
+                        "description": "Last Seen",
+                        "example": "2021-05-17 00:00"
                     }
                 }
             },
@@ -11702,6 +11763,10 @@
                         "type": "integer",
                         "description": "Max"
                     },
+                    "ico_mini": {
+                        "type": "string",
+                        "description": "Ico Mini"
+                    },
                     "double_address": {
                         "type": "string",
                         "description": "Double Address"
@@ -11713,6 +11778,10 @@
                     "deleted_by": {
                         "type": "string",
                         "description": "Deleted By"
+                    },
+                    "created_by": {
+                        "type": "string",
+                        "description": "Created By"
                     },
                     "updated_by": {
                         "type": "string",
@@ -11771,6 +11840,10 @@
                         "type": "integer",
                         "description": "Max"
                     },
+                    "ico_mini": {
+                        "type": "string",
+                        "description": "Ico Mini"
+                    },
                     "min": {
                         "type": "integer",
                         "description": "Min"
@@ -11786,6 +11859,10 @@
                     "deleted_by": {
                         "type": "string",
                         "description": "Deleted By"
+                    },
+                    "created_by": {
+                        "type": "string",
+                        "description": "Created By"
                     },
                     "updated_by": {
                         "type": "string",
@@ -12164,6 +12241,10 @@
                         "type": "string",
                         "description": "Oplata"
                     },
+                    "go_back": {
+                        "type": "string",
+                        "description": "Go Back"
+                    },
                     "user_id": {
                         "type": "string",
                         "description": "User Id"
@@ -12192,6 +12273,10 @@
                         "type": "string",
                         "description": "Verify Code"
                     },
+                    "created_by": {
+                        "type": "string",
+                        "description": "Created By"
+                    },
                     "deleted_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
@@ -12201,6 +12286,14 @@
                     "not_completed_reason": {
                         "type": "string",
                         "description": "Not Completed Reason"
+                    },
+                    "updated_by": {
+                        "type": "string",
+                        "description": "Updated By"
+                    },
+                    "deleted_by": {
+                        "type": "string",
+                        "description": "Deleted By"
                     }
                 }
             },
@@ -12293,6 +12386,10 @@
                         "type": "string",
                         "description": "Oplata"
                     },
+                    "go_back": {
+                        "type": "string",
+                        "description": "Go Back"
+                    },
                     "user_id": {
                         "type": "string",
                         "description": "User Id"
@@ -12327,6 +12424,10 @@
                         "description": "Verify Expiration",
                         "example": "2021-05-17 00:00"
                     },
+                    "created_by": {
+                        "type": "string",
+                        "description": "Created By"
+                    },
                     "deleted_at": {
                         "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                         "type": "date-time",
@@ -12336,6 +12437,14 @@
                     "not_completed_reason": {
                         "type": "string",
                         "description": "Not Completed Reason"
+                    },
+                    "updated_by": {
+                        "type": "string",
+                        "description": "Updated By"
+                    },
+                    "deleted_by": {
+                        "type": "string",
+                        "description": "Deleted By"
                     }
                 }
             },
@@ -12979,6 +13088,14 @@
                                     "type": "password",
                                     "description": "Password"
                                 },
+                                "active_task": {
+                                    "type": "string",
+                                    "description": "Active Task"
+                                },
+                                "active_step": {
+                                    "type": "string",
+                                    "description": "Active Step"
+                                },
                                 "avatar": {
                                     "type": "string",
                                     "description": "jpg,jpeg,png",
@@ -12996,6 +13113,10 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
+                                "location": {
+                                    "type": "string",
+                                    "description": "Location"
+                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
@@ -13003,6 +13124,10 @@
                                 "work_experience": {
                                     "type": "string",
                                     "description": "Work Experience"
+                                },
+                                "user_notifications_test": {
+                                    "type": "string",
+                                    "description": "User Notifications Test"
                                 },
                                 "born_date": {
                                     "type": "string",
@@ -13036,6 +13161,14 @@
                                     "type": "password",
                                     "description": "Password"
                                 },
+                                "active_task": {
+                                    "type": "string",
+                                    "description": "Active Task"
+                                },
+                                "active_step": {
+                                    "type": "string",
+                                    "description": "Active Step"
+                                },
                                 "avatar": {
                                     "type": "string",
                                     "description": "jpg,jpeg,png",
@@ -13053,6 +13186,10 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
+                                "location": {
+                                    "type": "string",
+                                    "description": "Location"
+                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
@@ -13064,6 +13201,10 @@
                                 "verify_code": {
                                     "type": "string",
                                     "description": "Verify Code"
+                                },
+                                "user_notifications_test": {
+                                    "type": "string",
+                                    "description": "User Notifications Test"
                                 },
                                 "born_date": {
                                     "type": "string",
@@ -13097,6 +13238,14 @@
                                     "type": "password",
                                     "description": "Password"
                                 },
+                                "active_task": {
+                                    "type": "string",
+                                    "description": "Active Task"
+                                },
+                                "active_step": {
+                                    "type": "string",
+                                    "description": "Active Step"
+                                },
                                 "avatar": {
                                     "type": "string",
                                     "description": "jpg,jpeg,png",
@@ -13114,6 +13263,10 @@
                                     "type": "string",
                                     "description": "Phone Number"
                                 },
+                                "location": {
+                                    "type": "string",
+                                    "description": "Location"
+                                },
                                 "description": {
                                     "type": "string",
                                     "description": "Description"
@@ -13125,6 +13278,10 @@
                                 "verify_code": {
                                     "type": "string",
                                     "description": "Verify Code"
+                                },
+                                "user_notifications_test": {
+                                    "type": "string",
+                                    "description": "User Notifications Test"
                                 },
                                 "born_date": {
                                     "type": "string",
@@ -13322,6 +13479,10 @@
                                     "type": "integer",
                                     "description": "Max"
                                 },
+                                "ico_mini": {
+                                    "type": "string",
+                                    "description": "Ico Mini"
+                                },
                                 "min": {
                                     "type": "integer",
                                     "description": "Min"
@@ -13337,6 +13498,10 @@
                                 "deleted_by": {
                                     "type": "string",
                                     "description": "Deleted By"
+                                },
+                                "created_by": {
+                                    "type": "string",
+                                    "description": "Created By"
                                 },
                                 "updated_by": {
                                     "type": "string",
@@ -13396,6 +13561,10 @@
                                     "type": "integer",
                                     "description": "Max"
                                 },
+                                "ico_mini": {
+                                    "type": "string",
+                                    "description": "Ico Mini"
+                                },
                                 "min": {
                                     "type": "integer",
                                     "description": "Min"
@@ -13411,6 +13580,10 @@
                                 "deleted_by": {
                                     "type": "string",
                                     "description": "Deleted By"
+                                },
+                                "created_by": {
+                                    "type": "string",
+                                    "description": "Created By"
                                 },
                                 "updated_by": {
                                     "type": "string",
@@ -13470,6 +13643,10 @@
                                     "type": "integer",
                                     "description": "Max"
                                 },
+                                "ico_mini": {
+                                    "type": "string",
+                                    "description": "Ico Mini"
+                                },
                                 "min": {
                                     "type": "integer",
                                     "description": "Min"
@@ -13485,6 +13662,10 @@
                                 "deleted_by": {
                                     "type": "string",
                                     "description": "Deleted By"
+                                },
+                                "created_by": {
+                                    "type": "string",
+                                    "description": "Created By"
                                 },
                                 "updated_by": {
                                     "type": "string",
@@ -14066,6 +14247,10 @@
                                     "type": "string",
                                     "description": "Oplata"
                                 },
+                                "go_back": {
+                                    "type": "string",
+                                    "description": "Go Back"
+                                },
                                 "user_id": {
                                     "type": "string",
                                     "description": "User Id"
@@ -14100,6 +14285,10 @@
                                     "description": "Verify Expiration",
                                     "example": "2021-05-17 00:00"
                                 },
+                                "created_by": {
+                                    "type": "string",
+                                    "description": "Created By"
+                                },
                                 "deleted_at": {
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                                     "type": "date-time",
@@ -14109,6 +14298,14 @@
                                 "not_completed_reason": {
                                     "type": "string",
                                     "description": "Not Completed Reason"
+                                },
+                                "updated_by": {
+                                    "type": "string",
+                                    "description": "Updated By"
+                                },
+                                "deleted_by": {
+                                    "type": "string",
+                                    "description": "Deleted By"
                                 }
                             }
                         }
@@ -14202,6 +14399,10 @@
                                     "type": "string",
                                     "description": "Oplata"
                                 },
+                                "go_back": {
+                                    "type": "string",
+                                    "description": "Go Back"
+                                },
                                 "user_id": {
                                     "type": "string",
                                     "description": "User Id"
@@ -14236,6 +14437,10 @@
                                     "description": "Verify Expiration",
                                     "example": "2021-05-17 00:00"
                                 },
+                                "created_by": {
+                                    "type": "string",
+                                    "description": "Created By"
+                                },
                                 "deleted_at": {
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                                     "type": "date-time",
@@ -14245,6 +14450,14 @@
                                 "not_completed_reason": {
                                     "type": "string",
                                     "description": "Not Completed Reason"
+                                },
+                                "updated_by": {
+                                    "type": "string",
+                                    "description": "Updated By"
+                                },
+                                "deleted_by": {
+                                    "type": "string",
+                                    "description": "Deleted By"
                                 }
                             }
                         }
@@ -14338,6 +14551,10 @@
                                     "type": "string",
                                     "description": "Oplata"
                                 },
+                                "go_back": {
+                                    "type": "string",
+                                    "description": "Go Back"
+                                },
                                 "user_id": {
                                     "type": "string",
                                     "description": "User Id"
@@ -14372,6 +14589,10 @@
                                     "description": "Verify Expiration",
                                     "example": "2021-05-17 00:00"
                                 },
+                                "created_by": {
+                                    "type": "string",
+                                    "description": "Created By"
+                                },
                                 "deleted_at": {
                                     "pattern": "\/([0-9]{4})-(?:[0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})\/",
                                     "type": "date-time",
@@ -14381,6 +14602,14 @@
                                 "not_completed_reason": {
                                     "type": "string",
                                     "description": "Not Completed Reason"
+                                },
+                                "updated_by": {
+                                    "type": "string",
+                                    "description": "Updated By"
+                                },
+                                "deleted_by": {
+                                    "type": "string",
+                                    "description": "Deleted By"
                                 }
                             }
                         }

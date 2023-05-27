@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use App\Models\TaskResponse;
 use App\Services\Task\CustomFieldService;
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

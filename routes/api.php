@@ -96,6 +96,9 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::post('/become-performer-category', [PerformerAPIController::class, 'becomePerformerCategory']); // fix
     Route::get('/reviews', [PerformerAPIController::class, 'reviews']); // fix
     Route::post('/task-cancel/{taskId}', [SearchAPIController::class, 'task_cancel']); // fix
+    Route::post('/favorite-task/create', [SearchAPIController::class, 'favorite_task_create']); // fix
+    Route::delete('/favorite-task/delete/{taskId}', [SearchAPIController::class, 'favorite_task_delete']); // fix
+    Route::get('/favorite-task', [SearchAPIController::class, 'favorite_task_all']); // fix
 
     //Verification
     Route::get('account/verify', [LoginAPIController::class, 'verifyCredentials']); // fix

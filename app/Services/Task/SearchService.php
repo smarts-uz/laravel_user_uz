@@ -2,9 +2,11 @@
 
 namespace App\Services\Task;
 
+use App\Http\Resources\FavoriteTaskResource;
 use App\Item\SearchServiceTaskItem;
 use App\Models\Address;
 use App\Models\ComplianceType;
+use App\Models\FavoriteTask;
 use App\Models\Task;
 use App\Models\Category;
 use App\Models\TaskElastic;
@@ -15,7 +17,7 @@ use App\Services\CustomService;
 use App\Services\TelegramService;
 use Elastic\ScoutDriverPlus\Support\Query;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -316,5 +318,63 @@ class SearchService
             $options .= "<option value='$task->name' id='$task->category_id'>$task->name</option>";
         }
         return $options;
+    }
+
+    /**
+     * Favorite task create
+     * @param $task_id
+     * @param $userId
+     * @return JsonResponse
+     */
+    public function favorite_task_create($task_id, $userId): JsonResponse
+    {
+        $task_exists = Task::query()->where('id',$task_id)->exists();
+        if($task_exists){
+            FavoriteTask::query()->updateOrCreate([
+                'task_id' => $task_id,
+                'user_id' => $userId
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => __('Успешно сохранено')
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            "message" => __("Нет такой задачи")
+        ], 403);
+    }
+
+    /**
+     * Favorite task delete
+     * @param $taskId
+     * @param $userId
+     * @return JsonResponse
+     */
+    public function favorite_task_delete($taskId, $userId): JsonResponse
+    {
+        $task_exists = Task::query()->where('id',$taskId)->exists();
+
+        if($task_exists){
+            $task_favorite = FavoriteTask::query()->where('task_id',$taskId)->where('user_id',$userId);
+            $task_favorite->delete();
+            return response()->json([
+                'success' => true,
+                'message' => __('Успешно удалено')
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            "message" => __("Нет такой задачи")
+        ], 403);
+    }
+
+    public function favorite_task_all($userId): AnonymousResourceCollection
+    {
+        $favorite_tasks = FavoriteTask::query()->where('user_id',$userId)->paginate(10);
+        return FavoriteTaskResource::collection($favorite_tasks);
     }
 }
