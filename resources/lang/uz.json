@@ -836,5 +836,6 @@
     "Вернуться на главную страницу": "Bosh sahifaqa qaytish",
     "Связаться с администраторами": "Adminlar bilan bog'lanish",
     "Нет такой задачи": "Bunday vazifa yo'q",
-    "Эта задача не добавлена в избранное": "Bu vazifa sevimli emas"
+    "Эта задача не добавлена в избранное": "Bu vazifa sevimli emas",
+    "У вас есть задачи в процессе, вы не можете удалить свой профиль": "Sizning bajarilayotgan vazifalaringiz bor, profilingizni o'chirolmaysiz"
 }

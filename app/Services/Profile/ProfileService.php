@@ -887,6 +887,14 @@ class ProfileService
      */
     public function self_delete($user): JsonResponse
     {
+        $tasks = Task::query()->where('user_id', $user->id)->whereIn('status', [Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS,])->count();
+        if($tasks>0){
+            return response()->json([
+                'success' => false,
+                'message' => __('У вас есть задачи в процессе, вы не можете удалить свой профиль')
+            ]);
+        }
+
         if ($user->phone_number && strlen($user->phone_number) === 13  && $user->is_phone_number_verified) {
             VerificationService::send_verification('phone', $user, $user->phone_number);
             return response()->json([
@@ -895,6 +903,7 @@ class ProfileService
                 'message' => __('СМС-код отправлен!')
             ]);
         }
+
 
         return response()->json([
             'success' => false,
