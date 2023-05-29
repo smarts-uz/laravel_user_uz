@@ -55,6 +55,8 @@ class ResponseService
                     $success = true;
                     $message = __('Выполнено успешно');
                     TaskResponse::query()->create($data);
+                    $task->status = Task::STATUS_RESPONSE;
+                    $task->save();
                     if ((int)$data['not_free'] === 1) {
                         $balance->balance -= setting('admin.pullik_otklik',2000);
                         $balance->save();

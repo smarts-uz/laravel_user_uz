@@ -175,7 +175,6 @@ Route::get('tasks-filter', [TaskAPIController::class, 'filter']); // fix
 Route::get('same-tasks/{taskId}', [TaskAPIController::class, 'same_tasks']); // fix
 
 //CategoryAPI
-Route::get('/categories', [CategoriesAPIController::class, 'index']); // fix
 Route::get('/popular-categories', [CategoriesAPIController::class, 'popular']); // fix
 Route::get('/categories-parent', [CategoriesAPIController::class, 'parents']); // fix
 Route::get('/categories/{id}', [CategoriesAPIController::class, 'show']); // fix

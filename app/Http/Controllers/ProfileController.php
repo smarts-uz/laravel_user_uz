@@ -82,11 +82,10 @@ class ProfileController extends Controller
 
         return view('profile.profile',
             [
-                'categories' => $item->categories,
                 'top_users' => $item->top_users,
                 'user' => $user,
                 'portfolios' => $item->portfolios,
-                'task' => $item->task,
+                'task_count' => $item->task_count,
                 'goodReviews' => $item->goodReviews,
                 'badReviews' => $item->badReviews,
                 'user_category'=>$item->user_category
@@ -101,13 +100,16 @@ class ProfileController extends Controller
         return view('profile.cash',
             [
                 'balance' => $item->balance,
-                'task' => $item->task,
+                'task_count' => $item->task_count,
                 'top_users' => $item->top_users,
                 'transactions' => $item->transactions,
                 'user' => $user,
             ]);
     }
 
+    /**
+     * @throws \UAParser\Exception\FileNotFoundException
+     */
     public function editData()
     {
         /** @var User $user */
@@ -123,7 +125,8 @@ class ProfileController extends Controller
             'top_users' => $item->top_users,
             'sessions' => $item->sessions,
             'parser' => $item->parser,
-            'task' => $item->task,
+            'task_count' => $item->task_count,
+            'tasks' => $item->tasks,
             'user_categories' => $item->user_categories,
         ]);
     }
