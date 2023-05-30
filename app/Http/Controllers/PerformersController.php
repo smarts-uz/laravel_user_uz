@@ -45,8 +45,7 @@ class PerformersController extends Controller
     public function performer(User $user): Factory|View|Application
     {
         (new PerformersService)->setView($user);
-        $authId = Auth::id();
-        $item = $this->performerService->performer($user, $authId);
+        $item = $this->performerService->performer($user);
 
         return view('performers/executors-courier',
             [

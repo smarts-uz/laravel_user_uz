@@ -396,8 +396,16 @@ class ProfileService
             ->limit(Review::TOP_USER)->pluck('id')->toArray();
         $item->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->latest()->get();
         $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->latest()->get();
-        $user_categories = UserCategory::query()->where('user_id', $user->id)->pluck('category_id')->toArray();
-        $item->user_category = Category::query()->whereIn('id', $user_categories)->get();
+        $performer_category = UserCategory::query()->where('user_id', auth()->id())->get()->groupBy(static function ($data){
+            return $data->category->parent->id;
+        });
+        $item->user_category = [];
+        foreach ($performer_category as $category_id => $category) {
+            $item->user_category[] = [
+                'parent' => Category::query()->where('id',$category_id)->get(),
+                'category' => $category
+            ];
+        }
         return $item;
     }
 

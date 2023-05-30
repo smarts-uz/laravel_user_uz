@@ -9,7 +9,8 @@ use App\Http\Requests\{Api\CategoryRequest,
     User\PerformerCreateRequest,
     UserPasswordRequest,
     UserUpdateDataRequest};
-use App\Models\{Session, Portfolio, User};
+use App\Http\Resources\UserCategoriesResource;
+use App\Models\{Category, Session, Portfolio, User, UserCategory};
 use Illuminate\Http\{RedirectResponse, Request};
 use Jenssegers\Agent\Agent;
 use Illuminate\Support\Facades\Auth;
@@ -88,7 +89,7 @@ class ProfileController extends Controller
                 'task_count' => $item->task_count,
                 'goodReviews' => $item->goodReviews,
                 'badReviews' => $item->badReviews,
-                'user_category'=>$item->user_category
+                'user_category' => $item->user_category,
             ]);
     }
 

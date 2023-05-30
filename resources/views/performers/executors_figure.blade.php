@@ -164,7 +164,7 @@
     <h1 class="text-3xl font-semibold text-gray-700">{{__('Обо мне')}}</h1>
     <p>{{$user->description}}</p>
 </div>
-<div class="mt-8">
+<div class="mt-8 mb-8">
     @if (count($portfolios) || $user->youtube_link != null)
         <h1 class="text-xl font-semibold mt-2">{{__('Примеры работ')}}</h1>
     @endif

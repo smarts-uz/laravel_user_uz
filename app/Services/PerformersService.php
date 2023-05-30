@@ -70,10 +70,9 @@ class PerformersService
      * id bo'yicha bitta performer ma'lumotlarini qaytaradi
      * @link https://user.uz/performers/354
      * @param $user
-     * @param $authId
      * @return  PerformerUserItem
      */
-    public function performer($user, $authId): PerformerUserItem
+    public function performer($user): PerformerUserItem
     {
         $item = new PerformerUserItem();
         $item->top_users = User::query()
@@ -81,18 +80,23 @@ class PerformersService
             ->where('role_id', User::ROLE_PERFORMER)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(Review::TOP_USER)->pluck('id')->toArray();
         $item->portfolios = $user->portfolios()->where('image', '!=', null)->get();
-        $item->review_good = $user->review_good;
-        $item->review_bad = $user->review_bad;
-        $item->review_rating = $user->review_rating;
         $item->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->latest()->get();
         $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->latest()->get();
-        $item->task_count = Task::query()->where('user_id', $authId)
+        $item->task_count = Task::query()->where('user_id', $user->id)
             ->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->get();
-        $user_categories = UserCategory::query()->where('user_id', $user->id)->pluck('category_id')->toArray();
-        $item->user_category = Category::query()->whereIn('id', $user_categories)->get();
         $value = Carbon::parse($user->created_at)->locale((new CustomService)->getLocale());
         $day = $value == now()->toDateTimeString() ? "Bugun" : "$value->day-$value->monthName";
         $item->created = "$day  {$value->year}";
+        $performer_category = UserCategory::query()->where('user_id', $user->id)->get()->groupBy(static function ($data){
+            return $data->category->parent->id;
+        });
+        $item->user_category = [];
+        foreach ($performer_category as $category_id => $category) {
+            $item->user_category[] = [
+                'parent' => Category::query()->where('id',$category_id)->get(),
+                'category' => $category
+            ];
+        }
         return $item;
     }
 
