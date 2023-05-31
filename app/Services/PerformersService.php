@@ -82,8 +82,6 @@ class PerformersService
         $item->portfolios = $user->portfolios()->where('image', '!=', null)->get();
         $item->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->latest()->get();
         $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->latest()->get();
-        $item->task_count = Task::query()->where('user_id', $user->id)
-            ->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->get();
         $value = Carbon::parse($user->created_at)->locale((new CustomService)->getLocale());
         $day = $value == now()->toDateTimeString() ? "Bugun" : "$value->day-$value->monthName";
         $item->created = "$day  {$value->year}";

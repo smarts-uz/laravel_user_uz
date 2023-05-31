@@ -45,7 +45,8 @@
                         @isset($user->location)
                             <i class="fas fa-map-marker-alt"></i>
                             {{__('Местоположение')}} {{$user->location}}
-                        @else {{__('город не обозначен')}}
+                        @else
+                            {{__('город не обозначен')}}
                         @endisset
                     </p>
                 </span>
@@ -53,11 +54,11 @@
             <div class="text-gray-500 text-base mt-2">
                 @if ( session('lang') === 'ru' )
                     <p class="mt-2">{{__('Создал')}}
-                        <span>{{count($task_count??[])}}</span> {{__('задание')}}
+                        <span>{{$user->tasks()->count()}}</span> {{__('задание')}}
                     </p>
                 @else
                     <p class="mt-2">
-                        <span>{{count($task_count??[])}}</span> {{__('задание')}}
+                        <span>{{$user->tasks()->count()}}</span> {{__('задание')}}
                         {{__('Создал')}}
                     </p>
                 @endif
@@ -81,8 +82,8 @@
                 @endif
             </div>
             <div class="flex flex-row items-center mt-3" id="str1">
-                <div class="flex flex-row items-center text-gray-500 text-base"> <p>{{__('Средняя оценка:')}}</p>
-                    <span id="review{{$user->id}}" class="mx-1">{{$review_rating}}</span>
+                <div class="flex flex-row items-center text-gray-500 text-base"><p>{{__('Средняя оценка:')}}</p>
+                    <span id="review{{$user->id}}" class="mx-1">{{$user->review_rating}}</span>
                 </div>
                 <div class="flex items-center ml-2" id="stars{{$user->id}}">
                 </div>
@@ -117,7 +118,7 @@
                     </div>
                 @endif
 
-                @if(in_array($user->id, $top_users))
+                @if(in_array($user->id, $top_users, true))
                     <div data-tooltip-target="tooltip-animation_2" class="mx-4 tooltip-2">
                         <img src="{{ asset('images/best.png') }}" alt="" class="w-24">
                         <div id="tooltip-animation_2" role="tooltip"
@@ -143,7 +144,7 @@
                 @endif
 
                 <div data-tooltip-target="tooltip-animation_3" class="mx-4">
-                    @if(($user->review_good)+($user->review_bad) >= 50 && $user->role_id==2)
+                    @if($user->reviews >= 50 && (int)$user->role_id === App\Models\User::ROLE_PERFORMER)
                         <img src="{{ asset('images/50.png') }}" alt="" class="w-24">
                     @else
                         <img src="{{ asset('images/50_gray.png') }}" alt="" class="w-24">
@@ -174,7 +175,6 @@
                class="border my-6 border-gray-400 mr-auto w-56 h-48 mr-6 sm:mb-0 mb-8">
                 <img src="{{  count(json_decode($portfolio->image)) == 0 ? '': asset('storage/portfolio/'.json_decode($portfolio->image)[0])  }}"
                     alt="#" class="w-56 h-48">
-
                 <div class="h-12 flex relative bottom-12 w-full bg-black opacity-75 hover:opacity-100 items-center">
                     <p class="w-2/3 text-center text-base text-white">{{$portfolio->comment}}</p>
                     <div class="w-1/3 flex items-center">
@@ -187,7 +187,8 @@
     </div>
     <div class="my-2">
         @if($user->youtube_link)
-            <iframe class="my-4 sm:w-full w-5/6" width="644" height="362" id="iframe" src="{{$user->youtube_link}}" frameborder="0"></iframe>
+            <iframe class="my-4 sm:w-full w-5/6" width="644" height="362" id="iframe" src="{{$user->youtube_link}}"
+                    frameborder="0"></iframe>
         @endif
     </div>
 </div>

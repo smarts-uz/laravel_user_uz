@@ -311,7 +311,6 @@ class ProfileService
         $item->sessions = Session::query()->where('user_id', $user->id)->get();
         $item->parser = Parser::create();
         $item->user_categories = UserCategory::query()->where('user_id', $user->id)->pluck('category_id')->toArray();
-        $item->task_count = Task::query()->where('user_id', Auth::id())->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->count();
         $item->tasks = Task::query()->where('user_id', $user->id)->whereIn('status', [Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS,])->count();
         return $item;
     }
@@ -366,7 +365,6 @@ class ProfileService
     {
         $item = new ProfileCashItem();
         $item->balance = $user->walletBalance;
-        $item->task_count = Task::query()->where('user_id', Auth::id())->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->count();
         $item->transactions = $user->transactions()->paginate(self::MAX_TRANSACTIONS);
         $item->top_users = User::query()->where('role_id', User::ROLE_PERFORMER)
             ->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
@@ -383,13 +381,6 @@ class ProfileService
     public function profileData($user): ProfileDataItem
     {
         $item = new ProfileDataItem();
-        $item->task_count = Task::query()->where('user_id', $user->id)->whereIn('status', [
-            Task::STATUS_OPEN,
-            Task::STATUS_RESPONSE,
-            Task::STATUS_IN_PROGRESS,
-            Task::STATUS_COMPLETE,
-            Task::STATUS_NOT_COMPLETED,
-            Task::STATUS_CANCELLED])->count();
         $item->portfolios = $user->portfolios()->where('image', '!=', null)->get();
         $item->top_users = User::query()->where('role_id', User::ROLE_PERFORMER)
             ->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')

@@ -8,6 +8,9 @@
             <div class="lg:col-span-2 col-span-3">
                 @include('performers.executors_figure')
                 <div class="my-4">
+                    <p class="text-2xl font-semibold">
+                        {{__('Виды выполняемых работ')}}
+                    </p>
                     <ul class="leading-7">
                         @foreach($user_category as $per_cat)
                             <div class="my-4">
