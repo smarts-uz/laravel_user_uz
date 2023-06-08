@@ -256,6 +256,7 @@ class ProfileService
             'last_version_ios' => setting('admin.last_version_ios',''),
             'last_version_android' => setting('admin.last_version_android',''),
             'gender' => $user->gender,
+            'role_id' => $user->role_id,
             'blocked_user' => $blocked_user,
             'notification_to' => $user->notification_to,
             'notification_from' => $user->notification_from,
