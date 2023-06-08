@@ -3,11 +3,12 @@
 namespace App\Services\User;
 
 use App\Mail\VerifyEmail;
-use App\Models\{Notification, Session, Task, Transaction, User, WalletBalance};
+use App\Models\{AccessTokens, Notification, Session, Task, Transaction, User, WalletBalance};
 use App\Services\{CustomService, NotificationService, SmsMobileService};
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
+use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Http\{JsonResponse, RedirectResponse};
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\{Auth, Cache, Hash, Mail};
@@ -447,6 +448,22 @@ class UserService
         return back()->with([
             'message' => "Muvafaqiyatli o'zgartirildi!"
         ]);
+    }
+
+    #[ArrayShape(['success' => "bool", 'message' => "string"])]
+    public function access_tokens(): array
+    {
+
+        $data = Carbon::now()->subDays(env('AccessTokenDate',7));
+        $tokens = AccessTokens::query()->where('created_at','<' , $data)->get();
+
+        foreach ($tokens as $token) {
+            $token->delete();
+        }
+        return [
+            'success' => true,
+            'message' => 'success',
+        ];
     }
 
 }
