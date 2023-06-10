@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CustomFieldController;
+use App\Http\Controllers\DeleteAccountController;
 use App\Services\Chat\TelegramService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -133,7 +134,7 @@ Route::get('/faq', [FaqsController::class, 'index'])->name('faq.index');
 Route::get('/questions/{id}', [FaqsController::class, 'questions'])->name('faq.questions');
 Route::get('/reviews',[Controller::class,'performer_reviews']);
 Route::get('/author-reviews',[Controller::class,'authors_reviews']);
-Route::get('/press', [Controller::class, 'index'])->name('massmedia');
+Route::get('/press', [Controller::class, 'massmedia'])->name('massmedia');
 Route::get('/geotaskshint', [Controller::class, 'geotaskshint'])->name('geotaskshint');
 Route::get('/security', [Controller::class, 'security'])->name('security');
 Route::get('/badges', [Controller::class, 'badges'])->name('badges');
@@ -144,10 +145,10 @@ Route::get('/app',[Controller::class,'device']);
 #endregion
 
 #region account-delete
-Route::get('/delete-account',[Controller::class,'delete_account']);
-Route::post('/delete-email', [Controller::class, 'delete_email'])->name('account.delete_email');
-Route::post('/delete-phone', [Controller::class, 'delete_phone'])->name('account.delete_phone');
-Route::post('/delete-code', [Controller::class, 'delete_code'])->name('account.delete_code');
+Route::get('/delete-account',[DeleteAccountController::class,'delete_account']);
+Route::post('/delete-email', [DeleteAccountController::class, 'delete_email'])->name('account.delete_email');
+Route::post('/delete-phone', [DeleteAccountController::class, 'delete_phone'])->name('account.delete_phone');
+Route::post('/delete-code', [DeleteAccountController::class, 'delete_code'])->name('account.delete_code');
 #endregion
 
 #region Profile
