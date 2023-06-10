@@ -463,7 +463,13 @@ class UserService
 
         if ((int)$code === (int)$user->verify_code) {
             if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
+                $tasks = Task::query()->where('user_id', $user->id)->whereIn('status', [Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS,])->count();
+                if($tasks>0){
+                    return back()->with(['error' => __('У вас есть задачи в процессе, вы не можете удалить свой профиль')]);
+                }
                 Alert::success(__('Поздравляю'), __('Ваш профиль успешно удален'));
+                $user->delete();
+                Auth::logout();
                 return redirect('/');
             }
             return back()->with(['error' => __('Срок действия кода истек')]);
