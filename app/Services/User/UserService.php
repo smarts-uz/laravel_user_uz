@@ -450,6 +450,31 @@ class UserService
         ]);
     }
 
+    /**
+     * yuborilgan kodni tasdiqlash(web)
+     * @param $verifications
+     * @param $code
+     * @return RedirectResponse
+     */
+    public function delete_code($verifications, $code): RedirectResponse
+    {
+        /** @var User $user */
+        $user = User::query()->where($verifications['key'], $verifications['value'])->first();
+
+        if ((int)$code === (int)$user->verify_code) {
+            if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
+                Alert::success(__('Поздравляю'), __('Ваш профиль успешно удален'));
+                return redirect('/');
+            }
+            return back()->with(['error' => __('Срок действия кода истек')]);
+        }
+
+        return back()->with(['error' => __('Код ошибки')]);
+    }
+
+    /**
+     * @return array
+     */
     #[ArrayShape(['success' => "bool", 'message' => "string"])]
     public function access_tokens(): array
     {

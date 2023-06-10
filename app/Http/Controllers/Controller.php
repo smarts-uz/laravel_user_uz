@@ -2,8 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{CustomField, FooterReview, Massmedia, BlogNew, Privacy};
-use App\Services\{Response, ControllerService};
+use App\Http\Requests\ResetCodeRequest;
+use App\Http\Requests\ResetEmailRequest;
+use App\Http\Requests\ResetRequest;
+use App\Models\{Category, CustomField, FooterReview, Massmedia, BlogNew, Privacy};
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use App\Services\{Response, ControllerService, User\UserService};
 use Illuminate\Foundation\{Auth\Access\AuthorizesRequests, Bus\DispatchesJobs, Validation\ValidatesRequests};
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller as BaseController;
@@ -14,6 +21,14 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     use Response;
+
+    public UserService $service;
+
+    public function __construct(UserService $userService)
+    {
+        $this->service = $userService;
+    }
+
 
     public function home()
     {
@@ -187,10 +202,47 @@ class Controller extends BaseController
         return Redirect::away(setting('site.android_url','https://play.google.com/store/apps/details?id=uz.smart.useruz'));
     }
 
+    public function delete_account(): Factory|View|Application
+    {
+        return view('delete_account.delete');
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function delete_email(ResetEmailRequest $request): Factory|View|Application
+    {
+        $data = $request->validated();
+        $email = $data['email'];
+        $this->service->reset_by_email($email);
+
+        return view('delete_account.code');
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function delete_phone(ResetRequest $request): Factory|View|Application
+    {
+        $data = $request->validated();
+        $phone_number = $data['phone_number'];
+        $this->service->reset_submit($phone_number);
+
+        return view('delete_account.code');
+    }
+
+    public function delete_code(ResetCodeRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+        $verifications = $request->session()->get('verifications');
+        $code = $data['code'];
+        return $this->service->delete_code($verifications, $code);
+    }
+
     public function routing($request)
     {
         $routeName = $request->route;
-        $category = \App\Models\Category::find($request->category_id);
+        $category = Category::find($request->category_id);
         $data = [];
 
         switch ($routeName) {

@@ -143,6 +143,13 @@ Route::get('/privacy', [Controller::class, 'policy'])->name('privacy');
 Route::get('/app',[Controller::class,'device']);
 #endregion
 
+#region account-delete
+Route::get('/delete-account',[Controller::class,'delete_account']);
+Route::post('/delete-email', [Controller::class, 'delete_email'])->name('account.delete_email');
+Route::post('/delete-phone', [Controller::class, 'delete_phone'])->name('account.delete_phone');
+Route::post('/delete-code', [Controller::class, 'delete_code'])->name('account.delete_code');
+#endregion
+
 #region Profile
 Route::group(['middleware' => 'auth'], static function () {
     Route::prefix('profile')->group(function () {

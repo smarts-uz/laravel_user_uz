@@ -33,7 +33,6 @@
         var Body = $('body');
         Body.removeClass('preloader-site');
         $('#st-cmp-v2').addClass('hidden');
-
     })
 </script>
 </body>

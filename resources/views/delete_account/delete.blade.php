@@ -1,15 +1,15 @@
-@extends('layouts.app')
+@extends('layouts.app2')
+
 @section('content')
-    <div class="mt-3 text-center text-base">
+    <div class="mt-12 text-center text-base">
         <div class="mx-auto w-full">
             <h3 class="font-bold text-3xl block mt-8 mb-4">
-                {{__('Восстановление пароля')}}
+                {{__('Удалить профиль')}}
             </h3>
             <p class="font-medium text-lg mt-3 mb-6">
-               {{__(' Выберите подходящий способ:')}}
+                {{__(' Выберите подходящий способ:')}}
             </p>
         </div>
-
 
         <!-- Tabs -->
         <div class="mx-auto my-8">
@@ -28,11 +28,11 @@
 
         <div id="tab-contents" class="flex justify-center">
             <div id="first" class="p-2 @if($errors->has('phone_number')) hidden @endif">
-                <form action="{{route('user.reset_submit_email')}}" method="POST">
+                <form action="{{route('account.delete_email')}}" method="POST">
                     @csrf
                     <div class="mx-auto flex items-center justify-center w-full">
                         <p class="mb-4">
-                           {!!__('Введите адрес электронной почты, связанный с вашей учетной записью. <br> Мы вышлем код на вашу почту')!!}
+                            {!!__('Введите адрес электронной почты, связанный с вашей учетной записью. <br> Мы вышлем код на вашу почту')!!}
                         </p>
                     </div>
                     <div class="mb-4">
@@ -62,7 +62,7 @@
                         {!!__("Укажите телефон, привязанный к вашей <br> учетной записи. Мы отправим СМС с кодом.")!!}
                     </p>
                 </div>
-                <form action="{{route('user.reset_submit')}}" method="POST">
+                <form action="{{route('account.delete_phone')}}" method="POST">
                     @csrf
                     <div>
                         <div class="mb-4">

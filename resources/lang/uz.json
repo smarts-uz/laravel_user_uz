@@ -7,8 +7,8 @@
     " Оставить отзыв": " Fikr bildiring",
     " Подтвердите пароль": " Parolni tasdiqlang",
     " Присваивается исполнителям, которые заняли первое место в рейтинге по результатам года.": " Yil yakunlari bo'yicha reytingda birinchi o'rinni egallagan ijrochilarga tayinlanadi.",
-    " Разные задания&nbsp;— это очень интересно! Главное, есть куда расти в&nbsp;плане навыков.\r\n                            Чувствуешь свою значимость, но&nbsp;не&nbsp;боишься испачкаться.": " Turli xil vazifalar va nbsp; - bu juda qiziq! Asosiysi - bu va nbsp; ko'nikma rejasi.\r\n                            Siz o'zingizning ahamiyatingizni his qilasiz, lekin & nbsp; nbsp; siz iflos bo'lishdan qo'rqasiz.",
-    "Укажите почту, привязанную к вашей <br> учетной записи. Мы отправим письмо <br> для восстановления пароля.": "Hisobingiz bilan bog'langan elektron pochta manzilini kiriting. <br> Parolingizni tiklash uchun pochtangizga xat yuboramiz.",
+    "Разные задания&nbsp;— это очень интересно! Главное, есть куда расти в&nbsp;плане навыков.\r\n                            Чувствуешь свою значимость, но&nbsp;не&nbsp;боишься испачкаться.": " Turli xil vazifalar va nbsp; - bu juda qiziq! Asosiysi - bu va nbsp; ko'nikma rejasi.\r\n                            Siz o'zingizning ahamiyatingizni his qilasiz, lekin & nbsp; nbsp; siz iflos bo'lishdan qo'rqasiz.",
+    "Введите адрес электронной почты, связанный с вашей учетной записью. <br> Мы вышлем код на вашу почту": "Hisobingiz bilan bog'langan elektron pochta manzilini kiriting. <br> Biz pochtangizga kod yuboramiz.",
     " Указать период": " Muddatni ko'rsating",
     " заданий": " vazifalar",
     " и оставил вам отзыв": " Va siz bilan sharh qoldirdi",
@@ -596,7 +596,7 @@
     "Уже через пару минут вы начнете получать отклики от исполнителей, готовых выполнить ваше задание.": "Bir necha daqiqadan so'ng, siz o'z vazifangizni bajarishga tayyor bo'lgan ijrochilarning takliflarini qabul qila boshlaysiz.",
     "Укажите адрес или место, чтобы найти исполнителя рядом с вами.": "Siz yoningizda ijrochini topish uchun manzil yoki joyni ko'rsating.",
     "Укажите свои контактные данные и выберите категории заданий, в которых вы хотите работать. На всё уйдёт примерно 3 минуты.": "O'zingizning aloqa ma'lumotlarini ko'rsating va ishlashni xohlagan vazifalar toifalarini tanlang. Taxminan 3 daqiqa davomida hamma narsani oladi.",
-    "Укажите телефон, привязанный к вашей <br> учетной записи. Мы отправим СМС с кодом.": "Telefoningizga bog'langan telefonni ko'rsating. Biz kod bilan SMS yuboramiz.",
+    "Укажите телефон, привязанный к вашей <br> учетной записи. Мы отправим СМС с кодом.": "Hisobingizga bog'langan telefon raqamini kiriting. <br> Biz SMS orqali kod yuboramiz.",
     "Укажите телефон, привязанный к вашей учетной записи. Мы отправим СМС с кодом.": "Hisobingizga bog'langan telefonni ko'rsating. Biz kod bilan SMS yuboramiz.",
     "Укажите точную дату или период, когда нужно приступить к работе.": "Ishni boshlashingiz kerak bo'lgan aniq sana yoki davrni ko'rsating.",
     "Указать другой телефонный номер": "Boshqa telefon raqamini ko'rsating",
@@ -842,5 +842,8 @@
     "задания": "ta vazifalar",
     "задач": "ta vazifalar",
     "заданий": "ta vazifalar",
-    "задание ": "ta vazifa"
+    "задание ": "ta vazifa",
+    "Введите код": "Kodni kiriting",
+    "Введите код, отправленный вам": "Sizga yuborilgan kodni kiriting",
+    "Ваш профиль успешно удален": "Sizning profilingiz muvaffaqiyatli o'chirildi"
 }

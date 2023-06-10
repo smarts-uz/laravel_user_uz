@@ -2,20 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ResetCodeRequest;
-use App\Http\Requests\ResetEmailRequest;
-use App\Http\Requests\ResetPasswordRequest;
-use App\Http\Requests\ResetRequest;
-use App\Http\Requests\VerifyProfileRequest;
+use App\Http\Requests\{ResetCodeRequest, ResetEmailRequest, ResetPasswordRequest, ResetRequest, VerifyProfileRequest};
 use App\Models\User;
-use App\Services\User\UserService;
-use App\Services\VerificationService;
+use App\Services\{User\UserService, VerificationService};
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\View\{Factory, View};
+use Illuminate\Http\{RedirectResponse, Request};
 use Illuminate\Routing\Redirector;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
 
