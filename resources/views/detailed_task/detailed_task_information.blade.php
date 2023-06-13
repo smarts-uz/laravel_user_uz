@@ -59,8 +59,8 @@
 <div class="ml-4 md:ml-12 flex flex-row mt-8">
     <h1 class="font-bold h-auto w-48">{{__('Способ оплаты')}}</h1>
     <div class=" h-auto w-96">
-        <p class="">
-            @if($task->oplata === 1)
+        <p>
+            @if((int)$task->oplata === 1)
                 {{__(' Оплата наличными')}}
             @else
                 {{__('Оплата через карту')}}
