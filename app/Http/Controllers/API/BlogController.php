@@ -3,13 +3,17 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\BlogNewsResource;
-use App\Models\BlogNew;
+use App\Services\FaqsService;
 use Illuminate\Http\JsonResponse;
 
 class BlogController extends Controller
 {
+    protected FaqsService $faqService;
 
+    public function __construct()
+    {
+        $this->faqService = new FaqsService();
+    }
     /**
      * @OA\Get(
      *     path="/api/blog-news",
@@ -36,12 +40,9 @@ class BlogController extends Controller
      *     ),
      * )
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        return response()->json([
-            'success' => true,
-            'data' => BlogNewsResource::collection(BlogNew::query()->latest()->get())
-        ]);
+       return $this->faqService->blog_news_index();
     }
 
     /**
@@ -73,11 +74,8 @@ class BlogController extends Controller
      *     ),
      * )
      */
-    public function show(BlogNew $newsId): JsonResponse
+    public function show($newsId): JsonResponse
     {
-        return response()->json([
-            'success' => true,
-            'data' => new BlogNewsResource($newsId)
-        ]);
+       return $this->faqService->blog_news_show($newsId);
     }
 }
