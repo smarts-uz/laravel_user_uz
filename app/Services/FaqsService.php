@@ -43,32 +43,6 @@ class FaqsService
     public function blog_news_index(): JsonResponse
     {
         $blog_news = BlogNew::query()->latest()->get();
-        return response()->json([
-            'success' => true,
-            'data' => $this->news($blog_news)
-        ]);
-    }
-
-    /**
-     * Bu method $newsId bo'yicha kerakli qiymatni qaytaradi
-     * @param $newsId
-     * @return JsonResponse
-     */
-    public function blog_news_show($newsId): JsonResponse
-    {
-        $blog_news = BlogNew::query()->where('id',$newsId)->get();
-        return response()->json([
-            'success' => true,
-            'data' => $this->news($blog_news)
-        ]);
-    }
-
-    /**
-     * @param $blog_news
-     * @return array
-     */
-    private function news($blog_news): array
-    {
         $data = [];
         foreach ($blog_news as $blog_new){
             $data[] = [
@@ -80,7 +54,33 @@ class FaqsService
                 'created_at' => $blog_new->created_at
             ];
         }
-        return $data;
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
     }
+
+    /**
+     * Bu method $newsId bo'yicha kerakli qiymatni qaytaradi
+     * @param $newsId
+     * @return JsonResponse
+     */
+    public function blog_news_show($newsId): JsonResponse
+    {
+        $blog_new = BlogNew::find($newsId);
+        $data = !empty($blog_new) ? [
+            'id' => $blog_new->id,
+            'title' => $blog_new->getTranslatedAttribute('title'),
+            'text' =>  $blog_new->getTranslatedAttribute('text'),
+            'desc' => $blog_new->getTranslatedAttribute('desc'),
+            'img' => asset('storage/'. $blog_new->img),
+            'created_at' => $blog_new->created_at
+        ]: [];
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
+    }
+
 
 }
