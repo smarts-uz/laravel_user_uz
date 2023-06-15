@@ -45,14 +45,7 @@ class FaqsService
         $blog_news = BlogNew::query()->latest()->get();
         $data = [];
         foreach ($blog_news as $blog_new){
-            $data[] = [
-                'id' => $blog_new->id,
-                'title' => $blog_new->getTranslatedAttribute('title'),
-                'text' =>  $blog_new->getTranslatedAttribute('text'),
-                'desc' => $blog_new->getTranslatedAttribute('desc'),
-                'img' => asset('storage/'. $blog_new->img),
-                'created_at' => $blog_new->created_at
-            ];
+            $data[] = $this->news($blog_new);
         }
         return response()->json([
             'success' => true,
@@ -68,7 +61,20 @@ class FaqsService
     public function blog_news_show($newsId): JsonResponse
     {
         $blog_new = BlogNew::find($newsId);
-        $data = !empty($blog_new) ? [
+
+        return response()->json([
+            'success' => true,
+            'data' => $this->news($blog_new)
+        ]);
+    }
+
+    /**
+     * @param $blog_new
+     * @return array
+     */
+    private function news($blog_new): array
+    {
+        return !empty($blog_new) ? [
             'id' => $blog_new->id,
             'title' => $blog_new->getTranslatedAttribute('title'),
             'text' =>  $blog_new->getTranslatedAttribute('text'),
@@ -76,10 +82,6 @@ class FaqsService
             'img' => asset('storage/'. $blog_new->img),
             'created_at' => $blog_new->created_at
         ]: [];
-        return response()->json([
-            'success' => true,
-            'data' => $data
-        ]);
     }
 
 
