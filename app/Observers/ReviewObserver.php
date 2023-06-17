@@ -13,15 +13,23 @@ class ReviewObserver
      * @param  Review  $review
      * @return void
      */
-    public function created(Review $review)
+    public function created(Review $review): void
     {
         /** @var User $user */
         $user = User::query()->find($review->user_id);
-        $user->review_rating = round($user->review_good * 5 / (($user->review_good+$user->review_bad === 0) ? 1 : ($user->review_good + $user->review_bad)));
+        $user->review_rating = round($user->review_good * 5 / (($user->review_good + $user->review_bad === 0) ? 1 : ($user->review_good + $user->review_bad)));
         $user->save();
         /** @var User $reviewer */
         $reviewer = User::query()->find($review->reviewer_id);
         $review->reviewer_name = $reviewer->name;
         $review->save();
+    }
+
+    public function deleted(Review $review): void
+    {
+        /** @var User $user */
+        $user = User::query()->find($review->user_id);
+        $user->review_rating = round($user->review_good * 5 / (($user->review_good + $user->review_bad === 0) ? 1 : ($user->review_good + $user->review_bad)));
+        $user->save();
     }
 }

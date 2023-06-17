@@ -16,7 +16,11 @@ use App\Http\Controllers\API\{
     SearchAPIController,
     FaqController
 };
-use App\Http\Controllers\{NotificationController, vendor\Chatify\Api\MessagesController, VoyagerTaskController};
+use App\Http\Controllers\{
+    NotificationController,
+    vendor\Chatify\Api\MessagesController,
+    VoyagerTaskController
+};
 
 
 /*
@@ -53,45 +57,48 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     Route::post('create-task/contacts', [TaskAPIController::class, 'contacts']); // fix
     Route::post('create-task/verify', [TaskAPIController::class, 'verify']); // fix
     //Task Update
-    Route::post('update-task/{task}/name', [TaskAPIController::class, 'updateName']); // fix
-    Route::post('update-task/{task}/custom', [TaskAPIController::class, 'updateCustom']); // fix
-    Route::post('update-task/{task}/remote', [TaskAPIController::class, 'updateRemote']); // fix
-    Route::post('update-task/{task}/address', [TaskAPIController::class, 'updateAddress']); // fix
-    Route::post('update-task/{task}/date', [TaskAPIController::class, 'updateDate']); // fix
-    Route::post('update-task/{task}/budget', [TaskAPIController::class, 'updateBudget']); // fix
-    Route::post('update-task/{task}/note', [TaskAPIController::class, 'updateNote']); // fix
-    Route::post('update-task/{task}/images', [TaskAPIController::class, 'updateUploadImages']); // fix
-    Route::post('update-task/{task}/contacts', [TaskAPIController::class, 'updateContacts']); // fix
-    Route::post('update-task/{task}/verify', [TaskAPIController::class, 'updateVerify']); // fix
-    Route::post('update-task/{task}/delete-image', [TaskAPIController::class, 'deleteImage']); // fix
+    Route::post('update-task/{taskId}/name', [TaskAPIController::class, 'updateName']); // fix
+    Route::post('update-task/{taskId}/custom', [TaskAPIController::class, 'updateCustom']); // fix
+    Route::post('update-task/{taskId}/remote', [TaskAPIController::class, 'updateRemote']); // fix
+    Route::post('update-task/{taskId}/address', [TaskAPIController::class, 'updateAddress']); // fix
+    Route::post('update-task/{taskId}/date', [TaskAPIController::class, 'updateDate']); // fix
+    Route::post('update-task/{taskId}/budget', [TaskAPIController::class, 'updateBudget']); // fix
+    Route::post('update-task/{taskId}/note', [TaskAPIController::class, 'updateNote']); // fix
+    Route::post('update-task/{taskId}/images', [TaskAPIController::class, 'updateUploadImages']); // fix
+    Route::post('update-task/{taskId}/contacts', [TaskAPIController::class, 'updateContacts']); // fix
+    Route::post('update-task/{taskId}/verify', [TaskAPIController::class, 'updateVerify']); // fix
+    Route::post('update-task/{taskId}/delete-image', [TaskAPIController::class, 'deleteImage']); // fix
 
     Route::get('/notifications', [NotificationController::class, 'getNotifications']); // fix
     Route::get('/count/notifications', [NotificationController::class, 'count']); // fix
-    Route::post('/read-notification/{notification}', [NotificationController::class, 'read_notification']); // fix
+    Route::post('/read-notification/{notificationId}', [NotificationController::class, 'read_notification']); // fix
     Route::post('/read-all-notification', [NotificationController::class, 'read_all_mobile_notification']); // fix
 
     Route::get('/my-tasks-count', [TaskAPIController::class, 'my_tasks_count']); // fix
     Route::get('/my-tasks', [TaskAPIController::class, 'my_tasks_all']); // fix
     Route::get('/performer-tasks', [TaskAPIController::class, 'performer_tasks']); // fix
     Route::get('/all-tasks', [TaskAPIController::class, 'all_tasks']); // fix
-    Route::post('/cancel-task/{task}', [SearchAPIController::class, 'cancelTask']); // fix
-    Route::delete('/delete-task/{task}/{user}', [SearchAPIController::class, 'delete_task']); // fix
-    Route::post("/task/{task}/response", [TaskAPIController::class, 'response_store']); // fix
-    Route::get('/responses/{task}', [TaskAPIController::class, 'responses']); // fix
+    Route::post('/cancel-task/{taskId}', [SearchAPIController::class, 'cancelTask']); // fix
+    Route::delete('/delete-task/{taskId}/{userId}', [SearchAPIController::class, 'delete_task']); // fix
+    Route::post('/task/{taskId}/response', [TaskAPIController::class, 'response_store']); // fix
+    Route::get('/responses/{taskId}', [TaskAPIController::class, 'responses']); // fix
     Route::get('/complain/types', [TaskAPIController::class, 'complainTypes']); // fix
-    Route::post('/task/{task}/complain', [TaskAPIController::class, 'complain']); // fix
-    Route::post('/select-performer/{response}', [TaskAPIController::class, 'selectPerformer']); // fix
-    Route::post('/task-status-update/{task}', [TaskAPIController::class, 'taskStatusUpdate']); // fix
-    Route::post('/task/{task}/complete', [UpdateAPIController::class, 'completed']); // fix
-    Route::post('/tasks/{task}/not-complete', [UpdateAPIController::class, 'not_completed']); // fix
-    Route::post('/send-review-user/{task}', [UpdateAPIController::class, 'sendReview']); // fix
+    Route::post('/task/{taskId}/complain', [TaskAPIController::class, 'complain']); // fix
+    Route::post('/select-performer/{responseId}', [TaskAPIController::class, 'selectPerformer']); // fix
+    Route::post('/task-status-update/{taskId}', [TaskAPIController::class, 'taskStatusUpdate']); // fix
+    Route::post('/task/{taskId}/complete', [UpdateAPIController::class, 'completed']); // fix
+    Route::post('/tasks/{taskId}/not-complete', [UpdateAPIController::class, 'not_completed']); // fix
+    Route::post('/send-review-user/{taskId}', [UpdateAPIController::class, 'sendReview']); // fix
     Route::post('/give-task', [PerformerAPIController::class, 'give_task']); // fix
     Route::post('/become-performer', [PerformerAPIController::class, 'becomePerformerData']); // fix
     Route::post('/become-performer-phone', [PerformerAPIController::class, 'becomePerformerEmailPhone']); // fix
     Route::post('/become-performer-avatar', [PerformerAPIController::class, 'becomePerformerAvatar']); // fix
     Route::post('/become-performer-category', [PerformerAPIController::class, 'becomePerformerCategory']); // fix
     Route::get('/reviews', [PerformerAPIController::class, 'reviews']); // fix
-    Route::post('/task-cancel/{task}', [SearchAPIController::class, 'task_cancel']); // fix
+    Route::post('/task-cancel/{taskId}', [SearchAPIController::class, 'task_cancel']); // fix
+    Route::post('/favorite-task/create', [SearchAPIController::class, 'favorite_task_create']); // fix
+    Route::delete('/favorite-task/delete/{taskId}', [SearchAPIController::class, 'favorite_task_delete']); // fix
+    Route::get('/favorite-task', [SearchAPIController::class, 'favorite_task_all']); // fix
 
     //Verification
     Route::get('account/verify', [LoginAPIController::class, 'verifyCredentials']); // fix
@@ -104,9 +111,9 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
         Route::get('/', [ProfileAPIController::class, 'index']); // fix
         Route::get('/portfolios', [ProfileAPIController::class, 'portfolios']); // fix
         Route::post('/portfolio/create', [ProfileAPIController::class, 'portfolioCreate']); // fix
-        Route::post('/portfolio/{portfolio}/update', [ProfileAPIController::class, 'portfolioUpdate']); // fix
-        Route::delete('/portfolio/{portfolio}/delete', [ProfileAPIController::class, 'portfolioDelete']); // fix
-        Route::post('/portfolio/{portfolio}/delete-image', [ProfileAPIController::class, 'deleteImage']); // fix
+        Route::post('/portfolio/{portfolioId}/update', [ProfileAPIController::class, 'portfolioUpdate']); // fix
+        Route::delete('/portfolio/{portfolioId}/delete', [ProfileAPIController::class, 'portfolioDelete']); // fix
+        Route::post('/portfolio/{portfolioId}/delete-image', [ProfileAPIController::class, 'deleteImage']); // fix
         Route::get('/reviews', [ProfileAPIController::class, 'reviews']); // fix
         Route::post('/video', [ProfileAPIController::class, 'videoStore']); // fix
         Route::delete('/video/delete', [ProfileAPIController::class, 'videoDelete']); // fix
@@ -114,9 +121,9 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
         Route::post('/confirmation-self-delete', [ProfileAPIController::class, 'confirmationSelfDelete']); // fix
         Route::get('/balance', [ProfileAPIController::class, 'balance']); // fix
         Route::get('/response-template', [ProfileAPIController::class, 'response_template']); // fix
-        Route::post('/response-template/edit/{id}', [ProfileAPIController::class, 'response_template_edit']); // fix
+        Route::post('/response-template/edit/{templateId}', [ProfileAPIController::class, 'response_template_edit']); // fix
         Route::post('/response-template/create', [ProfileAPIController::class, 'response_template_create']); // fix
-        Route::delete('/response-template/delete/{template}', [ProfileAPIController::class, 'response_template_delete']); // fix
+        Route::delete('/response-template/delete/{templateId}', [ProfileAPIController::class, 'response_template_delete']); // fix
         Route::post('/description/edit', [ProfileAPIController::class, 'editDescription']); // fix
         Route::post('/work-experience', [ProfileAPIController::class, 'work_experience']); // fix
         Route::post('/categories-subscribe', [ProfileAPIController::class, 'subscribeToCategory']); // fix
@@ -127,6 +134,7 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
         Route::post('/block-user', [ProfileAPIController::class, 'block']); // fix
         Route::get('/block-user-list', [ProfileAPIController::class, 'block_user_list']); // fix
         Route::post('/notification-off', [ProfileAPIController::class, 'notification_off']); // fix
+        Route::get('/categories', [ProfileAPIController::class, 'userCategory']); // fix
         Route::prefix('/settings')->group(function () {
             Route::get('/', [ProfileAPIController::class, 'editData']); // fix
             Route::post('/update', [ProfileAPIController::class, 'updateData']); // fix
@@ -139,9 +147,9 @@ Route::middleware(['custom.auth:api', 'is_user_active'])->group(function () {
     });
 });
 Route::post('/profile/settings/change-lang', [ProfileAPIController::class, 'changeLanguage']); // fix
-Route::get('/profile/{user}', [ProfileAPIController::class, 'userProfile']); // fix
-Route::get('/profile/{user}/portfolios', [ProfileAPIController::class, 'userPortfolios']); // fix
-Route::get('/profile/{user}/reviews', [ProfileAPIController::class, 'userReviews']); // fix
+Route::get('/profile/{userId}', [ProfileAPIController::class, 'userProfile']); // fix
+Route::get('/profile/{userId}/portfolios', [ProfileAPIController::class, 'userPortfolios']); // fix
+Route::get('/profile/{userId}/reviews', [ProfileAPIController::class, 'userReviews']); // fix
 
 
 //Setting
@@ -161,13 +169,12 @@ Route::get('/blog-news', [BlogController::class, 'index']); // fix
 Route::get('/blog-news/{newsId}', [BlogController::class, 'show']); // fix
 
 //Tasks
-Route::get('task/{task}', [TaskAPIController::class, 'task']); // fix
-Route::post('user/{user}', [TaskAPIController::class, 'active_task_null']); // fix
+Route::get('task/{taskId}', [TaskAPIController::class, 'task']); // fix
+Route::post('user/{userId}', [TaskAPIController::class, 'active_task_null']); // fix
 Route::get('tasks-filter', [TaskAPIController::class, 'filter']); // fix
-Route::get('same-tasks/{task}', [TaskAPIController::class, 'same_tasks']); // fix
+Route::get('same-tasks/{taskId}', [TaskAPIController::class, 'same_tasks']); // fix
 
 //CategoryAPI
-Route::get('/categories', [CategoriesAPIController::class, 'index']); // fix
 Route::get('/popular-categories', [CategoriesAPIController::class, 'popular']); // fix
 Route::get('/categories-parent', [CategoriesAPIController::class, 'parents']); // fix
 Route::get('/categories/{id}', [CategoriesAPIController::class, 'show']); // fix
@@ -175,10 +182,9 @@ Route::get('/category/search', [CategoriesAPIController::class, 'search']); // f
 Route::get('/all-categories-childs', [CategoriesAPIController::class, 'AllCategoriesChildsId']); // fix
 
 //Performers
-Route::get('/performers', [PerformerAPIController::class, 'performers']); // fix
 Route::get('/performers-filter', [PerformerAPIController::class, 'performer_filter']); // fix
-Route::get('/performers-count/{category_id}', [PerformerAPIController::class, 'performers_count']); // fix
-Route::get('/performers-image/{category_id}', [PerformerAPIController::class, 'performers_image']); // fix
+Route::get('/performers-count/{categoryId}', [PerformerAPIController::class, 'performers_count']); // fix
+Route::get('/performers-image/{categoryId}', [PerformerAPIController::class, 'performers_image']); // fix
 
 //Social
 Route::post('/social-login', [SocialAPIController::class, 'login']); // fix
@@ -193,6 +199,6 @@ Route::post('/pusher-notification', [NotificationController::class, 'pusher_noti
 Route::post('/sms-notification', [NotificationController::class, 'sms_notification']);
 Route::post('/email-notification', [NotificationController::class, 'email_notification']);
 Route::post('/task-create-notification', [NotificationController::class, 'task_create_notification']);
-Route::get('/test-complete-task/{task}', [VoyagerTaskController::class, 'test_complete_task']);
-Route::get('/test-delete-task/{task}', [VoyagerTaskController::class, 'test_delete_task']);
-Route::get('/test-cancel-task/{task}', [VoyagerTaskController::class, 'test_cancel_task']);
+Route::get('/test-complete-task/{taskId}', [VoyagerTaskController::class, 'test_complete_task']);
+Route::get('/test-delete-task/{taskId}', [VoyagerTaskController::class, 'test_delete_task']);
+Route::get('/test-cancel-task/{taskId}', [VoyagerTaskController::class, 'test_cancel_task']);

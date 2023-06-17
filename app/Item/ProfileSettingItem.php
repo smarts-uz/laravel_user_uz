@@ -4,7 +4,7 @@ namespace App\Item;
 
 class ProfileSettingItem
 {
-    public $task;
+    public $task_count;
     public $top_users;
     public $user_categories;
     public $parser;
@@ -15,4 +15,5 @@ class ProfileSettingItem
     public $regions;
     public $categories;
     public $categories2;
+    public $tasks;
 }

@@ -65,6 +65,9 @@ use Laravel\Passport\HasApiTokens;
  * @property $deleted_at user profili o'chirilgan vaqti
  * @property $sessions user sessiyalari
  * @property $settings user adminkadagi tanlagan tili
+ * @property $post_id
+ * @property $discussion_post_id
+ * @property $reply_message
  */
 class User extends \TCG\Voyager\Models\User
 {
@@ -160,7 +163,7 @@ class User extends \TCG\Voyager\Models\User
 
     public function tasks(): HasMany
     {
-        return $this->hasMany(Task::class);
+        return $this->hasMany(Task::class)->whereIn('status',[Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED]);
     }
 
     public function walletBalance()

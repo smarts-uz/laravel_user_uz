@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\BlogNew;
 use App\Services\NotificationService;
 use Illuminate\Console\Command;
 
@@ -29,13 +30,19 @@ class NotifyCmd extends Command
      */
     public function handle()
     {
-        $type = 'default';
+     /*   $type = 'default';
         $title = 'test title';
         $text = 'test text';
         $user_id = 655;
         $notificationService = new NotificationService();
         $data = $notificationService->firebase_notif($type,$title,$text,$user_id);
-        dd($data);
+        dd($data);*/
+
+        $news = new BlogNew();
+        $news->title = 'title';
+        $news->desc = 'desc';
+
+        NotificationService::sendNotification($news);
     }
 
 //    /**

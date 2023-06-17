@@ -144,9 +144,9 @@ class CategoriesAPIController extends Controller
      *     )
      * )
      */
-    public function show($category_id): array
+    public function show($id): array
     {
-        return $this->service->show($category_id);
+        return $this->service->show($id);
     }
 
     /**

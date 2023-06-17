@@ -5,9 +5,6 @@
             <h3 class="font-bold text-3xl block mt-8 mb-4">
                 {{__('Восстановление пароля')}}
             </h3>
-            <p class="font-medium text-lg mt-3 mb-6">
-                {{__('Выберите подходящий способ:')}}
-            </p>
         </div>
         <div class="mx-auto flex items-center justify-center w-full">
         </div>

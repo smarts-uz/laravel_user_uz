@@ -7,6 +7,7 @@ use App\Http\Requests\{Api\CategoryRequest, Api\PortfolioRequest, Api\ProfileAva
     Api\ProfilePasswordRequest, Api\ProfilePhoneRequest, Api\ProfileSettingsRequest, Api\ProfileVideoRequest,
     Api\ResponseTemplateRequest, Api\UserReportRequest, UserBlockRequest};
 use Exception;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use JsonException;
 use App\Models\{Portfolio, ReportedUser, ResponseTemplate, User};
 use App\Services\{CustomService, PerformersService, Profile\ProfileService};
@@ -28,6 +29,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/",
      *     tags={"Profile"},
      *     summary="Profile index",
+     *     description="[**Telegram :** https://t.me/c/1334612640/127](https://t.me/c/1334612640/127).",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -58,6 +60,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/portfolios",
      *     tags={"Profile"},
      *     summary="Profile portfolios",
+     *     description="[**Telegram :** https://t.me/c/1334612640/128](https://t.me/c/1334612640/128).",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -78,8 +81,8 @@ class ProfileAPIController extends Controller
     public function portfolios(): JsonResponseAlias
     {
         /** @var User $user */
-        $user = auth()->user()->id;
-        return $this->profileService->portfolios($user);
+        $userId = auth()->user()->id;
+        return $this->profileService->portfolios($userId);
     }
 
     /**
@@ -87,16 +90,12 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/portfolio/create",
      *     tags={"Profile"},
      *     summary="Portfolio Create",
+     *     description="[**Telegram :** https://t.me/c/1334612640/129](https://t.me/c/1334612640/129).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="images",
-     *                    description="portfolio uchun rasm kiritiladi",
-     *                    type="file",
-     *                 ),
      *                 @OA\Property (
      *                    property="comment",
      *                    description="portfolio uchun comment yoziladi",
@@ -106,6 +105,17 @@ class ProfileAPIController extends Controller
      *                    property="description",
      *                    description="portfolio uchun tavsif yoziladi",
      *                    type="string",
+     *                 ),
+     *                @OA\Property (
+     *                    property="images[]",
+     *                    type="array",
+     *                    @OA\Items(
+     *                      type="file",
+     *                      @OA\Property(
+     *                          property="image",
+     *                          description="portfolio uchun rasm kiritiladi",
+     *                      ),
+     *                    ),
      *                 ),
      *             ),
      *         ),
@@ -144,13 +154,14 @@ class ProfileAPIController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/profile/portfolio/{portfolio}/delete",
+     *     path="/api/profile/portfolio/{portfolioId}/delete",
      *     tags={"Profile"},
      *     summary="Delete Portfolio",
+     *     description="[**Telegram :** https://t.me/c/1334612640/172](https://t.me/c/1334612640/172).",
      *     @OA\Parameter(
      *          in="path",
      *          description="portfolio id kiritiladi",
-     *          name="portfolio",
+     *          name="portfolioId",
      *          required=true,
      *          @OA\Schema(
      *              type="integer"
@@ -173,8 +184,9 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function portfolioDelete(Portfolio $portfolio): JsonResponseAlias
+    public function portfolioDelete($portfolioId): JsonResponseAlias
     {
+        $portfolio = Portfolio::find($portfolioId);
         (new ProfileService)->portfolioGuard($portfolio);
         $portfolio->delete();
         $message = trans('trans.Portfolio deleted successfully.');
@@ -190,13 +202,14 @@ class ProfileAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/portfolio/{portfolio}/update",
+     *     path="/api/portfolio/{portfolioId}/update",
      *     tags={"Profile"},
      *     summary="Portfolio Update",
+     *     description="[**Telegram :** https://t.me/c/1334612640/227](https://t.me/c/1334612640/227).",
      *     @OA\Parameter(
      *          in="path",
      *          description="portfolio id kiritiladi",
-     *          name="portfolio",
+     *          name="portfolioId",
      *          required=true,
      *          @OA\Schema(
      *              type="integer"
@@ -217,10 +230,16 @@ class ProfileAPIController extends Controller
      *                    description="portfolio uchun tavsif yoziladi",
      *                    type="string",
      *                 ),
-     *                 @OA\Property (
-     *                    property="image",
-     *                    description="portfolio uchun rasm kiritiladi",
-     *                    type="file",
+     *                @OA\Property (
+     *                    property="image[]",
+     *                    type="array",
+     *                    @OA\Items(
+     *                      type="file",
+     *                      @OA\Property(
+     *                          property="image",
+     *                          description="portfolio uchun rasm kiritiladi",
+     *                      ),
+     *                    ),
      *                 ),
      *             ),
      *         ),
@@ -243,13 +262,13 @@ class ProfileAPIController extends Controller
      * )
      * @throws JsonException
      */
-    public function portfolioUpdate(PortfolioRequest $request, Portfolio $portfolio): JsonResponseAlias
+    public function portfolioUpdate(PortfolioRequest $request, $portfolioId): JsonResponseAlias
     {
         $hasFile = $request->hasFile('images');
         $files = $request->file('images');
         $description = $request->get('description');
         $comment = $request->get('comment');
-        $portfolios = $this->profileService->updatePortfolio($hasFile, $files, $portfolio, $description, $comment);
+        $portfolios = $this->profileService->updatePortfolio($hasFile, $files, $portfolioId, $description, $comment);
         return response()->json([
             'success' => true,
             'data' => $portfolios
@@ -262,6 +281,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/video",
      *     tags={"Profile"},
      *     summary="Profile Video Store",
+     *     description="[**Telegram :** https://t.me/c/1334612640/130](https://t.me/c/1334612640/130).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -308,6 +328,7 @@ class ProfileAPIController extends Controller
      *     path="/api/video/delete",
      *     tags={"Profile"},
      *     summary="Profile video delete",
+     *     description="[**Telegram :** https://t.me/c/1334612640/195](https://t.me/c/1334612640/195).",
      *     @OA\Response(
      *          response=200,
      *          description="Successful operation"
@@ -346,6 +367,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/reviews",
      *     tags={"Profile"},
      *     summary="Profile reviews",
+     *     description="[**Telegram :** https://t.me/c/1334612640/131](https://t.me/c/1334612640/131).",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -365,10 +387,10 @@ class ProfileAPIController extends Controller
      */
     public function reviews(Request $request): JsonResponseAlias
     {
-        $user = auth()->user();
+        $userId = auth()->id();
         $performer = $request->get('performer');
         $review = $request->get('review');
-        $reviews = ProfileService::userReviews($user, $performer, $review);
+        $reviews = ProfileService::userReviews($userId, $performer, $review);
         return response()->json([
             'success' => true,
             'data' => $reviews
@@ -380,12 +402,14 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/balance",
      *     tags={"Profile"},
      *     summary="Profile balance",
+     *     description="[**Telegram :** https://t.me/c/1334612640/132](https://t.me/c/1334612640/132).",
      *     @OA\Parameter (
      *          in="query",
      *          name="type",
      *          description="in yoki out kiritiladi",
      *          @OA\Schema (
      *              type="string",
+     *              enum={"in","out"},
      *          )
      *     ),
      *     @OA\Parameter (
@@ -393,13 +417,14 @@ class ProfileAPIController extends Controller
      *          name="period",
      *          description="month, week yoki year kiritiladi",
      *          @OA\Schema (
+     *              enum={"month","week","year"},
      *              type="string",
      *          )
      *     ),
      *     @OA\Parameter (
      *          in="query",
      *          name="from",
-     *          description="boshlang'ich vaqti kiritiladi(2022-11-01  shu formatda)",
+     *          description="boshlang'ich vaqti kiritiladi(2022-11-01 shu formatda)",
      *          @OA\Schema (
      *              type="string",
      *              format="date-time"
@@ -408,7 +433,7 @@ class ProfileAPIController extends Controller
      *     @OA\Parameter (
      *          in="query",
      *          name="to",
-     *          description="oxirgi vaqti kiritiladi(2022-12-01  shu formatda)",
+     *          description="oxirgi vaqti kiritiladi(2022-12-01 shu formatda)",
      *          @OA\Schema (
      *              type="string",
      *              format="date-time"
@@ -451,6 +476,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/settings/phone",
      *     tags={"Profile Settings"},
      *     summary="Phone",
+     *     description="[**Telegram :** https://t.me/c/1334612640/148](https://t.me/c/1334612640/148).",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -485,6 +511,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/settings/phone/edit",
      *     tags={"Profile Settings"},
      *     summary="Phone edit",
+     *     description="[**Telegram :** https://t.me/c/1334612640/149](https://t.me/c/1334612640/149).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -532,6 +559,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/settings/password/change",
      *     tags={"Profile Settings"},
      *     summary="Change password",
+     *     description="[**Telegram :** https://t.me/c/1334612640/150](https://t.me/c/1334612640/150).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -588,6 +616,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/settings/change-avatar",
      *     tags={"Profile Settings"},
      *     summary="Change Avator",
+     *     description="[**Telegram :** https://t.me/c/1334612640/151](https://t.me/c/1334612640/151).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -639,6 +668,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/settings/update",
      *     tags={"Profile Settings"},
      *     summary="Update settings",
+     *     description="[**Telegram :** https://t.me/c/1334612640/152](https://t.me/c/1334612640/152).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -646,13 +676,14 @@ class ProfileAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="name",
-     *                    description="name kiritiladi",
+     *                    description="foydalanuvchi nomi kiritiladi",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="gender",
      *                    description="1 yoki 0",
-     *                    type="integer",
+     *                    type="string",
+     *                    enum={"0","1"},
      *                 ),
      *                 @OA\Property (
      *                    property="born_date",
@@ -716,6 +747,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/settings",
      *     tags={"Profile Settings"},
      *     summary="Your profile data",
+     *     description="[**Telegram :** https://t.me/c/1334612640/153](https://t.me/c/1334612640/153).",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -737,6 +769,11 @@ class ProfileAPIController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
+        if($user->is_phone_number_verified){
+            $phone_number = (new CustomService)->correctPhoneNumber($user->phone_number);
+        }else{
+            $phone_number = '';
+        }
         $data = [
             'name' => $user->name,
             'last_name' => $user->last_name,
@@ -744,7 +781,7 @@ class ProfileAPIController extends Controller
             'location' => $user->location,
             'date_of_birth' => $user->born_date,
             'email' => $user->email,
-            'phone' => (new CustomService)->correctPhoneNumber($user->phone_number),
+            'phone' => $phone_number,
             'gender' => $user->gender,
         ];
         return response()->json([
@@ -758,6 +795,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/description/edit",
      *     tags={"Profile"},
      *     summary="Profile edit description",
+     *     description="[**Telegram :** https://t.me/c/1334612640/133](https://t.me/c/1334612640/133).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -811,6 +849,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/settings/notifications",
      *     tags={"Profile Settings"},
      *     summary="Profile edit news notifications",
+     *     description="[**Telegram :** https://t.me/c/1334612640/154](https://t.me/c/1334612640/154).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -818,8 +857,9 @@ class ProfileAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="notification",
-     *                    type="integer",
-     *                    description="0 yoki 1 kiritiladi, 0 bo'lsa o'chiriladi, 1 bo'lsa yoqiladi",
+     *                    type="string",
+     *                    description="0 yoki 1 tanlanadi, 0 bo'lsa o'chiriladi, 1 bo'lsa yoqiladi",
+     *                    enum={"0", "1"},
      *                 ),
      *             ),
      *         ),
@@ -857,13 +897,14 @@ class ProfileAPIController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/profile/{id}",
+     *     path="/api/profile/{userId}",
      *     tags={"Profile"},
      *     summary="Get Profile By ID",
+     *     description="[**Telegram :** https://t.me/c/1334612640/134](https://t.me/c/1334612640/134).",
      *     @OA\Parameter(
      *          in="path",
-     *          description="user id kiritiladi",
-     *          name="id",
+     *          description="foydalanuvchi idsi kiritiladi",
+     *          name="userId",
      *          required=true,
      *          @OA\Schema(
      *              type="string"
@@ -883,22 +924,23 @@ class ProfileAPIController extends Controller
      *     )
      * )
      */
-    public function userProfile(User $user): JsonResponseAlias
+    public function userProfile($userId): JsonResponseAlias
     {
-        $user_id = $user->id;
+        $user = User::find($userId);
         (new PerformersService)->setView($user);
-        return $this->profileService->index($user_id);
+        return $this->profileService->index($userId);
     }
 
     /**
      * @OA\Get(
-     *     path="/api/profile/{user}/portfolios",
+     *     path="/api/profile/{userId}/portfolios",
      *     tags={"Profile"},
      *     summary="User Portfolios",
+     *     description="[**Telegram :** https://t.me/c/1334612640/135](https://t.me/c/1334612640/135).",
      *     @OA\Parameter(
      *          in="path",
-     *          description="user id kiritiladi",
-     *          name="user",
+     *          description="foydalanuvchi idsi kiritiladi",
+     *          name="userId",
      *          required=true,
      *          @OA\Schema(
      *              type="string"
@@ -918,20 +960,21 @@ class ProfileAPIController extends Controller
      *     )
      * )
      */
-    public function userPortfolios($id): JsonResponseAlias
+    public function userPortfolios($userId): JsonResponseAlias
     {
-        return $this->profileService->portfolios($id);
+        return $this->profileService->portfolios($userId);
     }
 
     /**
      * @OA\Get(
-     *     path="/api/profile/{user}/reviews",
+     *     path="/api/profile/{userId}/reviews",
      *     tags={"Profile"},
      *     summary="User Reviews",
+     *     description="[**Telegram :** https://t.me/c/1334612640/136](https://t.me/c/1334612640/136).",
      *     @OA\Parameter(
      *          in="path",
-     *          description="user id kiritiladi",
-     *          name="user",
+     *          description="foydalanuvchi idsi kiritiladi",
+     *          name="userId",
      *          required=true,
      *          @OA\Schema(
      *              type="string"
@@ -951,11 +994,11 @@ class ProfileAPIController extends Controller
      *     )
      * )
      */
-    public function userReviews(Request $request, User $user): JsonResponseAlias
+    public function userReviews(Request $request, $userId): JsonResponseAlias
     {
         $performer = $request->get('performer');
         $review = $request->get('review');
-        $reviews = ProfileService::userReviews($user, $performer, $review);
+        $reviews = ProfileService::userReviews($userId, $performer, $review);
         return response()->json([
             'success' => true,
             'data' => $reviews
@@ -968,6 +1011,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/categories-subscribe",
      *     tags={"Profile"},
      *     summary="Category subscribe",
+     *     description="[**Telegram :** https://t.me/c/1334612640/162](https://t.me/c/1334612640/162).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -975,18 +1019,20 @@ class ProfileAPIController extends Controller
      *             @OA\Schema(
      *                  @OA\Property (
      *                    property="category",
-     *                    description="child category idlar kiritiladi(array formatda)",
-     *                    type="object",
+     *                    description="child kategoriya idlar kiritiladi",
+     *                    type="string",
      *                  ),
      *                  @OA\Property (
      *                    property="sms_notification",
-     *                    description="sms_notificationni yoqish uchun 1, o'chirish uchun 0 yoziladi",
-     *                    type="integer",
+     *                    description="sms_notificationni yoqish uchun 1, o'chirish uchun 0",
+     *                    enum={"0", "1"},
+     *                    type="string",
      *                 ),
      *                  @OA\Property (
      *                    property="email_notification",
-     *                    description="email_notificationni yoqish uchun 1, o'chirish uchun 0 yoziladi",
-     *                    type="integer",
+     *                    description="email_notificationni yoqish uchun 1, o'chirish uchun 0",
+     *                    enum={"0", "1"},
+     *                    type="string",
      *                 ),
      *             ),
      *         ),
@@ -1029,7 +1075,8 @@ class ProfileAPIController extends Controller
      * @OA\Post(
      *     path="/api/profile/settings/change-lang",
      *     tags={"Profile Settings"},
-     *     summary="Change lang",
+     *     summary="Change language",
+     *     description="[**Telegram :** https://t.me/c/1334612640/155](https://t.me/c/1334612640/155).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -1039,6 +1086,7 @@ class ProfileAPIController extends Controller
      *                    property="lang",
      *                    description="ru yoki uz",
      *                    type="string",
+     *                    enum={"ru", "uz"}
      *                 ),
      *                 @OA\Property (
      *                    property="version",
@@ -1077,6 +1125,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/self-delete",
      *     tags={"Profile"},
      *     summary="Self delete",
+     *     description="[**Telegram :** https://t.me/c/1334612640/215](https://t.me/c/1334612640/215).",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -1107,6 +1156,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/confirmation-self-delete",
      *     tags={"Profile"},
      *     summary="Confirmation self delete",
+     *     description="[**Telegram :** https://t.me/c/1334612640/256](https://t.me/c/1334612640/256).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -1150,6 +1200,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/report-user",
      *     tags={"Profile"},
      *     summary="Report user",
+     *     description="[**Telegram :** https://t.me/c/1334612640/216](https://t.me/c/1334612640/216).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -1206,6 +1257,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/block-user",
      *     tags={"Profile"},
      *     summary="Block user",
+     *     description="[**Telegram :** https://t.me/c/1334612640/217](https://t.me/c/1334612640/217).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -1250,6 +1302,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/block-user-list",
      *     tags={"Profile"},
      *     summary="Block user list",
+     *     description="[**Telegram :** https://t.me/c/1334612640/252](https://t.me/c/1334612640/252).",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -1275,13 +1328,14 @@ class ProfileAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/profile/portfolio/{portfolio}/delete-image",
+     *     path="/api/profile/portfolio/{portfolioId}/delete-image",
      *     tags={"Profile"},
      *     summary="Profile delete image",
+     *     description="[**Telegram :** https://t.me/c/1334612640/218](https://t.me/c/1334612640/218).",
      *     @OA\Parameter(
      *          in="path",
      *          description="portfolio id kiritiladi",
-     *          name="portfolio",
+     *          name="portfolioId",
      *          required=true,
      *          @OA\Schema(
      *              type="integer"
@@ -1294,7 +1348,7 @@ class ProfileAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="image",
-     *                    description="Username/1675856445_image_2023-02-07_11-00-21.png shunday ko'rinishda img url kiritiladi",
+     *                    description="Username/1675856445_image_2023-02-07_11-00-21.png shunday ko'rinishda rasm url kiritiladi",
      *                    type="string",
      *                 ),
      *             ),
@@ -1316,11 +1370,12 @@ class ProfileAPIController extends Controller
      *         {"token": {}}
      *     },
      * )
+     * @throws JsonException
      */
-    public function deleteImage(Request $request, Portfolio $portfolio): JsonResponseAlias
+    public function deleteImage(Request $request, $portfolioId): JsonResponseAlias
     {
         $image = $request->get('image');
-        $this->profileService->deleteImage($image,$portfolio);
+        $this->profileService->deleteImage($image,$portfolioId);
         return response()->json([
             'success' => true,
             'message' => __('Успешно удалено'),
@@ -1333,6 +1388,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/work-experience",
      *     tags={"Profile"},
      *     summary="Profile work experience",
+     *     description="[**Telegram :** https://t.me/c/1334612640/202](https://t.me/c/1334612640/202).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -1384,6 +1440,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/response-template",
      *     tags={"Profile"},
      *     summary="Profile response template",
+     *     description="[**Telegram :** https://t.me/c/1334612640/244](https://t.me/c/1334612640/244).",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -1403,21 +1460,21 @@ class ProfileAPIController extends Controller
      */
     public function response_template(): JsonResponseAlias
     {
-
         /** @var User $user */
-        $user = auth()->user();
-        return $this->profileService->response_template($user);
+        $userId = auth()->id();
+        return $this->profileService->response_template($userId);
     }
 
     /**
      * @OA\Post(
-     *     path="/api/profile/response-template/edit/{id}",
+     *     path="/api/profile/response-template/edit/{templateId}",
      *     tags={"Profile"},
      *     summary="Profile response template edit",
+     *     description="[**Telegram :** https://t.me/c/1334612640/162](https://t.me/c/1334612640/162).",
      *     @OA\Parameter(
      *          in="path",
-     *          description="response template id kiritiladi",
-     *          name="id",
+     *          description="Javob qoldirish shabloni idsi kiritiladi",
+     *          name="templateId",
      *          required=true,
      *          @OA\Schema(
      *              type="integer"
@@ -1458,10 +1515,10 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function response_template_edit(ResponseTemplateRequest $request, ResponseTemplate $id): JsonResponseAlias
+    public function response_template_edit(ResponseTemplateRequest $request, ResponseTemplate $templateId): JsonResponseAlias
     {
         $data = $request->validated();
-        $id->update($data);
+        $templateId->update($data);
 
         return response()->json([
             'success' => true,
@@ -1475,6 +1532,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/response-template/create",
      *     tags={"Profile"},
      *     summary="Profile response template create",
+     *     description="[**Telegram :** https://t.me/c/1334612640/246](https://t.me/c/1334612640/246).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -1530,13 +1588,14 @@ class ProfileAPIController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/profile/response-template/delete/{id}",
+     *     path="/api/profile/response-template/delete/{templateId}",
      *     tags={"Profile"},
      *     summary="Profile response template delete",
+     *     description="[**Telegram :** https://t.me/c/1334612640/248](https://t.me/c/1334612640/248).",
      *     @OA\Parameter(
-     *          description="response template id kiritiladi",
+     *          description="Javob qoldirish shabloni idsi kiritiladi",
      *          in="path",
-     *          name="id",
+     *          name="templateId",
      *          required=true,
      *          @OA\Schema(
      *              type="integer"
@@ -1559,11 +1618,11 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function response_template_delete(ResponseTemplate $template): JsonResponseAlias
+    public function response_template_delete(ResponseTemplate $templateId): JsonResponseAlias
     {
         /** @var User $user */
-        $user = auth()->user();
-        return $this->profileService->response_template_delete($user, $template);
+        $userId = auth()->id();
+        return $this->profileService->response_template_delete($userId, $templateId);
     }
 
     /**
@@ -1571,6 +1630,7 @@ class ProfileAPIController extends Controller
      *     path="/api/profile/notification-off",
      *     tags={"Profile"},
      *     summary="Notification on or off",
+     *     description="[**Telegram :** https://t.me/c/1334612640/251](https://t.me/c/1334612640/251).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -1623,6 +1683,35 @@ class ProfileAPIController extends Controller
             'success' => true,
             'message' => __('Успешно сохранено'),
         ]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/profile/categories",
+     *     tags={"Profile"},
+     *     summary="Profile categories",
+     *     description="[**Telegram :** https://t.me/c/1334612640/260](https://t.me/c/1334612640/260).",
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function userCategory(): AnonymousResourceCollection
+    {
+        $userId = \auth()->id();
+        return $this->profileService->userCategory($userId);
     }
 
 

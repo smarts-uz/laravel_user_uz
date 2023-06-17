@@ -10,7 +10,7 @@ class ProfileCashItem
     public $user;
     public $balance;
     public $views;
-    public $task;
+    public $task_count;
     public $transactions;
     public $top_users;
     public $review_good;

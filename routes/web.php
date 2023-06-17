@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CustomFieldController;
+use App\Http\Controllers\DeleteAccountController;
+use App\Services\Chat\TelegramService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
@@ -36,6 +38,9 @@ use Teamprodev\LaravelPayment\PayUz;
 Route::get('/debug-sentry', function () {
     Log::channel('api')->info('api ishlamadi');
 });
+
+Route::post('/webhook', [TelegramService::class, 'web']);
+
 #region performers
 Route::get('/for_del_new_task/{task}', [CreateController::class, 'deleteTask']);
 Route::post('del-notif', [PerformersController::class, 'del_all_notif']);
@@ -43,7 +48,7 @@ Route::get('perf-ajax/{id}', [PerformersController::class, 'perf_ajax'])->name('
 Route::get('active-performers', [PerformersController::class, 'ajaxAP'])->name('performers.active_performers');
 Route::post('give-task', [PerformersController::class, 'give_task']);
 Route::get('/performers_portfolio/{portfolio}',[PerformersController::class,'performers_portfolio'])->name('performers.performers_portfolio');
-Route::group(['prefix' => 'performers'], function () {
+Route::group(['prefix' => 'performers'], static function () {
     Route::get('/', [PerformersController::class, 'service'])->name('performers.service');
     Route::get('/{user}', [PerformersController::class, 'performer'])->name('performers.performer');
     Route::get('performer/list', [PerformersController::class, 'getPerformers'])->name('performers.list');
@@ -51,7 +56,7 @@ Route::group(['prefix' => 'performers'], function () {
 #endregion
 
 #region chat
-Route::group(['prefix' => 'chat'], function (){
+Route::group(['prefix' => 'chat'], static function (){
     Route::get('/getContacts', [MessagesController::class, 'getContacts'])->name('contacts.get');
     Route::get('/search', [MessagesController::class, 'search'])->name('search');
     Route::post('/favorites', [MessagesController::class, 'getFavorites'])->name('favorites');
@@ -69,7 +74,7 @@ Route::group(['prefix' => 'admin'], static function () {
     Route::group(['middleware' => 'auth'], static function () {
         Route::get('report', [ReportController::class, "index"])->name("index");
         Route::get('report/export/{id}', [ReportController::class, "report_export"])->name("report_export");
-        Route::get('report/get', [ReportController::class, "report"])->name("report");
+        Route::post('report/get', [ReportController::class, "report"])->name("report");
         Route::post('report/get/child', [ReportController::class, "report_sub"])->name("report_sub");
         Route::get('report/child/{id}', [ReportController::class, "index_sub"])->name("index_sub");
         Route::get('users/activity/{user}', [VoyagerUserController::class, "activity"])->name("voyagerUser.activity");
@@ -80,12 +85,14 @@ Route::group(['prefix' => 'admin'], static function () {
         Route::put('/custom-fields/{id}/update',[CustomFieldController::class,'update'])->name('voyager.custom-fields.update');
         Route::get('/info/{user}',[Controller::class,'user_info'])->name('user.info');
         Route::post('/users/store',[UserController::class,'store'])->name('voyager.users.store');
+        Route::get('/blogNew/{newsId}',[VoyagerUserController::class,'blogNews'])->name('blogNews');
+
     });
 });
 #endregion
 
 #region tasks
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth'], static function () {
     Route::get('/my-tasks', [Controller::class, 'my_tasks'])->name('searchTask.mytasks');
 });
 Route::get('/completed-task-names', [SearchTaskController::class, 'taskNames'])->name('search.task_name');
@@ -106,7 +113,7 @@ Route::get('task/{task}/map', [SearchTaskController::class, 'task_map'])->name('
 #endregion
 
 #region verificationInfo
-Route::group(['middleware' => 'auth', 'prefix' => 'verification'], function () {
+Route::group(['middleware' => 'auth', 'prefix' => 'verification'], static function () {
     Route::get('/', [ProfileController::class, 'verificationIndex'])->name('verification');
 
     Route::get('/verificationInfo', [ProfileController::class, 'verificationInfo'])->name('profile.verificationInfo');
@@ -128,7 +135,7 @@ Route::get('/faq', [FaqsController::class, 'index'])->name('faq.index');
 Route::get('/questions/{id}', [FaqsController::class, 'questions'])->name('faq.questions');
 Route::get('/reviews',[Controller::class,'performer_reviews']);
 Route::get('/author-reviews',[Controller::class,'authors_reviews']);
-Route::get('/press', [Controller::class, 'index'])->name('massmedia');
+Route::get('/press', [Controller::class, 'massmedia'])->name('massmedia');
 Route::get('/geotaskshint', [Controller::class, 'geotaskshint'])->name('geotaskshint');
 Route::get('/security', [Controller::class, 'security'])->name('security');
 Route::get('/badges', [Controller::class, 'badges'])->name('badges');
@@ -138,8 +145,15 @@ Route::get('/privacy', [Controller::class, 'policy'])->name('privacy');
 Route::get('/app',[Controller::class,'device']);
 #endregion
 
+#region account-delete
+Route::get('/delete-account',[DeleteAccountController::class,'delete_account']);
+Route::post('/delete-email', [DeleteAccountController::class, 'delete_email'])->name('account.delete_email');
+Route::post('/delete-phone', [DeleteAccountController::class, 'delete_phone'])->name('account.delete_phone');
+Route::post('/delete-code', [DeleteAccountController::class, 'delete_code'])->name('account.delete_code');
+#endregion
+
 #region Profile
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth'], static function () {
     Route::prefix('profile')->group(function () {
         Route::post('/youtube_link', [ProfileController::class, 'youtube_link'])->name('youtube_link');
         Route::get('youtube_link_delete',[ProfileController::class,'youtube_link_delete'])->name('youtube_link_delete');
@@ -245,7 +259,7 @@ Route::post('/confirmation-self-delete', [UserController::class, 'confirmationSe
 Route::post('/account/password/change', [ProfileController::class, 'change_password'])->name('profile.change_password');
 #endregion
 
-Route::any('/paynet', function () {
+Route::any('/paynet', static function () {
     (new PayUz)->driver('paynet')->handle();
 });
 // Show transactions history

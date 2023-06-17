@@ -17,7 +17,8 @@ class SocialAPIController extends Controller
      * @OA\Post(
      *     path="/api/social-login",
      *     tags={"Socials"},
-     *     summary="Socials Google and Facebook",
+     *     summary="Socials Google, Facebook and Apple",
+     *     description="[**Telegram :** https://t.me/c/1334612640/233](https://t.me/c/1334612640/233).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (

@@ -149,7 +149,7 @@ class One extends DefaultValueBinder implements WithStyles, FromCollection, With
      */
     public static function title() : string
     {
-        return '1 - Отчет общий';
+        return 'Отчет';
     }
 
     /**

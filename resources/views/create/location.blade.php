@@ -66,7 +66,7 @@
                                         </button>
                                         <input autocomplete="off" oninput="myMapFunction()" id="suggest0"
                                                autofocus="autofocus"
-                                               class="appearance-none bg-transparent w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none focus:border-yellow-500"
+                                               class="appearance-none bg-transparent w-full text-gray-700 p-1 leading-tight focus:outline-none focus:border-yellow-500"
                                                type="search" placeholder="{{__('Город, Улица, Дом')}}"
                                                value="{{session('location2')}}" name="location0" required>
                                         <button id="getlocal"
@@ -76,8 +76,7 @@
                                                  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                                  stroke-linecap="round" stroke-linejoin="round">
                                                 <path stroke="none" d="M0 0h24v24H0z"/>
-                                                <path
-                                                    d="M21 3L14.5 21a.55 .55 0 0 1 -1 0L10 14L3 10.5a.55 .55 0 0 1 0 -1L21 3"/>
+                                                <path d="M21 3L14.5 21a.55 .55 0 0 1 -1 0L10 14L3 10.5a.55 .55 0 0 1 0 -1L21 3"/>
                                             </svg>
                                         </button>
                                     </div>
@@ -85,24 +84,23 @@
                                     <div id="addinput" class="flex gap-y-2 flex-col">
                                         @if($task->category->parent->double_address)
                                             <div class="flex items-center gap-x-2">
-                                                <div class="flex items-center rounded-lg border  w-full py-1">
+                                                <div class="flex items-center rounded-lg border w-full py-1">
                                                     <button
                                                         class="Alfavit flex-shrink-0 border-transparent text-teal-500 text-md py-1 px-2 rounded focus:outline-none"
                                                         type="button"> B
                                                     </button>
                                                     <input oninput="myMapFunction()" id="suggest1"
-                                                           class="appearance-none bg-transparent w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+                                                           class="appearance-none bg-transparent w-full text-gray-700 py-1 px-2 leading-tight focus:outline-none"
                                                            type="search" name="location1" required
-                                                           placeholder="Город, Улица, Дом" aria-label="Full name">
+                                                           placeholder="{{__('Город, Улица, Дом')}}" aria-label="Full name">
                                                     <button id="1" onclick="getLocals(this.id)"
                                                             class="flex-shrink-0 border-transparent border-4 text-yellow-500 hover:text-yellow-600 text-sm py-1 px-2 rounded"
                                                             type="button">
-                                                        <svg className="h-4 w-4 text-yellow-500" width="18" height="18"
+                                                        <svg class="h-4 w-4 text-yellow-500" width="18" height="18"
                                                              viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                                                              fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z"/>
-                                                            <path
-                                                                d="M21 3L14.5 21a.55 .55 0 0 1 -1 0L10 14L3 10.5a.55 .55 0 0 1 0 -1L21 3"/>
+                                                            <path d="M21 3L14.5 21a.55 .55 0 0 1 -1 0L10 14L3 10.5a.55 .55 0 0 1 0 -1L21 3"/>
                                                         </svg>
                                                     </button>
                                                 </div>
@@ -196,6 +194,5 @@
             })
         })
     </script>
-    <script src="{{ asset('js/location.js') }}"></script>
-
+    @include('create.locationjs')
 @endsection

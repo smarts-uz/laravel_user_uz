@@ -5,6 +5,7 @@ namespace App\Services\Task;
 
 use App\Services\TelegramService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use JsonException;
 use App\Http\Resources\{PerformerResponseResource,
     SameTaskResource,
     TaskAddressResource,
@@ -30,7 +31,6 @@ class TaskService
     }
 
     /**
-     *
      * Function  taskIncrement
      * @param int $user_id
      * @param int $task_id
@@ -47,7 +47,6 @@ class TaskService
     }
 
     /**
-     *
      * Function  taskIndex
      * @param int $task_id
      * @return  array[]|JsonResponse
@@ -109,12 +108,13 @@ class TaskService
 
     /**
      * Shu $task categoriyasiga oid o'xshash tasklarni qaytaradi
-     * @param $task
+     * @param $taskId
      * @return AnonymousResourceCollection
      */
-    public function same_tasks($task): AnonymousResourceCollection
+    public function same_tasks($taskId): AnonymousResourceCollection
     {
-        $tasks = $task->category->tasks()->where('id', '!=', $task->id);
+        $task = Task::find($taskId);
+        $tasks = $task->category->tasks()->where('id', '!=', $taskId);
         $tasks = $tasks->where('status', Task::STATUS_OPEN)->take(self::SOME_TASK_LIMIT)->orderByDesc('created_at')->get();
         return SameTaskResource::collection($tasks);
     }
@@ -122,15 +122,16 @@ class TaskService
     /**
      * Shu $taskga otklik qilganlarni userlarni qaytaradi
      * @param $filter
-     * @param $task
+     * @param $taskId
      * @return AnonymousResourceCollection
      */
-    public function responses($filter, $task): AnonymousResourceCollection
+    public function responses($filter, $taskId): AnonymousResourceCollection
     {
+        $task = Task::find($taskId);
         if ($task->user_id === auth()->id()) {
             $responses = match ($filter) {
                 'rating' => TaskResponse::query()->select('task_responses.*')->join('users', 'task_responses.performer_id', '=', 'users.id')
-                    ->where('task_responses.task_id', '=', $task->id)->orderByDesc('users.review_rating'),
+                    ->where('task_responses.task_id', '=', $taskId)->orderByDesc('users.review_rating'),
                 'date' => $task->responses()->orderByDesc('created_at'),
                 'price' => $task->responses()->orderBy('price'),
                 default => $task->responses(),
@@ -150,9 +151,11 @@ class TaskService
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws JsonException
      */
-    public function response_store($task, $user, $data): JsonResponse
+    public function response_store($taskId, $user, $data): JsonResponse
     {
+        $task = Task::find($taskId);
         switch (true) {
             case ((int)$task->user_id === (int)$user->id) :
                 return $this->fail(null, trans('trans.your task'));
@@ -168,12 +171,13 @@ class TaskService
 
     /**
      * Task Status changed from cancel to open
-     * @param $task
+     * @param $taskId
      * @param $authId
      * @return JsonResponse
      */
-    public function taskStatusUpdate($task, $authId): JsonResponse
+    public function taskStatusUpdate($taskId, $authId): JsonResponse
     {
+        $task = Task::find($taskId);
         if ($task->user_id !== $authId){
             return response()->json([
                 'success' => false,
@@ -237,12 +241,13 @@ class TaskService
      * Taskka shikoyat qoldirish
      * @param $data
      * @param $user
-     * @param $task
+     * @param $taskId
      * @return JsonResponse
      */
-    public function taskComplain($data, $user, $task): JsonResponse
+    public function taskComplain($data, $user, $taskId): JsonResponse
     {
-        $data['task_id'] = $task->id;
+        $task = Task::find($taskId);
+        $data['task_id'] = $taskId;
         $data['user_id'] = $user->id;
         /** @var Compliance $compliant */
         $compliant = Compliance::query()->create($data);

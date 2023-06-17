@@ -6,11 +6,11 @@ use App\Models\{Address, Category, CustomField, CustomFieldsValue, Task, User};
 use App\Services\{CustomService, NotificationService, Response, VerificationService};
 use Carbon\Carbon;
 use Illuminate\Database\{Eloquent\Builder, Eloquent\Collection, Eloquent\Model};
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\{Arr, Facades\Log, Facades\Validator};
 use Illuminate\Validation\ValidationException;
 use JetBrains\PhpStorm\ArrayShape;
+use JsonException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -38,7 +38,6 @@ class CreateTaskService
 
     public function __construct()
     {
-        $this->service = new CreateService();
         $this->custom_field_service = new CustomFieldService();
     }
 
@@ -48,13 +47,11 @@ class CreateTaskService
      * @param string $name
      * @param int $category_id
      * @param $user
-     * @param int $user_id
      * @return  array
      */
-    public function name_store(string $name, int $category_id, $user, int $user_id): array
+    public function name_store(string $name, int $category_id, $user): array
     {
-        $data = ["name" => $name, "category_id" => $category_id];
-        $data['user_id'] = $user_id;
+        $data = ["name" => $name, "category_id" => $category_id, 'user_id'=> Arr::get($user, 'id')];
         $task = Task::create($data);
         $user->active_task = $task->id;
         $user->active_step = self::Create_Name;
@@ -63,7 +60,7 @@ class CreateTaskService
     }
 
     /**
-     *
+     * create task custom get
      * Function  get_custom
      * @param int $task_id
      * @return  array
@@ -76,7 +73,7 @@ class CreateTaskService
         if (!$task->category->customFieldsInCustom->count()) {
             if (!is_null($task->category->parent) && $task->category->parent->remote) {
                 return [
-                    'route' => 'remote', 'task_id' => $task->id, 'steps' => self::Create_Remote,
+                    'route' => 'remote', 'task_id' => $task_id, 'steps' => self::Create_Remote,
                     'custom_fields' => $custom_fields
                 ];
             }
@@ -117,9 +114,8 @@ class CreateTaskService
     }
 
     /**
-     * Retrieve next step with additional fields
-     *
-     * @param object $task // Task model object
+     * task create remote get
+     * @param int $task_id
      * @return array //Value Returned
      */
     #[ArrayShape(['route' => "string", 'task_id' => "int", 'steps' => "int", 'custom_fields' => "array"])]
@@ -132,8 +128,7 @@ class CreateTaskService
     }
 
     /**
-     * Save remote s values by request
-     *
+     * task create remote store
      * @param $data // Validated request data from mobile
      * @return array //Value Returned
      */
@@ -159,8 +154,7 @@ class CreateTaskService
     }
 
     /**
-     * Retrieve next step with additional fields
-     *
+     * task create address get
      * @param int $task_id
      * @return array //Value Returned
      */
@@ -177,8 +171,7 @@ class CreateTaskService
     }
 
     /**
-     * Save remote s values by request
-     *
+     * task create address store
      * @param $data // Validated request data from mobile
      * @return array //Value Returned
      */
@@ -211,8 +204,7 @@ class CreateTaskService
     }
 
     /**
-     * Retrieve next step with additional fields
-     *
+     * task create date get
      * @param int $task_id
      * @return array //Value Returned
      */
@@ -226,8 +218,7 @@ class CreateTaskService
     }
 
     /**
-     * Save remote s values by request
-     *
+     * task create date store
      * @param $data // Validated request data from mobile
      * @return array //Value Returned
      */
@@ -245,8 +236,7 @@ class CreateTaskService
     }
 
     /**
-     * Retrieve next step with additional fields
-     *
+     * task create budget get
      * @param int $task_id
      * @return array //Value Returned
      */
@@ -263,8 +253,7 @@ class CreateTaskService
     }
 
     /**
-     * Save remote s values by request
-     *
+     * task create budget store
      * @param $data // Validated request data from mobile
      * @return array //Value Returned
      */
@@ -284,8 +273,7 @@ class CreateTaskService
     }
 
     /**
-     * Retrieve next step with additional fields
-     *
+     * task create note get
      * @param int $task_id
      * @return array //Value Returned
      */
@@ -297,8 +285,7 @@ class CreateTaskService
     }
 
     /**
-     * Save remote s values by request
-     *
+     * task create note store
      * @param $data // Validated request data from mobile
      * @return array //Value Returned
      */
@@ -316,8 +303,7 @@ class CreateTaskService
     }
 
     /**
-     * Save remote s values by request
-     *
+     * task create image store
      * @param $request
      * @return JsonResponse //Value Returned
      * @throws ValidationException
@@ -356,8 +342,7 @@ class CreateTaskService
     }
 
     /**
-     * Retrieve next step with additional fields
-     *
+     * task create get contact
      * @param int $task_id
      * @return array //Value Returned
      */
@@ -370,13 +355,13 @@ class CreateTaskService
     }
 
     /**
-     * Save remote s values by request
-     *
+     * task create contact store
      * @param $data // Validated request data from mobile
      * @param $user
      * @return array //Value Returned
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws JsonException
      */
     public function contact_store($data, $user): array
     {
@@ -430,6 +415,9 @@ class CreateTaskService
      * task create api verification
      * @param $data
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws JsonException
      */
     public function verification($data): JsonResponse
     {
@@ -486,7 +474,6 @@ class CreateTaskService
     }
 
     /**
-     *
      * Function  attachCustomFieldsByRoute
      * @param int $task_id
      * @param string $routeName

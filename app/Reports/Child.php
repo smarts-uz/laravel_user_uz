@@ -138,7 +138,7 @@ class Child extends DefaultValueBinder implements WithStyles, FromCollection, Wi
      */
     public static function title() : string
     {
-        return '1 - Отчет общий';
+        return 'Отчет подкатегории';
     }
 
     /**

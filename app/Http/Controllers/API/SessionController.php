@@ -24,6 +24,7 @@ class SessionController extends Controller
      *     path="/api/profile/sessions",
      *     tags={"Profile"},
      *     summary="Get all sessions",
+     *     description="[**Telegram :** https://t.me/c/1334612640/219](https://t.me/c/1334612640/219).",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -51,6 +52,7 @@ class SessionController extends Controller
      *     path="/api/profile/clear-sessions",
      *     tags={"Profile"},
      *     summary="Clear sessions without current session",
+     *     description="[**Telegram :** https://t.me/c/1334612640/220](https://t.me/c/1334612640/220).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (

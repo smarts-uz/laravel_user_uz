@@ -24,7 +24,7 @@
                                     class="shadow appearance-none border focus:shadow-orange-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
                                     required>
                                 @foreach($custom_field['options'] as $key => $option)
-                                    <option {{ $option['selected'] ? 'selected':'' }} value="{{$option['id']}}">{{$option['value']}}</option>
+                                    <option {{ $option['selected'] ? 'selected':'' }} value="{{$option['id']}}">{{html_entity_decode($option['value'])}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -61,7 +61,7 @@
                                                 class="mr-2  h-4 w-4" type="checkbox" {{ $option['selected']?'checked':'' }}
                                                 value="{{ $option['id'] }}" name="{{$custom_field['name']}}[]">
                                             <span class="text-slate-900">
-                                                    {{$option['value']}}
+                                                    {{html_entity_decode($option['value'])}}
                                                     </span>
                                         </label>
                                     @endforeach
@@ -98,7 +98,7 @@
                                            @if($custom_field['required'] === 1) required @endif
                                             id="radio_{{$custom_field['name']}}_{{$option['value']}}" name="{{$custom_field['name']}}[]"
                                            value="{{$option['id']}}" {{ $option['selected']? 'checked':'' }}>
-                                    <label class="cursor-pointer" for="radio_{{$custom_field['name']}}_{{$option['value']}}">{{$option['value']}}</label>
+                                    <label class="cursor-pointer" for="radio_{{$custom_field['name']}}_{{$option['value']}}">{{html_entity_decode($option['value'])}}</label>
                                     <br>
                                     <br>
                                 @endforeach

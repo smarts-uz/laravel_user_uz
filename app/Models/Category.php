@@ -98,7 +98,7 @@ class Category extends Model
         parent::boot();
 
         // updating created_by and updated_by when model is created
-        static::creating(function ($model) {
+        static::creating(static function ($model) {
             if (!$model->isDirty('created_by')) {
                 $model->created_by = Arr::get(auth()->user(), 'id');
             }
@@ -108,11 +108,12 @@ class Category extends Model
         });
 
         // updating updated_by when model is updated
-        static::updating(function ($model) {
+        static::updating(static function ($model) {
             if (!$model->isDirty('updated_by')) {
                 $model->updated_by = Arr::get(auth()->user(), 'id');
             }
         });
+
     }
 
 }

@@ -60,13 +60,13 @@ class VoyagerTaskController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/test-complete-task/{task}",
+     *     path="/api/test-complete-task/{taskId}",
      *     tags={"Notifications"},
      *     summary="complete task notifications",
      *     @OA\Parameter (
      *          in="path",
      *          description="task id kiritiladi",
-     *          name="task",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -89,8 +89,9 @@ class VoyagerTaskController extends Controller
      *     },
      * )
      */
-    public function test_complete_task(Task $task): array
+    public function test_complete_task($taskId): array
     {
+        $task = Task::find($taskId);
         if (auth()->user()->hasPermission('reported_task_complete')){
             $task->status = Task::STATUS_COMPLETE;
             $task->save();
@@ -108,13 +109,13 @@ class VoyagerTaskController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/test-delete-task/{task}",
+     *     path="/api/test-delete-task/{taskId}",
      *     tags={"Notifications"},
      *     summary="delete task notifications",
      *     @OA\Parameter (
      *          in="path",
      *          description="task id kiritiladi",
-     *          name="task",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -137,9 +138,9 @@ class VoyagerTaskController extends Controller
      *     },
      * )
      */
-    public function test_delete_task(Task $task): array
+    public function test_delete_task($taskId): array
     {
-
+        $task = Task::find($taskId);
         if (auth()->user()->hasPermission('delete_tasks')){
             $task->update(['status' => Task::STATUS_CANCELLED]);
             TaskNotificationService::sendNotificationForCancelledTask($task);
@@ -152,13 +153,13 @@ class VoyagerTaskController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/test-cancel-task/{task}",
+     *     path="/api/test-cancel-task/{taskId}",
      *     tags={"Notifications"},
      *     summary="cencel task notifications",
      *     @OA\Parameter (
      *          in="path",
      *          description="task id kiritiladi",
-     *          name="task",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -182,8 +183,9 @@ class VoyagerTaskController extends Controller
      * )
      */
     #[ArrayShape(['success' => "bool", 'data' => Task::class])]
-    public function test_cancel_task(Task $task): array
+    public function test_cancel_task($taskId): array
     {
+        $task = Task::find($taskId);
         TaskNotificationService::sendNotificationForCancelledTask($task);
         $task->update(['status' => Task::STATUS_CANCELLED]);
         return ['success' => true, 'data' => $task];

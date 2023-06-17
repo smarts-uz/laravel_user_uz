@@ -77,6 +77,7 @@ class CreateService
      * @param  $task
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws \JsonException
      */
     public function delete($task): void
     {
@@ -92,12 +93,7 @@ class CreateService
             "type" => Notification::CANCELLED_TASK
         ]);
 
-        NotificationService::sendNotificationRequest([$task->user_id], [
-            'created_date' => $notification->created_at->format('d M'),
-            'title' => NotificationService::titles($notification->type),
-            'url' => route('show_notification', [$notification]),
-            'description' => NotificationService::descriptions($notification)
-        ]);
+        NotificationService::sendNotificationRequest($task->user_id, $notification);
 
         $locale = (new CustomService)->cacheLang($task->user_id);
         NotificationService::pushNotification($task->user, [
@@ -117,7 +113,7 @@ class CreateService
      */
     public function storeName(string $name, $category_id): int
     {
-        $data = ['name' => $name, 'category_id' => $category_id];
+        $data = ['name' => $name, 'category_id' => $category_id, 'user_id'=> Arr::get(auth()->user(), 'id')];
         $task = Task::query()->create($data);
         return (int)$task->id;
     }
@@ -184,6 +180,7 @@ class CreateService
      * @param $performer_id
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws \JsonException
      */
     public function perform_notification($task, $user, $performer_id): void
     {
@@ -207,12 +204,7 @@ class CreateService
             'type' => Notification::GIVE_TASK,
         ]);
 
-        NotificationService::sendNotificationRequest([$performer_id], [
-            'created_date' => $notification->created_at->format('d M'),
-            'title' => NotificationService::titles($notification->type),
-            'url' => route('show_notification', [$notification]),
-            'description' => NotificationService::descriptions($notification)
-        ]);
+        NotificationService::sendNotificationRequest($performer_id, $notification);
 
         NotificationService::pushNotification($performer, [
             'title' => __('Предложение', [], $locale), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
@@ -269,7 +261,7 @@ class CreateService
      */
     public function contact_register($task_id, $data, $password): RedirectResponse
     {
-        $task = Task::first($task_id);
+        $task = Task::find($task_id);
         $data['password'] = Hash::make($password);
         unset($data['password_confirmation']);
         $task->phone = $data['phone_number'];

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{CustomField, FooterReview, Massmedia, BlogNew, Privacy};
+use App\Models\{Category, CustomField, FooterReview, Massmedia, BlogNew, Privacy};
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use App\Services\{Response, ControllerService};
 use Illuminate\Foundation\{Auth\Access\AuthorizesRequests, Bus\DispatchesJobs, Validation\ValidatesRequests};
 use Illuminate\Http\RedirectResponse;
@@ -15,7 +18,7 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     use Response;
 
-    public function home()
+    public function home(): Factory|View|Application
     {
         $lang = Session::get('lang');
         $service = new ControllerService();
@@ -29,7 +32,7 @@ class Controller extends BaseController
         );
     }
 
-    public function my_tasks()
+    public function my_tasks(): Factory|View|Application
     {
         $lang = Session::get('lang');
         $user = auth()->user();
@@ -45,7 +48,7 @@ class Controller extends BaseController
 
     }
 
-    public function category($id)
+    public function category($id): Factory|View|Application
     {
         $lang = Session::get('lang');
         $service = new ControllerService();
@@ -58,7 +61,7 @@ class Controller extends BaseController
             ]);
     }
 
-    public function lang($lang)
+    public function lang($lang): RedirectResponse
     {
         Session::put('lang', $lang);
         if (auth()->check()) {
@@ -68,57 +71,58 @@ class Controller extends BaseController
         return redirect()->back();
     }
 
-    public function index()
+    public function massmedia(): Factory|View|Application
     {
         $medias = Massmedia::paginate(20);
         return view('reviews.CMI', compact('medias'));
     }
 
-    public function performer_reviews()
+    public function performer_reviews(): Factory|View|Application
     {
         $performer_reviews = FooterReview::where('review_type',2)->latest()->get();
         return view('reviews.review',compact('performer_reviews'));
     }
 
-    public function authors_reviews(){
+    public function authors_reviews(): Factory|View|Application
+    {
         $customer_reviews = FooterReview::where('review_type',1)->latest()->get();
         return view('reviews.authors_reviews',compact('customer_reviews'));
     }
 
-    public function geotaskshint()
+    public function geotaskshint(): Factory|View|Application
     {
         return view('/staticpages/geotaskshint');
     }
 
-    public function security()
+    public function security(): Factory|View|Application
     {
         return view('/staticpages/security');
     }
 
-    public function badges()
+    public function badges(): Factory|View|Application
     {
         return view('/staticpages/badges');
     }
 
-    public function news()
+    public function news(): Factory|View|Application
     {
         $news = BlogNew::latest()->get();
         return view('/staticpages/news',compact('news'));
     }
 
-    public function news_page(BlogNew $id)
+    public function news_page(BlogNew $id): Factory|View|Application
     {
         $news = BlogNew::find($id);
         return view('staticpages.blog_new', compact('news'));
     }
 
-    public function policy()
+    public function policy(): Factory|View|Application
     {
         $policies = Privacy::get();
         return view('/staticpages/privacy',compact('policies'));
     }
 
-    public function terms()
+    public function terms(): Factory|View|Application
     {
         $agent = new Agent();
         if ($agent->isMobile()) {
@@ -138,7 +142,7 @@ class Controller extends BaseController
         return redirect()->route('terms_mobile_url');
     }
 
-    public function paynet_mobile($lang)
+    public function paynet_mobile($lang): RedirectResponse
     {
         Session::put('lang', $lang);
         if (auth()->check()) {
@@ -148,7 +152,7 @@ class Controller extends BaseController
         return redirect()->route('paynet_oplata_url');
     }
 
-    public function paynet_oplata()
+    public function paynet_oplata(): Factory|View|Application
     {
         $agent = new Agent();
         if ($agent->isMobile()) {
@@ -158,7 +162,8 @@ class Controller extends BaseController
         return view('staticpages.paynet');
     }
 
-    public function user_info($user){
+    public function user_info($user): Factory|View|Application
+    {
 
         $service = new ControllerService();
         $item = $service->user_info($user);
@@ -190,7 +195,7 @@ class Controller extends BaseController
     public function routing($request)
     {
         $routeName = $request->route;
-        $category = \App\Models\Category::find($request->category_id);
+        $category = Category::find($request->category_id);
         $data = [];
 
         switch ($routeName) {

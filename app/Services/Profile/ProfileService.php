@@ -252,8 +252,11 @@ class ProfileService
             'wallet_balance' => $balance,
             'work_experience' => $user->work_experience,
             'last_seen' => $lastSeen,
-            'last_version' => setting('admin.last_version','1.0.54'),
+            'last_version' => setting('admin.last_version',''),
+            'last_version_ios' => setting('admin.last_version_ios',''),
+            'last_version_android' => setting('admin.last_version_android',''),
             'gender' => $user->gender,
+            'role_id' => $user->role_id,
             'blocked_user' => $blocked_user,
             'notification_to' => $user->notification_to,
             'notification_from' => $user->notification_from,
@@ -309,7 +312,7 @@ class ProfileService
         $item->sessions = Session::query()->where('user_id', $user->id)->get();
         $item->parser = Parser::create();
         $item->user_categories = UserCategory::query()->where('user_id', $user->id)->pluck('category_id')->toArray();
-        $item->task = Task::query()->where('user_id', Auth::id())->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->count();
+        $item->tasks = Task::query()->where('user_id', $user->id)->whereIn('status', [Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS,])->count();
         return $item;
     }
 
@@ -363,7 +366,6 @@ class ProfileService
     {
         $item = new ProfileCashItem();
         $item->balance = $user->walletBalance;
-        $item->task = Task::query()->where('user_id', Auth::id())->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->count();
         $item->transactions = $user->transactions()->paginate(self::MAX_TRANSACTIONS);
         $item->top_users = User::query()->where('role_id', User::ROLE_PERFORMER)
             ->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
@@ -380,35 +382,36 @@ class ProfileService
     public function profileData($user): ProfileDataItem
     {
         $item = new ProfileDataItem();
-        $item->task = Task::query()->where('user_id', $user->id)->whereIn('status', [
-            Task::STATUS_OPEN,
-            Task::STATUS_RESPONSE,
-            Task::STATUS_IN_PROGRESS,
-            Task::STATUS_COMPLETE,
-            Task::STATUS_NOT_COMPLETED,
-            Task::STATUS_CANCELLED])->count();
         $item->portfolios = $user->portfolios()->where('image', '!=', null)->get();
         $item->top_users = User::query()->where('role_id', User::ROLE_PERFORMER)
             ->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(Review::TOP_USER)->pluck('id')->toArray();
         $item->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->latest()->get();
         $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->latest()->get();
-        $user_categories = UserCategory::query()->where('user_id', $user->id)->pluck('category_id')->toArray();
-        $item->user_category = Category::query()->whereIn('id', $user_categories)->get();
+        $performer_category = UserCategory::query()->where('user_id', auth()->id())->get()->groupBy(static function ($data){
+            return $data->category->parent->id;
+        });
+        $item->user_category = [];
+        foreach ($performer_category as $category_id => $category) {
+            $item->user_category[] = [
+                'parent' => Category::query()->where('id',$category_id)->get(),
+                'category' => $category
+            ];
+        }
         return $item;
     }
 
     /**
      * Function  userReviews
      * Mazkur metod userga qoldirilgan reviewlar chiqarib beradi
-     * @param $user
+     * @param $userId
      * @param $performer
      * @param $review
      * @return AnonymousResourceCollection
      */
-    public static function userReviews($user, $performer, $review): AnonymousResourceCollection
+    public static function userReviews($userId, $performer, $review): AnonymousResourceCollection
     {
-        $reviews = Review::query()->whereHas('task')->where(['user_id' => $user->id]);
+        $reviews = Review::query()->whereHas('task')->where(['user_id' => $userId]);
 
         if (isset($performer)) {
             $reviews->where(['as_performer' => $performer]);
@@ -454,14 +457,15 @@ class ProfileService
      * Mazkur metod portfolio rasmlarni tahrirlash
      * @param $hasFile
      * @param $files
-     * @param $portfolio
+     * @param $portfolioId
      * @param $description
      * @param $comment
      * @return PortfolioIndexResource
      * @throws JsonException
      */
-    public function updatePortfolio($hasFile, $files, $portfolio, $description, $comment): PortfolioIndexResource
+    public function updatePortfolio($hasFile, $files, $portfolioId, $description, $comment): PortfolioIndexResource
     {
+        $portfolio = Portfolio::find($portfolioId);
         $user = $portfolio->user;
         $imgData = $portfolio->image ? json_decode($portfolio->image) : [];
         if ($hasFile) {
@@ -789,15 +793,17 @@ class ProfileService
     /**
      * portfoliodan $image bo'yicha kelgan rasmni o'chiradi
      * @param $image
-     * @param Portfolio $portfolio
+     * @param $portfolioId
      * @return bool
+     * @throws JsonException
      */
-    public function deleteImage($image, Portfolio $portfolio): bool
+    public function deleteImage($image, $portfolioId): bool
     {
+        $portfolio = Portfolio::find($portfolioId);
         File::delete(public_path() . '/storage/portfolio/' . $image);
-        $images = json_decode($portfolio->image);
+        $images = json_decode($portfolio->image, false, 512, JSON_THROW_ON_ERROR);
         $updatedImages = array_diff($images, [$image]);
-        $portfolio->image = json_encode(array_values($updatedImages));
+        $portfolio->image = json_encode(array_values($updatedImages), JSON_THROW_ON_ERROR);
         $portfolio->save();
         return true;
     }
@@ -832,12 +838,12 @@ class ProfileService
 
     /**
      * $user ga tegishli portfolioni qaytaradi
-     * @param $user
+     * @param $userId
      * @return JsonResponse
      */
-    public function portfolios($user): JsonResponse
+    public function portfolios($userId): JsonResponse
     {
-        $portfolio = Portfolio::query()->where(['user_id' => $user])->get();
+        $portfolio = Portfolio::query()->where(['user_id' => $userId])->get();
         return response()->json([
             'success' => true,
             'data' => PortfolioIndexResource::collection($portfolio)
@@ -881,6 +887,14 @@ class ProfileService
      */
     public function self_delete($user): JsonResponse
     {
+        $tasks = Task::query()->where('user_id', $user->id)->whereIn('status', [Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS,])->count();
+        if($tasks>0){
+            return response()->json([
+                'success' => false,
+                'message' => __('У вас есть задачи в процессе, вы не можете удалить свой профиль')
+            ]);
+        }
+
         if ($user->phone_number && strlen($user->phone_number) === 13  && $user->is_phone_number_verified) {
             VerificationService::send_verification('phone', $user, $user->phone_number);
             return response()->json([
@@ -889,6 +903,7 @@ class ProfileService
                 'message' => __('СМС-код отправлен!')
             ]);
         }
+
 
         return response()->json([
             'success' => false,
@@ -967,12 +982,12 @@ class ProfileService
 
     /**
      * shablon otklikni qaytaradi
-     * @param $user
+     * @param $userId
      * @return JsonResponse
      */
-    public function response_template($user): JsonResponse
+    public function response_template($userId): JsonResponse
     {
-        $data = ResponseTemplate::query()->where(['user_id' => $user->id])->get();
+        $data = ResponseTemplate::query()->where(['user_id' => $userId])->get();
         return response()->json([
             'success' => true,
             'data' => ResponseTemplateResource::collection($data)
@@ -981,14 +996,14 @@ class ProfileService
 
     /**
      * shablon otklikni o'chiradi
-     * @param $user
-     * @param $template
+     * @param $userId
+     * @param $templateId
      * @return JsonResponse
      */
-    public function response_template_delete($user, $template): JsonResponse
+    public function response_template_delete($userId, $templateId): JsonResponse
     {
-        if ((int)$user->id === (int)$template->user_id) {
-            $template->delete();
+        if ((int)$userId === (int)$templateId->user_id) {
+            $templateId->delete();
             return response()->json([
                 'success' => true,
                 'message' => 'success',
@@ -998,6 +1013,20 @@ class ProfileService
             'success' => false,
             'message' => 'unsuccessful',
         ]);
+    }
+
+    /**
+     * Ushbu metod foydalanuvchi tomonidan tanlangan kategoriyalarni qaytaradi
+     * @param $userId
+     * @return AnonymousResourceCollection
+     */
+    public function userCategory($userId): AnonymousResourceCollection
+    {
+        $user_categories = UserCategory::query()->where('user_id', $userId)->pluck('category_id')->toArray();
+        return CategoryIndexResource::collection(Category::query()
+            ->select('id', 'parent_id', 'name', 'ico')
+            ->whereIn('id', $user_categories)
+            ->get());
     }
 
 }

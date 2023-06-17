@@ -107,6 +107,11 @@ class Task extends Model
         return $this->hasMany(TaskResponse::class);
     }
 
+    public function favorite_tasks()
+    {
+        return $this->hasMany(FavoriteTask::class);
+    }
+
     public function getPriceAttribute()
     {
         return preg_replace('/[^0-9.]+/', '', $this->budget);
@@ -163,6 +168,7 @@ class Task extends Model
             $task->responses()->delete();
             $task->custom_field_values()->delete();
             $task->addresses()->delete();
+            $task->favorite_tasks()->delete();
             foreach ($task->reviews as $review) {
                 $review->delete();
             }

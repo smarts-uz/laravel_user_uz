@@ -45,8 +45,7 @@ class PerformersController extends Controller
     public function performer(User $user): Factory|View|Application
     {
         (new PerformersService)->setView($user);
-        $authId = Auth::id();
-        $item = $this->performerService->performer($user, $authId);
+        $item = $this->performerService->performer($user);
 
         return view('performers/executors-courier',
             [
@@ -58,7 +57,6 @@ class PerformersController extends Controller
                 'review_good' => $item->review_good,
                 'review_bad' =>$item->review_bad,
                 'review_rating' => $item->review_rating,
-                'task_count' => $item->task_count,
                 'created' => $item->created,
                 'user_category'=>$item->user_category
             ]);

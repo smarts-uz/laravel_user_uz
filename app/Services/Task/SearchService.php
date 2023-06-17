@@ -2,9 +2,11 @@
 
 namespace App\Services\Task;
 
+use App\Http\Resources\FavoriteTaskResource;
 use App\Item\SearchServiceTaskItem;
 use App\Models\Address;
 use App\Models\ComplianceType;
+use App\Models\FavoriteTask;
 use App\Models\Task;
 use App\Models\Category;
 use App\Models\TaskElastic;
@@ -15,7 +17,7 @@ use App\Services\CustomService;
 use App\Services\TelegramService;
 use Elastic\ScoutDriverPlus\Support\Query;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -39,7 +41,6 @@ class SearchService
     }
 
     /**
-     *
      * Function  comlianse_saveS
      * Mazkur metod taskka qoldirilgan shikoyatlarni tablega yozib beradi va telegramga yuboradi
      * @param $data
@@ -63,12 +64,13 @@ class SearchService
     }
 
     /**
-     *
      * Function  task_service
      * Mazkur metod yaratilgan barcha tasklarni korsatib berad va kerakli ma'lumotlarni yuboradi
      * @param  $auth_response , $userId, $task Object
      * @param $userId
-     * @param $task
+     * @param $task_id
+     * @param $filter
+     * @return array
      */
     public function task_service($auth_response, $userId, $task_id, $filter)
     {
@@ -118,7 +120,6 @@ class SearchService
     }
 
     /**
-     *
      * Function  search_new_service
      * Mazkur metod search task bladega ma'lumotlarni chiqarib beradi
      * @param  $arr_check , $filter, $suggest, $price, $remjob, $noresp, $radius,$lat,$lon,$filterByStartDate Object
@@ -224,13 +225,14 @@ class SearchService
     }
 
     /**
-     * cancel task status
-     * @param $task
+     * task status change cancelled
+     * @param $taskId
      * @param $authId
      * @return JsonResponse
      */
-    public function cancelTask($task, $authId): JsonResponse
+    public function cancelTask($taskId, $authId): JsonResponse
     {
+        $task = Task::find($taskId);
         if ($task->user_id !== $authId){
             return response()->json([
                 'success' => false,
@@ -248,12 +250,14 @@ class SearchService
 
     /**
      * Task delete
-     * @param $task
-     * @param $user
+     * @param $taskId
+     * @param $userId
      * @return JsonResponse
      */
-    public function delete_task($task, $user): JsonResponse
+    public function delete_task($taskId, $userId): JsonResponse
     {
+        $task = Task::find($taskId);
+        $user = User::find($userId);
         if ($task->user_id !== $user->id){
             return response()->json([
                 'success' => false,
@@ -272,8 +276,15 @@ class SearchService
         ]);
     }
 
-    public function task_cancel($task, $user): JsonResponse
+    /**
+     * user active_task task id save
+     * @param $taskId
+     * @param $user
+     * @return JsonResponse
+     */
+    public function task_cancel($taskId, $user): JsonResponse
     {
+        $task = Task::find($taskId);
         if ($task->user_id !== $user->id){
             return response()->json([
                 'success' => false,
@@ -281,7 +292,7 @@ class SearchService
             ], 403);
         }
 
-        $user->active_task = $task->id;
+        $user->active_task = $taskId;
         $user->save();
 
         return response()->json([
@@ -307,5 +318,63 @@ class SearchService
             $options .= "<option value='$task->name' id='$task->category_id'>$task->name</option>";
         }
         return $options;
+    }
+
+    /**
+     * Favorite task create
+     * @param $task_id
+     * @param $userId
+     * @return JsonResponse
+     */
+    public function favorite_task_create($task_id, $userId): JsonResponse
+    {
+        $task_exists = Task::query()->where('id',$task_id)->exists();
+        if($task_exists){
+            FavoriteTask::query()->updateOrCreate([
+                'task_id' => $task_id,
+                'user_id' => $userId
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => __('Успешно сохранено')
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            "message" => __("Нет такой задачи")
+        ], 403);
+    }
+
+    /**
+     * Favorite task delete
+     * @param $taskId
+     * @param $userId
+     * @return JsonResponse
+     */
+    public function favorite_task_delete($taskId, $userId): JsonResponse
+    {
+        $task_exists = Task::query()->where('id',$taskId)->exists();
+
+        if($task_exists){
+            $task_favorite = FavoriteTask::query()->where('task_id',$taskId)->where('user_id',$userId);
+            $task_favorite->delete();
+            return response()->json([
+                'success' => true,
+                'message' => __('Успешно удалено')
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            "message" => __("Нет такой задачи")
+        ], 403);
+    }
+
+    public function favorite_task_all($userId): AnonymousResourceCollection
+    {
+        $favorite_tasks = FavoriteTask::query()->where('user_id',$userId)->paginate(10);
+        return FavoriteTaskResource::collection($favorite_tasks);
     }
 }

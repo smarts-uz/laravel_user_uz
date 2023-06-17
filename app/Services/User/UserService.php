@@ -3,11 +3,12 @@
 namespace App\Services\User;
 
 use App\Mail\VerifyEmail;
-use App\Models\{Notification, Session, Task, Transaction, User, WalletBalance};
+use App\Models\{AccessTokens, Notification, Session, Task, Transaction, User, WalletBalance};
 use App\Services\{CustomService, NotificationService, SmsMobileService};
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
+use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Http\{JsonResponse, RedirectResponse};
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\{Auth, Cache, Hash, Mail};
@@ -281,6 +282,7 @@ class UserService
      * @return RedirectResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws \JsonException
      */
     public function verifyProfile($for_ver_func, $user, $sms_otp): RedirectResponse
     {
@@ -446,6 +448,53 @@ class UserService
         return back()->with([
             'message' => "Muvafaqiyatli o'zgartirildi!"
         ]);
+    }
+
+    /**
+     * yuborilgan kodni tasdiqlash(web)
+     * @param $verifications
+     * @param $code
+     * @return RedirectResponse
+     */
+    public function delete_code($verifications, $code): RedirectResponse
+    {
+        /** @var User $user */
+        $user = User::query()->where($verifications['key'], $verifications['value'])->first();
+
+        if ((int)$code === (int)$user->verify_code) {
+            if (strtotime($user->verify_expiration) >= strtotime(Carbon::now())) {
+                $tasks = Task::query()->where('user_id', $user->id)->whereIn('status', [Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS,])->count();
+                if($tasks>0){
+                    return back()->with(['error' => __('У вас есть задачи в процессе, вы не можете удалить свой профиль')]);
+                }
+                Alert::success(__('Поздравляю'), __('Ваш профиль успешно удален'));
+                $user->delete();
+                Auth::logout();
+                return redirect('/');
+            }
+            return back()->with(['error' => __('Срок действия кода истек')]);
+        }
+
+        return back()->with(['error' => __('Код ошибки')]);
+    }
+
+    /**
+     * @return array
+     */
+    #[ArrayShape(['success' => "bool", 'message' => "string"])]
+    public function access_tokens(): array
+    {
+
+        $data = Carbon::now()->subDays(env('AccessTokenDate',7));
+        $tokens = AccessTokens::query()->where('created_at','<' , $data)->get();
+
+        foreach ($tokens as $token) {
+            $token->delete();
+        }
+        return [
+            'success' => true,
+            'message' => 'success',
+        ];
     }
 
 }

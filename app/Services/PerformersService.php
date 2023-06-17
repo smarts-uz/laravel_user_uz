@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use JsonException;
 use App\Http\Resources\{NotificationResource, PerformerIndexResource, ReviewIndexResource};
 use App\Item\{PerformerPrefItem, PerformerServiceItem, PerformerUserItem};
 use App\Models\{BlockedUser, Notification, Review, Task, User, UserCategory, UserView, Category};
@@ -11,6 +12,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
 use League\Flysystem\WhitespacePathNormalizer;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 
 class PerformersService
@@ -67,10 +70,9 @@ class PerformersService
      * id bo'yicha bitta performer ma'lumotlarini qaytaradi
      * @link https://user.uz/performers/354
      * @param $user
-     * @param $authId
      * @return  PerformerUserItem
      */
-    public function performer($user, $authId): PerformerUserItem
+    public function performer($user): PerformerUserItem
     {
         $item = new PerformerUserItem();
         $item->top_users = User::query()
@@ -78,18 +80,21 @@ class PerformersService
             ->where('role_id', User::ROLE_PERFORMER)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(Review::TOP_USER)->pluck('id')->toArray();
         $item->portfolios = $user->portfolios()->where('image', '!=', null)->get();
-        $item->review_good = $user->review_good;
-        $item->review_bad = $user->review_bad;
-        $item->review_rating = $user->review_rating;
         $item->goodReviews = $user->goodReviews()->whereHas('task')->whereHas('user')->latest()->get();
         $item->badReviews = $user->badReviews()->whereHas('task')->whereHas('user')->latest()->get();
-        $item->task_count = Task::query()->where('user_id', $authId)
-            ->whereIn('status', [Task::STATUS_OPEN, Task::STATUS_RESPONSE, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETE, Task::STATUS_NOT_COMPLETED, Task::STATUS_CANCELLED])->get();
-        $user_categories = UserCategory::query()->where('user_id', $user->id)->pluck('category_id')->toArray();
-        $item->user_category = Category::query()->whereIn('id', $user_categories)->get();
         $value = Carbon::parse($user->created_at)->locale((new CustomService)->getLocale());
         $day = $value == now()->toDateTimeString() ? "Bugun" : "$value->day-$value->monthName";
         $item->created = "$day  {$value->year}";
+        $performer_category = UserCategory::query()->where('user_id', $user->id)->get()->groupBy(static function ($data){
+            return $data->category->parent->id;
+        });
+        $item->user_category = [];
+        foreach ($performer_category as $category_id => $category) {
+            $item->user_category[] = [
+                'parent' => Category::query()->where('id',$category_id)->get(),
+                'category' => $category
+            ];
+        }
         return $item;
     }
 
@@ -200,83 +205,14 @@ class PerformersService
     }
 
     /**
-     * bu method performerlar listini qaytaradi(api uchun)
-     * @param $online
-     * @param $per_page
-     * @return JsonResponse
-     */
-    public function performers($online, $per_page): JsonResponse
-    {
-        $per_page = $per_page ?? 20;
-        if (isset($online) && $online !== false) {
-            $date = Carbon::now()->subMinutes(2)->toDateTimeString();
-            $performers = User::where('role_id', User::ROLE_PERFORMER)->where('last_seen', ">=", $date)->paginate($per_page);
-        } else {
-            $performers = User::where('role_id', User::ROLE_PERFORMER)->orderByDesc('review_rating')->orderByRaw('(review_good - review_bad) DESC')->paginate($per_page);
-        }
-
-        $data = [];
-        foreach ($performers as $performer) {
-            $suffixAvatarMale = 'users/default_male.png';
-            $suffixAvatarFeMale = 'users/default_female.png';
-            $dirStorage = public_path('storage');
-            if((int)$performer->gender === 1){
-                $date_gender = __('Был онлайн');
-                $dirUserAvatar = $performer->avatar ? $dirStorage."/{$performer->avatar}" : $dirStorage."/{$suffixAvatarMale}";
-            }else{
-                $date_gender = __('Была онлайн');
-                $dirUserAvatar = $performer->avatar ? $dirStorage."/{$performer->avatar}" : $dirStorage."/{$suffixAvatarFeMale}";
-            }
-            $norms = new WhitespacePathNormalizer;
-            $dirUserAvatar = $norms->normalizePath($dirUserAvatar);
-            if ($performer->last_seen >= Carbon::now()->subMinutes(2)->toDateTimeString()) {
-                $lastSeen = __('В сети');
-            } else {
-                $seenDate = Carbon::parse($performer->last_seen);
-                $seenDate->locale(app()->getLocale() . '-' . app()->getLocale());
-                if(app()->getLocale()==='uz'){
-                    $lastSeen = $seenDate->diffForHumans().' saytda edi';
-                }else{
-                    $lastSeen = $date_gender. $seenDate->diffForHumans();
-                }
-            }
-            $user_exists = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$performer->id)->exists();
-            if(!$user_exists){
-                if (file_exists($dirUserAvatar))
-                {
-                    $user_avatar = asset('storage/' . $performer->avatar);
-                } else {
-                    $user_avatar = ((int)$performer->gender === 1) ? asset('storage/'.$suffixAvatarMale) : asset('storage/'.$suffixAvatarFeMale);
-                }
-            }else{
-                $user_avatar = asset("images/block-user.jpg");
-            }
-
-            $data[] = [
-                'id' => $performer->id,
-                'name' => $performer->name,
-                'email' => $performer->email,
-                'avatar' => $user_avatar,
-                'phone_number' => (new CustomService)->correctPhoneNumber($performer->phone_number),
-                'location' => $performer->location,
-                'last_seen' => $lastSeen,
-                'likes' => $performer->review_good,
-                'dislikes' => $performer->review_bad,
-                'description' => $performer->description,
-                'stars' => $performer->review_rating,
-                'role_id' => $performer->role_id,
-                'views' => $performer->performer_views()->count(),
-            ];
-        }
-        return response()->json(['success' => true,'data' => $data]);
-    }
-
-    /**
      * biror userga task give qilish (web)
      * @param $task_id
      * @param $user_id
      * @param $session
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws JsonException
      */
     public function task_give_web($task_id, $user_id, $session): JsonResponse
     {
@@ -306,12 +242,7 @@ class PerformersService
                 'type' => Notification::GIVE_TASK,
             ]);
 
-            NotificationService::sendNotificationRequest([$users_id], [
-                'created_date' => $notification->created_at->format('d M'),
-                'title' => NotificationService::titles($notification->type),
-                'url' => route('show_notification', [$notification]),
-                'description' => NotificationService::descriptions($notification)
-            ]);
+            NotificationService::sendNotificationRequest($users_id, $notification);
             $locale = (new CustomService)->cacheLang($performer->id);
             NotificationService::pushNotification($performer, [
                 'title' => __('Предложение', [], $locale), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
@@ -329,6 +260,9 @@ class PerformersService
      * @param $task_id
      * @param $performer_id
      * @return JsonResponse
+     * @throws JsonException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function task_give_app($task_id, $performer_id): JsonResponse
     {
@@ -353,12 +287,7 @@ class PerformersService
             'type' => Notification::GIVE_TASK,
         ]);
 
-        NotificationService::sendNotificationRequest([$performer_id], [
-            'created_date' => $notification->created_at->format('d M'),
-            'title' => NotificationService::titles($notification->type),
-            'url' => route('show_notification', [$notification]),
-            'description' => NotificationService::descriptions($notification)
-        ]);
+        NotificationService::sendNotificationRequest($performer_id, $notification);
 
         NotificationService::pushNotification($performer, [
             'title' => NotificationService::titles($notification->type, $locale),
@@ -397,13 +326,13 @@ class PerformersService
 
     /**
      * categoriya bo'yicha performerlar rasmlarini qaytaradi
-     * @param $category_id
+     * @param $categoryId
      * @param $authId
      * @return array
      */
-    public function performers_image($category_id, $authId): array
+    public function performers_image($categoryId, $authId): array
     {
-        $user_cat = UserCategory::query()->where('category_id', $category_id)->pluck('user_id')->toArray();
+        $user_cat = UserCategory::query()->where('category_id', $categoryId)->pluck('user_id')->toArray();
         $user_image = User::query()->whereIn('id', $user_cat)->WhereNot('id', $authId)->take(3)->get();
         $images = [];
         foreach ($user_image as $image) {
@@ -425,25 +354,6 @@ class PerformersService
             default:
         }
         return $images;
-    }
-
-    /**
-     * authId bo'yicha userlarning reviewlarini qaytaradi
-     * @param $from
-     * @param $type
-     * @param $authId
-     * @return mixed
-     */
-    public function reviews($from, $type, $authId): mixed
-    {
-        $reviews = Review::query()
-            ->whereHas('task')->whereHas('user')
-            ->where('user_id', $authId)
-            ->fromUserType($from)
-            ->type($type)
-            ->get();
-
-        return ReviewIndexResource::collection($reviews);
     }
 
     /**

@@ -2,12 +2,26 @@
 
 namespace App\Http\Controllers\API;
 
-use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use App\Http\Requests\Api\{TaskAddressRequest, TaskBudgetRequest, TaskComplaintRequest,
-    TaskContactsRequest, TaskCustomRequest, TaskDateRequest, TaskNameRequest,
-    TaskNoteRequest, TaskRemoteRequest, TaskResponseRequest, TaskVerificationRequest};
+use App\Http\Requests\Api\{TaskAddressRequest,
+    TaskBudgetRequest,
+    TaskComplaintRequest,
+    TaskContactsRequest,
+    TaskCustomRequest,
+    TaskDateRequest,
+    TaskNameRequest,
+    TaskNoteRequest,
+    TaskRemoteRequest,
+    TaskResponseRequest,
+    TaskUpdateAddressRequest,
+    TaskUpdateBudgetRequest,
+    TaskUpdateContactRequest,
+    TaskUpdateDateRequest,
+    TaskUpdateNoteRequest,
+    TaskUpdateRemoteRequest,
+    TaskUpdateVerifyRequest,
+    TaskVerificationRequest};
 use App\Http\Resources\{ComplianceTypeResource,
     TaskSingleResource, TaskPaginationResource};
 use Illuminate\{Http\Request,
@@ -38,13 +52,14 @@ class TaskAPIController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/same-tasks/{task}",
+     *     path="/api/same-tasks/{taskId}",
      *     tags={"Task"},
      *     summary="Same tasks by Task ID",
+     *     description="[**Telegram :** https://t.me/c/1334612640/177](https://t.me/c/1334612640/177).",
      *     @OA\Parameter (
      *          in="path",
-     *          description="task id yoziladi",
-     *          name="task",
+     *          description="vazifa idsi yoziladi",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="string"
@@ -64,20 +79,21 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function same_tasks(Task $task): AnonymousResourceCollection
+    public function same_tasks($taskId): AnonymousResourceCollection
     {
-        return $this->task_service->same_tasks($task);
+        return $this->task_service->same_tasks($taskId);
     }
 
     /**
      * @OA\Get(
-     *     path="/api/responses/{task}",
+     *     path="/api/responses/{taskId}",
      *     tags={"Task"},
      *     summary="Response tasks",
+     *     description="[**Telegram :** https://t.me/c/1334612640/180](https://t.me/c/1334612640/180).",
      *     @OA\Parameter (
      *          in="path",
-     *          description="task id yoziladi",
-     *          name="task",
+     *          description="vazifa idsi yoziladi",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -100,21 +116,22 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function responses(Request $request, Task $task): AnonymousResourceCollection
+    public function responses(Request $request, $taskId): AnonymousResourceCollection
     {
        $filter = $request->get('filter');
-       return $this->task_service->responses($filter, $task);
+       return $this->task_service->responses($filter, $taskId);
     }
 
     /**
      * @OA\Post(
-     *     path="/api/task/{task}/response",
+     *     path="/api/task/{taskId}/response",
      *     tags={"Responses"},
      *     summary="Send Response",
+     *     description="[**Telegram :** https://t.me/c/1334612640/222](https://t.me/c/1334612640/222).",
      *     @OA\Parameter (
      *          in="path",
-     *          description="task id yoziladi",
-     *          name="task",
+     *          description="vazifa idsi yoziladi",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -127,18 +144,19 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="description",
-     *                    description="otklik tavsifi yoziladi",
+     *                    description="javob tavsifi yoziladi",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="price",
-     *                    description="otklik narxi yoziladi",
+     *                    description="javob narxi yoziladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
      *                    property="not_free",
      *                    description="0 - bepul, 1 - pullik",
-     *                    type="integer",
+     *                    enum={"0","1"},
+     *                    type="string",
      *                 ),
      *             ),
      *         ),
@@ -160,23 +178,24 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function response_store(Task $task, TaskResponseRequest $request): JsonResponse
+    public function response_store($taskId, TaskResponseRequest $request): JsonResponse
     {
         /** @var User $user */
         $user = auth()->user();
         $data = $request->validated();
-        return $this->task_service->response_store($task, $user, $data);
+        return $this->task_service->response_store($taskId, $user, $data);
     }
 
     /**
      * @OA\Post(
-     *     path="/api/select-performer/{response}",
+     *     path="/api/select-performer/{responseId}",
      *     tags={"Responses"},
      *     summary="Select performer",
+     *     description="[**Telegram :** https://t.me/c/1334612640/181](https://t.me/c/1334612640/181).",
      *     @OA\Parameter (
      *          in="path",
-     *          description="task response id yoziladi",
-     *          name="response",
+     *          description="vazifaga qoldirilgan javob idsi yoziladi",
+     *          name="responseId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -199,8 +218,9 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function selectPerformer(TaskResponse $response): JsonResponse
+    public function selectPerformer($responseId): JsonResponse
     {
+        $response = TaskResponse::find($responseId);
         if (!$response->task || auth()->id() === $response->performer_id) {
             return response()->json([
                 'success' => false,
@@ -216,13 +236,14 @@ class TaskAPIController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/task-status-update/{task}",
+     *     path="/api/task-status-update/{taskId}",
      *     tags={"Task"},
      *     summary="Task Status changed from cancel to open",
+     *     description="[**Telegram :** https://t.me/c/1334612640/182](https://t.me/c/1334612640/182).",
      *     @OA\Parameter (
      *          in="path",
-     *          description="task idsi kiritiladi",
-     *          name="task",
+     *          description="vazifa idsi kiritiladi",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -246,10 +267,10 @@ class TaskAPIController extends Controller
      * )
      */
 
-    public function taskStatusUpdate(Task $task): JsonResponse
+    public function taskStatusUpdate($taskId): JsonResponse
     {
         $authId = auth()->id();
-        return $this->task_service->taskStatusUpdate($task, $authId);
+        return $this->task_service->taskStatusUpdate($taskId, $authId);
     }
 
     /**
@@ -257,6 +278,7 @@ class TaskAPIController extends Controller
      *     path="/api/tasks-filter",
      *     tags={"Task"},
      *     summary="Task filter",
+     *     description="[**Telegram :** https://t.me/c/1334612640/158](https://t.me/c/1334612640/158).",
      *     @OA\Parameter (
      *          in="query",
      *          name="categories",
@@ -275,7 +297,7 @@ class TaskAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
-     *          description="latitude bo'yicha filter",
+     *          description="kenglik bo'yicha filter",
      *          name="lat",
      *          @OA\Schema (
      *              type="string"
@@ -283,7 +305,7 @@ class TaskAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
-     *          description="longitude bo'yicha filter",
+     *          description="uzunlik bo'yicha filter",
      *          name="long",
      *          @OA\Schema (
      *              type="string"
@@ -291,7 +313,7 @@ class TaskAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
-     *          description="task budgeti kiritiladi",
+     *          description="vazifa budjeti kiritiladi",
      *          name="budget",
      *          @OA\Schema (
      *              type="integer"
@@ -299,7 +321,7 @@ class TaskAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
-     *          description="remote task bo'lsa true, bo'lmasa false bo'ladi",
+     *          description="masofaviy vazifa bo'lsa true, bo'lmasa false bo'ladi",
      *          name="is_remote",
      *          @OA\Schema (
      *              type="boolean"
@@ -307,7 +329,7 @@ class TaskAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
-     *          description="otklik tashlangan task bo'lsa true, bo'lmasa false bo'ladi",
+     *          description="javob qoldirilgan vazifa bo'lsa true, bo'lmasa false bo'ladi",
      *          name="without_response",
      *          @OA\Schema (
      *              type="boolean"
@@ -315,7 +337,7 @@ class TaskAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
-     *          description="difference bo'yicha filter",
+     *          description="radius bo'yicha filter",
      *          name="difference",
      *          @OA\Schema (
      *              type="integer"
@@ -323,7 +345,7 @@ class TaskAPIController extends Controller
      *     ),
      *     @OA\Parameter (
      *          in="query",
-     *          description="task nomi bo'yicha qidirish",
+     *          description="vazifa nomi bo'yicha qidirish",
      *          name="s",
      *          @OA\Schema (
      *              type="string"
@@ -351,13 +373,14 @@ class TaskAPIController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/task/{task}",
+     *     path="/api/task/{taskId}",
      *     tags={"Task"},
      *     summary="Get Task By ID",
+     *     description="[**Telegram :** https://t.me/c/1334612640/175](https://t.me/c/1334612640/175).",
      *     @OA\Parameter(
      *          in="path",
-     *          description="task id kiritiladi",
-     *          name="task",
+     *          description="vazifa idsi kiritiladi",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema(
      *              type="integer"
@@ -377,25 +400,26 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function task($task)
+    public function task($taskId)
     {
         if (auth()->guard('api')->check()) {
             $user_id = auth()->guard('api')->id();
-            (new TaskService)->taskIncrement($user_id, $task);
+            (new TaskService)->taskIncrement($user_id, $taskId);
         }
 
-        return (new TaskService)->taskIndex($task);
+        return (new TaskService)->taskIndex($taskId);
     }
 
     /**
      * @OA\Post (
-     *     path="/api/user/{user}",
+     *     path="/api/user/{userId}",
      *     tags={"Task"},
      *     summary="User active task and active step null",
+     *     description="[**Telegram :** https://t.me/c/1334612640/176](https://t.me/c/1334612640/176).",
      *     @OA\Parameter (
      *          in="path",
-     *          description="user id kiritiladi",
-     *          name="user",
+     *          description="Foydaluvchi idsi kiritiladi",
+     *          name="userId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -415,8 +439,9 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function active_task_null(User $user): JsonResponse
+    public function active_task_null($userId): JsonResponse
     {
+        $user = User::find($userId);
         $user->active_step = null;
         $user->active_task = null;
         $user->save();
@@ -432,12 +457,14 @@ class TaskAPIController extends Controller
      *     path="/api/my-tasks-count",
      *     tags={"Task"},
      *     summary="Get My Tasks Count",
+     *     description="[**Telegram :** https://t.me/c/1334612640/183](https://t.me/c/1334612640/183).",
      *     @OA\Parameter(
      *          in="query",
-     *          description="0 yoki 1, 0 bo'lsa user create qilgan tasklari, 1 bo'lsa performer bo'lgan tasklari",
+     *          description="0 yoki 1, 0 bo'lsa foydalanuvchi yaratgan vazifalari, 1 bo'lsa ijrochi bo'lgan vazifalari",
      *          name="is_performer",
      *          required=false,
      *          @OA\Schema(
+     *              enum={"0","1"},
      *              type="string"
      *          ),
      *     ),
@@ -472,18 +499,20 @@ class TaskAPIController extends Controller
      *     path="/api/my-tasks",
      *     tags={"Task"},
      *     summary="Get My Tasks",
+     *     description="[**Telegram :** https://t.me/c/1334612640/184](https://t.me/c/1334612640/184).",
      *     @OA\Parameter(
      *          in="query",
-     *          description="0 yoki 1, 0 bo'lsa user create qilgan tasklari, 1 bo'lsa performer bo'lgan tasklari",
+     *          description="0 yoki 1, 0 bo'lsa foydalanuvchi yaratgan vazifalari, 1 bo'lsa ijrochi bo'lgan vazifalari",
      *          name="is_performer",
      *          required=false,
      *          @OA\Schema(
-     *              type="integer"
+     *              enum={"0","1"},
+     *              type="string"
      *          ),
      *     ),
      *     @OA\Parameter(
      *          in="query",
-     *          description="task statusi kiritiladi",
+     *          description="vazifa holati kiritiladi",
      *          name="status",
      *          required=true,
      *          @OA\Schema(
@@ -524,18 +553,19 @@ class TaskAPIController extends Controller
      *     path="/api/create-task/name",
      *     tags={"Task Create"},
      *     summary="Task create name",
+     *     description="[**Telegram :** https://t.me/c/1334612640/117](https://t.me/c/1334612640/117).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
-     *                    description="Taskning nomi kiritiladi",
+     *                    description="vazifaning nomi kiritiladi",
      *                    property="name",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
-     *                    description="Category id yoziladi (faqat parent_idsi bor bo'lishi kerak)",
+     *                    description="Child kategoriya id yoziladi",
      *                    property="category_id",
      *                    type="integer",
      *                 ),
@@ -565,8 +595,7 @@ class TaskAPIController extends Controller
         $name = $data['name'];
         $category_id = $data['category_id'];
         $user = auth()->user();
-        $user_id = auth()->id();
-        return $this->success($this->create_task_service->name_store($name, $category_id, $user, $user_id));
+        return $this->success($this->create_task_service->name_store($name, $category_id, $user));
     }
 
     /**
@@ -574,6 +603,7 @@ class TaskAPIController extends Controller
      *     path="/api/create-task/custom",
      *     tags={"Task Create"},
      *     summary="Task create custom",
+     *     description="[**Telegram :** https://t.me/c/1334612640/118](https://t.me/c/1334612640/118).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -581,7 +611,7 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
-     *                    description="task id kiritiladi",
+     *                    description="vazifa id kiritiladi",
      *                    type="integer",
      *                 ),
      *             ),
@@ -614,6 +644,7 @@ class TaskAPIController extends Controller
      *     path="/api/create-task/remote",
      *     tags={"Task Create"},
      *     summary="Task create remote",
+     *     description="[**Telegram :** https://t.me/c/1334612640/119](https://t.me/c/1334612640/119).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -621,12 +652,13 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
-     *                    description="task id kiritiladi",
+     *                    description="vazifa id kiritiladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
      *                    property="radio",
-     *                    description="Agar masofaviy bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
+     *                    description="Agar masofaviy bo'lsa - remote, manzil bo'yicha bo'lsa - address tanlanadi",
+     *                    enum={"remote","address"},
      *                    type="string",
      *                 ),
      *             ),
@@ -659,6 +691,7 @@ class TaskAPIController extends Controller
      *     path="/api/create-task/address",
      *     tags={"Task Create"},
      *     summary="Task create address",
+     *     description="[**Telegram :** https://t.me/c/1334612640/120](https://t.me/c/1334612640/120).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -666,7 +699,7 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
-     *                    description="task id kiritiladi",
+     *                    description="vazifa id kiritiladi",
      *                    type="integer",
      *                 ),
      *                  @OA\Property (
@@ -676,17 +709,17 @@ class TaskAPIController extends Controller
      *                      type="object",
      *                      @OA\Property(
      *                          property="location",
-     *                          description="location kiritiladi",
+     *                          description="Manzil nomi kiritiladi",
      *                          type="string"
      *                      ),
      *                      @OA\Property(
      *                          property="latitude",
-     *                          description="latitude kiritiladi",
+     *                          description="koordinata kengligi kiritiladi",
      *                          type="number"
      *                      ),
      *                      @OA\Property(
      *                          property="longitude",
-     *                          description="longitude kiritiladi",
+     *                          description="koordinata uzunligi kiritiladi",
      *                          type="number"
      *                      ),
      *                   ),
@@ -721,6 +754,7 @@ class TaskAPIController extends Controller
      *     path="/api/create-task/date",
      *     tags={"Task Create"},
      *     summary="Task create date",
+     *     description="[**Telegram :** https://t.me/c/1334612640/121](https://t.me/c/1334612640/121).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -728,13 +762,14 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
-     *                    description="task id kiritiladi",
+     *                    description="vazifa idsi kiritiladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
      *                    property="date_type",
-     *                    description="1 dan 3 gacha bersa bo`ladi",
-     *                    type="integer",
+     *                    description="vazifa boshlanish vaqti kiritilsa 1, tugash vaqti kiritilsa 2, ikkalasi ham kiritilsa 3 tanlanadi",
+     *                    enum={"1","2","3"},
+     *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="start_date",
@@ -776,6 +811,7 @@ class TaskAPIController extends Controller
      *     path="/api/create-task/budget",
      *     tags={"Task Create"},
      *     summary="Task create budget",
+     *     description="[**Telegram :** https://t.me/c/1334612640/122](https://t.me/c/1334612640/122).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -783,18 +819,19 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
-     *                    description="task id kiritiladi",
+     *                    description="vazifa idsi kiritiladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
-     *                    description="Narxi",
+     *                    description="Vazifa uchun narx kiritiladi",
      *                    property="amount",
      *                    type="number",
      *                 ),
      *                 @OA\Property (
      *                    description="Naqt yoki plastik (0 yoki 1)",
      *                    property="budget_type",
-     *                    type="integer",
+     *                    enum={"0","1"},
+     *                    type="string",
      *                 ),
      *             ),
      *         ),
@@ -826,6 +863,7 @@ class TaskAPIController extends Controller
      *     path="/api/create-task/note",
      *     tags={"Task Create"},
      *     summary="Task create note",
+     *     description="[**Telegram :** https://t.me/c/1334612640/123](https://t.me/c/1334612640/123).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -833,18 +871,19 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
-     *                    description="task id kiritiladi",
+     *                    description="vazifa id kiritiladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
      *                    property="description",
-     *                    description="task uchun tavsif yoziladi",
+     *                    description="vazifa uchun tavsif yoziladi",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="docs",
-     *                    description="true - 1, false - 0",
-     *                    type="integer",
+     *                    description="hujjatlar olinishi kerak bo'lsa - 1,kerak bo'lmasa - 0 tanlanadi",
+     *                    enum={"0","1"},
+     *                    type="string",
      *                 ),
      *             ),
      *         ),
@@ -876,6 +915,7 @@ class TaskAPIController extends Controller
      *     path="/api/create-task/images",
      *     tags={"Task Create"},
      *     summary="Task create images",
+     *     description="[**Telegram :** https://t.me/c/1334612640/124](https://t.me/c/1334612640/124).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -883,13 +923,19 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
-     *                    description="task id kiritiladi",
+     *                    description="vazifa id kiritiladi",
      *                    type="integer",
      *                 ),
-     *                 @OA\Property (
-     *                    property="images",
-     *                    description="task uchun rasm kiritiladi",
-     *                    type="file",
+     *                @OA\Property (
+     *                    property="images[]",
+     *                    type="array",
+     *                    @OA\Items(
+     *                      type="file",
+     *                      @OA\Property(
+     *                          property="images",
+     *                          description="vazifa uchun rasm kiritiladi",
+     *                      ),
+     *                    ),
      *                 ),
      *             ),
      *         ),
@@ -922,6 +968,7 @@ class TaskAPIController extends Controller
      *     path="/api/create-task/contacts",
      *     tags={"Task Create"},
      *     summary="Task create contacts",
+     *     description="[**Telegram :** https://t.me/c/1334612640/125](https://t.me/c/1334612640/125).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -929,7 +976,7 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
-     *                    description="task id kiritiladi",
+     *                    description="vazifa idsi kiritiladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
@@ -960,6 +1007,7 @@ class TaskAPIController extends Controller
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws \JsonException
      */
     public function contacts(TaskContactsRequest $request): JsonResponse
     {
@@ -974,6 +1022,7 @@ class TaskAPIController extends Controller
      *     path="/api/create-task/verify",
      *     tags={"Task Create"},
      *     summary="Task create verify",
+     *     description="[**Telegram :** https://t.me/c/1334612640/126](https://t.me/c/1334612640/126).",
      *     @OA\RequestBody (
      *         required=true,
      *         @OA\MediaType (
@@ -981,7 +1030,7 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="task_id",
-     *                    description="task id kiritiladi",
+     *                    description="vazifa id kiritiladi",
      *                    type="integer",
      *                 ),
      *                 @OA\Property (
@@ -991,7 +1040,7 @@ class TaskAPIController extends Controller
      *                 ),
      *                 @OA\Property (
      *                    property="sms_otp",
-     *                    description="Telefonga kelgan SMS code",
+     *                    description="Telefonga kelgan SMS kod kiritiladi",
      *                    type="integer",
      *                 ),
      *             ),
@@ -1023,13 +1072,14 @@ class TaskAPIController extends Controller
 
     /**
      * @OA\Post(
-     *      path="/api/update-task/{task}/name",
+     *      path="/api/update-task/{taskId}/name",
      *      tags={"Task Update"},
      *      summary="Task update name",
+     *     description="[**Telegram :** https://t.me/c/1334612640/141](https://t.me/c/1334612640/141).",
      *      @OA\Parameter (
      *          in="path",
-     *          description="task id kiritiladi",
-     *          name="task",
+     *          description="vazifa id kiritiladi",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1042,12 +1092,12 @@ class TaskAPIController extends Controller
      *              @OA\Schema(
      *                  @OA\Property (
      *                      property="name",
-     *                      description="task name kiritiladi",
+     *                      description="vazifa nomi kiritiladi",
      *                      type="string",
      *                  ),
      *                  @OA\Property (
      *                      property="category_id",
-     *                      description="task child category_id kiritiladi",
+     *                      description="vazifa uchun child kategoriya idsi kiritiladi",
      *                      type="integer",
      *                  ),
      *              )
@@ -1074,20 +1124,21 @@ class TaskAPIController extends Controller
      *
      *
      */
-    public function updateName(TaskNameRequest $request, Task $task): JsonResponse
+    public function updateName(TaskNameRequest $request, $taskId): JsonResponse
     {
-        return $this->success($this->update_task_service->updateName($task, $request->validated()));
+        return $this->success($this->update_task_service->updateName($taskId, $request->validated()));
     }
 
     /**
      * @OA\Post(
-     *     path="/api/update-task/{task}/custom",
+     *     path="/api/update-task/{taskId}/custom",
      *     tags={"Task Update"},
      *     summary="Update task custom fields",
+     *     description="[**Telegram :** https://t.me/c/1334612640/185](https://t.me/c/1334612640/185).",
      *     @OA\Parameter (
      *          in="path",
-     *          description="task id kiritiladi",
-     *          name="task",
+     *          description="vazifa id kiritiladi",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1110,21 +1161,22 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateCustom(Request $request, Task $task): JsonResponse
+    public function updateCustom(Request $request, $taskId): JsonResponse
     {
-        return $this->success($this->update_task_service->updateCustom($task, $request));
+        return $this->success($this->update_task_service->updateCustom($taskId, $request));
     }
 
 
     /**
      * @OA\Post(
-     *     path="/api/update-task/{task}/remote",
+     *     path="/api/update-task/{taskId}/remote",
      *     tags={"Task Update"},
      *     summary="Task update remote",
+     *     description="[**Telegram :** https://t.me/c/1334612640/142](https://t.me/c/1334612640/142).",
      *     @OA\Parameter (
      *          in="path",
-     *          description="task id kiritiladi",
-     *          name="task",
+     *          description="vazifa id kiritiladi",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1137,7 +1189,8 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="radio",
-     *                    description="Agar masofaviy ish bolsa - remote, manzil bo`yicha bo`lsa - address deb yozing",
+     *                    description="Agar masofaviy ish bolsa - remote, manzil bo'yicha bo'lsa - address kiritiladi",
+     *                    enum={"remote","address"},
      *                    type="string",
      *                 ),
      *             ),
@@ -1160,21 +1213,23 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateRemote(TaskRemoteRequest $request, Task $task): JsonResponse
+    public function updateRemote(TaskUpdateRemoteRequest $request, $taskId): JsonResponse
     {
-        return $this->success($this->update_task_service->updateRemote($task, $request->validated()));
+        $data = $request->validated();
+        return $this->success($this->update_task_service->updateRemote($taskId, $data));
     }
 
 
     /**
      * @OA\Post(
-     *     path="/api/update-task/{task}/address",
+     *     path="/api/update-task/{taskId}/address",
      *     tags={"Task Update"},
      *     summary="Task update address",
+     *     description="[**Telegram :** https://t.me/c/1334612640/257](https://t.me/c/1334612640/257).",
      *     @OA\Parameter (
      *          in="path",
-     *          description="task id kiritiladi",
-     *          name="task",
+     *          description="vazifa id kiritiladi",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1185,21 +1240,28 @@ class TaskAPIController extends Controller
      *         @OA\MediaType (
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="location",
-     *                    description="task location kiritiladi",
-     *                    type="string",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="latitude",
-     *                    description="task latitude kiritiladi",
-     *                    type="number",
-     *                 ),
-     *                 @OA\Property (
-     *                    property="longitude",
-     *                    description="task longitude kiritiladi",
-     *                    type="number",
-     *                 ),
+     *                  @OA\Property (
+     *                    property="points[]",
+     *                    type="array",
+     *                    @OA\Items(
+     *                      type="object",
+     *                      @OA\Property(
+     *                          property="location",
+     *                          description="Manzil kiritiladi",
+     *                          type="string"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="latitude",
+     *                          description="kenglik kiritiladi",
+     *                          type="numeric"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="longitude",
+     *                          description="uzunlik kiritiladi",
+     *                          type="numeric"
+     *                      ),
+     *                   ),
+     *                 )
      *             ),
      *         ),
      *     ),
@@ -1220,21 +1282,23 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateAddress(TaskAddressRequest $request, Task $task): JsonResponse
+    public function updateAddress(TaskUpdateAddressRequest $request, int $taskId): JsonResponse
     {
-        return $this->success($this->update_task_service->updateAddress($task, $request->validated()));
+        $data = $request->validated();
+        return $this->success($this->update_task_service->updateAddress($taskId, $data));
     }
 
 
     /**
      * @OA\Post(
-     *     path="/api/update-task/{task}/date",
+     *     path="/api/update-task/{taskId}/date",
      *     tags={"Task Update"},
      *     summary="Task update date",
+     *     description="[**Telegram :** https://t.me/c/1334612640/143](https://t.me/c/1334612640/143).",
      *     @OA\Parameter (
      *          in="path",
-     *          description="task id kiritiladi",
-     *          name="task",
+     *          description="vazifa idsi kiritiladi",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1247,8 +1311,9 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="date_type",
-     *                    description="1 dan 3 gacha bersa bo`ladi",
-     *                    type="integer",
+     *                    description="vazifa boshlanish vaqti kiritilsa 1, tugash vaqti kiritilsa 2, ikkalasi ham kiritilsa 3 tanlanadi",
+     *                    enum={"1","2","3"},
+     *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="start_date",
@@ -1280,21 +1345,22 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateDate(TaskDateRequest $request, Task $task): JsonResponse
+    public function updateDate(TaskUpdateDateRequest $request, $taskId): JsonResponse
     {
-        return $this->success($this->update_task_service->updateDate($task, $request->validated()));
+        return $this->success($this->update_task_service->updateDate($taskId, $request->validated()));
     }
 
 
     /**
      * @OA\Post(
-     *     path="/api/update-task/{task}/budget",
+     *     path="/api/update-task/{taskId}/budget",
      *     tags={"Task Update"},
      *     summary="Task update budget",
+     *     description="[**Telegram :** https://t.me/c/1334612640/144](https://t.me/c/1334612640/144).",
      *     @OA\Parameter (
      *          in="path",
-     *          description="task id kiritiladi",
-     *          name="task",
+     *          description="vazifa idsi kiritiladi",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1306,14 +1372,15 @@ class TaskAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
-     *                    description="Narxi",
+     *                    description="Narxi yoziladi",
      *                    property="amount",
      *                    type="number",
      *                 ),
      *                 @OA\Property (
      *                    description="Naqt yoki plastik (0 yoki 1)",
      *                    property="budget_type",
-     *                    type="integer",
+     *                    enum={"0","1"},
+     *                    type="string",
      *                 ),
      *             ),
      *         ),
@@ -1335,21 +1402,22 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateBudget(TaskBudgetRequest $request, Task $task): JsonResponse
+    public function updateBudget(TaskUpdateBudgetRequest $request, $taskId): JsonResponse
     {
-        return $this->success($this->update_task_service->updateBudget($task, $request->validated()));
+        return $this->success($this->update_task_service->updateBudget($taskId, $request->validated()));
     }
 
 
     /**
      * @OA\Post(
-     *     path="/api/update-task/{task}/note",
+     *     path="/api/update-task/{taskId}/note",
      *     tags={"Task Update"},
      *     summary="Task update note",
+     *     description="[**Telegram :** https://t.me/c/1334612640/145](https://t.me/c/1334612640/145).",
      *     @OA\Parameter (
      *          in="path",
-     *          description="task id kiritiladi",
-     *          name="task",
+     *          description="vazifa idsi kiritiladi",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1362,112 +1430,13 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="description",
-     *                    description="task uchun tavsif kiritiladi",
+     *                    description="vazifa uchun tavsif kiritiladi",
      *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="docs",
-     *                    description="true - 1, false - 0",
-     *                    type="boolean",
-     *                 ),
-     *             ),
-     *         ),
-     *     ),
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
-    public function updateNote(TaskNoteRequest $request, Task $task): JsonResponse
-    {
-        return $this->success($this->update_task_service->updateNote($task, $request->validated()));
-    }
-
-
-    /**
-     * @OA\Post(
-     *     path="/api/update-task/{task}/images",
-     *     tags={"Task Update"},
-     *     summary="Task update images",
-     *     @OA\Parameter (
-     *          in="path",
-     *          description="task id kiritiladi",
-     *          name="task",
-     *          required=true,
-     *          @OA\Schema (
-     *              type="integer"
-     *          )
-     *      ),
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="images",
-     *                    description="task uchun rasm kiritiladi",
-     *                    type="file",
-     *                 ),
-     *             ),
-     *         ),
-     *     ),
-     *     @OA\Response (
-     *          response=200,
-     *          description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *     ),
-     *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *     ),
-     *     security={
-     *         {"token": {}}
-     *     },
-     * )
-     */
-    public function updateUploadImages(Request $request, Task $task): JsonResponse
-    {
-        return $this->update_task_service->updateImage($task, $request);
-    }
-
-
-    /**
-     * @OA\Post(
-     *     path="/api/update-task/{task}/contacts",
-     *     tags={"Task Update"},
-     *     summary="Task update contacts",
-     *     @OA\Parameter (
-     *          in="path",
-     *          description="task id kiritiladi",
-     *          name="task",
-     *          required=true,
-     *          @OA\Schema (
-     *              type="integer"
-     *          )
-     *      ),
-     *     @OA\RequestBody (
-     *         required=true,
-     *         @OA\MediaType (
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 @OA\Property (
-     *                    property="phone_number",
-     *                    description="task phone_number kiritiladi",
+     *                    description="hujjatlar olinishi kerak bo'lsa - 1,kerak bo'lmasa - 0 tanlanadi",
+     *                    enum={"0","1"},
      *                    type="string",
      *                 ),
      *             ),
@@ -1490,21 +1459,79 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateContacts(TaskContactsRequest $request, $task_id): JsonResponse
+    public function updateNote(TaskUpdateNoteRequest $request, $taskId): JsonResponse
     {
-        return $this->success($this->update_task_service->updateContact($task_id, $request->validated()));
+        return $this->success($this->update_task_service->updateNote($taskId, $request->validated()));
     }
 
 
     /**
      * @OA\Post(
-     *     path="/api/update-task/{task}/verify",
+     *     path="/api/update-task/{taskId}/images",
      *     tags={"Task Update"},
-     *     summary="Task update verify",
+     *     summary="Task update images",
+     *     description="[**Telegram :** https://t.me/c/1334612640/146](https://t.me/c/1334612640/146).",
      *     @OA\Parameter (
      *          in="path",
-     *          description="task id kiritiladi",
-     *          name="task",
+     *          description="vazifa id kiritiladi",
+     *          name="taskId",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                @OA\Property (
+     *                    property="images[]",
+     *                    type="array",
+     *                    @OA\Items(
+     *                      type="file",
+     *                      @OA\Property(
+     *                          property="images",
+     *                          description="vazifa uchun rasm kiritiladi",
+     *                      ),
+     *                    ),
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function updateUploadImages(Request $request, $taskId): JsonResponse
+    {
+        return $this->update_task_service->updateImage($taskId, $request);
+    }
+
+
+    /**
+     * @OA\Post(
+     *     path="/api/update-task/{taskId}/contacts",
+     *     tags={"Task Update"},
+     *     summary="Task update contacts",
+     *     description="[**Telegram :** https://t.me/c/1334612640/147](https://t.me/c/1334612640/147).",
+     *     @OA\Parameter (
+     *          in="path",
+     *          description="vazifa idsi kiritiladi",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1517,12 +1544,63 @@ class TaskAPIController extends Controller
      *             @OA\Schema(
      *                 @OA\Property (
      *                    property="phone_number",
-     *                    description="task phone_number kiritiladi",
-     *                    type="integer",
+     *                    description="vazifaga telefon raqaam kiritiladi",
+     *                    type="string",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response (
+     *          response=200,
+     *          description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     },
+     * )
+     */
+    public function updateContacts(TaskUpdateContactRequest $request, $taskId): JsonResponse
+    {
+        return $this->success($this->update_task_service->updateContact($taskId, $request->validated()));
+    }
+
+
+    /**
+     * @OA\Post(
+     *     path="/api/update-task/{taskId}/verify",
+     *     tags={"Task Update"},
+     *     summary="Task update verify",
+     *     description="[**Telegram :** https://t.me/c/1334612640/258](https://t.me/c/1334612640/258).",
+     *     @OA\Parameter (
+     *          in="path",
+     *          description="vazifa idsi kiritiladi",
+     *          name="taskId",
+     *          required=true,
+     *          @OA\Schema (
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\RequestBody (
+     *         required=true,
+     *         @OA\MediaType (
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property (
+     *                    property="phone_number",
+     *                    description="vazifa uchun telefon raqam kiritiladi",
+     *                    type="string",
      *                 ),
      *                 @OA\Property (
      *                    property="sms_otp",
-     *                    description="Telefonga kelgan SMS code",
+     *                    description="Telefonga kelgan SMS kod kiritiladi",
      *                    type="integer",
      *                 ),
      *             ),
@@ -1545,21 +1623,22 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function updateVerify(TaskVerificationRequest $request, $task_id): JsonResponse
+    public function updateVerify(TaskUpdateVerifyRequest $request, $taskId): JsonResponse
     {
         $data = $request->validated();
-        return $this->update_task_service->verification($task_id, $data);
+        return $this->update_task_service->verification($taskId, $data);
     }
 
     /**
      * @OA\Post(
-     *     path="/api/update-task/{task}/delete-image",
+     *     path="/api/update-task/{taskId}/delete-image",
      *     tags={"Task Update"},
      *     summary="Task delete images",
+     *     description="[**Telegram :** https://t.me/c/1334612640/259](https://t.me/c/1334612640/259).",
      *     @OA\Parameter (
      *          in="path",
-     *          description="task id kiritiladi",
-     *          name="task",
+     *          description="vazifa idsi kiritiladi",
+     *          name="taskId",
      *          required=true,
      *          @OA\Schema (
      *              type="integer"
@@ -1571,8 +1650,8 @@ class TaskAPIController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property (
-     *                    property="images",
-     *                    description="delete qilinadigan image url kiritiladi",
+     *                    property="image",
+     *                    description="o'chiriladigan rasm url manzili kiritiladi",
      *                    type="string",
      *                 ),
      *             ),
@@ -1595,20 +1674,21 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function deleteImage(Request $request, Task $task): JsonResponse
+    public function deleteImage(Request $request, $taskId): JsonResponse
     {
-        return $this->update_task_service->deleteImage($request, $task);
+        return $this->update_task_service->deleteImage($request, $taskId);
     }
 
 
     /**
      * @OA\Post(
-     *     path="/api/task/{task}/complain",
+     *     path="/api/task/{taskId}/complain",
      *     tags={"Complains"},
-     *     summary="Task complain",
+     *     summary="Vazifaga shikoyat qoldirish uchun api",
+     *     description="[**Telegram :** https://t.me/c/1334612640/174](https://t.me/c/1334612640/174).",
      *     @OA\Parameter (
      *          in="path",
-     *          description="task id kiritiladi",
+     *          description="vazifa id kiritiladi",
      *          name="task",
      *          required=true,
      *          @OA\Schema (
@@ -1650,19 +1730,20 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function complain(TaskComplaintRequest $request, Task $task): JsonResponse
+    public function complain(TaskComplaintRequest $request, $taskId): JsonResponse
     {
         $data = $request->validated();
         /** @var User $user */
         $user = auth()->user();
-        return $this->task_service->taskComplain($data, $user, $task);
+        return $this->task_service->taskComplain($data, $user, $taskId);
     }
 
     /**
      * @OA\Get (
      *     path="/api/complain/types",
      *     tags={"Complains"},
-     *     summary="Task complains types",
+     *     summary="Vazifaga shikoyat qoldirish turlari",
+     *     description="[**Telegram :** https://t.me/c/1334612640/173](https://t.me/c/1334612640/173).",
      *     @OA\Response (
      *          response=200,
      *          description="Successful operation"
@@ -1693,9 +1774,10 @@ class TaskAPIController extends Controller
      *     path="/api/performer-tasks",
      *     tags={"Task"},
      *     summary="Get Performer Tasks",
+     *     description="[**Telegram :** https://t.me/c/1334612640/179](https://t.me/c/1334612640/179).",
      *     @OA\Parameter(
      *          in="query",
-     *          description="user id kiritiladi",
+     *          description="foydalanuvchi idsi kiritiladi",
      *          name="user_id",
      *          required=true,
      *          @OA\Schema(
@@ -1704,11 +1786,12 @@ class TaskAPIController extends Controller
      *     ),
      *     @OA\Parameter(
      *          in="query",
-     *          description="status kiritiladi(1 yoki 0)",
+     *          description="vazifa holati kiritiladi(1 yoki 0)",
      *          name="status",
      *          required=true,
      *          @OA\Schema(
-     *              type="integer"
+     *              enum={"1","0"},
+     *              type="string"
      *          ),
      *     ),
      *     @OA\Response (
@@ -1740,9 +1823,10 @@ class TaskAPIController extends Controller
      *     path="/api/all-tasks",
      *     tags={"Task"},
      *     summary="Get Performer all Tasks",
+     *     description="[**Telegram :** https://t.me/c/1334612640/228](https://t.me/c/1334612640/228).",
      *     @OA\Parameter(
      *          in="query",
-     *          description="user id kiritiladi",
+     *          description="foydalanuvchi idsi kiritiladi",
      *          name="user_id",
      *          required=true,
      *          @OA\Schema(

@@ -3,26 +3,13 @@
 namespace App\Services\Task;
 
 use App\Http\Resources\TaskIndexResource;
-use App\Models\Address;
-use App\Models\Category;
-use App\Models\ChMessage;
-use App\Models\CustomField;
-use App\Models\CustomFieldsValue;
-use App\Models\Task;
-use App\Models\User;
-use App\Services\CustomService;
-use App\Services\Response;
-use App\Services\VerificationService;
+use App\Models\{Address, Category, ChMessage, CustomField, CustomFieldsValue, Task, User};
+use App\Services\{CustomService, Response, VerificationService};
 use Carbon\Carbon;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\{Exceptions\HttpResponseException, JsonResponse, RedirectResponse};
+use Illuminate\Support\{Arr, Facades\File, Facades\Validator};
 use JetBrains\PhpStorm\ArrayShape;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 use RealRashid\SweetAlert\Facades\Alert;
 
 class UpdateTaskService
@@ -44,17 +31,31 @@ class UpdateTaskService
         $this->custom_field_service = new CustomFieldService();
     }
 
-    public function updateName($task, $data): array
+    /**
+     * Update task name
+     * @param int $taskId
+     * @param $data
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function updateName(int $taskId, $data): array
     {
-        (new CustomService)->updateCache('task_update_' . $task->id, 'name', $data['name']);
-        (new CustomService)->updateCache('task_update_' . $task->id, 'category_id', $data['category_id']);
+        (new CustomService)->updateCache('task_update_' . $taskId, 'name', $data['name']);
+        (new CustomService)->updateCache('task_update_' . $taskId, 'category_id', $data['category_id']);
 
-        return $this->get_custom($task);
+        return $this->get_custom($taskId);
     }
 
+    /**
+     * update task get custom
+     * @param int $taskId
+     * @return array
+     */
     #[ArrayShape([])]
-    public function get_custom($task): array
+    public function get_custom(int $taskId): array
     {
+        $task = Task::find($taskId);
         $result = $this->custom_field_service->getCustomFieldsByRoute($task->id, CustomField::ROUTE_CUSTOM);
         $custom_fields = $result['custom_fields'];
         if (!$task->category->customFieldsInCustom->count()) {
@@ -63,11 +64,20 @@ class UpdateTaskService
             }
             return $this->get_address($task);
         }
-        return ['route' => 'custom', 'task_id' => $task->id, 'steps' => 6, 'custom_fields' => $custom_fields];
+        return ['route' => 'custom', 'task_id' => $taskId, 'steps' => 6, 'custom_fields' => $custom_fields];
     }
 
-    public function updateCustom($task, $request): array
+    /**
+     * task update custom
+     * @param int $taskId
+     * @param $request
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function updateCustom(int $taskId, $request): array
     {
+        $task = Task::find($taskId);
         $customFields = [];
         foreach ($task->category->custom_fields()->where('route', CustomField::ROUTE_CUSTOM)->get() as $customField) {
             $value['custom_field_id'] = $customField->id;
@@ -75,7 +85,7 @@ class UpdateTaskService
             $value['value'] = is_array($requestValue) ? json_encode($requestValue) : $requestValue;
             $customFields[] = $value;
         }
-        (new CustomService)->updateCache('task_update_' . $task->id, 'custom_fields', $customFields);
+        (new CustomService)->updateCache('task_update_' . $taskId, 'custom_fields', $customFields);
 
         if ($task->category->parent->remote) {
             return $this->get_remote($task);
@@ -85,6 +95,7 @@ class UpdateTaskService
 
 
     /**
+     * task update remote get
      * @param $task
      * @return array
      */
@@ -98,12 +109,14 @@ class UpdateTaskService
     }
 
     /**
-     * @param $task
+     * task update remote
+     * @param $taskId
      * @param $data
      * @return array
      */
-    public function updateRemote($task, $data): array
+    public function updateRemote($taskId, $data): array
     {
+        $task = Task::find($taskId);
         return match ($data['radio']) {
             CustomField::ROUTE_ADDRESS => $this->get_address($task),
             CustomField::ROUTE_REMOTE => $this->get_date($task),
@@ -113,6 +126,7 @@ class UpdateTaskService
 
 
     /**
+     * task update address get
      * @param $task
      * @return array
      */
@@ -126,19 +140,20 @@ class UpdateTaskService
     }
 
     /**
-     * @param $task
+     * task update address
+     * @param int $taskId
      * @param $data
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateAddress($task, $data): array
+    public function updateAddress(int $taskId, $data): array
     {
         $length = min(count($data['points']), setting('site.max_address',10));
         $addresses = [];
         for ($i = 0; $i < $length; $i++) {
             $address = [
-                'task_id' => $task->id,
+                'task_id' => $taskId,
                 'location' => $data['points'][$i]['location'],
                 'latitude' => $data['points'][$i]['latitude'],
                 'longitude' => $data['points'][$i]['longitude']
@@ -149,123 +164,133 @@ class UpdateTaskService
             $addresses[] = $address;
         }
 
-        (new CustomService)->updateCache('task_update_' . $task->id, 'addresses', $addresses);
+        (new CustomService)->updateCache('task_update_' . $taskId, 'addresses', $addresses);
 
-        return $this->get_date($task);
+        return $this->get_date($taskId);
 
     }
 
 
     /**
-     * @param $task
+     * task update date get
+     * @param int $taskId
      * @return array
      */
     #[ArrayShape([])]
-    public function get_date($task): array
+    public function get_date(int $taskId): array
     {
         return [
-            'route' => 'date', 'task_id' => $task->id, 'steps' => 3,
-            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task->id, CustomField::ROUTE_DATE)['custom_fields']
+            'route' => 'date', 'task_id' => $taskId, 'steps' => 3,
+            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($taskId, CustomField::ROUTE_DATE)['custom_fields']
         ];
     }
 
     /**
-     * @param $task
+     * task update date
+     * @param int $taskId
      * @param $data
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateDate($task, $data): array
+    public function updateDate(int $taskId, $data): array
     {
         unset($data['task_id']);
-        (new CustomService)->updateCache('task_update_' . $task->id, 'date', $data);
-        return $this->get_budget($task);
+        (new CustomService)->updateCache('task_update_' . $taskId, 'date', $data);
+        return $this->get_budget($taskId);
     }
 
 
     /**
-     * @param $task
+     * task update budget get
+     * @param int $taskId
      * @return array
      */
     #[ArrayShape([])]
-    public function get_budget($task): array
+    public function get_budget(int $taskId): array
     {
+        $task = Task::find($taskId);
         return [
-            'route' => 'budget', 'task_id' => $task->id, 'steps' => 2, 'price' => Category::query()->findOrFail($task->category_id)->max,
-            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task->id, CustomField::ROUTE_BUDGET)['custom_fields']
+            'route' => 'budget', 'task_id' => $taskId, 'steps' => 2, 'price' => Category::query()->findOrFail($task->category_id)->max,
+            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($taskId, CustomField::ROUTE_BUDGET)['custom_fields']
         ];
     }
 
     /**
-     * @param $task
+     * task update budget
+     * @param int $taskId
      * @param $data
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateBudget($task, $data): array
+    public function updateBudget(int $taskId, $data): array
     {
-        (new CustomService)->updateCache('task_update_' . $task->id, 'budget', $data['amount']);
-        (new CustomService)->updateCache('task_update_' . $task->id, 'oplata', $data['budget_type']);
-        return $this->get_note($task);
+        (new CustomService)->updateCache('task_update_' . $taskId, 'budget', $data['amount']);
+        (new CustomService)->updateCache('task_update_' . $taskId, 'oplata', $data['budget_type']);
+        return $this->get_note($taskId);
     }
 
 
     /**
-     * @param $task
+     * task update note get
+     * @param int $taskId
      * @return array
      */
     #[ArrayShape([])]
-    public function get_note($task): array
+    public function get_note(int $taskId): array
     {
-        $result = $this->custom_field_service->getCustomFieldsByRoute($task->id, CustomField::ROUTE_NOTE);
+        $result = $this->custom_field_service->getCustomFieldsByRoute($taskId, CustomField::ROUTE_NOTE);
         $custom_fields = $result['custom_fields'];
 
-        return ['route' => 'note', 'task_id' => $task->id, 'steps' => 1, 'custom_fields' => $custom_fields];
+        return ['route' => 'note', 'task_id' => $taskId, 'steps' => 1, 'custom_fields' => $custom_fields];
     }
 
     /**
-     * @param $task
+     * task update note
+     * @param int $taskId
      * @param $data
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateNote($task, $data): array
+    public function updateNote(int $taskId, $data): array
     {
         unset($data['task_id']);
-        (new CustomService)->updateCache('task_update_' . $task->id, 'note', $data);
-        return $this->get_contact($task);
+        (new CustomService)->updateCache('task_update_' . $taskId, 'note', $data);
+        return $this->get_contact($taskId);
     }
 
     /**
-     * @param $task
+     * task update contact get
+     * @param int $taskId
      * @return array
      */
     #[ArrayShape([])]
-    public function get_contact($task): array
+    public function get_contact(int $taskId): array
     {
+        $task = Task::find($taskId);
         return [
-            'route' => 'contact', 'task_id' => $task->id, 'steps' => 0,
+            'route' => 'contact', 'task_id' => $taskId, 'steps' => 0,
             'phone' => $task->phone ? (new CustomService)->correctPhoneNumber($task->phone) : null,
-            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($task->id, CustomField::ROUTE_CONTACTS)['custom_fields']
+            'custom_fields' => $this->custom_field_service->getCustomFieldsByRoute($taskId, CustomField::ROUTE_CONTACTS)['custom_fields']
         ];
     }
 
     /**
-     * @param $task_id
+     * task update contact
+     * @param int $taskId
      * @param $data
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateContact($task_id, $data): array
+    public function updateContact(int $taskId, $data): array
     {
         /** @var User $user */
         $user = auth()->user();
         unset($data['task_id']);
-        $task = TAsk::select('id','phone', 'verify_code', 'verify_expiration', 'status', 'user_id')->find($task_id);
+        $task = Task::find($taskId);
         $correct = (new CustomService)->correctPhoneNumber($data['phone_number']);
         $correctUser = (new CustomService)->correctPhoneNumber($user->phone_number);
         switch (true) {
@@ -275,13 +300,13 @@ class UpdateTaskService
                 $data['phone_number'] = $correct;
                 $user->update($data);
                 VerificationService::send_verification('phone', $user, $correctUser);
-                return $this->get_verify($task_id, $user);
+                return $this->get_verify($taskId, $user);
             case (!$user->is_phone_number_verified && $user->phone_number === $correct):
                 VerificationService::send_verification('phone', $user, $correctUser);
-                return $this->get_verify($task_id, $user);
+                return $this->get_verify($taskId, $user);
             case ($user->phone_number !== $correctUser && $task->phone !== $correct):
                 VerificationService::send_verification_for_task_phone($task, $correct);
-                return $this->get_verify($task_id, $user);
+                return $this->get_verify($taskId, $user);
             case ($user->is_phone_number_verified && $task->phone === $correct):
                 // in this case task's phone number already verified in create task process, that's why it doesn't need verification
                 $task->status = Task::STATUS_OPEN;
@@ -301,8 +326,9 @@ class UpdateTaskService
         $this->updateTask($task, $user);
 
         return [
-            'task_id' => $task->id,
+            'task_id' => $taskId,
             'route' => 'end',
+            'data' => $data
         ];
     }
 
@@ -310,12 +336,14 @@ class UpdateTaskService
     // Update Image
 
     /**
-     * @param $task
+     * task update image
+     * @param int $taskId
      * @param $request
      * @return JsonResponse
      */
-    public function updateImage($task, $request): JsonResponse
+    public function updateImage(int $taskId, $request): JsonResponse
     {
+        $task = Task::find($taskId);
         $validator = Validator::make($request->all(), [
             'task_id' => 'required',
             'images.*' => 'required|image:jpeg,jpg,png,gif|max:10000'
@@ -345,12 +373,14 @@ class UpdateTaskService
     }
 
     /**
+     * task delete image
      * @param $request
-     * @param $task
+     * @param int $taskId
      * @return JsonResponse
      */
-    public function deleteImage($request, $task): JsonResponse
+    public function deleteImage($request, int $taskId): JsonResponse
     {
+        $task = Task::find($taskId);
         $image = $request->get('image');
         File::delete(public_path() . '/storage/uploads/' . $image);
         $images = json_decode($task->photos);
@@ -359,23 +389,33 @@ class UpdateTaskService
         $task->save();
         return response()->json([
             'success' => true,
-            'message' => 'Successfully deleted'
+            'message' => 'Successfully deleted',
+            'data' => $task->photos
         ]);
     }
 
 
     /**
-     * @param $task_id
+     * task update verify get
+     * @param int $task_id
      * @param $user
      * @return array
      */
     #[ArrayShape([])]
-    public function get_verify($task_id, $user): array
+    public function get_verify(int $task_id, $user): array
     {
         return ['route' => 'verify', 'task_id' => $task_id, 'user' => $user];
     }
 
-    public function verification($task_id, $data): JsonResponse
+    /**
+     * task update verify
+     * @param int $task_id
+     * @param $data
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function verification(int $task_id, $data): JsonResponse
     {
         $correct = (new CustomService)->correctPhoneNumber($data['phone_number']);
         /** @var User $user */
@@ -408,6 +448,7 @@ class UpdateTaskService
 
 
     /**
+     * task update all
      * @param $task
      * @param $user
      * @return void
@@ -455,6 +496,7 @@ class UpdateTaskService
     }
 
     /**
+     * task address get
      * @param $data
      * @return mixed
      */
@@ -469,6 +511,7 @@ class UpdateTaskService
     }
 
     /**
+     * task guard api
      * @param $task
      * @return void
      */
@@ -482,6 +525,7 @@ class UpdateTaskService
     }
 
     /**
+     * task guard web
      * @param $task
      * @return void
      */
@@ -493,11 +537,12 @@ class UpdateTaskService
     }
 
     /**
+     * task update invoke
      * @param int $task_id
      * @param $data
      * @return JsonResponse
      */
-    public function __invoke(int $task_id, $data)
+    public function __invoke(int $task_id, $data): JsonResponse
     {
         $task = Task::select('user_id', 'performer_id')->find($task_id);
         $this->taskGuard($task);
@@ -509,12 +554,13 @@ class UpdateTaskService
     }
 
     /**
-     * @param $task_id
+     * task status change complete
+     * @param $taskId
      * @return JsonResponse|RedirectResponse
      */
-    public function completed($task_id): JsonResponse|RedirectResponse
+    public function completed($taskId): JsonResponse|RedirectResponse
     {
-        $task = Task::with('category')->find($task_id);
+        $task = Task::with('category')->find($taskId);
         $this->taskGuardApi($task);
         $data = [
             'status' => Task::STATUS_COMPLETE
@@ -531,13 +577,14 @@ class UpdateTaskService
     }
 
     /**
-     * @param $task_id
+     * task status change not complete
+     * @param $taskId
      * @param $data
      * @return JsonResponse|RedirectResponse
      */
-    public function not_completed($task_id, $data): JsonResponse|RedirectResponse
+    public function not_completed($taskId, $data): JsonResponse|RedirectResponse
     {
-        $task = Task::find($task_id);
+        $task = Task::find($taskId);
         $this->taskGuardApi($task);
         ChMessage::query()->where('from_id', $task->user_id)->where('to_id', $task->performer_id)->delete();
         ChMessage::query()->where('to_id', $task->user_id)->where('from_id', $task->performer_id)->delete();
@@ -551,6 +598,7 @@ class UpdateTaskService
     }
 
     /**
+     * task status change not completed web
      * @param $task_id
      * @param $data
      * @return RedirectResponse
@@ -566,6 +614,7 @@ class UpdateTaskService
     }
 
     /**
+     * change task web
      * @param $task_id
      * @param $request
      * @return void
@@ -605,6 +654,7 @@ class UpdateTaskService
     }
 
     /**
+     * change task web delete image
      * @param $task_id
      * @param $image
      * @return void
