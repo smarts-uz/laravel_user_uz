@@ -2,14 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ReportExportService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Services\ReportService;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class ReportController extends Controller
 {
+    private ReportExportService $exportService;
+
+    public function __construct()
+    {
+        $this->exportService = new ReportExportService();
+    }
+
     public function request(Request $request): RedirectResponse
     {
         Cache::put('date', $request->get('date'));
@@ -22,9 +31,28 @@ class ReportController extends Controller
         return view('vendor.voyager.report.report');
     }
 
-    public function report(): JsonResponse
+    /**
+     * @param $model
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function report_export($model, Request $request): \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
-        return (new ReportService())->report();
+        $user = auth()->user();
+        if (class_exists($model)) {
+            $data =  $this->exportService->export($model, $request, $user);
+        }
+        else{
+            Log::error('Model not exists {}');
+
+        }
+
+        return $data;
+    }
+
+    public function report(ReportService $service): JsonResponse
+    {
+        return $service->report();
     }
 
     public function index_sub($id)
