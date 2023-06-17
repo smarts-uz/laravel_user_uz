@@ -21,7 +21,7 @@
 </div>
 {{ Aire::close() }}
 @if((Illuminate\Support\Facades\Cache::get('date') && Illuminate\Support\Facades\Cache::get('date_1')) != null)
-    <x-laravelYajra tableId="report" stateSave=true dom="'Qlfrtip' + 'QBfrtip'" serverSide=true getData="{{ route('report') }}" exportId="{{ \App\Reports\One::class }}" startDate="{{Illuminate\Support\Facades\Cache::get('date')}}" endDate="{{Illuminate\Support\Facades\Cache::get('date_1')}}" language="ru"></x-laravelYajra>
+    <x-laravelYajra tableId="report" stateSave=true dom="'Qlfrtip' + 'QBfrtip'" getData="{{ route('report') }}" exportId="{{ \App\Reports\One::class }}" startDate="{{Illuminate\Support\Facades\Cache::get('date')}}" endDate="{{Illuminate\Support\Facades\Cache::get('date_1')}}" language="ru"></x-laravelYajra>
 
     <script>
         $(document).ready(function() {

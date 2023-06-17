@@ -27,6 +27,7 @@
         "laravel/socialite": "v5.5.5",
         "laravel/tinker": "v2.7.2",
         "league/flysystem": "v3.12.2",
+        "maatwebsite/excel": "^3.1",
         "munafio/chatify": "v1.5.2",
         "nutgram/nutgram": "v3.17.1",
         "pusher/pusher-php-server": "v7.0.2",
