@@ -54,8 +54,9 @@ class UserService
         $user->verify_expiration = Carbon::now()->addMinutes(5);
         $user->save();
         session()->put('verifications', ['key' => 'email', 'value' => $email]);
-
-        Mail::to($user->email)->send(new VerifyEmail($message));
+        try {
+            Mail::to($user->email)->send(new VerifyEmail($message));
+        }catch (Exception $e){}
         Alert::success(__('Поздравляю'), __('Ваш проверочный код успешно отправлен на') . $user->email);
     }
 

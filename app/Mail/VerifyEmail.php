@@ -24,10 +24,12 @@ class VerifyEmail extends Mailable
     {
         $this->data = $data;
 
-        if (!empty($subject))
+        if (!empty($subject)) {
             $this->subject = $subject;
-        else
+        }
+        else {
             $this->subject = __('Уведомление от ') . config('app.name');
+        }
 
     }
 

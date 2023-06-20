@@ -27,9 +27,13 @@ class VerificationService
                 'user' => $user->id
             ];
             if ($email) {
-                Mail::to($email)->send(new VerificationEmail($data, $user, $email));
+                try {
+                    Mail::to($email)->send(new VerificationEmail($data, $user, $email));
+                }catch (Exception $e){}
             } else {
-                Mail::to($user->email)->send(new VerificationEmail($data, $user, $email));
+                try {
+                    Mail::to($user->email)->send(new VerificationEmail($data, $user, $email));
+                }catch (Exception $e){}
             }
         } else {
             $message = random_int(100000, 999999);
@@ -50,7 +54,9 @@ class VerificationService
     public static function send_verification_email($needle,$user): void
     {
         $message = random_int(100000, 999999);
-        Mail::to($needle)->send(new VerifyEmail($message));
+        try {
+            Mail::to($needle)->send(new VerifyEmail($message));
+        }catch (Exception $e){}
 
         $user->verify_code = $message;
         $user->verify_expiration = Carbon::now()->addMinutes(5);

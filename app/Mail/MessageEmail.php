@@ -24,10 +24,12 @@ class MessageEmail extends Mailable
         $this->data = $data;
         $this->task_id = $task_id;
 
-        if (!empty($subject))
+        if (!empty($subject)) {
             $this->subject = $subject;
-        else
+        }
+        else {
             $this->subject = __('Уведомление от ') . config('app.name');
+        }
 
     }
 

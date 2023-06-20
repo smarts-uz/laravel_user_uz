@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Exception;
 use JetBrains\PhpStorm\ArrayShape;
 use JsonException;
 use Psr\Container\ContainerExceptionInterface;
@@ -114,7 +115,9 @@ class NotificationService
 
             if ($performer->email_notification) {
                 $task_id = $task->id;
-                Mail::to($performer->email)->send(new MessageEmail($task_id, $message, $subject));
+                try {
+                    Mail::to($performer->email)->send(new MessageEmail($task_id, $message, $subject));
+                }catch (Exception $e){}
             }
         }
 
@@ -268,7 +271,9 @@ class NotificationService
         ], (new CustomService)->cacheLang($user_id));
         $phone_number = (new CustomService)->correctPhoneNumber($user->phone_number);
         SmsMobileService::sms_packages($phone_number, $message);
-        Mail::to($user->email)->send(new VerifyEmail($message));
+        try {
+            Mail::to($user->email)->send(new VerifyEmail($message));
+        }catch (Exception $e){}
     }
 
 
@@ -454,12 +459,16 @@ class NotificationService
         };
         if ($users !== null && $user_id === null){
             foreach ($users as $user) {
-                Mail::to($user->email)->send(new VerifyEmail($text));
+                try {
+                    Mail::to($user->email)->send(new VerifyEmail($text));
+                }catch (Exception $e){}
             }
         }
         if ($user_id !== null && $users === null){
             $user = User::query()->findOrFail($user_id);
-            Mail::to($user->email)->send(new VerifyEmail($text));
+            try {
+                Mail::to($user->email)->send(new VerifyEmail($text));
+            }catch (Exception $e){}
         }
 
         return [

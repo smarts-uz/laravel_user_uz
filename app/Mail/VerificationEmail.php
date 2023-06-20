@@ -6,6 +6,11 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * @property $email_data
+ * @property $contact
+ * @property $email
+ */
 class VerificationEmail extends Mailable
 {
     use Queueable, SerializesModels;
