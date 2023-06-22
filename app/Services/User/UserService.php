@@ -2,6 +2,7 @@
 
 namespace App\Services\User;
 
+use App\Jobs\SendTaskCreateNotification;
 use App\Mail\VerifyEmail;
 use App\Models\{AccessTokens, Notification, Session, Task, Transaction, User, WalletBalance};
 use App\Services\{CustomService, NotificationService, SmsMobileService};
@@ -308,8 +309,9 @@ class UserService
                 }
                 auth()->login($user);
 
-                //send notification
-                NotificationService::sendTaskNotification($task, $user->id);
+
+                // dispatch queue job
+                dispatch(new SendTaskCreateNotification($task, $user->id));
 
                 return redirect()->route('searchTask.task', $for_ver_func);
             }

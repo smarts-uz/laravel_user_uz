@@ -5,6 +5,7 @@ namespace App\Services\Task;
 use App\Http\Resources\NotificationResource;
 use App\Item\CreateNameItem;
 use App\Models\{Address, Category, CustomFieldsValue, Notification, Task, User, WalletBalance};
+use App\Jobs\SendTaskCreateNotification;
 use App\Services\{CustomService, NotificationService, SmsMobileService, VerificationService};
 use Illuminate\Database\Eloquent\{Builder, Collection, Model};
 use Illuminate\Support\{Arr, Facades\Cache, Facades\Hash, Facades\Session};
@@ -246,7 +247,8 @@ class CreateService
         if ($performer_id) {
             $this->perform_notification($task, $user ,$performer_id);
         } else {
-            NotificationService::sendTaskNotification($task, $user->id);
+            // dispatch queue job
+            dispatch(new SendTaskCreateNotification($task, $user->id));
         }
         $task->save();
         return redirect()->route('searchTask.task', $task->id);

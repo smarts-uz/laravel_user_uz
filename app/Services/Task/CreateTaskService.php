@@ -3,6 +3,7 @@
 namespace App\Services\Task;
 
 use App\Models\{Address, Category, CustomField, CustomFieldsValue, Task, User};
+use App\Jobs\SendTaskCreateNotification;
 use App\Services\{CustomService, NotificationService, Response, VerificationService};
 use Carbon\Carbon;
 use Illuminate\Database\{Eloquent\Builder, Eloquent\Collection, Eloquent\Model};
@@ -391,7 +392,8 @@ class CreateTaskService
         $user->active_step = null;
         $user->active_task = null;
         $user->save();
-        NotificationService::sendTaskNotification($task, $user->id);
+        // dispatch queue job
+        dispatch(new SendTaskCreateNotification($task, $user->id));
 
         return [
             'task_id' => $task->id,
@@ -436,8 +438,8 @@ class CreateTaskService
                         'active_task' => null,
                     ]);
                     $task->update(['status' => 1, 'user_id' => $user->id, 'phone' => $task->phone]);
-                    // send notification
-                    NotificationService::sendTaskNotification($task, $user->id);
+                    // dispatch queue job
+                    dispatch(new SendTaskCreateNotification($task, $user->id));
 
                     return $this->success([
                         'task_id' => $task->id,
@@ -454,8 +456,8 @@ class CreateTaskService
                     $user->active_step = null;
                     $user->active_task = null;
                     $user->save();
-                    // send notification
-                    NotificationService::sendTaskNotification($task, $user->id);
+                    // dispatch queue job
+                    dispatch(new SendTaskCreateNotification($task, $user->id));
 
                     return $this->success([
                         'task_id' => $task->id,
