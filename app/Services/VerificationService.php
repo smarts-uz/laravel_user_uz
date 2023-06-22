@@ -6,6 +6,7 @@ use App\Mail\VerificationEmail;
 use App\Mail\VerifyEmail;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class VerificationService
@@ -29,11 +30,15 @@ class VerificationService
             if ($email) {
                 try {
                     Mail::to($email)->send(new VerificationEmail($data, $user, $email));
-                }catch (Exception $e){}
+                }catch (Exception $e){
+                    Log::error($e);
+                }
             } else {
                 try {
                     Mail::to($user->email)->send(new VerificationEmail($data, $user, $email));
-                }catch (Exception $e){}
+                }catch (Exception $e){
+                    Log::error($e);
+                }
             }
         } else {
             $message = random_int(100000, 999999);
@@ -56,7 +61,9 @@ class VerificationService
         $message = random_int(100000, 999999);
         try {
             Mail::to($needle)->send(new VerifyEmail($message));
-        }catch (Exception $e){}
+        }catch (Exception $e){
+            Log::error($e);
+        }
 
         $user->verify_code = $message;
         $user->verify_expiration = Carbon::now()->addMinutes(5);

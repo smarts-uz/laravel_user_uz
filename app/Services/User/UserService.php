@@ -12,7 +12,7 @@ use Illuminate\Contracts\Foundation\Application;
 use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Http\{JsonResponse, RedirectResponse};
 use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\{Auth, Cache, Hash, Mail};
+use Illuminate\Support\Facades\{Auth, Cache, Hash, Log, Mail};
 use Illuminate\Support\Str;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -57,7 +57,9 @@ class UserService
         session()->put('verifications', ['key' => 'email', 'value' => $email]);
         try {
             Mail::to($user->email)->send(new VerifyEmail($message));
-        }catch (Exception $e){}
+        }catch (Exception $e){
+            Log::error($e);
+        }
         Alert::success(__('Поздравляю'), __('Ваш проверочный код успешно отправлен на') . $user->email);
     }
 

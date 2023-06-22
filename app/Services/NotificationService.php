@@ -11,7 +11,7 @@ use App\Mail\{VerifyEmail, MessageEmail};
 use App\Models\{BlogNew, User, Notification, UserCategory, UserNotification};
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\{Collection, Facades\Http, Facades\Mail};
+use Illuminate\Support\{Collection, Facades\Http, Facades\Log, Facades\Mail};
 use App\Events\SendNotificationEvent;
 use App\Http\Resources\NotificationResource;
 
@@ -117,7 +117,9 @@ class NotificationService
                 $task_id = $task->id;
                 try {
                     Mail::to($performer->email)->send(new MessageEmail($task_id, $message, $subject));
-                }catch (Exception $e){}
+                }catch (Exception $e){
+                    Log::error($e);
+                }
             }
         }
 
@@ -273,7 +275,9 @@ class NotificationService
         SmsMobileService::sms_packages($phone_number, $message);
         try {
             Mail::to($user->email)->send(new VerifyEmail($message));
-        }catch (Exception $e){}
+        }catch (Exception $e){
+            Log::error($e);
+        }
     }
 
 
@@ -461,14 +465,18 @@ class NotificationService
             foreach ($users as $user) {
                 try {
                     Mail::to($user->email)->send(new VerifyEmail($text));
-                }catch (Exception $e){}
+                }catch (Exception $e){
+                    Log::error($e);
+                }
             }
         }
         if ($user_id !== null && $users === null){
             $user = User::query()->findOrFail($user_id);
             try {
                 Mail::to($user->email)->send(new VerifyEmail($text));
-            }catch (Exception $e){}
+            }catch (Exception $e){
+                Log::error($e);
+            }
         }
 
         return [

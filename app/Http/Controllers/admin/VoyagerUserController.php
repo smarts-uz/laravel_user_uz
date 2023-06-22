@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Jobs\SendNewsNotification;
 use App\Models\BlogNew;
 use App\Models\User;
 use App\Services\NotificationService;
@@ -46,7 +47,8 @@ class VoyagerUserController extends BaseVoyagerUserController
     public function blogNews($newsId): RedirectResponse
     {
         $blogNew = BlogNew::find($newsId);
-        NotificationService::sendNotification($blogNew);
+        // dispatch queue job
+        dispatch(new SendNewsNotification($blogNew));
         Alert::success(__('Уведомления успешно отправлены'));
         return redirect()->back();
     }

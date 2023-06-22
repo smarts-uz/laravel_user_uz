@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\FirebaseTokenRequest;
 use App\Http\Resources\NotificationResource;
+use App\Jobs\SendNewsNotification;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Routing\Redirector;
@@ -286,7 +287,8 @@ class NotificationController extends VoyagerBaseController
                 $redirect = redirect()->back();
             }
 
-            NotificationService::sendNotification($data);
+            // dispatch queue job
+            dispatch(new SendNewsNotification($data));
 
             return $redirect->with([
                 'message' => __('voyager::generic.successfully_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
