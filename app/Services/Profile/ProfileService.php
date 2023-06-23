@@ -2,8 +2,7 @@
 
 namespace App\Services\Profile;
 
-use App\Http\Resources\{BlockUserListResourse,
-    CategoryIndexResource,
+use App\Http\Resources\{
     PortfolioIndexResource,
     ResponseTemplateResource,
     ReviewIndexResource,
@@ -179,10 +178,11 @@ class ProfileService
         }
 
         $user_categories = UserCategory::query()->where('user_id', $user->id)->pluck('category_id')->toArray();
-        $categories = CategoryIndexResource::collection(Category::query()
-            ->select('id', 'parent_id', 'name', 'ico')
-            ->whereIn('id', $user_categories)
-            ->get());
+        $categories = Category::query()->whereIn('id', $user_categories)->get();
+        $data = [];
+        foreach ($categories as $category) {
+            $data[] = $this->categories($category);
+        }
         $user_category = UserCategory::query()->where('user_id', $user->id)->get()->groupBy(static function ($data){
             return (!empty($data->category->parent)) ? $data->category->parent->getTranslatedAttribute('name') : '';
         });
@@ -226,7 +226,7 @@ class ProfileService
             'district' => $user->district,
             'age' => $age,
             'description' => $user->description,
-            'categories' => $categories,
+            'categories' => $data,
             'email_verified' => boolval($user->is_email_verified),
             'phone_verified' => boolval($user->is_phone_number_verified),
             'google_id' => $user->google_id,
@@ -968,16 +968,44 @@ class ProfileService
     /**
      * block userlar listini qaytaradi
      * @param $user_id
-     * @return JsonResponse
+     * @return array
      */
-    public function blocked_user_list($user_id): JsonResponse
+    public function blocked_user_list($user_id): array
     {
-        $data = BlockedUser::query()->where('user_id', $user_id)->get();
-
-        return response()->json([
-            'success' => true,
-            'data' => BlockUserListResourse::collection($data)
-        ]);
+        $blocked_users = BlockedUser::query()->where('user_id', $user_id)->get();
+        $user = User::find($user_id);
+        $date = Carbon::now()->subMinutes(2)->toDateTimeString();
+        if((int)$user->gender === 1){
+            $date_gender = __('Был онлайн');
+        }else{
+            $date_gender = __('Была онлайн');
+        }
+        if ($user->last_seen >= $date) {
+            $lastSeen = __('В сети');
+        } else {
+            $seenDate = Carbon::parse($user->last_seen);
+            $seenDate->locale(app()->getLocale() . '-' . app()->getLocale());
+            if(app()->getLocale()==='uz'){
+                $lastSeen = $seenDate->diffForHumans().' saytda edi';
+            }else{
+                $lastSeen = $date_gender. $seenDate->diffForHumans();
+            }
+        }
+        $data = [];
+        foreach ($blocked_users as $blocked_user) {
+            $data[] = [
+                'id' => $blocked_user->id,
+                'user_id'=> $blocked_user->user_id,
+                'blocked_user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'last_seen' => $lastSeen,
+                    'avatar' => asset('storage/' . $user->avatar),
+                ],
+                'created_at' => $blocked_user->created_at
+            ];
+        }
+        return $data;
     }
 
     /**
@@ -1018,15 +1046,33 @@ class ProfileService
     /**
      * Ushbu metod foydalanuvchi tomonidan tanlangan kategoriyalarni qaytaradi
      * @param $userId
-     * @return AnonymousResourceCollection
+     * @return array
      */
-    public function userCategory($userId): AnonymousResourceCollection
+    public function userCategory($userId): array
     {
         $user_categories = UserCategory::query()->where('user_id', $userId)->pluck('category_id')->toArray();
-        return CategoryIndexResource::collection(Category::query()
-            ->select('id', 'parent_id', 'name', 'ico')
-            ->whereIn('id', $user_categories)
-            ->get());
+        $categories = Category::query()->whereIn('id', $user_categories)->get();
+        $data = [];
+        foreach ($categories as $category) {
+            $data[] = $this->categories($category);
+        }
+        return $data;
     }
+
+    /**
+     * @param $category
+     * @return array
+     */
+    private function categories($category): array
+    {
+        return !empty($category) ? [
+            'id' => $category->id,
+            'parent_id' => $category->parent_id,
+            'name' => $category->getTranslatedAttribute('name'),
+            'child_count' => $category->childs()->count(),
+            'ico' => asset('storage/' . $category->ico),
+        ]: [];
+    }
+
 
 }

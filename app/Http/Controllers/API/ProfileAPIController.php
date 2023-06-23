@@ -1323,7 +1323,11 @@ class ProfileAPIController extends Controller
     public function block_user_list(): JsonResponseAlias
     {
         $user_id = auth()->id();
-        return $this->profileService->blocked_user_list($user_id);
+        $data = $this->profileService->blocked_user_list($user_id);
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
     }
 
     /**
@@ -1708,10 +1712,11 @@ class ProfileAPIController extends Controller
      *     },
      * )
      */
-    public function userCategory(): AnonymousResourceCollection
+    public function userCategory(): array
     {
         $userId = \auth()->id();
-        return $this->profileService->userCategory($userId);
+        $data = $this->profileService->userCategory($userId);
+        return ['data'=>$data];
     }
 
 

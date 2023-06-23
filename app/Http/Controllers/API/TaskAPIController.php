@@ -22,8 +22,7 @@ use App\Http\Requests\Api\{TaskAddressRequest,
     TaskUpdateRemoteRequest,
     TaskUpdateVerifyRequest,
     TaskVerificationRequest};
-use App\Http\Resources\{ComplianceTypeResource,
-    TaskSingleResource, TaskPaginationResource};
+use App\Http\Resources\{TaskSingleResource, TaskPaginationResource};
 use Illuminate\{Http\Request,
     Http\JsonResponse, Routing\Controller,
     Validation\ValidationException, Http\Resources\Json\AnonymousResourceCollection};
@@ -1763,9 +1762,11 @@ class TaskAPIController extends Controller
      */
     public function complainTypes(): JsonResponse
     {
+        $data = $this->task_service->complainTypes();
+
         return response()->json([
             'success' => true,
-            'data' => ComplianceTypeResource::collection(ComplianceType::all())
+            'data' => $data
         ]);
     }
 

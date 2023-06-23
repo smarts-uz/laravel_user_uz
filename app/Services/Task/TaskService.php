@@ -14,7 +14,7 @@ use App\Http\Resources\{PerformerResponseResource,
     UserInTaskResource};
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use App\Models\{Compliance, Task, TaskResponse, User};
+use App\Models\{Compliance, ComplianceType, Task, TaskResponse, User};
 use App\Services\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
@@ -263,6 +263,23 @@ class TaskService
             'message' => trans('trans.Complaint is sent.'),
             'data' => $data
         ]);
+    }
+
+    /**
+     * complain Types
+     * @return array
+     */
+    public function complainTypes(): array
+    {
+        $complainTypes = ComplianceType::all();
+        $data = [];
+        foreach ($complainTypes as $complainType) {
+            $data[] = [
+                'id' => $complainType->id,
+                'name' => $complainType->getTranslatedAttribute('name')
+            ];
+        }
+        return $data;
     }
 
     /**

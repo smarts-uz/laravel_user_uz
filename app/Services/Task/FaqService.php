@@ -3,8 +3,6 @@
 
 namespace App\Services\Task;
 
-
-use App\Http\Resources\FaqCategoryResource;
 use App\Models\FaqCategories;
 use Illuminate\Http\JsonResponse;
 use TCG\Voyager\Models\Setting;
@@ -13,15 +11,34 @@ class FaqService
 {
     /**
      * faq category qiymatlarni qaytaradi
-     * @return JsonResponse
+     * @return array
      */
-    public function index(): JsonResponse
+    public function index(): array
     {
         $faqs = FaqCategories::query()->latest()->get();
-        return response()->json([
-            'success' => true,
-            'data' => FaqCategoryResource::collection($faqs)
-        ]);
+        $data = [];
+        foreach ($faqs as $faq) {
+            $data[] = [
+                'id' => $faq->id,
+                'title' => $faq->getTranslatedAttribute('title'),
+            ];
+        }
+       return $data;
+    }
+
+    /**
+     * @param $faqId
+     * @return array
+     */
+    public function faqAll($faqId): array
+    {
+        $faq = FaqCategories::find($faqId);
+        return !empty($faq) ? [
+            'id' => $faq->id,
+            'title' => $faq->getTranslatedAttribute('title'),
+            'description' => $faq->getTranslatedAttribute('description'),
+            'logo' => asset('storage/'.$faq->logo),
+        ]: [];
     }
 
     /**

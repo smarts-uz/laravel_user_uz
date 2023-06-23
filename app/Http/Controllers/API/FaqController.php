@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\FaqResource;
-use App\Models\FaqCategories;
 use App\Services\Task\FaqService;
 use Illuminate\Http\JsonResponse;
 
@@ -38,9 +36,13 @@ class FaqController extends Controller
      *     ),
      * )
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        return $this->service->index();
+        $data = $this->service->index();
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
     }
 
     /**
@@ -72,11 +74,12 @@ class FaqController extends Controller
      *     ),
      * )
      */
-    public function faq(FaqCategories $faqId): JsonResponse
+    public function faq($faqId): JsonResponse
     {
+        $data = $this->service->faqAll($faqId);
         return response()->json([
             'success' => true,
-            'data' => new FaqResource($faqId)
+            'data' => $data
         ]);
     }
 
