@@ -973,26 +973,26 @@ class ProfileService
     public function blocked_user_list($user_id): array
     {
         $blocked_users = BlockedUser::query()->where('user_id', $user_id)->get();
-        $user = User::find($user_id);
-        $date = Carbon::now()->subMinutes(2)->toDateTimeString();
-        if((int)$user->gender === 1){
-            $date_gender = __('Был онлайн');
-        }else{
-            $date_gender = __('Была онлайн');
-        }
-        if ($user->last_seen >= $date) {
-            $lastSeen = __('В сети');
-        } else {
-            $seenDate = Carbon::parse($user->last_seen);
-            $seenDate->locale(app()->getLocale() . '-' . app()->getLocale());
-            if(app()->getLocale()==='uz'){
-                $lastSeen = $seenDate->diffForHumans().' saytda edi';
-            }else{
-                $lastSeen = $date_gender. $seenDate->diffForHumans();
-            }
-        }
         $data = [];
         foreach ($blocked_users as $blocked_user) {
+            $user = $blocked_user->user;
+            $date = Carbon::now()->subMinutes(2)->toDateTimeString();
+            if((int)$user->gender === 1){
+                $date_gender = __('Был онлайн');
+            }else{
+                $date_gender = __('Была онлайн');
+            }
+            if ($user->last_seen >= $date) {
+                $lastSeen = __('В сети');
+            } else {
+                $seenDate = Carbon::parse($user->last_seen);
+                $seenDate->locale(app()->getLocale() . '-' . app()->getLocale());
+                if(app()->getLocale()==='uz'){
+                    $lastSeen = $seenDate->diffForHumans().' saytda edi';
+                }else{
+                    $lastSeen = $date_gender. $seenDate->diffForHumans();
+                }
+            }
             $data[] = [
                 'id' => $blocked_user->id,
                 'user_id'=> $blocked_user->user_id,
