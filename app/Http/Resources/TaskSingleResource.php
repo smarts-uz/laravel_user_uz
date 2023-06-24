@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Services\Task\TaskService;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Cache;
 
@@ -18,7 +19,7 @@ class TaskSingleResource extends JsonResource
         return [
             'id' => $this->id,
             'name'=> $this->name,
-            'addresses' => TaskAddressResource::collection($this->addresses),
+            'addresses' => (new TaskService)->taskAddress($this->addresses),
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
             'budget' => $this->budget,

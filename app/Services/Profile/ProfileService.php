@@ -4,7 +4,6 @@ namespace App\Services\Profile;
 
 use App\Http\Resources\{
     PortfolioIndexResource,
-    ResponseTemplateResource,
     ReviewIndexResource,
     TransactionHistoryCollection};
 use Exception;
@@ -991,15 +990,22 @@ class ProfileService
     /**
      * shablon otklikni qaytaradi
      * @param $userId
-     * @return JsonResponse
+     * @return array[]
      */
-    public function response_template($userId): JsonResponse
+    #[ArrayShape(['data' => "array"])]
+    public function response_template($userId): array
     {
-        $data = ResponseTemplate::query()->where(['user_id' => $userId])->get();
-        return response()->json([
-            'success' => true,
-            'data' => ResponseTemplateResource::collection($data)
-        ]);
+        $templates = ResponseTemplate::query()->where(['user_id' => $userId])->get();
+        $data = [];
+        foreach ($templates as $template) {
+            $data[] = [
+                'id' => $template->id,
+                'title' => $template->title,
+                'text' => $template->text,
+                'created_at' => $template->created_at
+            ];
+        }
+        return $data;
     }
 
     /**

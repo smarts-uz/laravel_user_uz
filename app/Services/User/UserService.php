@@ -5,7 +5,7 @@ namespace App\Services\User;
 use App\Jobs\SendTaskCreateNotification;
 use App\Mail\VerifyEmail;
 use App\Models\{AccessTokens, Notification, Session, Task, Transaction, User, WalletBalance};
-use App\Services\{CustomService, NotificationService, SmsMobileService};
+use App\Services\{CustomService, SmsMobileService};
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -390,6 +390,30 @@ class UserService
                 'type' => Notification::WALLET_BALANCE,
             ]);
         }
+    }
+
+    /**
+     * User return all sessions
+     * @param $user_id
+     * @return array
+     */
+    public function sessionIndex($user_id): array
+    {
+        $sessions = Session::query()->where('user_id', $user_id)->get();
+        $data = [];
+        foreach ($sessions as $session) {
+            $data[] = [
+                'id' => $session->id,
+                'ip_address' => $session->ip_address,
+                'user_agent' => $session->user_agent,
+                'last_activity' => $session->last_activity,
+                'device_id' => $session->device_id,
+                'device_name' => $session->device_name,
+                'platform' => $session->platform,
+                'is_mobile' => $session->is_mobile
+            ];
+        }
+        return $data;
     }
 
     /**

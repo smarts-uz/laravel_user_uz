@@ -4,8 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\SessionDeleteRequest;
-use App\Http\Resources\SessionResource;
-use App\Models\Session;
 use App\Models\User;
 use App\Services\User\UserService;
 use Illuminate\Http\JsonResponse;
@@ -42,9 +40,11 @@ class SessionController extends Controller
      *     },
      * )
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        return $this->success(SessionResource::collection(Session::query()->where('user_id', auth()->id())->get()));
+        $user_id = auth()->id();
+        $data = $this->service->sessionIndex($user_id);
+        return $this->success($data);
     }
 
     /**

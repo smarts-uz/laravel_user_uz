@@ -6,8 +6,6 @@ use App\Services\{CustomService, TelegramService, Response};
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use JsonException;
 use App\Http\Resources\{
-    SameTaskResource,
-    TaskAddressResource,
     TaskPaginationResource,
     TaskResponseResource};
 use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
@@ -65,7 +63,7 @@ class TaskService
             return ['data' => [
                 'id' => $task->id,
                 'name' => $task->name,
-                'address' => (!empty($task->addresses)) ? TaskAddressResource::collection($task->addresses) : [],
+                'address' => (!empty($task->addresses)) ? $this->taskAddress($task->addresses) : [],
                 'date_type' => $task->date_type,
                 'start_date' => $task->start_date,
                 'end_date' => $task->end_date,
@@ -141,17 +139,42 @@ class TaskService
         ]: [];
     }
 
+    public function taskAddress($addresses): array
+    {
+        $data = [];
+        foreach ($addresses as $address) {
+            $data[] = [
+                'location' => $address->location,
+                'longitude' => $address->longitude,
+                'latitude' => $address->latitude,
+            ];
+        }
+        return $data;
+    }
+
     /**
      * Shu $task categoriyasiga oid o'xshash tasklarni qaytaradi
      * @param $taskId
-     * @return AnonymousResourceCollection
+     * @return array
      */
-    public function same_tasks($taskId): AnonymousResourceCollection
+    public function same_tasks($taskId): array
     {
         $task = Task::find($taskId);
         $tasks = $task->category->tasks()->where('id', '!=', $taskId);
         $tasks = $tasks->where('status', Task::STATUS_OPEN)->take(self::SOME_TASK_LIMIT)->orderByDesc('created_at')->get();
-        return SameTaskResource::collection($tasks);
+        $data = [];
+        foreach ($tasks as $task) {
+            $data[] = [
+                'id' => $task->id,
+                'name' => $task->name,
+                'address' => $task->addresses ? $this->taskAddress($task->addresses) : __('udalyonka'),
+                'budget' => $task->budget,
+                'image' => asset('storage/'.$task->category->ico),
+                'oplata' => $task->oplata,
+                'start_date' => $task->start_date
+            ];
+        }
+        return $data;
     }
 
     /**

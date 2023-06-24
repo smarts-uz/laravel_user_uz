@@ -78,9 +78,10 @@ class TaskAPIController extends Controller
      *     )
      * )
      */
-    public function same_tasks($taskId): AnonymousResourceCollection
+    public function same_tasks($taskId): array
     {
-        return $this->task_service->same_tasks($taskId);
+        $data = $this->task_service->same_tasks($taskId);
+        return ['data' => $data];
     }
 
     /**

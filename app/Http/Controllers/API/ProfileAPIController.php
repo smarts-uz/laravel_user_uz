@@ -7,7 +7,6 @@ use App\Http\Requests\{Api\CategoryRequest, Api\PortfolioRequest, Api\ProfileAva
     Api\ProfilePasswordRequest, Api\ProfilePhoneRequest, Api\ProfileSettingsRequest, Api\ProfileVideoRequest,
     Api\ResponseTemplateRequest, Api\UserReportRequest, UserBlockRequest};
 use Exception;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use JsonException;
 use App\Models\{Portfolio, ReportedUser, ResponseTemplate, User};
 use App\Services\{CustomService, PerformersService, Profile\ProfileService};
@@ -1466,7 +1465,11 @@ class ProfileAPIController extends Controller
     {
         /** @var User $user */
         $userId = auth()->id();
-        return $this->profileService->response_template($userId);
+        $data = $this->profileService->response_template($userId);
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
     }
 
     /**
