@@ -81,7 +81,11 @@ class ProfileAPIController extends Controller
     {
         /** @var User $user */
         $userId = auth()->user()->id;
-        return $this->profileService->portfolios($userId);
+        $data = $this->profileService->portfolios($userId);
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
     }
 
     /**
@@ -961,7 +965,11 @@ class ProfileAPIController extends Controller
      */
     public function userPortfolios($userId): JsonResponseAlias
     {
-        return $this->profileService->portfolios($userId);
+        $data = $this->profileService->portfolios($userId);
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
     }
 
     /**

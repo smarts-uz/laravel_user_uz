@@ -3,8 +3,6 @@
 namespace App\Services\Profile;
 
 use App\Http\Resources\{
-    PortfolioIndexResource,
-    ReviewIndexResource,
     TransactionHistoryCollection};
 use Exception;
 use JsonException;
@@ -17,7 +15,7 @@ use App\Services\CustomService;
 use App\Services\SmsMobileService;
 use App\Services\VerificationService;
 use Carbon\Carbon;
-use Illuminate\Http\{JsonResponse, RedirectResponse, Resources\Json\AnonymousResourceCollection};
+use Illuminate\Http\{JsonResponse, RedirectResponse};
 use Illuminate\Support\{Facades\Auth, Facades\Cache, Facades\Hash, Facades\File};
 use JetBrains\PhpStorm\ArrayShape;
 use League\Flysystem\WhitespacePathNormalizer;
@@ -183,6 +181,11 @@ class ProfileService
             $phone_number = '';
         }
 
+        $portfolioData = [];
+        foreach ($user->portfolios as $portfolio) {
+            $portfolioData[] = $this->portfolioIndex($portfolio);
+        }
+
         $statuses = [
             Task::STATUS_OPEN,
             Task::STATUS_RESPONSE,
@@ -229,7 +232,7 @@ class ProfileService
             'phone_number_old' => $user->phone_number_old,
             'system_notification' => $user->system_notification,
             'news_notification' => $user->news_notification,
-            'portfolios' => PortfolioIndexResource::collection($user->portfolios),
+            'portfolios' => $portfolioData,
             'portfolios_count' => Portfolio::where('user_id', $user->id)->get()->count(),
             'views' => $user->performer_views()->count(),
             'wallet_balance' => $balance,
@@ -402,9 +405,9 @@ class ProfileService
      * @param $userId
      * @param $performer
      * @param $review
-     * @return AnonymousResourceCollection
+     * @return array
      */
-    public static function userReviews($userId, $performer, $review): AnonymousResourceCollection
+    public static function userReviews($userId, $performer, $review): array
     {
         $reviews = Review::query()->whereHas('task')->where(['user_id' => $userId]);
 
@@ -419,7 +422,32 @@ class ProfileService
                 $reviews->where(['good_bad' => 0]);
                 break;
         }
-        return ReviewIndexResource::collection($reviews->orderByDesc('created_at')->get());
+        $data = [];
+        foreach ($reviews->orderByDesc('created_at')->get() as $user_review){
+            $user = $user_review->reviewer;
+            $task = $user_review->task;
+            $lastSeen = (new CustomService)->lastSeen($user);
+            $data[] = [
+                'id' => $user_review->id,
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'last_seen' => $lastSeen,
+                    'review_good' => $user->review_good,
+                    'review_bad' => $user->review_bad,
+                    'rating' => $user->review_rating,
+                    'avatar' => url('/storage') . '/' . $user->avatar,
+                ],
+                'description' => $user_review->description,
+                'good_bad' => $user_review->good_bad,
+                'task' => [
+                    'name' => $task->name,
+                    'description' => $task->description
+                ],
+                'created_at' => $user_review->created_at
+            ];
+        }
+        return $data;
     }
 
     /**
@@ -429,9 +457,9 @@ class ProfileService
      * @param $data
      * @param $hasFile
      * @param $files
-     * @return PortfolioIndexResource
+     * @return array
      */
-    public function createPortfolio($user, $data, $hasFile, $files): PortfolioIndexResource
+    public function createPortfolio($user, $data, $hasFile, $files): array
     {
         $data['user_id'] = $user->id;
         if ($hasFile) {
@@ -444,7 +472,7 @@ class ProfileService
             $data['image'] = json_encode($image);
         }
         $portfolio = Portfolio::query()->create($data);
-        return new PortfolioIndexResource($portfolio);
+        return $this->portfolioIndex($portfolio);
     }
 
     /**
@@ -455,10 +483,10 @@ class ProfileService
      * @param $portfolioId
      * @param $description
      * @param $comment
-     * @return PortfolioIndexResource
+     * @return array
      * @throws JsonException
      */
-    public function updatePortfolio($hasFile, $files, $portfolioId, $description, $comment): PortfolioIndexResource
+    public function updatePortfolio($hasFile, $files, $portfolioId, $description, $comment): array
     {
         $portfolio = Portfolio::find($portfolioId);
         $user = $portfolio->user;
@@ -476,7 +504,7 @@ class ProfileService
         $portfolio->update($data);
         $portfolio->save();
 
-        return new PortfolioIndexResource($portfolio);
+        return $this->portfolioIndex($portfolio);
     }
 
     /**
@@ -834,15 +862,36 @@ class ProfileService
     /**
      * $user ga tegishli portfolioni qaytaradi
      * @param $userId
-     * @return JsonResponse
+     * @return array
      */
-    public function portfolios($userId): JsonResponse
+    public function portfolios($userId): array
     {
-        $portfolio = Portfolio::query()->where(['user_id' => $userId])->get();
-        return response()->json([
-            'success' => true,
-            'data' => PortfolioIndexResource::collection($portfolio)
-        ]);
+        $portfolios = Portfolio::query()->where(['user_id' => $userId])->get();
+        $data = [];
+        foreach ($portfolios as $portfolio) {
+            $data[] = $this->portfolioIndex($portfolio);
+        }
+        return $data;
+    }
+
+    public function portfolioIndex($portfolio): array
+    {
+        return !empty($portfolio) ? [
+            'id' => $portfolio->id,
+            'user_id' => $portfolio->user_id,
+            'comment' => $portfolio->comment,
+            'description' => $portfolio->description,
+            'images' => $this->makeAssets(json_decode($portfolio->image??"[]")),
+        ]: [];
+    }
+
+    public function makeAssets($collection): array
+    {
+        $arr = [];
+        foreach ($collection as $item) {
+            $arr[] = asset('/storage/portfolio/'.$item);
+        }
+        return $arr;
     }
 
     /**
