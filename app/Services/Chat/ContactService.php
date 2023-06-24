@@ -139,4 +139,36 @@ class ContactService
             ], JSON_THROW_ON_ERROR) : null,
         ]);
     }
+
+    /**
+     * chatify message data
+     * @param $messages
+     * @return array
+     */
+    public function messageData($messages): array
+    {
+        $data = [];
+        foreach ($messages as $message){
+            $attachment = [
+                'path' => null,
+                'type' => null
+            ];
+            if(isset($message->attachment)){
+                $attachmentOBJ = json_decode($message->attachment);
+                $attachment['path'] = url('/storage/attachments') . '/' . $attachmentOBJ->new_name;
+                $ext = pathinfo($attachmentOBJ->new_name, PATHINFO_EXTENSION);
+                $attachment['type'] = in_array($ext,config('chatify.attachments.allowed_images')) ? 'image' : 'file';
+            }
+            $data[] = [
+                'id' => $message->id,
+                'from_id' => $message->from_id,
+                'to_id' => $message->to_id,
+                'message' => html_entity_decode($message->body),
+                'attachment' => $attachment,
+                'seen' => $message->seen,
+                'created_at' => $message->created_at->format('Y-m-d H:i:s'),
+            ];
+        }
+        return $data;
+    }
 }

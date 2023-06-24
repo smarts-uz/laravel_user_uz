@@ -2,7 +2,7 @@
 
 namespace App\Models\Chat;
 
-use App\Http\Resources\MessageResource;
+use App\Services\Chat\ContactService;
 use Carbon\Carbon;
 
 class ChatifyMessenger extends \Chatify\ChatifyMessenger
@@ -61,7 +61,7 @@ class ChatifyMessenger extends \Chatify\ChatifyMessenger
                 'avatar' => url('/storage') . '/' . $user->avatar,
                 'last_seen' => $lastSeen
             ],
-            'lastMessage' => $lastMessage ? MessageResource::collection(collect([$lastMessage])) : [],
+            'lastMessage' => $lastMessage ? (new ContactService)->messageData(collect([$lastMessage])) : [],
             'unseenCounter' => $unseenCounter,
         ];
     }

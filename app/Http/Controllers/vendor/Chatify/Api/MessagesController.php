@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\vendor\Chatify\Api;
 
-use App\Http\Resources\MessageResource;
 use App\Http\Resources\UserInSearchChatResource;
 use App\Models\Chat\ChatifyMessenger;
 use App\Services\Chat\ContactService;
@@ -226,7 +225,7 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
         $messages = $query->latest()->get();
         $this->chatify->makeSeen($request['id']);
 
-        $messages = MessageResource::collection($messages);
+        $messages = (new ContactService)->messageData($messages);
         return Response::json([
             'success' => true,
             'data' => $messages,
