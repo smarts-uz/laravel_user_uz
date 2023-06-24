@@ -3,19 +3,17 @@
 namespace App\Services\Task;
 
 
-use App\Services\TelegramService;
+use Carbon\Carbon;
+use App\Services\{CustomService, TelegramService, Response};
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use JsonException;
 use App\Http\Resources\{PerformerResponseResource,
     SameTaskResource,
     TaskAddressResource,
     TaskPaginationResource,
-    TaskResponseResource,
-    UserInTaskResource};
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+    TaskResponseResource};
+use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 use App\Models\{Compliance, ComplianceType, Task, TaskResponse, User};
-use App\Services\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 
@@ -84,7 +82,7 @@ class TaskService
                 'category_id' => $task->category_id,
                 'current_user_response' => (bool)$user_response,
                 'responses_count' => $task->responses()->count(),
-                'user' => $task->user ? new UserInTaskResource($task->user) : [],
+                'user' => $task->user ? $this->userInTask($task->user) : [],
                 'views' => $task->views,
                 'status' => $task->status,
                 'oplata' => $task->oplata,
@@ -104,6 +102,26 @@ class TaskService
             'message' => __('Задача не найдена')
         ]];
         return response()->json($data);
+    }
+
+    /**
+     * @param $user
+     * @return array
+     */
+    public function userInTask($user): array
+    {
+        $lastSeen = (new CustomService)->lastSeen($user);
+        return !empty($user) ? [
+            'id' => $user->id,
+            'name' => $user->name,
+            'avatar' => asset('storage/'.$user->avatar),
+            'phone_number' => (new CustomService)->correctPhoneNumber($user->phone_number),
+            'degree' => $user->phone_number,
+            'likes' => $user->review_good,
+            'dislikes' => $user->review_bad,
+            'stars' => $user->review_rating,
+            'last_seen' => $lastSeen,
+        ]: [];
     }
 
     /**

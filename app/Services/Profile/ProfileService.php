@@ -130,31 +130,16 @@ class ProfileService
 
         $goodReviews = $user->goodReviews();
         $lastReview = $goodReviews->get()->last();
-        if ((int)$user->gender === 1) {
-            $date_gender = __('Был онлайн');
-            $suffixAvatar =$suffixAvatarMale;
-        } else {
-            $date_gender = __('Была онлайн');
-            $suffixAvatar = $suffixAvatarFeMale;
-        }
-        $suffixAvatar = $norms->normalizePath($suffixAvatar);
-
-        $date = Carbon::now()->subMinutes(2)->toDateTimeString();
-        if ($user->last_seen >= $date) {
-            $lastSeen = __('В сети');
-        } else {
-            $seenDate = Carbon::parse($user->last_seen);
-            $seenDate->locale(app()->getLocale() . '-' . app()->getLocale());
-            if (app()->getLocale() === 'uz') {
-                $lastSeen = $seenDate->diffForHumans() . ' onlayn edi';
-            } else {
-                $lastSeen = $date_gender . $seenDate->diffForHumans();
-            }
-        }
+        $lastSeen = (new CustomService)->lastSeen($user);
         $age = Carbon::parse($user->born_date)->age;
         $born_date = Carbon::parse($user->born_date)->format('Y-m-d');
         $user_exists = BlockedUser::query()->where('user_id', $user->id)->where('blocked_user_id', $user->id)->exists();
-
+        if ((int)$user->gender === 1) {
+            $suffixAvatar =$suffixAvatarMale;
+        } else {
+            $suffixAvatar = $suffixAvatarFeMale;
+        }
+        $suffixAvatar = $norms->normalizePath($suffixAvatar);
         if (!$user_exists) {
             $blocked_user = 0;
 
@@ -976,23 +961,7 @@ class ProfileService
         $data = [];
         foreach ($blocked_users as $blocked_user) {
             $user = $blocked_user->user;
-            $date = Carbon::now()->subMinutes(2)->toDateTimeString();
-            if((int)$user->gender === 1){
-                $date_gender = __('Был онлайн');
-            }else{
-                $date_gender = __('Была онлайн');
-            }
-            if ($user->last_seen >= $date) {
-                $lastSeen = __('В сети');
-            } else {
-                $seenDate = Carbon::parse($user->last_seen);
-                $seenDate->locale(app()->getLocale() . '-' . app()->getLocale());
-                if(app()->getLocale()==='uz'){
-                    $lastSeen = $seenDate->diffForHumans().' saytda edi';
-                }else{
-                    $lastSeen = $date_gender. $seenDate->diffForHumans();
-                }
-            }
+            $lastSeen = (new CustomService)->lastSeen($user);
             $data[] = [
                 'id' => $blocked_user->id,
                 'user_id'=> $blocked_user->user_id,

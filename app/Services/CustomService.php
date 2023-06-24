@@ -4,7 +4,10 @@
 namespace App\Services;
 
 use App\Models\Content;
+use Carbon\Carbon;
 use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Database\Eloquent\HigherOrderBuilderProxy;
 use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 
@@ -90,6 +93,28 @@ class CustomService
     public function cacheLang($id): mixed
     {
         return cache()->get('lang' . $id);
+    }
+
+    public function lastSeen($user): array|string|Translator|Application|null
+    {
+        if((int)$user->gender === 1){
+            $date_gender = __('Был онлайн ');
+        }else{
+            $date_gender = __('Была онлайн ');
+        }
+        $date = Carbon::now()->subMinutes(2)->toDateTimeString();
+        if ($user->last_seen >= $date) {
+            $lastSeen = __('В сети');
+        } else {
+            $seenDate = Carbon::parse($user->last_seen);
+            $seenDate->locale(app()->getLocale() . '-' . app()->getLocale());
+            if(app()->getLocale()==='uz'){
+                $lastSeen = $seenDate->diffForHumans().' onlayn edi';
+            }else{
+                $lastSeen = $date_gender . $seenDate->diffForHumans();
+            }
+        }
+        return $lastSeen;
     }
 
 }

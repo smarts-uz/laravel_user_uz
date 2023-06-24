@@ -3,6 +3,7 @@
 namespace App\Models\Chat;
 
 use App\Services\Chat\ContactService;
+use App\Services\CustomService;
 use Carbon\Carbon;
 
 class ChatifyMessenger extends \Chatify\ChatifyMessenger
@@ -36,23 +37,7 @@ class ChatifyMessenger extends \Chatify\ChatifyMessenger
         // Get Unseen messages counter
         $unseenCounter = $this->countUnseenMessages($user->id);
 
-        if((int)$user->gender === 1){
-            $date_gender = __('Был онлайн');
-        }else{
-            $date_gender = __('Была онлайн');
-        }
-        $date = Carbon::now()->subMinutes(2)->toDateTimeString();
-        if ($user->last_seen >= $date) {
-            $lastSeen = __('В сети');
-        } else {
-            $seenDate = Carbon::parse($user->last_seen);
-            $seenDate->locale(app()->getLocale() . '-' . app()->getLocale());
-            if(app()->getLocale()==='uz'){
-                $lastSeen = $seenDate->diffForHumans().' onlayn edi';
-            }else{
-                $lastSeen = $date_gender. $seenDate->diffForHumans();
-            }
-        }
+        $lastSeen = (new CustomService)->lastSeen($user);
         return [
             'user' => [
                 'id' => $user->id,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Services\Task\TaskService;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TaskResponseResource extends JsonResource
@@ -18,7 +19,7 @@ class TaskResponseResource extends JsonResource
         return
         [
             'id' => $this->id,
-            'user' => new UserInTaskResource($this->performer),
+            'user' => (new TaskService)->userInTask($this->performer),
             'budget' => $this->price,
             'description' =>$this->description,
             'created_at' =>$this->created,

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\vendor\Chatify\Api;
 
-use App\Http\Resources\UserInSearchChatResource;
 use App\Models\Chat\ChatifyMessenger;
 use App\Services\Chat\ContactService;
 use App\Services\CustomService;
 use App\Services\NotificationService;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -362,9 +362,20 @@ class MessagesController extends \Chatify\Http\Controllers\Api\MessagesControlle
             ->whereIn('id',$ids)
             ->where('name', 'LIKE', "%{$input}%")
             ->get();
+        $data = [];
+        foreach ($records as $record) {
+            $lastSeen = (new CustomService)->lastSeen($record);
+            $data[] = [
+                'id' => $record->id,
+                'name' => $record->name,
+                'active_status' => $record->active_status,
+                'avatar' => url('/storage') . '/' . $record->avatar,
+                'last_seen' => $lastSeen
+            ];
+        }
         return Response::json([
             'success' => true,
-            'data' => UserInSearchChatResource::collection($records),
+            'data' => $data,
             'message' => 'Success'
         ]);
     }
