@@ -2,7 +2,6 @@
 
 namespace App\Services\Task;
 
-use App\Http\Resources\TaskIndexResource;
 use App\Models\{Address, Category, ChMessage, CustomField, CustomFieldsValue, Task, User};
 use App\Services\{CustomService, Response, VerificationService};
 use Carbon\Carbon;
@@ -572,7 +571,7 @@ class UpdateTaskService
         return response()->json([
             'success' => true,
             'message' => __('Успешно сохранено'),
-            'task' => new TaskIndexResource($task)
+            'task' => (new TaskService)->taskIndex($taskId)
         ]);
     }
 

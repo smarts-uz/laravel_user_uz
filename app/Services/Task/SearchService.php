@@ -372,6 +372,11 @@ class SearchService
         ], 403);
     }
 
+    /**
+     * favorite task all
+     * @param $userId
+     * @return AnonymousResourceCollection
+     */
     public function favorite_task_all($userId): AnonymousResourceCollection
     {
         $favorite_tasks = FavoriteTask::query()->where('user_id',$userId)->paginate(10);

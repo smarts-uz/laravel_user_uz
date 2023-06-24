@@ -4,14 +4,13 @@
 namespace App\Services;
 
 use JsonException;
-use App\Http\Resources\{NotificationResource, PerformerIndexResource, ReviewIndexResource};
+use App\Http\Resources\{NotificationResource, PerformerIndexResource};
 use App\Item\{PerformerPrefItem, PerformerServiceItem, PerformerUserItem};
-use App\Models\{BlockedUser, Notification, Review, Task, User, UserCategory, UserView, Category};
+use App\Models\{Notification, Review, Task, User, UserCategory, UserView, Category};
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
-use League\Flysystem\WhitespacePathNormalizer;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
