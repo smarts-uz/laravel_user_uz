@@ -95,6 +95,11 @@ class CustomService
         return cache()->get('lang' . $id);
     }
 
+    /**
+     * Foydalanuchchi oxirgi kirgan vaqtini qaytaradi
+     * @param $user
+     * @return array|string|Translator|Application|null
+     */
     public function lastSeen($user): array|string|Translator|Application|null
     {
         if((int)$user->gender === 1){

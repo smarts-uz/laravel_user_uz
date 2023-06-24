@@ -6,8 +6,7 @@ use App\Http\Resources\{
     PortfolioIndexResource,
     ResponseTemplateResource,
     ReviewIndexResource,
-    TransactionHistoryCollection,
-    UserCategoriesResource};
+    TransactionHistoryCollection};
 use Exception;
 use JsonException;
 use App\Item\{ProfileCashItem, ProfileDataItem, ProfileSettingItem, VerificationCategoryItem};
@@ -175,7 +174,7 @@ class ProfileService
         foreach ($user_category as $category_name => $category) {
             $performed_tasks_count[] = [
                 'name' => $category_name,
-                'childs'=> UserCategoriesResource::collection($category)
+                'childs'=> $this->userCat($category)
             ];
         }
 
@@ -249,6 +248,18 @@ class ProfileService
             'created_at' => $user->created_at
         ];
         return response()->json(['success' => true, 'data' => $data]);
+    }
+
+    public function userCat($category): array
+    {
+        $data = [];
+        foreach ($category as $item) {
+            $data[] = [
+                'name' => $item->category->getTranslatedAttribute('name'),
+                'task_count' => $item->category->tasks()->where('performer_id',$item->user_id)->where('status',Task::STATUS_COMPLETE)->count(),
+            ];
+        }
+        return $data;
     }
 
     /**

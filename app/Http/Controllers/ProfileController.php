@@ -9,8 +9,7 @@ use App\Http\Requests\{Api\CategoryRequest,
     User\PerformerCreateRequest,
     UserPasswordRequest,
     UserUpdateDataRequest};
-use App\Http\Resources\UserCategoriesResource;
-use App\Models\{Category, Session, Portfolio, User, UserCategory};
+use App\Models\{Session, Portfolio, User};
 use Illuminate\Http\{RedirectResponse, Request};
 use Jenssegers\Agent\Agent;
 use Illuminate\Support\Facades\Auth;

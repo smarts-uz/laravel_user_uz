@@ -2,12 +2,10 @@
 
 namespace App\Services\Task;
 
-
-use Carbon\Carbon;
 use App\Services\{CustomService, TelegramService, Response};
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use JsonException;
-use App\Http\Resources\{PerformerResponseResource,
+use App\Http\Resources\{
     SameTaskResource,
     TaskAddressResource,
     TaskPaginationResource,
@@ -75,7 +73,7 @@ class TaskService
                 'description' => $task->description,
                 'phone' => $task->phone,
                 'performer_id' => $task->performer_id,
-                'performer' => (!empty($performer_response)) ? new PerformerResponseResource($performer_response) : null,
+                'performer' => (!empty($performer_response)) ? $this->performerResponse($performer_response) : null,
                 'other'=> $task->category->name === "Что-то другое" || $task->category->name === "Boshqa narsa",
                 'parent_category_name'=>$task->category->parent->getTranslatedAttribute('name', app()->getLocale(), 'ru'),
                 'category_name' => $task->category->getTranslatedAttribute('name', app()->getLocale(), 'ru'),
@@ -121,6 +119,25 @@ class TaskService
             'dislikes' => $user->review_bad,
             'stars' => $user->review_rating,
             'last_seen' => $lastSeen,
+        ]: [];
+    }
+
+    public function performerResponse($performer_response): array
+    {
+        $performer = $performer_response->performer;
+        return !empty($performer_response) ? [
+            'id' => $performer->id,
+            'name' => $performer->name,
+            'avatar' => $performer->avatar?asset('storage/'.$performer->avatar):null,
+            'phone_number' => (new CustomService)->correctPhoneNumber($performer->phone_number),
+            'degree' => (new CustomService)->correctPhoneNumber($performer->phone_number),
+            'likes' => $performer->review_good,
+            'dislikes' => $performer->review_bad,
+            'stars' => $performer->review_rating,
+            'last_seen' => $performer->last_seen_at,
+            'price' => $performer_response->price,
+            'description' => $performer_response->description,
+            'created_at' => $performer_response->created
         ]: [];
     }
 
