@@ -2,7 +2,7 @@
 
 namespace App\Services\Task;
 
-use App\Http\Resources\FavoriteTaskResource;
+use App\Http\Resources\TaskSingleResource;
 use App\Item\SearchServiceTaskItem;
 use App\Models\Address;
 use App\Models\ComplianceType;
@@ -17,7 +17,6 @@ use App\Services\CustomService;
 use App\Services\TelegramService;
 use Elastic\ScoutDriverPlus\Support\Query;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -375,11 +374,19 @@ class SearchService
     /**
      * favorite task all
      * @param $userId
-     * @return AnonymousResourceCollection
+     * @return array
      */
-    public function favorite_task_all($userId): AnonymousResourceCollection
+    public function favorite_task_all($userId): array
     {
-        $favorite_tasks = FavoriteTask::query()->where('user_id',$userId)->paginate(10);
-        return FavoriteTaskResource::collection($favorite_tasks);
+        $favorite_tasks = FavoriteTask::query()->where('user_id',$userId)->get();
+        $data = [];
+        foreach ($favorite_tasks as $favorite_task) {
+            $data[] = [
+                'id' => $favorite_task->id,
+                'user_id' => $favorite_task->user_id,
+                'task' => new TaskSingleResource($favorite_task->task),
+            ];
+        }
+        return $data;
     }
 }

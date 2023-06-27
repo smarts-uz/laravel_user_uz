@@ -4,9 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Services\Task\SearchService;
+use App\Utils\PaginateCollection;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 
 class SearchAPIController extends Controller
@@ -244,10 +246,11 @@ class SearchAPIController extends Controller
      *     )
      * )
      */
-    public function favorite_task_all(): AnonymousResourceCollection
+    public function favorite_task_all(): LengthAwarePaginator
     {
         $userId = auth()->id();
-        return $this->search_service->favorite_task_all($userId);
+        $data = $this->search_service->favorite_task_all($userId);
+        return (new PaginateCollection)->paginate($data,10);
     }
 
 }
