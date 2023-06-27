@@ -3,11 +3,8 @@
 namespace App\Services\Task;
 
 use App\Services\{CustomService, TelegramService, Response};
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use JsonException;
-use App\Http\Resources\{
-    TaskPaginationResource,
-    TaskResponseResource};
+use App\Http\Resources\TaskPaginationResource;
 use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 use App\Models\{Compliance, ComplianceType, Task, TaskResponse, User};
 use Illuminate\Http\JsonResponse;
@@ -181,9 +178,9 @@ class TaskService
      * Shu $taskga otklik qilganlarni userlarni qaytaradi
      * @param $filter
      * @param $taskId
-     * @return AnonymousResourceCollection
+     * @return array
      */
-    public function responses($filter, $taskId): AnonymousResourceCollection
+    public function responses($filter, $taskId): array
     {
         $task = Task::find($taskId);
         if ($task->user_id === auth()->id()) {
@@ -198,18 +195,29 @@ class TaskService
             $responses = $task->responses()->where('performer_id', auth()->id());
         }
         $responses->where('performer_id', '!=', $task->performer_id);
-        return TaskResponseResource::collection($responses->paginate(5));
+        $data = [];
+        foreach ($responses->get() as $respons) {
+            $data[] = [
+                'id' => $respons->id,
+                'user' => (new self)->userInTask($respons->performer),
+                'budget' => $respons->price,
+                'description' =>$respons->description,
+                'created_at' =>$respons->created,
+                'not_free' => $respons->not_free
+            ];
+        }
+        return $data;
     }
 
     /**
      * Bu method app orqali taskka otklik tashlash
-     * @param $task
+     * @param $taskId
      * @param $user
      * @param $data
      * @return JsonResponse
      * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      * @throws JsonException
+     * @throws NotFoundExceptionInterface
      */
     public function response_store($taskId, $user, $data): JsonResponse
     {

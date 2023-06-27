@@ -2,10 +2,10 @@
 
 namespace App\Services\User;
 
-use App\Http\Resources\PerformerIndexResource;
 use App\Models\Notification;
 use App\Models\User;
 use App\Models\WalletBalance;
+use App\Services\PerformersService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -67,7 +67,7 @@ class SocialService
             $accessToken = $user->createToken('authToken')->accessToken;
             // return the token for usage
             return response()->json([
-                'user' => new PerformerIndexResource(auth()->user()),
+                'user' => (new PerformersService)->performerData(auth()->user()),
                 'access_token' => $accessToken,
                 'socialpas' => $user->has_password
             ]);

@@ -4,12 +4,10 @@
 namespace App\Services;
 
 use JsonException;
-use App\Http\Resources\PerformerIndexResource;
 use App\Item\{PerformerPrefItem, PerformerServiceItem, PerformerUserItem};
-use App\Models\{Notification, Review, Task, User, UserCategory, UserView, Category};
+use App\Models\{BlockedUser, Notification, Review, Task, User, UserCategory, UserView, Category};
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -145,9 +143,9 @@ class PerformersService
      * Mazkur metod performerlar bo'yicha filter qiladi
      * @param $data
      * @param $authId
-     * @return AnonymousResourceCollection
+     * @return array
      */
-    public function performer_filter($data, $authId): AnonymousResourceCollection
+    public function performer_filter($data, $authId): array
     {
         if ((int)setting('admin.PerformerSelfVisible',1) !== 1) {
             $performers = User::query()
@@ -200,7 +198,38 @@ class PerformersService
             $performers = $performers->where('name', 'like', "%$search%");
         }
 
-        return PerformerIndexResource::collection($performers->paginate(20));
+        $data = [];
+        foreach ($performers->get() as $performer) {
+            $data[] = (new self)->performerData($performer);
+        }
+
+        return $data;
+    }
+
+    public function performerData($performer): array
+    {
+        $lastSeen = (new CustomService)->lastSeen($performer);
+        $user_exists = BlockedUser::query()->where('user_id',auth()->id())->where('blocked_user_id',$performer->id)->exists();
+        if(!$user_exists){
+            $user_avatar = asset('storage/'.$performer->avatar);
+        }else{
+            $user_avatar = asset("images/block-user.jpg");
+        }
+        return !empty($performer) ? [
+            'id' => $performer->id,
+            'name' => $performer->name,
+            'email' => $performer->email,
+            'avatar' => $user_avatar,
+            'phone_number' => (new CustomService)->correctPhoneNumber($performer->phone_number),
+            'location' => $performer->location,
+            'last_seen' => $lastSeen,
+            'likes' => $performer->review_good,
+            'dislikes' => $performer->review_bad,
+            'description' => $performer->description,
+            'stars' => $performer->review_rating,
+            'role_id' => $performer->role_id,
+            'views' => $performer->performer_views()->count(),
+        ]: [];
     }
 
     /**

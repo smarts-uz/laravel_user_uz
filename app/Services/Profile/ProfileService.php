@@ -26,12 +26,12 @@ use UAParser\Parser;
 
 class ProfileService
 {
-    public const MAX_TRANSACTIONS = 15;
 
-
-    public static function log($data) {
-        if (PHP_SAPI === 'cli')
+    public static function log($data): void
+    {
+        if (PHP_SAPI === 'cli') {
             var_dump($data);
+        }
     }
 
     /**
@@ -364,7 +364,7 @@ class ProfileService
     {
         $item = new ProfileCashItem();
         $item->balance = $user->walletBalance;
-        $item->transactions = $user->transactions()->paginate(self::MAX_TRANSACTIONS);
+        $item->transactions = $user->transactions()->paginate(15);
         $item->top_users = User::query()->where('role_id', User::ROLE_PERFORMER)
             ->where('review_rating', '!=', 0)->orderbyRaw('(review_good - review_bad) DESC')
             ->limit(Review::TOP_USER)->pluck('id')->toArray();
@@ -593,7 +593,7 @@ class ProfileService
         }
         return [
             'balance' => $balance,
-            'transaction' => TransactionHistoryCollection::collection($transactions->orderByDesc('created_at')->paginate(self::MAX_TRANSACTIONS))->response()->getData(true)
+            'transaction' => TransactionHistoryCollection::collection($transactions->orderByDesc('created_at')->paginate(15))->response()->getData(true)
         ];
     }
 

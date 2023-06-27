@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Utils\PaginateCollection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use App\Http\Requests\Api\{TaskAddressRequest,
@@ -24,8 +25,11 @@ use App\Http\Requests\Api\{TaskAddressRequest,
     TaskVerificationRequest};
 use App\Http\Resources\{TaskSingleResource, TaskPaginationResource};
 use Illuminate\{Http\Request,
-    Http\JsonResponse, Routing\Controller,
-    Validation\ValidationException, Http\Resources\Json\AnonymousResourceCollection};
+    Http\JsonResponse,
+    Pagination\LengthAwarePaginator,
+    Routing\Controller,
+    Validation\ValidationException,
+    Http\Resources\Json\AnonymousResourceCollection};
 use App\Models\{User, TaskResponse};
 use App\Services\{Task\TaskService, Task\ResponseService,
     Task\CreateTaskService, Task\FilterTaskService, Task\UpdateTaskService, Response};
@@ -116,10 +120,11 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function responses(Request $request, $taskId): AnonymousResourceCollection
+    public function responses(Request $request, $taskId): LengthAwarePaginator
     {
        $filter = $request->get('filter');
-       return $this->task_service->responses($filter, $taskId);
+       $data = $this->task_service->responses($filter, $taskId);
+       return (new PaginateCollection)->paginate($data,10);
     }
 
     /**

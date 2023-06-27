@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Utils\PaginateCollection;
 use App\Http\Requests\{CategoriesRequest, BecomePerformerEmailPhone, BecomePerformerRequest, GiveTaskRequest};
+use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\{User, UserCategory};
 use App\Services\{Profile\ProfileService, PerformersService};
 use Illuminate\Http\{JsonResponse, Request, Resources\Json\AnonymousResourceCollection};
@@ -109,11 +111,12 @@ class PerformerAPIController extends Controller
      * )
      *
      */
-    public function performer_filter(Request $request): AnonymousResourceCollection
+    public function performer_filter(Request $request): LengthAwarePaginator
     {
         $data = $request->all();
         $authId = Auth::id();
-        return $this->performer_service->performer_filter($data, $authId);
+        $datas = $this->performer_service->performer_filter($data, $authId);
+        return (new PaginateCollection)->paginate($datas,20);
     }
 
     /**
