@@ -13,7 +13,6 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\{Collection, Facades\Http, Facades\Log, Facades\Mail};
 use App\Events\SendNotificationEvent;
-use App\Http\Resources\NotificationResource;
 
 class NotificationService
 {
@@ -67,6 +66,21 @@ class NotificationService
     }
 
     /**
+     * Mobil ilova uchun foydalanuvchiga kelgan barcha bildirishnomalarni qaytaradi
+     * @param $user
+     * @return array
+     */
+    public function getNotifService($user): array
+    {
+       $notifications = self::getNotifications($user);
+       $data = [];
+       foreach ($notifications as $notification) {
+            $data[] = $this->notificationResource($notification);
+       }
+        return $data;
+    }
+
+    /**
      * Send new task notification by websocket, sms and firebase
      *
      * @param $task // Task model object
@@ -100,7 +114,7 @@ class NotificationService
             self::pushNotification($performer, [
                 'title' => self::titles($notification->type),
                 'body' => self::descriptions($notification)
-            ], 'notification', new NotificationResource($notification),$notifId);
+            ], 'notification', (new self)->notificationResource($notification),$notifId);
 
             self::sendNotificationRequest($performer->id,$notification);
 
@@ -165,7 +179,7 @@ class NotificationService
             self::pushNotification($user, [
                 'title' => $not->title,
                 'body' => $not->text
-            ], 'notification', new NotificationResource($notification),$notifId);
+            ], 'notification', (new self)->notificationResource($notification),$notifId);
 
             self::sendNotificationRequest($user->id, $notification);
         }
@@ -226,7 +240,7 @@ class NotificationService
         self::pushNotification($user, [
             'title' => self::titles($notification->type, $locale),
             'body' => self::descriptions($notification, $locale)
-        ], 'notification', new NotificationResource($notification));
+        ], 'notification', (new self)->notificationResource($notification));
 
         // 2. Send notification to task owner(user)
         /** @var Notification $notification */
@@ -247,7 +261,7 @@ class NotificationService
         self::pushNotification($task->user, [
             'title' => self::titles($notification->type, $locale),
             'body' => self::descriptions($notification, $locale)
-        ], 'notification', new NotificationResource($notification));
+        ], 'notification', (new self)->notificationResource($notification));
 
         return true;
     }
@@ -280,6 +294,27 @@ class NotificationService
         }
     }
 
+    /**
+     * bildirishnoma uchun kerakli ustun qiymatlarini qaytaradi
+     * @param $notification
+     * @return array
+     */
+    public function notificationResource($notification): array
+    {
+        return !empty($notification) ? [
+            'id' => $notification->id,
+            'title' => self::titles($notification->type),
+            'description' => self::descriptions($notification),
+            'type' => $notification->type,
+            'task_id' => $notification->task_id,
+            'task_name' => $notification->name_task,
+            'user_id' => $notification->user_id,
+            'user_name' => $notification->user->name ?? null,
+            'is_read' => $notification->is_read,
+            'created_at' => $notification->created_at?->format('d.m.Y')
+        ]: [];
+    }
+
 
     /**
      * Bu method yangi ro'yxatdan o'tib kirganida unga balans
@@ -297,7 +332,7 @@ class NotificationService
         self::pushNotification($user, [
             'title' => self::titles($notification->type, $locale),
             'body' => self::descriptions($notification, $locale)
-        ], 'notification', new NotificationResource($notification));
+        ], 'notification', (new self)->notificationResource($notification));
 
         $notification->status = 1;
         $notification->save();

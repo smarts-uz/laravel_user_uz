@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Http\Resources\NotificationResource;
 use App\Models\Notification;
 
 class UserNotificationService extends NotificationService
@@ -33,7 +32,7 @@ class UserNotificationService extends NotificationService
         self::pushNotification($task->performer, [
             'title' => self::titles($type, $locale),
             'body' => self::descriptions($notification, $locale)
-        ], 'notification', new NotificationResource($notification));
+        ], 'notification', (new NotificationService)->notificationResource($notification));
     }
 
     /**
@@ -63,6 +62,6 @@ class UserNotificationService extends NotificationService
         self::pushNotification($task->user, [
             'title' => self::titles($type, $locale),
             'body' => self::descriptions($notification, $locale)
-        ], 'notification', new NotificationResource($notification));
+        ], 'notification',(new NotificationService)->notificationResource($notification));
     }
 }

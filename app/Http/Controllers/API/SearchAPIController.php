@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\FavoriteTask;
-use App\Models\Task;
 use App\Services\Task\SearchService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;

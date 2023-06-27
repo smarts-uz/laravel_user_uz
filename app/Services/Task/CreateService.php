@@ -2,7 +2,6 @@
 
 namespace App\Services\Task;
 
-use App\Http\Resources\NotificationResource;
 use App\Item\CreateNameItem;
 use App\Models\{Address, Category, CustomFieldsValue, Notification, Task, User, WalletBalance};
 use App\Jobs\SendTaskCreateNotification;
@@ -102,7 +101,7 @@ class CreateService
             'body' => __('Ваше задание task_name №task_id было отменено', [
                 'task_name' => $task->name, 'task_id' => $task->id,
             ], $locale)
-        ], 'notification', new NotificationResource($notification));
+        ], 'notification',(new NotificationService)->notificationResource($notification));
     }
 
     /**
@@ -211,7 +210,7 @@ class CreateService
             'title' => __('Предложение', [], $locale), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
                 'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name
             ], $locale)
-        ], 'notification', new NotificationResource($notification));
+        ], 'notification', (new NotificationService)->notificationResource($notification));
 
         session()->forget('performer_id_for_task');
     }

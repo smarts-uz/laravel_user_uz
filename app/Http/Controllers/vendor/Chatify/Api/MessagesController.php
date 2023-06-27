@@ -6,7 +6,6 @@ use App\Models\Chat\ChatifyMessenger;
 use App\Services\Chat\ContactService;
 use App\Services\CustomService;
 use App\Services\NotificationService;
-use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;

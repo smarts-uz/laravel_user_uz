@@ -4,7 +4,6 @@
 namespace App\Services\Task;
 
 
-use App\Http\Resources\NotificationResource;
 use JsonException;
 use App\Models\{Notification, Task, TaskResponse, Transaction, User, UserExpense, WalletBalance};
 use App\Services\{CustomService, NotificationService, SmsMobileService};
@@ -140,7 +139,7 @@ class ResponseService
         NotificationService::pushNotification($performer, [
             'title' => NotificationService::titles($notification->type, $locale),
             'body' => NotificationService::descriptions($notification, $locale)
-        ], 'notification', new NotificationResource($notification));
+        ], 'notification', (new NotificationService)->notificationResource($notification));
         $taskResponse = TaskResponse::query()->where(['task_id' => $task->id])->where(['performer_id' => $performer->id])->first();
         if ((int)$taskResponse->not_free === 0) {
             /** @var WalletBalance $balance */

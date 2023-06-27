@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\FirebaseTokenRequest;
-use App\Http\Resources\NotificationResource;
 use App\Jobs\SendNewsNotification;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
@@ -52,9 +51,9 @@ class NotificationController extends VoyagerBaseController
      */
     public function getNotifications(): JsonResponse
     {
-        return $this->success(
-            NotificationResource::collection(NotificationService::getNotifications(auth()->user()))
-        );
+        $user = auth()->user();
+        $data = $this->notificationService->getNotifService($user);
+        return $this->success($data);
     }
 
     /**

@@ -4,7 +4,7 @@
 namespace App\Services;
 
 use JsonException;
-use App\Http\Resources\{NotificationResource, PerformerIndexResource};
+use App\Http\Resources\PerformerIndexResource;
 use App\Item\{PerformerPrefItem, PerformerServiceItem, PerformerUserItem};
 use App\Models\{Notification, Review, Task, User, UserCategory, UserView, Category};
 use Carbon\Carbon;
@@ -247,7 +247,7 @@ class PerformersService
                 'title' => __('Предложение', [], $locale), 'body' => __('Вам предложили новое задание task_name №task_id от заказчика task_user', [
                     'task_name' => $notification->name_task, 'task_id' => $notification->task_id, 'task_user' => $notification->user?->name
                 ], $locale)
-            ], 'notification', new NotificationResource($notification));
+            ], 'notification', (new NotificationService)->notificationResource($notification));
 
             return response()->json(['success' => true]);
         }
@@ -291,7 +291,7 @@ class PerformersService
         NotificationService::pushNotification($performer, [
             'title' => NotificationService::titles($notification->type, $locale),
             'body' => NotificationService::descriptions($notification, $locale)
-        ], 'notification', new NotificationResource($notification));
+        ], 'notification', (new NotificationService)->notificationResource($notification));
 
         return response()->json([
             'success' => true,

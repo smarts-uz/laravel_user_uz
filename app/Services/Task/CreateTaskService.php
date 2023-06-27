@@ -4,7 +4,7 @@ namespace App\Services\Task;
 
 use App\Models\{Address, Category, CustomField, CustomFieldsValue, Task, User};
 use App\Jobs\SendTaskCreateNotification;
-use App\Services\{CustomService, NotificationService, Response, VerificationService};
+use App\Services\{CustomService, Response, VerificationService};
 use Carbon\Carbon;
 use Illuminate\Database\{Eloquent\Builder, Eloquent\Collection, Eloquent\Model};
 use Illuminate\Http\JsonResponse;

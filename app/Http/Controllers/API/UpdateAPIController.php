@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\{Api\ReviewRequest, Task\UpdateRequest};
+use App\Http\Requests\{Api\ReviewRequest, UpdateRequest};
 use App\Models\Task;
 use App\Services\Task\{CreateService, ReviewService, UpdateTaskService};
 use Exception;

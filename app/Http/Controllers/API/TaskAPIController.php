@@ -26,7 +26,7 @@ use App\Http\Resources\{TaskSingleResource, TaskPaginationResource};
 use Illuminate\{Http\Request,
     Http\JsonResponse, Routing\Controller,
     Validation\ValidationException, Http\Resources\Json\AnonymousResourceCollection};
-use App\Models\{User, Task, TaskResponse, ComplianceType};
+use App\Models\{User, TaskResponse};
 use App\Services\{Task\TaskService, Task\ResponseService,
     Task\CreateTaskService, Task\FilterTaskService, Task\UpdateTaskService, Response};
 

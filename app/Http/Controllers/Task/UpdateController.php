@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Task\UpdateRequest;
+use App\Http\Requests\UpdateRequest;
 use App\Models\Task;
 use App\Services\Task\ReviewService;
 use App\Services\Task\UpdateTaskService;

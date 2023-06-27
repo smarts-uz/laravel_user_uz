@@ -2,9 +2,10 @@
 
 namespace App\Services;
 
-use App\Http\Resources\NotificationResource;
-use App\Models\Notification;
-use App\Models\WalletBalance;
+use JsonException;
+use App\Models\{Notification, WalletBalance};
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class TaskNotificationService extends NotificationService
 {
@@ -13,6 +14,9 @@ class TaskNotificationService extends NotificationService
      *
      * @param $task
      * @return void
+     * @throws JsonException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public static function sendNotificationForCancelledTask($task): void
     {
@@ -43,7 +47,7 @@ class TaskNotificationService extends NotificationService
                     self::pushNotification($response->performer, [
                         'title' => self::titles(Notification::CANCELLED_TASK),
                         'body' => self::descriptions($notification)
-                    ], 'notification', new NotificationResource($notification));
+                    ], 'notification', (new NotificationService)->notificationResource($notification));
                 }
                 break;
         }

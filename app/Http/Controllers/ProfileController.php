@@ -6,7 +6,7 @@ use App\Http\Requests\{Api\CategoryRequest,
     Api\ProfileVideoRequest,
     PersonalInfoRequest,
     PortfolioRequest,
-    User\PerformerCreateRequest,
+    PerformerCreateRequest,
     UserPasswordRequest,
     UserUpdateDataRequest};
 use App\Models\{Session, Portfolio, User};

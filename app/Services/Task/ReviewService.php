@@ -2,7 +2,6 @@
 
 namespace App\Services\Task;
 
-use App\Http\Resources\NotificationResource;
 use App\Models\{ChMessage, Notification, Review, Task, User};
 use App\Services\{CustomService, NotificationService};
 use JsonException;
@@ -116,7 +115,7 @@ class ReviewService
                 $notification = self::userReview($task, $request);
                 NotificationService::pushNotification($task->performer, [
                     'title' => __('Новый отзыв', [], $locale), 'body' => __('О вас оставлен новый отзыв', [], $locale) . " \"$task->name\" №$task->id"
-                ], 'notification', new NotificationResource($notification));
+                ], 'notification', (new NotificationService)->notificationResource($notification));
                 break;
             case $task->performer_id === auth()->id() :
                 // performer review to user
@@ -124,7 +123,7 @@ class ReviewService
                 $notification = self::performerReview($task, $request);
                 NotificationService::pushNotification($task->user, [
                     'title' => __('Новый отзыв', [], $locale), 'body' => __('О вас оставлен новый отзыв', [], $locale) . " \"$task->name\" №$task->id"
-                ], 'notification', new NotificationResource($notification));
+                ], 'notification', (new NotificationService)->notificationResource($notification));
                 break;
         }
     }
