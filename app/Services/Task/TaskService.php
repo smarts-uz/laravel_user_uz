@@ -4,7 +4,6 @@ namespace App\Services\Task;
 
 use App\Services\{CustomService, TelegramService, Response};
 use JsonException;
-use App\Http\Resources\TaskPaginationResource;
 use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
 use App\Models\{Compliance, ComplianceType, Task, TaskResponse, User};
 use Illuminate\Http\JsonResponse;
@@ -284,15 +283,15 @@ class TaskService
 
     /**
      * Get My Tasks
-     * @param $user
+     * @param $userId
      * @param $is_performer
      * @param $status
-     * @return TaskPaginationResource
+     * @return array
      */
-    public function my_tasks_all($user, $is_performer, $status): TaskPaginationResource
+    public function my_tasks_all($userId, $is_performer, $status): array
     {
         $column = $is_performer ? 'performer_id' : 'user_id';
-        $tasks = Task::query()->where($column, $user->id);
+        $tasks = Task::query()->where($column, $userId);
 
         if ($status) {
             $tasks = $tasks->where('status', $status);
@@ -300,7 +299,11 @@ class TaskService
         else {
             $tasks = $tasks->where('status', '!=', 0);
         }
-        return new TaskPaginationResource($tasks->orderByDesc('created_at')->paginate());
+        $data = [];
+        foreach ($tasks->get() as $task) {
+            $data[] = (new FilterTaskService)->taskSingle($task);
+        }
+        return $data;
     }
 
     /**
@@ -352,24 +355,28 @@ class TaskService
      * Userning tasklarini qaytaradi
      * @param $user_id
      * @param $status
-     * @return TaskPaginationResource
+     * @return array
      */
-    public function performer_tasks($user_id, $status): TaskPaginationResource
+    public function performer_tasks($user_id, $status): array
     {
         if((int)$status === 1){
             $tasks = Task::where('user_id', $user_id)->where('status', Task::STATUS_COMPLETE);
         }else{
             $tasks = Task::where('performer_id', $user_id)->where('status', Task::STATUS_COMPLETE);
         }
-        return new TaskPaginationResource($tasks->orderByDesc('created_at')->paginate());
+        $data = [];
+        foreach ($tasks->orderByDesc('created_at')->get() as $task) {
+            $data[] = (new FilterTaskService)->taskSingle($task);
+        }
+        return $data;
     }
 
     /**
      * Get Performer all Tasks
      * @param $user_id
-     * @return TaskPaginationResource
+     * @return array
      */
-    public function all_tasks($user_id): TaskPaginationResource
+    public function all_tasks($user_id): array
     {
         $statuses = [
             Task::STATUS_OPEN,
@@ -378,8 +385,11 @@ class TaskService
             Task::STATUS_COMPLETE,
             Task::STATUS_NOT_COMPLETED,
             Task::STATUS_CANCELLED];
-        $tasks = Task::where('user_id', $user_id)->whereIn('status', $statuses);
-
-        return new TaskPaginationResource($tasks->orderByDesc('created_at')->paginate());
+        $tasks = Task::query()->where('user_id', $user_id)->whereIn('status', $statuses);
+        $data = [];
+        foreach ($tasks->orderByDesc('created_at')->get() as $task) {
+            $data[] = (new FilterTaskService)->taskSingle($task);
+        }
+        return $data;
     }
 }

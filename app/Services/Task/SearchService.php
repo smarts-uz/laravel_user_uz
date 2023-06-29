@@ -2,7 +2,6 @@
 
 namespace App\Services\Task;
 
-use App\Http\Resources\TaskSingleResource;
 use App\Item\SearchServiceTaskItem;
 use App\Models\Address;
 use App\Models\ComplianceType;
@@ -384,7 +383,7 @@ class SearchService
             $data[] = [
                 'id' => $favorite_task->id,
                 'user_id' => $favorite_task->user_id,
-                'task' => new TaskSingleResource($favorite_task->task),
+                'task' => (new FilterTaskService)->taskSingle($favorite_task->task)
             ];
         }
         return $data;

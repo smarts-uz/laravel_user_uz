@@ -2,8 +2,7 @@
 
 namespace App\Services\Profile;
 
-use App\Http\Resources\{
-    TransactionHistoryCollection};
+use App\Utils\PaginateCollection;
 use Exception;
 use JsonException;
 use App\Item\{ProfileCashItem, ProfileDataItem, ProfileSettingItem, VerificationCategoryItem};
@@ -591,9 +590,22 @@ class ProfileService
                     ->where('created_at', '<', $to);
                 break;
         }
+        $data = [];
+        foreach ($transactions->orderByDesc('created_at')->get() as $item) {
+            $data[] = [
+                "id" => $item->id,
+                "user_id" => $item->transactionable_id,
+                "method" => ucfirst($item->payment_system) == 'Task' ? __('Оплата за отклик') : ucfirst($item->payment_system),
+                "amount" => ucfirst($item->payment_system) == 'Paynet' ? $item->amount / 100 : $item->amount,
+                "status" => strtolower($item->payment_system) == 'task' ? 0 : 1,
+                "created_at" => $item->created_at,
+                "updated_at" => $item->updated_at,
+                "state" => $item->state
+            ];
+        }
         return [
             'balance' => $balance,
-            'transaction' => TransactionHistoryCollection::collection($transactions->orderByDesc('created_at')->paginate(15))->response()->getData(true)
+            'transaction' =>( (new PaginateCollection)->paginate($data,10))
         ];
     }
 

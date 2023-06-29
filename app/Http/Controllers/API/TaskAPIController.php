@@ -5,31 +5,21 @@ namespace App\Http\Controllers\API;
 use App\Utils\PaginateCollection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use App\Http\Requests\Api\{TaskAddressRequest,
-    TaskBudgetRequest,
-    TaskComplaintRequest,
-    TaskContactsRequest,
-    TaskCustomRequest,
-    TaskDateRequest,
-    TaskNameRequest,
-    TaskNoteRequest,
-    TaskRemoteRequest,
-    TaskResponseRequest,
-    TaskUpdateAddressRequest,
-    TaskUpdateBudgetRequest,
-    TaskUpdateContactRequest,
-    TaskUpdateDateRequest,
-    TaskUpdateNoteRequest,
-    TaskUpdateRemoteRequest,
-    TaskUpdateVerifyRequest,
-    TaskVerificationRequest};
-use App\Http\Resources\{TaskSingleResource, TaskPaginationResource};
+use App\Http\Requests\Api\{
+    TaskAddressRequest,TaskVerificationRequest,
+    TaskBudgetRequest, TaskComplaintRequest,
+    TaskContactsRequest, TaskCustomRequest,
+    TaskDateRequest, TaskNameRequest,
+    TaskNoteRequest, TaskRemoteRequest,
+    TaskResponseRequest, TaskUpdateAddressRequest,
+    TaskUpdateBudgetRequest, TaskUpdateContactRequest,
+    TaskUpdateDateRequest, TaskUpdateNoteRequest,
+    TaskUpdateRemoteRequest, TaskUpdateVerifyRequest};
 use Illuminate\{Http\Request,
     Http\JsonResponse,
     Pagination\LengthAwarePaginator,
     Routing\Controller,
-    Validation\ValidationException,
-    Http\Resources\Json\AnonymousResourceCollection};
+    Validation\ValidationException};
 use App\Models\{User, TaskResponse};
 use App\Services\{Task\TaskService, Task\ResponseService,
     Task\CreateTaskService, Task\FilterTaskService, Task\UpdateTaskService, Response};
@@ -370,10 +360,10 @@ class TaskAPIController extends Controller
      *     ),
      * )
      */
-    public function filter(Request $request): AnonymousResourceCollection
+    public function filter(Request $request): LengthAwarePaginator
     {
         $tasks = $this->filter_service->filter($request->all());
-        return TaskSingleResource::collection($tasks);
+        return (new PaginateCollection)->paginate($tasks,20);
     }
 
     /**
@@ -541,16 +531,17 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function my_tasks_all(Request $request): TaskPaginationResource
+    public function my_tasks_all(Request $request): LengthAwarePaginator
     {
         $request->validate([
             'status' => 'in:0,1,3,4,5,6'
         ]);
         /** @var User $user */
-        $user = auth()->user();
+        $userId = auth()->id();
         $is_performer = $request->get('is_performer');
         $status = $request->get('status');
-        return $this->task_service->my_tasks_all($user, $is_performer, $status);
+        $datas = $this->task_service->my_tasks_all($userId, $is_performer, $status);
+        return (new PaginateCollection)->paginate($datas,10);
     }
 
     /**
@@ -1818,11 +1809,12 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function performer_tasks(Request $request): TaskPaginationResource
+    public function performer_tasks(Request $request): LengthAwarePaginator
     {
         $user_id = $request->get('user_id');
         $status = $request->get('status');
-        return $this->task_service->performer_tasks($user_id, $status);
+        $data = $this->task_service->performer_tasks($user_id, $status);
+        return (new PaginateCollection)->paginate($data,10);
     }
 
     /**
@@ -1857,9 +1849,10 @@ class TaskAPIController extends Controller
      *     },
      * )
      */
-    public function all_tasks(Request $request): TaskPaginationResource
+    public function all_tasks(Request $request): LengthAwarePaginator
     {
         $user_id = $request->get('user_id');
-        return $this->task_service->all_tasks($user_id);
+        $data = $this->task_service->all_tasks($user_id);
+        return (new PaginateCollection)->paginate($data,10);
     }
 }

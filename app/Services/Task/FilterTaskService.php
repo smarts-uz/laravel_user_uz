@@ -5,7 +5,6 @@ namespace App\Services\Task;
 
 use App\Models\Category;
 use App\Models\Task;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
 
 class FilterTaskService
@@ -23,9 +22,9 @@ class FilterTaskService
      *
      *
      * @param $data
-     * @return LengthAwarePaginator
+     * @return array
      */
-    public function filter($data): LengthAwarePaginator
+    public function filter($data): array
     {
         $tasks = Task::query()->where('status',Task::STATUS_OPEN);
 
@@ -77,9 +76,13 @@ class FilterTaskService
             $tasks->where('name','like',"%$s%");
         }
 
-        return $tasks->orderByDesc('created_at')->paginate(20);
-    }
+        $datas = [];
+        foreach ($tasks->orderByDesc('created_at')->get() as $task) {
+            $datas[] = $this->taskSingle($task);
+        }
 
+        return $datas;
+    }
 
     /**
      * task filter uchun radius qiymatni qaytaradi
@@ -98,10 +101,26 @@ class FilterTaskService
         $dist = sin($radlat1) * sin($radlat2) +  cos($radlat1) * cos($radlat2) * cos($radtheta);
         $dist = acos($dist);
         $dist = $dist * 180/ pi();
-        $dist = $dist * 60 * 1.1515;
+        $dist *= 60 * 1.1515;
         return $dist * 1.609344;
     }
 
+    public function taskSingle($task): array
+    {
+        return !empty($task) ? [
+            'id' => $task->id,
+            'name'=> $task->name,
+            'addresses' => (new TaskService)->taskAddress($task->addresses),
+            'start_date' => $task->start_date,
+            'end_date' => $task->end_date,
+            'budget' => $task->budget,
+            'remote' => $task->remote,
+            'oplata' => $task->oplata,
+            'status' => $task->status,
+            'category_icon' => asset('storage/'.$task->category->ico),
+            'viewed' => in_array($task->id, Cache::get('user_viewed_tasks' . auth()->guard('api')->id()) ?? [], true) ?? false
+        ]: [];
+    }
 
     /**
      * Navbar blade uchun categoriyalarni qaaytaradi
