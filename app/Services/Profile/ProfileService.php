@@ -605,7 +605,7 @@ class ProfileService
         }
         return [
             'balance' => $balance,
-            'transaction' =>( (new PaginateCollection)->paginate($data,10))
+            'transaction' => PaginateCollection::paginate($data,10)
         ];
     }
 

@@ -250,7 +250,7 @@ class SearchAPIController extends Controller
     {
         $userId = auth()->id();
         $data = $this->search_service->favorite_task_all($userId);
-        return (new PaginateCollection)->paginate($data,10);
+        return PaginateCollection::paginate($data,10);
     }
 
 }

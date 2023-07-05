@@ -114,7 +114,7 @@ class TaskAPIController extends Controller
     {
        $filter = $request->get('filter');
        $data = $this->task_service->responses($filter, $taskId);
-       return (new PaginateCollection)->paginate($data,10);
+        return PaginateCollection::paginate($data,10);
     }
 
     /**
@@ -363,7 +363,7 @@ class TaskAPIController extends Controller
     public function filter(Request $request): LengthAwarePaginator
     {
         $tasks = $this->filter_service->filter($request->all());
-        return (new PaginateCollection)->paginate($tasks,20);
+        return PaginateCollection::paginate($tasks,20);
     }
 
     /**
@@ -541,7 +541,7 @@ class TaskAPIController extends Controller
         $is_performer = $request->get('is_performer');
         $status = $request->get('status');
         $datas = $this->task_service->my_tasks_all($userId, $is_performer, $status);
-        return (new PaginateCollection)->paginate($datas,10);
+        return PaginateCollection::paginate($datas,10);
     }
 
     /**
@@ -1814,7 +1814,7 @@ class TaskAPIController extends Controller
         $user_id = $request->get('user_id');
         $status = $request->get('status');
         $data = $this->task_service->performer_tasks($user_id, $status);
-        return (new PaginateCollection)->paginate($data,10);
+        return PaginateCollection::paginate($data,10);
     }
 
     /**
@@ -1853,6 +1853,6 @@ class TaskAPIController extends Controller
     {
         $user_id = $request->get('user_id');
         $data = $this->task_service->all_tasks($user_id);
-        return (new PaginateCollection)->paginate($data,10);
+        return PaginateCollection::paginate($data,10);
     }
 }

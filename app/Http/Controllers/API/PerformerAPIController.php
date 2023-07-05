@@ -116,7 +116,7 @@ class PerformerAPIController extends Controller
         $data = $request->all();
         $authId = Auth::id();
         $datas = $this->performer_service->performer_filter($data, $authId);
-        return (new PaginateCollection)->paginate($datas,20);
+        return PaginateCollection::paginate($datas,20);
     }
 
     /**

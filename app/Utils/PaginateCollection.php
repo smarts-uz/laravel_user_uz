@@ -8,15 +8,21 @@ use Illuminate\Support\Facades\Request;
 
 class PaginateCollection
 {
-    public function paginate($items,$perPage): LengthAwarePaginator
+
+    public static function paginate($items, $perPage, $page = null): LengthAwarePaginator
     {
-        $pageStart = Request::get('page', 1);
-        // Start displaying items from this number;
-        $offSet = ($pageStart * $perPage) - $perPage;
+        if (Paginator::resolveCurrentPage()) {
+            $page = $page ?: (Paginator::resolveCurrentPage());
+        } else {
+            $page = $page ?: (1);
+        }
+        $total = count($items);
+        $currentpage = $page;
+        $offset = ($currentpage * $perPage) - $perPage ;
+        $itemstoshow = array_slice($items , $offset , $perPage);
 
-        // Get only the items you need using array_slice
-        $itemsForCurrentPage = array_slice($items, $offSet, $perPage, true);
 
-        return new LengthAwarePaginator($itemsForCurrentPage, count($items), $perPage,Paginator::resolveCurrentPage(), array('path' => Paginator::resolveCurrentPath()));
+        return new LengthAwarePaginator($itemstoshow, $total, $perPage, $page,
+            ['path'=> Request::fullUrl()]);
     }
 }
