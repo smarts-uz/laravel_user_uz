@@ -47,7 +47,7 @@ return [
         'eimzo_login_update_button' => Components\Eimzo\EimzoUpdateButton::class,
         'eimzo_login_sign_button' => Components\Eimzo\EimzoSignButton::class,
         'laravelYajra' => Components\Yajra\laravelYajra::class,
-        'laravelUppy' => Components\Uppy\laravelUppy::class,
+//        'laravelUppy' => Components\Uppy\laravelUppy::class,
     ],
 
     /*

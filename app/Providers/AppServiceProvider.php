@@ -7,6 +7,9 @@ use App\Observers\ReviewObserver;
 use Illuminate\Support\ServiceProvider;
 use TCG\Voyager\Facades\Voyager;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Queue\Events\JobProcessed;
+use Illuminate\Queue\Events\JobProcessing;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,6 +41,18 @@ class AppServiceProvider extends ServiceProvider
             require_once $filename;
         }
         Paginator::useBootstrap();
+
+        Queue::before(static function (JobProcessing $event) {
+             $event->job->timeout();
+             $event->job->getConnectionName();
+             $event->job->payload();
+        });
+
+        Queue::after(static function (JobProcessed $event) {
+            $event->job->timeout();
+            $event->job->getConnectionName();
+            $event->job->payload();
+        });
 
     }
 }
