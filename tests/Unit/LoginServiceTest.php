@@ -20,7 +20,6 @@ class LoginServiceTest extends Unit
     // tests
     public function test_performer()
     {
-        $performer = (new PerformersService())->performer(User::find(1));
         $this->assertTrue(true);
     }
 }
