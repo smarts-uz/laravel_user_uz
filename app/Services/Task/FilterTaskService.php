@@ -26,7 +26,7 @@ class FilterTaskService
      */
     public function filter($data): array
     {
-        $tasks = Task::query()->where('status',Task::STATUS_OPEN);
+        $tasks = Task::query()->whereIn('status',[Task::STATUS_OPEN,Task::STATUS_RESPONSE]);
 
         $tasks_items =  [];
         if (isset($data['lat'], $data['long'], $data['difference']) && !isset($data['is_remote']))
@@ -61,13 +61,15 @@ class FilterTaskService
 
         if (isset($data['is_remote'])) {
             $is_remote = $data['is_remote'];
-            if ((string)$is_remote === 'true')
+            if ((string)$is_remote === 'true') {
                 $tasks->where('remote', true);
+            }
         }
         if (isset($data['without_response'])) {
             $without_response = $data['without_response'];
-            if ((string)$without_response === 'true')
-                $tasks->whereDoesntHave('responses');
+            if ((string)$without_response === 'true') {
+                $tasks->where('status',Task::STATUS_OPEN);
+            }
         }
 
         if (isset($data['s']))
