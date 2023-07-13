@@ -125,16 +125,10 @@ class SearchService
     public function search_new_service($arr_check, $filter, $suggest, $price, $remjob, $noresp, $radius, $lat, $lon, $filterByStartDate)
     {
 
-        $users = Cache::remember('usersAll_', now()->addMinute(180), function () {
-            return User::all()->keyBy('id');
-        });
-
+        $users = User::all()->keyBy('id');
+        $adresses = Address::all()->keyBy('id');
         $categories = Cache::remember('categoriesAll_', now()->addMinute(180), function () {
             return Category::all()->keyBy('id');
-        });
-
-        $adresses = Cache::remember('adressesAll_', now()->addMinute(180), function () {
-            return Address::all()->keyBy('id');
         });
 
 

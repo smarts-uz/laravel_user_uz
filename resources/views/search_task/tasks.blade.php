@@ -16,8 +16,7 @@
                                 <a href="/detailed-tasks/{{$task->id}}"
                                    class="sm:text-lg text-base font-semibold text-blue-500 hover:text-red-600">{{ $task->name }}</a>
                             @endif
-                            <p class="text-sm">
-                                {{ ($task->address_main) ?: 'Можно выполнить удаленно' }}</p>
+                            <p class="text-sm"> {{ ($task->address_main) ?: 'Можно выполнить удаленно' }}</p>
                             @if($task->date_type === 1 || $task->date_type === 3)
                                 <p class="text-sm my-0.5">{{__('Начать')}} {{ $task->sd_parse }}</p>
                             @endif
