@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Services\ReportService;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ReportController extends Controller
 {
@@ -34,9 +35,9 @@ class ReportController extends Controller
     /**
      * @param $model
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return BinaryFileResponse
      */
-    public function report_export($model, Request $request): \Symfony\Component\HttpFoundation\BinaryFileResponse
+    public function report_export($model, Request $request): BinaryFileResponse
     {
         $user = auth()->user();
         if (class_exists($model)) {

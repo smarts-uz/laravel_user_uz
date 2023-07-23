@@ -3,6 +3,9 @@
 namespace App\Services;
 
 use App\Models\Notification;
+use JsonException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class UserNotificationService extends NotificationService
 {
@@ -11,9 +14,9 @@ class UserNotificationService extends NotificationService
      * @param $task
      * @param int $type
      * @return void
-     * @throws \JsonException
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws JsonException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public static function sendNotificationToPerformer($task, int $type = Notification::ADMIN_CANCEL_TASK): void
     {
@@ -40,9 +43,9 @@ class UserNotificationService extends NotificationService
      * @param $task
      * @param int $type
      * @return void
-     * @throws \JsonException
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws JsonException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public static function sendNotificationToUser($task, int $type = Notification::ADMIN_CANCEL_TASK): void
     {

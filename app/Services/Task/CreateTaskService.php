@@ -360,9 +360,7 @@ class CreateTaskService
      * @param $data // Validated request data from mobile
      * @param $user
      * @return array //Value Returned
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws JsonException
+     * @throws \Exception
      */
     public function contact_store($data, $user): array
     {

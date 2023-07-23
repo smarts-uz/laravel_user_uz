@@ -25,7 +25,7 @@ class ControllerService
      * @param string|null $lang
      * @return  ControllerItem
      */
-    public function home( ?string $lang = 'uz')
+    public function home( ?string $lang = 'uz'): ControllerItem
     {
         $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use($lang) {
             return Category::withTranslations($lang)->orderBy("order")->get();
