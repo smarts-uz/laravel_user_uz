@@ -72,7 +72,7 @@ class FaqsService
      * @param $blog_new
      * @return array
      */
-    private function news($blog_new): array
+    public function news($blog_new): array
     {
         return !empty($blog_new) ? [
             'id' => $blog_new->id,

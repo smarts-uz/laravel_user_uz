@@ -64,11 +64,11 @@ class ControllerService
      *
      * Function  my_tasks
      * Mazkur metod my_task sahifasini ochib beradi
-     * @param $user
+     * @param $userId
      * @param string|null $lang
      * @return  MyTaskItem
      */
-    public function my_tasks($user, ?string $lang = 'uz'): MyTaskItem
+    public function my_tasks($userId, ?string $lang = 'uz'): MyTaskItem
     {
         $category = Cache::remember('category_' . $lang, now()->addMinute(180), function () use($lang) {
             return Category::withTranslations($lang)->orderBy("order")->get();
@@ -82,8 +82,8 @@ class ControllerService
             Task::STATUS_CANCELLED
         ];
         $item = new MyTaskItem();
-        $item->tasks = Task::query()->where('user_id', $user->id)->whereIn('status', $statuses)->latest()->get();
-        $item->perform_tasks = Task::query()->where('performer_id', $user->id)->whereIn('status', $statuses)->latest()->get();
+        $item->tasks = Task::query()->where('user_id', $userId)->whereIn('status', $statuses)->latest()->get();
+        $item->perform_tasks = Task::query()->where('performer_id', $userId)->whereIn('status', $statuses)->latest()->get();
         $item->categories = collect($category)->where('parent_id', null)->all();
         $item->categories2 = collect($category)->where('parent_id', '!=', null)->all();
         return $item;

@@ -157,7 +157,6 @@ class ReportService
      * Function  child_report
      * Mazkur metod childcategoriyalar bo'yicha reportlar
      * @param $id
-     *
      * @return JsonResponse
      * @throws Exception
      */

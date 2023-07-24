@@ -35,9 +35,9 @@ class Controller extends BaseController
     public function my_tasks(): Factory|View|Application
     {
         $lang = Session::get('lang');
-        $user = auth()->user();
+        $userId = auth()->id();
         $service = new ControllerService();
-        $item = $service->my_tasks($user, $lang);
+        $item = $service->my_tasks($userId, $lang);
         return view('task.mytasks',
         [
             'categories' => $item->categories,
