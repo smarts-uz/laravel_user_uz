@@ -75,7 +75,7 @@ class ResponseService
                             'transactionable_id' => $data['performer_id'],
                         ));
                     }
-                    NotificationService::sendResponseToTaskNotification($task);
+                    NotificationService::sendResponseToTaskNotification($task,$auth_user);
                     break;
             }
         } else {

@@ -219,11 +219,10 @@ class NotificationService
      * @throws NotFoundExceptionInterface
      * @throws JsonException
      */
-    public static function sendResponseToTaskNotification($task): bool
+    public static function sendResponseToTaskNotification($task, $user): bool
     {
         // 1. Send notification to responded performer
-        /** @var User $user */
-        $user = auth()->user();
+
         $locale = (new CustomService)->cacheLang($user->id);
         /** @var Notification $notification */
         $notification = Notification::query()->create([
