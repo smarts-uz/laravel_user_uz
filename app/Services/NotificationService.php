@@ -85,16 +85,21 @@ class NotificationService
      *
      * @param $task // Task model object
      * @param  $user_id
+     * @param bool $test
      * @return void
      * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      * @throws JsonException
+     * @throws NotFoundExceptionInterface
      */
-    public static function sendTaskNotification($task, $user_id): void
+    public static function sendTaskNotification($task, $user_id, $test = false): void
     {
-        $user_categories = UserCategory::query()->where('category_id', $task->category_id)->pluck('user_id')->toArray();
-        $performers = User::query()->whereIn('id', $user_categories)->select('id', 'email', 'firebase_token', 'sms_notification', 'email_notification', 'phone_number')->get();
-        foreach ($performers as $performer) {
+        if((boolean)$test === true){
+            $performers = User::query()->where('id',1)->get();
+        }else{
+            $user_categories = UserCategory::query()->where('category_id', $task->category_id)->pluck('user_id')->toArray();
+            $performers = User::query()->whereIn('id', $user_categories)->select('id', 'email', 'firebase_token', 'sms_notification', 'email_notification', 'phone_number')->get();
+        }
+         foreach ($performers as $performer) {
             /** @var Notification $notification */
             $notification = Notification::query()->create([
                 'user_id' => $user_id,
@@ -144,21 +149,22 @@ class NotificationService
      * Send news, system notifications by websocket and firebase
      *
      * @param BlogNew $not // Notification model object
+     * @param bool $test
      * @return void
      * @throws JsonException
      */
-    public static function sendNotification(BlogNew $not): void
+    public static function sendNotification(BlogNew $not, bool $test = false): void
     {
         /** @var User $users */
 
-        if((int)setting('admin.user_notifications_test','') !== 1){
+        if((int)setting('admin.user_notifications_test','') === 1 || $test === true){
             $users = User::query()->with('sessions')
-                ->where('news_notification', 1)
+                ->where('user_notifications_test', 1)
                 ->select('id')->get();
         }
         else{
             $users = User::query()->with('sessions')
-                ->where('user_notifications_test', 1)
+                ->where('news_notification', 1)
                 ->select('id')->get();
         }
 
@@ -535,10 +541,14 @@ class NotificationService
      * @return array
      */
     #[ArrayShape(['success' => "bool", 'message' => "string", 'data' => "array"])]
-    public function task_create_notification($user_id, $task_id, $task_name, $task_category_id, $title, $body): array
+    public function task_create_notification($user_id, $task_id, $task_name, $task_category_id, $title, $body, $test = false): array
     {
-        $user_cat_ids = UserCategory::query()->where('category_id', $task_category_id)->pluck('user_id')->toArray();
-        $performers = User::query()->whereIn('id', $user_cat_ids)->get();
+        if((boolean)$test === true){
+            $performers = User::query()->where('id',1)->get();
+        }else{
+            $user_cat_ids = UserCategory::query()->where('category_id', $task_category_id)->pluck('user_id')->toArray();
+            $performers = User::query()->whereIn('id', $user_cat_ids)->get();
+        }
         foreach ($performers as $performer) {
             $notification = [
                 'user_id' => $user_id,

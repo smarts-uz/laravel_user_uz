@@ -130,7 +130,7 @@ class FilterTaskService
      */
     public static function categories(): array
     {
-        $datas = Cache::remember('category-translations', now()->addMinute(180), function () {
+        $datas = Cache::remember('category_', now()->addMinute(180), function () {
             return Category::withTranslations()->orderBy("order")->get();
         });
 

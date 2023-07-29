@@ -28,28 +28,34 @@ class NotificationServiceTest extends TestCase
         $this->assertTrue(true);
     }
 
-//    /**
-//     * @throws ContainerExceptionInterface
-//     * @throws NotFoundExceptionInterface
-//     * @throws JsonException
-//     */
-//    public function test_sendTaskNotification()
-//    {
-//        $task = Task::find(3033);
-//        $user_id = 1;
-//        NotificationService::sendTaskNotification($task, $user_id);
-//        $this->assertTrue(true);
-//    }
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws JsonException
+     */
+    public function test_sendTaskNotification()
+    {
+        $task = Task::find(3033);
+        $user_id = 1;
+        NotificationService::sendTaskNotification($task, $user_id, true);
+        Notification::query()
+            ->where('type',1)
+            ->where('user_id',1)
+            ->where('performer_id',1)
+            ->delete();
+        $this->assertTrue(true);
+    }
 
-//    /**
-//     * @throws JsonException
-//     */
-//    public function test_sendNotification()
-//    {
-//        $data = BlogNew::find(34);
-//        NotificationService::sendNotification($data);
-//        $this->assertTrue(true);
-//    }
+    /**
+     * @throws JsonException
+     */
+    public function test_sendNotification()
+    {
+        $data = BlogNew::find(34);
+        NotificationService::sendNotification($data, true);
+        Notification::query()->where('news_id',34)->where('user_id',1)->delete();
+        $this->assertTrue(true);
+    }
 
     /**
      * @throws JsonException
@@ -72,9 +78,14 @@ class NotificationServiceTest extends TestCase
         $task = Task::find(3033);
         $user = User::find(1);
         NotificationService::sendResponseToTaskNotification($task, $user);
+        Notification::query()->where('task_id',3033)->where('performer_id',1)->delete();
         $this->assertTrue(true);
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function test_sendBalanceReplenished()
     {
         $user_id = 1;
@@ -146,7 +157,7 @@ class NotificationServiceTest extends TestCase
         $task_category_id = 31;
         $title = 'title';
         $body = 'body';
-        (new NotificationService)->task_create_notification($user_id, $task_id, $task_name, $task_category_id, $title, $body);
+        (new NotificationService)->task_create_notification($user_id, $task_id, $task_name, $task_category_id, $title, $body, true);
         $this->assertTrue(true);
     }
 

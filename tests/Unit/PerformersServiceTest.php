@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Models\Session;
+use App\Models\Notification;
 use App\Models\User;
 use App\Services\PerformersService;
 use JsonException;
@@ -65,6 +65,11 @@ class PerformersServiceTest extends TestCase
         $task_id = 3033;
         $performer_id = 1;
         (new PerformersService)->task_give_app($task_id, $performer_id);
+        Notification::query()
+            ->where('task_id',3033)
+            ->where('performer_id',1)
+            ->where('type',4)
+            ->delete();
         $this->assertTrue(true);
     }
 
@@ -98,7 +103,7 @@ class PerformersServiceTest extends TestCase
     {
         $user = User::find(1);
         $data = [
-            'born_date' => '2000-12-23',
+            'born_date' => '1997-12-23',
             'name' => 'Admin',
             'location' => 'Tashkent',
         ];

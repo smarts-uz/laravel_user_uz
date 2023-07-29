@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Notification;
 use App\Models\Task;
 use App\Services\UserNotificationService;
 use JsonException;
@@ -20,6 +21,7 @@ class UserNotificationServiceTest extends TestCase
     {
         $task = Task::find(3033);
         UserNotificationService::sendNotificationToPerformer($task);
+        Notification::query()->where('task_id',3033)->where('type',12)->delete();
         $this->assertTrue(true);
     }
 
@@ -32,6 +34,7 @@ class UserNotificationServiceTest extends TestCase
     {
         $task = Task::find(3033);
         UserNotificationService::sendNotificationToUser($task);
+        Notification::query()->where('task_id',3033)->where('type',12)->delete();
         $this->assertTrue(true);
     }
 }

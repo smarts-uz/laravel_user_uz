@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Services\SmsMobileService;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class SmsServiceTest extends TestCase
 {
@@ -14,7 +14,7 @@ class SmsServiceTest extends TestCase
      */
     public function test_sms_service(): void
     {
-        $phone = '+998915480312';
+        $phone = '';
         $message = 'Hello world';
         SmsMobileService::sms_packages($phone, $message);
         $this->assertTrue(true);
