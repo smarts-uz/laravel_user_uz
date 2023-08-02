@@ -16,12 +16,11 @@ class LoginServiceTest extends TestCase
     {
         $data = [
             'name' => 'Adminjon',
-            'email' => 'adminjonaka@gnail.com',
+            'email' => "adminjonaka@gmail.com".rand(100,1000),
             'phone_number' =>  '+998123456789',
-            'password' => '123456789',
+            'password' => '1234567'.rand(12,100),
         ];
         (new LoginService)->customRegister($data);
-        User::query()->where('email','adminjonaka@gnail.com')->delete();
         $this->assertTrue(true);
     }
 
@@ -33,6 +32,17 @@ class LoginServiceTest extends TestCase
         $user = User::find(1);
         $hash = '123456';
         LoginService::verifyColum('email', $user, $hash);
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function test_verify_phone()
+    {
+        $code = 123456;
+        $user = User::find(1);
+        (new LoginService)->verify_phone($code, $user);
         $this->assertTrue(true);
     }
 }

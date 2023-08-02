@@ -115,7 +115,7 @@ class LoginService
                 }
             }
         } else {
-            abort(419);
+            return false;
         }
         return $result;
     }
