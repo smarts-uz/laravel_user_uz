@@ -237,7 +237,9 @@ class UserAPIController extends Controller
      */
     public function logout(Request $request): JsonResponse
     {
+        /** @var User $user */
+        $user = auth()->user();
         $device_id = $request->get('device_id');
-        return $this->service->logout($device_id);
+        return $this->service->logout($device_id, $user);
     }
 }

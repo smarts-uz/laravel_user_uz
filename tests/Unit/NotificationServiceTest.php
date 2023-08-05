@@ -53,7 +53,7 @@ class NotificationServiceTest extends TestCase
     {
         $data = BlogNew::find(34);
         NotificationService::sendNotification($data, true);
-        Notification::query()->where('news_id',34)->where('user_id',1)->delete();
+        Notification::query()->where('news_id',34)->where('user_id',1662)->delete();
         $this->assertTrue(true);
     }
 

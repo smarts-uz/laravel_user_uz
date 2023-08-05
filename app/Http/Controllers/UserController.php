@@ -132,7 +132,7 @@ class UserController extends VoyagerBaseController
     {
         parent::store($request);
         $new_user = User::query()->where('email', $request->email)->first();
-        (new UserService())->new_user($new_user);
+        (new UserService())->new_user($new_user->id);
         return redirect('admin/users');
 
     }

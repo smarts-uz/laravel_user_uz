@@ -18,9 +18,11 @@ class LoginServiceTest extends TestCase
             'name' => 'Adminjon',
             'email' => "adminjonaka@gmail.com".rand(100,1000),
             'phone_number' =>  '+998123456789',
-            'password' => '1234567'.rand(12,100),
+            'password' => '12345673245',
+            'youtube_link'=>'test_user_123'
         ];
         (new LoginService)->customRegister($data);
+        User::query()->where('youtube_link','test_user_123')->delete();
         $this->assertTrue(true);
     }
 

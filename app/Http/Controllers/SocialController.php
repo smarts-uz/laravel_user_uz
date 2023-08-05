@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Services\User\SocialService;
-use Exception;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpFoundation\RedirectResponse as RedirectResponseAlias;
@@ -38,32 +37,16 @@ class SocialController extends Controller
 
     public function loginWithFacebook(): bool|RedirectResponse
     {
-        try {
-            return $this->social_service->loginFacebook();
-        }catch (Exception $e) {
-            // Log to File
-        }
-        return false;
-
+        return $this->social_service->loginFacebook();
     }
 
     public function loginWithGoogle(): bool|RedirectResponse
     {
-        try {
-            return $this->social_service->loginGoogle();
-        } catch (Exception $e) {
-            // Log to File
-        }
-        return false;
+        return $this->social_service->loginGoogle();
     }
 
     public function loginWithApple(): bool|RedirectResponse
     {
-        try {
-            return $this->social_service->loginApple();
-        } catch (Exception $e) {
-            // Log to File
-        }
-        return false;
+        return $this->social_service->loginApple();
     }
 }

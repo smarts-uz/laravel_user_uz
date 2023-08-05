@@ -122,123 +122,141 @@ class SocialService
 
     /**
      * Social orqali ro'yxatdan o'tgan userga balance berish va parol o'rnatish haqida bildirishnoma yuborish
-     * @param $new_user
+     * @param $new_user_id
      * @return void
      */
-    public function social_wallet($new_user): void
+    public function social_wallet($new_user_id): void
     {
         $wallBal = new WalletBalance();
         $wallBal->balance = setting('admin.bonus',0);
-        $wallBal->user_id = $new_user->id;
+        $wallBal->user_id = $new_user_id;
         $wallBal->save();
         /** @var Notification $notification */
         Notification::query()->create([
-            'user_id' => $new_user->id,
+            'user_id' => $new_user_id,
             'description' => 'password',
             'type' => Notification::NEW_PASSWORD,
         ]);
         if(setting('admin.bonus',0)>0){
             Notification::query()->create([
-                'user_id' => $new_user->id,
+                'user_id' => $new_user_id,
                 'description' => 'wallet',
                 'type' => Notification::WALLET_BALANCE,
             ]);
         }
-        Auth::login($new_user);
     }
 
     /**
      * facebook orqali login qilish(web)
-     * @return RedirectResponse
+     * @return false|RedirectResponse
      */
-    public function loginFacebook(): RedirectResponse
+    public function loginFacebook(): bool|RedirectResponse
     {
-        $user = Socialite::driver('facebook')->setScopes(['name','email'])->user();
-        /** @var User $findUser */
-        $findUser = User::query()->where('email', $user->email)->first();
+        try {
+            $user = Socialite::driver('facebook')->setScopes(['name','email'])->user();
+            /** @var User $findUser */
+            $findUser = User::query()->where('email', $user->email)->first();
 
-        if (!$user->email) {
-            $findUser = User::query()->where('facebook_id', $user->id)->first();
+            if (!$user->email) {
+                $findUser = User::query()->where('facebook_id', $user->id)->first();
+            }
+            if ($findUser) {
+                $findUser->facebook_id = $user->id;
+                $findUser->save();
+                Alert::success(__('Успешно'), __('Вы успешно связали свой аккаунт Facebook'));
+                (new self)->password_notif($findUser);
+            } else {
+                $new_user = new User();
+                $new_user->name = $user->name;
+                $new_user->email = $user->email;
+                $new_user->facebook_id = $user->id;
+                $new_user->avatar = self::get_avatar($user);
+                $new_user->save();
+                (new self)->social_wallet($new_user->id);
+                Auth::login($new_user);
+            }
+            return redirect()->route('profile.profileData');
+        }catch (Exception $e) {
+            // Log to File
         }
-        if ($findUser) {
-            $findUser->facebook_id = $user->id;
-            $findUser->save();
-            Alert::success(__('Успешно'), __('Вы успешно связали свой аккаунт Facebook'));
-            (new self)->password_notif($findUser);
-        } else {
-            $new_user = new User();
-            $new_user->name = $user->name;
-            $new_user->email = $user->email;
-            $new_user->facebook_id = $user->id;
-            $new_user->avatar = self::get_avatar($user);
-            $new_user->save();
-            (new self)->social_wallet($new_user);
-        }
-        return redirect()->route('profile.profileData');
+        return false;
+
     }
 
     /**
      * google orqali login qilish(web)
-     * @return RedirectResponse
+     * @return false|RedirectResponse
      */
-    public function loginGoogle(): RedirectResponse
+    public function loginGoogle(): bool|RedirectResponse
     {
-        $user = Socialite::driver('google')->setScopes(['openid', 'email'])->user();
+        try {
+            $user = Socialite::driver('google')->setScopes(['openid', 'email'])->user();
 
-        /** @var User $findUser */
-        $findUser = User::query()->where('email', $user->email)->first();
+            /** @var User $findUser */
+            $findUser = User::query()->where('email', $user->email)->first();
 
-        if (!$user->email) {
-            $findUser = User::query()->where('google_id', $user->id)->first();
+            if (!$user->email) {
+                $findUser = User::query()->where('google_id', $user->id)->first();
+            }
+            if ($findUser) {
+                $findUser->google_id = $user->id;
+                $findUser->save();
+                Alert::success(__('Успешно'), __('Вы успешно связали свой аккаунт Google'));
+                (new self)->password_notif($findUser);
+            } else {
+                $new_user = new User();
+                $new_user->name = $user->name;
+                $new_user->email = $user->email;
+                $new_user->google_id = $user->id;
+                $new_user->avatar = self::get_avatar($user);
+                $new_user->is_email_verified = 1;
+                $new_user->save();
+                (new self)->social_wallet($new_user->id);
+                Auth::login($new_user);
+            }
+
+            return redirect()->route('profile.profileData');
+        } catch (Exception $e) {
+            // Log to File
         }
-        if ($findUser) {
-            $findUser->google_id = $user->id;
-            $findUser->save();
-            Alert::success(__('Успешно'), __('Вы успешно связали свой аккаунт Google'));
-            (new self)->password_notif($findUser);
-        } else {
-            $new_user = new User();
-            $new_user->name = $user->name;
-            $new_user->email = $user->email;
-            $new_user->google_id = $user->id;
-            $new_user->avatar = self::get_avatar($user);
-            $new_user->is_email_verified = 1;
-            $new_user->save();
-            (new self)->social_wallet($new_user);
-        }
-
-        return redirect()->route('profile.profileData');
+        return false;
     }
 
     /**
      * apple orqali login qilish(web)
-     * @return RedirectResponse
+     * @return false|RedirectResponse
      */
-    public function loginApple(): RedirectResponse
+    public function loginApple(): bool|RedirectResponse
     {
-        $user = Socialite::driver('apple')->user();
+        try {
+            $user = Socialite::driver('apple')->user();
 
-        /** @var User $findUser */
-        $findUser = User::query()->where('email', $user->email)->first();
-        if (!$user->email) {
-            $findUser = User::query()->where('apple_id', $user->id)->first();
+            /** @var User $findUser */
+            $findUser = User::query()->where('email', $user->email)->first();
+            if (!$user->email) {
+                $findUser = User::query()->where('apple_id', $user->id)->first();
+            }
+
+            if ($findUser) {
+                $findUser->apple_id = $user->id;
+                $findUser->save();
+                Alert::success(__('Успешно'), __('Вы успешно связали свой аккаунт Google'));
+                (new self)->password_notif($findUser);
+            } else {
+                $new_user = new User();
+                $new_user->name = $user->name ?? self::emailToName($user->email);
+                $new_user->email = $user->email;
+                $new_user->apple_id = $user->id;
+                $new_user->is_email_verified = 1;
+                $new_user->save();
+                (new self)->social_wallet($new_user->id);
+                Auth::login($new_user);
+            }
+
+            return redirect()->route('profile.profileData');
+        } catch (Exception $e) {
+            // Log to File
         }
-
-        if ($findUser) {
-            $findUser->apple_id = $user->id;
-            $findUser->save();
-            Alert::success(__('Успешно'), __('Вы успешно связали свой аккаунт Google'));
-            (new self)->password_notif($findUser);
-        } else {
-            $new_user = new User();
-            $new_user->name = $user->name ?? self::emailToName($user->email);
-            $new_user->email = $user->email;
-            $new_user->apple_id = $user->id;
-            $new_user->is_email_verified = 1;
-            $new_user->save();
-            (new self)->social_wallet($new_user);
-        }
-
-        return redirect()->route('profile.profileData');
+        return false;
     }
 }

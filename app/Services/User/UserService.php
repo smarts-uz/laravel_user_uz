@@ -213,12 +213,11 @@ class UserService
     /**
      * logout qilish(api)
      * @param $device_id
+     * @param $user
      * @return JsonResponse
      */
-    public function logout($device_id): JsonResponse
+    public function logout($device_id, $user): JsonResponse
     {
-        /** @var User $user */
-        $user = auth()->user();
         $user->tokens->each(function ($token) {
             $token->delete();
         });
@@ -374,18 +373,18 @@ class UserService
 
     /**
      * Admin tompnidan yaratilgan userga balance bering va push notification jo'natish
-     * @param $new_user
+     * @param $new_user_id
      * @return void
      */
-    public function new_user($new_user): void
+    public function new_user($new_user_id): void
     {
         $wallBal = new WalletBalance();
         $wallBal->balance = setting('admin.bonus',0);
-        $wallBal->user_id = $new_user->id;
+        $wallBal->user_id = $new_user_id;
         $wallBal->save();
         if(setting('admin.bonus',0) > 0){
             Notification::query()->create([
-                'user_id' => $new_user->id,
+                'user_id' => $new_user_id,
                 'description' => 'wallet',
                 'type' => Notification::WALLET_BALANCE,
             ]);
