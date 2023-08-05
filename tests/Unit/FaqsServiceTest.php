@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Models\BlogNew;
 use App\Services\FaqsService;
+use App\Services\Task\FaqService;
 use Tests\TestCase;
 
 class FaqsServiceTest extends TestCase
@@ -38,6 +39,32 @@ class FaqsServiceTest extends TestCase
     {
         $blog_news = BlogNew::find(34);
         (new FaqsService)->news($blog_news);
+        $this->assertTrue(true);
+    }
+
+    public function test_index()
+    {
+        (new FaqService)->index();
+        $this->assertTrue(true);
+    }
+
+    public function test_faqAll()
+    {
+        $faqId = 1;
+        (new FaqService)->faqAll($faqId);
+        $this->assertTrue(true);
+    }
+
+    public function test_get_all()
+    {
+        (new FaqService)->get_all();
+        $this->assertTrue(true);
+    }
+
+    public function test_get_key()
+    {
+        $key = 'site.title';
+        (new FaqService)->get_key($key);
         $this->assertTrue(true);
     }
 }

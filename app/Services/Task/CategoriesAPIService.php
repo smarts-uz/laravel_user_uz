@@ -67,7 +67,7 @@ class CategoriesAPIService
      * @return array[]
      */
     #[ArrayShape(['data' => "array"])]
-    private function category($categories): array
+    public function category($categories): array
     {
         $data = [];
         foreach ($categories as $category) {

@@ -465,8 +465,8 @@ class ProfileAPIController extends Controller
         $from = $request->get('from');
         $to = $request->get('to');
         $type = $request->get('type');
-
-        $data = $this->profileService->balance($period, $from, $to, $type);
+        $userId = \auth()->id();
+        $data = $this->profileService->balance($period, $from, $to, $type, $userId);
         return response()->json([
             'success' => true,
             'data' => $data

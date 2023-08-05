@@ -553,20 +553,19 @@ class ProfileService
      * @param $from
      * @param $to
      * @param $type
+     * @param $userId
      * @return array
      */
     #[ArrayShape([])]
-    public function balance($period, $from, $to, $type): array
+    public function balance($period, $from, $to, $type, $userId): array
     {
-        /** @var User $user */
-        $user = auth()->user();
         /** @var WalletBalance $balance */
-        $balance = WalletBalance::query()->where('user_id', $user->id)->first();
+        $balance = WalletBalance::query()->where('user_id', $userId)->first();
         if ($balance !== null)
             $balance = $balance->balance;
         else
             $balance = 0;
-        $transactions = Transaction::query()->where(['transactionable_id' => $user->id])->where('state', 2);
+        $transactions = Transaction::query()->where(['transactionable_id' => $userId])->where('state', 2);
 
         switch ($type) {
             case 'in' :
@@ -1110,7 +1109,7 @@ class ProfileService
      * @param $category
      * @return array
      */
-    private function categories($category): array
+    public function categories($category): array
     {
         return !empty($category) ? [
             'id' => $category->id,
