@@ -64,7 +64,9 @@ class LoginAPIController extends Controller
     public function verifyCredentials(VerifyCredentialsRequest $request): JsonResponse
     {
         $data = $request->validated();
-        return $this->service->verifyCredentials($data);
+        /** @var User $user */
+        $user = auth()->user();
+        return $this->service->verifyCredentials($data, $user);
     }
 
 

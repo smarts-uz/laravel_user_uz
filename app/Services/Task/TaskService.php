@@ -177,12 +177,13 @@ class TaskService
      * Shu $taskga otklik qilganlarni userlarni qaytaradi
      * @param $filter
      * @param $taskId
+     * @param $userId
      * @return array
      */
-    public function responses($filter, $taskId): array
+    public function responses($filter, $taskId, $userId): array
     {
         $task = Task::find($taskId);
-        if ($task->user_id === auth()->id()) {
+        if ($task->user_id === $userId) {
             $responses = match ($filter) {
                 'rating' => TaskResponse::query()->select('task_responses.*')->join('users', 'task_responses.performer_id', '=', 'users.id')
                     ->where('task_responses.task_id', '=', $taskId)->orderByDesc('users.review_rating'),
@@ -191,7 +192,7 @@ class TaskService
                 default => $task->responses(),
             };
         } else {
-            $responses = $task->responses()->where('performer_id', auth()->id());
+            $responses = $task->responses()->where('performer_id', $userId);
         }
         $responses->where('performer_id', '!=', $task->performer_id);
         $data = [];

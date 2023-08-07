@@ -15,25 +15,24 @@ class LoginAPIService
     /**
      * email or phone verification
      * @param $data
+     * @param $user
      * @return JsonResponse
      * @throws Exception
      */
-    public function verifyCredentials($data): JsonResponse
+    public function verifyCredentials($data, $user): JsonResponse
     {
         $column = $data['type'];
         if (!User::query()
             ->where($column, $data['type'] === 'phone_number' ? (new CustomService)->correctPhoneNumber($data['data']) : $data['data'])
-            ->whereNot('id', auth()->id())
+            ->whereNot('id', $user->id)
             ->exists()
         ) {
-            /** @var User $user */
-            $user = auth()->user();
+
             Cache::put($user->id . 'user_' . $column , $data['type'] === 'phone_number' ? (new CustomService)->correctPhoneNumber($data['data']) : $data['data']);
 
             if ($data['type'] === 'phone_number') {
                 VerificationService::send_verification($data['type'], $user, phone_number: $data['data']);
             } else {
-                $user = Auth::user();
                 VerificationService::send_verification_email($data['data'],$user);
             }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskResponseRequest;
+use JsonException;
 use App\Models\{Task, TaskResponse, User};
 use App\Services\Task\ResponseService;
 use Illuminate\Http\RedirectResponse;
@@ -40,6 +41,7 @@ class ResponseController extends Controller
      * @return RedirectResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws JsonException
      */
     public function selectPerformer(TaskResponse $response): RedirectResponse
     {

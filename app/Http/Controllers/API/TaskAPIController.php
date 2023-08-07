@@ -113,8 +113,9 @@ class TaskAPIController extends Controller
     public function responses(Request $request, $taskId): LengthAwarePaginator
     {
        $filter = $request->get('filter');
-       $data = $this->task_service->responses($filter, $taskId);
-        return PaginateCollection::paginate($data,10);
+       $userId = auth()->id();
+       $data = $this->task_service->responses($filter, $taskId, $userId);
+       return PaginateCollection::paginate($data,10);
     }
 
     /**
