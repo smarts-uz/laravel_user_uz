@@ -59,7 +59,7 @@ class UpdateTaskService
         $custom_fields = $result['custom_fields'];
         if (!$task->category->customFieldsInCustom->count()) {
             if ($task->category->parent->remote) {
-                return $this->get_remote($task);
+                return $this->get_remote($taskId);
             }
             return $this->get_address($task);
         }
@@ -87,7 +87,7 @@ class UpdateTaskService
         (new CustomService)->updateCache('task_update_' . $taskId, 'custom_fields', $customFields);
 
         if ($task->category->parent->remote) {
-            return $this->get_remote($task);
+            return $this->get_remote($taskId);
         }
         return $this->get_address($task);
     }
@@ -95,14 +95,14 @@ class UpdateTaskService
 
     /**
      * task update remote get
-     * @param $task
+     * @param $taskId
      * @return array
      */
     #[ArrayShape([])]
-    public function get_remote($task): array
+    public function get_remote($taskId): array
     {
         return [
-            'route' => 'remote', 'task_id' => $task->id, 'steps' => 5,
+            'route' => 'remote', 'task_id' => $taskId, 'steps' => 5,
             'custom_fields' => []
         ];
     }
@@ -280,14 +280,14 @@ class UpdateTaskService
      * task update contact
      * @param int $taskId
      * @param $data
+     * @param $user
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateContact(int $taskId, $data): array
+    public function updateContact(int $taskId, $data, $user): array
     {
-        /** @var User $user */
-        $user = auth()->user();
+
         unset($data['task_id']);
         $task = Task::find($taskId);
         $correct = (new CustomService)->correctPhoneNumber($data['phone_number']);
@@ -512,11 +512,12 @@ class UpdateTaskService
     /**
      * task guard api
      * @param $task
+     * @param $userId
      * @return void
      */
-    public function taskGuardApi($task): void
+    public function taskGuardApi($task, $userId): void
     {
-        if ((int)$task->user_id !== auth()->id() && (int)$task->performer_id !== auth()->id()) {
+        if ((int)$task->user_id !== $userId && (int)$task->performer_id !== $userId) {
             throw new HttpResponseException(response()->json([
                 'success' => false, 'message' => "No Permission"
             ], 403));
@@ -555,12 +556,13 @@ class UpdateTaskService
     /**
      * task status change complete
      * @param $taskId
+     * @param $userId
      * @return JsonResponse|RedirectResponse
      */
-    public function completed($taskId): JsonResponse|RedirectResponse
+    public function completed($taskId, $userId): JsonResponse|RedirectResponse
     {
         $task = Task::with('category')->find($taskId);
-        $this->taskGuardApi($task);
+        $this->taskGuardApi($task, $userId);
         $data = [
             'status' => Task::STATUS_COMPLETE
         ];
@@ -579,12 +581,13 @@ class UpdateTaskService
      * task status change not complete
      * @param $taskId
      * @param $data
+     * @param $userId
      * @return JsonResponse|RedirectResponse
      */
-    public function not_completed($taskId, $data): JsonResponse|RedirectResponse
+    public function not_completed($taskId, $data, $userId): JsonResponse|RedirectResponse
     {
         $task = Task::find($taskId);
-        $this->taskGuardApi($task);
+        $this->taskGuardApi($task, $userId);
         ChMessage::query()->where('from_id', $task->user_id)->where('to_id', $task->performer_id)->delete();
         ChMessage::query()->where('to_id', $task->user_id)->where('from_id', $task->performer_id)->delete();
         $task->update(['status' => Task::STATUS_NOT_COMPLETED, 'not_completed_reason' => $data]);

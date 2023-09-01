@@ -1515,7 +1515,12 @@ class TaskAPIController extends Controller
      */
     public function updateUploadImages(Request $request, $taskId): JsonResponse
     {
-        return $this->update_task_service->updateImage($taskId, $request);
+        $validator = $request->validate([
+            'task_id' => 'required',
+            'images.*' => 'required|image:jpeg,jpg,png,gif|max:10000'
+        ]);
+
+        return $this->update_task_service->updateImage($taskId, $validator);
     }
 
 
@@ -1566,7 +1571,10 @@ class TaskAPIController extends Controller
      */
     public function updateContacts(TaskUpdateContactRequest $request, $taskId): JsonResponse
     {
-        return $this->success($this->update_task_service->updateContact($taskId, $request->validated()));
+        $data = $request->validated();
+        /** @var User $user */
+        $user = auth()->user();
+        return $this->success($this->update_task_service->updateContact($taskId, $data, $user));
     }
 
 
