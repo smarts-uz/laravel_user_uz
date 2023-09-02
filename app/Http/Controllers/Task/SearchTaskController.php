@@ -48,7 +48,7 @@ class SearchTaskController extends VoyagerBaseController
                 'created'            => $item->created,
                 'end'                => $item->end,
                 'start'              => $item->start,
-                'complianceType'     => $item->complianceType,
+                'complianceTypes'     => $item->complianceType,
                 'same_tasks'         => $item->same_tasks,
                 'auth_response'      => $item->auth_response,
                 'selected'           => $item->selected,
@@ -62,7 +62,7 @@ class SearchTaskController extends VoyagerBaseController
     public function compliance_save(Request $request): RedirectResponse
     {
         $data = $request->all();
-        $this->service->comlianse_saveS($data);
+        $this->service->compliance_saveS($data);
         return redirect()->back();
     }
 
@@ -115,7 +115,6 @@ class SearchTaskController extends VoyagerBaseController
     {
         $data = collect($request->get('data'))->keyBy('name');
         $filter = $data['filter']['value'] ?? null;
-        $suggest = $data['suggest']['value'] ?? null;
 
         $lat = $data['user_lat']['value'] ?? null;
         $lon = $data['user_long']['value'] ?? null;
@@ -128,7 +127,7 @@ class SearchTaskController extends VoyagerBaseController
         $remjob = $data['remjob']['value'] ?? false;
         $noresp = $data['noresp']['value'] ?? false;
 
-        $tasks = $this->service->search_new_service($arr_check, $filter, $suggest, $price, $remjob, $noresp, $radius, $lat, $lon, $filterByStartDate);
+        $tasks = $this->service->search_new_service($arr_check, $filter, $price, $remjob, $noresp, $radius, $lat, $lon, $filterByStartDate);
 
         $html = view("search_task.tasks", ['tasks' => $tasks[0]])->render();
         return response()->json(array('dataForMap' => $tasks[1], 'html' => $html));

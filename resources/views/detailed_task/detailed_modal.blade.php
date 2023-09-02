@@ -45,17 +45,15 @@
 
                 <form action="{{route('searchTask.comlianse_save')}}" method="POST">
                     @csrf
-                    <input type="hidden" name="taskId" value="{{ $task->id }}">
-                    <input type="hidden" name="userId"
-                           value="{{ Auth::check() ? Auth::user()->id : $task->user->id}}">
-                    <select name="c_type" id=""
+                    <input type="hidden" name="task_id" value="{{ $task->id }}">
+                    <input type="hidden" name="user_id" value="{{ auth()->id()}}">
+                        <select name="compliance_type_id"
                             class="w-4/5 border-2 border-gray-500 rounded-lg mb-4 py-2 px-2 focus:outline-none hover:border-yellow-500">
-                        @foreach ($complianceType as $complType)
-                            <option value="{{$complType->id}}">{{$complType->getTranslatedAttribute('name')}}</option>
+                        @foreach ($complianceTypes as $complianceType)
+                            <option value="{{$complianceType->id}}">{{$complianceType->getTranslatedAttribute('name')}}</option>
                         @endforeach
                     </select>
-                    <textarea name="c_text" id="" required
-                              class="border-2 border-gray-500 rounded-lg p-2 w-4/5 focus:outline-none hover:border-yellow-500"></textarea>
+                    <textarea name="text" required class="border-2 border-gray-500 rounded-lg p-2 w-4/5 focus:outline-none hover:border-yellow-500"></textarea>
                     <input type="submit" value="{{__('Отправить')}}" required
                            class="bg-yellow-500 mt-4 py-3 px-5 rounded-lg text-white text-xl cursor-pointer font-medium border-2 border-gray-500 hover:bg-yellow-600">
                 </form>

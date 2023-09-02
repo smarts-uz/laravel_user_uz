@@ -20,13 +20,15 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use JetBrains\PhpStorm\ArrayShape;
 
 class SearchService
 {
     public const MAX_SEARCH_TASK = 20;
     public const REMOTE_TASK = 1;
 
-    public function search_new(?string $lang = 'uz') {
+    public function search_new(?string $lang = 'uz'): array
+    {
         $categories = Cache::remember('category_' . $lang, now()->addMinute(180), function () use ($lang) {
             return Category::withTranslations('uz')->orderBy("order")->get();
         });
@@ -44,14 +46,9 @@ class SearchService
      * @param $data
      * @return bool
      */
-    public function comlianse_saveS($data): bool
+    public function compliance_saveS($data): bool
     {
-        $comp = new Compliance();
-        $comp->compliance_type_id = $data['c_type'];
-        $comp->text = $data['c_text'];
-        $comp->user_id = $data['userId'];
-        $comp->task_id = $data['taskId'];
-        $comp->save();
+        $comp = Compliance::query()->create($data);
         $telegramService = new TelegramService();
         $data['id'] = $comp->id;
         $data['complaint'] = $comp->text;
@@ -70,7 +67,8 @@ class SearchService
      * @param $filter
      * @return array
      */
-    public function task_service($auth_response, $userId, $task_id, $filter)
+    #[ArrayShape(['item' => "\App\Item\SearchServiceTaskItem", 'task' => "mixed"])]
+    public function task_service($auth_response, $userId, $task_id, $filter): array
     {
         $task = Task::with('category')->find($task_id);
         if (auth()->check() && $userId !== $task->user_id) {
@@ -122,7 +120,7 @@ class SearchService
      * Mazkur metod search task bladega ma'lumotlarni chiqarib beradi
      * @param  $arr_check , $filter, $suggest, $price, $remjob, $noresp, $radius,$lat,$lon,$filterByStartDate Object
      */
-    public function search_new_service($arr_check, $filter, $suggest, $price, $remjob, $noresp, $radius, $lat, $lon, $filterByStartDate)
+    public function search_new_service($arr_check, $filter, $price, $remjob, $noresp, $radius, $lat, $lon, $filterByStartDate): array
     {
 
         $users = User::all()->keyBy('id');
@@ -250,7 +248,7 @@ class SearchService
     {
         $task = Task::find($taskId);
         $user = User::find($userId);
-        if ($task->user_id !== $user->id){
+        if ($task->user_id !== $userId){
             return response()->json([
                 'success' => false,
                 "message" => __("Отсутствует разрешение")
