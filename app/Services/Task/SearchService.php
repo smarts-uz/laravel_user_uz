@@ -123,14 +123,18 @@ class SearchService
     public function search_new_service($arr_check, $filter, $price, $remjob, $noresp, $radius, $lat, $lon, $filterByStartDate): array
     {
 
-        $users = User::all()->keyBy('id');
-        $adresses = Address::all()->keyBy('id');
-        $categories = Cache::remember('categoriesAll_', now()->addMinute(180), function () {
+        $users = Cache::remember('usersAll_', 3600, function () {
+            return User::all()->keyBy('id');
+        });
+        $addresses = Cache::remember('addressesAll_', 3600, function () {
+            return Address::all()->keyBy('id');
+        });
+        $categories = Cache::remember('categoriesAll_', 3600, function () {
             return Category::all()->keyBy('id');
         });
 
 
-        $adressesQuery = "
+        $addressesQuery = "
         SELECT task_id FROM ( SELECT task_id,
         6371 * acos(cos(radians($lat))
 		        * cos(radians(`latitude`))
@@ -140,7 +144,7 @@ class SearchService
         $results = [];
 
         if (!$remjob && $lat && $lon && $radius) {
-            $results = DB::select(DB::raw($adressesQuery));
+            $results = DB::select(DB::raw($addressesQuery));
         }
 
         $relatedAdress = [];
@@ -177,15 +181,15 @@ class SearchService
             ->paginate(self::MAX_SEARCH_TASK);
 
 
-        $tasks->transform(function ($task) use ($users, $adresses, $categories) {
+        $tasks->transform(function ($task) use ($users, $addresses, $categories) {
             if ($users->contains($task->user_id)) {
                 $task->user_name = $users->get($task->user_id)->name;
             }
-            $allAdresses = $adresses->where('task_id', $task->id);
-            $mainAdress = Arr::first($allAdresses);
-            $task->address_main = Arr::get($mainAdress, 'location');
-            $task->latitude = Arr::get($mainAdress, 'latitude');
-            $task->longitude = Arr::get($mainAdress, 'longitude');
+            $allAddresses = $addresses->where('task_id', $task->id);
+            $mainAddress = Arr::first($allAddresses);
+            $task->address_main = Arr::get($mainAddress, 'location');
+            $task->latitude = Arr::get($mainAddress, 'latitude');
+            $task->longitude = Arr::get($mainAddress, 'longitude');
 
             if ($categories->contains($task->category_id)) {
                 $task->category_icon = $categories->get($task->category_id)->ico;
